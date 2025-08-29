@@ -61,7 +61,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
     def testTooManyPositionalErrorMessage(self):
         def f(a, b=Nichts, *, c=Nichts):
             pass
-        with self.assertRaises(TypeError) as exc:
+        mit self.assertRaises(TypeError) als exc:
             f(1, 2, 3)
         expected = (f"{f.__qualname__}() takes von 1 to 2 "
                     "positional arguments but 3 were given")
@@ -153,7 +153,7 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
         # determine their scope: global, local, cell...
         # This was not done fuer the default values of keyword
         # arguments in a lambda definition, and the following line
-        # used to fail with a SystemError.
+        # used to fail mit a SystemError.
         lambda *, k1=unittest: Nichts
 
     def test_mangling(self):
@@ -165,11 +165,11 @@ klasse KeywordOnlyArgTestCase(unittest.TestCase):
     def test_default_evaluation_order(self):
         # See issue 16967
         a = 42
-        with self.assertRaises(NameError) as err:
+        mit self.assertRaises(NameError) als err:
             def f(v=a, x=b, *, y=c, z=d):
                 pass
         self.assertEqual(str(err.exception), "name 'b' is not defined")
-        with self.assertRaises(NameError) as err:
+        mit self.assertRaises(NameError) als err:
             g = lambda v=a, x=b, *, y=c, z=d: Nichts
         self.assertEqual(str(err.exception), "name 'b' is not defined")
 

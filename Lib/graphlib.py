@@ -19,7 +19,7 @@ klasse _NodeInfo:
         self.npredecessors = 0
 
         # List of successor nodes. The list can contain duplicated elements as
-        # long as they're all reflected in the successor's npredecessors attribute.
+        # long als they're all reflected in the successor's npredecessors attribute.
         self.successors = []
 
 
@@ -61,11 +61,11 @@ klasse TopologicalSorter:
 
         Both the *node* and all elements in *predecessors* must be hashable.
 
-        If called multiple times with the same node argument, the set of dependencies
+        If called multiple times mit the same node argument, the set of dependencies
         will be the union of all dependencies passed in.
 
-        It is possible to add a node with no dependencies (*predecessors* is not provided)
-        as well as provide a dependency twice. If a node that has not been provided before
+        It is possible to add a node mit no dependencies (*predecessors* is not provided)
+        als well als provide a dependency twice. If a node that has not been provided before
         is included among *predecessors* it will be automatically added to the graph with
         no predecessors of its own.
 
@@ -84,10 +84,10 @@ klasse TopologicalSorter:
             pred_info.successors.append(node)
 
     def prepare(self):
-        """Mark the graph as finished and check fuer cycles in the graph.
+        """Mark the graph als finished and check fuer cycles in the graph.
 
         If any cycle is detected, "CycleError" will be raised, but "get_ready" can
-        still be used to obtain as many nodes as possible until cycles block more
+        still be used to obtain als many nodes als possible until cycles block more
         progress. After a call to this function, the graph cannot be modified and
         therefore no more nodes can be added using "add".
 
@@ -103,8 +103,8 @@ klasse TopologicalSorter:
             ]
         # ready_nodes is set before we look fuer cycles on purpose:
         # wenn the user wants to catch the CycleError, that's fine,
-        # they can continue using the instance to grab as many
-        # nodes as possible before cycles block more progress
+        # they can continue using the instance to grab als many
+        # nodes als possible before cycles block more progress
         cycle = self._find_cycle()
         wenn cycle:
             raise CycleError("nodes are in a cycle", cycle)
@@ -112,8 +112,8 @@ klasse TopologicalSorter:
     def get_ready(self):
         """Return a tuple of all the nodes that are ready.
 
-        Initially it returns all nodes with no predecessors; once those are marked
-        as processed by calling "done", further calls will return all new nodes that
+        Initially it returns all nodes mit no predecessors; once those are marked
+        als processed by calling "done", further calls will return all new nodes that
         have all their predecessors already processed. Once no more progress can be made,
         empty tuples are returned.
 
@@ -153,7 +153,7 @@ klasse TopologicalSorter:
         return self.is_active()
 
     def done(self, *nodes):
-        """Marks a set of nodes returned by "get_ready" as processed.
+        """Marks a set of nodes returned by "get_ready" als processed.
 
         This method unblocks any successor of each node in *nodes* fuer being returned
         in the future by a call to "get_ready".
@@ -175,7 +175,7 @@ klasse TopologicalSorter:
             wenn (nodeinfo := n2i.get(node)) is Nichts:
                 raise ValueError(f"node {node!r} was not added using add()")
 
-            # If the node has not being returned (marked as ready) previously, inform the user.
+            # If the node has not being returned (marked als ready) previously, inform the user.
             stat = nodeinfo.npredecessors
             wenn stat != _NODE_OUT:
                 wenn stat >= 0:
@@ -187,7 +187,7 @@ klasse TopologicalSorter:
                 sonst:
                     assert Falsch, f"node {node!r}: unknown status {stat}"
 
-            # Mark the node as processed
+            # Mark the node als processed
             nodeinfo.npredecessors = _NODE_DONE
 
             # Go to all the successors and reduce the number of predecessors, collecting all the ones

@@ -76,7 +76,7 @@ klasse MyContextManager:
 def context_manager():
     N = 1000 * WORK_SCALE
     fuer i in range(N):
-        with MyContextManager():
+        mit MyContextManager():
             pass
 
 @register_benchmark
@@ -294,7 +294,7 @@ def initialize_threads(opts):
     sonst:
         cpus = [Nichts] * opts.threads  # don't set affinity
 
-    drucke(f"Running benchmarks with {len(cpus)} threads")
+    drucke(f"Running benchmarks mit {len(cpus)} threads")
     fuer cpu in cpus:
         inq = queue.Queue()
         outq = queue.Queue()
@@ -308,7 +308,7 @@ def initialize_threads(opts):
 def main(opts):
     global WORK_SCALE
     wenn not hasattr(sys, "_is_gil_enabled") or sys._is_gil_enabled():
-        sys.stderr.write("expected to be run with the  GIL disabled\n")
+        sys.stderr.write("expected to be run mit the  GIL disabled\n")
 
     benchmark_names = opts.benchmarks
     wenn benchmark_names:

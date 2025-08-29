@@ -20,7 +20,7 @@ klasse WindowsLoadTracker():
     """
     This klasse asynchronously reads the performance counters to calculate
     the system load on Windows.  A "raw" thread is used here to prevent
-    interference with the test suite's cases fuer the threading module.
+    interference mit the test suite's cases fuer the threading module.
     """
 
     def __init__(self):

@@ -188,7 +188,7 @@ klasse TestHeapq(unittest.TestCase):
         lock = Lock()
 
         def worker():
-            with lock:
+            mit lock:
                 nonlocal count
                 x = count
                 count += 1

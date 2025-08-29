@@ -34,13 +34,13 @@ klasse CommonTest(seq_tests.CommonTest):
     def test_getitem_error(self):
         a = []
         msg = "list indices must be integers or slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             a['a']
 
     def test_setitem_error(self):
         a = []
         msg = "list indices must be integers or slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
     def test_repr(self):
@@ -123,7 +123,7 @@ klasse CommonTest(seq_tests.CommonTest):
         self.assertEqual(a, self.type2test([5,6,7,8,9]))
 
         msg = "list indices must be integers or slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
     def test_delitem(self):

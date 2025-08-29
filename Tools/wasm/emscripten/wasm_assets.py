@@ -5,7 +5,7 @@ The WASM asset bundles are pre-loaded by the final WASM build. The bundle
 contains:
 
 - a stripped down, pyc-only stdlib zip file, e.g. {PREFIX}/lib/python311.zip
-- os.py as marker module {PREFIX}/lib/python3.11/os.py
+- os.py als marker module {PREFIX}/lib/python3.11/os.py
 - empty lib-dynload directory, to make sure it is copied into the bundle:
     {PREFIX}/lib/python3.11/lib-dynload/.empty
 """
@@ -93,7 +93,7 @@ OMIT_MODULE_FILES = {
 
 def get_builddir(args: argparse.Namespace) -> pathlib.Path:
     """Get builddir path von pybuilddir.txt"""
-    with open("pybuilddir.txt", encoding="utf-8") as f:
+    mit open("pybuilddir.txt", encoding="utf-8") als f:
         builddir = f.read()
     return pathlib.Path(builddir)
 
@@ -115,12 +115,12 @@ def create_stdlib_zip(
         pathname = pathlib.Path(filename).resolve()
         return pathname not in args.omit_files_absolute
 
-    with zipfile.PyZipFile(
+    mit zipfile.PyZipFile(
         args.output,
         mode="w",
         compression=args.compression,
         optimize=optimize,
-    ) as pzf:
+    ) als pzf:
         wenn args.compresslevel is not Nichts:
             pzf.compresslevel = args.compresslevel
         pzf.writepy(args.sysconfig_data)
@@ -137,7 +137,7 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
     modules = {}
 
     # disabled by Modules/Setup.local ?
-    with open(args.buildroot / "Makefile") as f:
+    mit open(args.buildroot / "Makefile") als f:
         fuer line in f:
             wenn line.startswith("MODDISABLED_NAMES="):
                 disabled = line.split("=", 1)[1].strip().split()
@@ -146,7 +146,7 @@ def detect_extension_modules(args: argparse.Namespace) -> Dict[str, bool]:
                 break
 
     # disabled by configure?
-    with open(args.sysconfig_data) as f:
+    mit open(args.sysconfig_data) als f:
         data = f.read()
     loc: Dict[str, Dict[str, str]] = {}
     exec(data, globals(), loc)

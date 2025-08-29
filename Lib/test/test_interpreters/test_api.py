@@ -16,7 +16,7 @@ _interpreters = import_helper.import_module('_interpreters')
 von concurrent importiere interpreters
 von test.support importiere Py_GIL_DISABLED
 von test.support importiere force_not_colorized
-importiere test._crossinterp_definitions as defs
+importiere test._crossinterp_definitions als defs
 von concurrent.interpreters importiere (
     InterpreterError, InterpreterNotFoundError, ExecutionFailed,
 )
@@ -44,7 +44,7 @@ def is_pickleable(obj):
 
 @contextlib.contextmanager
 def defined_in___main__(name, script, *, remove=Falsch):
-    importiere __main__ as mainmod
+    importiere __main__ als mainmod
     mainns = vars(mainmod)
     assert name not in mainns
     exec(script, mainns, mainns)
@@ -124,7 +124,7 @@ klasse CreateTests(TestBase):
             lock.acquire()
             lock.release()
         t = threading.Thread(target=f)
-        with lock:
+        mit lock:
             t.start()
         t.join()
         self.assertIn(interp, interpreters.list_all())
@@ -205,12 +205,12 @@ klasse GetCurrentTests(TestBase):
         self.assertNotEqual(current, main)
 
     def test_idempotent(self):
-        with self.subTest('main'):
+        mit self.subTest('main'):
             cur1 = interpreters.get_current()
             cur2 = interpreters.get_current()
             self.assertIs(cur1, cur2)
 
-        with self.subTest('subinterpreter'):
+        mit self.subTest('subinterpreter'):
             interp = interpreters.create()
             out = _run_output(interp, dedent("""
                 von concurrent importiere interpreters
@@ -222,7 +222,7 @@ klasse GetCurrentTests(TestBase):
             objid1, objid2 = (int(v) fuer v in out.splitlines())
             self.assertEqual(objid1, objid2)
 
-        with self.subTest('per-interpreter'):
+        mit self.subTest('per-interpreter'):
             interp = interpreters.create()
             out = _run_output(interp, dedent("""
                 von concurrent importiere interpreters
@@ -237,7 +237,7 @@ klasse GetCurrentTests(TestBase):
     def test_created_with_capi(self):
         expected = _testinternalcapi.next_interpreter_id()
         text = self.run_temp_from_capi(f"""
-            importiere {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} als interpreters
             interp = interpreters.get_current()
             drucke((interp.id, interp.whence))
             """)
@@ -304,7 +304,7 @@ klasse ListAllTests(TestBase):
         ]
         expected2 = expected[:-2]
         text = self.run_temp_from_capi(f"""
-            importiere {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} als interpreters
             interp = interpreters.create()
             drucke(
                 [(i.id, i.whence) fuer i in interpreters.list_all()])
@@ -336,8 +336,8 @@ klasse InterpreterObjectTests(TestBase):
             Nichts,
             '',
         ]:
-            with self.subTest(repr(interpid)):
-                with self.assertRaises(TypeError):
+            mit self.subTest(repr(interpid)):
+                mit self.assertRaises(TypeError):
                     interpreters.Interpreter(interpid)
 
     def test_idempotent(self):
@@ -346,11 +346,11 @@ klasse InterpreterObjectTests(TestBase):
         self.assertIs(interp, main)
 
     def test_init_does_not_exist(self):
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             interpreters.Interpreter(1_000_000)
 
     def test_init_bad_id(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             interpreters.Interpreter(-1)
 
     def test_id_type(self):
@@ -363,29 +363,29 @@ klasse InterpreterObjectTests(TestBase):
 
     def test_id_readonly(self):
         interp = interpreters.create()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             interp.id = 1_000_000
 
     def test_whence(self):
         main = interpreters.get_main()
         interp = interpreters.create()
 
-        with self.subTest('main'):
+        mit self.subTest('main'):
             self.assertEqual(main.whence, WHENCE_STR_RUNTIME)
 
-        with self.subTest('from _interpreters'):
+        mit self.subTest('from _interpreters'):
             self.assertEqual(interp.whence, WHENCE_STR_STDLIB)
 
-        with self.subTest('from C-API'):
+        mit self.subTest('from C-API'):
             text = self.run_temp_from_capi(f"""
-                importiere {interpreters.__name__} as interpreters
+                importiere {interpreters.__name__} als interpreters
                 interp = interpreters.get_current()
                 drucke(repr(interp.whence))
                 """)
             whence = eval(text)
             self.assertEqual(whence, WHENCE_STR_CAPI)
 
-        with self.subTest('readonly'):
+        mit self.subTest('readonly'):
             fuer value in [
                 Nichts,
                 WHENCE_STR_UNKNOWN,
@@ -393,9 +393,9 @@ klasse InterpreterObjectTests(TestBase):
                 WHENCE_STR_STDLIB,
                 WHENCE_STR_CAPI,
             ]:
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     interp.whence = value
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     main.whence = value
 
     def test_hashable(self):
@@ -413,7 +413,7 @@ klasse InterpreterObjectTests(TestBase):
     def test_pickle(self):
         interp = interpreters.create()
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(protocol=protocol):
+            mit self.subTest(protocol=protocol):
                 data = pickle.dumps(interp, protocol)
                 unpickled = pickle.loads(data)
                 self.assertEqual(unpickled, interp)
@@ -431,7 +431,7 @@ klasse TestInterpreterIsRunning(TestBase):
         interp = interpreters.create()
         self.assertFalsch(interp.is_running())
 
-        with _running(interp):
+        mit _running(interp):
             self.assertWahr(interp.is_running())
         self.assertFalsch(interp.is_running())
 
@@ -459,7 +459,7 @@ klasse TestInterpreterIsRunning(TestBase):
     def test_already_destroyed(self):
         interp = interpreters.create()
         interp.close()
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             interp.is_running()
 
     def test_with_only_background_threads(self):
@@ -489,7 +489,7 @@ klasse TestInterpreterIsRunning(TestBase):
 
     def test_created_with_capi(self):
         script = dedent(f"""
-            importiere {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} als interpreters
             interp = interpreters.get_current()
             drucke(interp.is_running())
             """)
@@ -500,39 +500,39 @@ klasse TestInterpreterIsRunning(TestBase):
             except Exception:
                 raise Exception(repr(text))
 
-        with self.subTest('running __main__ (from self)'):
-            with self.interpreter_from_capi() as interpid:
+        mit self.subTest('running __main__ (from self)'):
+            mit self.interpreter_from_capi() als interpid:
                 text = self.run_from_capi(interpid, script, main=Wahr)
             running = parse_results(text)
             self.assertWahr(running)
 
-        with self.subTest('running, but not __main__ (from self)'):
+        mit self.subTest('running, but not __main__ (from self)'):
             text = self.run_temp_from_capi(script)
             running = parse_results(text)
             self.assertFalsch(running)
 
-        with self.subTest('running __main__ (from other)'):
-            with self.interpreter_obj_from_capi() as (interp, interpid):
+        mit self.subTest('running __main__ (from other)'):
+            mit self.interpreter_obj_from_capi() als (interp, interpid):
                 before = interp.is_running()
-                with self.running_from_capi(interpid, main=Wahr):
+                mit self.running_from_capi(interpid, main=Wahr):
                     during = interp.is_running()
                 after = interp.is_running()
             self.assertFalsch(before)
             self.assertWahr(during)
             self.assertFalsch(after)
 
-        with self.subTest('running, but not __main__ (from other)'):
-            with self.interpreter_obj_from_capi() as (interp, interpid):
+        mit self.subTest('running, but not __main__ (from other)'):
+            mit self.interpreter_obj_from_capi() als (interp, interpid):
                 before = interp.is_running()
-                with self.running_from_capi(interpid, main=Falsch):
+                mit self.running_from_capi(interpid, main=Falsch):
                     during = interp.is_running()
                 after = interp.is_running()
             self.assertFalsch(before)
             self.assertFalsch(during)
             self.assertFalsch(after)
 
-        with self.subTest('not running (from other)'):
-            with self.interpreter_obj_from_capi() as (interp, _):
+        mit self.subTest('not running (from other)'):
+            mit self.interpreter_obj_from_capi() als (interp, _):
                 running = interp.is_running()
             self.assertFalsch(running)
 
@@ -563,11 +563,11 @@ klasse TestInterpreterClose(TestBase):
 
     def test_main(self):
         main, = interpreters.list_all()
-        with self.assertRaises(InterpreterError):
+        mit self.assertRaises(InterpreterError):
             main.close()
 
         def f():
-            with self.assertRaises(InterpreterError):
+            mit self.assertRaises(InterpreterError):
                 main.close()
 
         t = threading.Thread(target=f)
@@ -577,7 +577,7 @@ klasse TestInterpreterClose(TestBase):
     def test_already_destroyed(self):
         interp = interpreters.create()
         interp.close()
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             interp.close()
 
     def test_from_current(self):
@@ -623,8 +623,8 @@ klasse TestInterpreterClose(TestBase):
     def test_still_running(self):
         main, = interpreters.list_all()
         interp = interpreters.create()
-        with _running(interp):
-            with self.assertRaises(InterpreterError):
+        mit _running(interp):
+            mit self.assertRaises(InterpreterError):
                 interp.close()
             self.assertWahr(interp.is_running())
 
@@ -661,47 +661,47 @@ klasse TestInterpreterClose(TestBase):
 
     def test_created_with_capi(self):
         script = dedent(f"""
-            importiere {interpreters.__name__} as interpreters
+            importiere {interpreters.__name__} als interpreters
             interp = interpreters.get_current()
             interp.close()
             """)
 
-        with self.subTest('running __main__ (from self)'):
-            with self.interpreter_from_capi() as interpid:
-                with self.assertRaisesRegex(ExecutionFailed,
+        mit self.subTest('running __main__ (from self)'):
+            mit self.interpreter_from_capi() als interpid:
+                mit self.assertRaisesRegex(ExecutionFailed,
                                             'InterpreterError.*unrecognized'):
                     self.run_from_capi(interpid, script, main=Wahr)
 
-        with self.subTest('running, but not __main__ (from self)'):
-            with self.assertRaisesRegex(ExecutionFailed,
+        mit self.subTest('running, but not __main__ (from self)'):
+            mit self.assertRaisesRegex(ExecutionFailed,
                                         'InterpreterError.*unrecognized'):
                 self.run_temp_from_capi(script)
 
-        with self.subTest('running __main__ (from other)'):
-            with self.interpreter_obj_from_capi() as (interp, interpid):
-                with self.running_from_capi(interpid, main=Wahr):
-                    with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+        mit self.subTest('running __main__ (from other)'):
+            mit self.interpreter_obj_from_capi() als (interp, interpid):
+                mit self.running_from_capi(interpid, main=Wahr):
+                    mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                         interp.close()
                     # Make sure it wssn't closed.
                     self.assertWahr(
                         self.interp_exists(interpid))
 
-        # The rest would be skipped until we deal with running threads when
+        # The rest would be skipped until we deal mit running threads when
         # interp.close() is called.  However, the "whence" restrictions
         # trigger first.
 
-        with self.subTest('running, but not __main__ (from other)'):
-            with self.interpreter_obj_from_capi() as (interp, interpid):
-                with self.running_from_capi(interpid, main=Falsch):
-                    with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+        mit self.subTest('running, but not __main__ (from other)'):
+            mit self.interpreter_obj_from_capi() als (interp, interpid):
+                mit self.running_from_capi(interpid, main=Falsch):
+                    mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                         interp.close()
                     # Make sure it wssn't closed.
                     self.assertWahr(
                         self.interp_exists(interpid))
 
-        with self.subTest('not running (from other)'):
-            with self.interpreter_obj_from_capi() as (interp, interpid):
-                with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+        mit self.subTest('not running (from other)'):
+            mit self.interpreter_obj_from_capi() als (interp, interpid):
+                mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                     interp.close()
                 self.assertWahr(
                     self.interp_exists(interpid))
@@ -711,7 +711,7 @@ klasse TestInterpreterPrepareMain(TestBase):
 
     def test_empty(self):
         interp = interpreters.create()
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             interp.prepare_main()
 
     def test_dict(self):
@@ -753,29 +753,29 @@ klasse TestInterpreterPrepareMain(TestBase):
 
     def test_not_shareable(self):
         interp = interpreters.create()
-        with self.assertRaises(interpreters.NotShareableError):
+        mit self.assertRaises(interpreters.NotShareableError):
             interp.prepare_main(spam={'spam': 'eggs', 'foo': 'bar'})
 
         # Make sure neither was actually bound.
-        with self.assertRaises(ExecutionFailed):
+        mit self.assertRaises(ExecutionFailed):
             interp.exec('drucke(foo)')
-        with self.assertRaises(ExecutionFailed):
+        mit self.assertRaises(ExecutionFailed):
             interp.exec('drucke(spam)')
 
     def test_running(self):
         interp = interpreters.create()
         interp.prepare_main({'spam': Wahr})
-        with self.running(interp):
-            with self.assertRaisesRegex(InterpreterError, 'running'):
+        mit self.running(interp):
+            mit self.assertRaisesRegex(InterpreterError, 'running'):
                 interp.prepare_main({'spam': Falsch})
         interp.exec('assert spam is Wahr')
 
     @requires_test_modules
     def test_created_with_capi(self):
-        with self.interpreter_obj_from_capi() as (interp, interpid):
-            with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+        mit self.interpreter_obj_from_capi() als (interp, interpid):
+            mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                 interp.prepare_main({'spam': Wahr})
-            with self.assertRaisesRegex(ExecutionFailed, 'NameError'):
+            mit self.assertRaisesRegex(ExecutionFailed, 'NameError'):
                 self.run_from_capi(interpid, 'assert spam is Wahr')
 
 
@@ -784,7 +784,7 @@ klasse TestInterpreterExec(TestBase):
     def test_success(self):
         interp = interpreters.create()
         script, results = _captured_script('drucke("it worked!", end="")')
-        with results:
+        mit results:
             interp.exec(script)
         results = results.final()
         results.raise_if_failed()
@@ -794,7 +794,7 @@ klasse TestInterpreterExec(TestBase):
 
     def test_failure(self):
         interp = interpreters.create()
-        with self.assertRaises(ExecutionFailed):
+        mit self.assertRaises(ExecutionFailed):
             interp.exec('raise Exception')
 
     @force_not_colorized
@@ -849,7 +849,7 @@ klasse TestInterpreterExec(TestBase):
     def test_in_thread(self):
         interp = interpreters.create()
         script, results = _captured_script('drucke("it worked!", end="")')
-        with results:
+        mit results:
             def f():
                 interp.exec(script)
 
@@ -866,7 +866,7 @@ klasse TestInterpreterExec(TestBase):
     def test_fork(self):
         interp = interpreters.create()
         importiere tempfile
-        with tempfile.NamedTemporaryFile('w+', encoding='utf-8') as file:
+        mit tempfile.NamedTemporaryFile('w+', encoding='utf-8') als file:
             file.write('')
             file.flush()
 
@@ -876,7 +876,7 @@ klasse TestInterpreterExec(TestBase):
                 try:
                     os.fork()
                 except RuntimeError:
-                    with open('{file.name}', 'w', encoding='utf-8') as out:
+                    mit open('{file.name}', 'w', encoding='utf-8') als out:
                         out.write('{expected}')
                 """)
             interp.exec(script)
@@ -889,13 +889,13 @@ klasse TestInterpreterExec(TestBase):
     @unittest.skip('Fails on FreeBSD')
     def test_already_running(self):
         interp = interpreters.create()
-        with _running(interp):
-            with self.assertRaises(RuntimeError):
+        mit _running(interp):
+            mit self.assertRaises(RuntimeError):
                 interp.exec('drucke("spam")')
 
     def test_bad_script(self):
         interp = interpreters.create()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             interp.exec(10)
 
     def test_bytes_for_script(self):
@@ -942,8 +942,8 @@ klasse TestInterpreterExec(TestBase):
         self.assertEqual(os.read(r_interp, 1), FINISHED)
 
     def test_created_with_capi(self):
-        with self.interpreter_obj_from_capi() as (interp, _):
-            with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+        mit self.interpreter_obj_from_capi() als (interp, _):
+            mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                 interp.exec('raise Exception("it worked!")')
 
     def test_list_comprehension(self):
@@ -1097,7 +1097,7 @@ klasse TestInterpreterCall(TestBase):
 
     @contextlib.contextmanager
     def assert_fails(self, expected):
-        with self.assertRaises(ExecutionFailed) as cm:
+        mit self.assertRaises(ExecutionFailed) als cm:
             yield cm
         uncaught = cm.exception.excinfo
         self.assertEqual(uncaught.type.__name__, expected.__name__)
@@ -1147,29 +1147,29 @@ klasse TestInterpreterCall(TestBase):
         interp = interpreters.create()
 
         func = call_func_noop
-        with self.subTest('no args, no return'):
+        mit self.subTest('no args, no return'):
             res = interp.call(func)
             self.assertIsNichts(res)
 
         func = call_func_return_shareable
-        with self.subTest('no args, returns shareable'):
+        mit self.subTest('no args, returns shareable'):
             res = interp.call(func)
             self.assertEqual(res, (1, Nichts))
 
         func = call_func_return_stateless_func
         expected = (lambda x: x)
-        with self.subTest('no args, returns stateless func'):
+        mit self.subTest('no args, returns stateless func'):
             res = interp.call(func)
             self.assert_funcs_equal(res, expected)
 
         func = call_func_return_pickleable
-        with self.subTest('no args, returns pickleable'):
+        mit self.subTest('no args, returns pickleable'):
             res = interp.call(func)
             self.assertEqual(res, [1, 2, 3])
 
         func = call_func_return_unpickleable
-        with self.subTest('no args, returns unpickleable'):
-            with self.assertRaises(interpreters.NotShareableError):
+        mit self.subTest('no args, returns unpickleable'):
+            mit self.assertRaises(interpreters.NotShareableError):
                 interp.call(func)
 
     def test_stateless_func_returns_arg(self):
@@ -1183,20 +1183,20 @@ klasse TestInterpreterCall(TestBase):
             (1, 2, 'spam!'),
             memoryview(b'spam!'),
         ]:
-            with self.subTest(f'shareable {arg!r}'):
+            mit self.subTest(f'shareable {arg!r}'):
                 assert _interpreters.is_shareable(arg)
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assertEqual(res, arg)
 
         fuer arg in defs.STATELESS_FUNCTIONS:
-            with self.subTest(f'stateless func {arg!r}'):
+            mit self.subTest(f'stateless func {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assert_funcs_equal(res, arg)
 
         fuer arg in defs.TOP_FUNCTIONS:
             wenn arg in defs.STATELESS_FUNCTIONS:
                 continue
-            with self.subTest(f'stateful func {arg!r}'):
+            mit self.subTest(f'stateful func {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
                 self.assert_funcs_equal(res, arg)
                 assert is_pickleable(arg)
@@ -1225,7 +1225,7 @@ klasse TestInterpreterCall(TestBase):
             *(c(*a) fuer c, a in defs.TOP_CLASSES.items()
               wenn c not in defs.CLASSES_WITHOUT_EQUALITY),
         ]:
-            with self.subTest(f'pickleable {arg!r}'):
+            mit self.subTest(f'pickleable {arg!r}'):
                 res = interp.call(defs.spam_returns_arg, arg)
                 wenn type(arg) is object:
                     self.assertIs(type(res), object)
@@ -1240,10 +1240,10 @@ klasse TestInterpreterCall(TestBase):
             *(f fuer f in defs.NESTED_FUNCTIONS
               wenn f not in defs.STATELESS_FUNCTIONS),
         ]:
-            with self.subTest(f'unpickleable {arg!r}'):
+            mit self.subTest(f'unpickleable {arg!r}'):
                 assert not _interpreters.is_shareable(arg)
                 assert not is_pickleable(arg)
-                with self.assertRaises(interpreters.NotShareableError):
+                mit self.assertRaises(interpreters.NotShareableError):
                     interp.call(defs.spam_returns_arg, arg)
 
     def test_full_args(self):
@@ -1281,7 +1281,7 @@ klasse TestInterpreterCall(TestBase):
     def test_func_in___main___valid(self):
         # pickleable, already there'
 
-        with os_helper.temp_dir() as tempdir:
+        mit os_helper.temp_dir() als tempdir:
             def new_mod(name, text):
                 script_helper.make_script(tempdir, name, dedent(text))
 
@@ -1297,7 +1297,7 @@ klasse TestInterpreterCall(TestBase):
                 return res.out.decode('utf-8').strip()
 
             # no module indirection
-            with self.subTest('no indirection'):
+            mit self.subTest('no indirection'):
                 text = run(f"""
                     von concurrent importiere interpreters
 
@@ -1312,12 +1312,12 @@ klasse TestInterpreterCall(TestBase):
                     """)
                 self.assertEqual(text, '<fake __main__>')
 
-            # indirect as func, direct interp
+            # indirect als func, direct interp
             new_mod('mymod', f"""
                 def run(interp, func):
                     return interp.call(func)
                 """)
-            with self.subTest('indirect as func, direct interp'):
+            mit self.subTest('indirect als func, direct interp'):
                 text = run(f"""
                     von concurrent importiere interpreters
                     importiere mymod
@@ -1333,14 +1333,14 @@ klasse TestInterpreterCall(TestBase):
                     """)
                 self.assertEqual(text, '<fake __main__>')
 
-            # indirect as func, indirect interp
+            # indirect als func, indirect interp
             new_mod('mymod', f"""
                 von concurrent importiere interpreters
                 def run(func):
                     interp = interpreters.create()
                     return interp.call(func)
                 """)
-            with self.subTest('indirect as func, indirect interp'):
+            mit self.subTest('indirect als func, indirect interp'):
                 text = run(f"""
                     importiere mymod
 
@@ -1364,14 +1364,14 @@ klasse TestInterpreterCall(TestBase):
                 return __name__
             """)
 
-        with self.subTest('pickleable, added dynamically'):
-            with defined_in___main__(funcname, script) as arg:
-                with self.assertRaises(interpreters.NotShareableError):
+        mit self.subTest('pickleable, added dynamically'):
+            mit defined_in___main__(funcname, script) als arg:
+                mit self.assertRaises(interpreters.NotShareableError):
                     interp.call(defs.spam_returns_arg, arg)
 
-        with self.subTest('lying about __main__'):
-            with defined_in___main__(funcname, script, remove=Wahr) as arg:
-                with self.assertRaises(interpreters.NotShareableError):
+        mit self.subTest('lying about __main__'):
+            mit defined_in___main__(funcname, script, remove=Wahr) als arg:
+                mit self.assertRaises(interpreters.NotShareableError):
                     interp.call(defs.spam_returns_arg, arg)
 
     def test_func_in___main___hidden(self):
@@ -1387,8 +1387,8 @@ klasse TestInterpreterCall(TestBase):
         # of unpickling, so we avoid modifying that interpreter's
         # __main__ module by running the script in a hidden module.
         #
-        # In this test we verify that the function runs with the hidden
-        # module as its __globals__ when called in the other interpreter,
+        # In this test we verify that the function runs mit the hidden
+        # module als its __globals__ when called in the other interpreter,
         # and that the interpreter's __main__ module is unaffected.
         text = dedent("""
             eggs = Wahr
@@ -1432,7 +1432,7 @@ klasse TestInterpreterCall(TestBase):
                     ],
                 ])
            """)
-        with os_helper.temp_dir() as tempdir:
+        mit os_helper.temp_dir() als tempdir:
             filename = script_helper.make_script(tempdir, 'my-script', text)
             res = script_helper.assert_python_ok(filename)
         stdout = res.out.decode('utf-8').strip()
@@ -1541,7 +1541,7 @@ klasse TestInterpreterCall(TestBase):
 
                 drucke(results)
            """)
-        with os_helper.temp_dir() as tempdir:
+        mit os_helper.temp_dir() als tempdir:
             filename = script_helper.make_script(tempdir, 'my-script', text)
             res = script_helper.assert_python_ok(filename)
         stdout = res.out.decode('utf-8').strip()
@@ -1557,10 +1557,10 @@ klasse TestInterpreterCall(TestBase):
 
     def test_raises(self):
         interp = interpreters.create()
-        with self.assertRaises(ExecutionFailed):
+        mit self.assertRaises(ExecutionFailed):
             interp.call(call_func_failure)
 
-        with self.assert_fails(ValueError):
+        mit self.assert_fails(ValueError):
             interp.call(call_func_complex, '???', exc=ValueError('spam'))
 
     def test_call_valid(self):
@@ -1585,7 +1585,7 @@ klasse TestInterpreterCall(TestBase):
             (call_func_complex, ('interpid',), {}, interp.id),
             (call_func_complex, ('custom', 'spam!'), {}, Spam('spam!')),
         ]):
-            with self.subTest(f'success case #{i+1}'):
+            mit self.subTest(f'success case #{i+1}'):
                 res = interp.call(callable, *args, **kwargs)
                 self.assertEqual(res, expected)
 
@@ -1593,24 +1593,24 @@ klasse TestInterpreterCall(TestBase):
         interp = interpreters.create()
 
         func = get_call_func_closure
-        with self.subTest(func):
-            with self.assertRaises(interpreters.NotShareableError):
+        mit self.subTest(func):
+            mit self.assertRaises(interpreters.NotShareableError):
                 interp.call(func, 42)
 
         func = get_call_func_closure(42)
-        with self.subTest(func):
-            with self.assertRaises(interpreters.NotShareableError):
+        mit self.subTest(func):
+            mit self.assertRaises(interpreters.NotShareableError):
                 interp.call(func)
 
         func = call_func_complex
         op = 'closure'
-        with self.subTest(f'{func} ({op})'):
-            with self.assertRaises(interpreters.NotShareableError):
+        mit self.subTest(f'{func} ({op})'):
+            mit self.assertRaises(interpreters.NotShareableError):
                 interp.call(func, op, value='~~~')
 
         op = 'custom-inner'
-        with self.subTest(f'{func} ({op})'):
-            with self.assertRaises(interpreters.NotShareableError):
+        mit self.subTest(f'{func} ({op})'):
+            mit self.assertRaises(interpreters.NotShareableError):
                 interp.call(func, op, 'eggs!')
 
     def test_callable_requires_frame(self):
@@ -1624,7 +1624,7 @@ klasse TestInterpreterCall(TestBase):
             ((exec, '...'),
                 Nichts),
         ]:
-            with self.subTest(str(call)):
+            mit self.subTest(str(call)):
                 res = interp.call(*call)
                 self.assertEqual(res, expected)
 
@@ -1639,9 +1639,9 @@ klasse TestInterpreterCall(TestBase):
             vars: dict,
             dir: list,
         }.items():
-            with self.subTest(str(func)):
+            mit self.subTest(str(func)):
                 wenn func in result_not_pickleable:
-                    with self.assertRaises(interpreters.NotShareableError):
+                    mit self.assertRaises(interpreters.NotShareableError):
                         interp.call(func)
                 sonst:
                     res = interp.call(func)
@@ -1676,7 +1676,7 @@ klasse TestInterpreterCall(TestBase):
             '__package__': Nichts,
             '__loader__': BuiltinImporter,
         })
-        with self.assertRaises(ExecutionFailed):
+        mit self.assertRaises(ExecutionFailed):
             interp.call(eval, 'spam'),
 
         interp.call(exec, f'assert dir() == {names}')
@@ -1739,8 +1739,8 @@ klasse TestInterpreterCall(TestBase):
             (call_func_complex, ('interpid',), {}),
             (call_func_complex, ('custom', 'spam!'), {}),
         ]):
-            with self.subTest(f'success case #{i+1}'):
-                with self.captured_thread_exception() as ctx:
+            mit self.subTest(f'success case #{i+1}'):
+                mit self.captured_thread_exception() als ctx:
                     t = interp.call_in_thread(callable, *args, **kwargs)
                     t.join()
                 self.assertIsNichts(ctx.caught)
@@ -1749,13 +1749,13 @@ klasse TestInterpreterCall(TestBase):
             (get_call_func_closure, (42,), {}),
             (get_call_func_closure(42), (), {}),
         ]):
-            with self.subTest(f'invalid case #{i+1}'):
-                with self.captured_thread_exception() as ctx:
+            mit self.subTest(f'invalid case #{i+1}'):
+                mit self.captured_thread_exception() als ctx:
                     t = interp.call_in_thread(callable, *args, **kwargs)
                     t.join()
                 self.assertIsNotNichts(ctx.caught)
 
-        with self.captured_thread_exception() as ctx:
+        mit self.captured_thread_exception() als ctx:
             t = interp.call_in_thread(call_func_failure)
             t.join()
         self.assertIsNotNichts(ctx.caught)
@@ -1779,7 +1779,7 @@ klasse TestIsShareable(TestBase):
                 (1, ('spam', 'eggs'), Wahr),
                 ]
         fuer obj in shareables:
-            with self.subTest(obj):
+            mit self.subTest(obj):
                 shareable = interpreters.is_shareable(obj)
                 self.assertWahr(shareable)
 
@@ -1808,31 +1808,31 @@ klasse TestIsShareable(TestBase):
                 SubBytes(b'spam'),
                 ]
         fuer obj in not_shareables:
-            with self.subTest(repr(obj)):
+            mit self.subTest(repr(obj)):
                 self.assertFalsch(
                     interpreters.is_shareable(obj))
 
 
 klasse LowLevelTests(TestBase):
 
-    # The behaviors in the low-level module are important in as much
-    # as they are exercised by the high-level module.  Therefore the
+    # The behaviors in the low-level module are important in als much
+    # als they are exercised by the high-level module.  Therefore the
     # most important testing happens in the high-level tests.
     # These low-level tests cover corner cases that are not
     # encountered by the high-level module, thus they
-    # mostly shouldn't matter as much.
+    # mostly shouldn't matter als much.
 
     def test_new_config(self):
         # This test overlaps with
         # test.test_capi.test_misc.InterpreterConfigTests.
 
         default = _interpreters.new_config('isolated')
-        with self.subTest('no arg'):
+        mit self.subTest('no arg'):
             config = _interpreters.new_config()
             self.assert_ns_equal(config, default)
             self.assertIsNot(config, default)
 
-        with self.subTest('default'):
+        mit self.subTest('default'):
             config1 = _interpreters.new_config('default')
             self.assert_ns_equal(config1, default)
             self.assertIsNot(config1, default)
@@ -1842,7 +1842,7 @@ klasse LowLevelTests(TestBase):
             self.assertIsNot(config2, config1)
 
         fuer arg in ['', 'default']:
-            with self.subTest(f'default ({arg!r})'):
+            mit self.subTest(f'default ({arg!r})'):
                 config = _interpreters.new_config(arg)
                 self.assert_ns_equal(config, default)
                 self.assertIsNot(config, default)
@@ -1879,7 +1879,7 @@ klasse LowLevelTests(TestBase):
         gil_supported = ['default', 'shared', 'own']
 
         fuer name, vanilla in supported.items():
-            with self.subTest(f'supported ({name})'):
+            mit self.subTest(f'supported ({name})'):
                 expected = vanilla
                 config1 = _interpreters.new_config(name)
                 self.assert_ns_equal(config1, expected)
@@ -1889,13 +1889,13 @@ klasse LowLevelTests(TestBase):
                 self.assert_ns_equal(config2, config1)
                 self.assertIsNot(config2, config1)
 
-            with self.subTest(f'noop override ({name})'):
+            mit self.subTest(f'noop override ({name})'):
                 expected = vanilla
                 overrides = vars(vanilla)
                 config = _interpreters.new_config(name, **overrides)
                 self.assert_ns_equal(config, expected)
 
-            with self.subTest(f'override all ({name})'):
+            mit self.subTest(f'override all ({name})'):
                 overrides = {k: not v fuer k, v in vars(vanilla).items()}
                 fuer gil in gil_supported:
                     wenn vanilla.gil == gil:
@@ -1912,7 +1912,7 @@ klasse LowLevelTests(TestBase):
                 sonst:
                     values = [not old]
                 fuer val in values:
-                    with self.subTest(f'{name}.{field} ({old!r} -> {val!r})'):
+                    mit self.subTest(f'{name}.{field} ({old!r} -> {val!r})'):
                         overrides = {field: val}
                         expected = types.SimpleNamespace(
                             **dict(vars(vanilla), **overrides),
@@ -1920,8 +1920,8 @@ klasse LowLevelTests(TestBase):
                         config = _interpreters.new_config(name, **overrides)
                         self.assert_ns_equal(config, expected)
 
-        with self.subTest('extra override'):
-            with self.assertRaises(ValueError):
+        mit self.subTest('extra override'):
+            mit self.assertRaises(ValueError):
                 _interpreters.new_config(spam=Wahr)
 
         # Bad values fuer bool fields.
@@ -1930,18 +1930,18 @@ klasse LowLevelTests(TestBase):
                 continue
             assert isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, Nichts, object()]:
-                with self.subTest(f'bad override ({field}={value!r})'):
-                    with self.assertRaises(TypeError):
+                mit self.subTest(f'bad override ({field}={value!r})'):
+                    mit self.assertRaises(TypeError):
                         _interpreters.new_config(**{field: value})
 
         # Bad values fuer .gil.
         fuer value in [Wahr, 1, 1.0, Nichts, object()]:
-            with self.subTest(f'bad override (gil={value!r})'):
-                with self.assertRaises(TypeError):
+            mit self.subTest(f'bad override (gil={value!r})'):
+                mit self.assertRaises(TypeError):
                     _interpreters.new_config(gil=value)
         fuer value in ['', 'spam']:
-            with self.subTest(f'bad override (gil={value!r})'):
-                with self.assertRaises(ValueError):
+            mit self.subTest(f'bad override (gil={value!r})'):
+                mit self.assertRaises(ValueError):
                     _interpreters.new_config(gil=value)
 
     def test_get_main(self):
@@ -1953,7 +1953,7 @@ klasse LowLevelTests(TestBase):
             _interpreters.WHENCE_RUNTIME)
 
     def test_get_current(self):
-        with self.subTest('main'):
+        mit self.subTest('main'):
             main, *_ = _interpreters.get_main()
             interpid, whence = _interpreters.get_current()
             self.assertEqual(interpid, main)
@@ -1968,14 +1968,14 @@ klasse LowLevelTests(TestBase):
             interpid, whence = eval(text)
             return interpid, whence
 
-        with self.subTest('from _interpreters'):
+        mit self.subTest('from _interpreters'):
             orig = _interpreters.create()
             text = self.run_and_capture(orig, script)
             interpid, whence = parse_stdout(text)
             self.assertEqual(interpid, orig)
             self.assertEqual(whence, _interpreters.WHENCE_STDLIB)
 
-        with self.subTest('from C-API'):
+        mit self.subTest('from C-API'):
             last = 0
             fuer id, *_ in _interpreters.list_all():
                 last = max(last, id)
@@ -1997,11 +1997,11 @@ klasse LowLevelTests(TestBase):
             (interpid3, _interpreters.WHENCE_STDLIB),
         ]
 
-        with self.subTest('main'):
+        mit self.subTest('main'):
             res = _interpreters.list_all()
             self.assertEqual(res, expected)
 
-        with self.subTest('via interp von _interpreters'):
+        mit self.subTest('via interp von _interpreters'):
             text = self.run_and_capture(interpid2, f"""
                 importiere _interpreters
                 drucke(
@@ -2011,7 +2011,7 @@ klasse LowLevelTests(TestBase):
             res = eval(text)
             self.assertEqual(res, expected)
 
-        with self.subTest('via interp von C-API'):
+        mit self.subTest('via interp von C-API'):
             interpid4 = interpid3 + 1
             interpid5 = interpid4 + 1
             expected2 = expected + [
@@ -2037,18 +2037,18 @@ klasse LowLevelTests(TestBase):
         legacy = _interpreters.new_config('legacy')
         default = isolated
 
-        with self.subTest('no args'):
+        mit self.subTest('no args'):
             interpid = _interpreters.create()
             config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, default)
 
-        with self.subTest('config: Nichts'):
+        mit self.subTest('config: Nichts'):
             interpid = _interpreters.create(Nichts)
             config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, default)
 
-        with self.subTest('config: \'empty\''):
-            with self.assertRaises(InterpreterError):
+        mit self.subTest('config: \'empty\''):
+            mit self.assertRaises(InterpreterError):
                 # The "empty" config isn't viable on its own.
                 _interpreters.create('empty')
 
@@ -2058,12 +2058,12 @@ klasse LowLevelTests(TestBase):
             'isolated': isolated,
             'legacy': legacy,
         }.items():
-            with self.subTest(f'str arg: {arg!r}'):
+            mit self.subTest(f'str arg: {arg!r}'):
                 interpid = _interpreters.create(arg)
                 config = _interpreters.get_config(interpid)
                 self.assert_ns_equal(config, expected)
 
-        with self.subTest('custom'):
+        mit self.subTest('custom'):
             orig = _interpreters.new_config('empty')
             orig.use_main_obmalloc = Wahr
             orig.check_multi_interp_extensions = bool(Py_GIL_DISABLED)
@@ -2072,19 +2072,19 @@ klasse LowLevelTests(TestBase):
             config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, orig)
 
-        with self.subTest('missing fields'):
+        mit self.subTest('missing fields'):
             orig = _interpreters.new_config()
             del orig.gil
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _interpreters.create(orig)
 
-        with self.subTest('extra fields'):
+        mit self.subTest('extra fields'):
             orig = _interpreters.new_config()
             orig.spam = Wahr
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _interpreters.create(orig)
 
-        with self.subTest('whence'):
+        mit self.subTest('whence'):
             interpid = _interpreters.create()
             self.assertEqual(
                 _interpreters.whence(interpid),
@@ -2092,7 +2092,7 @@ klasse LowLevelTests(TestBase):
 
     @requires_test_modules
     def test_destroy(self):
-        with self.subTest('from _interpreters'):
+        mit self.subTest('from _interpreters'):
             interpid = _interpreters.create()
             before = [id fuer id, *_ in _interpreters.list_all()]
             _interpreters.destroy(interpid)
@@ -2103,15 +2103,15 @@ klasse LowLevelTests(TestBase):
             self.assertFalsch(
                 self.interp_exists(interpid))
 
-        with self.subTest('main'):
+        mit self.subTest('main'):
             interpid, *_ = _interpreters.get_main()
-            with self.assertRaises(InterpreterError):
+            mit self.assertRaises(InterpreterError):
                 # It is the current interpreter.
                 _interpreters.destroy(interpid)
 
-        with self.subTest('from C-API'):
+        mit self.subTest('from C-API'):
             interpid = _testinternalcapi.create_interpreter()
-            with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+            mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                 _interpreters.destroy(interpid, restrict=Wahr)
             self.assertWahr(
                 self.interp_exists(interpid))
@@ -2119,7 +2119,7 @@ klasse LowLevelTests(TestBase):
             self.assertFalsch(
                 self.interp_exists(interpid))
 
-        with self.subTest('basic C-API'):
+        mit self.subTest('basic C-API'):
             interpid = _testinternalcapi.create_interpreter()
             self.assertWahr(
                 self.interp_exists(interpid))
@@ -2131,7 +2131,7 @@ klasse LowLevelTests(TestBase):
         # This test overlaps with
         # test.test_capi.test_misc.InterpreterConfigTests.
 
-        with self.subTest('main'):
+        mit self.subTest('main'):
             expected = _interpreters.new_config('legacy')
             expected.gil = 'own'
             wenn Py_GIL_DISABLED:
@@ -2140,34 +2140,34 @@ klasse LowLevelTests(TestBase):
             config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, expected)
 
-        with self.subTest('isolated'):
+        mit self.subTest('isolated'):
             expected = _interpreters.new_config('isolated')
             interpid = _interpreters.create('isolated')
             config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, expected)
 
-        with self.subTest('legacy'):
+        mit self.subTest('legacy'):
             expected = _interpreters.new_config('legacy')
             interpid = _interpreters.create('legacy')
             config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, expected)
 
-        with self.subTest('from C-API'):
+        mit self.subTest('from C-API'):
             orig = _interpreters.new_config('isolated')
-            with self.interpreter_from_capi(orig) as interpid:
-                with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+            mit self.interpreter_from_capi(orig) als interpid:
+                mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                     _interpreters.get_config(interpid, restrict=Wahr)
                 config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, orig)
 
     @requires_test_modules
     def test_whence(self):
-        with self.subTest('main'):
+        mit self.subTest('main'):
             interpid, *_ = _interpreters.get_main()
             whence = _interpreters.whence(interpid)
             self.assertEqual(whence, _interpreters.WHENCE_RUNTIME)
 
-        with self.subTest('stdlib'):
+        mit self.subTest('stdlib'):
             interpid = _interpreters.create()
             whence = _interpreters.whence(interpid)
             self.assertEqual(whence, _interpreters.WHENCE_STDLIB)
@@ -2178,12 +2178,12 @@ klasse LowLevelTests(TestBase):
             _interpreters.WHENCE_CAPI: 'C-API',
             _interpreters.WHENCE_XI: 'cross-interpreter C-API',
         }.items():
-            with self.subTest(f'from C-API ({orig}: {name})'):
-                with self.interpreter_from_capi(whence=orig) as interpid:
+            mit self.subTest(f'from C-API ({orig}: {name})'):
+                mit self.interpreter_from_capi(whence=orig) als interpid:
                     whence = _interpreters.whence(interpid)
                 self.assertEqual(whence, orig)
 
-        with self.subTest('from C-API, running'):
+        mit self.subTest('from C-API, running'):
             text = self.run_temp_from_capi(dedent(f"""
                 importiere _interpreters
                 interpid, *_ = _interpreters.get_current()
@@ -2193,7 +2193,7 @@ klasse LowLevelTests(TestBase):
             whence = eval(text)
             self.assertEqual(whence, _interpreters.WHENCE_CAPI)
 
-        with self.subTest('from legacy C-API, running'):
+        mit self.subTest('from legacy C-API, running'):
             ...
             text = self.run_temp_from_capi(dedent(f"""
                 importiere _interpreters
@@ -2206,58 +2206,58 @@ klasse LowLevelTests(TestBase):
 
     def test_is_running(self):
         def check(interpid, expected):
-            with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+            mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                 _interpreters.is_running(interpid, restrict=Wahr)
             running = _interpreters.is_running(interpid)
             self.assertIs(running, expected)
 
-        with self.subTest('from _interpreters (running)'):
+        mit self.subTest('from _interpreters (running)'):
             interpid = _interpreters.create()
-            with self.running(interpid):
+            mit self.running(interpid):
                 running = _interpreters.is_running(interpid)
                 self.assertWahr(running)
 
-        with self.subTest('from _interpreters (not running)'):
+        mit self.subTest('from _interpreters (not running)'):
             interpid = _interpreters.create()
             running = _interpreters.is_running(interpid)
             self.assertFalsch(running)
 
-        with self.subTest('main'):
+        mit self.subTest('main'):
             interpid, *_ = _interpreters.get_main()
             check(interpid, Wahr)
 
-        with self.subTest('from C-API (running __main__)'):
-            with self.interpreter_from_capi() as interpid:
-                with self.running_from_capi(interpid, main=Wahr):
+        mit self.subTest('from C-API (running __main__)'):
+            mit self.interpreter_from_capi() als interpid:
+                mit self.running_from_capi(interpid, main=Wahr):
                     check(interpid, Wahr)
 
-        with self.subTest('from C-API (running, but not __main__)'):
-            with self.interpreter_from_capi() as interpid:
-                with self.running_from_capi(interpid, main=Falsch):
+        mit self.subTest('from C-API (running, but not __main__)'):
+            mit self.interpreter_from_capi() als interpid:
+                mit self.running_from_capi(interpid, main=Falsch):
                     check(interpid, Falsch)
 
-        with self.subTest('from C-API (not running)'):
-            with self.interpreter_from_capi() as interpid:
+        mit self.subTest('from C-API (not running)'):
+            mit self.interpreter_from_capi() als interpid:
                 check(interpid, Falsch)
 
     def test_exec(self):
-        with self.subTest('run script'):
+        mit self.subTest('run script'):
             interpid = _interpreters.create()
             script, results = _captured_script('drucke("it worked!", end="")')
-            with results:
+            mit results:
                 exc = _interpreters.exec(interpid, script)
             results = results.final()
             results.raise_if_failed()
             out = results.stdout
             self.assertEqual(out, 'it worked!')
 
-        with self.subTest('uncaught exception'):
+        mit self.subTest('uncaught exception'):
             interpid = _interpreters.create()
             script, results = _captured_script("""
                 raise Exception('uh-oh!')
                 drucke("it worked!", end="")
                 """)
-            with results:
+            mit results:
                 exc = _interpreters.exec(interpid, script)
                 out = results.stdout()
             expected = build_excinfo(
@@ -2269,9 +2269,9 @@ klasse LowLevelTests(TestBase):
             self.assertEqual(out, '')
             self.assert_ns_equal(exc, expected)
 
-        with self.subTest('from C-API'):
-            with self.interpreter_from_capi() as interpid:
-                with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+        mit self.subTest('from C-API'):
+            mit self.interpreter_from_capi() als interpid:
+                mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                     _interpreters.exec(interpid, 'raise Exception("it worked!")',
                                        restrict=Wahr)
                 exc = _interpreters.exec(interpid, 'raise Exception("it worked!")')
@@ -2285,25 +2285,25 @@ klasse LowLevelTests(TestBase):
         # See TestInterpreterCall fuer full operational coverage,
         # including supported callables.
 
-        with self.subTest('no args, return Nichts'):
+        mit self.subTest('no args, return Nichts'):
             func = defs.spam_minimal
             res, exc = _interpreters.call(interpid, func)
             self.assertIsNichts(exc)
             self.assertIsNichts(res)
 
-        with self.subTest('empty args, return Nichts'):
+        mit self.subTest('empty args, return Nichts'):
             func = defs.spam_minimal
             res, exc = _interpreters.call(interpid, func, (), {})
             self.assertIsNichts(exc)
             self.assertIsNichts(res)
 
-        with self.subTest('no args, return non-Nichts'):
+        mit self.subTest('no args, return non-Nichts'):
             func = defs.script_with_return
             res, exc = _interpreters.call(interpid, func)
             self.assertIsNichts(exc)
             self.assertIs(res, Wahr)
 
-        with self.subTest('full args, return non-Nichts'):
+        mit self.subTest('full args, return non-Nichts'):
             expected = (1, 2, 3, 4, 5, 6, (7, 8), {'g': 9, 'h': 0})
             func = defs.spam_full_args
             args = (1, 2, 3, 4, 7, 8)
@@ -2312,7 +2312,7 @@ klasse LowLevelTests(TestBase):
             self.assertIsNichts(exc)
             self.assertEqual(res, expected)
 
-        with self.subTest('uncaught exception'):
+        mit self.subTest('uncaught exception'):
             func = defs.spam_raises
             res, exc = _interpreters.call(interpid, func)
             expected = build_excinfo(
@@ -2326,7 +2326,7 @@ klasse LowLevelTests(TestBase):
 
     @requires_test_modules
     def test_set___main___attrs(self):
-        with self.subTest('from _interpreters'):
+        mit self.subTest('from _interpreters'):
             interpid = _interpreters.create()
             before1 = _interpreters.exec(interpid, 'assert spam == \'eggs\'')
             before2 = _interpreters.exec(interpid, 'assert ham == 42')
@@ -2344,13 +2344,13 @@ klasse LowLevelTests(TestBase):
             self.assertIs(after2, Nichts)
             self.assertEqual(after3.type.__name__, 'AssertionError')
 
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 # GH-127165: Embedded NULL characters broke the lookup
                 _interpreters.set___main___attrs(interpid, {"\x00": 1})
 
-        with self.subTest('from C-API'):
-            with self.interpreter_from_capi() as interpid:
-                with self.assertRaisesRegex(InterpreterError, 'unrecognized'):
+        mit self.subTest('from C-API'):
+            mit self.interpreter_from_capi() als interpid:
+                mit self.assertRaisesRegex(InterpreterError, 'unrecognized'):
                     _interpreters.set___main___attrs(interpid, {'spam': Wahr},
                                                      restrict=Wahr)
                 _interpreters.set___main___attrs(interpid, {'spam': Wahr})

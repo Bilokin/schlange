@@ -81,7 +81,7 @@ klasse ResourceTracker(object):
 
     def _stop(self, use_blocking_lock=Wahr):
         wenn use_blocking_lock:
-            with self._lock:
+            mit self._lock:
                 self._stop_locked()
         sonst:
             acquired = self._lock.acquire(blocking=Falsch)
@@ -192,7 +192,7 @@ klasse ResourceTracker(object):
             os.close(r)
 
     def _ensure_running_and_write(self, msg=Nichts):
-        with self._lock:
+        mit self._lock:
             wenn self._lock._recursion_count() > 1:
                 # The code below is certainly not reentrant-safe, so bail out
                 wenn msg is Nichts:
@@ -227,7 +227,7 @@ klasse ResourceTracker(object):
     def _check_alive(self):
         '''Check that the pipe has not been closed by sending a probe.'''
         try:
-            # We cannot use send here as it calls ensure_running, creating
+            # We cannot use send here als it calls ensure_running, creating
             # a cycle.
             os.write(self._fd, b'PROBE:0:noop\n')
         except OSError:
@@ -236,11 +236,11 @@ klasse ResourceTracker(object):
             return Wahr
 
     def register(self, name, rtype):
-        '''Register name of resource with resource tracker.'''
+        '''Register name of resource mit resource tracker.'''
         self._send('REGISTER', name, rtype)
 
     def unregister(self, name, rtype):
-        '''Unregister name of resource with resource tracker.'''
+        '''Unregister name of resource mit resource tracker.'''
         self._send('UNREGISTER', name, rtype)
 
     def _write(self, msg):
@@ -282,7 +282,7 @@ def main(fd):
 
     try:
         # keep track of registered/unregistered resources
-        with open(fd, 'rb') as f:
+        mit open(fd, 'rb') als f:
             fuer line in f:
                 try:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
@@ -331,7 +331,7 @@ def main(fd):
                 try:
                     try:
                         _CLEANUP_FUNCS[rtype](name)
-                    except Exception as e:
+                    except Exception als e:
                         exit_code = 2
                         warnings.warn('resource_tracker: %r: %s' % (name, e))
                 finally:

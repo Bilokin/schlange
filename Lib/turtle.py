@@ -17,8 +17,8 @@
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
 #    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked als such, and must not be
+#    misrepresented als being the original software.
 # 3. This notice may not be removed or altered von any source distribution.
 
 """
@@ -28,7 +28,7 @@ by Wally Feurzig and Seymour Papert in 1966.
 
 Imagine a robotic turtle starting at (0, 0) in the x-y plane. After an ``import turtle``, give it
 the command turtle.forward(15), and it moves (on-screen!) 15 pixels in
-the direction it is facing, drawing a line as it moves. Give it the
+the direction it is facing, drawing a line als it moves. Give it the
 command turtle.right(25), and it rotates in-place 25 degrees clockwise.
 
 By combining together these and similar commands, intricate shapes and
@@ -40,7 +40,7 @@ This module is an extended reimplementation of turtle.py von the
 Python standard distribution up to Python 2.5. (See: https://www.python.org)
 
 It tries to keep the merits of turtle.py and to be (nearly) 100%
-compatible with it. This means in the first place to enable the
+compatible mit it. This means in the first place to enable the
 learning programmer to use all the commands, classes and methods
 interactively when using the module von within IDLE run with
 the -n switch.
@@ -48,10 +48,10 @@ the -n switch.
 Roughly it has the following features added:
 
 - Better animation of the turtle movements, especially of turning the
-  turtle. So the turtles can more easily be used as a visual feedback
+  turtle. So the turtles can more easily be used als a visual feedback
   instrument by the (beginning) programmer.
 
-- Different turtle shapes, image files as turtle shapes, user defined
+- Different turtle shapes, image files als turtle shapes, user defined
   and user controllable turtle shapes, among them compound
   (multicolored) shapes. Turtle shapes can be stretched and tilted, which
   makes turtles very versatile geometrical objects.
@@ -65,15 +65,15 @@ Roughly it has the following features added:
   when kids try to program fancy pictures on their first encounter with
   turtle graphics.
 
-- Turtles now have an undo()-method with configurable undo-buffer.
+- Turtles now have an undo()-method mit configurable undo-buffer.
 
 - Some simple commands/methods fuer creating event driven programs
   (mouse-, key-, timer-events). Especially useful fuer programming games.
 
 - A scrollable Canvas class. The default scrollable Canvas can be
-  extended interactively as needed while playing around with the turtle(s).
+  extended interactively als needed while playing around mit the turtle(s).
 
-- A TurtleScreen klasse with methods controlling background color or
+- A TurtleScreen klasse mit methods controlling background color or
   background image, window and canvas size and other properties of the
   TurtleScreen.
 
@@ -91,14 +91,14 @@ Roughly it has the following features added:
 - If configured appropriately the module reads in docstrings von a docstring
   dictionary in some different language, supplied separately  and replaces
   the English ones by those read in. There is a utility function
-  write_docstringdict() to write a dictionary with the original (English)
-  docstrings to disc, so it can serve as a template fuer translations.
+  write_docstringdict() to write a dictionary mit the original (English)
+  docstrings to disc, so it can serve als a template fuer translations.
 
-Behind the scenes there are some features included with possible
+Behind the scenes there are some features included mit possible
 extensions in mind. These will be commented and documented elsewhere.
 """
 
-importiere tkinter as TK
+importiere tkinter als TK
 importiere types
 importiere math
 importiere time
@@ -167,7 +167,7 @@ _CFG = {"width" : 0.5,               # Screen
 
 def config_dict(filename):
     """Convert content of config-file into dictionary."""
-    with open(filename, "r") as f:
+    mit open(filename, "r") als f:
         cfglines = f.readlines()
     cfgdict = {}
     fuer line in cfglines:
@@ -231,7 +231,7 @@ except Exception:
 
 
 klasse Vec2D(tuple):
-    """A 2 dimensional vector class, used as a helper class
+    """A 2 dimensional vector class, used als a helper class
     fuer implementing turtle graphics.
     May be useful fuer turtle graphics programs also.
     Derived von tuple, so a vector is a tuple!
@@ -240,7 +240,7 @@ klasse Vec2D(tuple):
        a+b vector addition
        a-b vector subtraction
        a*b inner product
-       k*a and a*k multiplication with scalar
+       k*a and a*k multiplication mit scalar
        |a| absolute value of a
        a.rotate(angle) rotation
     """
@@ -327,7 +327,7 @@ def __forwardmethods(fromClass, toClass, toPart, exclude = ()):
 klasse ScrolledCanvas(TK.Frame):
     """Modeled after the scrolled canvas klasse von Grayons's Tkinter book.
 
-    Used as the default canvas, which pops up automatically when
+    Used als the default canvas, which pops up automatically when
     using turtle graphics functions or the Turtle class.
     """
     def __init__(self, master, width=500, height=350,
@@ -581,7 +581,7 @@ klasse TurtleScreenBase(object):
             return self.cv.cget("bg")
 
     def _write(self, pos, txt, align, font, pencolor):
-        """Write txt at pos in canvas with specified font
+        """Write txt at pos in canvas mit specified font
         and color.
         Return text item and x-coord of right bottom corner
         of text's bounding box."""
@@ -596,7 +596,7 @@ klasse TurtleScreenBase(object):
 
     def _onclick(self, item, fun, num=1, add=Nichts):
         """Bind fun to mouse-click event on turtle.
-        fun must be a function with two arguments, the coordinates
+        fun must be a function mit two arguments, the coordinates
         of the clicked point on the canvas.
         num, the number of the mouse-button defaults to 1
         """
@@ -611,7 +611,7 @@ klasse TurtleScreenBase(object):
 
     def _onrelease(self, item, fun, num=1, add=Nichts):
         """Bind fun to mouse-button-release event on turtle.
-        fun must be a function with two arguments, the coordinates
+        fun must be a function mit two arguments, the coordinates
         of the point on the canvas where mouse button is released.
         num, the number of the mouse-button defaults to 1
 
@@ -630,7 +630,7 @@ klasse TurtleScreenBase(object):
 
     def _ondrag(self, item, fun, num=1, add=Nichts):
         """Bind fun to mouse-move-event (with pressed mouse button) on turtle.
-        fun must be a function with two arguments, the coordinates of the
+        fun must be a function mit two arguments, the coordinates of the
         actual mouse position on the canvas.
         num, the number of the mouse-button defaults to 1
 
@@ -651,7 +651,7 @@ klasse TurtleScreenBase(object):
 
     def _onscreenclick(self, fun, num=1, add=Nichts):
         """Bind fun to mouse-click event on canvas.
-        fun must be a function with two arguments, the coordinates
+        fun must be a function mit two arguments, the coordinates
         of the clicked point on the canvas.
         num, the number of the mouse-button defaults to 1
 
@@ -715,7 +715,7 @@ klasse TurtleScreenBase(object):
         return self.cv.create_image(0, 0, image=image)
 
     def _drawimage(self, item, pos, image):
-        """Configure image item as to draw image object
+        """Configure image item als to draw image object
         at position (x,y) on canvas)
         """
         x, y = pos
@@ -723,7 +723,7 @@ klasse TurtleScreenBase(object):
         self.cv.itemconfig(item, image=image)
 
     def _setbgpic(self, item, image):
-        """Configure image item as to draw image object
+        """Configure image item als to draw image object
         at center of canvas. Set item to the first item
         in the displaylist, so it will be drawn below
         any other item ."""
@@ -906,7 +906,7 @@ klasse Shape(object):
 
 
 klasse Tbuffer(object):
-    """Ring buffer used as undobuffer fuer RawTurtle objects."""
+    """Ring buffer used als undobuffer fuer RawTurtle objects."""
     def __init__(self, bufsize=10):
         self.bufsize = bufsize
         self.buffer = [[Nichts]] * bufsize
@@ -1003,7 +1003,7 @@ klasse TurtleScreen(TurtleScreenBase):
         Example (for a TurtleScreen instance named screen):
         >>> screen.clear()
 
-        Note: this method is not available as function.
+        Note: this method is not available als function.
         """
         self._delayvalue = _CFG["delay"]
         self._colormode = _CFG["colormode"]
@@ -1028,8 +1028,8 @@ klasse TurtleScreen(TurtleScreenBase):
         Optional argument:
         mode -- one of the strings 'standard', 'logo' or 'world'
 
-        Mode 'standard' is compatible with turtle.py.
-        Mode 'logo' is compatible with most Logo-Turtle-Graphics.
+        Mode 'standard' is compatible mit turtle.py.
+        Mode 'logo' is compatible mit most Logo-Turtle-Graphics.
         Mode 'world' uses userdefined 'worldcoordinates'. *Attention*: in
         this mode angles appear distorted wenn x/y unit-ratio doesn't equal 1.
         If mode is not given, return the current mode.
@@ -1287,7 +1287,7 @@ klasse TurtleScreen(TurtleScreenBase):
 
         Example (for a TurtleScreen instance named screen
         and a Turtle instance named turtle):
-        >>> with screen.no_animation():
+        >>> mit screen.no_animation():
         ...    turtle.circle(50)
         """
         tracer = self.tracer()
@@ -1362,7 +1362,7 @@ klasse TurtleScreen(TurtleScreenBase):
         """Bind fun to mouse-click event on canvas.
 
         Arguments:
-        fun -- a function with two arguments, the coordinates of the
+        fun -- a function mit two arguments, the coordinates of the
                clicked point on the canvas.
         btn -- the number of the mouse-button, defaults to 1
 
@@ -1379,7 +1379,7 @@ klasse TurtleScreen(TurtleScreenBase):
         """Bind fun to key-release event of key.
 
         Arguments:
-        fun -- a function with no arguments
+        fun -- a function mit no arguments
         key -- a string: key (e.g. "a") or key-symbol (e.g. "space")
 
         In order to be able to register key-events, TurtleScreen
@@ -1410,7 +1410,7 @@ klasse TurtleScreen(TurtleScreenBase):
         or to any key-press-event wenn no key is given.
 
         Arguments:
-        fun -- a function with no arguments
+        fun -- a function mit no arguments
         key -- a string: key (e.g. "a") or key-symbol (e.g. "space")
 
         In order to be able to register key-events, TurtleScreen
@@ -1453,7 +1453,7 @@ klasse TurtleScreen(TurtleScreenBase):
         """Install a timer, which calls fun after t milliseconds.
 
         Arguments:
-        fun -- a function with no arguments.
+        fun -- a function mit no arguments.
         t -- a number >= 0
 
         Example (for a TurtleScreen instance named screen):
@@ -1476,7 +1476,7 @@ klasse TurtleScreen(TurtleScreenBase):
         Optional argument:
         picname -- a string, name of an image file (PNG, GIF, PGM, and PPM) or "nopic".
 
-        If picname is a filename, set the corresponding image as background.
+        If picname is a filename, set the corresponding image als background.
         If picname is "nopic", delete backgroundimage, wenn present.
         If picname is Nichts, return the filename of the current backgroundimage.
 
@@ -1514,11 +1514,11 @@ klasse TurtleScreen(TurtleScreenBase):
         return self._resize(canvwidth, canvheight, bg)
 
     def save(self, filename, *, overwrite=Falsch):
-        """Save the drawing as a PostScript file
+        """Save the drawing als a PostScript file
 
         Arguments:
         filename -- a string, the path of the created file.
-                    Must end with '.ps' or '.eps'.
+                    Must end mit '.ps' or '.eps'.
 
         Optional arguments:
         overwrite -- boolean, wenn true, then existing files will be overwritten
@@ -1621,7 +1621,7 @@ klasse TNavigator(object):
         >>> turtle.heading()
         90
 
-        Change angle measurement unit to grad (also known as gon,
+        Change angle measurement unit to grad (also known als gon,
         grade, or gradian and equals 1/100-th of the right angle.)
         >>> turtle.degrees(400.0)
         >>> turtle.heading()
@@ -1751,7 +1751,7 @@ klasse TNavigator(object):
         self._rotate(angle)
 
     def pos(self):
-        """Return the turtle's current location (x,y), as a Vec2D-vector.
+        """Return the turtle's current location (x,y), als a Vec2D-vector.
 
         Aliases: pos | position
 
@@ -1803,7 +1803,7 @@ klasse TNavigator(object):
 
         call: goto(x, y)         # two coordinates
         --or: goto((x, y))       # a pair (tuple) of coordinates
-        --or: goto(vec)          # e.g. as returned by pos()
+        --or: goto(vec)          # e.g. als returned by pos()
 
         Move turtle to an absolute position. If the pen is down,
         a line will be drawn. The turtle's orientation does not change.
@@ -1886,7 +1886,7 @@ klasse TNavigator(object):
 
         call: distance(x, y)         # two coordinates
         --or: distance((x, y))       # a pair (tuple) of coordinates
-        --or: distance(vec)          # e.g. as returned by pos()
+        --or: distance(vec)          # e.g. als returned by pos()
         --or: distance(mypen)        # where mypen is another turtle
 
         Example (for a Turtle instance named turtle):
@@ -1918,7 +1918,7 @@ klasse TNavigator(object):
 
         call: distance(x, y)         # two coordinates
         --or: distance((x, y))       # a pair (tuple) of coordinates
-        --or: distance(vec)          # e.g. as returned by pos()
+        --or: distance(vec)          # e.g. als returned by pos()
         --or: distance(mypen)        # where mypen is another turtle
 
         Return the angle, between the line von turtle-position to position
@@ -1988,14 +1988,14 @@ klasse TNavigator(object):
         self._rotate(angle)
 
     def circle(self, radius, extent = Nichts, steps = Nichts):
-        """ Draw a circle with given radius.
+        """ Draw a circle mit given radius.
 
         Arguments:
         radius -- a number
         extent (optional) -- a number
         steps (optional) -- an integer
 
-        Draw a circle with given radius. The center is radius units left
+        Draw a circle mit given radius. The center is radius units left
         of the turtle; extent - an angle - determines which part of the
         circle is drawn. If extent is not given, draw the entire circle.
         If extent is not a full circle, one endpoint of the arc is the
@@ -2107,7 +2107,7 @@ klasse TPen(object):
                    which are set by shapesize()
           - "noresize" no adaption of the turtle's appearance takes place.
         If no argument is given, return current resizemode.
-        resizemode("user") is called by a call of shapesize with arguments.
+        resizemode("user") is called by a call of shapesize mit arguments.
 
 
         Examples (for a Turtle instance named turtle):
@@ -2230,14 +2230,14 @@ klasse TPen(object):
 
         Arguments:
         Several input formats are allowed.
-        They use 0, 1, 2, or 3 arguments as follows:
+        They use 0, 1, 2, or 3 arguments als follows:
 
         color()
             Return the current pencolor and the current fillcolor
-            as a pair of color specification strings as are returned
+            als a pair of color specification strings als are returned
             by pencolor and fillcolor.
         color(colorstring), color((r,g,b)), color(r,g,b)
-            inputs as in pencolor, set both, fillcolor and pencolor,
+            inputs als in pencolor, set both, fillcolor and pencolor,
             to the given value.
         color(colorstring1, colorstring2),
         color((r1,g1,b1), (r2,g2,b2))
@@ -2245,7 +2245,7 @@ klasse TPen(object):
             and analogously, wenn the other input format is used.
 
         If turtleshape is a polygon, outline and interior of that polygon
-        is drawn with the newly set colors.
+        is drawn mit the newly set colors.
         For more info see: pencolor, fillcolor
 
         Example (for a Turtle instance named turtle):
@@ -2277,11 +2277,11 @@ klasse TPen(object):
         Arguments:
         Four input formats are allowed:
           - pencolor()
-            Return the current pencolor as color specification string,
+            Return the current pencolor als color specification string,
             possibly in hex-number format (see example).
-            May be used as input to another color/pencolor/fillcolor call.
+            May be used als input to another color/pencolor/fillcolor call.
           - pencolor(colorstring)
-            s is a Tk color specification string, such as "red" or "yellow"
+            s is a Tk color specification string, such als "red" or "yellow"
           - pencolor((r, g, b))
             *a tuple* of r, g, and b, which represent, an RGB color,
             and each of r, g, and b are in the range 0..colormode,
@@ -2291,7 +2291,7 @@ klasse TPen(object):
             are in the range 0..colormode
 
         If turtleshape is a polygon, the outline of that polygon is drawn
-        with the newly set pencolor.
+        mit the newly set pencolor.
 
         Example (for a Turtle instance named turtle):
         >>> turtle.pencolor('brown')
@@ -2314,11 +2314,11 @@ klasse TPen(object):
         Arguments:
         Four input formats are allowed:
           - fillcolor()
-            Return the current fillcolor as color specification string,
+            Return the current fillcolor als color specification string,
             possibly in hex-number format (see example).
-            May be used as input to another color/pencolor/fillcolor call.
+            May be used als input to another color/pencolor/fillcolor call.
           - fillcolor(colorstring)
-            s is a Tk color specification string, such as "red" or "yellow"
+            s is a Tk color specification string, such als "red" or "yellow"
           - fillcolor((r, g, b))
             *a tuple* of r, g, and b, which represent, an RGB color,
             and each of r, g, and b are in the range 0..colormode,
@@ -2328,7 +2328,7 @@ klasse TPen(object):
             are in the range 0..colormode
 
         If turtleshape is a polygon, the interior of that polygon is drawn
-        with the newly set fillcolor.
+        mit the newly set fillcolor.
 
         Example (for a Turtle instance named turtle):
         >>> turtle.fillcolor('violet')
@@ -2398,12 +2398,12 @@ klasse TPen(object):
         """Return or set the pen's attributes.
 
         Arguments:
-            pen -- a dictionary with some or all of the below listed keys.
-            **pendict -- one or more keyword-arguments with the below
-                         listed keys as keywords.
+            pen -- a dictionary mit some or all of the below listed keys.
+            **pendict -- one or more keyword-arguments mit the below
+                         listed keys als keywords.
 
         Return or set the pen's attributes in a 'pen-dictionary'
-        with the following key/value pairs:
+        mit the following key/value pairs:
            "shown"      :   Wahr/Falsch
            "pendown"    :   Wahr/Falsch
            "pencolor"   :   color-string or color-tuple
@@ -2416,9 +2416,9 @@ klasse TPen(object):
            "outline"    :   positive number
            "tilt"       :   number
 
-        This dictionary can be used as argument fuer a subsequent
+        This dictionary can be used als argument fuer a subsequent
         pen()-call to restore the former pen-state. Moreover one
-        or more of these attributes can be provided as keyword-arguments.
+        or more of these attributes can be provided als keyword-arguments.
         This can be used to set several pen attributes in one statement.
 
 
@@ -2694,7 +2694,7 @@ klasse RawTurtle(TPen, TNavigator):
         No arguments.
 
         Delete the turtle's drawings von the screen. Do not move turtle.
-        State and position of the turtle as well as drawings of other
+        State and position of the turtle als well als drawings of other
         turtles are not affected.
 
         Examples (for a Turtle instance named turtle):
@@ -2780,8 +2780,8 @@ klasse RawTurtle(TPen, TNavigator):
         fill_gap -- a boolean     This argument must be specified by name.
 
         call: teleport(x, y)         # two coordinates
-        --or: teleport(x)            # teleport to x position, keeping y as is
-        --or: teleport(y=y)          # teleport to y position, keeping x as is
+        --or: teleport(x)            # teleport to x position, keeping y als is
+        --or: teleport(y=y)          # teleport to y position, keeping x als is
         --or: teleport(x, y, fill_gap=Wahr)
                                      # teleport but fill the gap in between
 
@@ -2789,8 +2789,8 @@ klasse RawTurtle(TPen, TNavigator):
         be drawn. The turtle's orientation does not change. If currently
         filling, the polygon(s) teleported von will be filled after leaving,
         and filling will begin again after teleporting. This can be disabled
-        with fill_gap=Wahr, which makes the imaginary line traveled during
-        teleporting act as a fill barrier like in goto(x, y).
+        mit fill_gap=Wahr, which makes the imaginary line traveled during
+        teleporting act als a fill barrier like in goto(x, y).
 
         Example (for a Turtle instance named turtle):
         >>> tp = turtle.pos()
@@ -2824,7 +2824,7 @@ klasse RawTurtle(TPen, TNavigator):
 
         No argument.
 
-        Create and return a clone of the turtle with same position, heading
+        Create and return a clone of the turtle mit same position, heading
         and turtle properties.
 
         Example (for a Turtle instance named mick):
@@ -2860,17 +2860,17 @@ klasse RawTurtle(TPen, TNavigator):
         return q
 
     def shape(self, name=Nichts):
-        """Set turtle shape to shape with given name / return current shapename.
+        """Set turtle shape to shape mit given name / return current shapename.
 
         Optional argument:
         name -- a string, which is a valid shapename
 
-        Set turtle shape to shape with given name or, wenn name is not given,
+        Set turtle shape to shape mit given name or, wenn name is not given,
         return name of current shape.
-        Shape with name must exist in the TurtleScreen's shape dictionary.
+        Shape mit name must exist in the TurtleScreen's shape dictionary.
         Initially there are the following polygon shapes:
         'arrow', 'turtle', 'circle', 'square', 'triangle', 'classic'.
-        To learn about how to deal with shapes see Screen-method register_shape.
+        To learn about how to deal mit shapes see Screen-method register_shape.
 
         Example (for a Turtle instance named turtle):
         >>> turtle.shape()
@@ -3057,7 +3057,7 @@ klasse RawTurtle(TPen, TNavigator):
                                                            fuer (x, y) in poly]
 
     def get_shapepoly(self):
-        """Return the current shape polygon as tuple of coordinate pairs.
+        """Return the current shape polygon als tuple of coordinate pairs.
 
         No argument.
 
@@ -3087,7 +3087,7 @@ klasse RawTurtle(TPen, TNavigator):
         return tuple((t11*x + t12*y, t21*x + t22*y) fuer (x, y) in polygon)
 
     def _drawturtle(self):
-        """Manages the correct rendering of the turtle with respect to
+        """Manages the correct rendering of the turtle mit respect to
         its shape, resizemode, stretch and tilt etc."""
         screen = self.screen
         shape = screen._shapes[self.turtle.shapeIndex]
@@ -3194,7 +3194,7 @@ klasse RawTurtle(TPen, TNavigator):
         buf.buffer.insert((buf.ptr+1)%buf.bufsize, [Nichts])
 
     def clearstamp(self, stampid):
-        """Delete stamp with given stampid
+        """Delete stamp mit given stampid
 
         Argument:
         stampid - an integer, must be return value of previous stamp() call.
@@ -3241,7 +3241,7 @@ klasse RawTurtle(TPen, TNavigator):
         wenn pen is down. All other methods fuer turtle movement depend
         on this one.
         """
-        ## Version with undo-stuff
+        ## Version mit undo-stuff
         go_modes = ( self._drawing,
                      self._pencolor,
                      self._pensize,
@@ -3411,7 +3411,7 @@ klasse RawTurtle(TPen, TNavigator):
 
         Example (for a Turtle instance named turtle):
         >>> turtle.color("black", "red")
-        >>> with turtle.fill():
+        >>> mit turtle.fill():
         ...     turtle.circle(60)
         """
         self.begin_fill()
@@ -3461,13 +3461,13 @@ klasse RawTurtle(TPen, TNavigator):
             self._update()
 
     def dot(self, size=Nichts, *color):
-        """Draw a dot with diameter size, using color.
+        """Draw a dot mit diameter size, using color.
 
         Optional arguments:
         size -- an integer >= 1 (if given)
         color -- a colorstring or a numeric color tuple
 
-        Draw a circular dot with diameter size, using color.
+        Draw a circular dot mit diameter size, using color.
         If size is not given, the maximum of pensize+4 and 2*pensize is used.
 
         Example (for a Turtle instance named turtle):
@@ -3525,7 +3525,7 @@ klasse RawTurtle(TPen, TNavigator):
 
         Write text - the string representation of arg - at the current
         turtle position according to align ("left", "center" or right")
-        and with the given font.
+        and mit the given font.
         If move is Wahr, the pen is moved to the bottom-right corner
         of the text. By default, move is Falsch.
 
@@ -3551,8 +3551,8 @@ klasse RawTurtle(TPen, TNavigator):
         begin_poly() and end_poly()
 
         Example (for a Turtle instance named turtle) where we create a
-        triangle as the polygon and move the turtle 100 steps forward:
-        >>> with turtle.poly():
+        triangle als the polygon and move the turtle 100 steps forward:
+        >>> mit turtle.poly():
         ...     fuer side in range(3)
         ...         turtle.forward(50)
         ...         turtle.right(60)
@@ -3584,7 +3584,7 @@ klasse RawTurtle(TPen, TNavigator):
         No argument.
 
         Stop recording the vertices of a polygon. Current turtle position is
-        last point of polygon. This will be connected with the first point.
+        last point of polygon. This will be connected mit the first point.
 
         Example (for a Turtle instance named turtle):
         >>> turtle.end_poly()
@@ -3625,7 +3625,7 @@ klasse RawTurtle(TPen, TNavigator):
 
         No argument.
 
-        Only reasonable use: as a function to return the 'anonymous turtle':
+        Only reasonable use: als a function to return the 'anonymous turtle':
 
         Example:
         >>> pet = getturtle()
@@ -3653,7 +3653,7 @@ klasse RawTurtle(TPen, TNavigator):
         """Bind fun to mouse-click event on this turtle on canvas.
 
         Arguments:
-        fun --  a function with two arguments, to which will be assigned
+        fun --  a function mit two arguments, to which will be assigned
                 the coordinates of the clicked point on the canvas.
         btn --  number of the mouse-button defaults to 1 (left mouse button).
         add --  Wahr or Falsch. If Wahr, new binding will be added, otherwise
@@ -3674,7 +3674,7 @@ klasse RawTurtle(TPen, TNavigator):
         """Bind fun to mouse-button-release event on this turtle on canvas.
 
         Arguments:
-        fun -- a function with two arguments, to which will be assigned
+        fun -- a function mit two arguments, to which will be assigned
                 the coordinates of the clicked point on the canvas.
         btn --  number of the mouse-button defaults to 1 (left mouse button).
 
@@ -3699,7 +3699,7 @@ klasse RawTurtle(TPen, TNavigator):
         """Bind fun to mouse-move event on this turtle on canvas.
 
         Arguments:
-        fun -- a function with two arguments, to which will be assigned
+        fun -- a function mit two arguments, to which will be assigned
                the coordinates of the clicked point on the canvas.
         btn -- number of the mouse-button defaults to 1 (left mouse button).
 
@@ -3819,9 +3819,9 @@ klasse _Screen(TurtleScreen):
         """ Set the size and position of the main window.
 
         Arguments:
-        width: as integer a size in pixels, as float a fraction of the screen.
+        width: als integer a size in pixels, als float a fraction of the screen.
           Default is 50% of screen.
-        height: as integer the height in pixels, as float a fraction of the
+        height: als integer the height in pixels, als float a fraction of the
           screen. Default is 75% of screen.
         startx: wenn positive, starting position in pixels von the left
           edge of the screen, wenn negative von the right edge
@@ -3897,7 +3897,7 @@ klasse _Screen(TurtleScreen):
         Bind bye() method to mouseclick on TurtleScreen.
         If "using_IDLE" - value in configuration dictionary is Falsch
         (default value), enter mainloop.
-        If IDLE with -n switch (no subprocess) is used, this value should be
+        If IDLE mit -n switch (no subprocess) is used, this value should be
         set to Wahr in turtle.cfg. In this case IDLE's mainloop
         is active also fuer the client script.
 
@@ -3909,7 +3909,7 @@ klasse _Screen(TurtleScreen):
 
         """
         def exitGracefully(x, y):
-            """Screen.bye() with two dummy-parameters"""
+            """Screen.bye() mit two dummy-parameters"""
             self.bye()
         self.onclick(exitGracefully)
         wenn _CFG["using_IDLE"]:
@@ -3945,12 +3945,12 @@ def write_docstringdict(filename="turtle_docstringdict"):
     """Create and write docstring-dictionary to file.
 
     Optional argument:
-    filename -- a string, used as filename
+    filename -- a string, used als filename
                 default value is turtle_docstringdict
 
     Has to be called explicitly, (not used by the turtle-graphics classes)
     The docstring dictionary will be written to the Python script <filename>.py
-    It is intended to serve as a template fuer translation of the docstrings
+    It is intended to serve als a template fuer translation of the docstrings
     into different languages.
     """
     docsdict = {}
@@ -3962,7 +3962,7 @@ def write_docstringdict(filename="turtle_docstringdict"):
         key = "Turtle."+methodname
         docsdict[key] = eval(key).__doc__
 
-    with open("%s.py" % filename,"w") as f:
+    mit open("%s.py" % filename,"w") als f:
         keys = sorted(x fuer x in docsdict
                       wenn x.split('.')[1] not in _alias_list)
         f.write('docsdict = {\n\n')
@@ -4065,7 +4065,7 @@ def _screen_docrevise(docstr):
     return newdocstr
 
 ## The following mechanism makes all methods of RawTurtle and Turtle available
-## as functions. So we can enhance, change, add, delete methods to these
+## als functions. So we can enhance, change, add, delete methods to these
 ## classes and do not need to change anything here.
 
 __func_body = """\

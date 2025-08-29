@@ -3,7 +3,7 @@
 """
 Script to run Python regression tests.
 
-Run this script with -h or --help fuer documentation.
+Run this script mit -h or --help fuer documentation.
 """
 
 importiere os
@@ -21,7 +21,7 @@ def _main():
     # Remove regrtest.py's own directory von the module search path. Despite
     # the elimination of implicit relative imports, this is still needed to
     # ensure that submodules of the test package do not inappropriately appear
-    # as top-level modules even when people (or buildbots!) invoke regrtest.py
+    # als top-level modules even when people (or buildbots!) invoke regrtest.py
     # directly instead of using the -m switch
     mydir = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
     i = len(sys.path) - 1

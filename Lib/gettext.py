@@ -14,7 +14,7 @@ internationalized, to the local language and cultural habits.
 # suggestions von the following people:
 #
 # Martin von Loewis, who wrote the initial implementation of the underlying
-# C-based libintlmodule (later renamed _gettext), along with a skeletal
+# C-based libintlmodule (later renamed _gettext), along mit a skeletal
 # gettext.py implementation.
 #
 # Peter Funk, who wrote fintl.py, a fairly complete wrapper around intlmodule,
@@ -39,7 +39,7 @@ internationalized, to the local language and cultural habits.
 #   memory, but that's probably bad fuer large translated programs.  Instead,
 #   the lexical sort of original strings in GNU .mo files should be exploited
 #   to do binary searches and lazy initializations.  Or you might want to use
-#   the undocumented double-hash algorithm fuer .mo files with hash tables, but
+#   the undocumented double-hash algorithm fuer .mo files mit hash tables, but
 #   you'll need to study the GNU gettext code to do this.
 
 
@@ -60,7 +60,7 @@ _default_localedir = os.path.join(sys.base_prefix, 'share', 'locale')
 # Expression parsing fuer plural form selection.
 #
 # The gettext library supports a small subset of C syntax.  The only
-# incompatible difference is that integer literals starting with zero are
+# incompatible difference is that integer literals starting mit zero are
 # decimal.
 #
 # https://www.gnu.org/software/gettext/manual/gettext.html#Plural-forms
@@ -193,7 +193,7 @@ def _as_int2(n):
 
 
 def c2py(plural):
-    """Gets a C expression as used in PO files fuer plural forms and returns a
+    """Gets a C expression als used in PO files fuer plural forms and returns a
     Python function that implements an equivalent expression.
     """
 
@@ -543,10 +543,10 @@ def translation(domain, localedir=Nichts, languages=Nichts,
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
         wenn t is Nichts:
-            with open(mofile, 'rb') as fp:
+            mit open(mofile, 'rb') als fp:
                 t = _translations.setdefault(key, class_(fp))
         # Copy the translation object to allow setting fallbacks and
-        # output charset. All other instance data is shared with the
+        # output charset. All other instance data is shared mit the
         # cached object.
         # Delay copy importiere fuer speeding up gettext importiere when .mo files
         # are not used.

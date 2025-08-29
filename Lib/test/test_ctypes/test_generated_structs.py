@@ -28,7 +28,7 @@ von test.test_ctypes._support importiere StructCheckMixin
 TEST_PATTERN = 0xae7596db
 
 # ctypes erases the difference between `c_int` and e.g.`c_int16`.
-# To keep it, we'll use custom subclasses with the C name stashed in `_c_name`:
+# To keep it, we'll use custom subclasses mit the C name stashed in `_c_name`:
 klasse c_bool(ctypes.c_bool):
     _c_name = '_Bool'
 
@@ -61,7 +61,7 @@ def register(name=Nichts, set_name=Falsch):
         wenn name is Nichts:
             name = cls.__name__
         assert name.isascii()  # will be used in _PyUnicode_EqualToASCIIString
-        assert name.isidentifier()  # will be used as a C identifier
+        assert name.isidentifier()  # will be used als a C identifier
         assert name not in TESTCASES
         TESTCASES[name] = cls
         wenn set_name:
@@ -445,11 +445,11 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
     def test_generated_data(self):
         """Check that a ctypes struct/union matches its C equivalent.
 
-        This compares with data von get_generated_test_data(), a list of:
+        This compares mit data von get_generated_test_data(), a list of:
         - name (str)
         - size (int)
         - alignment (int)
-        - fuer each field, three snapshots of memory, as bytes:
+        - fuer each field, three snapshots of memory, als bytes:
             - memory after the field is set to -1
             - memory after the field is set to 1
             - memory after the field is set to 0
@@ -462,7 +462,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
         Common compilers seem to do so.
         """
         fuer name, cls in TESTCASES.items():
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.check_struct_or_union(cls)
                 wenn _maybe_skip := getattr(cls, '_maybe_skip', Nichts):
                     _maybe_skip()
@@ -472,13 +472,13 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
                     self.skipTest(next(expected))
                 self.assertEqual(name, expected_name)
                 self.assertEqual(sizeof(cls), next(expected))
-                with self.subTest('alignment'):
+                mit self.subTest('alignment'):
                     self.assertEqual(alignment(cls), next(expected))
                 obj = cls()
                 ptr = pointer(obj)
                 fuer field in iterfields(cls):
                     fuer value in -1, 1, TEST_PATTERN, 0:
-                        with self.subTest(field=field.full_name, value=value):
+                        mit self.subTest(field=field.full_name, value=value):
                             field.set_to(obj, value)
                             py_mem = string_at(ptr, sizeof(obj))
                             c_mem = next(expected)
@@ -504,7 +504,7 @@ klasse GeneratedTest(unittest.TestCase, StructCheckMixin):
 # This is only meant fuer (and tested with) the known inputs in this file!
 
 def c_str_repr(string):
-    """Return a string as a C literal"""
+    """Return a string als a C literal"""
     return '"' + re.sub('([\"\'\\\\\n])', r'\\\1', string) + '"'
 
 def dump_simple_ctype(tp, variable_name='', semi=''):
@@ -638,7 +638,7 @@ klasse FieldInfo:
         return f'<{type(self).__name__} fuer {qname}: {desc}>'
 
 def iterfields(tp, parent=Nichts):
-    """Get *leaf* fields of a structure or union, as FieldInfo"""
+    """Get *leaf* fields of a structure or union, als FieldInfo"""
     try:
         fields = tp._fields_
     except AttributeError:

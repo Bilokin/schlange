@@ -25,7 +25,7 @@ klasse OpcodeTest(unittest.TestCase):
     def test_setup_annotations_line(self):
         # check that SETUP_ANNOTATIONS does not create spurious line numbers
         try:
-            with open(ann_module.__file__, encoding="utf-8") as f:
+            mit open(ann_module.__file__, encoding="utf-8") als f:
                 txt = f.read()
             co = compile(txt, ann_module.__file__, 'exec')
             self.assertEqual(co.co_firstlineno, 1)
@@ -43,7 +43,7 @@ klasse OpcodeTest(unittest.TestCase):
 
     def test_do_not_recreate_annotations(self):
         # Don't rely on the existence of the '__annotations__' global.
-        with support.swap_item(globals(), '__annotations__', {}):
+        mit support.swap_item(globals(), '__annotations__', {}):
             globals().pop('__annotations__', Nichts)
             klasse C:
                 try:
@@ -80,7 +80,7 @@ klasse OpcodeTest(unittest.TestCase):
 
         try:
             raise b
-        except AClass as v:
+        except AClass als v:
             self.assertEqual(v, b)
         sonst:
             self.fail("no exception")
@@ -91,7 +91,7 @@ klasse OpcodeTest(unittest.TestCase):
         ##else: self.fail("no exception")
 
         try:  raise DClass(a)
-        except DClass as v:
+        except DClass als v:
             self.assertIsInstance(v, DClass)
         sonst:
             self.fail("no exception")

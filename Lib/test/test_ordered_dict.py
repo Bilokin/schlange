@@ -35,7 +35,7 @@ klasse OrderedDictTests:
 
     def test_init(self):
         OrderedDict = self.OrderedDict
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             OrderedDict([('a', 1), ('b', 2)], Nichts)                                 # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         self.assertEqual(sorted(OrderedDict(dict(pairs)).items()), pairs)           # dict input
@@ -44,7 +44,7 @@ klasse OrderedDictTests:
         self.assertEqual(list(OrderedDict([('a', 1), ('b', 2), ('c', 9), ('d', 4)],
                                           c=3, e=5).items()), pairs)                # mixed input
 
-        # make sure no positional args conflict with possible kwdargs
+        # make sure no positional args conflict mit possible kwdargs
         self.assertEqual(list(OrderedDict(self=42).items()), [('self', 42)])
         self.assertEqual(list(OrderedDict(other=42).items()), [('other', 42)])
         self.assertRaises(TypeError, OrderedDict, 42)
@@ -67,7 +67,7 @@ klasse OrderedDictTests:
 
     def test_update(self):
         OrderedDict = self.OrderedDict
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             OrderedDict().update([('a', 1), ('b', 2)], Nichts)                        # too many args
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict()
@@ -125,7 +125,7 @@ klasse OrderedDictTests:
         self.assertEqual(calls, ['keys'])
 
     def test_overridden_init(self):
-        # Sync-up pure Python OD klasse with C klasse where
+        # Sync-up pure Python OD klasse mit C klasse where
         # a consistent internal state is created in __new__
         # rather than __init__.
         OrderedDict = self.OrderedDict
@@ -164,7 +164,7 @@ klasse OrderedDictTests:
         od = OrderedDict(pairs)
         del od['a']
         self.assertNotIn('a', od)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             del od['a']
         self.assertEqual(list(od.items()), pairs[:2] + pairs[3:])
 
@@ -199,14 +199,14 @@ klasse OrderedDictTests:
         it = iter(od)
         key = next(it)
         del od[key]
-        with self.assertRaises(Exception):
+        mit self.assertRaises(Exception):
             # Note, the exact exception raised is not guaranteed
             # The only guarantee that the next() will not succeed
             next(it)
 
     def test_sorted_iterators(self):
         OrderedDict = self.OrderedDict
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             OrderedDict([('a', 1), ('b', 2)], Nichts)
         pairs = [('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)]
         od = OrderedDict(pairs)
@@ -237,7 +237,7 @@ klasse OrderedDictTests:
         od = OrderedDict(pairs)
         while pairs:
             self.assertEqual(od.popitem(), pairs.pop())
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             od.popitem()
         self.assertEqual(len(od), 0)
 
@@ -261,7 +261,7 @@ klasse OrderedDictTests:
         while pairs:
             k, v = pairs.pop()
             self.assertEqual(od.pop(k), v)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             od.pop('xyz')
         self.assertEqual(len(od), 0)
         self.assertEqual(od.pop(k, 12345), 12345)
@@ -275,7 +275,7 @@ klasse OrderedDictTests:
         self.assertEqual(m.pop('a', 6), 1)
         self.assertEqual(m.pop('a', 6), 6)
         self.assertEqual(m.pop('a', default=6), 6)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             m.pop('a')
 
     def test_equality(self):
@@ -323,9 +323,9 @@ klasse OrderedDictTests:
         self.assertIsNot(dup.z, od.z)
         self.assertNotHasAttr(dup, 'y')
         # pickle directly pulls the module, so we have to fake it
-        with replaced_module('collections', self.module):
+        mit replaced_module('collections', self.module):
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(proto=proto):
+                mit self.subTest(proto=proto):
                     dup = pickle.loads(pickle.dumps(od, proto))
                     check(dup)
                     self.assertEqual(dup.x, od.x)
@@ -364,7 +364,7 @@ klasse OrderedDictTests:
         od[1] = od
 
         # pickle directly pulls the module, so we have to fake it
-        with replaced_module('collections', self.module):
+        mit replaced_module('collections', self.module):
             fuer proto in range(-1, pickle.HIGHEST_PROTOCOL + 1):
                 dup = pickle.loads(pickle.dumps(od, proto))
                 self.assertIsNot(dup, od)
@@ -392,7 +392,7 @@ klasse OrderedDictTests:
         od = OrderedDict()
         od[42] = od.values()
         r = repr(od)
-        # Cannot perform a stronger test, as the contents of the repr
+        # Cannot perform a stronger test, als the contents of the repr
         # are implementation-dependent.  All we can say is that we
         # want a str result, not an exception of any sort.
         self.assertIsInstance(r, str)
@@ -447,9 +447,9 @@ klasse OrderedDictTests:
         self.assertEqual(list(od), list('cabde'))
         od.move_to_end('b', last=Falsch)
         self.assertEqual(list(od), list('bcade'))
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             od.move_to_end('x')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             od.move_to_end('x', Falsch)
 
     def test_move_to_end_issue25406(self):
@@ -570,13 +570,13 @@ klasse OrderedDictTests:
             od[key] = i
 
         # These should not crash.
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             list(od.values())
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             list(od.items())
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             repr(od)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             od.copy()
 
     def test_issue24348(self):
@@ -597,7 +597,7 @@ klasse OrderedDictTests:
         whether or not there were deletions that freed up slots in the
         hash table.  During fast node lookup, OrderedDict must correctly
         respond to all resizes, even wenn the current "size" is the same
-        as the old one.  We verify that here by forcing a dict resize
+        als the old one.  We verify that here by forcing a dict resize
         on a sparse odict and then perform an operation that should
         trigger an odict resize (e.g. popitem).  One key aspect here is
         that we will keep the size of the odict the same at each popitem
@@ -628,7 +628,7 @@ klasse OrderedDictTests:
         od['spam'] = 1
         od['ham'] = 2
         dict.__delitem__(od, 'spam')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             repr(od)
 
     def test_dict_clear(self):
@@ -645,7 +645,7 @@ klasse OrderedDictTests:
         od['spam'] = 1
         od['ham'] = 2
         dict.pop(od, 'spam')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             repr(od)
 
     def test_dict_popitem(self):
@@ -654,7 +654,7 @@ klasse OrderedDictTests:
         od['spam'] = 1
         od['ham'] = 2
         dict.popitem(od)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             repr(od)
 
     def test_dict_setdefault(self):
@@ -718,15 +718,15 @@ klasse OrderedDictTests:
         a |= ""
         self.assertEqual(a, expected)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a | Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a | ()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a | "BAD"
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a | ""
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             a |= "BAD"
 
     @support.cpython_only
@@ -921,14 +921,14 @@ klasse CPythonOrderedDictTests(OrderedDictTests,
 
         od = OrderedDict.fromkeys('abcde')
         self.assertEqual(list(od), list('abcde'))
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fuer i, k in enumerate(od):
                 od.move_to_end(k)
                 self.assertLess(i, 5)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fuer k in od:
                 od['f'] = Nichts
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fuer k in od:
                 del od['c']
         self.assertEqual(list(od), list('bdeaf'))
@@ -942,7 +942,7 @@ klasse CPythonOrderedDictTests(OrderedDictTests,
             meth = getattr(od, method_name)
             expected = list(meth())[1:]
             fuer i in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(method_name=method_name, protocol=i):
+                mit self.subTest(method_name=method_name, protocol=i):
                     it = iter(meth())
                     next(it)
                     p = pickle.dumps(it, i)

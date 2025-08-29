@@ -39,7 +39,7 @@ def _run_quiet(cmd, *, cwd=Nichts):
             text=Wahr,
             check=Wahr,
         )
-    except subprocess.CalledProcessError as err:
+    except subprocess.CalledProcessError als err:
         # Don't be quiet wenn things fail
         drucke(f"{err.__class__.__name__}: {err}")
         drucke("--- STDOUT ---")
@@ -113,7 +113,7 @@ def prepare(script=Nichts, outdir=Nichts):
     wenn script:
         scriptfile = os.path.join(outdir, 'app.py')
         drucke(f'creating the script to be frozen at {scriptfile}')
-        with open(scriptfile, 'w', encoding='utf-8') as outfile:
+        mit open(scriptfile, 'w', encoding='utf-8') als outfile:
             outfile.write(script)
 
     # Make a copy of the repo to avoid affecting the current build
@@ -139,7 +139,7 @@ def prepare(script=Nichts, outdir=Nichts):
 
     cores = os.process_cpu_count()
     wenn cores and cores >= 3:
-        # this test is most often run as part of the whole suite with a lot
+        # this test is most often run als part of the whole suite mit a lot
         # of other tests running in parallel, von 1-2 vCPU systems up to
         # people's NNN core beasts. Don't attempt to use it all.
         jobs = cores * 2 // 3

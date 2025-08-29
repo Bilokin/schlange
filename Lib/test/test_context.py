@@ -28,16 +28,16 @@ def isolated_context(func):
 
 klasse ContextTest(unittest.TestCase):
     def test_context_var_new_1(self):
-        with self.assertRaisesRegex(TypeError, 'takes exactly 1'):
+        mit self.assertRaisesRegex(TypeError, 'takes exactly 1'):
             contextvars.ContextVar()
 
-        with self.assertRaisesRegex(TypeError, 'must be a str'):
+        mit self.assertRaisesRegex(TypeError, 'must be a str'):
             contextvars.ContextVar(1)
 
         c = contextvars.ContextVar('aaa')
         self.assertEqual(c.name, 'aaa')
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             c.name = 'bbb'
 
         self.assertNotEqual(hash(c), hash('aaa'))
@@ -71,25 +71,25 @@ klasse ContextTest(unittest.TestCase):
                          r"at 0x[0-9a-fA-F]+> at 0x[0-9a-fA-F]+>$")
 
     def test_context_subclassing_1(self):
-        with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             klasse MyContextVar(contextvars.ContextVar):
                 # Potentially we might want ContextVars to be subclassable.
                 pass
 
-        with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             klasse MyContext(contextvars.Context):
                 pass
 
-        with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             klasse MyToken(contextvars.Token):
                 pass
 
     def test_context_new_1(self):
-        with self.assertRaisesRegex(TypeError, 'any arguments'):
+        mit self.assertRaisesRegex(TypeError, 'any arguments'):
             contextvars.Context(1)
-        with self.assertRaisesRegex(TypeError, 'any arguments'):
+        mit self.assertRaisesRegex(TypeError, 'any arguments'):
             contextvars.Context(1, a=1)
-        with self.assertRaisesRegex(TypeError, 'any arguments'):
+        mit self.assertRaisesRegex(TypeError, 'any arguments'):
             contextvars.Context(a=1)
         contextvars.Context(**{})
 
@@ -99,17 +99,17 @@ klasse ContextTest(unittest.TestCase):
             def __eq__(self, other):
                 pass
 
-        with self.assertRaisesRegex(TypeError, 'unhashable type'):
+        mit self.assertRaisesRegex(TypeError, 'unhashable type'):
             contextvars.ContextVar(weird_str())
 
     def test_context_typerrors_1(self):
         ctx = contextvars.Context()
 
-        with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
+        mit self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             ctx[1]
-        with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
+        mit self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             1 in ctx
-        with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
+        mit self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             ctx.get(1)
 
     def test_context_get_context_1(self):
@@ -119,7 +119,7 @@ klasse ContextTest(unittest.TestCase):
     def test_context_run_1(self):
         ctx = contextvars.Context()
 
-        with self.assertRaisesRegex(TypeError, 'missing 1 required'):
+        mit self.assertRaisesRegex(TypeError, 'missing 1 required'):
             ctx.run()
 
     def test_context_run_2(self):
@@ -156,11 +156,11 @@ klasse ContextTest(unittest.TestCase):
         def func(*args, **kwargs):
             1 / 0
 
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             ctx.run(func)
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             ctx.run(func, 1, 2)
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             ctx.run(func, 1, 2, a=123)
 
     @isolated_context
@@ -197,7 +197,7 @@ klasse ContextTest(unittest.TestCase):
             var.set('spam')
             1 / 0
 
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             ctx.run(func)
 
         self.assertIsNichts(var.get(Nichts))
@@ -220,7 +220,7 @@ klasse ContextTest(unittest.TestCase):
         ctx = contextvars.Context()
 
         def fun():
-            with self.assertRaisesRegex(RuntimeError, 'is already entered'):
+            mit self.assertRaisesRegex(RuntimeError, 'is already entered'):
                 ctx.run(fun)
 
         ctx.run(fun)
@@ -228,7 +228,7 @@ klasse ContextTest(unittest.TestCase):
     @isolated_context
     def test_context_getset_1(self):
         c = contextvars.ContextVar('c')
-        with self.assertRaises(LookupError):
+        mit self.assertRaises(LookupError):
             c.get()
 
         self.assertIsNichts(c.get(Nichts))
@@ -250,7 +250,7 @@ klasse ContextTest(unittest.TestCase):
         self.assertEqual(c.get(Nichts), 42)
 
         c.set('spam2')
-        with self.assertRaisesRegex(RuntimeError, 'has already been used'):
+        mit self.assertRaisesRegex(RuntimeError, 'has already been used'):
             c.reset(t)
         self.assertEqual(c.get(), 'spam2')
 
@@ -258,7 +258,7 @@ klasse ContextTest(unittest.TestCase):
         self.assertIn(c, ctx1)
 
         c.reset(t0)
-        with self.assertRaisesRegex(RuntimeError, 'has already been used'):
+        mit self.assertRaisesRegex(RuntimeError, 'has already been used'):
             c.reset(t0)
         self.assertIsNichts(c.get(Nichts))
 
@@ -273,7 +273,7 @@ klasse ContextTest(unittest.TestCase):
 
         ctx2 = contextvars.copy_context()
         self.assertNotIn(c, ctx2)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             ctx2[c]
         self.assertEqual(ctx2.get(c, 'aa'), 'aa')
         self.assertEqual(len(ctx2), 0)
@@ -285,7 +285,7 @@ klasse ContextTest(unittest.TestCase):
         v2 = contextvars.ContextVar('v2')
 
         t1 = v1.set(42)
-        with self.assertRaisesRegex(ValueError, 'by a different'):
+        mit self.assertRaisesRegex(ValueError, 'by a different'):
             v2.reset(t1)
 
     @isolated_context
@@ -295,7 +295,7 @@ klasse ContextTest(unittest.TestCase):
 
         def fun():
             self.assertEqual(c.get(), 42)
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 ctx[c]
             self.assertIsNichts(ctx.get(c))
             self.assertEqual(ctx.get(c, 'spam'), 'spam')
@@ -308,7 +308,7 @@ klasse ContextTest(unittest.TestCase):
 
             c.reset(t)
             self.assertEqual(list(ctx.keys()), [])
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 ctx[c]
 
         ctx.run(fun)
@@ -320,7 +320,7 @@ klasse ContextTest(unittest.TestCase):
 
         tok = ctx.run(c.set, 1)
 
-        with self.assertRaisesRegex(ValueError, 'different Context'):
+        mit self.assertRaisesRegex(ValueError, 'different Context'):
             c.reset(tok)
 
     @isolated_context
@@ -371,7 +371,7 @@ klasse ContextTest(unittest.TestCase):
             '__ne__', 'get', 'items', 'keys', 'values',
         )
         fuer name in mapping_methods:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertWahr(callable(getattr(ctx, name)))
 
     @isolated_context
@@ -414,7 +414,7 @@ klasse ContextTest(unittest.TestCase):
         thread.start()
         thread.join()
 
-        # Passing 'Nichts' explicitly should have same behaviour as not
+        # Passing 'Nichts' explicitly should have same behaviour als not
         # passing parameter.
         thread = threading.Thread(target=run_context_none, context=Nichts)
         thread.start()
@@ -438,9 +438,9 @@ klasse ContextTest(unittest.TestCase):
         thread.start()
         thread.join()
 
-        # You can also pass a new Context() object to start with an empty context
+        # You can also pass a new Context() object to start mit an empty context
         def run_empty():
-            with self.assertRaises(LookupError):
+            mit self.assertRaises(LookupError):
                 cvar.get()
 
         thread = threading.Thread(target=run_empty, context=contextvars.Context())
@@ -452,7 +452,7 @@ klasse ContextTest(unittest.TestCase):
         c = contextvars.ContextVar('c', default=42)
 
         def fun():
-            with c.set(36):
+            mit c.set(36):
                 self.assertEqual(c.get(), 36)
 
             self.assertEqual(c.get(), 42)
@@ -464,10 +464,10 @@ klasse ContextTest(unittest.TestCase):
         c = contextvars.ContextVar('c')
 
         def fun():
-            with c.set(36):
+            mit c.set(36):
                 self.assertEqual(c.get(), 36)
 
-            with self.assertRaisesRegex(LookupError, "<ContextVar name='c'"):
+            mit self.assertRaisesRegex(LookupError, "<ContextVar name='c'"):
                 c.get()
 
         ctx.run(fun)
@@ -477,13 +477,13 @@ klasse ContextTest(unittest.TestCase):
         c = contextvars.ContextVar('c', default=42)
 
         def fun():
-            with c.set(36):
+            mit c.set(36):
                 self.assertEqual(c.get(), 36)
                 raise ValueError("custom exception")
 
             self.assertEqual(c.get(), 42)
 
-        with self.assertRaisesRegex(ValueError, "custom exception"):
+        mit self.assertRaisesRegex(ValueError, "custom exception"):
             ctx.run(fun)
 
     def test_token_contextmanager_reentrant(self):
@@ -492,12 +492,12 @@ klasse ContextTest(unittest.TestCase):
 
         def fun():
             token = c.set(36)
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                     RuntimeError,
                     "<Token .+ has already been used once"
             ):
-                with token:
-                    with token:
+                mit token:
+                    mit token:
                         self.assertEqual(c.get(), 36)
 
             self.assertEqual(c.get(), 42)
@@ -509,7 +509,7 @@ klasse ContextTest(unittest.TestCase):
         c = contextvars.ContextVar('c', default=42)
 
         def fun():
-            with c.set(36):
+            mit c.set(36):
                 self.assertEqual(c.get(), 36)
                 c.set(24)
                 self.assertEqual(c.get(), 24)
@@ -525,11 +525,11 @@ klasse ContextTest(unittest.TestCase):
         c = contextvars.ContextVar('c', default=42)
 
         def fun():
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                     RuntimeError,
                     "<Token .+ has already been used once"
             ):
-                with c.set(36) as token:
+                mit c.set(36) als token:
                     self.assertEqual(c.get(), 36)
                     c.reset(token)
 
@@ -544,7 +544,7 @@ klasse ContextTest(unittest.TestCase):
         c = contextvars.ContextVar('c', default=42)
 
         def fun():
-            with c.set(36):
+            mit c.set(36):
                 self.assertEqual(c.get(), 36)
 
                 token = c.set(24)
@@ -732,7 +732,7 @@ klasse HamtTest(unittest.TestCase):
         self.assertEqual(len(h5), 3)
 
     def test_hamt_collision_3(self):
-        # Test that iteration works with the deepest tree possible.
+        # Test that iteration works mit the deepest tree possible.
         # https://github.com/python/cpython/issues/93065
 
         C = HashKey(0b10000000_00000000_00000000_00000000, 'C')
@@ -782,15 +782,15 @@ klasse HamtTest(unittest.TestCase):
                 key = KeyStr(i)
 
                 wenn not (i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=Wahr):
-                        with self.assertRaises(HashingError):
+                    mit HaskKeyCrasher(error_on_hash=Wahr):
+                        mit self.assertRaises(HashingError):
                             h.set(key, i)
 
                 h = h.set(key, i)
 
                 wenn not (i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=Wahr):
-                        with self.assertRaises(EqError):
+                    mit HaskKeyCrasher(error_on_eq=Wahr):
+                        mit self.assertRaises(EqError):
                             h.get(KeyStr(i))  # really trigger __eq__
 
                 d[key] = i
@@ -811,13 +811,13 @@ klasse HamtTest(unittest.TestCase):
                 key = KeyStr(i)
 
                 wenn not (iter_i % CRASH_HASH_EVERY):
-                    with HaskKeyCrasher(error_on_hash=Wahr):
-                        with self.assertRaises(HashingError):
+                    mit HaskKeyCrasher(error_on_hash=Wahr):
+                        mit self.assertRaises(HashingError):
                             h.delete(key)
 
                 wenn not (iter_i % CRASH_EQ_EVERY):
-                    with HaskKeyCrasher(error_on_eq=Wahr):
-                        with self.assertRaises(EqError):
+                    mit HaskKeyCrasher(error_on_eq=Wahr):
+                        mit self.assertRaises(EqError):
                             h.delete(KeyStr(i))
 
                 h = h.delete(key)
@@ -885,7 +885,7 @@ klasse HamtTest(unittest.TestCase):
         h = h.delete(C)
         self.assertEqual(len(h), orig_len - 1)
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        mit self.assertRaisesRegex(ValueError, 'cannot compare'):
             h.delete(Er)
 
         h = h.delete(D)
@@ -929,7 +929,7 @@ klasse HamtTest(unittest.TestCase):
         #             <Key name:B hash:201001>: 'b'
         #             <Key name:C hash:101001>: 'c'
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        mit self.assertRaisesRegex(ValueError, 'cannot compare'):
             h.delete(Er)
 
         h = h.delete(Z)
@@ -1203,10 +1203,10 @@ klasse HamtTest(unittest.TestCase):
         h2 = hamt()
         h2 = h2.set(Er, 'a')
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        mit self.assertRaisesRegex(ValueError, 'cannot compare'):
             h1 == h2
 
-        with self.assertRaisesRegex(ValueError, 'cannot compare'):
+        mit self.assertRaisesRegex(ValueError, 'cannot compare'):
             h1 != h2
 
     def test_hamt_gc_1(self):
@@ -1264,12 +1264,12 @@ klasse HamtTest(unittest.TestCase):
         self.assertWahr(A in h)
         self.assertFalsch(B in h)
 
-        with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=Wahr):
+        mit self.assertRaises(EqError):
+            mit HaskKeyCrasher(error_on_eq=Wahr):
                 AA in h
 
-        with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=Wahr):
+        mit self.assertRaises(HashingError):
+            mit HaskKeyCrasher(error_on_hash=Wahr):
                 AA in h
 
     def test_hamt_getitem_1(self):
@@ -1284,15 +1284,15 @@ klasse HamtTest(unittest.TestCase):
         self.assertEqual(h[A], 1)
         self.assertEqual(h[AA], 1)
 
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             h[B]
 
-        with self.assertRaises(EqError):
-            with HaskKeyCrasher(error_on_eq=Wahr):
+        mit self.assertRaises(EqError):
+            mit HaskKeyCrasher(error_on_eq=Wahr):
                 h[AA]
 
-        with self.assertRaises(HashingError):
-            with HaskKeyCrasher(error_on_hash=Wahr):
+        mit self.assertRaises(HashingError):
+            mit HaskKeyCrasher(error_on_hash=Wahr):
                 h[AA]
 
 

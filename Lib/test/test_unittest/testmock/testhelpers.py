@@ -473,8 +473,8 @@ klasse SpecSignatureTest(unittest.TestCase):
 
 
     def test_spec_as_list(self):
-        # because spec as a list of strings in the mock constructor means
-        # something very different we treat a list instance as the type.
+        # because spec als a list of strings in the mock constructor means
+        # something very different we treat a list instance als the type.
         mock = create_autospec([])
         mock.append('foo')
         mock.append.assert_called_with('foo')
@@ -514,9 +514,9 @@ klasse SpecSignatureTest(unittest.TestCase):
 
         mock = create_autospec(MyClass)
         mock.some_attr(1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             mock.some_attr()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             mock.some_attr(1, 2)
 
 
@@ -533,22 +533,22 @@ klasse SpecSignatureTest(unittest.TestCase):
                 raise AttributeError(item)
 
         inst = CrazyClass()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             inst.other
         self.assertEqual(inst.crazy(42), 42)
 
         mock = create_autospec(inst)
         mock.crazy(42)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             mock.crazy()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             mock.crazy(1, 2)
 
 
     def test_builtin_functions_types(self):
-        # we could replace builtin functions / methods with a function
-        # with *args / **kwargs signature. Using the builtin method type
-        # as a spec seems to work fairly well though.
+        # we could replace builtin functions / methods mit a function
+        # mit *args / **kwargs signature. Using the builtin method type
+        # als a spec seems to work fairly well though.
         klasse BuiltinSubclass(list):
             def bar(self, arg): pass
             sorted = sorted
@@ -726,7 +726,7 @@ klasse SpecSignatureTest(unittest.TestCase):
 
 
     def test_builtins(self):
-        # used to fail with infinite recursion
+        # used to fail mit infinite recursion
         create_autospec(1)
 
         create_autospec(int)
@@ -1012,7 +1012,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         mock = create_autospec(f)
         mock(1)
         mock.assert_has_calls([call(1)])
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             mock.assert_has_calls([call(2)])
 
 
@@ -1021,7 +1021,7 @@ klasse SpecSignatureTest(unittest.TestCase):
         mock = create_autospec(f)
         mock(1)
         mock.assert_any_call(1)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             mock.assert_any_call(2)
 
 
@@ -1049,7 +1049,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             create_autospec(WithPostInit, instance=Wahr),
             create_autospec(WithPostInit()),
         ]:
-            with self.subTest(mock=mock):
+            mit self.subTest(mock=mock):
                 self.assertIsInstance(mock, WithPostInit)
                 self.assertIsInstance(mock.a, int)
                 self.assertIsInstance(mock.b, int)
@@ -1057,9 +1057,9 @@ klasse SpecSignatureTest(unittest.TestCase):
         # Classes do not have these fields:
         mock = create_autospec(WithPostInit)
         msg = "Mock object has no attribute"
-        with self.assertRaisesRegex(AttributeError, msg):
+        mit self.assertRaisesRegex(AttributeError, msg):
             mock.a
-        with self.assertRaisesRegex(AttributeError, msg):
+        mit self.assertRaisesRegex(AttributeError, msg):
             mock.b
 
     def test_dataclass_default(self):
@@ -1072,7 +1072,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             create_autospec(WithDefault, instance=Wahr),
             create_autospec(WithDefault(1)),
         ]:
-            with self.subTest(mock=mock):
+            mit self.subTest(mock=mock):
                 self.assertIsInstance(mock, WithDefault)
                 self.assertIsInstance(mock.a, int)
                 self.assertIsInstance(mock.b, int)
@@ -1088,7 +1088,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             create_autospec(WithMethod, instance=Wahr),
             create_autospec(WithMethod(1)),
         ]:
-            with self.subTest(mock=mock):
+            mit self.subTest(mock=mock):
                 self.assertIsInstance(mock, WithMethod)
                 self.assertIsInstance(mock.a, int)
                 mock.b.assert_not_called()
@@ -1104,11 +1104,11 @@ klasse SpecSignatureTest(unittest.TestCase):
             create_autospec(WithNonFields, instance=Wahr),
             create_autospec(WithNonFields(1)),
         ]:
-            with self.subTest(mock=mock):
+            mit self.subTest(mock=mock):
                 self.assertIsInstance(mock, WithNonFields)
-                with self.assertRaisesRegex(AttributeError, msg):
+                mit self.assertRaisesRegex(AttributeError, msg):
                     mock.a
-                with self.assertRaisesRegex(AttributeError, msg):
+                mit self.assertRaisesRegex(AttributeError, msg):
                     mock.b
 
     def test_dataclass_special_attrs(self):
@@ -1120,7 +1120,7 @@ klasse SpecSignatureTest(unittest.TestCase):
             create_autospec(Description, instance=Wahr),
             create_autospec(Description(1)),
         ]:
-            with self.subTest(mock=mock):
+            mit self.subTest(mock=mock):
                 self.assertIsInstance(mock, Description)
                 self.assertIs(mock.__class__, Description)
                 self.assertIsInstance(mock.__dataclass_fields__, MagicMock)
@@ -1215,7 +1215,7 @@ klasse TestCallList(unittest.TestCase):
         p = PropertyMock(side_effect=ValueError)
         type(m).foo = p
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             m.foo
         p.assert_called_once_with()
 

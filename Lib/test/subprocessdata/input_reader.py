@@ -1,4 +1,4 @@
-"""When called as a script, consumes the input"""
+"""When called als a script, consumes the input"""
 
 importiere sys
 

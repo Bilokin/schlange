@@ -376,7 +376,7 @@ klasse OutputTestCase(unittest.TestCase):
 
         lines = []
         fuer line in s.splitlines(keepends=Falsch):
-            # Drop texts, as they are locale dependent
+            # Drop texts, als they are locale dependent
             wenn line and not filter(neitherspacenordigit, line):
                 lines.append(line)
         return lines
@@ -459,9 +459,9 @@ klasse OutputTestCase(unittest.TestCase):
             result_0_02_text
         )
     def test_formatmonth_with_invalid_month(self):
-        with self.assertRaises(calendar.IllegalMonthError):
+        mit self.assertRaises(calendar.IllegalMonthError):
             calendar.TextCalendar().formatmonth(2017, 13)
-        with self.assertRaises(calendar.IllegalMonthError):
+        mit self.assertRaises(calendar.IllegalMonthError):
             calendar.TextCalendar().formatmonth(2017, -1)
 
     def test_formatmonthname_with_year(self):
@@ -477,30 +477,30 @@ klasse OutputTestCase(unittest.TestCase):
         )
 
     def test_prweek(self):
-        with support.captured_stdout() as out:
+        mit support.captured_stdout() als out:
             week = [(1,0), (2,1), (3,2), (4,3), (5,4), (6,5), (7,6)]
             calendar.TextCalendar().prweek(week, 1)
             self.assertEqual(out.getvalue(), " 1  2  3  4  5  6  7")
 
     def test_prmonth(self):
-        with support.captured_stdout() as out:
+        mit support.captured_stdout() als out:
             calendar.TextCalendar().prmonth(2004, 1)
             self.assertEqual(out.getvalue(), result_2004_01_text)
 
     def test_pryear(self):
-        with support.captured_stdout() as out:
+        mit support.captured_stdout() als out:
             calendar.TextCalendar().pryear(2004)
             self.assertEqual(out.getvalue(), result_2004_text)
 
     def test_format(self):
-        with support.captured_stdout() as out:
+        mit support.captured_stdout() als out:
             calendar.format(["1", "2", "3"], colwidth=3, spacing=1)
             self.assertEqual(out.getvalue().strip(), "1   2   3")
 
 klasse CalendarTestCase(unittest.TestCase):
 
     def test_deprecation_warning(self):
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
             DeprecationWarning,
             "The 'January' attribute is deprecated, use 'JANUARY' instead"
         ):
@@ -528,7 +528,7 @@ klasse CalendarTestCase(unittest.TestCase):
         calendar.setfirstweekday(orig)
 
     def test_illegal_weekday_reported(self):
-        with self.assertRaisesRegex(calendar.IllegalWeekdayError, '123'):
+        mit self.assertRaisesRegex(calendar.IllegalWeekdayError, '123'):
             calendar.setfirstweekday(123)
 
     def test_enumerate_weekdays(self):
@@ -560,7 +560,7 @@ klasse CalendarTestCase(unittest.TestCase):
 
     @support.run_with_locale('LC_ALL', 'pl_PL')
     @unittest.skipUnless(sys.platform == 'darwin' or platform.libc_ver()[0] == 'glibc',
-                         "Guaranteed to work with glibc and macOS")
+                         "Guaranteed to work mit glibc and macOS")
     def test_standalone_month_name_and_abbr_pl_locale(self):
         expected_standalone_month_names = [
             "", "styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec",
@@ -584,7 +584,7 @@ klasse CalendarTestCase(unittest.TestCase):
         # Ensure that the standalone month names and abbreviations are
         # equal to the regular month names and abbreviations for
         # the "C" locale.
-        with calendar.different_locale("C"):
+        mit calendar.different_locale("C"):
             self.assertListEqual(list(calendar.month_name),
                                  list(calendar.standalone_month_name))
             self.assertListEqual(list(calendar.month_abbr),
@@ -983,21 +983,21 @@ klasse MonthRangeTestCase(unittest.TestCase):
 
     def test_zeroth_month(self):
         # Tests low invalid boundary case.
-        with self.assertRaises(calendar.IllegalMonthError):
+        mit self.assertRaises(calendar.IllegalMonthError):
             calendar.monthrange(2004, 0)
 
     def test_thirteenth_month(self):
         # Tests high invalid boundary case.
-        with self.assertRaises(calendar.IllegalMonthError):
+        mit self.assertRaises(calendar.IllegalMonthError):
             calendar.monthrange(2004, 13)
 
     def test_illegal_month_reported(self):
-        with self.assertRaisesRegex(calendar.IllegalMonthError, '65'):
+        mit self.assertRaisesRegex(calendar.IllegalMonthError, '65'):
             calendar.monthrange(2004, 65)
 
 klasse LeapdaysTestCase(unittest.TestCase):
     def test_no_range(self):
-        # test when no range i.e. two identical years as args
+        # test when no range i.e. two identical years als args
         self.assertEqual(calendar.leapdays(2010,2010), 0)
 
     def test_no_leapdays(self):
@@ -1048,7 +1048,7 @@ klasse CommandLineTestCase(unittest.TestCase):
             sys.stderr = orig_stderr
 
     def run_cli_ok(self, *args):
-        with self.captured_stdout_with_buffer() as stdout:
+        mit self.captured_stdout_with_buffer() als stdout:
             calendar.main(args)
         return stdout.buffer.read()
 
@@ -1056,7 +1056,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         return assert_python_ok('-m', 'calendar', *args)[1]
 
     def assertCLIFails(self, *args):
-        with self.captured_stderr_with_buffer() as stderr:
+        mit self.captured_stderr_with_buffer() als stderr:
             self.assertRaises(SystemExit, calendar.main, args)
         stderr = stderr.buffer.read()
         self.assertIn(b'usage:', stderr)
@@ -1080,7 +1080,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         self.assertIn(b'--help', stdout)
 
         # special case: stdout but sys.exit()
-        with self.captured_stdout_with_buffer() as output:
+        mit self.captured_stdout_with_buffer() als output:
             self.assertRaises(SystemExit, calendar.main, ['-h'])
         output = output.buffer.read()
         self.assertIn(b'usage:', output)
@@ -1241,9 +1241,9 @@ klasse TestSubClassingCase(unittest.TestCase):
                       self.cal.formatmonth(2017, 5))
 
     def test_formatmonth_with_invalid_month(self):
-        with self.assertRaises(calendar.IllegalMonthError):
+        mit self.assertRaises(calendar.IllegalMonthError):
             self.cal.formatmonth(2017, 13)
-        with self.assertRaises(calendar.IllegalMonthError):
+        mit self.assertRaises(calendar.IllegalMonthError):
             self.cal.formatmonth(2017, -1)
 
 

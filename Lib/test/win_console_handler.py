@@ -1,6 +1,6 @@
 """Script used to test os.kill on Windows, fuer issue #1220212
 
-This script is started as a subprocess in test_os and is used to test the
+This script is started als a subprocess in test_os and is used to test the
 CTRL_C_EVENT and CTRL_BREAK_EVENT signals, which requires a custom handler
 to be written into the kill target.
 
@@ -35,7 +35,7 @@ SetConsoleCtrlHandler.argtypes = (HandlerRoutine, wintypes.BOOL)
 SetConsoleCtrlHandler.restype = wintypes.BOOL
 
 wenn __name__ == "__main__":
-    # Add our console control handling function with value 1
+    # Add our console control handling function mit value 1
     wenn not SetConsoleCtrlHandler(ctrl_handler, 1):
         drucke("Unable to add SetConsoleCtrlHandler")
         exit(-1)

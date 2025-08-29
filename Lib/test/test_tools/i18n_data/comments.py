@@ -1,4 +1,4 @@
-von gettext importiere gettext as _
+von gettext importiere gettext als _
 
 # Not a translator comment
 _('foo')
@@ -11,19 +11,19 @@ _('bar')
 _('baz')
 
 # i18n: This is a translator comment
-# with multiple
+# mit multiple
 # lines
 _('qux')
 
 # This comment should not be included because
-# it does not start with the prefix
+# it does not start mit the prefix
 # i18n: This is a translator comment
 _('quux')
 
 # i18n: This is a translator comment
-# with multiple lines
+# mit multiple lines
 # i18n: This is another translator comment
-# with multiple lines
+# mit multiple lines
 _('corge')
 
 # i18n: This comment should be ignored
@@ -59,7 +59,7 @@ _('fred')
 _('fred')
 
 # i18n: This is a translator comment
-# with multiple lines
+# mit multiple lines
 _('fred')
 
 _('plugh')  # i18n: This comment should be ignored

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# There are tests here with unicode string literals and
+# There are tests here mit unicode string literals and
 # identifiers. There's a code in ast.c that was added because of a
-# failure with a non-ascii-only expression.  So, I have tests for
+# failure mit a non-ascii-only expression.  So, I have tests for
 # that.  There are workarounds that would let me run tests fuer that
 # code without unicode identifiers and strings, but just using them
 # directly seems like the easiest and therefore safest thing to do.
@@ -23,8 +23,8 @@ von test.support.script_helper importiere assert_python_failure, assert_python_o
 a_global = 'global variable'
 
 # You could argue that I'm too strict in looking fuer specific error
-#  values with assertRaisesRegex, but without it it's way too easy to
-#  make a syntax error in the test strings. Especially with all of the
+#  values mit assertRaisesRegex, but without it it's way too easy to
+#  make a syntax error in the test strings. Especially mit all of the
 #  triple quotes, raw strings, backslashes, etc. I think it's a
 #  worthwhile tradeoff. When I switched to this method, I found many
 #  examples where I wasn't testing what I thought I was.
@@ -32,8 +32,8 @@ a_global = 'global variable'
 klasse TestCase(unittest.TestCase):
     def assertAllRaise(self, exception_type, regex, error_strings):
         fuer str in error_strings:
-            with self.subTest(str=str):
-                with self.assertRaisesRegex(exception_type, regex):
+            mit self.subTest(str=str):
+                mit self.assertRaisesRegex(exception_type, regex):
                     eval(str)
 
     def test__format__lookup(self):
@@ -574,7 +574,7 @@ x = (
         self.assertIsNichts(g.__doc__)
 
     def test_literal_eval(self):
-        with self.assertRaisesRegex(ValueError, 'malformed node or string'):
+        mit self.assertRaisesRegex(ValueError, 'malformed node or string'):
             ast.literal_eval("f'x'")
 
     def test_ast_compile_time_concat(self):
@@ -639,7 +639,7 @@ x = (
                 pass
             except MemoryError:
                 pass
-            except Exception as ex:
+            except Exception als ex:
                 self.fail(f"Should raise SyntaxError or MemoryError, not {type(ex)}")
             sonst:
                 self.fail("No exception raised")
@@ -726,7 +726,7 @@ x = (
         self.assertEqual(f'' '' f'' '', '')
 
         # This is not really [f'{'] + [f'}'] since we treat the inside
-        # of braces as a purely new context, so it is actually f'{ and
+        # of braces als a purely new context, so it is actually f'{ and
         # then eval('  f') (a valid expression) and then }' which would
         # constitute a valid f-string.
         self.assertEqual(f'{' f'}', ' f')
@@ -787,9 +787,9 @@ x = (
                              ])
 
     def test_many_expressions(self):
-        # Create a string with many expressions in it. Note that
-        #  because we have a space in here as a literal, we're actually
-        #  going to use twice as many ast nodes: one fuer each literal
+        # Create a string mit many expressions in it. Note that
+        #  because we have a space in here als a literal, we're actually
+        #  going to use twice als many ast nodes: one fuer each literal
         #  plus one fuer each expression.
         def build_fstr(n, extra=''):
             return "f'" + ('{x} ' * n) + extra + "'"
@@ -851,7 +851,7 @@ x = (
 
         self.assertEqual(f'{CustomFormat():\n}', '\n')
         self.assertEqual(f'{CustomFormat():\u2603}', '☃')
-        with self.assertWarns(SyntaxWarning):
+        mit self.assertWarns(SyntaxWarning):
             exec(r'f"{F():¯\_(ツ)_/¯}"', {'F': CustomFormat})
 
     def test_side_effect_order(self):
@@ -985,10 +985,10 @@ x = (
         self.assertEqual(f'2\x203', '2 3')
         self.assertEqual(f'\x203', ' 3')
 
-        with self.assertWarns(SyntaxWarning):  # invalid escape sequence
+        mit self.assertWarns(SyntaxWarning):  # invalid escape sequence
             value = eval(r"f'\{6*7}'")
         self.assertEqual(value, '\\42')
-        with self.assertWarns(SyntaxWarning):  # invalid escape sequence
+        mit self.assertWarns(SyntaxWarning):  # invalid escape sequence
             value = eval(r"f'\g'")
         self.assertEqual(value, '\\g')
         self.assertEqual(f'\\{6*7}', '\\42')
@@ -1038,7 +1038,7 @@ x = (
 
     def test_invalid_backslashes_inside_fstring_context(self):
         # All of these variations are invalid python syntax,
-        # so they are also invalid in f-strings as well.
+        # so they are also invalid in f-strings als well.
         cases = [
             formatting.format(expr=expr)
             fuer formatting in [
@@ -1091,11 +1091,11 @@ x = (
                              ])
         # Ensure the detection of invalid lambdas doesn't trigger detection
         # fuer valid lambdas in the second error pass
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             compile("lambda name_3=f'{name_4}': {name_3}\n1 $ 1", "<string>", "exec")
 
         # but don't emit the paren warning in general cases
-        with self.assertRaisesRegex(SyntaxError, "f-string: expecting a valid expression after '{'"):
+        mit self.assertRaisesRegex(SyntaxError, "f-string: expecting a valid expression after '{'"):
             eval("f'{+ lambda:Nichts}'")
 
     def test_valid_prefixes(self):
@@ -1121,8 +1121,8 @@ x = (
             (r"f'{1+1}\}}'", '2\\}')
         ]
         fuer case, expected_result in deprecated_cases:
-            with self.subTest(case=case, expected_result=expected_result):
-                with self.assertWarns(SyntaxWarning):
+            mit self.subTest(case=case, expected_result=expected_result):
+                mit self.assertWarns(SyntaxWarning):
                     result = eval(case)
                 self.assertEqual(result, expected_result)
         self.assertEqual(fr'\{{\}}', '\\{\\}')
@@ -1132,7 +1132,7 @@ x = (
         self.assertEqual(fr'{1+1}\}}', '2\\}')
 
     def test_fstring_backslash_before_double_bracket_warns_once(self):
-        with self.assertWarns(SyntaxWarning) as w:
+        mit self.assertWarns(SyntaxWarning) als w:
             eval(r"f'\{{'")
         self.assertEqual(len(w.warnings), 1)
         self.assertEqual(w.warnings[0].category, SyntaxWarning)
@@ -1225,7 +1225,7 @@ x = (
         self.assertEqual(f'v:{value}', 'v:123')
 
     def test_missing_variable(self):
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             f'v:{value}'
 
     def test_missing_format_spec(self):
@@ -1320,7 +1320,7 @@ x = (
 
     def test_not_equal(self):
         # There's a special test fuer this because there's a special
-        #  case in the f-string parser to look fuer != as not ending an
+        #  case in the f-string parser to look fuer != als not ending an
         #  expression. Normally it would, while looking fuer !s or !r.
 
         self.assertEqual(f'{3!=4}', 'Wahr')
@@ -1515,9 +1515,9 @@ x = (
 
     def test_filename_in_syntaxerror(self):
         # see issue 38964
-        with temp_cwd() as cwd:
+        mit temp_cwd() als cwd:
             file_path = os.path.join(cwd, 't.py')
-            with open(file_path, 'w', encoding="utf-8") as f:
+            mit open(file_path, 'w', encoding="utf-8") als f:
                 f.write('f"{a b}"') # This generates a SyntaxError
             _, _, stderr = assert_python_failure(file_path,
                                                  PYTHONIOENCODING='ascii')
@@ -1562,18 +1562,18 @@ x = (
         x = 9
         self.assertEqual(f'{3*x+15=}', '3*x+15=42')
 
-        # There is code in ast.c that deals with non-ascii expression values.  So,
+        # There is code in ast.c that deals mit non-ascii expression values.  So,
         # use a unicode identifier to trigger that.
         tenπ = 31.4
         self.assertEqual(f'{tenπ=:.2f}', 'tenπ=31.40')
 
-        # Also test with Unicode in non-identifiers.
+        # Also test mit Unicode in non-identifiers.
         self.assertEqual(f'{"Σ"=}', '"Σ"=\'Σ\'')
 
         # Make sure nested fstrings still work.
         self.assertEqual(f'{f"{3.1415=:.1f}":*^20}', '*****3.1415=3.1*****')
 
-        # Make sure text before and after an expression with = works
+        # Make sure text before and after an expression mit = works
         # correctly.
         pi = 'π'
         self.assertEqual(f'alpha α {pi=} ω omega', "alpha α pi='π' ω omega")
@@ -1597,7 +1597,7 @@ x = (
         self.assertEqual(f'{"="}', '=')
 
         x = 20
-        # This isn't an assignment expression, it's 'x', with a format
+        # This isn't an assignment expression, it's 'x', mit a format
         # spec of '=10'.  See test_walrus: you need to use parens.
         self.assertEqual(f'{x:=10}', '        20')
 
@@ -1673,7 +1673,7 @@ x = (
         #self.assertEqual(f'X{x =       }Y', 'Xx\t=\t'+repr(x)+'Y')
 
     def test_debug_expressions_are_raw_strings(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore', SyntaxWarning)
             self.assertEqual(eval("""f'{b"\\N{OX}"=}'"""), 'b"\\N{OX}"=b\'\\\\N{OX}\'')
         self.assertEqual(f'{r"\xff"=}', 'r"\\xff"=\'\\\\xff\'')
@@ -1683,7 +1683,7 @@ x = (
 
     def test_walrus(self):
         x = 20
-        # This isn't an assignment expression, it's 'x', with a format
+        # This isn't an assignment expression, it's 'x', mit a format
         # spec of '=10'.
         self.assertEqual(f'{x:=10}', '        20')
 
@@ -1692,35 +1692,35 @@ x = (
         self.assertEqual(x, 10)
 
     def test_invalid_syntax_error_message(self):
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "f-string: expecting '=', or '!', or ':', or '}'"):
             compile("f'{a $ b}'", "?", "exec")
 
     def test_with_two_commas_in_format_specifier(self):
-        error_msg = re.escape("Cannot specify ',' with ','.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        error_msg = re.escape("Cannot specify ',' mit ','.")
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f'{1:,,}'
 
     def test_with_two_underscore_in_format_specifier(self):
-        error_msg = re.escape("Cannot specify '_' with '_'.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        error_msg = re.escape("Cannot specify '_' mit '_'.")
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f'{1:__}'
 
     def test_with_a_commas_and_an_underscore_in_format_specifier(self):
         error_msg = re.escape("Cannot specify both ',' and '_'.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f'{1:,_}'
 
     def test_with_an_underscore_and_a_comma_in_format_specifier(self):
         error_msg = re.escape("Cannot specify both ',' and '_'.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f'{1:_,}'
 
     def test_syntax_error_for_starred_expressions(self):
-        with self.assertRaisesRegex(SyntaxError, "can't use starred expression here"):
+        mit self.assertRaisesRegex(SyntaxError, "can't use starred expression here"):
             compile("f'{*a}'", "?", "exec")
 
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "f-string: expecting a valid expression after '{'"):
             compile("f'{**a}'", "?", "exec")
 
@@ -1740,7 +1740,7 @@ sdfsdfs{1+
 '''
         try:
             compile(data, "?", "exec")
-        except SyntaxError as e:
+        except SyntaxError als e:
             self.assertEqual(e.text, 'z = f"""')
             self.assertEqual(e.lineno, 3)
     def test_syntax_error_after_debug(self):
@@ -1758,9 +1758,9 @@ sdfsdfs{1+
                             ])
 
     def test_debug_in_file(self):
-        with temp_cwd():
+        mit temp_cwd():
             script = 'script.py'
-            with open('script.py', 'w') as f:
+            mit open('script.py', 'w') als f:
                 f.write(f"""\
 drucke(f'''{{
 3
@@ -1771,9 +1771,9 @@ drucke(f'''{{
                          "3\n=3")
 
     def test_syntax_warning_infinite_recursion_in_file(self):
-        with temp_cwd():
+        mit temp_cwd():
             script = 'script.py'
-            with open(script, 'w') as f:
+            mit open(script, 'w') als f:
                 f.write(r"drucke(f'\{1}')")
 
             _, stdout, stderr = assert_python_ok(script)
@@ -1782,7 +1782,7 @@ drucke(f'''{{
 
     def test_fstring_without_formatting_bytecode(self):
         # f-string without any formatting should emit the same bytecode
-        # as a normal string. See gh-99606.
+        # als a normal string. See gh-99606.
         def get_code(s):
             return [(i.opname, i.oparg) fuer i in dis.get_instructions(s)]
 
@@ -1835,7 +1835,7 @@ drucke(f'''{{
         # Test raw f-string format spec behavior (Issue #137314).
         #
         # Raw f-strings should preserve literal backslashes in format specifications,
-        # not interpret them as escape sequences.
+        # not interpret them als escape sequences.
         klasse UnchangedFormat:
             """Test helper that returns the format spec unchanged."""
             def __format__(self, format):
@@ -1845,7 +1845,7 @@ drucke(f'''{{
         self.assertEqual(f"{UnchangedFormat():\xFF}", 'ÿ')
         self.assertEqual(rf"{UnchangedFormat():\xFF}", '\\xFF')
 
-        # Test nested expressions with raw/non-raw combinations
+        # Test nested expressions mit raw/non-raw combinations
         self.assertEqual(rf"{UnchangedFormat():{'\xFF'}}", 'ÿ')
         self.assertEqual(f"{UnchangedFormat():{r'\xFF'}}", '\\xFF')
         self.assertEqual(rf"{UnchangedFormat():{r'\xFF'}}", '\\xFF')

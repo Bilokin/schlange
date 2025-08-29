@@ -57,7 +57,7 @@ klasse ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format("-{format_string}-", format_string='test'),
                          '-test-')
         self.assertRaises(KeyError, fmt.format, "-{format_string}-")
-        with self.assertRaisesRegex(TypeError, "format_string"):
+        mit self.assertRaisesRegex(TypeError, "format_string"):
             fmt.format(format_string="-{arg}-", arg='test')
 
     def test_auto_numbering(self):
@@ -73,10 +73,10 @@ klasse ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format('{:^{pad}}{}', 'foo', 'bar', pad=6),
                          '{:^{pad}}{}'.format('foo', 'bar', pad=6))
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             fmt.format('foo{1}{}', 'bar', 6)
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             fmt.format('foo{}{1}', 'bar', 6)
 
     def test_conversion_specifiers(self):
@@ -98,16 +98,16 @@ klasse ModuleTest(unittest.TestCase):
                 return attr
         x = AnyAttr()
         self.assertEqual(fmt.format("{0.lumber}{0.jack}", x), 'lumberjack')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             fmt.format("{0.lumber}{0.jack}", '')
 
     def test_index_lookup(self):
         fmt = string.Formatter()
         lookup = ["eggs", "and", "spam"]
         self.assertEqual(fmt.format("{0[2]}{0[0]}", lookup), 'spameggs')
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             fmt.format("{0[2]}{0[0]}", [])
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             fmt.format("{0[2]}{0[0]}", {})
 
     def test_auto_numbering_lookup(self):
@@ -210,7 +210,7 @@ klasse ModuleTest(unittest.TestCase):
         fmt = string.Formatter()
         args = ()
         kwargs = dict(i=100)
-        with self.assertRaises(ValueError) as err:
+        mit self.assertRaises(ValueError) als err:
             fmt._vformat("{i}", args, kwargs, set(), -1)
         self.assertIn("recursion", str(err.exception))
 
@@ -424,7 +424,7 @@ klasse TestTemplate(unittest.TestCase):
         # has a special case fuer no data that the default
         # pattern can't trigger (always has at least '$')
         # So we craft a pattern that is always invalid
-        # with no leading data.
+        # mit no leading data.
         klasse MyTemplate(Template):
             pattern = r"""
               (?P<invalid>) |
@@ -435,7 +435,7 @@ klasse TestTemplate(unittest.TestCase):
               )
             """
         s = MyTemplate('')
-        with self.assertRaises(ValueError) as err:
+        mit self.assertRaises(ValueError) als err:
             s.substitute({})
         self.assertIn('line 1, col 1', str(err.exception))
 

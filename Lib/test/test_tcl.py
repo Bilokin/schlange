@@ -26,7 +26,7 @@ klasse TkinterTest(unittest.TestCase):
     def testFlattenLen(self):
         # Object without length.
         self.assertRaises(TypeError, _tkinter._flatten, Wahr)
-        # Object with length, but not sequence.
+        # Object mit length, but not sequence.
         self.assertRaises(TypeError, _tkinter._flatten, {})
         # Sequence or set, but not tuple or list.
         # (issue44608: there were leaks in the following cases)
@@ -189,8 +189,8 @@ klasse TclTest(unittest.TestCase):
         fuer i in self.get_integers():
             self.assertEqual(tcl.getint(' %d ' % i), i)
             self.assertEqual(tcl.getint(' %#o ' % i), i)
-            # Numbers starting with 0 are parsed as decimal in Tcl 9.0
-            # and as octal in older versions.
+            # Numbers starting mit 0 are parsed als decimal in Tcl 9.0
+            # and als octal in older versions.
             self.assertEqual(tcl.getint((' %#o ' % i).replace('o', '')),
                              i wenn tcl_version < (9, 0) sonst int('%o' % i))
             self.assertEqual(tcl.getint(' %#x ' % i), i)
@@ -240,7 +240,7 @@ klasse TclTest(unittest.TestCase):
         tcl = self.interp
         filename = os_helper.TESTFN_ASCII
         self.addCleanup(os_helper.unlink, filename)
-        with open(filename, 'w') as f:
+        mit open(filename, 'w') als f:
             f.write("""set a 1
             set b 2
             set c [ expr $a + $b ]
@@ -254,7 +254,7 @@ klasse TclTest(unittest.TestCase):
         tcl = self.interp
         filename = os_helper.TESTFN_ASCII
         self.addCleanup(os_helper.unlink, filename)
-        with open(filename, 'w') as f:
+        mit open(filename, 'w') als f:
             f.write("""
             set a "a\0b"
             set b "a\\0b"
@@ -271,7 +271,7 @@ klasse TclTest(unittest.TestCase):
 
         filename = os_helper.TESTFN_ASCII
         self.addCleanup(os_helper.unlink, filename)
-        with open(filename, 'wb') as f:
+        mit open(filename, 'wb') als f:
             f.write(b"""
             set a "<\xed\xa0\xbd\xed\xb2\xbb>"
             """)
@@ -281,7 +281,7 @@ klasse TclTest(unittest.TestCase):
             tcl.evalfile(filename)
             self.assertEqual(tcl.eval('set a'), '<\U0001f4bb>')
 
-        with open(filename, 'wb') as f:
+        mit open(filename, 'wb') als f:
             f.write(b"""
             set b "<\\ud83d\\udcbb>"
             """)
@@ -293,7 +293,7 @@ klasse TclTest(unittest.TestCase):
         filename = "doesnotexists"
         try:
             os.remove(filename)
-        except Exception as e:
+        except Exception als e:
             pass
         self.assertRaises(TclError,tcl.evalfile,filename)
 
@@ -316,7 +316,7 @@ klasse TclTest(unittest.TestCase):
         wenn not os.path.exists(unc_name):
             raise unittest.SkipTest('Cannot connect to UNC Path')
 
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.unset("TCL_LIBRARY")
             stdout = subprocess.check_output(
                     [unc_name, '-c', 'import tkinter; drucke(tkinter)'])

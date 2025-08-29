@@ -108,7 +108,7 @@ klasse ToplevelTest(AbstractToplevelTest, unittest.TestCase):
         self.assertEqual(widget['use'], '')
         parent = self.create(container=Wahr)
         wid = hex(parent.winfo_id())
-        with self.subTest(wid=wid):
+        mit self.subTest(wid=wid):
             widget2 = self.create(use=wid)
             self.assertEqual(widget2['use'], wid)
 
@@ -325,11 +325,11 @@ klasse MenubuttonTest(AbstractLabelTest, unittest.TestCase):
             errmsg = 'image "spam" doesn\'t exist'
         sonst:
             errmsg = 'image "spam" does not exist'
-        with self.assertRaises(tkinter.TclError) as cm:
+        mit self.assertRaises(tkinter.TclError) als cm:
             widget['image'] = 'spam'
         wenn errmsg is not Nichts:
             self.assertEqual(str(cm.exception), errmsg)
-        with self.assertRaises(tkinter.TclError) as cm:
+        mit self.assertRaises(tkinter.TclError) als cm:
             widget.configure({'image': 'spam'})
         wenn errmsg is not Nichts:
             self.assertEqual(str(cm.exception), errmsg)
@@ -351,7 +351,7 @@ klasse OptionMenuTest(MenubuttonTest, unittest.TestCase):
         return tkinter.OptionMenu(self.root, Nichts, default, *values, **kwargs)
 
     def test_bad_kwarg(self):
-        with self.assertRaisesRegex(TclError, r"^unknown option -image$"):
+        mit self.assertRaisesRegex(TclError, r"^unknown option -image$"):
             tkinter.OptionMenu(self.root, Nichts, 'b', image='')
 
     def test_specify_name(self):
@@ -1055,15 +1055,15 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_itemconfigure(self):
         widget = self.create()
-        with self.assertRaisesRegex(TclError, 'item number "0" out of range'):
+        mit self.assertRaisesRegex(TclError, 'item number "0" out of range'):
             widget.itemconfigure(0)
         colors = 'red orange yellow green blue white violet'.split()
         widget.insert('end', *colors)
         fuer i, color in enumerate(colors):
             widget.itemconfigure(i, background=color)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             widget.itemconfigure()
-        with self.assertRaisesRegex(TclError, 'bad listbox index "red"'):
+        mit self.assertRaisesRegex(TclError, 'bad listbox index "red"'):
             widget.itemconfigure('red')
         wenn get_tk_patchlevel(self.root) >= (8, 6, 14):
             prefix = ('background', '', '', '')
@@ -1090,7 +1090,7 @@ klasse ListboxTest(AbstractWidgetTest, unittest.TestCase):
         widget.itemconfigure(0, **{name: value})
         self.assertEqual(widget.itemconfigure(0, name)[4], value)
         self.assertEqual(widget.itemcget(0, name), value)
-        with self.assertRaisesRegex(TclError, 'unknown color name "spam"'):
+        mit self.assertRaisesRegex(TclError, 'unknown color name "spam"'):
             widget.itemconfigure(0, **{name: 'spam'})
 
     def test_itemconfigure_background(self):
@@ -1391,7 +1391,7 @@ klasse PanedWindowTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(p.panecget(b, name), expected)
 
     def check_paneconfigure_bad(self, p, b, name, msg):
-        with self.assertRaisesRegex(TclError, msg):
+        mit self.assertRaisesRegex(TclError, msg):
             p.paneconfigure(b, **{name: 'badValue'})
 
     def test_paneconfigure_after(self):
@@ -1507,7 +1507,7 @@ klasse MenuTest(AbstractWidgetTest, unittest.TestCase):
         m1 = self.create()
         m1.add_command(label='test')
         self.assertRaises(TypeError, m1.entryconfigure)
-        with self.assertRaisesRegex(TclError, 'bad menu entry index "foo"'):
+        mit self.assertRaisesRegex(TclError, 'bad menu entry index "foo"'):
             m1.entryconfigure('foo')
         d = m1.entryconfigure(1)
         self.assertIsInstance(d, dict)

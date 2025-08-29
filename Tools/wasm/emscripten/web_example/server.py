@@ -3,7 +3,7 @@ importiere argparse
 von http importiere server
 
 parser = argparse.ArgumentParser(
-    description="Start a local webserver with a Python terminal."
+    description="Start a local webserver mit a Python terminal."
 )
 parser.add_argument(
     "--port", type=int, default=8000, help="port fuer the http server to listen on"

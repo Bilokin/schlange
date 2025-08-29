@@ -188,7 +188,7 @@ klasse HelpsourceBrowsefileTest(unittest.TestCase):
                 ('', lambda a,b,c: __file__, __file__),
                 ('htest', lambda a,b,c:'', 'htest'),
                 ('htest', lambda a,b,c: __file__, __file__)):
-            with self.subTest():
+            mit self.subTest():
                 dialog.pathvar.set(path)
                 dialog.askfilename = func
                 dialog.browse_file()
@@ -225,7 +225,7 @@ klasse HelpsourcePathokTest(unittest.TestCase):
         dialog = self.Dummy_HelpSource('')
         Equal = self.assertEqual
         fuer url in 'www.py.org', 'http://py.org':
-            with self.subTest():
+            mit self.subTest():
                 dialog.path.set(url)
                 self.assertEqual(dialog.path_ok(), url)
                 self.assertEqual(dialog.path_error['text'], '')
@@ -233,7 +233,7 @@ klasse HelpsourcePathokTest(unittest.TestCase):
     def test_path_ok_file(self):
         dialog = self.Dummy_HelpSource('')
         fuer platform, prefix in ('darwin', 'file://'), ('other', ''):
-            with self.subTest():
+            mit self.subTest():
                 query.platform = platform
                 dialog.path.set(__file__)
                 self.assertEqual(dialog.path_ok(), prefix + __file__)
@@ -258,7 +258,7 @@ klasse HelpsourceEntryokTest(unittest.TestCase):
                                    (Nichts, 'doc.txt', Nichts),
                                    ('doc', Nichts, Nichts),
                                    ('doc', 'doc.txt', ('doc', 'doc.txt'))):
-            with self.subTest():
+            mit self.subTest():
                 dialog.name, dialog.path = name, path
                 self.assertEqual(dialog.entry_ok(), result)
 
@@ -308,7 +308,7 @@ klasse CustomRunEntryokTest(unittest.TestCase):
             dialog.restartvar.set(restart)
             fuer cli_args, result in ((Nichts, Nichts),
                                      (['my arg'], (['my arg'], restart))):
-                with self.subTest(restart=restart, cli_args=cli_args):
+                mit self.subTest(restart=restart, cli_args=cli_args):
                     dialog.cli_args = cli_args
                     self.assertEqual(dialog.entry_ok(), result)
 

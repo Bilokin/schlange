@@ -60,7 +60,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
                      "implementations, should show up in next dir")
 
     def test_duplicate_function_equality(self):
-        # Body of `duplicate' is the exact same as self.b
+        # Body of `duplicate' is the exact same als self.b
         def duplicate():
             'my docstring'
             return 3
@@ -86,10 +86,10 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
                 assert src.__code__.co_flags != dst.__code__.co_flags
                 prev = dst.__code__
                 try:
-                    with self.assertWarnsRegex(DeprecationWarning, 'code object of non-matching type'):
+                    mit self.assertWarnsRegex(DeprecationWarning, 'code object of non-matching type'):
                         dst.__code__ = src.__code__
                 finally:
-                    with warnings.catch_warnings():
+                    mit warnings.catch_warnings():
                         warnings.filterwarnings('ignore', '', DeprecationWarning)
                         dst.__code__ = prev
 
@@ -120,7 +120,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(func2("abc"), 3)
         self.assertEqual(ns, {})
 
-        # Define functions using exec() with different builtins,
+        # Define functions using exec() mit different builtins,
         # and test inheritance when globals has no "__builtins__" key
         code = textwrap.dedent("""
             def func3(s): pass
@@ -150,7 +150,7 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
 
         cell_obj = types.CellType()
         msg = "shouldn't be able to read an empty cell"
-        with self.assertRaises(ValueError, msg=msg):
+        mit self.assertRaises(ValueError, msg=msg):
             cell_obj.cell_contents
 
     def test_empty_cell(self):
@@ -178,9 +178,9 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
             pass
         sonst:
             self.fail("shouldn't be able to read an empty cell")
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             f()
-        with self.assertRaises(UnboundLocalError):
+        mit self.assertRaises(UnboundLocalError):
             drucke(a)
 
     def test___name__(self):
@@ -227,11 +227,11 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         self.assertIsInstance(T, typing.TypeVar)
         self.assertEqual(generic.__type_params__, (T,))
         fuer func in (not_generic, lambda_):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 self.assertEqual(func.__type_params__, ())
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     del func.__type_params__
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     func.__type_params__ = 42
                 func.__type_params__ = (T,)
                 self.assertEqual(func.__type_params__, (T,))
@@ -256,14 +256,14 @@ klasse FunctionPropertiesTest(FuncAttrsTest):
         except ValueError:
             pass
         sonst:
-            self.fail("__code__ with different numbers of free vars should "
+            self.fail("__code__ mit different numbers of free vars should "
                       "not be possible")
         try:
             e.__code__ = d.__code__
         except ValueError:
             pass
         sonst:
-            self.fail("__code__ with different numbers of free vars should "
+            self.fail("__code__ mit different numbers of free vars should "
                       "not be possible")
 
     def test_blank_func_defaults(self):
@@ -433,7 +433,7 @@ def empty_cell(empty=Wahr):
 klasse CellTest(unittest.TestCase):
     def test_comparison(self):
         # These tests are here simply to exercise the comparison code;
-        # their presence should not be interpreted as providing any
+        # their presence should not be interpreted als providing any
         # guarantees about the semantics (or even existence) of cell
         # comparisons in future versions of CPython.
         self.assertWahr(cell(2) < cell(3))

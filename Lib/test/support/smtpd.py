@@ -1,5 +1,5 @@
 #! /usr/bin/env python3
-"""An RFC 5321 smtp proxy with optional RFC 1870 and RFC 6531 extensions.
+"""An RFC 5321 smtp proxy mit optional RFC 1870 and RFC 6531 extensions.
 
 Usage: %(program)s [options] [localhost:localport [remotehost:remoteport]]
 
@@ -8,7 +8,7 @@ Options:
     --nosetuid
     -n
         This program generally tries to setuid 'nobody', unless this flag is
-        set.  The setuid call will fail wenn this program is not run as root (in
+        set.  The setuid call will fail wenn this program is not run als root (in
         which case, use this flag).
 
     --version
@@ -17,7 +17,7 @@ Options:
 
     --class classname
     -c classname
-        Use 'classname' as the concrete SMTP proxy class.  Uses 'PureProxy' by
+        Use 'classname' als the concrete SMTP proxy class.  Uses 'PureProxy' by
         default.
 
     --size limit
@@ -27,7 +27,7 @@ Options:
 
     --smtputf8
     -u
-        Enable the SMTPUTF8 extension and behave as an RFC 6531 smtp proxy.
+        Enable the SMTPUTF8 extension and behave als an RFC 6531 smtp proxy.
 
     --debug
     -d
@@ -46,7 +46,7 @@ and wenn remoteport is not given, then 25 is used.
 
 # Overview:
 #
-# This file implements the minimal SMTP protocol as defined in RFC 5321.  It
+# This file implements the minimal SMTP protocol als defined in RFC 5321.  It
 # has a hierarchy of classes which implement the backend functionality fuer the
 # smtpd.  A number of classes are provided:
 #
@@ -56,7 +56,7 @@ and wenn remoteport is not given, then 25 is used.
 #   DebuggingServer - simply prints each message it receives on stdout.
 #
 #   PureProxy - Proxies all messages to a real smtpd which does final
-#   delivery.  One known problem with this klasse is that it doesn't handle
+#   delivery.  One known problem mit this klasse is that it doesn't handle
 #   SMTP errors von the backend server at all.  This should be fixed
 #   (contributions are welcome!).
 #
@@ -150,7 +150,7 @@ klasse SMTPChannel(asynchat.async_chat):
         self.fqdn = socket.getfqdn()
         try:
             self.peer = conn.getpeername()
-        except OSError as err:
+        except OSError als err:
             # a race condition  may occur wenn the other end is closing
             # before we can get the peername
             self.close()
@@ -445,7 +445,7 @@ klasse SMTPChannel(asynchat.async_chat):
         return address.addr_spec, rest
 
     def _getparams(self, params):
-        # Return params as dictionary. Return Nichts wenn not all parameters
+        # Return params als dictionary. Return Nichts wenn not all parameters
         # appear to be syntactically valid according to RFC 1869.
         result = {}
         fuer param in params:
@@ -609,7 +609,7 @@ klasse SMTPChannel(asynchat.async_chat):
             return
         self.smtp_state = self.DATA
         self.set_terminator(b'\r\n.\r\n')
-        self.push('354 End data with <CR><LF>.<CR><LF>')
+        self.push('354 End data mit <CR><LF>.<CR><LF>')
 
     # Commands that have not been implemented
     def smtp_EXPN(self, arg):
@@ -659,7 +659,7 @@ klasse SMTPServer(asyncore.dispatcher):
                                      self.enable_SMTPUTF8,
                                      self._decode_data)
 
-    # API fuer "doing something useful with the message"
+    # API fuer "doing something useful mit the message"
     def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
         """Override this abstract method to handle messages von the client.
 
@@ -679,7 +679,7 @@ klasse SMTPServer(asyncore.dispatcher):
         removed.
 
         kwargs is a dictionary containing additional information.  It is
-        empty wenn decode_data=Wahr was given as init parameter, otherwise
+        empty wenn decode_data=Wahr was given als init parameter, otherwise
         it will contain the following keys:
             'mail_options': list of parameters to the mail command.  All
                             elements are uppercase strings.  Example:
@@ -741,7 +741,7 @@ klasse PureProxy(SMTPServer):
         lines.insert(i, 'X-Peer: %s' % peer[0])
         data = NEWLINE.join(lines)
         refused = self._deliver(mailfrom, rcpttos, data)
-        # TBD: what to do with refused addresses?
+        # TBD: what to do mit refused addresses?
         drucke('we got some refusals:', refused, file=DEBUGSTREAM)
 
     def _deliver(self, mailfrom, rcpttos, data):
@@ -754,13 +754,13 @@ klasse PureProxy(SMTPServer):
                 refused = s.sendmail(mailfrom, rcpttos, data)
             finally:
                 s.quit()
-        except smtplib.SMTPRecipientsRefused as e:
+        except smtplib.SMTPRecipientsRefused als e:
             drucke('got SMTPRecipientsRefused', file=DEBUGSTREAM)
             refused = e.recipients
-        except (OSError, smtplib.SMTPException) as e:
+        except (OSError, smtplib.SMTPException) als e:
             drucke('got', e.__class__, file=DEBUGSTREAM)
             # All recipients were refused.  If the exception had an associated
-            # error code, use it.  Otherwise,fake it with a non-triggering
+            # error code, use it.  Otherwise,fake it mit a non-triggering
             # exception code.
             errcode = getattr(e, 'smtp_code', -1)
             errmsg = getattr(e, 'smtp_error', 'ignore')
@@ -783,7 +783,7 @@ def parseargs():
             sys.argv[1:], 'nVhc:s:du',
             ['class=', 'nosetuid', 'version', 'help', 'size=', 'debug',
              'smtputf8'])
-    except getopt.error as e:
+    except getopt.error als e:
         usage(1, e)
 
     options = Options()
@@ -851,7 +851,7 @@ wenn __name__ == '__main__':
         mod = __import__(classname[:lastdot], globals(), locals(), [""])
         classname = classname[lastdot+1:]
     sonst:
-        importiere __main__ as mod
+        importiere __main__ als mod
     class_ = getattr(mod, classname)
     proxy = class_((options.localhost, options.localport),
                    (options.remotehost, options.remoteport),
@@ -860,13 +860,13 @@ wenn __name__ == '__main__':
         try:
             importiere pwd
         except ImportError:
-            drucke('Cannot importiere module "pwd"; try running with -n option.', file=sys.stderr)
+            drucke('Cannot importiere module "pwd"; try running mit -n option.', file=sys.stderr)
             sys.exit(1)
         nobody = pwd.getpwnam('nobody')[2]
         try:
             os.setuid(nobody)
         except PermissionError:
-            drucke('Cannot setuid "nobody"; try running with -n option.', file=sys.stderr)
+            drucke('Cannot setuid "nobody"; try running mit -n option.', file=sys.stderr)
             sys.exit(1)
     try:
         asyncore.loop()

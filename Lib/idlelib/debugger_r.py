@@ -178,7 +178,7 @@ def start_debugger(rpchandler, gui_adap_oid):
 
     Start the subprocess side of the split debugger and set up that side of the
     RPC link by instantiating the GUIProxy, Idb debugger, and IdbAdapter
-    objects and linking them together.  Register the IdbAdapter with the
+    objects and linking them together.  Register the IdbAdapter mit the
     RPCServer to handle RPC requests von the split debugger GUI via the
     IdbProxy.
 
@@ -347,7 +347,7 @@ def start_remote_debugger(rpcclt, pyshell):
     up the Idle side of the split debugger by instantiating the IdbProxy,
     debugger GUI, and debugger GUIAdapter objects and linking them together.
 
-    Register the GUIAdapter with the RPCClient to handle debugger GUI
+    Register the GUIAdapter mit the RPCClient to handle debugger GUI
     interaction requests coming von the subprocess debugger via the GUIProxy.
 
     The IdbAdapter will pass execution and environment requests coming von the
@@ -382,7 +382,7 @@ def close_subprocess_debugger(rpcclt):
 def restart_subprocess_debugger(rpcclt):
     idb_adap_oid_ret = rpcclt.remotecall("exec", "start_the_debugger",\
                                          (gui_adap_oid,), {})
-    assert idb_adap_oid_ret == idb_adap_oid, 'Idb restarted with different oid'
+    assert idb_adap_oid_ret == idb_adap_oid, 'Idb restarted mit different oid'
 
 
 wenn __name__ == "__main__":

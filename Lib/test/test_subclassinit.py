@@ -46,7 +46,7 @@ klasse Test(unittest.TestCase):
             def __init_subclass__(cls):
                 raise RuntimeError
 
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             klasse B(A):
                 pass
 
@@ -55,7 +55,7 @@ klasse Test(unittest.TestCase):
             def __init_subclass__(cls, whatever):
                 pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse B(A):
                 pass
 
@@ -134,7 +134,7 @@ klasse Test(unittest.TestCase):
             def __set_name__(self, owner, name):
                 1/0
 
-        with self.assertRaises(ZeroDivisionError) as cm:
+        mit self.assertRaises(ZeroDivisionError) als cm:
             klasse NotGoingToWork:
                 attr = Descriptor()
 
@@ -148,7 +148,7 @@ klasse Test(unittest.TestCase):
             def __set_name__(self):
                 pass
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             klasse NotGoingToWork:
                 attr = Descriptor()
 
@@ -215,11 +215,11 @@ klasse Test(unittest.TestCase):
         klasse MyMeta(type):
             pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse MyClass(metaclass=MyMeta, otherarg=1):
                 pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             types.new_class("MyClass", (object,),
                             dict(metaclass=MyMeta, otherarg=1))
         types.prepare_class("MyClass", (object,),
@@ -229,7 +229,7 @@ klasse Test(unittest.TestCase):
             def __init__(self, name, bases, namespace, otherarg):
                 super().__init__(name, bases, namespace)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse MyClass2(metaclass=MyMeta, otherarg=1):
                 pass
 
@@ -253,7 +253,7 @@ klasse Test(unittest.TestCase):
                 return super().__new__(cls, name=name, bases=bases,
                                        dict=namespace)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse MyClass(metaclass=MyMeta):
                 pass
 
@@ -273,7 +273,7 @@ klasse Test(unittest.TestCase):
         self.assertIsInstance(t, type)
         self.assertEqual(t.__name__, 'NewClass')
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             type(name='NewClass', bases=(object,), dict={})
 
 

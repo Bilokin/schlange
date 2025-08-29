@@ -141,8 +141,8 @@ klasse _Target(typing.Generic[_S, _R]):
             # -O2 and -O3 include some optimizations that make sense for
             # standalone functions, but not fuer snippets of code that are going
             # to be laid out end-to-end (like ours)... common examples include
-            # passes like tail-duplication, or aligning jump targets with nops.
-            # -Os is equivalent to -O2 with many of these problematic passes
+            # passes like tail-duplication, or aligning jump targets mit nops.
+            # -Os is equivalent to -O2 mit many of these problematic passes
             # disabled. Based on manual review, fuer *our* purposes it usually
             # generates better code than -O2 (and -O2 usually generates better
             # code than -O3). As a nice benefit, it uses less memory too:
@@ -188,15 +188,15 @@ klasse _Target(typing.Generic[_S, _R]):
             )
         )
         tasks = []
-        with tempfile.TemporaryDirectory() as tempdir:
+        mit tempfile.TemporaryDirectory() als tempdir:
             work = pathlib.Path(tempdir).resolve()
-            async with asyncio.TaskGroup() as group:
+            async mit asyncio.TaskGroup() als group:
                 coro = self._compile("trampoline", TOOLS_JIT / "trampoline.c", work)
                 tasks.append(group.create_task(coro, name="trampoline"))
                 template = TOOLS_JIT_TEMPLATE_C.read_text()
                 fuer case, opname in cases_and_opnames:
-                    # Write out a copy of the template with *only* this case
-                    # inserted. This is about twice as fast as #include'ing all
+                    # Write out a copy of the template mit *only* this case
+                    # inserted. This is about twice als fast als #include'ing all
                     # of executor_cases.c.h each time we compile (since the C
                     # compiler wastes a bunch of time parsing the dead code for
                     # all of the other cases):
@@ -233,7 +233,7 @@ klasse _Target(typing.Generic[_S, _R]):
         stencil_groups = ASYNCIO_RUNNER.run(self._build_stencils())
         jit_stencils_new = jit_stencils.parent / "jit_stencils.h.new"
         try:
-            with jit_stencils_new.open("w") as file:
+            mit jit_stencils_new.open("w") als file:
                 file.write(digest)
                 wenn comment:
                     file.write(f"// {comment}\n")
@@ -260,7 +260,7 @@ klasse _COFF(
         wenn "SectionData" in section:
             section_data_bytes = section["SectionData"]["Bytes"]
         sonst:
-            # Zeroed BSS data, seen with printf debugging calls:
+            # Zeroed BSS data, seen mit printf debugging calls:
             section_data_bytes = [0] * section["RawDataSize"]
         wenn "IMAGE_SCN_MEM_EXECUTE" in flags:
             value = _stencils.HoleValue.CODE
@@ -303,7 +303,7 @@ klasse _COFF(
             case {
                 "Offset": offset,
                 "Symbol": s,
-                "Type": {"Name": "IMAGE_REL_I386_DIR32" as kind},
+                "Type": {"Name": "IMAGE_REL_I386_DIR32" als kind},
             }:
                 offset += base
                 value, symbol = self._unwrap_dllimport(s)
@@ -312,7 +312,7 @@ klasse _COFF(
                 "Offset": offset,
                 "Symbol": s,
                 "Type": {
-                    "Name": "IMAGE_REL_AMD64_REL32" | "IMAGE_REL_I386_REL32" as kind
+                    "Name": "IMAGE_REL_AMD64_REL32" | "IMAGE_REL_I386_REL32" als kind
                 },
             }:
                 offset += base
@@ -327,7 +327,7 @@ klasse _COFF(
                     "Name": "IMAGE_REL_ARM64_BRANCH26"
                     | "IMAGE_REL_ARM64_PAGEBASE_REL21"
                     | "IMAGE_REL_ARM64_PAGEOFFSET_12A"
-                    | "IMAGE_REL_ARM64_PAGEOFFSET_12L" as kind
+                    | "IMAGE_REL_ARM64_PAGEOFFSET_12L" als kind
                 },
             }:
                 offset += base
@@ -423,7 +423,7 @@ klasse _ELF(
                     | "R_AARCH64_LD64_GOT_LO12_NC"
                     | "R_X86_64_GOTPCREL"
                     | "R_X86_64_GOTPCRELX"
-                    | "R_X86_64_REX_GOTPCRELX" as kind
+                    | "R_X86_64_REX_GOTPCRELX" als kind
                 },
             }:
                 offset += base
@@ -501,7 +501,7 @@ klasse _MachO(
                 "Symbol": {"Name": s},
                 "Type": {
                     "Name": "ARM64_RELOC_GOT_LOAD_PAGE21"
-                    | "ARM64_RELOC_GOT_LOAD_PAGEOFF12" as kind
+                    | "ARM64_RELOC_GOT_LOAD_PAGEOFF12" als kind
                 },
             }:
                 offset += base
@@ -511,7 +511,7 @@ klasse _MachO(
             case {
                 "Offset": offset,
                 "Symbol": {"Name": s},
-                "Type": {"Name": "X86_64_RELOC_GOT" | "X86_64_RELOC_GOT_LOAD" as kind},
+                "Type": {"Name": "X86_64_RELOC_GOT" | "X86_64_RELOC_GOT_LOAD" als kind},
             }:
                 offset += base
                 s = s.removeprefix(self.symbol_prefix)
@@ -522,11 +522,11 @@ klasse _MachO(
             case {
                 "Offset": offset,
                 "Section": {"Name": s},
-                "Type": {"Name": "X86_64_RELOC_SIGNED" as kind},
+                "Type": {"Name": "X86_64_RELOC_SIGNED" als kind},
             } | {
                 "Offset": offset,
                 "Symbol": {"Name": s},
-                "Type": {"Name": "X86_64_RELOC_BRANCH" | "X86_64_RELOC_SIGNED" as kind},
+                "Type": {"Name": "X86_64_RELOC_BRANCH" | "X86_64_RELOC_SIGNED" als kind},
             }:
                 offset += base
                 s = s.removeprefix(self.symbol_prefix)

@@ -1,4 +1,4 @@
-importiere dataclasses as dc
+importiere dataclasses als dc
 importiere re
 importiere sys
 von typing importiere NoReturn
@@ -31,8 +31,8 @@ klasse Monitor:
     what the current C preprocessor #if state is.
 
     Doesn't handle everything--for example, wenn you have /* inside a C string,
-    without a matching */ (also inside a C string), or with a */ inside a C
-    string but on another line and with preprocessor macros in between...
+    without a matching */ (also inside a C string), or mit a */ inside a C
+    string but on another line and mit preprocessor macros in between...
     the parser will get lost.
 
     Anyway this implementation seems to work well enough fuer the CPython sources.
@@ -60,7 +60,7 @@ klasse Monitor:
 
     def condition(self) -> str:
         """
-        Returns the current preprocessor state, as a single #if condition.
+        Returns the current preprocessor state, als a single #if condition.
         """
         return " && ".join(condition fuer token, condition in self.stack)
 
@@ -185,7 +185,7 @@ klasse Monitor:
 def _main(filenames: list[str] | Nichts = Nichts) -> Nichts:
     filenames = filenames or sys.argv[1:]
     fuer filename in filenames:
-        with open(filename) as f:
+        mit open(filename) als f:
             cpp = Monitor(filename, verbose=Wahr)
             drucke()
             drucke(filename)

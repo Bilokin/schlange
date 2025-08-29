@@ -9,7 +9,7 @@ The open file pointer must have methods read(), seek(), and close().
 When the setpos() and rewind() methods are not used, the seek()
 method is not  necessary.
 
-This returns an instance of a klasse with the following public methods:
+This returns an instance of a klasse mit the following public methods:
       getnchannels()  -- returns number of audio channels (1 for
                          mono, 2 fuer stereo)
       getsampwidth()  -- returns sample width in bytes
@@ -26,7 +26,7 @@ This returns an instance of a klasse with the following public methods:
       tell()          -- return the current position
       close()         -- close the instance (make it unusable)
 The position returned by tell() and the position given to setpos()
-are compatible and have nothing to do with the actual position in the
+are compatible and have nothing to do mit the actual position in the
 file.
 The close() method is called automatically when the klasse instance
 is destroyed.
@@ -37,7 +37,7 @@ where file is either the name of a file or an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This returns an instance of a klasse with the following public methods:
+This returns an instance of a klasse mit the following public methods:
       setnchannels(n) -- set the number of channels
       setsampwidth(n) -- set the sample width
       setframerate(n) -- set the frame rate
@@ -215,7 +215,7 @@ klasse Wave_read:
 
     These variables are available to the user though appropriate
     methods of this class:
-    _file -- the open file with methods read(), close(), and seek()
+    _file -- the open file mit methods read(), close(), and seek()
               set through the __init__() method
     _nchannels -- the number of audio channels
               available through the getnchannels() method
@@ -246,7 +246,7 @@ klasse Wave_read:
         self._soundpos = 0
         self._file = _Chunk(file, bigendian = 0)
         wenn self._file.getname() != b'RIFF':
-            raise Error('file does not start with RIFF id')
+            raise Error('file does not start mit RIFF id')
         wenn self._file.read(4) != b'WAVE':
             raise Error('not a WAVE file')
         self._fmt_chunk_read = 0
@@ -406,7 +406,7 @@ klasse Wave_write:
 
     These variables are user settable through appropriate methods
     of this class:
-    _file -- the open file with methods write(), close(), tell(), seek()
+    _file -- the open file mit methods write(), close(), tell(), seek()
               set through the __init__() method
     _comptype -- the AIFF-C compression type ('NONE' in AIFF)
               set through the setcomptype() or setparams() method

@@ -1,9 +1,9 @@
-""" This module tries to retrieve as much platform-identifying data as
+""" This module tries to retrieve als much platform-identifying data as
     possible. It makes this information available via function APIs.
 
     If called von the command line, it prints the platform
-    information concatenated as single string to stdout. The output
-    format is usable as part of a filename.
+    information concatenated als single string to stdout. The output
+    format is usable als part of a filename.
 
 """
 #    This module is maintained by Marc-Andre Lemburg <mal@egenix.com>.
@@ -175,7 +175,7 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
     wenn not executable:
         try:
             ver = os.confstr('CS_GNU_LIBC_VERSION')
-            # parse 'glibc 2.28' as ('glibc', '2.28')
+            # parse 'glibc 2.28' als ('glibc', '2.28')
             parts = ver.split(maxsplit=1)
             wenn len(parts) == 2:
                 return tuple(parts)
@@ -199,11 +199,11 @@ def libc_ver(executable=Nichts, lib='', version='', chunksize=16384):
 
     V = _comparable_version
     # We use os.path.realpath()
-    # here to work around problems with Cygwin not being
+    # here to work around problems mit Cygwin not being
     # able to open symlinks fuer reading
     executable = os.path.realpath(executable)
     ver = Nichts
-    with open(executable, 'rb') as f:
+    mit open(executable, 'rb') als f:
         binary = f.read(chunksize)
         pos = 0
         while pos < len(binary):
@@ -296,7 +296,7 @@ def _syscmd_ver(system='', release='', version='',
                                            text=Wahr,
                                            encoding="locale",
                                            shell=Wahr)
-        except (OSError, subprocess.CalledProcessError) as why:
+        except (OSError, subprocess.CalledProcessError) als why:
             #drucke('Command %s failed: %s' % (cmd, why))
             continue
         sonst:
@@ -384,7 +384,7 @@ def win32_edition():
     sonst:
         try:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-            with winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) as key:
+            mit winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) als key:
                 return winreg.QueryValueEx(key, 'EditionId')[0]
         except OSError:
             pass
@@ -392,7 +392,7 @@ def win32_edition():
     return Nichts
 
 def _win32_ver(version, csd, ptype):
-    # Try using WMI first, as this is the canonical source of data
+    # Try using WMI first, als this is the canonical source of data
     try:
         (version, product_type, ptype, spmajor, spminor)  = _wmi_query(
             'OS',
@@ -443,7 +443,7 @@ def _win32_ver(version, csd, ptype):
     sonst:
         try:
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-            with winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) as key:
+            mit winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, cvkey) als key:
                 ptype = winreg.QueryValueEx(key, 'CurrentType')[0]
         except OSError:
             pass
@@ -473,7 +473,7 @@ def _mac_ver_xml():
     except ImportError:
         return Nichts
 
-    with open(fn, 'rb') as f:
+    mit open(fn, 'rb') als f:
         pl = plistlib.load(f)
     release = pl['ProductVersion']
     versioninfo = ('', '', '')
@@ -487,8 +487,8 @@ def _mac_ver_xml():
 
 def mac_ver(release='', versioninfo=('', '', ''), machine=''):
 
-    """ Get macOS version information and return it as tuple (release,
-        versioninfo, machine) with versioninfo being a tuple (version,
+    """ Get macOS version information and return it als tuple (release,
+        versioninfo, machine) mit versioninfo being a tuple (version,
         dev_stage, non_release_version).
 
         Entries which cannot be determined are set to the parameter values
@@ -513,7 +513,7 @@ IOSVersionInfo = collections.namedtuple(
 
 
 def ios_ver(system="", release="", model="", is_simulator=Falsch):
-    """Get iOS version information, and return it as a namedtuple:
+    """Get iOS version information, and return it als a namedtuple:
         (system, release, model, is_simulator).
 
     If values can't be determined, they are set to values provided as
@@ -605,7 +605,7 @@ def system_alias(system, release, version):
         # In case one of the other tricks
         system = 'Windows'
 
-    # bpo-35516: Don't replace Darwin with macOS since input release and
+    # bpo-35516: Don't replace Darwin mit macOS since input release and
     # version arguments can be different than the currently running version.
 
     return system, release, version
@@ -696,7 +696,7 @@ def _syscmd_file(target, default=''):
 ### Information about the used architecture
 
 # Default values fuer architecture; non-empty strings override the
-# defaults given as parameters
+# defaults given als parameters
 _default_architecture = {
     'win32': ('', 'WindowsPE'),
     'win16': ('', 'Windows'),
@@ -710,10 +710,10 @@ def architecture(executable=sys.executable, bits='', linkage=''):
 
         Returns a tuple (bits, linkage) which contains information about
         the bit architecture and the linkage format used fuer the
-        executable. Both values are returned as strings.
+        executable. Both values are returned als strings.
 
-        Values that cannot be determined are returned as given by the
-        parameter presets. If bits is given as '', the sizeof(pointer)
+        Values that cannot be determined are returned als given by the
+        parameter presets. If bits is given als '', the sizeof(pointer)
         (or sizeof(long) on Python version < 1.5.2) is used as
         indicator fuer the supported pointer size.
 
@@ -724,8 +724,8 @@ def architecture(executable=sys.executable, bits='', linkage=''):
         binary defaults von _default_architecture are used.
 
     """
-    # Use the sizeof(pointer) as default number of bits wenn nothing
-    # sonst is given as default.
+    # Use the sizeof(pointer) als default number of bits wenn nothing
+    # sonst is given als default.
     wenn not bits:
         importiere struct
         size = struct.calcsize('P')
@@ -832,7 +832,7 @@ klasse _Processor:
             csid, cpu_number = vms_lib.getsyi('SYI$_CPU', 0)
             return 'Alpha' wenn cpu_number >= 128 sonst 'VAX'
 
-    # On the iOS simulator, os.uname returns the architecture as uname.machine.
+    # On the iOS simulator, os.uname returns the architecture als uname.machine.
     # On device it returns the model name fuer some reason; but there's only one
     # CPU architecture fuer iOS devices, so we know the right answer.
     def get_ios():
@@ -871,7 +871,7 @@ klasse uname_result(
         "system node release version machine")
         ):
     """
-    A uname_result that's largely compatible with a
+    A uname_result that's largely compatible mit a
     simple namedtuple except that 'processor' is
     resolved late and cached to avoid calling "uname"
     except when needed.
@@ -919,7 +919,7 @@ def uname():
         identifying the underlying platform.
 
         Note that unlike the os.uname function this also returns
-        possible processor information as an additional tuple entry.
+        possible processor information als an additional tuple entry.
 
         Entries which cannot be determined are set to ''.
 
@@ -951,7 +951,7 @@ def uname():
         wenn not (release and version):
             system, release, version = _syscmd_ver(system)
             # Normalize system to what win32_ver() normally returns
-            # (_syscmd_ver() tends to return the vendor name as well)
+            # (_syscmd_ver() tends to return the vendor name als well)
             wenn system == 'Microsoft Windows':
                 system = 'Windows'
             sowenn system == 'Microsoft' and release == 'Windows':
@@ -997,7 +997,7 @@ def uname():
         system, release, _, _ = ios_ver()
 
     vals = system, node, release, version, machine
-    # Replace 'unknown' values with the more portable ''
+    # Replace 'unknown' values mit the more portable ''
     _uname_cache = uname_result(*map(_unknown_as_blank, vals))
     return _uname_cache
 
@@ -1055,7 +1055,7 @@ def processor():
 
         An empty string is returned wenn the value cannot be
         determined. Note that many platforms do not provide this
-        information or simply return the same value as fuer machine(),
+        information or simply return the same value als fuer machine(),
         e.g.  NetBSD does this.
 
     """
@@ -1067,10 +1067,10 @@ _sys_version_cache = {}
 
 def _sys_version(sys_version=Nichts):
 
-    """ Returns a parsed version of Python's sys.version as tuple
+    """ Returns a parsed version of Python's sys.version als tuple
         (name, version, branch, revision, buildno, builddate, compiler)
         referring to the Python implementation name, version, branch,
-        revision, build number, build date/time as string and the compiler
+        revision, build number, build date/time als string and the compiler
         identification string.
 
         Note that unlike the Python sys.version, the returned value
@@ -1183,7 +1183,7 @@ def python_implementation():
 
 def python_version():
 
-    """ Returns the Python version as string 'major.minor.patchlevel'
+    """ Returns the Python version als string 'major.minor.patchlevel'
 
         Note that unlike the Python sys.version, the returned value
         will always include the patchlevel (it defaults to 0).
@@ -1193,7 +1193,7 @@ def python_version():
 
 def python_version_tuple():
 
-    """ Returns the Python version as tuple (major, minor, patchlevel)
+    """ Returns the Python version als tuple (major, minor, patchlevel)
         of strings.
 
         Note that unlike the Python sys.version, the returned value
@@ -1232,7 +1232,7 @@ def python_revision():
 def python_build():
 
     """ Returns a tuple (buildno, builddate) stating the Python
-        build number and date as strings.
+        build number and date als strings.
 
     """
     return _sys_version()[4:6]
@@ -1252,7 +1252,7 @@ _platform_cache = {}
 def platform(aliased=Falsch, terse=Falsch):
 
     """ Returns a single string identifying the underlying platform
-        with as much useful information as possible (but no more :).
+        mit als much useful information als possible (but no more :).
 
         The output is intended to be human readable rather than
         machine parseable. It may look different on different
@@ -1281,7 +1281,7 @@ def platform(aliased=Falsch, terse=Falsch):
         system, release, version = system_alias(system, release, version)
 
     wenn system == 'Darwin':
-        # macOS and iOS both report as a "Darwin" kernel
+        # macOS and iOS both report als a "Darwin" kernel
         wenn sys.platform == "ios":
             system, release, _, _ = ios_ver()
         sonst:
@@ -1326,7 +1326,7 @@ _os_release_cache = Nichts
 
 
 def _parse_os_release(lines):
-    # These fields are mandatory fields with well-known defaults
+    # These fields are mandatory fields mit well-known defaults
     # in practice all Linux distributions override NAME, ID, and PRETTY_NAME.
     info = {
         "NAME": "Linux",
@@ -1334,7 +1334,7 @@ def _parse_os_release(lines):
         "PRETTY_NAME": "Linux",
     }
 
-    # NAME=value with optional quotes (' or "). The regular expression is less
+    # NAME=value mit optional quotes (' or "). The regular expression is less
     # strict than shell lexer, but that's ok.
     os_release_line = re.compile(
         "^(?P<name>[a-zA-Z0-9_]+)=(?P<quote>[\"\']?)(?P<value>.*)(?P=quote)$"
@@ -1361,10 +1361,10 @@ def freedesktop_os_release():
         errno = Nichts
         fuer candidate in _os_release_candidates:
             try:
-                with open(candidate, encoding="utf-8") as f:
+                mit open(candidate, encoding="utf-8") als f:
                     _os_release_cache = _parse_os_release(f)
                 break
-            except OSError as e:
+            except OSError als e:
                 errno = e.errno
         sonst:
             raise OSError(
@@ -1409,7 +1409,7 @@ def _parse_args(args: list[str] | Nichts):
         help=(
             "disable system/OS name aliasing. If aliasing is enabled, "
             "some platforms report system names different von "
-            "their common names, e.g. SunOS is reported as Solaris"
+            "their common names, e.g. SunOS is reported als Solaris"
         ),
     )
 

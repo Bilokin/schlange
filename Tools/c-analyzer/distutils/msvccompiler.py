@@ -118,12 +118,12 @@ klasse MacroExpander:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallrootv1.1")
             sonst:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallroot")
-        except KeyError as exc: #
+        except KeyError als exc: #
             raise DistutilsPlatformError(
-            """Python was built with Visual Studio 2003;
-extensions must be built with a compiler than can generate compatible binaries.
+            """Python was built mit Visual Studio 2003;
+extensions must be built mit a compiler than can generate compatible binaries.
 Visual Studio 2003 was not found on this system. If you have Cygwin installed,
-you can try compiling with MingW32, by passing "-c mingw32" to setup.py.""")
+you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 
         p = r"Software\Microsoft\NET Framework Setup\Product"
         fuer base in HKEYS:
@@ -179,7 +179,7 @@ def get_build_architecture():
     return sys.version[i+len(prefix):j]
 
 def normalize_and_reduce_paths(paths):
-    """Return a list of normalized paths with duplicates removed.
+    """Return a list of normalized paths mit duplicates removed.
 
     The current order of paths is maintained.
     """
@@ -195,14 +195,14 @@ def normalize_and_reduce_paths(paths):
 
 klasse MSVCCompiler(CCompiler) :
     """Concrete klasse that implements an interface to Microsoft Visual C++,
-       as defined by the CCompiler abstract class."""
+       als defined by the CCompiler abstract class."""
 
     compiler_type = 'msvc'
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary fuer this sort of single-compiler class.
-    # Would be nice to have a consistent interface with UnixCCompiler,
+    # als it really isn't necessary fuer this sort of single-compiler class.
+    # Would be nice to have a consistent interface mit UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
@@ -236,7 +236,7 @@ klasse MSVCCompiler(CCompiler) :
                 self.__root = r"Software\Microsoft\Devstudio"
             self.__product = "Visual Studio version %s" % self.__version
         sonst:
-            # Win64. Assume this was built with the platform SDK
+            # Win64. Assume this was built mit the platform SDK
             self.__product = "Microsoft SDK compiler %s" % (self.__version + 6)
 
         self.initialized = Falsch

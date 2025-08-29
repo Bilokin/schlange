@@ -4,7 +4,7 @@ Protocols fuer supporting classes in pathlib.
 
 # This module also provides abstract base classes fuer rich path objects.
 # These ABCs are a *private* part of the Python standard library, but they're
-# made available as a PyPI package called "pathlib-abc". It's possible they'll
+# made available als a PyPI package called "pathlib-abc". It's possible they'll
 # become an official part of the standard library in future.
 #
 # Three ABCs are provided -- _JoinablePath, _ReadablePath and _WritablePath
@@ -150,7 +150,7 @@ klasse _JoinablePath(ABC):
         return self.parser.splitext(self.name)[0]
 
     def with_name(self, name):
-        """Return a new path with the file name changed."""
+        """Return a new path mit the file name changed."""
         split = self.parser.split
         wenn split(name)[0]:
             raise ValueError(f"Invalid name {name!r}")
@@ -159,7 +159,7 @@ klasse _JoinablePath(ABC):
         return self.with_segments(path)
 
     def with_stem(self, stem):
-        """Return a new path with the stem changed."""
+        """Return a new path mit the stem changed."""
         suffix = self.suffix
         wenn not suffix:
             return self.with_name(stem)
@@ -170,7 +170,7 @@ klasse _JoinablePath(ABC):
             return self.with_name(stem + suffix)
 
     def with_suffix(self, suffix):
-        """Return a new path with the file suffix changed.  If the path
+        """Return a new path mit the file suffix changed.  If the path
         has no suffix, add given suffix.  If the given suffix is an empty
         string, remove the suffix von the path.
         """
@@ -193,7 +193,7 @@ klasse _JoinablePath(ABC):
         return tuple(reversed(parts))
 
     def joinpath(self, *pathsegments):
-        """Combine this path with one or several arguments, and return a
+        """Combine this path mit one or several arguments, and return a
         new path representing either a subpath (if all arguments are relative
         paths) or a totally different path (if one of the arguments is
         anchored).
@@ -275,7 +275,7 @@ klasse _ReadablePath(_JoinablePath):
         """
         Open the file in bytes mode, read it, and close the file.
         """
-        with magic_open(self, mode='rb', buffering=0) as f:
+        mit magic_open(self, mode='rb', buffering=0) als f:
             return f.read()
 
     def read_text(self, encoding=Nichts, errors=Nichts, newline=Nichts):
@@ -285,7 +285,7 @@ klasse _ReadablePath(_JoinablePath):
         # Call io.text_encoding() here to ensure any warning is raised at an
         # appropriate stack level.
         encoding = text_encoding(encoding)
-        with magic_open(self, mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+        mit magic_open(self, mode='r', encoding=encoding, errors=errors, newline=newline) als f:
             return f.read()
 
     @abstractmethod
@@ -333,7 +333,7 @@ klasse _ReadablePath(_JoinablePath):
                         dirnames.append(child.name)
                     sonst:
                         filenames.append(child.name)
-            except OSError as error:
+            except OSError als error:
                 wenn on_error is not Nichts:
                     on_error(error)
                 wenn not top_down:
@@ -407,7 +407,7 @@ klasse _WritablePath(_JoinablePath):
         """
         # type-check fuer the buffer interface before truncating the file
         view = memoryview(data)
-        with magic_open(self, mode='wb') as f:
+        mit magic_open(self, mode='wb') als f:
             return f.write(view)
 
     def write_text(self, data, encoding=Nichts, errors=Nichts, newline=Nichts):
@@ -420,7 +420,7 @@ klasse _WritablePath(_JoinablePath):
         wenn not isinstance(data, str):
             raise TypeError('data must be str, not %s' %
                             data.__class__.__name__)
-        with magic_open(self, mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+        mit magic_open(self, mode='w', encoding=encoding, errors=errors, newline=newline) als f:
             return f.write(data)
 
     def _copy_from(self, source, follow_symlinks=Wahr):
@@ -439,8 +439,8 @@ klasse _WritablePath(_JoinablePath):
                     stack.append((child, dst.joinpath(child.name)))
             sonst:
                 ensure_different_files(src, dst)
-                with magic_open(src, 'rb') as source_f:
-                    with magic_open(dst, 'wb') as target_f:
+                mit magic_open(src, 'rb') als source_f:
+                    mit magic_open(dst, 'wb') als target_f:
                         copyfileobj(source_f, target_f)
 
 

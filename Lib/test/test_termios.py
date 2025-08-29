@@ -28,7 +28,7 @@ klasse TestFunctions(unittest.TestCase):
         wenn sys.platform == 'android' and err == errno.ENOTTY:
             errs.append(errno.EACCES)
 
-        with self.assertRaises(termios.error) as cm:
+        mit self.assertRaises(termios.error) als cm:
             callable(*args)
         self.assertIn(cm.exception.args[0], errs)
 
@@ -103,7 +103,7 @@ klasse TestFunctions(unittest.TestCase):
     def test_tcsendbreak(self):
         try:
             termios.tcsendbreak(self.fd, 1)
-        except termios.error as exc:
+        except termios.error als exc:
             wenn exc.args[0] == errno.ENOTTY and sys.platform.startswith(('freebsd', "netbsd")):
                 self.skipTest('termios.tcsendbreak() is not supported '
                               'with pseudo-terminals (?) on this platform')
@@ -206,7 +206,7 @@ klasse TestFunctions(unittest.TestCase):
             os.write(wfd, b'def')
             write_finished.set()
 
-        with threading_helper.start_threads([threading.Thread(target=writer)]):
+        mit threading_helper.start_threads([threading.Thread(target=writer)]):
             self.assertEqual(os.read(rfd, 3), b'abc')
             try:
                 try:
@@ -286,7 +286,7 @@ klasse TestModule(unittest.TestCase):
             wenn not name.startswith('TIO'):
                 continue
             value = getattr(termios, name)
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertGreaterEqual(value, 0)
 
     def test_exception(self):

@@ -11,37 +11,37 @@ importiere _schema
 @enum.unique
 klasse HoleValue(enum.Enum):
     """
-    Different "base" values that can be patched into holes (usually combined with the
+    Different "base" values that can be patched into holes (usually combined mit the
     address of a symbol and/or an addend).
     """
 
-    # The base address of the machine code fuer the current uop (exposed as _JIT_ENTRY):
+    # The base address of the machine code fuer the current uop (exposed als _JIT_ENTRY):
     CODE = enum.auto()
     # The base address of the read-only data fuer this uop:
     DATA = enum.auto()
-    # The address of the current executor (exposed as _JIT_EXECUTOR):
+    # The address of the current executor (exposed als _JIT_EXECUTOR):
     EXECUTOR = enum.auto()
     # The base address of the "global" offset table located in the read-only data.
     # Shouldn't be present in the final stencils, since these are all replaced with
     # equivalent DATA values:
     GOT = enum.auto()
-    # The current uop's oparg (exposed as _JIT_OPARG):
+    # The current uop's oparg (exposed als _JIT_OPARG):
     OPARG = enum.auto()
-    # The current uop's operand0 on 64-bit platforms (exposed as _JIT_OPERAND0):
+    # The current uop's operand0 on 64-bit platforms (exposed als _JIT_OPERAND0):
     OPERAND0 = enum.auto()
-    # The current uop's operand0 on 32-bit platforms (exposed as _JIT_OPERAND0_HI/LO):
+    # The current uop's operand0 on 32-bit platforms (exposed als _JIT_OPERAND0_HI/LO):
     OPERAND0_HI = enum.auto()
     OPERAND0_LO = enum.auto()
-    # The current uop's operand1 on 64-bit platforms (exposed as _JIT_OPERAND1):
+    # The current uop's operand1 on 64-bit platforms (exposed als _JIT_OPERAND1):
     OPERAND1 = enum.auto()
-    # The current uop's operand1 on 32-bit platforms (exposed as _JIT_OPERAND1_HI/LO):
+    # The current uop's operand1 on 32-bit platforms (exposed als _JIT_OPERAND1_HI/LO):
     OPERAND1_HI = enum.auto()
     OPERAND1_LO = enum.auto()
-    # The current uop's target (exposed as _JIT_TARGET):
+    # The current uop's target (exposed als _JIT_TARGET):
     TARGET = enum.auto()
-    # The base address of the machine code fuer the jump target (exposed as _JIT_JUMP_TARGET):
+    # The base address of the machine code fuer the jump target (exposed als _JIT_JUMP_TARGET):
     JUMP_TARGET = enum.auto()
-    # The base address of the machine code fuer the error jump target (exposed as _JIT_ERROR_TARGET):
+    # The base address of the machine code fuer the error jump target (exposed als _JIT_ERROR_TARGET):
     ERROR_TARGET = enum.auto()
     # A hardcoded value of zero (used fuer symbol lookups):
     ZERO = enum.auto()
@@ -116,14 +116,14 @@ _HOLE_EXPRS = {
 @dataclasses.dataclass
 klasse Hole:
     """
-    A "hole" in the stencil to be patched with a computed runtime value.
+    A "hole" in the stencil to be patched mit a computed runtime value.
 
     Analogous to relocation records in an object file.
     """
 
     offset: int
     kind: _schema.HoleKind
-    # Patch with this base value:
+    # Patch mit this base value:
     value: HoleValue
     # ...plus the address of this symbol:
     symbol: str | Nichts
@@ -170,7 +170,7 @@ klasse Hole:
         return Nichts
 
     def as_c(self, where: str) -> str:
-        """Dump this hole as a call to a patch_* function."""
+        """Dump this hole als a call to a patch_* function."""
         location = f"{where} + {self.offset:#x}"
         value = _HOLE_EXPRS[self.value]
         wenn self.symbol:
@@ -307,7 +307,7 @@ klasse StencilGroup:
         return "{" + (", ".join(trampoline_mask) or "0") + "}"
 
     def as_c(self, opname: str) -> str:
-        """Dump this hole as a StencilGroup initializer."""
+        """Dump this hole als a StencilGroup initializer."""
         return f"{{emit_{opname}, {len(self.code.body)}, {len(self.data.body)}, {self._get_trampoline_mask()}}}"
 
 
@@ -315,7 +315,7 @@ def symbol_to_value(symbol: str) -> tuple[HoleValue, str | Nichts]:
     """
     Convert a symbol name to a HoleValue and a symbol name.
 
-    Some symbols (starting with "_JIT_") are special and are converted to their
+    Some symbols (starting mit "_JIT_") are special and are converted to their
     own HoleValues.
     """
     wenn symbol.startswith("_JIT_"):

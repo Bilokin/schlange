@@ -124,7 +124,7 @@ klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
         self.assertEqual(S_OK, hr_qi)
         self.assertEqual(3, punk.Release())
 
-        with self.assertRaises(OSError) as e:
+        mit self.assertRaises(OSError) als e:
             punk.QueryInterface(IID_IStream, IUnknown())
         self.assertEqual(E_NOINTERFACE, e.exception.winerror)
 
@@ -151,7 +151,7 @@ klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
         self.assertEqual(S_OK, hr_qi)
         self.assertEqual(1, punk.Release())
 
-        with self.assertRaises(OSError) as e:
+        mit self.assertRaises(OSError) als e:
             ppst.QueryInterface(IID_IStream, IUnknown())
         self.assertEqual(E_NOINTERFACE, e.exception.winerror)
 
@@ -176,7 +176,7 @@ klasse ForeignFunctionsThatWillCallComMethodsTests(unittest.TestCase):
         self.assertEqual(S_OK, hr_qi)
         self.assertEqual(1, punk.Release())
 
-        with self.assertRaises(COMError) as e:
+        mit self.assertRaises(COMError) als e:
             ppst.QueryInterface(IID_IStream, IUnknown())
         self.assertEqual(E_NOINTERFACE, e.exception.hresult)
 
@@ -250,7 +250,7 @@ klasse CopyComPointerTests(unittest.TestCase):
         self.assertEqual(S_OK, hr)
         self.assertIsNichts(dst.value)
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             dst.GetClassID()  # NULL COM pointer access
 
         # This indicates that the refcount was 1 before the `Release` call.

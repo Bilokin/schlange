@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec mac_greek generated von 'MAPPINGS/VENDORS/APPLE/GREEK.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_greek generated von 'MAPPINGS/VENDORS/APPLE/GREEK.TXT' mit gencodec.py.
 
 """#"
 

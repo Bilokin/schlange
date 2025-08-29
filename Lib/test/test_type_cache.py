@@ -18,7 +18,7 @@ type_assign_version = _testcapi.type_assign_version
 type_modified = _testcapi.type_modified
 
 def clear_type_cache():
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         _clear_type_cache()
 

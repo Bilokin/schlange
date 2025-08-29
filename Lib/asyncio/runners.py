@@ -32,7 +32,7 @@ klasse Runner:
 
     is a shortcut for
 
-    with asyncio.Runner(debug=Wahr) as runner:
+    mit asyncio.Runner(debug=Wahr) als runner:
         runner.run(main())
 
     The run() method can be called multiple times within the runner's context.
@@ -87,7 +87,7 @@ klasse Runner:
     def run(self, coro, *, context=Nichts):
         """Run code in the embedded event loop."""
         wenn events._get_running_loop() is not Nichts:
-            # fail fast with short traceback
+            # fail fast mit short traceback
             raise RuntimeError(
                 "Runner.run() cannot be called von a running event loop")
 
@@ -116,7 +116,7 @@ klasse Runner:
                 signal.signal(signal.SIGINT, sigint_handler)
             except ValueError:
                 # `signal.signal` may throw wenn `threading.main_thread` does
-                # not support signals (e.g. embedded interpreter with signals
+                # not support signals (e.g. embedded interpreter mit signals
                 # not registered - see gh-91880)
                 sigint_handler = Nichts
         sonst:
@@ -160,7 +160,7 @@ klasse Runner:
         self._interrupt_count += 1
         wenn self._interrupt_count == 1 and not main_task.done():
             main_task.cancel()
-            # wakeup loop wenn it is blocked by select() with long timeout
+            # wakeup loop wenn it is blocked by select() mit long timeout
             self._loop.call_soon_threadsafe(lambda: Nichts)
             return
         raise KeyboardInterrupt()
@@ -180,7 +180,7 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
     If loop_factory is passed, it is used fuer new event loop creation.
 
     This function always creates a new event loop and closes it at the end.
-    It should be used as a main entry point fuer asyncio programs, and should
+    It should be used als a main entry point fuer asyncio programs, and should
     ideally only be called once.
 
     The executor is given a timeout duration of 5 minutes to shutdown.
@@ -196,11 +196,11 @@ def run(main, *, debug=Nichts, loop_factory=Nichts):
         asyncio.run(main())
     """
     wenn events._get_running_loop() is not Nichts:
-        # fail fast with short traceback
+        # fail fast mit short traceback
         raise RuntimeError(
             "asyncio.run() cannot be called von a running event loop")
 
-    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+    mit Runner(debug=debug, loop_factory=loop_factory) als runner:
         return runner.run(main)
 
 

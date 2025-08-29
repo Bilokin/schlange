@@ -23,13 +23,13 @@ def interpreter_requires_environment():
     Returns Wahr wenn our sys.executable interpreter requires environment
     variables in order to be able to run at all.
 
-    This is designed to be used with @unittest.skipIf() to annotate tests
+    This is designed to be used mit @unittest.skipIf() to annotate tests
     that need to use an assert_python*() function to launch an isolated
     mode (-I) or no environment mode (-E) sub-interpreter process.
 
     A normal build & test does not run into this situation but it can happen
     when trying to run the standard library test suite von an interpreter that
-    doesn't have an obvious home with Python's current home finding logic.
+    doesn't have an obvious home mit Python's current home finding logic.
 
     Setting PYTHONHOME is one way to get most of the testsuite to run in that
     situation.  PYTHONPATH or PYTHONUSERSITE are other common environment
@@ -46,7 +46,7 @@ def interpreter_requires_environment():
             __cached_interp_requires_environment = Falsch
             return Falsch
 
-        # Try running an interpreter with -E to see wenn it works or not.
+        # Try running an interpreter mit -E to see wenn it works or not.
         try:
             subprocess.check_call([sys.executable, '-E',
                                    '-c', 'import sys; sys.exit(0)'])
@@ -150,7 +150,7 @@ def run_python_until_end(*args, **env_vars):
     proc = subprocess.Popen(cmd_line, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          env=env, cwd=cwd)
-    with proc:
+    mit proc:
         try:
             out, err = proc.communicate()
         finally:
@@ -170,11 +170,11 @@ def _assert_python(expected_success, /, *args, **env_vars):
 
 def assert_python_ok(*args, **env_vars):
     """
-    Assert that running the interpreter with `args` and optional environment
+    Assert that running the interpreter mit `args` and optional environment
     variables `env_vars` succeeds (rc == 0) and return a (return code, stdout,
     stderr) tuple.
 
-    If the __cleanenv keyword is set, env_vars is used as a fresh environment.
+    If the __cleanenv keyword is set, env_vars is used als a fresh environment.
 
     Python is started in isolated mode (command line option -I),
     except wenn the __isolated keyword is set to Falsch.
@@ -184,7 +184,7 @@ def assert_python_ok(*args, **env_vars):
 
 def assert_python_failure(*args, **env_vars):
     """
-    Assert that running the interpreter with `args` and optional environment
+    Assert that running the interpreter mit `args` and optional environment
     variables `env_vars` fails (rc != 0) and return a (return code, stdout,
     stderr) tuple.
 
@@ -195,7 +195,7 @@ def assert_python_failure(*args, **env_vars):
 
 @support.requires_subprocess()
 def spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
-    """Run a Python subprocess with the given arguments.
+    """Run a Python subprocess mit the given arguments.
 
     kw is extra keyword args to pass to subprocess.Popen. Returns a Popen
     object.
@@ -223,7 +223,7 @@ def kill_python(p):
     data = p.stdout.read()
     p.stdout.close()
     # try to cleanup the child so we don't appear to leak when running
-    # with regrtest -R.
+    # mit regrtest -R.
     p.wait()
     subprocess._cleanup()
     return data
@@ -236,10 +236,10 @@ def make_script(script_dir, script_basename, source, omit_suffix=Falsch):
     script_name = os.path.join(script_dir, script_filename)
     wenn isinstance(source, str):
         # The script should be encoded to UTF-8, the default string encoding
-        with open(script_name, 'w', encoding='utf-8') as script_file:
+        mit open(script_name, 'w', encoding='utf-8') als script_file:
             script_file.write(source)
     sonst:
-        with open(script_name, 'wb') as script_file:
+        mit open(script_name, 'wb') als script_file:
             script_file.write(source)
     importlib.invalidate_caches()
     return script_name
@@ -249,7 +249,7 @@ def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
     importiere zipfile
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
-    with zipfile.ZipFile(zip_name, 'w') as zip_file:
+    mit zipfile.ZipFile(zip_name, 'w') als zip_file:
         wenn name_in_zip is Nichts:
             parts = script_name.split(os.sep)
             wenn len(parts) >= 2 and parts[-2] == '__pycache__':
@@ -260,7 +260,7 @@ def make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Nichts):
                 name_in_zip = os.path.basename(script_name)
         zip_file.write(script_name, name_in_zip)
     #if test.support.verbose:
-    #    with zipfile.ZipFile(zip_name, 'r') as zip_file:
+    #    mit zipfile.ZipFile(zip_name, 'r') als zip_file:
     #        print 'Contents of %r:' % zip_name
     #        zip_file.printdir()
     return zip_name, os.path.join(zip_name, name_in_zip)
@@ -288,7 +288,7 @@ def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     script_name_in_zip = os.path.join(pkg_names[-1], os.path.basename(script_name))
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
-    with zipfile.ZipFile(zip_name, 'w') as zip_file:
+    mit zipfile.ZipFile(zip_name, 'w') als zip_file:
         fuer name in pkg_names:
             init_name_in_zip = os.path.join(name, init_basename)
             zip_file.write(init_name, init_name_in_zip)
@@ -296,7 +296,7 @@ def make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     fuer name in unlink:
         os.unlink(name)
     #if test.support.verbose:
-    #    with zipfile.ZipFile(zip_name, 'r') as zip_file:
+    #    mit zipfile.ZipFile(zip_name, 'r') als zip_file:
     #        print 'Contents of %r:' % zip_name
     #        zip_file.printdir()
     return zip_name, os.path.join(zip_name, script_name_in_zip)

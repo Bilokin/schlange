@@ -46,7 +46,7 @@ klasse ZipReader(abc.TraversableResources):
     def open_resource(self, resource):
         try:
             return super().open_resource(resource)
-        except KeyError as exc:
+        except KeyError als exc:
             raise FileNotFoundError(exc.args[0])
 
     def is_resource(self, path):
@@ -164,7 +164,7 @@ klasse NamespaceReader(abc.TraversableResources):
     @staticmethod
     def _resolve_zip_path(path_str: str):
         fuer match in reversed(list(re.finditer(r'[\\/]', path_str))):
-            with contextlib.suppress(
+            mit contextlib.suppress(
                 FileNotFoundError,
                 IsADirectoryError,
                 NotADirectoryError,
@@ -189,7 +189,7 @@ def _ensure_traversable(path):
     """
     Convert deprecated string arguments to traversables (pathlib.Path).
 
-    Remove with Python 3.15.
+    Remove mit Python 3.15.
     """
     wenn not isinstance(path, str):
         return path

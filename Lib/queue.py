@@ -4,7 +4,7 @@ importiere threading
 importiere types
 von collections importiere deque
 von heapq importiere heappush, heappop
-von time importiere monotonic as time
+von time importiere monotonic als time
 try:
     von _queue importiere SimpleQueue
 except ImportError:
@@ -34,11 +34,11 @@ klasse Full(Exception):
 
 
 klasse ShutDown(Exception):
-    '''Raised when put/get with shut-down queue.'''
+    '''Raised when put/get mit shut-down queue.'''
 
 
 klasse Queue:
-    '''Create a queue object with a given maximum size.
+    '''Create a queue object mit a given maximum size.
 
     If maxsize is <= 0, the queue size is infinite.
     '''
@@ -83,7 +83,7 @@ klasse Queue:
         Raises a ValueError wenn called more times than there were items
         placed in the queue.
         '''
-        with self.all_tasks_done:
+        mit self.all_tasks_done:
             unfinished = self.unfinished_tasks - 1
             wenn unfinished <= 0:
                 wenn unfinished < 0:
@@ -100,38 +100,38 @@ klasse Queue:
 
         When the count of unfinished tasks drops to zero, join() unblocks.
         '''
-        with self.all_tasks_done:
+        mit self.all_tasks_done:
             while self.unfinished_tasks:
                 self.all_tasks_done.wait()
 
     def qsize(self):
         '''Return the approximate size of the queue (not reliable!).'''
-        with self.mutex:
+        mit self.mutex:
             return self._qsize()
 
     def empty(self):
         '''Return Wahr wenn the queue is empty, Falsch otherwise (not reliable!).
 
         This method is likely to be removed at some point.  Use qsize() == 0
-        as a direct substitute, but be aware that either approach risks a race
+        als a direct substitute, but be aware that either approach risks a race
         condition where a queue can grow before the result of empty() or
         qsize() can be used.
 
         To create code that needs to wait fuer all queued tasks to be
         completed, the preferred technique is to use the join() method.
         '''
-        with self.mutex:
+        mit self.mutex:
             return not self._qsize()
 
     def full(self):
         '''Return Wahr wenn the queue is full, Falsch otherwise (not reliable!).
 
         This method is likely to be removed at some point.  Use qsize() >= n
-        as a direct substitute, but be aware that either approach risks a race
+        als a direct substitute, but be aware that either approach risks a race
         condition where a queue can shrink before the result of full() or
         qsize() can be used.
         '''
-        with self.mutex:
+        mit self.mutex:
             return 0 < self.maxsize <= self._qsize()
 
     def put(self, item, block=Wahr, timeout=Nichts):
@@ -147,7 +147,7 @@ klasse Queue:
 
         Raises ShutDown wenn the queue has been shut down.
         '''
-        with self.not_full:
+        mit self.not_full:
             wenn self.is_shutdown:
                 raise ShutDown
             wenn self.maxsize > 0:
@@ -188,7 +188,7 @@ klasse Queue:
         Raises ShutDown wenn the queue has been shut down and is empty,
         or wenn the queue has been shut down immediately.
         '''
-        with self.not_empty:
+        mit self.not_empty:
             wenn self.is_shutdown and not self._qsize():
                 raise ShutDown
             wenn not block:
@@ -242,7 +242,7 @@ klasse Queue:
         is reduced by the number of drained tasks.  If unfinished tasks
         is reduced to zero, callers of Queue.join are unblocked.
         '''
-        with self.mutex:
+        mit self.mutex:
             self.is_shutdown = Wahr
             wenn immediate:
                 while self._qsize():
@@ -257,7 +257,7 @@ klasse Queue:
 
     # Override these methods to implement other queue organizations
     # (e.g. stack or priority queue).
-    # These will only be called with appropriate locks held
+    # These will only be called mit appropriate locks held
 
     # Initialize the queue representation
     def _init(self, maxsize):
@@ -329,8 +329,8 @@ klasse _PySimpleQueue:
     def put(self, item, block=Wahr, timeout=Nichts):
         '''Put the item on the queue.
 
-        The optional 'block' and 'timeout' arguments are ignored, as this method
-        never blocks.  They are provided fuer compatibility with the Queue class.
+        The optional 'block' and 'timeout' arguments are ignored, als this method
+        never blocks.  They are provided fuer compatibility mit the Queue class.
         '''
         self._queue.append(item)
         self._count.release()
@@ -356,7 +356,7 @@ klasse _PySimpleQueue:
         '''Put an item into the queue without blocking.
 
         This is exactly equivalent to `put(item, block=Falsch)` and is only provided
-        fuer compatibility with the Queue class.
+        fuer compatibility mit the Queue class.
         '''
         return self.put(item, block=Falsch)
 

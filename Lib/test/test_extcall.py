@@ -98,7 +98,7 @@ Mix keyword arguments and dict unpacking
     >>> f(**d1, b=2, **d2, d=4)
     () {'a': 1, 'b': 2, 'c': 3, 'd': 4}
 
-Examples with invalid arguments (TypeErrors). We're also testing the function
+Examples mit invalid arguments (TypeErrors). We're also testing the function
 names in the exception messages.
 
 Verify clearing of SF bug #733667
@@ -172,8 +172,8 @@ Verify clearing of SF bug #733667
     >>> g(*Nothing())
     0 (1, 2, 3) {}
 
-Check fuer issue #4806: Does a TypeError in a generator get propagated with the
-right error message? (Also check with other iterables.)
+Check fuer issue #4806: Does a TypeError in a generator get propagated mit the
+right error message? (Also check mit other iterables.)
 
     >>> def broken(): raise TypeError("myerror")
     ...
@@ -336,7 +336,7 @@ not function
       ...
     TypeError: dir() got multiple values fuer keyword argument 'b'
 
-Test a kwargs mapping with duplicated keys.
+Test a kwargs mapping mit duplicated keys.
 
     >>> von collections.abc importiere Mapping
     >>> klasse MultiDict(Mapping):
@@ -382,7 +382,7 @@ Test a kwargs mapping with duplicated keys.
       ...
     TypeError: test.test_extcall.g() got multiple values fuer keyword argument 'x'
 
-Call with dict subtype:
+Call mit dict subtype:
 
     >>> klasse MyDict(dict):
     ...     pass
@@ -527,7 +527,7 @@ Too few and missing arguments:
       ...
     TypeError: f() missing 1 required positional argument: 'a'
 
-Same with keyword only args:
+Same mit keyword only args:
 
     >>> def f(*, w): pass
     >>> f()

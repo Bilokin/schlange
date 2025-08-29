@@ -51,13 +51,13 @@ def nested_calls():
     return level1()
 
 def main_loop():
-    """Main computation loop with different execution paths"""
+    """Main computation loop mit different execution paths"""
     iteration = 0
 
     while Wahr:
         iteration += 1
 
-        # Different execution paths with different frequencies
+        # Different execution paths mit different frequencies
         wenn iteration % 50 == 0:
             # Expensive operation - should show high per-call time
             result = slow_fibonacci(20)
@@ -106,7 +106,7 @@ def cpu_intensive_work():
     return result
 
 def io_intensive_work():
-    """Simulate IO intensive work with sleeps"""
+    """Simulate IO intensive work mit sleeps"""
     time.sleep(0.1)
 
 def mixed_workload():
@@ -126,7 +126,7 @@ def create_threads(n):
         threads.append(t)
     return threads
 
-# Start with 5 threads
+# Start mit 5 threads
 active_threads = create_threads(5)
 thread_count = 5
 
@@ -154,11 +154,11 @@ while Wahr:
 CODE_EXAMPLES = {
     "basic": {
         "code": CODE,
-        "description": "Mixed workload with fibonacci, computations, and string operations",
+        "description": "Mixed workload mit fibonacci, computations, and string operations",
     },
     "deep_static": {
         "code": DEEP_STATIC_CODE,
-        "description": "Deep recursive call stack with 900+ frames (factorial)",
+        "description": "Deep recursive call stack mit 900+ frames (factorial)",
     },
     "threads": {
         "code": CODE_WITH_TONS_OF_THREADS,
@@ -190,7 +190,7 @@ def benchmark(unwinder, duration_seconds=10):
                 stack_trace = unwinder.get_stack_trace()
                 wenn stack_trace:
                     sample_count += 1
-            except (OSError, RuntimeError, UnicodeDecodeError) as e:
+            except (OSError, RuntimeError, UnicodeDecodeError) als e:
                 fail_count += 1
 
             work_end = time.perf_counter()
@@ -382,7 +382,7 @@ def create_target_process(temp_file, code_example="basic"):
 
 def cleanup_process(process, temp_file_path):
     """Clean up the target process and temporary file"""
-    with contextlib.suppress(Exception):
+    mit contextlib.suppress(Exception):
         wenn process.poll() is Nichts:
             process.terminate()
             try:
@@ -415,14 +415,14 @@ def main():
     try:
         # Create target process
         drucke(f"\n{colors.BLUE}Creating and starting target process...{colors.RESET}")
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".py") as temp_file:
+        mit tempfile.NamedTemporaryFile(mode="w", suffix=".py") als temp_file:
             process, temp_file_path = create_target_process(temp_file, args.code)
             drucke(
-                f"{colors.GREEN}Target process started with PID: {colors.BOLD_WHITE}{process.pid}{colors.RESET}"
+                f"{colors.GREEN}Target process started mit PID: {colors.BOLD_WHITE}{process.pid}{colors.RESET}"
             )
 
-            # Run benchmark with specified duration
-            with process:
+            # Run benchmark mit specified duration
+            mit process:
                 # Create unwinder and run benchmark
                 drucke(f"{colors.BLUE}Initializing unwinder...{colors.RESET}")
                 try:
@@ -443,18 +443,18 @@ def main():
             # Print results
             print_benchmark_results(results)
 
-    except PermissionError as e:
+    except PermissionError als e:
         drucke(
             f"{colors.BOLD_RED}Error: Insufficient permissions to read stack trace: {e}{colors.RESET}"
         )
         drucke(
-            f"{colors.YELLOW}Try running with appropriate privileges (e.g., sudo){colors.RESET}"
+            f"{colors.YELLOW}Try running mit appropriate privileges (e.g., sudo){colors.RESET}"
         )
         return 1
-    except Exception as e:
+    except Exception als e:
         drucke(f"{colors.BOLD_RED}Error during benchmarking: {e}{colors.RESET}")
         wenn process:
-            with contextlib.suppress(Exception):
+            mit contextlib.suppress(Exception):
                 stdout, stderr = process.communicate(timeout=1)
                 wenn stdout:
                     drucke(

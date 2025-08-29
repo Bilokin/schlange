@@ -108,7 +108,7 @@ klasse TestCallable(unittest.TestCase):
 
         fuer arg in 'spec', 'spec_set':
             fuer Klass in CallableX, Sub, Multi:
-                with patch('%s.X' % __name__, **{arg: Klass}) as mock:
+                mit patch('%s.X' % __name__, **{arg: Klass}) als mock:
                     instance = mock()
                     mock.assert_called_once_with()
 

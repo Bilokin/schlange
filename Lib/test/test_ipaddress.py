@@ -48,7 +48,7 @@ klasse BaseTestCase(unittest.TestCase):
         wenn args:
             details = details % args
         cm = self.assertRaisesRegex(exc_type, details)
-        with cm as exc:
+        mit cm als exc:
             yield exc
         # Ensure we produce clean tracebacks on failure
         wenn exc.exception.__context__ is not Nichts:
@@ -72,23 +72,23 @@ klasse BaseTestCase(unittest.TestCase):
 klasse CommonTestMixin:
 
     def test_empty_address(self):
-        with self.assertAddressError("Address cannot be empty"):
+        mit self.assertAddressError("Address cannot be empty"):
             self.factory("")
 
     def test_floats_rejected(self):
-        with self.assertAddressError(re.escape(repr("1.0"))):
+        mit self.assertAddressError(re.escape(repr("1.0"))):
             self.factory(1.0)
 
     def test_not_an_index_issue15559(self):
-        # Implementing __index__ makes fuer a very nasty interaction with the
-        # bytes constructor. Thus, we disallow implicit use as an integer
+        # Implementing __index__ makes fuer a very nasty interaction mit the
+        # bytes constructor. Thus, we disallow implicit use als an integer
         self.assertRaises(TypeError, operator.index, self.factory(1))
         self.assertRaises(TypeError, hex, self.factory(1))
         self.assertRaises(TypeError, bytes, self.factory(1))
 
     def pickle_test(self, addr):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 x = self.factory(addr)
                 y = pickle.loads(pickle.dumps(x, proto))
                 self.assertEqual(y, x)
@@ -97,7 +97,7 @@ klasse CommonTestMixin:
 klasse CommonTestMixin_v4(CommonTestMixin):
 
     def test_leading_zeros(self):
-        # bpo-36384: no leading zeros to avoid ambiguity with octal notation
+        # bpo-36384: no leading zeros to avoid ambiguity mit octal notation
         msg = "Leading zeros are not permitted in '\\d+'"
         addresses = [
             "000.000.000.000",
@@ -110,8 +110,8 @@ klasse CommonTestMixin_v4(CommonTestMixin):
             "1.2.3.040",
         ]
         fuer address in addresses:
-            with self.subTest(address=address):
-                with self.assertAddressError(msg):
+            mit self.subTest(address=address):
+                mit self.assertAddressError(msg):
                     self.factory(address)
 
     def test_int(self):
@@ -123,20 +123,20 @@ klasse CommonTestMixin_v4(CommonTestMixin):
         self.assertInstancesEqual(bytes.fromhex("c0a80001"), "192.168.0.1")
 
     def test_negative_ints_rejected(self):
-        msg = "-1 (< 0) is not permitted as an IPv4 address"
-        with self.assertAddressError(re.escape(msg)):
+        msg = "-1 (< 0) is not permitted als an IPv4 address"
+        mit self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     def test_large_ints_rejected(self):
-        msg = "%d (>= 2**32) is not permitted as an IPv4 address"
-        with self.assertAddressError(re.escape(msg % 2**32)):
+        msg = "%d (>= 2**32) is not permitted als an IPv4 address"
+        mit self.assertAddressError(re.escape(msg % 2**32)):
             self.factory(2**32)
 
     def test_bad_packed_length(self):
         def assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 4) is not permitted as an IPv4 address"
-            with self.assertAddressError(re.escape(msg % (addr, length))):
+            msg = "%r (len %d != 4) is not permitted als an IPv4 address"
+            mit self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
 
         assertBadLength(3)
@@ -162,20 +162,20 @@ klasse CommonTestMixin_v6(CommonTestMixin):
         self.assertInstancesEqual(addr, "c0a8:1::")
 
     def test_negative_ints_rejected(self):
-        msg = "-1 (< 0) is not permitted as an IPv6 address"
-        with self.assertAddressError(re.escape(msg)):
+        msg = "-1 (< 0) is not permitted als an IPv6 address"
+        mit self.assertAddressError(re.escape(msg)):
             self.factory(-1)
 
     def test_large_ints_rejected(self):
-        msg = "%d (>= 2**128) is not permitted as an IPv6 address"
-        with self.assertAddressError(re.escape(msg % 2**128)):
+        msg = "%d (>= 2**128) is not permitted als an IPv6 address"
+        mit self.assertAddressError(re.escape(msg % 2**128)):
             self.factory(2**128)
 
     def test_bad_packed_length(self):
         def assertBadLength(length):
             addr = b'\0' * length
-            msg = "%r (len %d != 16) is not permitted as an IPv6 address"
-            with self.assertAddressError(re.escape(msg % (addr, length))):
+            msg = "%r (len %d != 16) is not permitted als an IPv6 address"
+            mit self.assertAddressError(re.escape(msg % (addr, length))):
                 self.factory(addr)
                 self.factory(addr)
 
@@ -184,12 +184,12 @@ klasse CommonTestMixin_v6(CommonTestMixin):
 
     def test_blank_scope_id(self):
         address = ('::1%')
-        with self.assertAddressError('Invalid IPv6 address: "%r"', address):
+        mit self.assertAddressError('Invalid IPv6 address: "%r"', address):
             self.factory(address)
 
     def test_invalid_scope_id_with_percent(self):
         address = ('::1%scope%')
-        with self.assertAddressError('Invalid IPv6 address: "%r"', address):
+        mit self.assertAddressError('Invalid IPv6 address: "%r"', address):
             self.factory(address)
 
 klasse AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
@@ -222,12 +222,12 @@ klasse AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 
     def test_network_passed_as_address(self):
         addr = "127.0.0.1/24"
-        with self.assertAddressError("Unexpected '/' in %r", addr):
+        mit self.assertAddressError("Unexpected '/' in %r", addr):
             ipaddress.IPv4Address(addr)
 
     def test_bad_address_split(self):
         def assertBadSplit(addr):
-            with self.assertAddressError("Expected 4 octets in %r", addr):
+            mit self.assertAddressError("Expected 4 octets in %r", addr):
                 ipaddress.IPv4Address(addr)
 
         assertBadSplit("127.0.1")
@@ -256,7 +256,7 @@ klasse AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
 
     def test_empty_octet(self):
         def assertBadOctet(addr):
-            with self.assertAddressError("Empty octet not permitted in %r",
+            mit self.assertAddressError("Empty octet not permitted in %r",
                                          addr):
                 ipaddress.IPv4Address(addr)
 
@@ -266,7 +266,7 @@ klasse AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
     def test_invalid_characters(self):
         def assertBadOctet(addr, octet):
             msg = "Only decimal digits permitted in %r in %r" % (octet, addr)
-            with self.assertAddressError(re.escape(msg)):
+            mit self.assertAddressError(re.escape(msg)):
                 ipaddress.IPv4Address(addr)
 
         assertBadOctet("0x0a.0x0a.0x0a.0x0a", "0x0a")
@@ -282,7 +282,7 @@ klasse AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
     def test_octet_length(self):
         def assertBadOctet(addr, octet):
             msg = "At most 3 characters permitted in %r in %r"
-            with self.assertAddressError(re.escape(msg % (octet, addr))):
+            mit self.assertAddressError(re.escape(msg % (octet, addr))):
                 ipaddress.IPv4Address(addr)
 
         assertBadOctet("0000.000.000.000", "0000")
@@ -291,7 +291,7 @@ klasse AddressTestCase_v4(BaseTestCase, CommonTestMixin_v4):
     def test_octet_limit(self):
         def assertBadOctet(addr, octet):
             msg = "Octet %d (> 255) not permitted in %r" % (octet, addr)
-            with self.assertAddressError(re.escape(msg)):
+            mit self.assertAddressError(re.escape(msg)):
                 ipaddress.IPv4Address(addr)
 
         assertBadOctet("257.0.0.0", 257)
@@ -359,7 +359,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_network_passed_as_address(self):
         def assertBadSplit(addr):
             msg = "Unexpected '/' in %r"
-            with self.assertAddressError(msg, addr):
+            mit self.assertAddressError(msg, addr):
                 ipaddress.IPv6Address(addr)
         assertBadSplit("::1/24")
         assertBadSplit("::1%scope_id/24")
@@ -367,7 +367,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_bad_address_split_v6_not_enough_parts(self):
         def assertBadSplit(addr):
             msg = "At least 3 parts expected in %r"
-            with self.assertAddressError(msg, addr.split('%')[0]):
+            mit self.assertAddressError(msg, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit(":")
@@ -380,7 +380,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_bad_address_split_v6_too_many_colons(self):
         def assertBadSplit(addr):
             msg = "At most 8 colons permitted in %r"
-            with self.assertAddressError(msg, addr.split('%')[0]):
+            mit self.assertAddressError(msg, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit("9:8:7:6:5:4:3::2:1")
@@ -400,7 +400,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_bad_address_split_v6_too_long(self):
         def assertBadSplit(addr):
             msg = r"At most 45 characters expected in '%s"
-            with self.assertAddressError(msg, re.escape(addr[:45])):
+            mit self.assertAddressError(msg, re.escape(addr[:45])):
                 ipaddress.IPv6Address(addr)
 
         # Long IPv6 address
@@ -413,7 +413,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_bad_address_split_v6_too_many_parts(self):
         def assertBadSplit(addr):
             msg = "Exactly 8 parts expected without '::' in %r"
-            with self.assertAddressError(msg, addr.split('%')[0]):
+            mit self.assertAddressError(msg, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit("3ffe:0:0:0:0:0:0:0:1")
@@ -432,8 +432,8 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     def test_bad_address_split_v6_too_many_parts_with_double_colon(self):
         def assertBadSplit(addr):
-            msg = "Expected at most 7 other parts with '::' in %r"
-            with self.assertAddressError(msg, addr.split('%')[0]):
+            msg = "Expected at most 7 other parts mit '::' in %r"
+            mit self.assertAddressError(msg, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit("1:2:3:4::5:6:7:8")
@@ -442,7 +442,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_bad_address_split_v6_repeated_double_colon(self):
         def assertBadSplit(addr):
             msg = "At most one '::' permitted in %r"
-            with self.assertAddressError(msg, addr.split('%')[0]):
+            mit self.assertAddressError(msg, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit("3ffe::1::1")
@@ -469,8 +469,8 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     def test_bad_address_split_v6_leading_colon(self):
         def assertBadSplit(addr):
-            msg = "Leading ':' only permitted as part of '::' in %r"
-            with self.assertAddressError(msg, addr.split('%')[0]):
+            msg = "Leading ':' only permitted als part of '::' in %r"
+            mit self.assertAddressError(msg, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit(":2001:db8::1")
@@ -485,8 +485,8 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     def test_bad_address_split_v6_trailing_colon(self):
         def assertBadSplit(addr):
-            msg = "Trailing ':' only permitted as part of '::' in %r"
-            with self.assertAddressError(msg, addr.split('%')[0]):
+            msg = "Trailing ':' only permitted als part of '::' in %r"
+            mit self.assertAddressError(msg, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadSplit("2001:db8::1:")
@@ -501,7 +501,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
 
     def test_bad_v4_part_in(self):
         def assertBadAddressPart(addr, v4_error):
-            with self.assertAddressError("%s in %r", v4_error, addr.split('%')[0]):
+            mit self.assertAddressError("%s in %r", v4_error, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadAddressPart("3ffe::1.net", "Expected 4 octets in '1.net'")
@@ -529,7 +529,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_invalid_characters(self):
         def assertBadPart(addr, part):
             msg = "Only hex digits permitted in %r in %r" % (part, addr.split('%')[0])
-            with self.assertAddressError(re.escape(msg)):
+            mit self.assertAddressError(re.escape(msg)):
                 ipaddress.IPv6Address(addr)
 
         assertBadPart("3ffe::goog", "goog")
@@ -549,7 +549,7 @@ klasse AddressTestCase_v6(BaseTestCase, CommonTestMixin_v6):
     def test_part_length(self):
         def assertBadPart(addr, part):
             msg = "At most 4 characters permitted in %r in %r"
-            with self.assertAddressError(msg, part, addr.split('%')[0]):
+            mit self.assertAddressError(msg, part, addr.split('%')[0]):
                 ipaddress.IPv6Address(addr)
 
         assertBadPart("::00000", "00000")
@@ -590,12 +590,12 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
 
     def test_split_netmask(self):
         addr = "1.2.3.4/32/24"
-        with self.assertAddressError("Only one '/' permitted in %r" % addr):
+        mit self.assertAddressError("Only one '/' permitted in %r" % addr):
             self.factory(addr)
 
     def test_address_errors(self):
         def assertBadAddress(addr, details):
-            with self.assertAddressError(details):
+            mit self.assertAddressError(details):
                 self.factory(addr)
 
         assertBadAddress("/", "Address cannot be empty")
@@ -621,10 +621,10 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
             # Generate and re-parse the expanded netmask.
             self.assertEqual(
                 str(self.factory('0.0.0.0/%s' % net.netmask)), net_str)
-            # Zero prefix is treated as decimal.
+            # Zero prefix is treated als decimal.
             self.assertEqual(str(self.factory('0.0.0.0/0%d' % i)), net_str)
             # Generate and re-parse the expanded hostmask.  The ambiguous
-            # cases (/0 and /32) are treated as netmasks.
+            # cases (/0 and /32) are treated als netmasks.
             wenn i in (32, 0):
                 net_str = '0.0.0.0/%d' % (32 - i)
             self.assertEqual(
@@ -633,7 +633,7 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
     def test_netmask_errors(self):
         def assertBadNetmask(addr, netmask):
             msg = "%r is not a valid netmask" % netmask
-            with self.assertNetmaskError(re.escape(msg)):
+            mit self.assertNetmaskError(re.escape(msg)):
                 self.factory("%s/%s" % (addr, netmask))
 
         assertBadNetmask("1.2.3.4", "")
@@ -654,7 +654,7 @@ klasse NetmaskTestMixin_v4(CommonTestMixin_v4):
     def test_netmask_in_tuple_errors(self):
         def assertBadNetmask(addr, netmask):
             msg = "%r is not a valid netmask" % netmask
-            with self.assertNetmaskError(re.escape(msg)):
+            mit self.assertNetmaskError(re.escape(msg)):
                 self.factory((addr, netmask))
         assertBadNetmask("1.1.1.1", -1)
         assertBadNetmask("1.1.1.1", 33)
@@ -709,16 +709,16 @@ klasse NetworkTestCase_v4(BaseTestCase, NetmaskTestMixin_v4):
                 self.factory('10.0.0.0/30')))
 
     def test_subnet_of_mixed_types(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             ipaddress.IPv4Network('10.0.0.0/30').supernet_of(
                 ipaddress.IPv6Network('::1/128'))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             ipaddress.IPv6Network('::1/128').supernet_of(
                 ipaddress.IPv4Network('10.0.0.0/30'))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             ipaddress.IPv4Network('10.0.0.0/30').subnet_of(
                 ipaddress.IPv6Network('::1/128'))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             ipaddress.IPv6Network('::1/128').subnet_of(
                 ipaddress.IPv4Network('10.0.0.0/30'))
 
@@ -742,16 +742,16 @@ klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
 
     def test_split_netmask(self):
         addr = "cafe:cafe::/128/190"
-        with self.assertAddressError("Only one '/' permitted in %r" % addr):
+        mit self.assertAddressError("Only one '/' permitted in %r" % addr):
             self.factory(addr)
 
         scoped_addr = "cafe:cafe::%scope/128/190"
-        with self.assertAddressError("Only one '/' permitted in %r" % scoped_addr):
+        mit self.assertAddressError("Only one '/' permitted in %r" % scoped_addr):
             self.factory(scoped_addr)
 
     def test_address_errors(self):
         def assertBadAddress(addr, details):
-            with self.assertAddressError(details):
+            mit self.assertAddressError(details):
                 self.factory(addr)
 
         assertBadAddress("/", "Address cannot be empty")
@@ -780,7 +780,7 @@ klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
             # Generate and re-parse the CIDR format (trivial).
             net_str = '::/%d' % i
             self.assertEqual(str(self.factory(net_str)), net_str)
-            # Zero prefix is treated as decimal.
+            # Zero prefix is treated als decimal.
             self.assertEqual(str(self.factory('::/0%d' % i)), net_str)
 
         self.assertEqual(str(self.factory('2001:db8::%scope/32')), '2001:db8::%scope/32')
@@ -788,13 +788,13 @@ klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
             # Generate and re-parse the CIDR format (trivial).
             net_str = '::/%d' % i
             self.assertEqual(str(self.factory(net_str)), net_str)
-            # Zero prefix is treated as decimal.
+            # Zero prefix is treated als decimal.
             self.assertEqual(str(self.factory('::/0%d' % i)), net_str)
 
     def test_netmask_errors(self):
         def assertBadNetmask(addr, netmask):
             msg = "%r is not a valid netmask" % netmask
-            with self.assertNetmaskError(re.escape(msg)):
+            mit self.assertNetmaskError(re.escape(msg)):
                 self.factory("%s/%s" % (addr, netmask))
 
         assertBadNetmask("::1", "")
@@ -814,7 +814,7 @@ klasse NetmaskTestMixin_v6(CommonTestMixin_v6):
     def test_netmask_in_tuple_errors(self):
         def assertBadNetmask(addr, netmask):
             msg = "%r is not a valid netmask" % netmask
-            with self.assertNetmaskError(re.escape(msg)):
+            mit self.assertNetmaskError(re.escape(msg)):
                 self.factory((addr, netmask))
         assertBadNetmask("::1", -1)
         assertBadNetmask("::1", 129)
@@ -882,10 +882,10 @@ klasse NetworkTestCase_v6(BaseTestCase, NetmaskTestMixin_v6):
 klasse FactoryFunctionErrors(BaseTestCase):
 
     def assertFactoryError(self, factory, kind):
-        """Ensure a clean ValueError with the expected message"""
+        """Ensure a clean ValueError mit the expected message"""
         addr = "camelot"
         msg = '%r does not appear to be an IPv4 or IPv6 %s'
-        with self.assertCleanError(ValueError, msg, addr, kind):
+        mit self.assertCleanError(ValueError, msg, addr, kind):
             factory(addr)
 
     def test_ip_address(self):
@@ -1013,13 +1013,13 @@ klasse ComparisonTests(unittest.TestCase):
     def test_foreign_type_ordering(self):
         other = object()
         fuer obj in self.objects_with_scoped:
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 obj < other
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 obj > other
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 obj <= other
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 obj >= other
             self.assertWahr(obj < LARGEST)
             self.assertFalsch(obj > LARGEST)
@@ -1031,7 +1031,7 @@ klasse ComparisonTests(unittest.TestCase):
             self.assertWahr(obj >= SMALLEST)
 
     def test_mixed_type_key(self):
-        # with get_mixed_type_key, you can sort addresses and network.
+        # mit get_mixed_type_key, you can sort addresses and network.
         v4_ordered = [self.v4addr, self.v4net, self.v4intf]
         v6_ordered = [self.v6addr, self.v6net, self.v6intf]
         v6_scoped_ordered = [self.v6addr_scoped, self.v6net_scoped, self.v6intf_scoped]
@@ -1121,17 +1121,17 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(ipaddress.IPv4Network((3221225985,
                                                 '255.255.255.255')), net)
         # strict=Wahr and host bits set
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv4Network(('192.0.2.1', 24))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv4Network((ip, 24))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv4Network((3221225985, 24))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv4Network(('192.0.2.1', '255.255.255.0'))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv4Network((ip, '255.255.255.0'))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv4Network((3221225985, '255.255.255.0'))
         # strict=Falsch and host bits set
         net = ipaddress.IPv4Network('192.0.2.0/24')
@@ -1170,11 +1170,11 @@ klasse IpaddrUnitTest(unittest.TestCase):
                          ipaddress.IPv4Interface('192.0.2.1/24'))
 
         # Invalid netmask
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv4Network(('192.0.2.1', '255.255.255.255.0'))
 
         # Invalid netmask using factory
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.ip_network(('192.0.2.1', '255.255.255.255.0'))
 
     # issue #16531: constructing IPv6Network von an (address, mask) tuple
@@ -1203,12 +1203,12 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
         # strict=Wahr and host bits set
         ip = ipaddress.IPv6Address('2001:db8::1')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv6Network(('2001:db8::1', 96))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv6Network((
                 42540766411282592856903984951653826561, 96))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv6Network((ip, 96))
         # strict=Falsch and host bits set
         net = ipaddress.IPv6Network('2001:db8::/96')
@@ -1230,18 +1230,18 @@ klasse IpaddrUnitTest(unittest.TestCase):
                          ipaddress.IPv6Interface('2001:db8::1/96'))
 
         ip_scoped = ipaddress.IPv6Address('2001:db8::1%scope')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv6Network(('2001:db8::1%scope', 96))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv6Network((ip_scoped, 96))
         # strict=Falsch and host bits set
 
         # Invalid netmask
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.IPv6Network(('2001:db8::1', '255.255.255.0'))
 
         # Invalid netmask using factory
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ipaddress.ip_network(('2001:db8::1', '255.255.255.0'))
 
     # issue57
@@ -1672,11 +1672,11 @@ klasse IpaddrUnitTest(unittest.TestCase):
                       self.ipv4_network)
         self.assertNotIn(ipaddress.IPv4Interface('1.2.4.1/24'),
                          self.ipv4_network)
-        # We can test addresses and string as well.
+        # We can test addresses and string als well.
         addr1 = ipaddress.IPv4Address('1.2.3.37')
         self.assertIn(addr1, self.ipv4_network)
         # issue 61, bad network comparison on like-ip'd network objects
-        # with identical broadcast addresses.
+        # mit identical broadcast addresses.
         self.assertFalsch(ipaddress.IPv4Network('1.1.0.0/16').__contains__(
                 ipaddress.IPv4Network('1.0.0.0/15')))
 
@@ -2182,7 +2182,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertRaises(ipaddress.AddressValueError, ipaddress.IPv6Interface,
                           '2001:1.1.1.1:1.1.1.1')
 
-    # Issue 67: IPv6 with embedded IPv4 address not recognized.
+    # Issue 67: IPv6 mit embedded IPv4 address not recognized.
     def testIPv6AddressTooLarge(self):
         # RFC4291 2.5.5.2
         self.assertEqual(ipaddress.ip_address('::FFFF:192.0.2.1'),
@@ -2463,7 +2463,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertWahr(ipaddress.ip_address('2001:30::').is_global)
         self.assertFalsch(ipaddress.ip_address('2001:40::').is_global)
         self.assertFalsch(ipaddress.ip_address('2002::').is_global)
-        # gh-124217: conform with RFC 9637
+        # gh-124217: conform mit RFC 9637
         self.assertFalsch(ipaddress.ip_address('3fff::').is_global)
 
         # some generic IETF reserved addresses
@@ -2480,7 +2480,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
 
     def testIpv4MappedProperties(self):
         # Test that an IPv4 mapped IPv6 address has
-        # the same properties as an IPv4 address.
+        # the same properties als an IPv4 address.
         fuer addr4 in (
             "178.62.3.251",     # global
             "169.254.169.254",  # link local
@@ -2490,7 +2490,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
             "0.0.0.0",          # unspecified
             "100.64.0.1",       # public and not global
         ):
-            with self.subTest(addr4):
+            mit self.subTest(addr4):
                 ipv4 = ipaddress.IPv4Address(addr4)
                 ipv6 = ipaddress.IPv6Address(f"::ffff:{addr4}")
 
@@ -2656,7 +2656,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
             # test vector: https://www.rfc-editor.org/rfc/rfc1035, §3.5
             ('10.2.0.52', '52.0.2.10.in-addr.arpa'),
         ]:
-            with self.subTest('ipv4_reverse_pointer', addr=addr_v4):
+            mit self.subTest('ipv4_reverse_pointer', addr=addr_v4):
                 addr = ipaddress.IPv4Address(addr_v4)
                 self.assertEqual(addr.reverse_pointer, expected)
 
@@ -2684,7 +2684,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
                 )
              )
         ]:
-            with self.subTest('ipv6_reverse_pointer', addr=addr_v6):
+            mit self.subTest('ipv6_reverse_pointer', addr=addr_v6):
                 addr = ipaddress.IPv6Address(addr_v6)
                 self.assertEqual(addr.reverse_pointer, expected)
 
@@ -2709,7 +2709,7 @@ klasse IpaddrUnitTest(unittest.TestCase):
         self.assertEqual(self.ipv6_interface.with_netmask,
                          '2001:658:22a:cafe:200::1/ffff:ffff:ffff:ffff::')
         # this probably don't make much sense, but it's included for
-        # compatibility with ipv4
+        # compatibility mit ipv4
         self.assertEqual(self.ipv6_interface.with_hostmask,
                          '2001:658:22a:cafe:200::1/::ffff:ffff:ffff:ffff')
 

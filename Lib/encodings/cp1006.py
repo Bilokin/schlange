@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp1006 generated von 'MAPPINGS/VENDORS/MISC/CP1006.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp1006 generated von 'MAPPINGS/VENDORS/MISC/CP1006.TXT' mit gencodec.py.
 
 """#"
 

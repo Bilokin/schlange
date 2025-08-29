@@ -71,7 +71,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
 
     def test_unsigned_values(self):
         # the value given to the constructor is available
-        # as the 'value' attribute
+        # als the 'value' attribute
         fuer t, (l, h) in zip(unsigned_types, unsigned_ranges):
             self.assertEqual(t(l).value, l)
             self.assertEqual(t(h).value, h)
@@ -138,7 +138,7 @@ klasse NumberTestCase(unittest.TestCase, ComplexesAreIdenticalMixin):
         fuer z in values:
             fuer t in [ctypes.c_double_complex, ctypes.c_float_complex,
                       ctypes.c_longdouble_complex]:
-                with self.subTest(z=z, type=t):
+                mit self.subTest(z=z, type=t):
                     self.assertComplexesAreIdentical(z, t(z).value)
 
     def test_integers(self):

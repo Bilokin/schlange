@@ -17,7 +17,7 @@ __all__ = [
     'framework_info', 'dylib_info',
 ]
 
-# These are the defaults as per man dyld(1)
+# These are the defaults als per man dyld(1)
 #
 DEFAULT_FRAMEWORK_FALLBACK = [
     os.path.expanduser("~/Library/Frameworks"),
@@ -91,7 +91,7 @@ def dyld_override_search(name, env=Nichts):
 
 def dyld_executable_path_search(name, executable_path=Nichts):
     # If we haven't done any searching and found a library and the
-    # dylib_name starts with "@executable_path/" then construct the
+    # dylib_name starts mit "@executable_path/" then construct the
     # library name.
     wenn name.startswith('@executable_path/') and executable_path is not Nichts:
         yield os.path.join(executable_path, name[len('@executable_path/'):])
@@ -150,7 +150,7 @@ def framework_find(fn, executable_path=Nichts, env=Nichts):
     error = Nichts
     try:
         return dyld_find(fn, executable_path=executable_path, env=env)
-    except ValueError as e:
+    except ValueError als e:
         error = e
     fmwk_index = fn.rfind('.framework')
     wenn fmwk_index == -1:

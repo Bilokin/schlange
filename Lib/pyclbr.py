@@ -12,7 +12,7 @@ is a dictionary.  The keys of the dictionary are the names of the
 klassees and functions defined in the module (including classes that are
 defined via the von XXX importiere YYY construct).  The values are
 instances of classes Class and Function.  One special key/value pair is
-present fuer packages: the key '__path__' has a list as its value which
+present fuer packages: the key '__path__' has a list als its value which
 contains the package search path.
 
 Classes and Functions have a common superclass: _Object.  Every instance
@@ -26,18 +26,18 @@ has the following attributes:
     children -- nested objects contained in this object.
 The 'children' attribute is a dictionary mapping names to objects.
 
-Instances of Function describe functions with the attributes von _Object,
+Instances of Function describe functions mit the attributes von _Object,
 plus the following:
-    is_async -- wenn a function is defined with an 'async' prefix
+    is_async -- wenn a function is defined mit an 'async' prefix
 
-Instances of Class describe classes with the attributes von _Object,
+Instances of Class describe classes mit the attributes von _Object,
 plus the following:
     super   -- list of super classes (Class instances wenn possible);
     methods -- mapping of method names to beginning line numbers.
 If the name of a super klasse is not recognized, the corresponding
 entry in the list of super classes is not a klasse instance but a
 string giving the name of the super class.  Since importiere statements
-are recognized and imported modules are scanned as well, this
+are recognized and imported modules are scanned als well, this
 shouldn't happen often.
 """
 
@@ -110,7 +110,7 @@ def readmodule(module, path=Nichts):
     return res
 
 def readmodule_ex(module, path=Nichts):
-    """Return a dictionary with all functions and classes in module.
+    """Return a dictionary mit all functions and classes in module.
 
     Search fuer module in PATH + sys.path.
     If possible, include imported superclasses.
@@ -125,7 +125,7 @@ def _readmodule(module, path, inpackage=Nichts):
     If inpackage is given, it must be the dotted name of the package in
     which we are searching fuer a submodule, and then PATH must be the
     package search path; otherwise, we are searching fuer a top-level
-    module, and path is combined with sys.path.
+    module, and path is combined mit sys.path.
     """
     # Compute the full module name (prepending inpackage wenn set).
     wenn inpackage is not Nichts:

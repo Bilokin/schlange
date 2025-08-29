@@ -137,7 +137,7 @@ klasse TestBisect:
         self.assertEqual(mod.bisect_right(data, n-3, n-10, n), n-2)
 
     def test_large_pyrange(self):
-        # Same as above, but without C-imposed limits on range() parameters
+        # Same als above, but without C-imposed limits on range() parameters
         mod = self.module
         n = sys.maxsize
         data = Range(0, n-1)
@@ -203,7 +203,7 @@ klasse TestBisect:
     def test_lookups_with_key_function(self):
         mod = self.module
 
-        # Invariant: Index with a keyfunc on an array
+        # Invariant: Index mit a keyfunc on an array
         # should match the index on an array where
         # key function has already been applied.
 

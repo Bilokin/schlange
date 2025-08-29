@@ -26,19 +26,19 @@ klasse PyCompileError(Exception):
     where
 
         exc_type:   exception type to be used in error message
-                    type name can be accesses as klasse variable
+                    type name can be accesses als klasse variable
                     'exc_type_name'
 
         exc_value:  exception value to be used in error message
-                    can be accesses as klasse variable 'exc_value'
+                    can be accesses als klasse variable 'exc_value'
 
         file:       name of file being compiled to be used in error message
-                    can be accesses as klasse variable 'file'
+                    can be accesses als klasse variable 'file'
 
-        msg:        string message to be written as error message
+        msg:        string message to be written als error message
                     If no value is given, a default exception message will be
-                    given, consistent with 'standard' py_compile output.
-                    message (or default) can be accesses as klasse variable
+                    given, consistent mit 'standard' py_compile output.
+                    message (or default) can be accesses als klasse variable
                     'msg'
 
     """
@@ -93,10 +93,10 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
         exception will be raised.
     :param optimize: The optimization level fuer the compiler.  Valid values
         are -1, 0, 1 and 2.  A value of -1 means to use the optimization
-        level of the current interpreter, as given by -O command line options.
+        level of the current interpreter, als given by -O command line options.
     :param invalidation_mode:
-    :param quiet: Return full output with Falsch or 0, errors only with 1,
-        and no output with 2.
+    :param quiet: Return full output mit Falsch or 0, errors only mit 1,
+        and no output mit 2.
 
     :return: Path to the resulting byte compiled file.
 
@@ -143,7 +143,7 @@ def compile(file, cfile=Nichts, dfile=Nichts, doraise=Falsch, optimize=-1,
     try:
         code = loader.source_to_code(source_bytes, dfile or file,
                                      _optimize=optimize)
-    except Exception as err:
+    except Exception als err:
         py_exc = PyCompileError(err.__class__, err, dfile or file)
         wenn quiet < 2:
             wenn doraise:
@@ -196,12 +196,12 @@ def main():
     fuer filename in filenames:
         try:
             compile(filename, doraise=Wahr)
-        except PyCompileError as error:
+        except PyCompileError als error:
             wenn args.quiet:
                 parser.exit(1)
             sonst:
                 parser.exit(1, error.msg)
-        except OSError as error:
+        except OSError als error:
             wenn args.quiet:
                 parser.exit(1)
             sonst:

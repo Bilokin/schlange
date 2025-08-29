@@ -5,7 +5,7 @@
 #
 
 importiere _codecs_tw, codecs
-importiere _multibytecodec as mbc
+importiere _multibytecodec als mbc
 
 codec = _codecs_tw.getcodec('cp950')
 

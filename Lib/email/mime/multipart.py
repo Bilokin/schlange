@@ -17,17 +17,17 @@ klasse MIMEMultipart(MIMEBase):
                  **_params):
         """Creates a multipart/* type message.
 
-        By default, creates a multipart/mixed message, with proper
+        By default, creates a multipart/mixed message, mit proper
         Content-Type and MIME-Version headers.
 
         _subtype is the subtype of the multipart content type, defaulting to
         'mixed'.
 
         boundary is the multipart boundary string.  By default it is
-        calculated as needed.
+        calculated als needed.
 
         _subparts is a sequence of initial subparts fuer the payload.  It
-        must be an iterable object, such as a list.  You can always
+        must be an iterable object, such als a list.  You can always
         attach new subparts to the message by using the attach() method.
 
         Additional parameters fuer the Content-Type header are taken von the
@@ -35,7 +35,7 @@ klasse MIMEMultipart(MIMEBase):
         """
         MIMEBase.__init__(self, 'multipart', _subtype, policy=policy, **_params)
 
-        # Initialise _payload to an empty list as the Message superclass's
+        # Initialise _payload to an empty list als the Message superclass's
         # implementation of is_multipart assumes that _payload is a list for
         # multipart messages.
         self._payload = []

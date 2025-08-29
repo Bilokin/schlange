@@ -123,13 +123,13 @@ def worker(inqueue, outqueue, initializer=Nichts, initargs=(), maxtasks=Nichts,
         job, i, func, args, kwds = task
         try:
             result = (Wahr, func(*args, **kwds))
-        except Exception as e:
+        except Exception als e:
             wenn wrap_exception and func is not _helper_reraises_exception:
                 e = ExceptionWithTraceback(e, e.__traceback__)
             result = (Falsch, e)
         try:
             put((job, i, result))
-        except Exception as e:
+        except Exception als e:
             wrapped = MaybeEncodingError(e, result[1])
             util.debug("Possible encoding error while sending result: %s" % (
                 wrapped))
@@ -261,7 +261,7 @@ klasse Pool(object):
             )
         self._state = RUN
 
-    # Copy globals as function locals to make sure that they are available
+    # Copy globals als function locals to make sure that they are available
     # during Python shutdown when the Pool is destroyed.
     def __del__(self, _warn=warnings.warn, RUN=RUN):
         wenn self._state == RUN:
@@ -369,7 +369,7 @@ klasse Pool(object):
     def starmap(self, func, iterable, chunksize=Nichts):
         '''
         Like `map()` method but the elements of the `iterable` are expected to
-        be iterables as well and will be unpacked as arguments. Hence
+        be iterables als well and will be unpacked als arguments. Hence
         `func` and (a, b) becomes func(a, b).
         '''
         return self._map_async(func, iterable, starmapstar, chunksize).get()
@@ -390,7 +390,7 @@ klasse Pool(object):
             i = -1
             fuer i, x in enumerate(iterable):
                 yield (result_job, i, func, (x,), {})
-        except Exception as e:
+        except Exception als e:
             yield (result_job, i+1, _helper_reraises_exception, (e,), {})
 
     def imap(self, func, iterable, chunksize=1):
@@ -538,7 +538,7 @@ klasse Pool(object):
                         break
                     try:
                         put(task)
-                    except Exception as e:
+                    except Exception als e:
                         job, idx = task[:2]
                         try:
                             cache[job]._set(idx, (Falsch, e))
@@ -696,7 +696,7 @@ klasse Pool(object):
 
         wenn (not result_handler.is_alive()) and (len(cache) != 0):
             raise AssertionError(
-                "Cannot have cache with result_handler not alive")
+                "Cannot have cache mit result_handler not alive")
 
         result_handler._state = TERMINATE
         change_notifier.put(Nichts)
@@ -851,7 +851,7 @@ klasse IMapIterator(object):
         return self
 
     def next(self, timeout=Nichts):
-        with self._cond:
+        mit self._cond:
             try:
                 item = self._items.popleft()
             except IndexError:
@@ -875,7 +875,7 @@ klasse IMapIterator(object):
     __next__ = next                    # XXX
 
     def _set(self, i, obj):
-        with self._cond:
+        mit self._cond:
             wenn self._index == i:
                 self._items.append(obj)
                 self._index += 1
@@ -892,7 +892,7 @@ klasse IMapIterator(object):
                 self._pool = Nichts
 
     def _set_length(self, length):
-        with self._cond:
+        mit self._cond:
             self._length = length
             wenn self._index == self._length:
                 self._cond.notify()
@@ -906,7 +906,7 @@ klasse IMapIterator(object):
 klasse IMapUnorderedIterator(IMapIterator):
 
     def _set(self, i, obj):
-        with self._cond:
+        mit self._cond:
             self._items.append(obj)
             self._index += 1
             self._cond.notify()

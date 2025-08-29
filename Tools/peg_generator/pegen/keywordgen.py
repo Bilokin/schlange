@@ -41,10 +41,10 @@ def main() -> Nichts:
         description="Generate the Lib/keywords.py file von the grammar."
     )
     parser.add_argument(
-        "grammar", help="The file with the grammar definition in PEG format"
+        "grammar", help="The file mit the grammar definition in PEG format"
     )
     parser.add_argument(
-        "tokens_file", help="The file with the token definitions"
+        "tokens_file", help="The file mit the token definitions"
     )
     parser.add_argument(
         "keyword_file",
@@ -53,12 +53,12 @@ def main() -> Nichts:
     args = parser.parse_args()
 
     grammar, _, _ = build_parser(args.grammar)
-    with open(args.tokens_file) as tok_file:
+    mit open(args.tokens_file) als tok_file:
         all_tokens, exact_tok, non_exact_tok = generate_token_definitions(tok_file)
     gen = CParserGenerator(grammar, all_tokens, exact_tok, non_exact_tok, file=Nichts)
     gen.collect_rules()
 
-    with open(args.keyword_file, 'w') as thefile:
+    mit open(args.keyword_file, 'w') als thefile:
         all_keywords = sorted(list(gen.keywords.keys()))
         all_soft_keywords = sorted(gen.soft_keywords)
 

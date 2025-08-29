@@ -109,7 +109,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         Buffered data will be flushed asynchronously.  No more data
         will be received.  After all buffered data is flushed, the
         protocol's connection_lost() method will (eventually) called
-        with Nichts as its argument.
+        mit Nichts als its argument.
         """
         wenn not self._closed:
             self._closed = Wahr
@@ -158,7 +158,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         well, and causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer is empty.
-        Use of zero fuer either limit is generally sub-optimal as it
+        Use of zero fuer either limit is generally sub-optimal als it
         reduces opportunities fuer doing I/O and computation
         concurrently.
         """
@@ -188,7 +188,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
         well, and causes pause_reading() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_reading() to be called only once the buffer is empty.
-        Use of zero fuer either limit is generally sub-optimal as it
+        Use of zero fuer either limit is generally sub-optimal als it
         reduces opportunities fuer doing I/O and computation
         concurrently.
         """
@@ -245,7 +245,7 @@ klasse _SSLProtocolTransport(transports._FlowControlMixin,
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with Nichts as its argument.
+        called mit Nichts als its argument.
         """
         self._force_close(Nichts)
 
@@ -401,7 +401,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
         self._outgoing.read()
         self._conn_lost += 1
 
-        # Just mark the app transport as closed so that its __dealloc__
+        # Just mark the app transport als closed so that its __dealloc__
         # doesn't complain.
         wenn self._app_transport is not Nichts:
             self._app_transport._closed = Wahr
@@ -563,7 +563,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             self._sslobj.do_handshake()
         except SSLAgainErrors:
             self._process_outgoing()
-        except ssl.SSLError as exc:
+        except ssl.SSLError als exc:
             self._on_handshake_complete(exc)
         sonst:
             self._on_handshake_complete(Nichts)
@@ -581,7 +581,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                 raise handshake_exc
 
             peercert = sslobj.getpeercert()
-        except Exception as exc:
+        except Exception als exc:
             handshake_exc = Nichts
             self._set_state(SSLProtocolState.UNWRAPPED)
             wenn isinstance(exc, ssl.CertificateError):
@@ -651,7 +651,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                 self._sslobj.unwrap()
         except SSLAgainErrors:
             self._process_outgoing()
-        except ssl.SSLError as exc:
+        except ssl.SSLError als exc:
             self._on_shutdown_complete(exc)
         sonst:
             self._process_outgoing()
@@ -696,7 +696,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
             wenn self._state == SSLProtocolState.WRAPPED:
                 self._do_write()
 
-        except Exception as ex:
+        except Exception als ex:
             self._fatal_error(ex, 'Fatal error on SSL protocol')
 
     def _do_write(self):
@@ -743,7 +743,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                 sonst:
                     self._process_outgoing()
             self._control_ssl_reading()
-        except Exception as ex:
+        except Exception als ex:
             self._fatal_error(ex, 'Fatal error on SSL protocol')
 
     def _do_read__buffered(self):
@@ -815,7 +815,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                                    'has no effect when using ssl')
         except (KeyboardInterrupt, SystemExit):
             raise
-        except BaseException as ex:
+        except BaseException als ex:
             self._fatal_error(ex, 'Error calling eof_received()')
 
     # Flow control fuer writes von APP socket
@@ -828,7 +828,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                 self._app_protocol.pause_writing()
             except (KeyboardInterrupt, SystemExit):
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.pause_writing() failed',
                     'exception': exc,
@@ -841,7 +841,7 @@ klasse SSLProtocol(protocols.BufferedProtocol):
                 self._app_protocol.resume_writing()
             except (KeyboardInterrupt, SystemExit):
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.resume_writing() failed',
                     'exception': exc,

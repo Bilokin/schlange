@@ -33,7 +33,7 @@ klasse TestLRUCache(unittest.TestCase):
             t = Thread(target=thread_func)
             threads.append(t)
 
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
 
     def test_concurrent_operations_unbounded(self):
@@ -61,7 +61,7 @@ klasse TestLRUCache(unittest.TestCase):
             t = Thread(target=thread_func)
             threads.append(t)
 
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
 
     def test_reentrant_cache_clear_unbounded(self):

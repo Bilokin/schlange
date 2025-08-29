@@ -29,11 +29,11 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
                                             self.machinery.BYTECODE_SUFFIXES))
 
     def sensitivity_test(self):
-        """Look fuer a module with matching and non-matching sensitivity."""
+        """Look fuer a module mit matching and non-matching sensitivity."""
         sensitive_pkg = 'sensitive.{0}'.format(self.name)
         insensitive_pkg = 'insensitive.{0}'.format(self.name.lower())
         context = util.create_modules(insensitive_pkg, sensitive_pkg)
-        with context as mapping:
+        mit context als mapping:
             sensitive_path = os.path.join(mapping['.root'], 'sensitive')
             insensitive_path = os.path.join(mapping['.root'], 'insensitive')
             sensitive_finder = self.finder(sensitive_path)
@@ -42,7 +42,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_sensitive(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.unset('PYTHONCASEOK')
             self.caseok_env_changed(should_exist=Falsch)
             sensitive, insensitive = self.sensitivity_test()
@@ -52,7 +52,7 @@ klasse CaseSensitivityTest(util.CASEOKTestBase):
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_insensitive(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.set('PYTHONCASEOK', '1')
             self.caseok_env_changed(should_exist=Wahr)
             sensitive, insensitive = self.sensitivity_test()

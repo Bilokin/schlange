@@ -16,7 +16,7 @@ von idlelib.config importiere idleConf
 #   after it is determined that an OS X Aqua Tk is in use,
 #   which cannot be done until after Tk() is first called.
 #   Do not alter the 'file', 'options', or 'help' cascades here
-#   without altering overrideRootMenu() as well.
+#   without altering overrideRootMenu() als well.
 #       TODO: Make this more robust
 
 menudefs = [

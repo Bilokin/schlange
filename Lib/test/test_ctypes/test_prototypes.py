@@ -30,13 +30,13 @@ _ctypes_test = import_helper.import_module("_ctypes_test")
 testdll = CDLL(_ctypes_test.__file__)
 
 
-# Return machine address `a` as a (possibly long) non-negative integer.
-# Starting with Python 2.5, id(anything) is always non-negative, and
+# Return machine address `a` als a (possibly long) non-negative integer.
+# Starting mit Python 2.5, id(anything) is always non-negative, and
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
 def positive_address(a):
     wenn a >= 0:
         return a
-    # View the bits in `a` as unsigned instead.
+    # View the bits in `a` als unsigned instead.
     importiere struct
     num_bits = struct.calcsize("P") * 8 # num bits in native machine address
     a += 1 << num_bits
@@ -64,7 +64,7 @@ klasse CharPointersTestCase(unittest.TestCase):
 
         try:
             func()
-        except TypeError as details:
+        except TypeError als details:
             self.assertEqual(str(details), "required argument 'input' missing")
         sonst:
             self.fail("TypeError not raised")

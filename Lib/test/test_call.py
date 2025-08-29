@@ -171,15 +171,15 @@ klasse CFunctionCallsErrorMessages(unittest.TestCase):
                                print, 0, sep=1, end=2, file=3, flush=4, foo=5)
 
     def test_varargs18_kw(self):
-        # _PyArg_UnpackKeywords() with varpos
+        # _PyArg_UnpackKeywords() mit varpos
         msg = r"invalid keyword argument fuer print\(\)$"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             drucke(0, 1, **{BadStr('foo'): ','})
 
     def test_varargs19_kw(self):
         # _PyArg_UnpackKeywords()
         msg = r"invalid keyword argument fuer round\(\)$"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             round(1.75, **{BadStr('foo'): 1})
 
     def test_oldargs0_1(self):
@@ -454,11 +454,11 @@ klasse FastCallTests(unittest.TestCase):
     """Test calling using various callables von C
     """
 
-    # Test calls with positional arguments
+    # Test calls mit positional arguments
     CALLS_POSARGS = [
         # (func, args: tuple, result)
 
-        # Python function with 2 arguments
+        # Python function mit 2 arguments
         (pyfunc, (1, 2), [1, 2]),
 
         # Python function without argument
@@ -477,11 +477,11 @@ klasse FastCallTests(unittest.TestCase):
         # C callables are added later
     ]
 
-    # Test calls with positional and keyword arguments
+    # Test calls mit positional and keyword arguments
     CALLS_KWARGS = [
         # (func, args: tuple, kwargs: dict, result)
 
-        # Python function with 2 arguments
+        # Python function mit 2 arguments
         (pyfunc, (1,), {'arg2': 2}, [1, 2]),
         (pyfunc, (), {'arg1': 1, 'arg2': 2}, [1, 2]),
 
@@ -542,7 +542,7 @@ klasse FastCallTests(unittest.TestCase):
         # Test PyObject_VectorcallDict()
 
         fuer func, args, expected in self.CALLS_POSARGS:
-            with self.subTest(func=func, args=args):
+            mit self.subTest(func=func, args=args):
                 # kwargs=NULL
                 result = _testcapi.pyobject_fastcalldict(func, args, Nichts)
                 self.check_result(result, expected)
@@ -553,7 +553,7 @@ klasse FastCallTests(unittest.TestCase):
                     self.check_result(result, expected)
 
         fuer func, args, kwargs, expected in self.CALLS_KWARGS:
-            with self.subTest(func=func, args=args, kwargs=kwargs):
+            mit self.subTest(func=func, args=args, kwargs=kwargs):
                 result = _testcapi.pyobject_fastcalldict(func, args, kwargs)
                 self.check_result(result, expected)
 
@@ -562,7 +562,7 @@ klasse FastCallTests(unittest.TestCase):
         # Test PyObject_Vectorcall()
 
         fuer func, args, expected in self.CALLS_POSARGS:
-            with self.subTest(func=func, args=args):
+            mit self.subTest(func=func, args=args):
                 # kwnames=NULL
                 result = _testcapi.pyobject_vectorcall(func, args, Nichts)
                 self.check_result(result, expected)
@@ -581,7 +581,7 @@ klasse FastCallTests(unittest.TestCase):
                     self.check_result(result, expected)
 
         fuer func, args, kwargs, expected in self.CALLS_KWARGS:
-            with self.subTest(func=func, args=args, kwargs=kwargs):
+            mit self.subTest(func=func, args=args, kwargs=kwargs):
                 kwnames = tuple(kwargs.keys())
                 args = args + tuple(kwargs.values())
                 result = _testcapi.pyobject_vectorcall(func, args, kwnames)
@@ -690,7 +690,7 @@ klasse TestPEP590(unittest.TestCase):
 
         instance = DerivedType()
 
-        # Derived types with its own vectorcall should be unaffected
+        # Derived types mit its own vectorcall should be unaffected
         UnaffectedType1 = _testcapi.make_vectorcall_class(DerivedType)
         UnaffectedType2 = _testcapi.make_vectorcall_class(SuperType)
 
@@ -730,7 +730,7 @@ klasse TestPEP590(unittest.TestCase):
         #   (only fuer objects that support vectorcall directly)
         # 2. normal call
         # 3. vectorcall using PyObject_Vectorcall()
-        # 4. call as bound method
+        # 4. call als bound method
         # 5. call using functools.partial
 
         # A list of (function, args, kwargs, result) calls to test
@@ -754,7 +754,7 @@ klasse TestPEP590(unittest.TestCase):
             return pyobject_vectorcall(func, args, kwnames)
 
         fuer (func, args, kwargs, expected) in calls:
-            with self.subTest(str(func)):
+            mit self.subTest(str(func)):
                 wenn not kwargs:
                     self.assertEqual(expected, pyvectorcall_call(func, args))
                 self.assertEqual(expected, pyvectorcall_call(func, args, kwargs))
@@ -786,7 +786,7 @@ klasse TestPEP590(unittest.TestCase):
         ]
 
         fuer (func, args, kwargs, expected) in calls:
-            with self.subTest(str(func)):
+            mit self.subTest(str(func)):
                 args1 = args[1:]
                 meth = MethodType(func, args[0])
                 wrapped = partial(func)
@@ -855,7 +855,7 @@ klasse TestPEP590(unittest.TestCase):
         von _testcapi importiere pyobject_vectorcall
         fuer cls in (_testlimitedcapi.LimitedVectorCallClass,
                     _testlimitedcapi.LimitedRelativeVectorCallClass):
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 obj = cls()
                 self.assertEqual(
                     pyobject_vectorcall(obj, (), ()),
@@ -911,46 +911,46 @@ klasse TestErrorMessagesUseQualifiedName(unittest.TestCase):
 
     @contextlib.contextmanager
     def check_raises_type_error(self, message):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             yield
         self.assertEqual(str(cm.exception), message)
 
     def test_missing_arguments(self):
         msg = "A.method_two_args() missing 1 required positional argument: 'y'"
-        with self.check_raises_type_error(msg):
+        mit self.check_raises_type_error(msg):
             A().method_two_args("x")
 
     def test_too_many_positional(self):
         msg = "A.static_no_args() takes 0 positional arguments but 1 was given"
-        with self.check_raises_type_error(msg):
+        mit self.check_raises_type_error(msg):
             A.static_no_args("oops it's an arg")
 
     def test_positional_only_passed_as_keyword(self):
-        msg = "A.positional_only() got some positional-only arguments passed as keyword arguments: 'arg'"
-        with self.check_raises_type_error(msg):
+        msg = "A.positional_only() got some positional-only arguments passed als keyword arguments: 'arg'"
+        mit self.check_raises_type_error(msg):
             A.positional_only(arg="x")
 
     def test_unexpected_keyword(self):
         msg = "A.method_two_args() got an unexpected keyword argument 'bad'"
-        with self.check_raises_type_error(msg):
+        mit self.check_raises_type_error(msg):
             A().method_two_args(bad="x")
 
     def test_multiple_values(self):
         msg = "A.method_two_args() got multiple values fuer argument 'x'"
-        with self.check_raises_type_error(msg):
+        mit self.check_raises_type_error(msg):
             A().method_two_args("x", "y", x="oops")
 
 @cpython_only
 klasse TestErrorMessagesSuggestions(unittest.TestCase):
     @contextlib.contextmanager
     def check_suggestion_includes(self, message):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             yield
         self.assertIn(f"Did you mean '{message}'?", str(cm.exception))
 
     @contextlib.contextmanager
     def check_suggestion_not_present(self):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             yield
         self.assertNotIn("Did you mean", str(cm.exception))
 
@@ -966,9 +966,9 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
         ]
 
         fuer keyword, suggestion in cases:
-            with self.subTest(keyword):
+            mit self.subTest(keyword):
                 ctx = self.check_suggestion_includes(suggestion) wenn suggestion sonst self.check_suggestion_not_present()
-                with ctx:
+                mit ctx:
                     foo(**{keyword:Nichts})
 
     def test_unexpected_keyword_suggestion_kinds(self):
@@ -1004,34 +1004,34 @@ klasse TestErrorMessagesSuggestions(unittest.TestCase):
             (elimination_over_addition, "bluc"),
             (case_change_over_substitution, "BLuch"),
         ]:
-            with self.subTest(suggestion):
-                with self.check_suggestion_includes(suggestion):
+            mit self.subTest(suggestion):
+                mit self.check_suggestion_includes(suggestion):
                     func(bluch=Nichts)
 
     def test_unexpected_keyword_suggestion_via_getargs(self):
-        with self.check_suggestion_includes("maxsplit"):
+        mit self.check_suggestion_includes("maxsplit"):
             "foo".split(maxsplt=1)
 
         self.assertRaisesRegex(
             TypeError, r"split\(\) got an unexpected keyword argument 'blech'$",
             "foo".split, blech=1
         )
-        with self.check_suggestion_not_present():
+        mit self.check_suggestion_not_present():
             "foo".split(blech=1)
-        with self.check_suggestion_not_present():
+        mit self.check_suggestion_not_present():
             "foo".split(more_noise=1, maxsplt=1)
 
         # Also test the vgetargskeywords path
-        with self.check_suggestion_includes("name"):
+        mit self.check_suggestion_includes("name"):
             ImportError(namez="oops")
 
         self.assertRaisesRegex(
             TypeError, r"ImportError\(\) got an unexpected keyword argument 'blech'$",
             ImportError, blech=1
         )
-        with self.check_suggestion_not_present():
+        mit self.check_suggestion_not_present():
             ImportError(blech=1)
-        with self.check_suggestion_not_present():
+        mit self.check_suggestion_not_present():
             ImportError(blech=1, namez="oops")
 
 @cpython_only
@@ -1063,30 +1063,30 @@ klasse TestRecursion(unittest.TestCase):
             wenn m:
                 _testcapi.pyobject_vectorcall(py_recurse, (1000, m), ())
 
-        with set_recursion_limit(100_000):
+        mit set_recursion_limit(100_000):
             recurse(90_000)
-            with self.assertRaises(RecursionError):
+            mit self.assertRaises(RecursionError):
                 recurse(101_000)
             c_recurse(50)
-            with self.assertRaises(RecursionError):
+            mit self.assertRaises(RecursionError):
                 c_recurse(90_000)
             c_py_recurse(50)
-            with self.assertRaises(RecursionError):
+            mit self.assertRaises(RecursionError):
                 c_py_recurse(100_000)
 
     def test_recursion_with_kwargs(self):
         # GH-137883: The interpreter forgot to check the recursion limit when
-        # calling with keywords.
+        # calling mit keywords.
         def recurse_kw(a=0):
             recurse_kw(a=0)
-        with self.assertRaises(RecursionError):
+        mit self.assertRaises(RecursionError):
             recurse_kw()
 
 
 klasse TestFunctionWithManyArgs(unittest.TestCase):
     def test_function_with_many_args(self):
         fuer N in (10, 500, 1000):
-            with self.subTest(N=N):
+            mit self.subTest(N=N):
                 args = ",".join([f"a{i}" fuer i in range(N)])
                 src = f"def f({args}) : return a{N//2}"
                 l = {}

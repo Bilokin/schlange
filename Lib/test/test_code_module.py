@@ -235,11 +235,11 @@ klasse TestInteractiveConsole(unittest.TestCase, MockSys):
         def raise_base(*args, **kwargs):
             raise SystemExit
         self.sysmod.excepthook = raise_base
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             self.console.interact()
 
     def test_banner(self):
-        # with banner
+        # mit banner
         self.infunc.side_effect = EOFError('Finished')
         self.console.interact(banner='Foo')
         self.assertEqual(len(self.stderr.method_calls), 3)

@@ -87,8 +87,8 @@ def get_and_fixup_unknown_message_content(msg):
     # wenn it were application/octet-stream, per
     # tools.ietf.org/html/rfc2046#section-5.2.4.  Feedparser doesn't do that,
     # so do our best to fix things up.  Note that it is *not* appropriate to
-    # model message/partial content as Message objects, so they are handled
-    # here as well.  (How to reassemble them is out of scope fuer this comment :)
+    # model message/partial content als Message objects, so they are handled
+    # here als well.  (How to reassemble them is out of scope fuer this comment :)
     return bytes(msg.get_payload(0))
 raw_data_manager.add_get_handler('message',
                                  get_and_fixup_unknown_message_content)
@@ -106,7 +106,7 @@ def _prepare_set(msg, maintype, subtype, headers):
                 wenn header.defects:
                     raise header.defects[0]
                 msg[header.name] = header
-        except email.errors.HeaderDefect as exc:
+        except email.errors.HeaderDefect als exc:
             raise ValueError("Invalid header: {}".format(
                                 header.fold(policy=msg.policy))) von exc
 

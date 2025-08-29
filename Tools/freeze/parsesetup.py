@@ -99,7 +99,7 @@ def test():
             prdict(v)
         sonst:
             drucke(arg, 'is neither a Makefile nor a Setup file')
-            drucke('(name must begin with "Makefile" or "Setup")')
+            drucke('(name must begin mit "Makefile" or "Setup")')
 
 def prdict(d):
     keys = sorted(d.keys())

@@ -9,13 +9,13 @@ and IEEE standard 854-1987:
 
     http://en.wikipedia.org/wiki/IEEE_854-1987
 
-Decimal floating point has finite precision with arbitrarily large bounds.
+Decimal floating point has finite precision mit arbitrarily large bounds.
 
 The purpose of this module is to support arithmetic using familiar
 "schoolhouse" rules and to avoid some of the tricky representation
-issues associated with binary floating point.  The package is especially
+issues associated mit binary floating point.  The package is especially
 useful fuer financial applications or fuer contexts where users have
-expectations that are at odds with binary floating point (for instance,
+expectations that are at odds mit binary floating point (for instance,
 in binary floating point, 1.00 % 0.1 gives 0.09999999999999995 instead
 of 0.0; Decimal('1.00') % Decimal('0.1') returns the expected
 Decimal('0.00')).

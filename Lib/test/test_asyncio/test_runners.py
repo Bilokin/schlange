@@ -6,7 +6,7 @@ importiere signal
 importiere sys
 importiere threading
 importiere unittest
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 von unittest importiere mock
 von unittest.mock importiere patch
 
@@ -87,12 +87,12 @@ klasse RunTests(BaseTest):
             await asyncio.sleep(0)
             raise ValueError('spam')
 
-        with self.assertRaisesRegex(ValueError, 'spam'):
+        mit self.assertRaisesRegex(ValueError, 'spam'):
             asyncio.run(main())
 
     def test_asyncio_run_only_coro(self):
         fuer o in {1, lambda: Nichts}:
-            with self.subTest(obj=o), \
+            mit self.subTest(obj=o), \
                     self.assertRaisesRegex(TypeError,
                                            'an awaitable is required'):
                 asyncio.run(o)
@@ -104,10 +104,10 @@ klasse RunTests(BaseTest):
 
         asyncio.run(main(Falsch), debug=Falsch)
         asyncio.run(main(Wahr), debug=Wahr)
-        with mock.patch('asyncio.coroutines._is_debug_mode', lambda: Wahr):
+        mit mock.patch('asyncio.coroutines._is_debug_mode', lambda: Wahr):
             asyncio.run(main(Wahr))
             asyncio.run(main(Falsch), debug=Falsch)
-        with mock.patch('asyncio.coroutines._is_debug_mode', lambda: Falsch):
+        mit mock.patch('asyncio.coroutines._is_debug_mode', lambda: Falsch):
             asyncio.run(main(Wahr), debug=Wahr)
             asyncio.run(main(Falsch))
 
@@ -119,7 +119,7 @@ klasse RunTests(BaseTest):
             finally:
                 coro.close()  # Suppress ResourceWarning
 
-        with self.assertRaisesRegex(RuntimeError,
+        mit self.assertRaisesRegex(RuntimeError,
                                     'cannot be called von a running'):
             asyncio.run(main())
 
@@ -193,7 +193,7 @@ klasse RunTests(BaseTest):
             lazyboy = asyncio.create_task(spin())
             raise FancyExit
 
-        with self.assertRaises(FancyExit):
+        mit self.assertRaises(FancyExit):
             asyncio.run(main())
 
         self.assertWahr(lazyboy.done())
@@ -260,7 +260,7 @@ klasse RunTests(BaseTest):
             return loop
 
         asyncio.events._set_event_loop_policy(TestPolicy(new_event_loop))
-        with self.assertRaises(asyncio.CancelledError):
+        mit self.assertRaises(asyncio.CancelledError):
             asyncio.run(main())
 
     def test_asyncio_run_loop_factory(self):
@@ -287,16 +287,16 @@ klasse RunTests(BaseTest):
 klasse RunnerTests(BaseTest):
 
     def test_non_debug(self):
-        with asyncio.Runner(debug=Falsch) as runner:
+        mit asyncio.Runner(debug=Falsch) als runner:
             self.assertFalsch(runner.get_loop().get_debug())
 
     def test_debug(self):
-        with asyncio.Runner(debug=Wahr) as runner:
+        mit asyncio.Runner(debug=Wahr) als runner:
             self.assertWahr(runner.get_loop().get_debug())
 
     def test_custom_factory(self):
         loop = mock.Mock()
-        with asyncio.Runner(loop_factory=lambda: loop) as runner:
+        mit asyncio.Runner(loop_factory=lambda: loop) als runner:
             self.assertIs(runner.get_loop(), loop)
 
     def test_run(self):
@@ -304,11 +304,11 @@ klasse RunnerTests(BaseTest):
             await asyncio.sleep(0)
             return 'done'
 
-        with asyncio.Runner() as runner:
+        mit asyncio.Runner() als runner:
             self.assertEqual('done', runner.run(f()))
             loop = runner.get_loop()
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             RuntimeError,
             "Runner is closed"
         ):
@@ -317,15 +317,15 @@ klasse RunnerTests(BaseTest):
         self.assertWahr(loop.is_closed())
 
     def test_run_non_coro(self):
-        with asyncio.Runner() as runner:
-            with self.assertRaisesRegex(
+        mit asyncio.Runner() als runner:
+            mit self.assertRaisesRegex(
                 TypeError,
                 "an awaitable is required"
             ):
                 runner.run(123)
 
     def test_run_future(self):
-        with asyncio.Runner() as runner:
+        mit asyncio.Runner() als runner:
             fut = runner.get_loop().create_future()
             fut.set_result('done')
             self.assertEqual('done', runner.run(fut))
@@ -339,14 +339,14 @@ klasse RunnerTests(BaseTest):
             async def run():
                 return 'done'
 
-        with asyncio.Runner() as runner:
+        mit asyncio.Runner() als runner:
             self.assertEqual('done', runner.run(MyAwaitable()))
 
     def test_explicit_close(self):
         runner = asyncio.Runner()
         loop = runner.get_loop()
         runner.close()
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 RuntimeError,
                 "Runner is closed"
         ):
@@ -372,14 +372,14 @@ klasse RunnerTests(BaseTest):
             ret.append(arg)
 
         runner = asyncio.Runner()
-        with runner:
+        mit runner:
             runner.run(f(1))
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             RuntimeError,
             "Runner is closed"
         ):
-            with runner:
+            mit runner:
                 runner.run(f(2))
 
         self.assertEqual([1], ret)
@@ -396,7 +396,7 @@ klasse RunnerTests(BaseTest):
         async def get_context():
             return contextvars.copy_context()
 
-        with asyncio.Runner() as runner:
+        mit asyncio.Runner() als runner:
             self.assertEqual(-1, runner.run(f(1)))
             self.assertEqual(1, runner.run(f(2)))
 
@@ -409,12 +409,12 @@ klasse RunnerTests(BaseTest):
         async def f():
             runner.run(g())
 
-        with asyncio.Runner() as runner:
-            with self.assertWarnsRegex(
+        mit asyncio.Runner() als runner:
+            mit self.assertWarnsRegex(
                 RuntimeWarning,
                 "coroutine .+ was never awaited",
             ):
-                with self.assertRaisesRegex(
+                mit self.assertRaisesRegex(
                     RuntimeError,
                     re.escape(
                         "Runner.run() cannot be called von a running event loop"
@@ -428,14 +428,14 @@ klasse RunnerTests(BaseTest):
         assert threading.current_thread() is threading.main_thread()
 
         async def coro():
-            with self.assertRaises(asyncio.CancelledError):
+            mit self.assertRaises(asyncio.CancelledError):
                 while Wahr:
                     await asyncio.sleep(0)
             raise asyncio.CancelledError()
 
-        with asyncio.Runner() as runner:
+        mit asyncio.Runner() als runner:
             runner.get_loop().call_later(0.1, interrupt_self)
-            with self.assertRaises(KeyboardInterrupt):
+            mit self.assertRaises(KeyboardInterrupt):
                 runner.run(coro())
 
     def test_interrupt_wait(self):
@@ -443,15 +443,15 @@ klasse RunnerTests(BaseTest):
         assert threading.current_thread() is threading.main_thread()
 
         async def coro(fut):
-            with self.assertRaises(asyncio.CancelledError):
+            mit self.assertRaises(asyncio.CancelledError):
                 await fut
             raise asyncio.CancelledError()
 
-        with asyncio.Runner() as runner:
+        mit asyncio.Runner() als runner:
             fut = runner.get_loop().create_future()
             runner.get_loop().call_later(0.1, interrupt_self)
 
-            with self.assertRaises(KeyboardInterrupt):
+            mit self.assertRaises(KeyboardInterrupt):
                 runner.run(coro(fut))
 
             self.assertWahr(fut.cancelled())
@@ -469,8 +469,8 @@ klasse RunnerTests(BaseTest):
             asyncio.create_task(subtask(asyncio.current_task()))
             await asyncio.sleep(10)
 
-        with asyncio.Runner() as runner:
-            with self.assertRaises(asyncio.CancelledError):
+        mit asyncio.Runner() als runner:
+            mit self.assertRaises(asyncio.CancelledError):
                 runner.run(coro())
 
     def test_signal_install_not_supported_ok(self):
@@ -480,8 +480,8 @@ klasse RunnerTests(BaseTest):
         async def coro():
             pass
 
-        with asyncio.Runner() as runner:
-            with patch.object(
+        mit asyncio.Runner() als runner:
+            mit patch.object(
                 signal,
                 "signal",
                 side_effect=ValueError(
@@ -517,7 +517,7 @@ klasse RunnerTests(BaseTest):
             return MyResult()
 
 
-        with asyncio.Runner() as runner:
+        mit asyncio.Runner() als runner:
             result = runner.run(coro())
 
         self.assertEqual(0, result.repr_count)

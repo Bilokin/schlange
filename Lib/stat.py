@@ -30,7 +30,7 @@ def S_IFMT(mode):
     """
     return mode & 0o170000
 
-# Constants used as S_IFMT() fuer various file types
+# Constants used als S_IFMT() fuer various file types
 # (not all are implemented on all systems)
 
 S_IFDIR  = 0o040000  # directory
@@ -135,7 +135,7 @@ _filemode_table = (
     # File type chars according to:
     # http://en.wikibooks.org/wiki/C_Programming/POSIX_Reference/sys/stat.h
     ((S_IFLNK,         "l"),
-     (S_IFSOCK,        "s"),  # Must appear before IFREG and IFDIR as IFSOCK == IFREG | IFDIR
+     (S_IFSOCK,        "s"),  # Must appear before IFREG and IFDIR als IFSOCK == IFREG | IFDIR
      (S_IFREG,         "-"),
      (S_IFBLK,         "b"),
      (S_IFDIR,         "d"),

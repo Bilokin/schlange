@@ -77,7 +77,7 @@ klasse Logger:
 
         try:
             self.win_load_tracker = WindowsLoadTracker()
-        except PermissionError as error:
+        except PermissionError als error:
             # Standard accounts may not have access to the performance
             # counters.
             print_warning(f'Failed to create WindowsLoadTracker: {error}')

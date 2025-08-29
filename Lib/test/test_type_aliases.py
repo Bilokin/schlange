@@ -129,7 +129,7 @@ klasse TypeParamsAliasValueTest(unittest.TestCase):
         type Generic[A] = dict[A, A]
         type VeryGeneric[T, *Ts, **P] = Callable[P, tuple[T, *Ts]]
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             NonGeneric[int]
 
         specialized = Generic[int]
@@ -172,9 +172,9 @@ klasse TypeParamsAliasValueTest(unittest.TestCase):
 
     def test_raising(self):
         type MissingName = list[_My_X]
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             NameError,
-            "cannot access free variable '_My_X' where it is not associated with a value",
+            "cannot access free variable '_My_X' where it is not associated mit a value",
         ):
             MissingName.__value__
         _My_X = int
@@ -185,7 +185,7 @@ klasse TypeParamsAliasValueTest(unittest.TestCase):
 
         # Explicit exception:
         type ExprException = 1 / 0
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             ExprException.__value__
 
 
@@ -221,7 +221,7 @@ klasse TypeAliasConstructorTest(unittest.TestCase):
         self.assertEqual(TA.__value__, list[int])
         self.assertEqual(TA.__type_params__, ())
         self.assertEqual(TA.__module__, __name__)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             TypeError,
             "Only generic type aliases are subscriptable",
         ):
@@ -242,7 +242,7 @@ klasse TypeAliasConstructorTest(unittest.TestCase):
             (HasNoDefaultP, WithDefaultP),
             (HasNoDefaultTT, WithDefaultTT),
         ]:
-            with self.subTest(type_params=type_params):
+            mit self.subTest(type_params=type_params):
                 TypeAliasType("A", int, type_params=type_params)  # ok
 
         msg = "follows default type parameter"
@@ -252,19 +252,19 @@ klasse TypeAliasConstructorTest(unittest.TestCase):
             (WithDefaultTT, HasNoDefaultTT),
             (WithDefaultT, HasNoDefaultP),  # different types
         ]:
-            with self.subTest(type_params=type_params):
-                with self.assertRaisesRegex(TypeError, msg):
+            mit self.subTest(type_params=type_params):
+                mit self.assertRaisesRegex(TypeError, msg):
                     TypeAliasType("A", int, type_params=type_params)
 
     def test_expects_type_like(self):
         T = TypeVar("T")
 
         msg = "Expected a type param"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             TypeAliasType("A", int, type_params=(1,))
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             TypeAliasType("A", int, type_params=(1, 2))
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             TypeAliasType("A", int, type_params=(T, 2))
 
     def test_keywords(self):
@@ -275,23 +275,23 @@ klasse TypeAliasConstructorTest(unittest.TestCase):
         self.assertEqual(TA.__module__, __name__)
 
     def test_errors(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             TypeAliasType()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             TypeAliasType("TA")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             TypeAliasType("TA", list, ())
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             TypeAliasType("TA", list, type_params=42)
 
 
 klasse TypeAliasTypeTest(unittest.TestCase):
     def test_immutable(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             TypeAliasType.whatever = "not allowed"
 
     def test_no_subclassing(self):
-        with self.assertRaisesRegex(TypeError, "not an acceptable base type"):
+        mit self.assertRaisesRegex(TypeError, "not an acceptable base type"):
             klasse MyAlias(TypeAliasType):
                 pass
 
@@ -377,7 +377,7 @@ klasse TypeAliasPickleTest(unittest.TestCase):
         ]
         fuer thing in things_to_test:
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(thing=thing, proto=proto):
+                mit self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     self.assertEqual(pickle.loads(pickled), thing)
 
@@ -391,8 +391,8 @@ klasse TypeAliasPickleTest(unittest.TestCase):
         ]
         fuer thing in things_to_test:
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(thing=thing, proto=proto):
-                    with self.assertRaises(pickle.PickleError):
+                mit self.subTest(thing=thing, proto=proto):
+                    mit self.assertRaises(pickle.PickleError):
                         pickle.dumps(thing, protocol=proto)
 
 

@@ -36,7 +36,7 @@ def setUpModule():
     # Issue #13441: Skip some locales (e.g. cs_CZ and hu_HU) on Solaris to
     # workaround a mbstowcs() bug. For example, on Solaris, the hu_HU locale uses
     # the locale encoding ISO-8859-2, the thousands separator is b'\xA0' and it is
-    # decoded as U+30000020 (an invalid character) by mbstowcs().
+    # decoded als U+30000020 (an invalid character) by mbstowcs().
     wenn sys.platform == 'sunos5':
         old_locale = locale.setlocale(locale.LC_ALL)
         try:
@@ -49,7 +49,7 @@ def setUpModule():
                 encoding = locale.getencoding()
                 try:
                     localeconv()
-                except Exception as err:
+                except Exception als err:
                     drucke("WARNING: Skip locale %s (encoding %s): [%s] %s"
                         % (loc, encoding, type(err), err))
                 sonst:
@@ -66,7 +66,7 @@ def setUpModule():
         candidate_locales = [loc fuer loc in candidate_locales wenn accept(loc)]
 
 # List known locale values to test against when available.
-# Dict formatted as ``<locale> : (<decimal_point>, <thousands_sep>)``.  If a
+# Dict formatted als ``<locale> : (<decimal_point>, <thousands_sep>)``.  If a
 # value is not known, use '' .
 known_numerics = {
     'en_US': ('.', ','),
@@ -103,7 +103,7 @@ wenn sys.platform == 'win32':
     del known_numerics['ps_AF']
 
 wenn sys.platform == 'sunos5':
-    # On Solaris, Japanese ERAs start with the year 1927,
+    # On Solaris, Japanese ERAs start mit the year 1927,
     # and thus there's less of them.
     known_era['ja_JP'] = (5, '+:1:2019/05/01:2019/12/31:令和:%EC元年')
 
@@ -209,14 +209,14 @@ klasse _LocaleTests(unittest.TestCase):
         # Test nl_langinfo(ALT_DIGITS)
         tested = Falsch
         fuer loc in candidate_locales:
-            with self.subTest(locale=loc):
+            mit self.subTest(locale=loc):
                 try:
                     setlocale(LC_TIME, loc)
                 except Error:
                     self.skipTest(f'no locale {loc!r}')
                     continue
 
-                with self.subTest(locale=loc):
+                mit self.subTest(locale=loc):
                     alt_digits = nl_langinfo(locale.ALT_DIGITS)
                     self.assertIsInstance(alt_digits, str)
                     alt_digits = alt_digits.split(';') wenn alt_digits sonst []
@@ -241,14 +241,14 @@ klasse _LocaleTests(unittest.TestCase):
         # Test nl_langinfo(ERA)
         tested = Falsch
         fuer loc in candidate_locales:
-            with self.subTest(locale=loc):
+            mit self.subTest(locale=loc):
                 try:
                     setlocale(LC_TIME, loc)
                 except Error:
                     self.skipTest(f'no locale {loc!r}')
                     continue
 
-                with self.subTest(locale=loc):
+                mit self.subTest(locale=loc):
                     era = nl_langinfo(locale.ERA)
                     self.assertIsInstance(era, str)
                     wenn era:

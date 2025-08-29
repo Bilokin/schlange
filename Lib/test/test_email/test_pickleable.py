@@ -40,8 +40,8 @@ klasse TestPickleCopyHeader(TestEmailBase):
 klasse TestPickleCopyMessage(TestEmailBase):
 
     # Message objects are a sequence, so we have to make them a one-tuple in
-    # msg_params so they get passed to the parameterized test method as a
-    # single argument instead of as a list of headers.
+    # msg_params so they get passed to the parameterized test method als a
+    # single argument instead of als a list of headers.
     msg_params = {}
 
     # Note: there will be no custom header objects in the parsed message.

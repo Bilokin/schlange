@@ -17,7 +17,7 @@ def _test():
 wenn __name__ == "__main__":
     _test()
 
-Then running the module as a script will cause the examples in the
+Then running the module als a script will cause the examples in the
 docstrings to get executed and verified:
 
 python M.py
@@ -27,7 +27,7 @@ failing example(s) and the cause(s) of the failure(s) are printed to stdout
 (why not stderr? because stderr is a lame hack <0.2 wink>), and the final
 line of output is "Test failed.".
 
-Run it with the -v switch instead:
+Run it mit the -v switch instead:
 
 python M.py -v
 
@@ -202,7 +202,7 @@ ELLIPSIS_MARKER = '...'
 
 def _extract_future_flags(globs):
     """
-    Return the compiler-flags associated with the future features that
+    Return the compiler-flags associated mit the future features that
     have been imported into the given namespace (globs).
     """
     flags = 0
@@ -217,7 +217,7 @@ def _normalize_module(module, depth=2):
     Return the module specified by `module`.  In particular:
       - If `module` is a module, then return module.
       - If `module` is a string, then importiere and return the
-        module with that name.
+        module mit that name.
       - If `module` is Nichts, then return the calling module.
         The calling module is assumed to be the module of
         the stack frame at the given depth in the call stack.
@@ -253,10 +253,10 @@ def _load_testfile(filename, package, module_relative, encoding):
         wenn hasattr(loader, 'get_data'):
             file_contents = loader.get_data(filename)
             file_contents = file_contents.decode(encoding)
-            # get_data() opens files as 'rb', so one must do the equivalent
-            # conversion as universal newlines would do.
+            # get_data() opens files als 'rb', so one must do the equivalent
+            # conversion als universal newlines would do.
             return _newline_convert(file_contents), filename
-    with open(filename, encoding=encoding) as f:
+    mit open(filename, encoding=encoding) als f:
         return f.read(), filename
 
 def _indent(s, indent=4):
@@ -307,17 +307,17 @@ def _ellipsis_match(want, got):
     ws = want.split(ELLIPSIS_MARKER)
     assert len(ws) >= 2
 
-    # Deal with exact matches possibly needed at one or both ends.
+    # Deal mit exact matches possibly needed at one or both ends.
     startpos, endpos = 0, len(got)
     w = ws[0]
-    wenn w:   # starts with exact match
+    wenn w:   # starts mit exact match
         wenn got.startswith(w):
             startpos = len(w)
             del ws[0]
         sonst:
             return Falsch
     w = ws[-1]
-    wenn w:   # ends with exact match
+    wenn w:   # ends mit exact match
         wenn got.endswith(w):
             endpos -= len(w)
             del ws[-1]
@@ -325,7 +325,7 @@ def _ellipsis_match(want, got):
             return Falsch
 
     wenn startpos > endpos:
-        # Exact end matches required more characters than we have, as in
+        # Exact end matches required more characters than we have, als in
         # _ellipsis_match('aa...aa', 'aaa')
         return Falsch
 
@@ -380,7 +380,7 @@ def _strip_exception_details(msg):
 klasse _OutputRedirectingPdb(pdb.Pdb):
     """
     A specialized version of the python debugger that redirects stdout
-    to a given stream when interacting with the user.  Stdout is *not*
+    to a given stream when interacting mit the user.  Stdout is *not*
     redirected when traced code is executed.
     """
     def __init__(self, out):
@@ -399,7 +399,7 @@ klasse _OutputRedirectingPdb(pdb.Pdb):
 
     def set_continue(self):
         # Calling set_continue unconditionally would break unit test
-        # coverage reporting, as Bdb.set_continue calls sys.settrace(Nichts).
+        # coverage reporting, als Bdb.set_continue calls sys.settrace(Nichts).
         wenn self.__debugger_used:
             pdb.Pdb.set_continue(self)
 
@@ -413,14 +413,14 @@ klasse _OutputRedirectingPdb(pdb.Pdb):
         finally:
             sys.stdout = save_stdout
 
-# [XX] Normalize with respect to os.path.pardir?
+# [XX] Normalize mit respect to os.path.pardir?
 def _module_relative_path(module, test_path):
     wenn not inspect.ismodule(module):
         raise TypeError('Expected a module: %r' % module)
     wenn test_path.startswith('/'):
         raise ValueError('Module-relative files may not have absolute paths')
 
-    # Normalize the path. On Windows, replace "/" with "\".
+    # Normalize the path. On Windows, replace "/" mit "\".
     test_path = os.path.join(*(test_path.split('/')))
 
     # Find the base directory fuer the path.
@@ -457,7 +457,7 @@ def _module_relative_path(module, test_path):
 ##   where the example was extracted from.
 ##
 ## - A "doctest" is a collection of examples, typically extracted from
-##   a string (such as an object's docstring).  The DocTest klasse also
+##   a string (such als an object's docstring).  The DocTest klasse also
 ##   includes information about where the string was extracted from.
 
 klasse Example:
@@ -465,25 +465,25 @@ klasse Example:
     A single doctest example, consisting of source code and expected
     output.  `Example` defines the following attributes:
 
-      - source: A single Python statement, always ending with a newline.
+      - source: A single Python statement, always ending mit a newline.
         The constructor adds a newline wenn needed.
 
       - want: The expected output von running the source code (either
         von stdout, or a traceback in case of exception).  `want` ends
-        with a newline unless it's empty, in which case it's an empty
+        mit a newline unless it's empty, in which case it's an empty
         string.  The constructor adds a newline wenn needed.
 
       - exc_msg: The exception message generated by the example, if
         the example is expected to generate an exception; or `Nichts` if
         it is not expected to generate an exception.  This exception
         message is compared against the return value of
-        `traceback.format_exception_only()`.  `exc_msg` ends with a
+        `traceback.format_exception_only()`.  `exc_msg` ends mit a
         newline unless it's `Nichts`.  The constructor adds a newline
         wenn needed.
 
       - lineno: The line number within the DocTest string containing
         this Example where the Example begins.  This line number is
-        zero-based, with respect to the beginning of the DocTest.
+        zero-based, mit respect to the beginning of the DocTest.
 
       - indent: The example's indentation in the DocTest string.
         I.e., the number of space characters that precede the
@@ -546,7 +546,7 @@ klasse DocTest:
 
       - lineno: The line number within filename where this DocTest
         begins, or `Nichts` wenn the line number is unavailable.  This
-        line number is zero-based, with respect to the beginning of
+        line number is zero-based, mit respect to the beginning of
         the file.
 
       - docstring: The string that the examples were extracted from,
@@ -555,7 +555,7 @@ klasse DocTest:
     def __init__(self, examples, globs, name, filename, lineno, docstring):
         """
         Create a new DocTest containing the given examples.  The
-        DocTest's globals are initialized with a copy of `globs`.
+        DocTest's globals are initialized mit a copy of `globs`.
         """
         assert not isinstance(examples, str), \
                "DocTest no longer accepts str; use DocTestParser instead"
@@ -620,9 +620,9 @@ klasse DocTestParser:
             (?:^(?P<indent> [ ]*) >>>    .*)    # PS1 line
             (?:\n           [ ]*  \.\.\. .*)*)  # PS2 lines
         \n?
-        # Want consists of any non-blank lines that do not start with PS1.
+        # Want consists of any non-blank lines that do not start mit PS1.
         (?P<want> (?:(?![ ]*$)    # Not a blank line
-                     (?![ ]*>>>)  # Not a line starting with PS1
+                     (?![ ]*>>>)  # Not a line starting mit PS1
                      .+$\n?       # But any other line
                   )*)
         ''', re.MULTILINE | re.VERBOSE)
@@ -631,10 +631,10 @@ klasse DocTestParser:
     # expected exceptions.  It divides `want` into three pieces:
     #    - the traceback header line (`hdr`)
     #    - the traceback stack (`stack`)
-    #    - the exception message (`msg`), as generated by
+    #    - the exception message (`msg`), als generated by
     #      traceback.format_exception_only()
     # `msg` may have multiple lines.  We assume/require that the
-    # exception message is the first non-indented line starting with a word
+    # exception message is the first non-indented line starting mit a word
     # character following the traceback header line.
     _EXCEPTION_RE = re.compile(r"""
         # Grab the traceback header.  Different versions of Python have
@@ -646,7 +646,7 @@ klasse DocTestParser:
         )
         \s* $                # toss trailing whitespace on the header.
         (?P<stack> .*?)      # don't blink: absorb stuff until...
-        ^ (?P<msg> \w+ .*)   #     a line *starts* with alphanum.
+        ^ (?P<msg> \w+ .*)   #     a line *starts* mit alphanum.
         """, re.VERBOSE | re.MULTILINE | re.DOTALL)
 
     # A callable returning a true value iff its argument is a blank line
@@ -656,13 +656,13 @@ klasse DocTestParser:
     def parse(self, string, name='<string>'):
         """
         Divide the given string into examples and intervening text,
-        and return them as a list of alternating Examples and strings.
+        and return them als a list of alternating Examples and strings.
         Line numbers fuer the Examples are 0-based.  The optional
         argument `name` is a name identifying this string, and is only
         used fuer error messages.
         """
         string = string.expandtabs()
-        # If all lines begin with the same indentation, then strip it.
+        # If all lines begin mit the same indentation, then strip it.
         min_indent = self._min_indent(string)
         wenn min_indent > 0:
             string = '\n'.join([l[min_indent:] fuer l in string.split('\n')])
@@ -707,9 +707,9 @@ klasse DocTestParser:
     def get_examples(self, string, name='<string>'):
         """
         Extract all doctest examples von the given string, and return
-        them as a list of `Example` objects.  Line numbers are
+        them als a list of `Example` objects.  Line numbers are
         0-based, because it's most common in doctests that nothing
-        interesting appears on the same line as opening triple-quote,
+        interesting appears on the same line als opening triple-quote,
         and so the first interesting line is called \"line 1\" then.
 
         The optional argument `name` is a name identifying this
@@ -764,7 +764,7 @@ klasse DocTestParser:
 
     # This regular expression looks fuer option directives in the
     # source code of an example.  Option directives are comments
-    # starting with "doctest:".  Warning: this may give false
+    # starting mit "doctest:".  Warning: this may give false
     # positives fuer string-literals that contain the string
     # "#doctest:".  Eliminating these false positives would require
     # actually parsing the string; but we limit them by ignoring any
@@ -781,7 +781,7 @@ klasse DocTestParser:
         where the example starts; both are used fuer error messages.
         """
         options = {}
-        # (note: with the current regexp, this will match at most once:)
+        # (note: mit the current regexp, this will match at most once:)
         fuer m in self._OPTION_DIRECTIVE_RE.finditer(source):
             option_strings = m.group(1).replace(',', ' ').split()
             fuer option in option_strings:
@@ -794,7 +794,7 @@ klasse DocTestParser:
                 options[flag] = (option[0] == '+')
         wenn options and self._IS_BLANK_OR_COMMENT(source):
             raise ValueError('line %r of the doctest fuer %s has an option '
-                             'directive on a line with no example: %r' %
+                             'directive on a line mit no example: %r' %
                              (lineno, name, source))
         return options
 
@@ -826,7 +826,7 @@ klasse DocTestParser:
 
     def _check_prefix(self, lines, prefix, name, lineno):
         """
-        Check that every line in the given list starts with the given
+        Check that every line in the given list starts mit the given
         prefix; wenn any line does not, then raise a ValueError.
         """
         fuer i, line in enumerate(lines):
@@ -856,7 +856,7 @@ klasse DocTestFinder:
 
         The optional argument `parser` specifies a klasse or
         function that should be used to create new DocTest objects (or
-        objects that implement the same interface as DocTest).  The
+        objects that implement the same interface als DocTest).  The
         signature fuer this factory function should match the signature
         of the DocTest constructor.
 
@@ -864,7 +864,7 @@ klasse DocTestFinder:
         only examine the given object, and not any contained objects.
 
         If the optional argument `exclude_empty` is false, then `find`
-        will include tests fuer objects with empty docstrings.
+        will include tests fuer objects mit empty docstrings.
         """
         self._parser = parser
         self._verbose = verbose
@@ -1160,9 +1160,9 @@ klasse DocTestFinder:
             lineno = obj.co_firstlineno - 1
 
         # Find the line number where the docstring starts.  Assume
-        # that it's the first line that begins with a quote mark.
+        # that it's the first line that begins mit a quote mark.
         # Note: this could be fooled by a multiline function
-        # signature, where a continuation line begins with a quote
+        # signature, where a continuation line begins mit a quote
         # mark.
         wenn lineno is not Nichts:
             wenn source_lines is Nichts:
@@ -1224,7 +1224,7 @@ klasse DocTestRunner:
         0
 
     The comparison between expected outputs and actual outputs is done
-    by an `OutputChecker`.  This comparison may be customized with a
+    by an `OutputChecker`.  This comparison may be customized mit a
     number of option flags; see the documentation fuer `testmod` for
     more information.  If the option flags are insufficient, then the
     comparison may also be customized by passing a subclass of
@@ -1232,7 +1232,7 @@ klasse DocTestRunner:
 
     The test runner's display output can be controlled in two ways.
     First, an output function (`out`) can be passed to
-    `TestRunner.run`; this function will be called with strings that
+    `TestRunner.run`; this function will be called mit strings that
     should be displayed.  It defaults to `sys.stdout.write`.  If
     capturing the output is not sufficient, then the display output
     can be also customized by subclassing DocTestRunner, and
@@ -1348,7 +1348,7 @@ klasse DocTestRunner:
     def __run(self, test, compileflags, out):
         """
         Run the examples in `test`.  Write the outcome of each example
-        with one of the `DocTestRunner.report_*` methods, using the
+        mit one of the `DocTestRunner.report_*` methods, using the
         writer function `out`.  `compileflags` is the set of compiler
         flags that should be used to execute examples.  Return a TestResults
         instance.  The examples are run in the namespace `test.globs`.
@@ -1409,7 +1409,7 @@ klasse DocTestRunner:
                 exc_info = Nichts
             except KeyboardInterrupt:
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 exc_info = type(exc), exc, exc.__traceback__.tb_next
                 self.debugger.set_continue() # ==== Example Finished ====
 
@@ -1430,7 +1430,7 @@ klasse DocTestRunner:
                     # SyntaxError / IndentationError is special:
                     # we don't care about the carets / suggestions / etc
                     # We only care about the error message and notes.
-                    # They start with `SyntaxError:` (or any other klasse name)
+                    # They start mit `SyntaxError:` (or any other klasse name)
                     exception_line_prefixes = (
                         f"{exc_info[0].__qualname__}:",
                         f"{exc_info[0].__module__}.{exc_info[0].__qualname__}:",
@@ -1519,7 +1519,7 @@ klasse DocTestRunner:
 
         The examples are run in the namespace `test.globs`.  If
         `clear_globs` is true (the default), then this namespace will
-        be cleared after the test runs, to help with garbage
+        be cleared after the test runs, to help mit garbage
         collection.  If you would like to examine the namespace after
         the test completes, then use `clear_globs=Falsch`.
 
@@ -1718,10 +1718,10 @@ klasse OutputChecker:
         option flags.
         """
 
-        # If `want` contains hex-escaped character such as "\u1234",
+        # If `want` contains hex-escaped character such als "\u1234",
         # then `want` is a string of six characters(e.g. [\,u,1,2,3,4]).
         # On the other hand, `got` could be another sequence of
-        # characters such as [\u1234], so `want` and `got` should
+        # characters such als [\u1234], so `want` and `got` should
         # be folded to hex-escaped ASCII string to compare.
         got = self._toAscii(got)
         want = self._toAscii(want)
@@ -1731,7 +1731,7 @@ klasse OutputChecker:
         wenn got == want:
             return Wahr
 
-        # The values Wahr and Falsch replaced 1 and 0 as the return
+        # The values Wahr and Falsch replaced 1 and 0 als the return
         # value fuer boolean comparisons in Python 2.3.
         wenn not (optionflags & DONT_ACCEPT_TRUE_FOR_1):
             wenn (got,want) == ("Wahr\n", "1\n"):
@@ -1739,10 +1739,10 @@ klasse OutputChecker:
             wenn (got,want) == ("Falsch\n", "0\n"):
                 return Wahr
 
-        # <BLANKLINE> can be used as a special sequence to signify a
+        # <BLANKLINE> can be used als a special sequence to signify a
         # blank line, unless the DONT_ACCEPT_BLANKLINE flag is used.
         wenn not (optionflags & DONT_ACCEPT_BLANKLINE):
-            # Replace <BLANKLINE> in want with a blank line.
+            # Replace <BLANKLINE> in want mit a blank line.
             want = re.sub(r'(?m)^%s\s*?$' % re.escape(BLANKLINE_MARKER),
                           '', want)
             # If a line in got contains only spaces, then remove the
@@ -1753,7 +1753,7 @@ klasse OutputChecker:
 
         # This flag causes doctest to ignore any differences in the
         # contents of whitespace strings.  Note that this can be used
-        # in conjunction with the ELLIPSIS flag.
+        # in conjunction mit the ELLIPSIS flag.
         wenn optionflags & NORMALIZE_WHITESPACE:
             got = ' '.join(got.split())
             want = ' '.join(want.split())
@@ -1802,7 +1802,7 @@ klasse OutputChecker:
         """
         want = example.want
         # If <BLANKLINE>s are being used, then replace blank lines
-        # with <BLANKLINE> in the actual output string.
+        # mit <BLANKLINE> in the actual output string.
         wenn not (optionflags & DONT_ACCEPT_BLANKLINE):
             got = re.sub('(?m)^[ ]*(?=\n)', BLANKLINE_MARKER, got)
 
@@ -1815,15 +1815,15 @@ klasse OutputChecker:
             wenn optionflags & REPORT_UDIFF:
                 diff = difflib.unified_diff(want_lines, got_lines, n=2)
                 diff = list(diff)[2:] # strip the diff header
-                kind = 'unified diff with -expected +actual'
+                kind = 'unified diff mit -expected +actual'
             sowenn optionflags & REPORT_CDIFF:
                 diff = difflib.context_diff(want_lines, got_lines, n=2)
                 diff = list(diff)[2:] # strip the diff header
-                kind = 'context diff with expected followed by actual'
+                kind = 'context diff mit expected followed by actual'
             sowenn optionflags & REPORT_NDIFF:
                 engine = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
                 diff = list(engine.compare(want_lines, got_lines))
-                kind = 'ndiff with -expected +actual'
+                kind = 'ndiff mit -expected +actual'
             sonst:
                 assert 0, 'Bad diff option'
             return 'Differences (%s):\n' % kind + _indent(''.join(diff))
@@ -1878,7 +1878,7 @@ klasse UnexpectedException(Exception):
         return str(self.test)
 
 klasse DebugRunner(DocTestRunner):
-    r"""Run doc tests but raise an exception as soon as there is a failure.
+    r"""Run doc tests but raise an exception als soon als there is a failure.
 
        If an unexpected exception occurs, an UnexpectedException is raised.
        It contains the test, the example, and the original exception:
@@ -1888,7 +1888,7 @@ klasse DebugRunner(DocTestRunner):
          ...                                    {}, 'foo', 'foo.py', 0)
          >>> try:
          ...     runner.run(test)
-         ... except UnexpectedException as f:
+         ... except UnexpectedException als f:
          ...     failure = f
 
          >>> failure.test is test
@@ -1916,7 +1916,7 @@ klasse DebugRunner(DocTestRunner):
 
          >>> try:
          ...    runner.run(test)
-         ... except DocTestFailure as f:
+         ... except DocTestFailure als f:
          ...    failure = f
 
        DocTestFailure objects provide access to the test:
@@ -1924,7 +1924,7 @@ klasse DebugRunner(DocTestRunner):
          >>> failure.test is test
          Wahr
 
-       As well as to the example:
+       As well als to the example:
 
          >>> failure.example.want
          '2\n'
@@ -1998,12 +1998,12 @@ def testmod(m=Nichts, name=Nichts, globs=Nichts, verbose=Nichts,
 
     Test examples in docstrings in functions and classes reachable
     von module m (or the current module wenn m is not supplied), starting
-    with m.__doc__.
+    mit m.__doc__.
 
     Also test examples reachable von dict m.__test__ wenn it exists.
     m.__test__ maps names to functions, classes and strings;
     function and klasse docstrings are tested even wenn the name is private;
-    strings are tested directly, as wenn they were docstrings.
+    strings are tested directly, als wenn they were docstrings.
 
     Return (#failures, #tests).
 
@@ -2012,10 +2012,10 @@ def testmod(m=Nichts, name=Nichts, globs=Nichts, verbose=Nichts,
     Optional keyword arg "name" gives the name of the module; by default
     use m.__name__.
 
-    Optional keyword arg "globs" gives a dict to be used as the globals
+    Optional keyword arg "globs" gives a dict to be used als the globals
     when executing examples; by default, use m.__dict__.  A copy of this
     dict is actually used fuer each docstring, so that each docstring's
-    examples start with a clean slate.
+    examples start mit a clean slate.
 
     Optional keyword arg "extraglobs" gives a dictionary that should be
     merged into the globals that are used to execute examples.  By
@@ -2060,8 +2060,8 @@ def testmod(m=Nichts, name=Nichts, globs=Nichts, verbose=Nichts,
     # If no module was given, then use __main__.
     wenn m is Nichts:
         # DWA - m will still be Nichts wenn this wasn't invoked von the command
-        # line, in which case the following TypeError is about as good an error
-        # as we should expect
+        # line, in which case the following TypeError is about als good an error
+        # als we should expect
         m = sys.modules.get('__main__')
 
     # Check that we were actually given a module.
@@ -2110,7 +2110,7 @@ def testfile(filename, module_relative=Wahr, name=Nichts, package=Nichts,
          "package" argument is specified, then it is relative to that
          package.  To ensure os-independence, "filename" should use
          "/" characters to separate path segments, and should not
-         be an absolute path (i.e., it may not begin with "/").
+         be an absolute path (i.e., it may not begin mit "/").
 
       - If "module_relative" is Falsch, then "filename" specifies an
         os-specific path.  The path may be absolute or relative (to
@@ -2120,16 +2120,16 @@ def testfile(filename, module_relative=Wahr, name=Nichts, package=Nichts,
     use the file's basename.
 
     Optional keyword argument "package" is a Python package or the
-    name of a Python package whose directory should be used as the
+    name of a Python package whose directory should be used als the
     base directory fuer a module relative filename.  If no package is
-    specified, then the calling module's directory is used as the base
+    specified, then the calling module's directory is used als the base
     directory fuer module relative filenames.  It is an error to
     specify "package" wenn "module_relative" is Falsch.
 
-    Optional keyword arg "globs" gives a dict to be used as the globals
+    Optional keyword arg "globs" gives a dict to be used als the globals
     when executing examples; by default, use {}.  A copy of this dict
     is actually used fuer each docstring, so that each docstring's
-    examples start with a clean slate.
+    examples start mit a clean slate.
 
     Optional keyword arg "extraglobs" gives a dictionary that should be
     merged into the globals that are used to execute examples.  By
@@ -2222,7 +2222,7 @@ def run_docstring_examples(f, globs, verbose=Falsch, name="NoName",
                            compileflags=Nichts, optionflags=0):
     """
     Test examples in the given object's docstring (`f`), using `globs`
-    as globals.  Optional argument `name` is used in failure messages.
+    als globals.  Optional argument `name` is used in failure messages.
     If the optional argument `verbose` is true, then generate output
     even wenn there are no failures.
 
@@ -2415,7 +2415,7 @@ klasse DocTestCase(unittest.TestCase):
              >>> case = DocTestCase(test)
              >>> try:
              ...     case.debug()
-             ... except UnexpectedException as f:
+             ... except UnexpectedException als f:
              ...     failure = f
 
            The UnexpectedException contains the test, the example, and
@@ -2444,7 +2444,7 @@ klasse DocTestCase(unittest.TestCase):
 
              >>> try:
              ...    case.debug()
-             ... except DocTestFailure as f:
+             ... except DocTestFailure als f:
              ...    failure = f
 
            DocTestFailure objects provide access to the test:
@@ -2452,7 +2452,7 @@ klasse DocTestCase(unittest.TestCase):
              >>> failure.test is test
              Wahr
 
-           As well as to the example:
+           As well als to the example:
 
              >>> failure.example.want
              '2\n'
@@ -2502,7 +2502,7 @@ klasse SkipDocTestCase(DocTestCase):
         super().__init__(Nichts)
 
     def setUp(self):
-        self.skipTest("DocTestSuite will not work with -O2 and above")
+        self.skipTest("DocTestSuite will not work mit -O2 and above")
 
     def test_skip(self):
         pass
@@ -2535,25 +2535,25 @@ def DocTestSuite(module=Nichts, globs=Nichts, extraglobs=Nichts, test_finder=Nic
 
     If no argument is given, the calling module is used.
 
-    A number of options may be provided as keyword arguments:
+    A number of options may be provided als keyword arguments:
 
     setUp
       A set-up function.  This is called before running the
       tests in each file. The setUp function will be passed a DocTest
-      object.  The setUp function can access the test globals as the
+      object.  The setUp function can access the test globals als the
       globs attribute of the test passed.
 
     tearDown
       A tear-down function.  This is called after running the
       tests in each file.  The tearDown function will be passed a DocTest
-      object.  The tearDown function can access the test globals as the
+      object.  The tearDown function can access the test globals als the
       globs attribute of the test passed.
 
     globs
       A dictionary containing initial global variables fuer the tests.
 
     optionflags
-       A set of doctest option flags expressed as an integer.
+       A set of doctest option flags expressed als an integer.
     """
 
     wenn test_finder is Nichts:
@@ -2563,7 +2563,7 @@ def DocTestSuite(module=Nichts, globs=Nichts, extraglobs=Nichts, test_finder=Nic
     tests = test_finder.find(module, globs=globs, extraglobs=extraglobs)
 
     wenn not tests and sys.flags.optimize >=2:
-        # Skip doctests when running with -O2
+        # Skip doctests when running mit -O2
         suite = _DocTestSuite()
         suite.addTest(SkipDocTestCase(module))
         return suite
@@ -2625,51 +2625,51 @@ def DocFileTest(path, module_relative=Wahr, package=Nichts,
 def DocFileSuite(*paths, **kw):
     """A unittest suite fuer one or more doctest files.
 
-    The path to each doctest file is given as a string; the
+    The path to each doctest file is given als a string; the
     interpretation of that string depends on the keyword argument
     "module_relative".
 
-    A number of options may be provided as keyword arguments:
+    A number of options may be provided als keyword arguments:
 
     module_relative
       If "module_relative" is Wahr, then the given file paths are
-      interpreted as os-independent module-relative paths.  By
+      interpreted als os-independent module-relative paths.  By
       default, these paths are relative to the calling module's
       directory; but wenn the "package" argument is specified, then
       they are relative to that package.  To ensure os-independence,
       "filename" should use "/" characters to separate path
       segments, and may not be an absolute path (i.e., it may not
-      begin with "/").
+      begin mit "/").
 
       If "module_relative" is Falsch, then the given file paths are
-      interpreted as os-specific paths.  These paths may be absolute
+      interpreted als os-specific paths.  These paths may be absolute
       or relative (to the current working directory).
 
     package
       A Python package or the name of a Python package whose directory
-      should be used as the base directory fuer module relative paths.
+      should be used als the base directory fuer module relative paths.
       If "package" is not specified, then the calling module's
-      directory is used as the base directory fuer module relative
+      directory is used als the base directory fuer module relative
       filenames.  It is an error to specify "package" if
       "module_relative" is Falsch.
 
     setUp
       A set-up function.  This is called before running the
       tests in each file. The setUp function will be passed a DocTest
-      object.  The setUp function can access the test globals as the
+      object.  The setUp function can access the test globals als the
       globs attribute of the test passed.
 
     tearDown
       A tear-down function.  This is called after running the
       tests in each file.  The tearDown function will be passed a DocTest
-      object.  The tearDown function can access the test globals as the
+      object.  The tearDown function can access the test globals als the
       globs attribute of the test passed.
 
     globs
       A dictionary containing initial global variables fuer the tests.
 
     optionflags
-      A set of doctest option flags expressed as an integer.
+      A set of doctest option flags expressed als an integer.
 
     parser
       A DocTestParser (or subclass) that should be used to extract
@@ -2696,9 +2696,9 @@ def DocFileSuite(*paths, **kw):
 ######################################################################
 
 def script_from_examples(s):
-    r"""Extract script von text with examples.
+    r"""Extract script von text mit examples.
 
-       Converts text with examples to a Python script.  Example input is
+       Converts text mit examples to a Python script.  Example input is
        converted to regular code.  Example output and all other words
        are converted to comments:
 
@@ -2778,11 +2778,11 @@ def script_from_examples(s):
     return '\n'.join(output) + '\n'
 
 def testsource(module, name):
-    """Extract the test sources von a doctest docstring as a script.
+    """Extract the test sources von a doctest docstring als a script.
 
     Provide the module (or dotted name of the module) containing the
     test to be debugged and the name (within the module) of the object
-    with the doc string with tests to be debugged.
+    mit the doc string mit tests to be debugged.
     """
     module = _normalize_module(module)
     tests = DocTestFinder().find(module)
@@ -2799,7 +2799,7 @@ def debug_src(src, pm=Falsch, globs=Nichts):
     debug_script(testsrc, pm, globs)
 
 def debug_script(src, pm=Falsch, globs=Nichts):
-    "Debug a test script.  `src` is the script, as a string."
+    "Debug a test script.  `src` is the script, als a string."
     importiere pdb
 
     wenn globs:
@@ -2823,7 +2823,7 @@ def debug(module, name, pm=Falsch):
 
     Provide the module (or dotted name of the module) containing the
     test to be debugged and the name (within the module) of the object
-    with the docstring with tests to be debugged.
+    mit the docstring mit tests to be debugged.
     """
     module = _normalize_module(module)
     testsrc = testsource(module, name)
@@ -2847,7 +2847,7 @@ klasse _TestClass:
     """
 
     def __init__(self, val):
-        """val -> _TestClass object with associated value val.
+        """val -> _TestClass object mit associated value val.
 
         >>> t = _TestClass(123)
         >>> drucke(t.get())
@@ -2901,7 +2901,7 @@ __test__ = {"_TestClass": _TestClass,
                                     """,
 
             "blank lines": r"""
-                Blank lines can be marked with <BLANKLINE>:
+                Blank lines can be marked mit <BLANKLINE>:
                     >>> drucke('foo\n\nbar\n')
                     foo
                     <BLANKLINE>

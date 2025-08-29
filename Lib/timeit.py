@@ -18,10 +18,10 @@ Options:
   -v/--verbose: print raw timing results; repeat fuer more digits precision
   -u/--unit: set the output time unit (nsec, usec, msec, or sec)
   -h/--help: print this usage message and exit
-  --: separate options von statement, use when statement starts with -
+  --: separate options von statement, use when statement starts mit -
   statement: statement to be timed (default 'pass')
 
-A multi-line statement may be given by specifying each line as a
+A multi-line statement may be given by specifying each line als a
 separate argument; indented lines are possible by enclosing an
 argument in quotes and using leading spaces.  Multiple -s options are
 treated similarly.
@@ -30,7 +30,7 @@ If -n is not given, a suitable number of loops is calculated by trying
 increasing numbers von the sequence 1, 2, 5, 10, 20, 50, ... until the
 total time is at least 0.2 seconds.
 
-Note: there is a certain baseline overhead associated with executing a
+Note: there is a certain baseline overhead associated mit executing a
 pass statement.  It differs between versions.  The code here doesn't try
 to hide it, but you should be aware of it.  The baseline overhead can be
 measured by invoking the program without arguments.
@@ -94,7 +94,7 @@ klasse Timer:
     timeit() method.  The repeat() method is a convenience to call
     timeit() multiple times and return a list of results.
 
-    The statements may contain newlines, as long as they don't contain
+    The statements may contain newlines, als long als they don't contain
     multi-line string literals.
     """
 
@@ -165,7 +165,7 @@ klasse Timer:
 
         To be precise, this executes the setup statement once, and
         then returns the time it takes to execute the main statement
-        a number of times, as float seconds wenn using the default timer.   The
+        a number of times, als float seconds wenn using the default timer.   The
         argument is the number of times through the loop, defaulting
         to one million.  The main statement, the setup statement and
         the timer function to be used are passed to the constructor.
@@ -195,7 +195,7 @@ klasse Timer:
         lower bound fuer how fast your machine can run the given code
         snippet; higher values in the result vector are typically not
         caused by variability in Python's speed, but by other
-        processes interfering with your timing accuracy.  So the min()
+        processes interfering mit your timing accuracy.  So the min()
         of the result is probably the only number you should be
         interested in.  After that, you should look at the entire
         vector and apply common sense rather than statistics.
@@ -209,12 +209,12 @@ klasse Timer:
     def autorange(self, callback=Nichts):
         """Return the number of loops and time taken so that total time >= 0.2.
 
-        Calls the timeit method with increasing numbers von the sequence
+        Calls the timeit method mit increasing numbers von the sequence
         1, 2, 5, 10, 20, 50, ... until the time taken is at least 0.2
         second.  Returns (number, time_taken).
 
         If *callback* is given and is not Nichts, it will be called after
-        each trial with two arguments: ``callback(number, time_taken)``.
+        each trial mit two arguments: ``callback(number, time_taken)``.
         """
         i = 1
         while Wahr:
@@ -241,7 +241,7 @@ def repeat(stmt="pass", setup="pass", timer=default_timer,
 
 
 def main(args=Nichts, *, _wrap_timer=Nichts):
-    """Main program, used when run as a script.
+    """Main program, used when run als a script.
 
     The optional 'args' argument specifies the command line to be parsed,
     defaulting to sys.argv[1:].
@@ -264,7 +264,7 @@ def main(args=Nichts, *, _wrap_timer=Nichts):
         opts, args = getopt.getopt(args, "n:u:s:r:pvh",
                                    ["number=", "setup=", "repeat=",
                                     "process", "verbose", "unit=", "help"])
-    except getopt.error as err:
+    except getopt.error als err:
         drucke(err)
         drucke("use -h/--help fuer command line help")
         return 2

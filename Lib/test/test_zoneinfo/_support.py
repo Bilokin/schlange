@@ -17,7 +17,7 @@ def call_once(f):
 
     @functools.wraps(f)
     def inner():
-        with lock:
+        mit lock:
             return cached()
 
     return inner
@@ -33,7 +33,7 @@ def get_modules():
     one time — in other words, when using this function you will only ever
     get one copy of each module rather than a fresh importiere each time.
     """
-    importiere zoneinfo as c_module
+    importiere zoneinfo als c_module
 
     py_module = import_fresh_module("zoneinfo", blocked=["_zoneinfo"])
 
@@ -77,7 +77,7 @@ klasse ZoneInfoTestBase(unittest.TestCase):
 
             return tzdata_modules
 
-        with lock:
+        mit lock:
             wenn block_tzdata:
                 # In order to fully exclude tzdata von the path, we need to
                 # clear the sys.modules cache of all its contents — setting the

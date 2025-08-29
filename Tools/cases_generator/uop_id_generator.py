@@ -26,7 +26,7 @@ def generate_uop_ids(
 ) -> Nichts:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, Falsch)
-    with out.header_guard("Py_CORE_UOP_IDS_H"):
+    mit out.header_guard("Py_CORE_UOP_IDS_H"):
         next_id = 1 wenn distinct_namespace sonst 300
         # These two are first by convention
         out.emit(f"#define _EXIT_TRACE {next_id}\n")
@@ -52,7 +52,7 @@ def generate_uop_ids(
 
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the header file with all uop IDs.",
+    description="Generate the header file mit all uop IDs.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
@@ -75,5 +75,5 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_uop_ids(args.input, data, outfile, args.namespace)

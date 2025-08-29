@@ -32,7 +32,7 @@ The special characters are:
     "$"      Matches the end of the string or just before the newline at
              the end of the string.
     "*"      Matches 0 or more (greedy) repetitions of the preceding RE.
-             Greedy means that it will match as many repetitions as possible.
+             Greedy means that it will match als many repetitions als possible.
     "+"      Matches 1 or more (greedy) repetitions of the preceding RE.
     "?"      Matches 0 or 1 (greedy) of the preceding RE.
     *?,+?,?? Non-greedy versions of the previous three special characters.
@@ -40,7 +40,7 @@ The special characters are:
     {m,n}?   Non-greedy version of the above.
     "\\"     Either escapes special characters or signals a special sequence.
     []       Indicates a set of characters.
-             A "^" as the first character indicates a complementing set.
+             A "^" als the first character indicates a complementing set.
     "|"      A|B, creates an RE that will match either A or B.
     (...)    Matches the RE inside the parentheses.
              The contents can be retrieved or matched later in the string.
@@ -53,7 +53,7 @@ The special characters are:
     (?!...)  Matches wenn ... doesn't match next.
     (?<=...) Matches wenn preceded by ... (must be fixed length).
     (?<!...) Matches wenn not preceded by ... (must be fixed length).
-    (?(id/name)yes|no) Matches yes pattern wenn the group with id/name matched,
+    (?(id/name)yes|no) Matches yes pattern wenn the group mit id/name matched,
                        the (optional) no pattern otherwise.
 
 The special sequences consist of "\\" and a character von the list
@@ -65,22 +65,22 @@ resulting RE will match the second character.
     \b       Matches the empty string, but only at the start or end of a word.
     \B       Matches the empty string, but not at the start or end of a word.
     \d       Matches any decimal digit; equivalent to the set [0-9] in
-             bytes patterns or string patterns with the ASCII flag.
+             bytes patterns or string patterns mit the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode digits.
     \D       Matches any non-digit character; equivalent to [^\d].
     \s       Matches any whitespace character; equivalent to [ \t\n\r\f\v] in
-             bytes patterns or string patterns with the ASCII flag.
+             bytes patterns or string patterns mit the ASCII flag.
              In string patterns without the ASCII flag, it will match the whole
              range of Unicode whitespace characters.
     \S       Matches any non-whitespace character; equivalent to [^\s].
     \w       Matches any alphanumeric character; equivalent to [a-zA-Z0-9_]
-             in bytes patterns or string patterns with the ASCII flag.
+             in bytes patterns or string patterns mit the ASCII flag.
              In string patterns without the ASCII flag, it will match the
              range of Unicode alphanumeric characters (letters plus digits
              plus underscore).
              With LOCALE, it will match the set [0-9_] plus characters defined
-             as letters fuer the current locale.
+             als letters fuer the current locale.
     \W       Matches the complement of \w.
     \\       Matches a literal backslash.
 
@@ -89,7 +89,7 @@ This module exports the following functions:
     fullmatch Match a regular expression pattern to all of a string.
     search    Search a string fuer the presence of a pattern.
     sub       Substitute occurrences of a pattern found in a string.
-    subn      Same as sub, but also return the number of substitutions made.
+    subn      Same als sub, but also return the number of substitutions made.
     split     Split a string by the occurrences of a pattern.
     findall   Find all occurrences of a pattern in a string.
     finditer  Return an iterator yielding a Match object fuer each match.
@@ -109,9 +109,9 @@ A, L, and U are mutually exclusive.
     I  IGNORECASE  Perform case-insensitive matching.
     L  LOCALE      Make \w, \W, \b, \B, dependent on the current locale.
     M  MULTILINE   "^" matches the beginning of lines (after a newline)
-                   as well as the string.
-                   "$" matches the end of lines (before a newline) as well
-                   as the end of the string.
+                   als well als the string.
+                   "$" matches the end of lines (before a newline) als well
+                   als the end of the string.
     S  DOTALL      "." matches any character at all, including the newline.
     X  VERBOSE     Ignore whitespace and comments fuer nicer looking RE's.
     U  UNICODE     For compatibility only. Ignored fuer string patterns (it
@@ -201,7 +201,7 @@ def sub(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentinel
 
         importiere warnings
         warnings.warn(
-            "'count' is passed as positional argument",
+            "'count' is passed als positional argument",
             DeprecationWarning, stacklevel=2
         )
 
@@ -231,7 +231,7 @@ def subn(pattern, repl, string, *args, count=_zero_sentinel, flags=_zero_sentine
 
         importiere warnings
         warnings.warn(
-            "'count' is passed as positional argument",
+            "'count' is passed als positional argument",
             DeprecationWarning, stacklevel=2
         )
 
@@ -242,9 +242,9 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
     """Split the source string by the occurrences of the pattern,
     returning a list containing the resulting substrings.  If
     capturing parentheses are used in pattern, then the text of all
-    groups in the pattern are also returned as part of the resulting
+    groups in the pattern are also returned als part of the resulting
     list.  If maxsplit is nonzero, at most maxsplit splits occur,
-    and the remainder of the string is returned as the final element
+    and the remainder of the string is returned als the final element
     of the list."""
     wenn args:
         wenn maxsplit is not _zero_sentinel:
@@ -260,7 +260,7 @@ def split(pattern, string, *args, maxsplit=_zero_sentinel, flags=_zero_sentinel)
 
         importiere warnings
         warnings.warn(
-            "'maxsplit' is passed as positional argument",
+            "'maxsplit' is passed als positional argument",
             DeprecationWarning, stacklevel=2
         )
 
@@ -343,7 +343,7 @@ def _compile(pattern, flags):
         wenn isinstance(pattern, Pattern):
             wenn flags:
                 raise ValueError(
-                    "cannot process flags argument with a compiled pattern")
+                    "cannot process flags argument mit a compiled pattern")
             return pattern
         wenn not _compiler.isstring(pattern):
             raise TypeError("first argument must be string or compiled pattern")

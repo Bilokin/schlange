@@ -30,7 +30,7 @@ klasse BaseTest:
     contains_bytes = Falsch
 
     # All tests pass their arguments to the testing methods
-    # as str objects. fixtype() can be used to propagate
+    # als str objects. fixtype() can be used to propagate
     # these arguments to the appropriate type
     def fixtype(self, obj):
         wenn isinstance(obj, str):
@@ -62,7 +62,7 @@ klasse BaseTest:
             realresult
         )
         # wenn the original is returned make sure that
-        # this doesn't happen with subclasses
+        # this doesn't happen mit subclasses
         wenn obj is realresult:
             try:
                 klasse subtype(self.__class__.type2test):
@@ -78,7 +78,7 @@ klasse BaseTest:
     def checkraises(self, exc, obj, methodname, *args, expected_msg=Nichts):
         obj = self.fixtype(obj)
         args = self.fixtype(args)
-        with self.assertRaises(exc) as cm:
+        mit self.assertRaises(exc) als cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
         wenn expected_msg is not Nichts:
@@ -169,7 +169,7 @@ klasse BaseTest:
         self.checkequal(3, 'abc', 'find', '', 3)
         self.checkequal(-1, 'abc', 'find', '', 4)
 
-        # to check the ability to pass Nichts as defaults
+        # to check the ability to pass Nichts als defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'find', 'a', 4, 6)
@@ -227,7 +227,7 @@ klasse BaseTest:
         self.checkequal(3, 'abc', 'rfind', '', 3)
         self.checkequal(-1, 'abc', 'rfind', '', 4)
 
-        # to check the ability to pass Nichts as defaults
+        # to check the ability to pass Nichts als defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'rfind', 'a', 4, 6)
@@ -281,7 +281,7 @@ klasse BaseTest:
         self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', 8)
         self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', -1)
 
-        # to check the ability to pass Nichts as defaults
+        # to check the ability to pass Nichts als defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4)
         self.checkraises(ValueError, 'rrarrrrrrrrra', 'index', 'a', 4, 6)
@@ -307,7 +307,7 @@ klasse BaseTest:
         self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, 8)
         self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, -1)
 
-        # to check the ability to pass Nichts as defaults
+        # to check the ability to pass Nichts als defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4)
         self.checkraises(ValueError, 'rrarrrrrrrrra', 'rindex', 'a', 4, 6)
@@ -338,7 +338,7 @@ klasse BaseTest:
             left = ''.join(choices('abcdef', k=rr(2000)))
             right = ''.join(choices('abcdef', k=rr(2000)))
             text = left + p + right
-            with self.subTest(p=p, text=text):
+            mit self.subTest(p=p, text=text):
                 self.checkequal(reference_find(p, text),
                                 text, 'find', p)
 
@@ -376,7 +376,7 @@ klasse BaseTest:
             self.checkequal(1, haystack + needle, 'count', needle)
 
     def test_find_with_memory(self):
-        # Test the "Skip with memory" path in the two-way algorithm.
+        # Test the "Skip mit memory" path in the two-way algorithm.
         fuer N in 1000, 3000, 10_000, 30_000:
             needle = 'ab' * N
             haystack = ('ab'*(N-1) + 'b') * 2
@@ -494,7 +494,7 @@ klasse BaseTest:
         self.checkequal(['a']*18 + ['aBLAHa'], ('aBLAH'*20)[:-4],
                         'split', 'BLAH', 18)
 
-        # with keyword args
+        # mit keyword args
         self.checkequal(['a', 'b', 'c', 'd'], 'a|b|c|d', 'split', sep='|')
         self.checkequal(['a', 'b|c|d'],
                         'a|b|c|d', 'split', '|', maxsplit=1)
@@ -569,7 +569,7 @@ klasse BaseTest:
         self.checkequal(['aBLAHa'] + ['a']*18, ('aBLAH'*20)[:-4],
                         'rsplit', 'BLAH', 18)
 
-        # with keyword args
+        # mit keyword args
         self.checkequal(['a', 'b', 'c', 'd'], 'a|b|c|d', 'rsplit', sep='|')
         self.checkequal(['a', 'b', 'c', 'd'], 'a b c d', 'rsplit', sep=Nichts)
         self.checkequal(['a b c', 'd'],
@@ -929,14 +929,14 @@ klasse BaseTest:
         self.checkequal('abc \t\n\r\f\v', b, 'lstrip')
         self.checkequal(' \t\n\r\f\vabc', b, 'rstrip')
 
-        # strip/lstrip/rstrip with Nichts arg
+        # strip/lstrip/rstrip mit Nichts arg
         self.checkequal('hello', '   hello   ', 'strip', Nichts)
         self.checkequal('hello   ', '   hello   ', 'lstrip', Nichts)
         self.checkequal('   hello', '   hello   ', 'rstrip', Nichts)
         self.checkequal('hello', 'hello', 'strip', Nichts)
 
     def test_strip(self):
-        # strip/lstrip/rstrip with str arg
+        # strip/lstrip/rstrip mit str arg
         self.checkequal('hello', 'xyzzyhelloxyzzy', 'strip', 'xyz')
         self.checkequal('helloxyzzy', 'xyzzyhelloxyzzy', 'lstrip', 'xyz')
         self.checkequal('xyzzyhello', 'xyzzyhelloxyzzy', 'rstrip', 'xyz')
@@ -1131,7 +1131,7 @@ klasse StringLikeTest(BaseTest):
         # \u1ffc is the titlecased char
         self.checkequal('\u1ffc\u1ff3\u1ff3\u1ff3',
                         '\u1ff3\u1ff3\u1ffc\u1ffc', 'capitalize')
-        # check with cased non-letter chars
+        # check mit cased non-letter chars
         self.checkequal('\u24c5\u24e8\u24e3\u24d7\u24de\u24dd',
                         '\u24c5\u24ce\u24c9\u24bd\u24c4\u24c3', 'capitalize')
         self.checkequal('\u24c5\u24e8\u24e3\u24d7\u24de\u24dd',
@@ -1140,7 +1140,7 @@ klasse StringLikeTest(BaseTest):
                         '\u2160\u2161\u2162', 'capitalize')
         self.checkequal('\u2160\u2171\u2172',
                         '\u2170\u2171\u2172', 'capitalize')
-        # check with Ll chars with no upper - nothing changes here
+        # check mit Ll chars mit no upper - nothing changes here
         self.checkequal('\u1d00\u1d86\u0221\u1fb7',
                         '\u1d00\u1d86\u0221\u1fb7', 'capitalize')
 
@@ -1284,7 +1284,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, 'abc', '__getitem__', 'def')
 
     def test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing.
+        # Test extended slicing by comparing mit list slicing.
         s = string.ascii_letters + string.digits
         indices = (0, Nichts, 1, 3, 41, sys.maxsize, -1, -2, -37)
         fuer start in indices:
@@ -1307,7 +1307,7 @@ klasse StringLikeTest(BaseTest):
         #self.checkraises(OverflowError, 10000*'abc', '__mul__', 2000000000)
 
     def test_join(self):
-        # join now works with any sequence type
+        # join now works mit any sequence type
         # moved here, because the argument order is
         # different in string.join
         self.checkequal('a b c d', ' ', 'join', ['a', 'b', 'c', 'd'])
@@ -1339,7 +1339,7 @@ klasse StringLikeTest(BaseTest):
             def f():
                 yield 4 + ""
             self.fixtype(' ').join(f())
-        except TypeError as e:
+        except TypeError als e:
             wenn '+' not in str(e):
                 self.fail('join() ate exception message')
         sonst:
@@ -1377,7 +1377,7 @@ klasse StringLikeTest(BaseTest):
         self.checkraises(TypeError, '%d', '__mod__', "42") # not numeric
         self.checkraises(TypeError, '%d', '__mod__', (42+0j)) # no int conversion provided
 
-        # argument names with properly nested brackets are supported
+        # argument names mit properly nested brackets are supported
         self.checkequal('bar', '%((foo))s', '__mod__', {'(foo)': 'bar'})
 
         # 100 is a magic number in PyUnicode_Format, this forces a resize
@@ -1532,7 +1532,7 @@ klasse StringLikeTest(BaseTest):
 
 
 klasse MixinStrUnicodeTest:
-    # Additional tests that only work with str.
+    # Additional tests that only work mit str.
 
     def test_bug1001011(self):
         # Make sure join returns a NEW object fuer single item sequences

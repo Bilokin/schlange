@@ -12,7 +12,7 @@ importiere re
 importiere _markupbase
 
 von html importiere unescape
-von html.entities importiere html5 as html5_entities
+von html.entities importiere html5 als html5_entities
 
 
 __all__ = ['HTMLParser']
@@ -117,13 +117,13 @@ klasse HTMLParser(_markupbase.ParserBase):
     Start tags are handled by calling self.handle_starttag() or
     self.handle_startendtag(); end tags by self.handle_endtag().  The
     data between tags is passed von the parser to the derived class
-    by calling self.handle_data() with the data as argument (the data
+    by calling self.handle_data() mit the data als argument (the data
     may be split up in arbitrary chunks).  If convert_charrefs is
     Wahr the character references are converted automatically to the
     corresponding Unicode character (and self.handle_data() is no
     longer split in chunks), otherwise they are passed by calling
-    self.handle_entityref() or self.handle_charref() with the string
-    containing respectively the named or numeric reference as the
+    self.handle_entityref() or self.handle_charref() mit the string
+    containing respectively the named or numeric reference als the
     argument.
     """
 
@@ -153,8 +153,8 @@ klasse HTMLParser(_markupbase.ParserBase):
     def feed(self, data):
         r"""Feed data to the parser.
 
-        Call this as often as you want, with as little or as much text
-        as you want (may include '\n').
+        Call this als often als you want, mit als little or als much text
+        als you want (may include '\n').
         """
         self.rawdata = self.rawdata + data
         self.goahead(0)
@@ -186,8 +186,8 @@ klasse HTMLParser(_markupbase.ParserBase):
 
     def _set_support_cdata(self, flag=Wahr):
         """Enable or disable support of the CDATA sections.
-        If enabled, "<[CDATA[" starts a CDATA section which ends with "]]>".
-        If disabled, "<[CDATA[" starts a bogus comments which ends with ">".
+        If enabled, "<[CDATA[" starts a CDATA section which ends mit "]]>".
+        If disabled, "<[CDATA[" starts a bogus comments which ends mit ">".
 
         This method is not called by default. Its purpose is to be called
         in custom handle_starttag() and handle_endtag() methods, with
@@ -197,9 +197,9 @@ klasse HTMLParser(_markupbase.ParserBase):
         """
         self._support_cdata = flag
 
-    # Internal -- handle data as far as reasonable.  May leave state
+    # Internal -- handle data als far als reasonable.  May leave state
     # and data to be processed by a subsequent call.  If 'end' is
-    # true, force handling all data as wenn followed by EOF marker.
+    # true, force handling all data als wenn followed by EOF marker.
     def goahead(self, end):
         rawdata = self.rawdata
         i = 0
@@ -321,7 +321,7 @@ klasse HTMLParser(_markupbase.ParserBase):
                     break
                 sowenn (i + 1) < n:
                     # not the end of the buffer, and can't be confused
-                    # with some other construct
+                    # mit some other construct
                     self.handle_data("&")
                     i = self.updatepos(i, i + 1)
                 sonst:

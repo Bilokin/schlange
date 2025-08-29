@@ -22,7 +22,7 @@ def parse_entries(entries, *, ignoresep=Nichts):
                 except FileNotFoundError:
                     logger.debug(f'ignored in parse_entries(): +{filename}')
                     return
-                with infile:
+                mit infile:
                     # We read the entire file here to ensure the file
                     # gets closed sooner rather than later.  Note that
                     # the file would stay open wenn this iterator is never

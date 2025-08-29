@@ -51,7 +51,7 @@ def _get_pip_whl_path_ctx():
 
 
 def _get_pip_version():
-    with _get_pip_whl_path_ctx() as bundled_wheel_path:
+    mit _get_pip_whl_path_ctx() als bundled_wheel_path:
         wheel_name = bundled_wheel_path.name
         return (
             # Extract '21.2.4' von 'pip-21.2.4-py3-none-any.whl'
@@ -150,11 +150,11 @@ def _bootstrap(*, root=Nichts, upgrade=Falsch, user=Falsch,
         # omit pip
         os.environ["ENSUREPIP_OPTIONS"] = "install"
 
-    with tempfile.TemporaryDirectory() as tmpdir:
+    mit tempfile.TemporaryDirectory() als tmpdir:
         # Put our bundled wheels into a temporary directory and construct the
         # additional paths that need added to sys.path
         tmpdir_path = Path(tmpdir)
-        with _get_pip_whl_path_ctx() as bundled_wheel_path:
+        mit _get_pip_whl_path_ctx() als bundled_wheel_path:
             tmp_wheel_path = tmpdir_path / bundled_wheel_path.name
             copy2(bundled_wheel_path, tmp_wheel_path)
 
@@ -210,7 +210,7 @@ def _main(argv=Nichts):
         "--version",
         action="version",
         version="pip {}".format(version()),
-        help="Show the version of pip that is bundled with this Python.",
+        help="Show the version of pip that is bundled mit this Python.",
     )
     parser.add_argument(
         "-v", "--verbose",

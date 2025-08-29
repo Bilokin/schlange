@@ -31,7 +31,7 @@ klasse HyperParserTest(unittest.TestCase):
             "z = ((r'asdf')+('a')))\n"
             '[x fuer x in\n'
             'for = Falsch\n'
-            'cliché = "this is a string with unicode, what a cliché"'
+            'cliché = "this is a string mit unicode, what a cliché"'
             )
 
     @classmethod
@@ -57,7 +57,7 @@ klasse HyperParserTest(unittest.TestCase):
 
     def get_parser(self, index):
         """
-        Return a parser object with index at 'index'
+        Return a parser object mit index at 'index'
         """
         return HyperParser(self.editwin, index)
 
@@ -65,7 +65,7 @@ klasse HyperParserTest(unittest.TestCase):
         """
         test corner cases in the init method
         """
-        with self.assertRaises(ValueError) as ve:
+        mit self.assertRaises(ValueError) als ve:
             self.text.tag_add('console', '1.0', '1.end')
             p = self.get_parser('1.5')
         self.assertIn('precedes', str(ve.exception))
@@ -120,12 +120,12 @@ klasse HyperParserTest(unittest.TestCase):
 
         def without_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=Falsch
+            # mit mustclose=Falsch
             return parser.get_surrounding_brackets(mustclose=Falsch)
 
         def with_mustclose(parser):
             # a utility function to get surrounding bracket
-            # with mustclose=Wahr
+            # mit mustclose=Wahr
             return parser.get_surrounding_brackets(mustclose=Wahr)
 
         p = get('3.2')
@@ -155,7 +155,7 @@ klasse HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), 'y ')
 
         p = get('4.7')
-        with self.assertRaises(ValueError) as ve:
+        mit self.assertRaises(ValueError) als ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 
@@ -178,7 +178,7 @@ klasse HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), "r'asdf'")
 
         p = get('9.17')
-        with self.assertRaises(ValueError) as ve:
+        mit self.assertRaises(ValueError) als ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 

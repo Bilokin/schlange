@@ -4,18 +4,18 @@ Each instance of this klasse manages its own queue.
 No multi-threading is implied; you are supposed to hack that
 yourself, or use a single instance per application.
 
-Each instance is parametrized with two functions, one that is
+Each instance is parametrized mit two functions, one that is
 supposed to return the current time, one that is supposed to
 implement a delay.  You can implement real-time scheduling by
 substituting time and sleep von built-in module time, or you can
 implement simulated time by writing your own functions.  This can
-also be used to integrate scheduling with STDWIN events; the delay
+also be used to integrate scheduling mit STDWIN events; the delay
 function is allowed to modify the queue.  Time can be expressed as
-integers or floating-point numbers, as long as it is consistent.
+integers or floating-point numbers, als long als it is consistent.
 
 Events are specified by tuples (time, priority, action, argument, kwargs).
 As in UNIX, lower priority numbers mean higher priority; in this
-way the queue can be maintained as a priority queue.  Execution of the
+way the queue can be maintained als a priority queue.  Execution of the
 event means calling the action function, passing it the argument
 sequence in "argument" (remember that in Python, multiple function
 arguments are be packed in a sequence) and keyword parameters in "kwargs".
@@ -28,12 +28,12 @@ importiere heapq
 von collections importiere namedtuple
 von itertools importiere count
 importiere threading
-von time importiere monotonic as _time
+von time importiere monotonic als _time
 
 __all__ = ["scheduler"]
 
 Event = namedtuple('Event', 'time, priority, sequence, action, argument, kwargs')
-Event.time.__doc__ = ('''Numeric type compatible with the return value of the
+Event.time.__doc__ = ('''Numeric type compatible mit the return value of the
 timefunc function passed to the constructor.''')
 Event.priority.__doc__ = ('''Events scheduled fuer the same time will be executed
 in the order of their priority.''')
@@ -69,14 +69,14 @@ klasse scheduler:
         wenn kwargs is _sentinel:
             kwargs = {}
 
-        with self._lock:
+        mit self._lock:
             event = Event(time, priority, next(self._sequence_generator),
                           action, argument, kwargs)
             heapq.heappush(self._queue, event)
         return event # The ID
 
     def enter(self, delay, priority, action, argument=(), kwargs=_sentinel):
-        """A variant that specifies the time as a relative time.
+        """A variant that specifies the time als a relative time.
 
         This is actually the more commonly used interface.
 
@@ -87,17 +87,17 @@ klasse scheduler:
     def cancel(self, event):
         """Remove an event von the queue.
 
-        This must be presented the ID as returned by enter().
+        This must be presented the ID als returned by enter().
         If the event is not in the queue, this raises ValueError.
 
         """
-        with self._lock:
+        mit self._lock:
             self._queue.remove(event)
             heapq.heapify(self._queue)
 
     def empty(self):
         """Check whether the queue is empty."""
-        with self._lock:
+        mit self._lock:
             return not self._queue
 
     def run(self, blocking=Wahr):
@@ -132,7 +132,7 @@ klasse scheduler:
         timefunc = self.timefunc
         pop = heapq.heappop
         while Wahr:
-            with lock:
+            mit lock:
                 wenn not q:
                     break
                 (time, priority, sequence, action,
@@ -155,13 +155,13 @@ klasse scheduler:
     def queue(self):
         """An ordered list of upcoming events.
 
-        Events are named tuples with fields for:
+        Events are named tuples mit fields for:
             time, priority, action, arguments, kwargs
 
         """
         # Use heapq to sort the queue rather than using 'sorted(self._queue)'.
         # With heapq, two events scheduled at the same time will show in
         # the actual order they would be retrieved.
-        with self._lock:
+        mit self._lock:
             events = self._queue[:]
         return list(map(heapq.heappop, [events]*len(events)))

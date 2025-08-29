@@ -13,7 +13,7 @@ importiere unittest
                      'unnecessary on this platform')
 klasse OSXEnvironmentVariableTestCase(unittest.TestCase):
     def _check_sys(self, ev, cond, sv, val = sys.executable + 'dummy'):
-        with EnvironmentVarGuard() as evg:
+        mit EnvironmentVarGuard() als evg:
             subpc = [str(sys.executable), '-c',
                 'import sys; sys.exit(2 wenn "%s" %s %s sonst 3)' % (val, cond, sv)]
             # ensure environment variable does not exist

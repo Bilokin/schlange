@@ -49,7 +49,7 @@ klasse FutureTests(BaseTestCase):
         self.assertWahr(was_cancelled)
 
     def test_done_callback_raises(self):
-        with support.captured_stderr() as stderr:
+        mit support.captured_stderr() als stderr:
             raising_was_called = Falsch
             fn_was_called = Falsch
 
@@ -104,7 +104,7 @@ klasse FutureTests(BaseTestCase):
         self.assertWahr(was_cancelled)
 
     def test_done_callback_raises_already_succeeded(self):
-        with support.captured_stderr() as stderr:
+        mit support.captured_stderr() als stderr:
             def raising_fn(callback_future):
                 raise Exception('doh!')
 
@@ -243,7 +243,7 @@ klasse FutureTests(BaseTestCase):
         def notification():
             # Wait until the main thread is waiting fuer the exception.
             time.sleep(1)
-            with f1._condition:
+            mit f1._condition:
                 f1._state = FINISHED
                 f1._exception = OSError()
                 f1._condition.notify_all()
@@ -259,7 +259,7 @@ klasse FutureTests(BaseTestCase):
         f = create_future(state=PENDING)
         f.set_result(1)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 futures.InvalidStateError,
                 'FINISHED: <Future at 0x[0-9a-f]+ '
                 'state=finished returned int>'
@@ -274,7 +274,7 @@ klasse FutureTests(BaseTestCase):
         e = ValueError()
         f.set_exception(e)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 futures.InvalidStateError,
                 'FINISHED: <Future at 0x[0-9a-f]+ '
                 'state=finished raised ValueError>'
@@ -285,7 +285,7 @@ klasse FutureTests(BaseTestCase):
 
     def test_get_snapshot(self):
         """Test the _get_snapshot method fuer atomic state retrieval."""
-        # Test with a pending future
+        # Test mit a pending future
         f = Future()
         done, cancelled, result, exception = f._get_snapshot()
         self.assertFalsch(done)
@@ -293,7 +293,7 @@ klasse FutureTests(BaseTestCase):
         self.assertIsNichts(result)
         self.assertIsNichts(exception)
 
-        # Test with a finished future (successful result)
+        # Test mit a finished future (successful result)
         f = Future()
         f.set_result(42)
         done, cancelled, result, exception = f._get_snapshot()
@@ -302,7 +302,7 @@ klasse FutureTests(BaseTestCase):
         self.assertEqual(result, 42)
         self.assertIsNichts(exception)
 
-        # Test with a finished future (exception)
+        # Test mit a finished future (exception)
         f = Future()
         exc = ValueError("test error")
         f.set_exception(exc)
@@ -312,7 +312,7 @@ klasse FutureTests(BaseTestCase):
         self.assertIsNichts(result)
         self.assertIs(exception, exc)
 
-        # Test with a cancelled future
+        # Test mit a cancelled future
         f = Future()
         f.cancel()
         done, cancelled, result, exception = f._get_snapshot()
@@ -332,7 +332,7 @@ klasse FutureTests(BaseTestCase):
                 results.append(snapshot)
 
         threads = [threading.Thread(target=get_snapshot) fuer _ in range(4)]
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
         # All snapshots should be identical fuer a finished future
         expected = (Wahr, Falsch, 100, Nichts)

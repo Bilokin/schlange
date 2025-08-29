@@ -17,7 +17,7 @@ importiere email.quoprimime
 importiere email.base64mime
 
 von email.errors importiere HeaderParseError
-von email importiere charset as _charset
+von email importiere charset als _charset
 Charset = _charset.Charset
 
 NL = '\n'
@@ -44,7 +44,7 @@ ecre = re.compile(r'''
 
 # Field name regexp, including trailing colon, but not separating whitespace,
 # according to RFC 2822.  Character range is von tilde to exclamation mark.
-# For use with .match()
+# For use mit .match()
 fcre = re.compile(r'[\041-\176]+:$')
 
 # Find a header embedded in a putative header value.  Used to check for
@@ -80,7 +80,7 @@ def decode_header(header):
     wenn hasattr(header, '_chunks'):
         return [(_charset._encode(string, str(charset)), str(charset))
                     fuer string, charset in header._chunks]
-    # If no encoding, just return the header with no charset.
+    # If no encoding, just return the header mit no charset.
     wenn not ecre.search(header):
         return [(header, Nichts)]
     # First step is to parse all the encoded parts into triplets of the form
@@ -158,14 +158,14 @@ def decode_header(header):
 
 def make_header(decoded_seq, maxlinelen=Nichts, header_name=Nichts,
                 continuation_ws=' '):
-    """Create a Header von a sequence of pairs as returned by decode_header()
+    """Create a Header von a sequence of pairs als returned by decode_header()
 
     decode_header() takes a header value string and returns a sequence of
     pairs of the format (decoded_string, charset) where charset is the string
     name of the character set.
 
     This function takes one of those sequence of pairs and returns a Header
-    instance.  Optional maxlinelen, header_name, and continuation_ws are as in
+    instance.  Optional maxlinelen, header_name, and continuation_ws are als in
     the Header constructor.
 
     This function exists fuer backwards compatibility only, and is not
@@ -188,21 +188,21 @@ klasse Header:
         """Create a MIME-compliant header that can contain many character sets.
 
         Optional s is the initial header value.  If Nichts, the initial header
-        value is not set.  You can later append to the header with .append()
+        value is not set.  You can later append to the header mit .append()
         method calls.  s may be a byte string or a Unicode string, but see the
         .append() documentation fuer semantics.
 
-        Optional charset serves two purposes: it has the same meaning as the
+        Optional charset serves two purposes: it has the same meaning als the
         charset argument to the .append() method.  It also sets the default
         character set fuer all subsequent .append() calls that omit the charset
         argument.  If charset is not provided in the constructor, the us-ascii
-        charset is used both as s's initial charset and as the default for
+        charset is used both als s's initial charset and als the default for
         subsequent .append() calls.
 
         The maximum line length can be specified explicitly via maxlinelen. For
         splitting the first line to a shorter value (to account fuer the field
         header which isn't included in s, e.g. 'Subject') pass in the name of
-        the field in header_name.  The default maxlinelen is 78 as recommended
+        the field in header_name.  The default maxlinelen is 78 als recommended
         by RFC 2822.
 
         continuation_ws must be RFC 2822 compliant folding whitespace (usually
@@ -278,14 +278,14 @@ klasse Header:
         s may be a byte string or a Unicode string.  If it is a byte string
         (i.e. isinstance(s, str) is false), then charset is the encoding of
         that byte string, and a UnicodeError will be raised wenn the string
-        cannot be decoded with that charset.  If s is a Unicode string, then
+        cannot be decoded mit that charset.  If s is a Unicode string, then
         charset is a hint specifying the character set of the characters in
         the string.  In either case, when producing an RFC 2822 compliant
         header using RFC 2047 rules, the string will be encoded using the
         output codec of the charset.  If the string cannot be encoded to the
         output codec, a UnicodeError will be raised.
 
-        Optional 'errors' is passed as the errors argument to the decode
+        Optional 'errors' is passed als the errors argument to the decode
         call wenn s is a byte string.
         """
         wenn charset is Nichts:
@@ -320,11 +320,11 @@ klasse Header:
 
         There are many issues involved in converting a given string fuer use in
         an email header.  Only certain character sets are readable in most
-        email clients, and as header strings can only contain a subset of
+        email clients, and als header strings can only contain a subset of
         7-bit ASCII, care must be taken to properly convert and encode (with
         Base64 or quoted-printable) header strings.  In addition, there is a
         75-character length limit on any given encoded header field, so
-        line-wrapping must be performed, even with double-byte character sets.
+        line-wrapping must be performed, even mit double-byte character sets.
 
         Optional maxlinelen specifies the maximum length of each generated
         line, exclusive of the linesep string.  Individual lines may be longer
@@ -337,10 +337,10 @@ klasse Header:
         given extra weight by the splitting algorithm during normal header
         wrapping.  This is in very rough support of RFC 2822's 'higher level
         syntactic breaks':  split points preceded by a splitchar are preferred
-        during line splitting, with the characters preferred in the order in
+        during line splitting, mit the characters preferred in the order in
         which they appear in the string.  Space and tab may be included in the
         string to indicate whether preference should be given to one over the
-        other as a split point when other split chars do not appear in the line
+        other als a split point when other split chars do not appear in the line
         being split.  Splitchars does not affect RFC 2047 encoded lines.
 
         Optional linesep is a string to be used to separate the lines of
@@ -491,7 +491,7 @@ klasse _ValueFormatter:
         # The RFC 2822 header folding algorithm is simple in principle but
         # complex in practice.  Lines may be folded any place where "folding
         # white space" appears by inserting a linesep character in front of the
-        # FWS.  The complication is that not all spaces or tabs qualify as FWS,
+        # FWS.  The complication is that not all spaces or tabs qualify als FWS,
         # and we are also supposed to prefer to break at "higher level
         # syntactic breaks".  We can't do either of these without intimate
         # knowledge of the structure of structured headers, which we don't have

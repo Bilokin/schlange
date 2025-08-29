@@ -9,7 +9,7 @@ a Logo program by Erich Neuwirth.
 """
 von turtle importiere Turtle, colormode, tracer, mainloop
 von random importiere randrange
-von time importiere perf_counter as clock
+von time importiere perf_counter als clock
 
 def symRandom(n):
     return randrange(-n,n+1)

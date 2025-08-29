@@ -17,7 +17,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
     args = (sys.executable, '-c', script)
     proc = subprocess.Popen(args, stdin=slave, stdout=slave, stderr=slave, env=env)
     os.close(slave)
-    with ExitStack() as cleanup:
+    mit ExitStack() als cleanup:
         cleanup.enter_context(proc)
         def terminate(proc):
             try:
@@ -28,10 +28,10 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
         cleanup.callback(terminate, proc)
         cleanup.callback(os.close, master)
         # Avoid using DefaultSelector and PollSelector. Kqueue() does not
-        # work with pseudo-terminals on OS X < 10.9 (Issue 20365) and Open
-        # BSD (Issue 20667). Poll() does not work with OS X 10.6 or 10.4
+        # work mit pseudo-terminals on OS X < 10.9 (Issue 20365) and Open
+        # BSD (Issue 20667). Poll() does not work mit OS X 10.6 or 10.4
         # either (Issue 20472). Hopefully the file descriptor is low enough
-        # to use with select().
+        # to use mit select().
         sel = cleanup.enter_context(selectors.SelectSelector())
         sel.register(master, selectors.EVENT_READ | selectors.EVENT_WRITE)
         os.set_blocking(master, Falsch)
@@ -40,7 +40,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
                 wenn events & selectors.EVENT_READ:
                     try:
                         chunk = os.read(master, 0x10000)
-                    except OSError as err:
+                    except OSError als err:
                         # Linux raises EIO when slave is closed (Issue 5380)
                         wenn err.errno != EIO:
                             raise
@@ -51,7 +51,7 @@ def run_pty(script, input=b"dummy input\r", env=Nichts):
                 wenn events & selectors.EVENT_WRITE:
                     try:
                         input = input[os.write(master, input):]
-                    except OSError as err:
+                    except OSError als err:
                         # Apparently EIO means the slave was closed
                         wenn err.errno != EIO:
                             raise

@@ -32,9 +32,9 @@ klasse FunctionalTest(unittest.TestCase):
         # bpo-42639: It is safe to have more than one atexit instance.
         code = textwrap.dedent("""
             importiere sys
-            importiere atexit as atexit1
+            importiere atexit als atexit1
             del sys.modules['atexit']
-            importiere atexit as atexit2
+            importiere atexit als atexit2
             del sys.modules['atexit']
 
             assert atexit2 is not atexit1
@@ -100,7 +100,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         self.assertEqual(atexit._ncallbacks(), n)
 
     def test_callbacks_leak_refcycle(self):
-        # Similar to the above, but with a refcycle through the atexit
+        # Similar to the above, but mit a refcycle through the atexit
         # module.
         n = atexit._ncallbacks()
         code = textwrap.dedent(r"""

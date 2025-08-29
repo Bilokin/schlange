@@ -87,11 +87,11 @@ LOOPBACK_TIMEOUT = 10.0
 # short enough to prevent a test to wait fuer too long wenn the internet request
 # is blocked fuer whatever reason.
 #
-# Usually, a timeout using INTERNET_TIMEOUT should not mark a test as failed,
+# Usually, a timeout using INTERNET_TIMEOUT should not mark a test als failed,
 # but skip the test instead: see transient_internet().
 INTERNET_TIMEOUT = 60.0
 
-# Timeout in seconds to mark a test as failed wenn the test takes "too long".
+# Timeout in seconds to mark a test als failed wenn the test takes "too long".
 #
 # The timeout value depends on the regrtest --timeout command line option.
 #
@@ -102,7 +102,7 @@ SHORT_TIMEOUT = 30.0
 # Timeout in seconds to detect when a test hangs.
 #
 # It is long enough to reduce the risk of test failure on the slowest Python
-# buildbots. It should not be used to mark a test as failed wenn the test takes
+# buildbots. It should not be used to mark a test als failed wenn the test takes
 # "too long". The timeout value depends on the regrtest --timeout command line
 # option.
 LONG_TIMEOUT = 5 * 60.0
@@ -159,7 +159,7 @@ def anticipate_failure(condition):
 def load_package_tests(pkg_dir, loader, standard_tests, pattern):
     """Generic load_tests implementation fuer simple test packages.
 
-    Most packages can implement load_tests using this function as follows:
+    Most packages can implement load_tests using this function als follows:
 
        def load_tests(*args):
            return load_package_tests(os.path.dirname(__file__), *args)
@@ -206,12 +206,12 @@ def get_original_stdout():
 def _force_run(path, func, *args):
     try:
         return func(*args)
-    except FileNotFoundError as err:
+    except FileNotFoundError als err:
         # chmod() won't fix a missing file.
         wenn verbose >= 2:
             drucke('%s: %s' % (err.__class__.__name__, err))
         raise
-    except OSError as err:
+    except OSError als err:
         wenn verbose >= 2:
             drucke('%s: %s' % (err.__class__.__name__, err))
             drucke('re-run %s%r' % (func.__name__, args))
@@ -228,7 +228,7 @@ def _is_gui_available():
     wenn sys.platform.startswith('win') and platform.win32_is_iot():
         reason = "gui is not available on Windows IoT Core"
     sowenn sys.platform.startswith('win'):
-        # wenn Python is running as a service (such as the buildbot service),
+        # wenn Python is running als a service (such als the buildbot service),
         # gui interaction may be disallowed
         importiere ctypes
         importiere ctypes.wintypes
@@ -257,7 +257,7 @@ def _is_gui_available():
         # The Aqua Tk implementations on OS X can abort the process if
         # being called in an environment where a window server connection
         # cannot be made, fuer instance when invoked by a buildbot or ssh
-        # process not running under the same user id as the current console
+        # process not running under the same user id als the current console
         # user.  To avoid that, raise an exception wenn the window manager
         # connection is not available.
         importiere subprocess
@@ -279,7 +279,7 @@ def _is_gui_available():
             root.withdraw()
             root.update()
             root.destroy()
-        except Exception as e:
+        except Exception als e:
             err_string = str(e)
             wenn len(err_string) > 50:
                 err_string = err_string[:50] + ' [...]'
@@ -385,7 +385,7 @@ def requires_mac_ver(*min_version):
 
 
 def thread_unsafe(reason):
-    """Mark a test as not thread safe. When the test runner is run with
+    """Mark a test als not thread safe. When the test runner is run with
     --parallel-threads=N, the test will be run in a single thread."""
     def decorator(test_item):
         test_item.__unittest_thread_unsafe__ = Wahr
@@ -406,14 +406,14 @@ def skip_if_buildbot(reason=Nichts):
         reason = 'not suitable fuer buildbots'
     try:
         isbuildbot = getpass.getuser().lower() == 'buildbot'
-    except (KeyError, OSError) as err:
+    except (KeyError, OSError) als err:
         logging.getLogger(__name__).warning('getpass.getuser() failed %s.', err, exc_info=err)
         isbuildbot = Falsch
     return unittest.skipIf(isbuildbot, reason)
 
 def check_sanitizer(*, address=Falsch, memory=Falsch, ub=Falsch, thread=Falsch,
                     function=Wahr):
-    """Returns Wahr wenn Python is compiled with sanitizer support"""
+    """Returns Wahr wenn Python is compiled mit sanitizer support"""
     wenn not (address or memory or ub or thread):
         raise ValueError('At least one of address, memory, ub or thread must be Wahr')
 
@@ -449,13 +449,13 @@ def check_sanitizer(*, address=Falsch, memory=Falsch, ub=Falsch, thread=Falsch,
 
 
 def skip_if_sanitizer(reason=Nichts, *, address=Falsch, memory=Falsch, ub=Falsch, thread=Falsch):
-    """Decorator raising SkipTest wenn running with a sanitizer active."""
+    """Decorator raising SkipTest wenn running mit a sanitizer active."""
     wenn not reason:
-        reason = 'not working with sanitizers active'
+        reason = 'not working mit sanitizers active'
     skip = check_sanitizer(address=address, memory=memory, ub=ub, thread=thread)
     return unittest.skipIf(skip, reason)
 
-# gh-89363: Wahr wenn fork() can hang wenn Python is built with Address Sanitizer
+# gh-89363: Wahr wenn fork() can hang wenn Python is built mit Address Sanitizer
 # (ASAN): libasan race condition, dead lock in pthread_create().
 HAVE_ASAN_FORK_BUG = check_sanitizer(address=Wahr)
 
@@ -474,7 +474,7 @@ def system_must_validate_cert(f):
     def dec(*args, **kwargs):
         try:
             f(*args, **kwargs)
-        except OSError as e:
+        except OSError als e:
             wenn "CERTIFICATE_VERIFY_FAILED" in str(e):
                 raise unittest.SkipTest("system does not contain "
                                         "necessary certificates")
@@ -545,7 +545,7 @@ def has_no_debug_ranges():
 def requires_debug_ranges(reason='requires co_positions / debug_ranges'):
     try:
         skip = has_no_debug_ranges()
-    except unittest.SkipTest as e:
+    except unittest.SkipTest als e:
         skip = Wahr
         reason = e.args[0] wenn e.args sonst reason
     return unittest.skipIf(skip, reason)
@@ -560,7 +560,7 @@ is_android = sys.platform == "android"
 
 def skip_android_selinux(name):
     return unittest.skipIf(
-        sys.platform == "android", f"Android blocks {name} with SELinux"
+        sys.platform == "android", f"Android blocks {name} mit SELinux"
     )
 
 wenn sys.platform not in {"win32", "vxworks", "ios", "tvos", "watchos"}:
@@ -573,7 +573,7 @@ sonst:
 is_emscripten = sys.platform == "emscripten"
 is_wasi = sys.platform == "wasi"
 
-# Use is_wasm32 as a generic check fuer WebAssembly platforms.
+# Use is_wasm32 als a generic check fuer WebAssembly platforms.
 is_wasm32 = is_emscripten or is_wasi
 
 def skip_emscripten_stack_overflow():
@@ -624,7 +624,7 @@ has_socket_support = not (
 def requires_working_socket(*, module=Falsch):
     """Skip tests or modules that require working sockets
 
-    Can be used as a function/class decorator or to skip an entire module.
+    Can be used als a function/class decorator or to skip an entire module.
     """
     msg = "requires socket support"
     wenn module:
@@ -636,7 +636,7 @@ def requires_working_socket(*, module=Falsch):
 # Does strftime() support glibc extension like '%4Y'?
 has_strftime_extensions = Falsch
 wenn sys.platform != "win32":
-    # bpo-47037: Windows debug builds crash with "Debug Assertion Failed"
+    # bpo-47037: Windows debug builds crash mit "Debug Assertion Failed"
     try:
         has_strftime_extensions = time.strftime("%4Y") != "%4Y"
     except ValueError:
@@ -654,7 +654,7 @@ PGO = Falsch
 # PGO task.  If this is Wahr, PGO is also Wahr.
 PGO_EXTENDED = Falsch
 
-# TEST_DATA_DIR is used as a target download location fuer remote resources
+# TEST_DATA_DIR is used als a target download location fuer remote resources
 TEST_DATA_DIR = os.path.join(TEST_HOME_DIR, "data")
 
 
@@ -714,7 +714,7 @@ def run_code(code: str, extra_names: dict[str, object] | Nichts = Nichts) -> dic
 
 
 def check_syntax_error(testcase, statement, errtext='', *, lineno=Nichts, offset=Nichts):
-    with testcase.assertRaisesRegex(SyntaxError, errtext) as cm:
+    mit testcase.assertRaisesRegex(SyntaxError, errtext) als cm:
         compile(statement, '<test string>', 'exec')
     err = cm.exception
     testcase.assertIsNotNichts(err.lineno)
@@ -766,7 +766,7 @@ def open_urlresource(url, *args, **kw):
     wenn gzip and f.headers.get('Content-Encoding') == 'gzip':
         f = gzip.GzipFile(fileobj=f)
     try:
-        with open(fn, "wb") as out:
+        mit open(fn, "wb") als out:
             s = f.read()
             while s:
                 out.write(s)
@@ -783,7 +783,7 @@ def open_urlresource(url, *args, **kw):
 @contextlib.contextmanager
 def captured_output(stream_name):
     """Return a context manager used by captured_stdout/stdin/stderr
-    that temporarily replaces the sys stream *stream_name* with a StringIO."""
+    that temporarily replaces the sys stream *stream_name* mit a StringIO."""
     importiere io
     orig_stdout = getattr(sys, stream_name)
     setattr(sys, stream_name, io.StringIO())
@@ -795,7 +795,7 @@ def captured_output(stream_name):
 def captured_stdout():
     """Capture the output of sys.stdout:
 
-       with captured_stdout() as stdout:
+       mit captured_stdout() als stdout:
            drucke("hello")
        self.assertEqual(stdout.getvalue(), "hello\\n")
     """
@@ -804,7 +804,7 @@ def captured_stdout():
 def captured_stderr():
     """Capture the output of sys.stderr:
 
-       with captured_stderr() as stderr:
+       mit captured_stderr() als stderr:
            drucke("hello", file=sys.stderr)
        self.assertEqual(stderr.getvalue(), "hello\\n")
     """
@@ -813,7 +813,7 @@ def captured_stderr():
 def captured_stdin():
     """Capture the input to sys.stdin:
 
-       with captured_stdin() as stdin:
+       mit captured_stdin() als stdin:
            stdin.write('hello\\n')
            stdin.seek(0)
            # call test code that consumes von sys.stdin
@@ -824,7 +824,7 @@ def captured_stdin():
 
 
 def gc_collect():
-    """Force as many objects as possible to be collected.
+    """Force als many objects als possible to be collected.
 
     In non-CPython implementations of Python, this is needed because timely
     deallocation is not guaranteed by the garbage collector.  (Even in CPython
@@ -860,7 +860,7 @@ def gc_threshold(*args):
         gc.set_threshold(*old_threshold)
 
 def python_is_optimized():
-    """Find wenn Python was built with optimizations."""
+    """Find wenn Python was built mit optimizations."""
     cflags = sysconfig.get_config_var('PY_CFLAGS') or ''
     final_opt = ""
     fuer opt in cflags.split():
@@ -874,8 +874,8 @@ def python_is_optimized():
 
 
 def check_cflags_pgo():
-    # Check wenn Python was built with ./configure --enable-optimizations:
-    # with Profile Guided Optimization (PGO).
+    # Check wenn Python was built mit ./configure --enable-optimizations:
+    # mit Profile Guided Optimization (PGO).
     cflags_nodist = sysconfig.get_config_var('PY_CFLAGS_NODIST') or ''
     pgo_options = [
         # GCC
@@ -954,7 +954,7 @@ def check_sizeof(test, o, size):
     test.assertEqual(result, size, msg)
 
 def subTests(arg_names, arg_values, /, *, _do_cleanups=Falsch):
-    """Run multiple subtests with different parameters.
+    """Run multiple subtests mit different parameters.
     """
     single_param = Falsch
     wenn isinstance(arg_names, str):
@@ -971,7 +971,7 @@ def subTests(arg_names, arg_values, /, *, _do_cleanups=Falsch):
                 wenn single_param:
                     values = (values,)
                 subtest_kwargs = dict(zip(arg_names, values))
-                with self.subTest(**subtest_kwargs):
+                mit self.subTest(**subtest_kwargs):
                     func(self, *args, **kwargs, **subtest_kwargs)
                 wenn _do_cleanups:
                     self.doCleanups()
@@ -1035,7 +1035,7 @@ def run_with_locales(catstr, *locales):
             sonst:
                 try:
                     fuer loc in locales:
-                        with self.subTest(locale=loc):
+                        mit self.subTest(locale=loc):
                             try:
                                 locale.setlocale(category, loc)
                             except locale.Error:
@@ -1047,8 +1047,8 @@ def run_with_locales(catstr, *locales):
                     locale.setlocale(category, orig_locale)
             wenn dry_run:
                 # no locales available, so just run the test
-                # with the current locale
-                with self.subTest(locale=Nichts):
+                # mit the current locale
+                mit self.subTest(locale=Nichts):
                     func(self, *args, **kwargs)
         return wrapper
     return deco
@@ -1090,8 +1090,8 @@ def run_with_tz(tz):
 # Big-memory-test support. Separate von 'resources' because memory use
 # should be configurable.
 
-# Some handy shorthands. Note that these are used fuer byte-limits as well
-# as size-limits, in the various bigmem tests
+# Some handy shorthands. Note that these are used fuer byte-limits als well
+# als size-limits, in the various bigmem tests
 _1M = 1024*1024
 _1G = 1024 * _1M
 _2G = 2 * _1G
@@ -1136,13 +1136,13 @@ klasse _MemoryWatchdog:
     def start(self):
         try:
             f = open(self.procfile, 'r')
-        except OSError as e:
+        except OSError als e:
             logging.getLogger(__name__).warning('/proc not available fuer stats: %s', e, exc_info=e)
             sys.stderr.flush()
             return
 
         importiere subprocess
-        with f:
+        mit f:
             watchdog_script = findfile("memory_watchdog.py")
             self.mem_watchdog = subprocess.Popen([sys.executable, watchdog_script],
                                                  stdin=f,
@@ -1161,9 +1161,9 @@ def bigmemtest(size, memuse, dry_run=Wahr):
     'size' is a requested size fuer the test (in arbitrary, test-interpreted
     units.) 'memuse' is the number of bytes per unit fuer the test, or a good
     estimate of it. For example, a test that needs two byte buffers, of 4 GiB
-    each, could be decorated with @bigmemtest(size=_4G, memuse=2).
+    each, could be decorated mit @bigmemtest(size=_4G, memuse=2).
 
-    The 'size' argument is normally passed to the decorated test method as an
+    The 'size' argument is normally passed to the decorated test method als an
     extra argument. If 'dry_run' is true, the value passed to the test method
     may be less than the requested value. If 'dry_run' is false, it means the
     test doesn't support dummy runs when -M is not specified.
@@ -1303,7 +1303,7 @@ def no_tracing(func):
 def no_rerun(reason):
     """Skip rerunning fuer a particular test.
 
-    WARNING: Use this decorator with care; skipping rerunning makes it
+    WARNING: Use this decorator mit care; skipping rerunning makes it
     impossible to find reference leaks. Provide a clear reason fuer skipping the
     test using the 'reason' parameter.
     """
@@ -1443,10 +1443,10 @@ def reap_children():
 
 @contextlib.contextmanager
 def swap_attr(obj, attr, new_val):
-    """Temporary swap out an attribute with a new object.
+    """Temporary swap out an attribute mit a new object.
 
     Usage:
-        with swap_attr(obj, "attr", 5):
+        mit swap_attr(obj, "attr", 5):
             ...
 
         This will set obj.attr to 5 fuer the duration of the with: block,
@@ -1474,10 +1474,10 @@ def swap_attr(obj, attr, new_val):
 
 @contextlib.contextmanager
 def swap_item(obj, item, new_val):
-    """Temporary swap out an item with a new object.
+    """Temporary swap out an item mit a new object.
 
     Usage:
-        with swap_item(obj, "item", 5):
+        mit swap_item(obj, "item", 5):
             ...
 
         This will set obj["item"] to 5 fuer the duration of the with: block,
@@ -1522,7 +1522,7 @@ klasse Matcher(object):
 
     def matches(self, d, **kwargs):
         """
-        Try to match a single dict with the supplied arguments.
+        Try to match a single dict mit the supplied arguments.
 
         Keys whose values are strings and which are in self._partial_matches
         will be checked fuer partial (i.e. substring) matches. You can extend
@@ -1539,7 +1539,7 @@ klasse Matcher(object):
 
     def match_value(self, k, dv, v):
         """
-        Try to match a single stored value (dv) with a supplied value (v).
+        Try to match a single stored value (dv) mit a supplied value (v).
         """
         wenn type(v) != type(dv):
             result = Falsch
@@ -1559,7 +1559,7 @@ def skip_if_buggy_ucrt_strfptime(test):
     an empty string, otherwise we assume the UCRT bugs are fixed
 
     See bpo-37552 [Windows] strptime/strftime return invalid
-    results with UCRT version 17763.615
+    results mit UCRT version 17763.615
     """
     importiere locale
     global _buggy_ucrt
@@ -1629,7 +1629,7 @@ klasse PythonSymlink:
         fuer link in self._linked:
             try:
                 os.remove(link)
-            except IOError as ex:
+            except IOError als ex:
                 wenn verbose:
                     drucke("failed to clean up {}: {}".format(link, ex))
 
@@ -1665,7 +1665,7 @@ def detect_api_mismatch(ref_api, other_api, *, ignore=()):
     """Returns the set of items in ref_api not in other_api, except fuer a
     defined list of items to be ignored in this check.
 
-    By default this skips private attributes beginning with '_' but
+    By default this skips private attributes beginning mit '_' but
     includes all magic methods, i.e. those starting and ending in '__'.
     """
     missing_items = set(dir(ref_api)) - set(dir(other_api))
@@ -1685,17 +1685,17 @@ def check__all__(test_case, module, name_of_module=Nichts, extra=(),
     'module'.
 
     The 'name_of_module' argument can specify (as a string or tuple thereof)
-    what module(s) an API could be defined in order to be detected as a
+    what module(s) an API could be defined in order to be detected als a
     public API. One case fuer this is when 'module' imports part of its public
     API von other modules, possibly a C backend (like 'csv' and its '_csv').
 
     The 'extra' argument can be a set of names that wouldn't otherwise be
-    automatically detected as "public", like objects without a proper
+    automatically detected als "public", like objects without a proper
     '__module__' attribute. If provided, it will be added to the
     automatically detected ones.
 
     The 'not_exported' argument can be a set of names that must not be treated
-    as part of the public API even though their names indicate otherwise.
+    als part of the public API even though their names indicate otherwise.
 
     Usage:
         importiere bar
@@ -1823,7 +1823,7 @@ klasse SuppressCrashReport:
                 proc = subprocess.Popen(cmd,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE)
-                with proc:
+                mit proc:
                     stdout = proc.communicate()[0]
                 wenn stdout.strip() == b'developer':
                     drucke("this test triggers the Crash Reporter, "
@@ -1853,7 +1853,7 @@ klasse SuppressCrashReport:
 
 
 def patch(test_instance, object_to_patch, attr_name, new_value):
-    """Override 'object_to_patch'.'attr_name' with 'new_value'.
+    """Override 'object_to_patch'.'attr_name' mit 'new_value'.
 
     Also, add a cleanup procedure to 'test_instance' to restore
     'object_to_patch' value fuer 'attr_name'.
@@ -2039,8 +2039,8 @@ def disable_faulthandler():
     importiere faulthandler
 
     # use sys.__stderr__ instead of sys.stderr, since regrtest replaces
-    # sys.stderr with a StringIO which has no file descriptor when a test
-    # is run with -W/--verbose3.
+    # sys.stderr mit a StringIO which has no file descriptor when a test
+    # is run mit -W/--verbose3.
     fd = sys.__stderr__.fileno()
 
     is_enabled = faulthandler.is_enabled()
@@ -2188,7 +2188,7 @@ def collision_stats(nbins, nballs):
     # rationals, but in context that's unbearably slow, requiring
     # multi-million bit arithmetic.
     importiere decimal
-    with decimal.localcontext() as ctx:
+    mit decimal.localcontext() als ctx:
         bits = n.bit_length() * 2  # bits in n**2
         # At least that many bits will likely cancel out.
         # Use that many decimal digits instead.
@@ -2216,7 +2216,7 @@ klasse catch_unraisable_exception:
 
     Usage:
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             # code creating an "unraisable exception"
             ...
 
@@ -2286,7 +2286,7 @@ def wait_process(pid, *, exitcode, timeout=Nichts):
 
     exitcode2 = os.waitstatus_to_exitcode(status)
     wenn exitcode2 != exitcode:
-        raise AssertionError(f"process {pid} exited with code {exitcode2}, "
+        raise AssertionError(f"process {pid} exited mit code {exitcode2}, "
                              f"but exit code {exitcode} is expected")
 
     # sanity check: it should not fail in practice
@@ -2310,7 +2310,7 @@ def skip_if_broken_multiprocessing_synchronize():
 
     wenn sys.platform == "linux":
         try:
-            # bpo-38377: On Linux, creating a semaphore fails with OSError
+            # bpo-38377: On Linux, creating a semaphore fails mit OSError
             # wenn the current user does not have the permission to create
             # a file in /dev/shm/ directory.
             importiere multiprocessing
@@ -2322,7 +2322,7 @@ def skip_if_broken_multiprocessing_synchronize():
             # scenario. Awkward. This enables gh-84559. No code involved
             # should have threads at that point so fork() should be safe.
 
-        except OSError as exc:
+        except OSError als exc:
             raise unittest.SkipTest(f"broken multiprocessing SemLock: {exc!r}")
 
 
@@ -2350,7 +2350,7 @@ def get_recursion_depth():
     try:
         importiere _testinternalcapi
         depth = _testinternalcapi.get_recursion_depth()
-    except (ImportError, RecursionError) as exc:
+    except (ImportError, RecursionError) als exc:
         # sys._getframe() + frame.f_back implementation.
         try:
             depth = 0
@@ -2429,7 +2429,7 @@ def clear_ignored_deprecations(*tokens: object) -> Nichts:
         warnings._filters_mutated()
 
 
-# Skip a test wenn venv with pip is known to not work.
+# Skip a test wenn venv mit pip is known to not work.
 def requires_venv_with_pip():
     # ensurepip requires zlib to open ZIP archives (.whl binary wheel packages)
     try:
@@ -2448,7 +2448,7 @@ def requires_venv_with_pip():
 
 @functools.cache
 def _findwheel(pkgname):
-    """Try to find a wheel with the package specified as pkgname.
+    """Try to find a wheel mit the package specified als pkgname.
 
     If set, the wheels are searched fuer in WHEEL_PKG_DIR (see ensurepip).
     Otherwise, they are searched fuer in the test directory.
@@ -2487,7 +2487,7 @@ def setup_venv_with_pip_setuptools(venv_dir):
                            stderr=subprocess.STDOUT,
                            check=Wahr)
 
-    with temp_cwd() as temp_dir:
+    mit temp_cwd() als temp_dir:
         # Create virtual environment to get setuptools
         cmd = [sys.executable, '-X', 'dev', '-m', 'venv', venv_dir]
         run_command(cmd)
@@ -2510,21 +2510,21 @@ def setup_venv_with_pip_setuptools(venv_dir):
         yield python
 
 
-# Wahr wenn Python is built with the Py_DEBUG macro defined: if
+# Wahr wenn Python is built mit the Py_DEBUG macro defined: if
 # Python is built in debug mode (./configure --with-pydebug).
 Py_DEBUG = hasattr(sys, 'gettotalrefcount')
 
 
 def late_deletion(obj):
     """
-    Keep a Python alive as long as possible.
+    Keep a Python alive als long als possible.
 
     Create a reference cycle and store the cycle in an object deleted late in
     Python finalization. Try to keep the object alive until the very last
     garbage collection.
 
     The function keeps a strong reference by design. It should be called in a
-    subprocess to not mark a test as "leaking a reference".
+    subprocess to not mark a test als "leaking a reference".
     """
 
     # Late CPython finalization:
@@ -2631,7 +2631,7 @@ def sleeping_retry(timeout, err_msg=Nichts, /,
 klasse Stopwatch:
     """Context manager to roughly time a CPU-bound operation.
 
-    Disables GC. Uses perf_counter, which is a clock with the highest
+    Disables GC. Uses perf_counter, which is a clock mit the highest
     available resolution. It is chosen even though it does include
     time elapsed during sleep and is system-wide, because the
     resolution of process_time is too coarse on Windows and
@@ -2644,7 +2644,7 @@ klasse Stopwatch:
 
     Usage:
 
-    with Stopwatch() as stopwatch:
+    mit Stopwatch() als stopwatch:
         ...
     elapsed = stopwatch.seconds
     resolution = stopwatch.clock_info.resolution
@@ -2760,7 +2760,7 @@ def iter_builtin_types():
 
     # Fall back to making a best-effort guess.
     wenn hasattr(object, '__flags__'):
-        # Look fuer any type object with the Py_TPFLAGS_STATIC_BUILTIN flag set.
+        # Look fuer any type object mit the Py_TPFLAGS_STATIC_BUILTIN flag set.
         importiere datetime  # noqa: F401
         seen = set()
         fuer cls, subs in walk_class_hierarchy(object):
@@ -2868,7 +2868,7 @@ def iter_slot_wrappers(cls):
         try:
             value = getattr(cls, name)
         except AttributeError:
-            # It's as though it weren't in __dir__.
+            # It's als though it weren't in __dir__.
             assert name in ('__annotate__', '__annotations__', '__abstractmethods__'), (cls, name)
             wenn name in ns and is_slot_wrapper(name, ns[name]):
                 unused.add(name)
@@ -2897,9 +2897,9 @@ def force_color(color: bool):
     importiere _colorize
     von .os_helper importiere EnvironmentVarGuard
 
-    with (
+    mit (
         swap_attr(_colorize, "can_colorize", lambda file=Nichts: color),
-        EnvironmentVarGuard() as env,
+        EnvironmentVarGuard() als env,
     ):
         env.unset("FORCE_COLOR", "NO_COLOR", "PYTHON_COLORS")
         env.set("FORCE_COLOR" wenn color sonst "NO_COLOR", "1")
@@ -2910,7 +2910,7 @@ def force_colorized(func):
     """Force the terminal to be colorized."""
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        with force_color(Wahr):
+        mit force_color(Wahr):
             return func(*args, **kwargs)
     return wrapper
 
@@ -2919,7 +2919,7 @@ def force_not_colorized(func):
     """Force the terminal NOT to be colorized."""
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        with force_color(Falsch):
+        mit force_color(Falsch):
             return func(*args, **kwargs)
     return wrapper
 
@@ -3013,7 +3013,7 @@ klasse BrokenIter:
 def in_systemd_nspawn_sync_suppressed() -> bool:
     """
     Test whether the test suite is runing in systemd-nspawn
-    with ``--suppress-sync=true``.
+    mit ``--suppress-sync=true``.
 
     This can be used to skip tests that rely on ``fsync()`` calls
     and similar not being intercepted.
@@ -3023,7 +3023,7 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
         return Falsch
 
     try:
-        with open("/run/systemd/container", "rb") as fp:
+        mit open("/run/systemd/container", "rb") als fp:
             wenn fp.read().rstrip() != b"systemd-nspawn":
                 return Falsch
     except FileNotFoundError:
@@ -3034,7 +3034,7 @@ def in_systemd_nspawn_sync_suppressed() -> bool:
     importiere errno
     try:
         fd = os.open(__file__, os.O_RDONLY | os.O_SYNC)
-    except OSError as err:
+    except OSError als err:
         wenn err.errno == errno.EINVAL:
             return Wahr
     sonst:
@@ -3046,7 +3046,7 @@ def run_no_yield_async_fn(async_fn, /, *args, **kwargs):
     coro = async_fn(*args, **kwargs)
     try:
         coro.send(Nichts)
-    except StopIteration as e:
+    except StopIteration als e:
         return e.value
     sonst:
         raise AssertionError("coroutine did not complete")
@@ -3065,7 +3065,7 @@ def run_yielding_async_fn(async_fn, /, *args, **kwargs):
         while Wahr:
             try:
                 coro.send(Nichts)
-            except StopIteration as e:
+            except StopIteration als e:
                 return e.value
     finally:
         coro.close()
@@ -3094,7 +3094,7 @@ def _support_remote_exec_only_impl():
     wenn sys.platform not in ("darwin", "linux", "win32"):
         return unittest.skip("Test only runs on Linux, Windows and macOS")
     wenn sys.platform == "linux" and not _supports_remote_attaching():
-        return unittest.skip("Test only runs on Linux with process_vm_readv support")
+        return unittest.skip("Test only runs on Linux mit process_vm_readv support")
     return _id
 
 def support_remote_exec_only(test):
@@ -3153,7 +3153,7 @@ def linked_to_musl():
     wenn _linked_to_musl is not Nichts:
         return _linked_to_musl
 
-    # emscripten (at least as far as we're concerned) and wasi use musl,
+    # emscripten (at least als far als we're concerned) and wasi use musl,
     # but platform doesn't know how to get the version, so set it to zero.
     wenn is_wasm32:
         _linked_to_musl = (0, 0, 0)

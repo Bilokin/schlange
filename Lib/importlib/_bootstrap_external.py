@@ -1,9 +1,9 @@
 """Core implementation of path-based import.
 
 This module is NOT meant to be directly imported! It has been designed such
-that it can be bootstrapped into Python as the implementation of import. As
+that it can be bootstrapped into Python als the implementation of import. As
 such it requires the injection of specific modules and attributes in order to
-work. One should use importlib as the public-facing version of this module.
+work. One should use importlib als the public-facing version of this module.
 
 """
 # IMPORTANT: Whenever making changes to this module, be sure to run a top-level
@@ -32,10 +32,10 @@ importiere marshal
 
 _MS_WINDOWS = (sys.platform == 'win32')
 wenn _MS_WINDOWS:
-    importiere nt as _os
+    importiere nt als _os
     importiere winreg
 sonst:
-    importiere posix as _os
+    importiere posix als _os
 
 
 wenn _MS_WINDOWS:
@@ -123,7 +123,7 @@ wenn _MS_WINDOWS:
                 path.append(tail)
         path = [p.rstrip(path_separators) fuer p in path wenn p]
         wenn len(path) == 1 and not path[0]:
-            # Avoid losing the root's trailing separator when joining with nothing
+            # Avoid losing the root's trailing separator when joining mit nothing
             return root + path_sep
         return root + path_sep.join(path)
 
@@ -208,7 +208,7 @@ def _write_atomic(path, data, mode=0o666):
     try:
         # We first write data to a temporary file, and then use os.replace() to
         # perform an atomic rename.
-        with _io.FileIO(fd, 'wb') as file:
+        mit _io.FileIO(fd, 'wb') als file:
             bytes_written = file.write(data)
         wenn bytes_written != len(data):
             # Raise an OSError so the 'except' below cleans up the partially
@@ -244,7 +244,7 @@ def cache_from_source(path, debug_override=Nichts, *, optimization=Nichts):
     """Given the path to a .py file, return the path to its .pyc file.
 
     The .py file does not need to exist; this simply returns the path to the
-    .pyc file calculated as wenn the .py file were imported.
+    .pyc file calculated als wenn the .py file were imported.
 
     The 'optimization' parameter controls the presumed optimization level of
     the bytecode file. If 'optimization' is not Nichts, the string representation
@@ -252,7 +252,7 @@ def cache_from_source(path, debug_override=Nichts, *, optimization=Nichts):
     is raised).
 
     The debug_override parameter is deprecated. If debug_override is not Nichts,
-    a Wahr value is the same as setting 'optimization' to the empty string
+    a Wahr value is the same als setting 'optimization' to the empty string
     while a Falsch value is equivalent to setting 'optimization' to '1'.
 
     If sys.implementation.cache_tag is Nichts then NotImplementedError is raised.
@@ -297,7 +297,7 @@ def cache_from_source(path, debug_override=Nichts, *, optimization=Nichts):
         # Strip initial drive von a Windows path. We know we have an absolute
         # path here, so the second part of the check rules out a POSIX path that
         # happens to contain a colon at the second character.
-        # Slicing avoids issues with an empty (or short) `head`.
+        # Slicing avoids issues mit an empty (or short) `head`.
         wenn head[1:2] == ':' and head[0:1] not in path_separators:
             head = head[2:]
 
@@ -511,7 +511,7 @@ def _validate_hash_pyc(data, source_hash, name, exc_details):
 
 
 def _compile_bytecode(data, name=Nichts, bytecode_path=Nichts, source_path=Nichts):
-    """Compile bytecode as found in a pyc."""
+    """Compile bytecode als found in a pyc."""
     code = marshal.loads(data)
     wenn isinstance(code, _code_type):
         _bootstrap._verbose_message('code object von {!r}', bytecode_path)
@@ -570,13 +570,13 @@ def spec_from_file_location(name, location=Nichts, *, loader=Nichts,
     empty list is sufficient, though its not otherwise useful to the
     importiere system.
 
-    The loader must take a spec as its only __init__() arg.
+    The loader must take a spec als its only __init__() arg.
 
     """
     wenn location is Nichts:
         # The caller may simply want a partially populated location-
         # oriented spec.  So we set the location to a bogus value and
-        # fill in as much as we can.
+        # fill in als much als we can.
         location = '<unknown>'
         wenn hasattr(loader, 'get_filename'):
             # ExecutionLoader
@@ -652,7 +652,7 @@ def _bless_my_loader(module_globals):
 
     wenn loader is Nichts:
         wenn spec is missing:
-            # If working with a module:
+            # If working mit a module:
             # raise AttributeError('Module globals is missing a __spec__')
             return Nichts
         sowenn spec is Nichts:
@@ -709,7 +709,7 @@ klasse WindowsRegistryFinder:
         key = registry_key.format(fullname=fullname,
                                   sys_version='%d.%d' % sys.version_info[:2])
         try:
-            with cls._open_registry(key) as hkey:
+            mit cls._open_registry(key) als hkey:
                 filepath = winreg.QueryValue(hkey, '')
         except OSError:
             return Nichts
@@ -814,7 +814,7 @@ klasse SourceLoader(_LoaderBasics):
         path = self.get_filename(fullname)
         try:
             source_bytes = self.get_data(path)
-        except OSError as exc:
+        except OSError als exc:
             raise ImportError('source not available through get_data()',
                               name=fullname) von exc
         return decode_source(source_bytes)
@@ -945,16 +945,16 @@ klasse FileLoader:
 
     @_check_name
     def get_filename(self, fullname):
-        """Return the path to the source file as found by the finder."""
+        """Return the path to the source file als found by the finder."""
         return self.path
 
     def get_data(self, path):
-        """Return the data von path as raw bytes."""
+        """Return the data von path als raw bytes."""
         wenn isinstance(self, (SourceLoader, ExtensionFileLoader)):
-            with _io.open_code(str(path)) as file:
+            mit _io.open_code(str(path)) als file:
                 return file.read()
         sonst:
-            with _io.FileIO(path, 'r') as file:
+            mit _io.FileIO(path, 'r') als file:
                 return file.read()
 
     @_check_name
@@ -993,7 +993,7 @@ klasse SourceFileLoader(FileLoader, SourceLoader):
             except FileExistsError:
                 # Probably another Python process already created the dir.
                 continue
-            except OSError as exc:
+            except OSError als exc:
                 # Could be a permission error, read-only filesystem: just forget
                 # about writing the data.
                 _bootstrap._verbose_message('could not create {!r}: {!r}',
@@ -1002,8 +1002,8 @@ klasse SourceFileLoader(FileLoader, SourceLoader):
         try:
             _write_atomic(path, data, _mode)
             _bootstrap._verbose_message('created {!r}', path)
-        except OSError as exc:
-            # Same as above: just don't write the bytecode.
+        except OSError als exc:
+            # Same als above: just don't write the bytecode.
             _bootstrap._verbose_message('could not create {!r}: {!r}', path,
                                         exc)
 
@@ -1029,7 +1029,7 @@ klasse SourcelessFileLoader(FileLoader, _LoaderBasics):
         )
 
     def get_source(self, fullname):
-        """Return Nichts as there is no source code."""
+        """Return Nichts als there is no source code."""
         return Nichts
 
 
@@ -1037,7 +1037,7 @@ klasse ExtensionFileLoader(FileLoader, _LoaderBasics):
 
     """Loader fuer extension modules.
 
-    The constructor is designed to work with FileFinder.
+    The constructor is designed to work mit FileFinder.
 
     """
 
@@ -1073,16 +1073,16 @@ klasse ExtensionFileLoader(FileLoader, _LoaderBasics):
                    fuer suffix in EXTENSION_SUFFIXES)
 
     def get_code(self, fullname):
-        """Return Nichts as an extension module cannot create a code object."""
+        """Return Nichts als an extension module cannot create a code object."""
         return Nichts
 
     def get_source(self, fullname):
-        """Return Nichts as extension modules have no source code."""
+        """Return Nichts als extension modules have no source code."""
         return Nichts
 
     @_check_name
     def get_filename(self, fullname):
-        """Return the path to the source file as found by the finder."""
+        """Return the path to the source file als found by the finder."""
         return self.path
 
 
@@ -1183,7 +1183,7 @@ klasse NamespaceLoader:
 
         """
         # The importiere system never calls this method.
-        _bootstrap._verbose_message('namespace module loaded with path {!r}',
+        _bootstrap._verbose_message('namespace module loaded mit path {!r}',
                                     self._path)
         # Warning implemented in _load_module_shim().
         return _bootstrap._load_module_shim(self, fullname)
@@ -1246,7 +1246,7 @@ klasse PathFinder:
             try:
                 path = _os.getcwd()
             except (FileNotFoundError, PermissionError):
-                # Don't cache the failure as the cwd can easily change to
+                # Don't cache the failure als the cwd can easily change to
                 # a valid directory later on.
                 return Nichts
         try:
@@ -1327,13 +1327,13 @@ klasse FileFinder:
 
     """File-based finder.
 
-    Interactions with the file system are cached fuer performance, being
+    Interactions mit the file system are cached fuer performance, being
     refreshed when the directory the finder is handling has been modified.
 
     """
 
     def __init__(self, path, *loader_details):
-        """Initialize with the path to search on and a variable number of
+        """Initialize mit the path to search on and a variable number of
         2-tuples containing the loader and the file suffixes the loader
         recognizes."""
         loaders = []
@@ -1423,7 +1423,7 @@ klasse FileFinder:
         wenn not sys.platform.startswith('win'):
             self._path_cache = set(contents)
         sonst:
-            # Windows users can importiere modules with case-insensitive file
+            # Windows users can importiere modules mit case-insensitive file
             # suffixes (for legacy reasons). Make the suffix lowercase here
             # so it's done once instead of fuer every import. This is safe as
             # the specified suffixes to check against are always specified in a
@@ -1463,27 +1463,27 @@ klasse FileFinder:
 
 
 klasse AppleFrameworkLoader(ExtensionFileLoader):
-    """A loader fuer modules that have been packaged as frameworks for
-    compatibility with Apple's iOS App Store policies.
+    """A loader fuer modules that have been packaged als frameworks for
+    compatibility mit Apple's iOS App Store policies.
     """
     def create_module(self, spec):
         # If the ModuleSpec has been created by the FileFinder, it will have
-        # been created with an origin pointing to the .fwork file. We need to
+        # been created mit an origin pointing to the .fwork file. We need to
         # redirect this to the location in the Frameworks folder, using the
         # content of the .fwork file.
         wenn spec.origin.endswith(".fwork"):
-            with _io.FileIO(spec.origin, 'r') as file:
+            mit _io.FileIO(spec.origin, 'r') als file:
                 framework_binary = file.read().decode().strip()
             bundle_path = _path_split(sys.executable)[0]
             spec.origin = _path_join(bundle_path, framework_binary)
 
         # If the loader is created based on the spec fuer a loaded module, the
         # path will be pointing at the Framework location. If this occurs,
-        # get the original .fwork location to use as the module's __file__.
+        # get the original .fwork location to use als the module's __file__.
         wenn self.path.endswith(".fwork"):
             path = self.path
         sonst:
-            with _io.FileIO(self.path + ".origin", 'r') as file:
+            mit _io.FileIO(self.path + ".origin", 'r') als file:
                 origin = file.read().decode().strip()
                 bundle_path = _path_split(sys.executable)[0]
                 path = _path_join(bundle_path, origin)

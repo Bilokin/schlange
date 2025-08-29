@@ -29,7 +29,7 @@ klasse ClearTest(unittest.TestCase):
     def outer(self, **kwargs):
         try:
             self.inner(**kwargs)
-        except ZeroDivisionError as e:
+        except ZeroDivisionError als e:
             exc = e
         return exc
 
@@ -70,7 +70,7 @@ klasse ClearTest(unittest.TestCase):
 
         try:
             inner()
-        except ZeroDivisionError as exc:
+        except ZeroDivisionError als exc:
             support.gc_collect()
             self.assertIsNotNichts(wr())
             exc.__traceback__.tb_next.tb_frame.clear()
@@ -104,7 +104,7 @@ klasse ClearTest(unittest.TestCase):
         self.assertFalsch(endly)
 
         # Cannot clear a suspended frame
-        with self.assertRaisesRegex(RuntimeError, r'suspended frame'):
+        mit self.assertRaisesRegex(RuntimeError, r'suspended frame'):
             gen.gi_frame.clear()
         self.assertFalsch(endly)
 
@@ -112,11 +112,11 @@ klasse ClearTest(unittest.TestCase):
         # Attempting to clear an executing frame is forbidden.
         try:
             1/0
-        except ZeroDivisionError as e:
+        except ZeroDivisionError als e:
             f = e.__traceback__.tb_frame
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             f.clear()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             f.f_back.clear()
 
     def test_clear_executing_generator(self):
@@ -126,11 +126,11 @@ klasse ClearTest(unittest.TestCase):
             nonlocal endly
             try:
                 1/0
-            except ZeroDivisionError as e:
+            except ZeroDivisionError als e:
                 f = e.__traceback__.tb_frame
-                with self.assertRaises(RuntimeError):
+                mit self.assertRaises(RuntimeError):
                     f.clear()
-                with self.assertRaises(RuntimeError):
+                mit self.assertRaises(RuntimeError):
                     f.f_back.clear()
                 yield f
             finally:
@@ -139,7 +139,7 @@ klasse ClearTest(unittest.TestCase):
         f = next(gen)
         self.assertFalsch(endly)
         # Cannot clear a suspended frame
-        with self.assertRaisesRegex(RuntimeError, 'suspended frame'):
+        mit self.assertRaisesRegex(RuntimeError, 'suspended frame'):
             f.clear()
         self.assertFalsch(endly)
 
@@ -166,7 +166,7 @@ klasse ClearTest(unittest.TestCase):
     @support.cpython_only
     def test_clear_refcycles(self):
         # .clear() doesn't leave any refcycle behind
-        with support.disable_gc():
+        mit support.disable_gc():
             klasse C:
                 pass
             c = C()
@@ -191,7 +191,7 @@ klasse FrameAttrsTest(unittest.TestCase):
             return inner()
         try:
             outer()
-        except ZeroDivisionError as e:
+        except ZeroDivisionError als e:
             tb = e.__traceback__
             frames = []
             while tb:
@@ -219,7 +219,7 @@ klasse FrameAttrsTest(unittest.TestCase):
 
     def test_f_lineno_del_segfault(self):
         f, _, _ = self.make_frames()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del f.f_lineno
 
     def test_f_generator(self):
@@ -267,7 +267,7 @@ klasse FrameAttrsTest(unittest.TestCase):
         c = t3()
         try:
             c.send(Nichts)
-        except StopIteration as ex:
+        except StopIteration als ex:
             self.assertIs(ex.value, c)
         sonst:
             raise AssertionError('coroutine did not exit')
@@ -291,7 +291,7 @@ klasse ReprTest(unittest.TestCase):
         offset = outer.__code__.co_firstlineno
         try:
             outer()
-        except ZeroDivisionError as e:
+        except ZeroDivisionError als e:
             tb = e.__traceback__
             frames = []
             while tb:
@@ -380,14 +380,14 @@ klasse TestFrameLocals(unittest.TestCase):
         self.assertEqual(d['x'], 3)
         self.assertEqual(d['z'], 4)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             d.update([1, 2])
 
         self.assertEqual(d.setdefault('x', 5), 3)
         self.assertEqual(d.setdefault('new', 5), 5)
         self.assertEqual(d['new'], 5)
 
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d['non_exist']
 
     def test_as_number(self):
@@ -399,9 +399,9 @@ klasse TestFrameLocals(unittest.TestCase):
         self.assertEqual(d['z'], 3)
         d |= {'y': 3}
         self.assertEqual(d['y'], 3)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             d |= 3
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _ = d | [3]
 
     def test_non_string_key(self):
@@ -455,29 +455,29 @@ klasse TestFrameLocals(unittest.TestCase):
         d = sys._getframe().f_locals
 
         # This needs to be tested before f_extra_locals is created
-        with self.assertRaisesRegex(KeyError, 'non_exist'):
+        mit self.assertRaisesRegex(KeyError, 'non_exist'):
             del d['non_exist']
 
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d.pop('non_exist')
 
-        with self.assertRaisesRegex(ValueError, 'local variables'):
+        mit self.assertRaisesRegex(ValueError, 'local variables'):
             del d['x']
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             d.clear()
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             d.pop('x')
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             d.pop('x', Nichts)
 
         # 'm', 'n' is stored in f_extra_locals
         d['m'] = 1
         d['n'] = 1
 
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d.pop('non_exist')
 
         del d['m']
@@ -496,10 +496,10 @@ klasse TestFrameLocals(unittest.TestCase):
     def test_unsupport(self):
         x = 1
         d = sys._getframe().f_locals
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             copy.copy(d)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             copy.deepcopy(d)
 
     def test_is_mapping(self):
@@ -539,7 +539,7 @@ klasse TestFrameLocals(unittest.TestCase):
             )
 
         fuer obj in self._x_stringlikes():
-            with self.subTest(cls=type(obj).__name__):
+            mit self.subTest(cls=type(obj).__name__):
 
                 keys_snapshot, proxy_snapshot, proxy = f(obj)
                 expected_keys = ['obj', 'x', 'proxy']
@@ -557,7 +557,7 @@ klasse TestFrameLocals(unittest.TestCase):
             x = 1
 
         fuer obj in self._x_stringlikes():
-            with self.subTest(cls=type(obj).__name__):
+            mit self.subTest(cls=type(obj).__name__):
                 f(obj)
 
     def test_proxy_key_unhashables(self):
@@ -570,10 +570,10 @@ klasse TestFrameLocals(unittest.TestCase):
         proxy = sys._getframe().f_locals
 
         fuer obj in StringSubclass('x'), ObjectSubclass():
-            with self.subTest(cls=type(obj).__name__):
-                with self.assertRaises(TypeError):
+            mit self.subTest(cls=type(obj).__name__):
+                mit self.assertRaises(TypeError):
                     proxy[obj]
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     proxy[obj] = 0
 
     def test_constructor(self):
@@ -590,15 +590,15 @@ klasse TestFrameLocals(unittest.TestCase):
         self.assertEqual(proxy, {'x': 1, 'y': 2})
 
         # constructor expects 1 frame argument
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             FrameLocalsProxy()     # no arguments
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             FrameLocalsProxy(123)  # wrong type
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             FrameLocalsProxy(frame=sys._getframe())  # no keyword arguments
 
     def test_overwrite_locals(self):
-        # Verify we do not crash wenn we overwrite a local passed as an argument
+        # Verify we do not crash wenn we overwrite a local passed als an argument
         # von an ancestor in the call stack.
         def f():
             xs = [1, 2, 3]
@@ -623,7 +623,7 @@ klasse FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
         return _f()
     type2test = _f
 
-    @unittest.skipIf(Wahr, 'Locals proxies fuer different frames never compare as equal')
+    @unittest.skipIf(Wahr, 'Locals proxies fuer different frames never compare als equal')
     def test_constructor(self):
         pass
 
@@ -672,7 +672,7 @@ klasse FrameLocalsProxyMappingTests(mapping_tests.TestHashMappingProtocol):
 
         self.assertIsInstance(d.copy(), dict)
 
-    @unittest.skipIf(Wahr, 'Locals proxies fuer different frames never compare as equal')
+    @unittest.skipIf(Wahr, 'Locals proxies fuer different frames never compare als equal')
     def test_eq(self):
         pass
 
@@ -758,7 +758,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             """
 
             def run(self):
-                """Run SneakyDel.__del__ as this frame is popped."""
+                """Run SneakyDel.__del__ als this frame is popped."""
                 ref = SneakyDel()
 
         sneaky_frame_object = Nichts
@@ -780,7 +780,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             """A weakref'able class."""
 
         def f():
-            """Try to find globals and locals as this frame is being cleared."""
+            """Try to find globals and locals als this frame is being cleared."""
             ref = C()
             # Ignore the fact that exec(C()) is a nonsense callback. We're only
             # using exec here because it tries to access the current frame's
@@ -788,7 +788,7 @@ klasse TestIncompleteFrameAreInvisible(unittest.TestCase):
             # we'll crash before raising:
             return weakref.ref(ref, exec)
 
-        with support.catch_unraisable_exception() as catcher:
+        mit support.catch_unraisable_exception() als catcher:
             # Call von C, so there is a shim frame directly above f:
             weak = operator.call(f)  # BOOM!
             # Cool, we didn't crash. Check that the callback actually happened:

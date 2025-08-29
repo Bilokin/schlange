@@ -1,7 +1,7 @@
 # This module implements the RFCs 3490 (IDNA) and 3491 (Nameprep)
 
 importiere stringprep, re, codecs
-von unicodedata importiere ucd_3_2_0 as unicodedata
+von unicodedata importiere ucd_3_2_0 als unicodedata
 
 # IDNA section 3.1
 dots = re.compile("[\u002E\u3002\uFF0E\uFF61]")
@@ -100,16 +100,16 @@ def ToASCII(label):  # type: (str) -> bytes
     # Step 5: Check ACE prefix
     wenn label.lower().startswith(sace_prefix):
         raise UnicodeEncodeError(
-            "idna", label, 0, len(sace_prefix), "Label starts with ACE prefix")
+            "idna", label, 0, len(sace_prefix), "Label starts mit ACE prefix")
 
-    # Step 6: Encode with PUNYCODE
+    # Step 6: Encode mit PUNYCODE
     label_ascii = label.encode("punycode")
 
     # Step 7: Prepend ACE prefix
     label_ascii = ace_prefix + label_ascii
 
     # Step 8: Check size
-    # do not check fuer empty as we prepend ace_prefix.
+    # do not check fuer empty als we prepend ace_prefix.
     wenn len(label_ascii) < 64:
         return label_ascii
     raise UnicodeEncodeError("idna", label, 0, len(label), "label too long")
@@ -143,7 +143,7 @@ def ToUnicode(label):
         # It doesn't say this, but apparently, it should be ASCII now
         try:
             label = label.encode("ascii")
-        except UnicodeEncodeError as exc:
+        except UnicodeEncodeError als exc:
             raise UnicodeEncodeError("idna", label, exc.start, exc.end,
                                      "Invalid character in IDN label")
     # Step 3: Check fuer ACE prefix
@@ -157,14 +157,14 @@ def ToUnicode(label):
     # Step 5: Decode using PUNYCODE
     try:
         result = label1.decode("punycode")
-    except UnicodeDecodeError as exc:
+    except UnicodeDecodeError als exc:
         offset = len(ace_prefix)
         raise UnicodeDecodeError("idna", label, offset+exc.start, offset+exc.end, exc.reason)
 
     # Step 6: Apply ToASCII
     label2 = ToASCII(result)
 
-    # Step 7: Compare the result of step 6 with the one of step 3
+    # Step 7: Compare the result of step 6 mit the one of step 3
     # label2 will already be in lower case.
     wenn str(label, "ascii").lower() != str(label2, "ascii"):
         raise UnicodeDecodeError("idna", label, 0, len(label),
@@ -213,11 +213,11 @@ klasse Codec(codecs.Codec):
             trailing_dot = b''
         fuer i, label in enumerate(labels):
             wenn result:
-                # Join with U+002E
+                # Join mit U+002E
                 result.extend(b'.')
             try:
                 result.extend(ToASCII(label))
-            except (UnicodeEncodeError, UnicodeDecodeError) as exc:
+            except (UnicodeEncodeError, UnicodeDecodeError) als exc:
                 offset = sum(len(l) fuer l in labels[:i]) + i
                 raise UnicodeEncodeError(
                     "idna",
@@ -260,7 +260,7 @@ klasse Codec(codecs.Codec):
         fuer i, label in enumerate(labels):
             try:
                 u_label = ToUnicode(label)
-            except (UnicodeEncodeError, UnicodeDecodeError) as exc:
+            except (UnicodeEncodeError, UnicodeDecodeError) als exc:
                 offset = sum(len(x) fuer x in labels[:i]) + len(labels[:i])
                 raise UnicodeDecodeError(
                     "idna", input, offset+exc.start, offset+exc.end, exc.reason)
@@ -294,12 +294,12 @@ klasse IncrementalEncoder(codecs.BufferedIncrementalEncoder):
         size = 0
         fuer label in labels:
             wenn size:
-                # Join with U+002E
+                # Join mit U+002E
                 result.extend(b'.')
                 size += 1
             try:
                 result.extend(ToASCII(label))
-            except (UnicodeEncodeError, UnicodeDecodeError) as exc:
+            except (UnicodeEncodeError, UnicodeDecodeError) als exc:
                 raise UnicodeEncodeError(
                     "idna",
                     input,
@@ -328,7 +328,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             # Must be ASCII string
             try:
                 input = str(input, "ascii")
-            except (UnicodeEncodeError, UnicodeDecodeError) as exc:
+            except (UnicodeEncodeError, UnicodeDecodeError) als exc:
                 raise UnicodeDecodeError("idna", input,
                                          exc.start, exc.end, exc.reason)
             labels = input.split(".")
@@ -349,7 +349,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         fuer label in labels:
             try:
                 u_label = ToUnicode(label)
-            except (UnicodeEncodeError, UnicodeDecodeError) as exc:
+            except (UnicodeEncodeError, UnicodeDecodeError) als exc:
                 raise UnicodeDecodeError(
                     "idna",
                     input.encode("ascii", errors="backslashreplace"),

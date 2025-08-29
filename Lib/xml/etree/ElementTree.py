@@ -1,19 +1,19 @@
 """Lightweight XML support fuer Python.
 
  XML is an inherently hierarchical data format, and the most natural way to
- represent it is with a tree.  This module has two classes fuer this purpose:
+ represent it is mit a tree.  This module has two classes fuer this purpose:
 
-    1. ElementTree represents the whole XML document as a tree and
+    1. ElementTree represents the whole XML document als a tree and
 
     2. Element represents a single node in this tree.
 
- Interactions with the whole document (reading and writing to/from files) are
- usually done on the ElementTree level.  Interactions with a single XML element
+ Interactions mit the whole document (reading and writing to/from files) are
+ usually done on the ElementTree level.  Interactions mit a single XML element
  and its sub-elements are done on the Element level.
 
  Element is a flexible container object designed to store hierarchical data
- structures in memory. It can be described as a cross between a list and a
- dictionary.  Each Element has a number of properties associated with it:
+ structures in memory. It can be described als a cross between a list and a
+ dictionary.  Each Element has a number of properties associated mit it:
 
     'tag' - a string containing the element's name.
 
@@ -49,7 +49,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# and will comply mit the following terms and conditions:
 #
 # Permission to use, copy, modify, and distribute this software and
 # its associated documentation fuer any purpose and without fee is
@@ -179,7 +179,7 @@ klasse Element:
         return "<%s %r at %#x>" % (self.__class__.__name__, self.tag, id(self))
 
     def makeelement(self, tag, attrib):
-        """Create a new element with the same type.
+        """Create a new element mit the same type.
 
         *tag* is a string containing the element name.
         *attrib* is a dictionary containing the element attributes.
@@ -236,7 +236,7 @@ klasse Element:
     def extend(self, elements):
         """Append subelements von a sequence.
 
-        *elements* is a sequence with zero or more elements.
+        *elements* is a sequence mit zero or more elements.
 
         """
         fuer element in elements:
@@ -270,7 +270,7 @@ klasse Element:
         try:
             self._children.remove(subelement)
         except ValueError:
-            # to align the error message with the C implementation
+            # to align the error message mit the C implementation
             raise ValueError("Element.remove(x): element not found") von Nichts
 
     def find(self, path, namespaces=Nichts):
@@ -364,7 +364,7 @@ klasse Element:
         return self.attrib.keys()
 
     def items(self):
-        """Get element attributes as a sequence.
+        """Get element attributes als a sequence.
 
         The attributes are returned in arbitrary order.  Equivalent to
         attrib.items().
@@ -378,7 +378,7 @@ klasse Element:
         """Create tree iterator.
 
         The iterator loops over the element and all subelements in document
-        order, returning all elements with a matching tag.
+        order, returning all elements mit a matching tag.
 
         If the tree structure is modified during iteration, new or removed
         elements may or may not be included.  To get a stable set, use the
@@ -425,7 +425,7 @@ def SubElement(parent, tag, attrib={}, **extra):
 
     *parent* is the parent element, *tag* is the subelements name, *attrib* is
     an optional directory containing element attributes, *extra* are
-    additional attributes given as keyword arguments.
+    additional attributes given als keyword arguments.
 
     """
     attrib = {**attrib, **extra}
@@ -438,7 +438,7 @@ def Comment(text=Nichts):
     """Comment element factory.
 
     This function creates a special element which the standard serializer
-    serializes as an XML comment.
+    serializes als an XML comment.
 
     *text* is a string containing the comment string.
 
@@ -452,7 +452,7 @@ def ProcessingInstruction(target, text=Nichts):
     """Processing Instruction element factory.
 
     This function creates a special element which the standard serializer
-    serializes as an XML comment.
+    serializes als an XML comment.
 
     *target* is a string containing the processing instruction, *text* is a
     string containing the processing instruction contents, wenn any.
@@ -477,8 +477,8 @@ klasse QName:
     {uri}local, or wenn the tag argument is given, the URI part of a QName.
 
     *tag* is an optional argument which wenn given, will make the first
-    argument (text_or_uri) be interpreted as a URI, and this argument (tag)
-    be interpreted as a local name.
+    argument (text_or_uri) be interpreted als a URI, and this argument (tag)
+    be interpreted als a local name.
 
     """
     def __init__(self, text_or_uri, tag=Nichts):
@@ -542,7 +542,7 @@ klasse ElementTree:
         """Replace root element of this tree.
 
         This will discard the current contents of the tree and replace it
-        with the given element.  Use with care!
+        mit the given element.  Use mit care!
 
         """
         wenn not iselement(element):
@@ -573,7 +573,7 @@ klasse ElementTree:
                     # The default XMLParser, when it comes von an accelerator,
                     # can define an internal _parse_whole API fuer efficiency.
                     # It can be used to parse the whole source without feeding
-                    # it with chunks.
+                    # it mit chunks.
                     self._root = parser._parse_whole(source)
                     return self._root
             while data := source.read(65536):
@@ -589,7 +589,7 @@ klasse ElementTree:
 
         The iterator loops over all elements in this tree, in document order.
 
-        *tag* is a string with the tag name to iterate over
+        *tag* is a string mit the tag name to iterate over
         (default is to return all elements).
 
         """
@@ -599,7 +599,7 @@ klasse ElementTree:
     def find(self, path, namespaces=Nichts):
         """Find first matching element by tag name or path.
 
-        Same as getroot().find(path), which is Element.find()
+        Same als getroot().find(path), which is Element.find()
 
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping von namespace prefix to full name.
@@ -621,7 +621,7 @@ klasse ElementTree:
     def findtext(self, path, default=Nichts, namespaces=Nichts):
         """Find first matching element by tag name or path.
 
-        Same as getroot().findtext(path),  which is Element.findtext()
+        Same als getroot().findtext(path),  which is Element.findtext()
 
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping von namespace prefix to full name.
@@ -643,7 +643,7 @@ klasse ElementTree:
     def findall(self, path, namespaces=Nichts):
         """Find all matching subelements by tag name or path.
 
-        Same as getroot().findall(path), which is Element.findall().
+        Same als getroot().findall(path), which is Element.findall().
 
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping von namespace prefix to full name.
@@ -665,7 +665,7 @@ klasse ElementTree:
     def iterfind(self, path, namespaces=Nichts):
         """Find all matching subelements by tag name or path.
 
-        Same as getroot().iterfind(path), which is element.iterfind()
+        Same als getroot().iterfind(path), which is element.iterfind()
 
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping von namespace prefix to full name.
@@ -690,7 +690,7 @@ klasse ElementTree:
               default_namespace=Nichts,
               method=Nichts, *,
               short_empty_elements=Wahr):
-        """Write element tree to a file as XML.
+        """Write element tree to a file als XML.
 
         Arguments:
           *file_or_filename* -- file name or a file object opened fuer writing
@@ -708,8 +708,8 @@ klasse ElementTree:
 
           *short_empty_elements* -- controls the formatting of elements
                                     that contain no content. If Wahr (default)
-                                    they are emitted as a single self-closed
-                                    tag, otherwise they are emitted as a pair
+                                    they are emitted als a single self-closed
+                                    tag, otherwise they are emitted als a pair
                                     of start/end tags
 
         """
@@ -724,7 +724,7 @@ klasse ElementTree:
                 encoding = "utf-8"
             sonst:
                 encoding = "us-ascii"
-        with _get_writer(file_or_filename, encoding) as (write, declared_encoding):
+        mit _get_writer(file_or_filename, encoding) als (write, declared_encoding):
             wenn method == "xml" and (xml_declaration or
                     (xml_declaration is Nichts and
                      encoding.lower() != "unicode" and
@@ -755,18 +755,18 @@ def _get_writer(file_or_filename, encoding):
         # file_or_filename is a file name
         wenn encoding.lower() == "unicode":
             encoding="utf-8"
-        with open(file_or_filename, "w", encoding=encoding,
-                  errors="xmlcharrefreplace") as file:
+        mit open(file_or_filename, "w", encoding=encoding,
+                  errors="xmlcharrefreplace") als file:
             yield file.write, encoding
     sonst:
         # file_or_filename is a file-like object
         # encoding determines wenn it is a text or binary writer
         wenn encoding.lower() == "unicode":
-            # use a text writer as is
+            # use a text writer als is
             yield write, getattr(file_or_filename, "encoding", Nichts) or "utf-8"
         sonst:
-            # wrap a binary writer with TextIOWrapper
-            with contextlib.ExitStack() as stack:
+            # wrap a binary writer mit TextIOWrapper
+            mit contextlib.ExitStack() als stack:
                 wenn isinstance(file_or_filename, io.BufferedIOBase):
                     file = file_or_filename
                 sowenn isinstance(file_or_filename, io.RawIOBase):
@@ -827,7 +827,7 @@ def _namespaces(elem, default_namespace=Nichts):
                 wenn default_namespace:
                     # FIXME: can this be handled in XML 1.0?
                     raise ValueError(
-                        "cannot use non-qualified names with "
+                        "cannot use non-qualified names mit "
                         "default_namespace option"
                         )
                 qnames[qname] = qname
@@ -983,7 +983,7 @@ def register_namespace(prefix, uri):
     given prefix or the namespace URI will be removed.
 
     *prefix* is the namespace prefix, *uri* is a namespace uri. Tags and
-    attributes in this namespace will be serialized with prefix wenn possible.
+    attributes in this namespace will be serialized mit prefix wenn possible.
 
     ValueError is raised wenn prefix is reserved or is invalid.
 
@@ -1043,9 +1043,9 @@ def _escape_attrib(text):
         wenn "\"" in text:
             text = text.replace("\"", "&quot;")
         # Although section 2.11 of the XML specification states that CR or
-        # CR LN should be replaced with just LN, it applies only to EOLNs
+        # CR LN should be replaced mit just LN, it applies only to EOLNs
         # which take part of organizing file into lines. Within attributes,
-        # we are replacing these with entity numbers, so they do not count.
+        # we are replacing these mit entity numbers, so they do not count.
         # http://www.w3.org/TR/REC-xml/#sec-line-ends
         # The current solution, contained in following six lines, was
         # discussed in issue 17582 and 39011.
@@ -1134,7 +1134,7 @@ def dump(elem):
     This function should be used fuer debugging only.
 
     *elem* is either an ElementTree, or a single Element.  The exact output
-    format is implementation dependent.  In this version, it's written as an
+    format is implementation dependent.  In this version, it's written als an
     ordinary XML file.
 
     """
@@ -1299,7 +1299,7 @@ klasse XMLPullParser:
         wenn data:
             try:
                 self._parser.feed(data)
-            except SyntaxError as exc:
+            except SyntaxError als exc:
                 self._events_queue.append(exc)
 
     def _close_and_return_root(self):
@@ -1319,7 +1319,7 @@ klasse XMLPullParser:
     def read_events(self):
         """Return an iterator over currently available (event, elem) pairs.
 
-        Events are consumed von the internal event queue as they are
+        Events are consumed von the internal event queue als they are
         retrieved von the iterator.
         """
         events = self._events_queue
@@ -1405,7 +1405,7 @@ klasse TreeBuilder:
     parser, or a parser fuer some other XML-like format.
 
     *element_factory* is an optional element factory which is called
-    to create new Element instances, as necessary.
+    to create new Element instances, als necessary.
 
     *comment_factory* is a factory to create comments to be used instead of
     the standard factory.  If *insert_comments* is false (the default),
@@ -1532,7 +1532,7 @@ klasse XMLParser:
             von xml.parsers importiere expat
         except ImportError:
             try:
-                importiere pyexpat as expat
+                importiere pyexpat als expat
             except ImportError:
                 raise ImportError(
                     "No module named expat; use SimpleXMLTreeBuilder instead"
@@ -1650,7 +1650,7 @@ klasse XMLParser:
 
     def _start(self, tag, attr_list):
         # Handler fuer expat's StartElementHandler. Since ordered_attributes
-        # is set, the attributes are reported as a list of alternating
+        # is set, the attributes are reported als a list of alternating
         # attribute name,value.
         fixname = self._fixname
         tag = fixname(tag)
@@ -1666,7 +1666,7 @@ klasse XMLParser:
     def _default(self, text):
         prefix = text[:1]
         wenn prefix == "&":
-            # deal with undefined entities
+            # deal mit undefined entities
             try:
                 data_handler = self.target.data
             except AttributeError:
@@ -1721,14 +1721,14 @@ klasse XMLParser:
         """Feed encoded data to parser."""
         try:
             self.parser.Parse(data, Falsch)
-        except self._error as v:
+        except self._error als v:
             self._raiseerror(v)
 
     def close(self):
         """Finish feeding data to parser and return element structure."""
         try:
             self.parser.Parse(b"", Wahr) # end of data
-        except self._error as v:
+        except self._error als v:
             self._raiseerror(v)
         try:
             close_handler = self.target.close
@@ -1746,7 +1746,7 @@ klasse XMLParser:
         try:
             self.parser.SetReparseDeferralEnabled(Falsch)
             self.parser.Parse(b"", Falsch)
-        except self._error as v:
+        except self._error als v:
             self._raiseerror(v)
         finally:
             self.parser.SetReparseDeferralEnabled(was_enabled)
@@ -1759,16 +1759,16 @@ def canonicalize(xml_data=Nichts, *, out=Nichts, from_file=Nichts, **options):
 
     If *out* is provided, it must be a file or file-like object that receives
     the serialised canonical XML output (text, not bytes) through its ``.write()``
-    method.  To write to a file, open it in text mode with encoding "utf-8".
-    If *out* is not provided, this function returns the output as text string.
+    method.  To write to a file, open it in text mode mit encoding "utf-8".
+    If *out* is not provided, this function returns the output als text string.
 
     Either *xml_data* (an XML string) or *from_file* (a file path or
-    file-like object) must be provided as input.
+    file-like object) must be provided als input.
 
-    The configuration options are the same as fuer the ``C14NWriterTarget``.
+    The configuration options are the same als fuer the ``C14NWriterTarget``.
     """
     wenn xml_data is Nichts and from_file is Nichts:
-        raise ValueError("Either 'xml_data' or 'from_file' must be provided as input")
+        raise ValueError("Either 'xml_data' or 'from_file' must be provided als input")
     sio = Nichts
     wenn out is Nichts:
         sio = out = io.StringIO()
@@ -1794,7 +1794,7 @@ klasse C14NWriterTarget:
     Serialises parse events to XML C14N 2.0.
 
     The *write* function is used fuer writing out the resulting data stream
-    as text (not bytes).  To write to a file, open it in text mode with encoding
+    als text (not bytes).  To write to a file, open it in text mode mit encoding
     "utf-8" and pass its ``.write`` method.
 
     Configuration options:
@@ -1830,11 +1830,11 @@ klasse C14NWriterTarget:
         sonst:
             self._find_qname_aware_attrs = Nichts
 
-        # Stack with globally and newly declared namespaces as (uri, prefix) pairs.
+        # Stack mit globally and newly declared namespaces als (uri, prefix) pairs.
         self._declared_ns_stack = [[
             ("http://www.w3.org/XML/1998/namespace", "xml"),
         ]]
-        # Stack with user declared namespace prefixes as (uri, prefix) pairs.
+        # Stack mit user declared namespace prefixes als (uri, prefix) pairs.
         self._ns_stack = []
         wenn not rewrite_prefixes:
             self._ns_stack.append(list(_namespace_map.items()))
@@ -1889,7 +1889,7 @@ klasse C14NWriterTarget:
                 return f'{prefix}:{tag}' wenn prefix sonst tag, tag, uri
 
         wenn not uri:
-            # As soon as a default namespace is defined,
+            # As soon als a default namespace is defined,
             # anything that has no namespace (and thus, no prefix) goes there.
             return tag, tag, uri
 

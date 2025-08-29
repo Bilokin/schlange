@@ -1155,36 +1155,36 @@ TEST_INPUTS_TABLE = [
 klasse TestAsyncioToolsTree(unittest.TestCase):
     def test_asyncio_utils(self):
         fuer input_, tree in TEST_INPUTS_TREE:
-            with self.subTest(input_):
+            mit self.subTest(input_):
                 result = tools.build_async_tree(input_)
                 self.assertEqual(result, tree)
 
     def test_asyncio_utils_cycles(self):
         fuer input_, cycles in TEST_INPUTS_CYCLES_TREE:
-            with self.subTest(input_):
+            mit self.subTest(input_):
                 try:
                     tools.build_async_tree(input_)
-                except tools.CycleFoundException as e:
+                except tools.CycleFoundException als e:
                     self.assertEqual(e.cycles, cycles)
 
 
 klasse TestAsyncioToolsTable(unittest.TestCase):
     def test_asyncio_utils(self):
         fuer input_, table in TEST_INPUTS_TABLE:
-            with self.subTest(input_):
+            mit self.subTest(input_):
                 result = tools.build_task_table(input_)
                 self.assertEqual(result, table)
 
 
 klasse TestAsyncioToolsBasic(unittest.TestCase):
     def test_empty_input_tree(self):
-        """Test build_async_tree with empty input."""
+        """Test build_async_tree mit empty input."""
         result = []
         expected_output = []
         self.assertEqual(tools.build_async_tree(result), expected_output)
 
     def test_empty_input_table(self):
-        """Test build_task_table with empty input."""
+        """Test build_task_table mit empty input."""
         result = []
         expected_output = []
         self.assertEqual(tools.build_task_table(result), expected_output)
@@ -1239,7 +1239,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         )
 
     def test_single_task_tree(self):
-        """Test build_async_tree with a single task and no awaits."""
+        """Test build_async_tree mit a single task and no awaits."""
         result = [
             AwaitedInfo(
                 thread_id=1,
@@ -1261,7 +1261,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         self.assertEqual(tools.build_async_tree(result), expected_output)
 
     def test_single_task_table(self):
-        """Test build_task_table with a single task and no awaits."""
+        """Test build_task_table mit a single task and no awaits."""
         result = [
             AwaitedInfo(
                 thread_id=1,
@@ -1309,12 +1309,12 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
                 ]
             )
         ]
-        with self.assertRaises(tools.CycleFoundException) as context:
+        mit self.assertRaises(tools.CycleFoundException) als context:
             tools.build_async_tree(result)
         self.assertEqual(context.exception.cycles, [[3, 2, 3]])
 
     def test_complex_tree(self):
-        """Test build_async_tree with a more complex tree structure."""
+        """Test build_async_tree mit a more complex tree structure."""
         result = [
             AwaitedInfo(
                 thread_id=1,
@@ -1362,7 +1362,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
         self.assertEqual(tools.build_async_tree(result), expected_output)
 
     def test_complex_table(self):
-        """Test build_task_table with a more complex tree structure."""
+        """Test build_task_table mit a more complex tree structure."""
         result = [
             AwaitedInfo(
                 thread_id=1,
@@ -1495,7 +1495,7 @@ klasse TestAsyncioToolsBasic(unittest.TestCase):
                 ]
             )
         ]
-        with self.assertRaises(tools.CycleFoundException) as ctx:
+        mit self.assertRaises(tools.CycleFoundException) als ctx:
             tools.build_async_tree(input_)
         cycles = ctx.exception.cycles
         self.assertWahr(any(set(c) == {1, 2, 3} fuer c in cycles))
@@ -1563,7 +1563,7 @@ klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
                 ]
             )
         ]
-        with self.assertRaises(tools.CycleFoundException) as ctx:
+        mit self.assertRaises(tools.CycleFoundException) als ctx:
             tools.build_async_tree(input_)
         self.assertIn([1, 1], ctx.exception.cycles)
 
@@ -1640,7 +1640,7 @@ klasse TestAsyncioToolsEdgeCases(unittest.TestCase):
         self.assertIn("Task-1", flat)
 
     def test_task_with_no_name(self):
-        """Task with no name in id2name - should still render with fallback."""
+        """Task mit no name in id2name - should still render mit fallback."""
         input_ = [
             AwaitedInfo(
                 thread_id=1,

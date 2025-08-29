@@ -149,7 +149,7 @@ klasse Callbacks(unittest.TestCase):
             drucke(f"a={a}, b={b}, c={c}")
             return c
         dll = cdll[_ctypes_test.__file__]
-        with support.captured_stdout() as out:
+        mit support.captured_stdout() als out:
             # With no fix fuer i38748, the next line will raise OSError and cause the test to fail.
             self.assertEqual(dll._test_i38748_runCallback(callback, 5, 10), 15)
             self.assertEqual(out.getvalue(), "a=5, b=10, c=15\n")
@@ -214,10 +214,10 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
 
     def test_callback_register_int(self):
         # Issue #8275: buggy handling of callback args under Win64
-        # NOTE: should be run on release builds as well
+        # NOTE: should be run on release builds als well
         dll = CDLL(_ctypes_test.__file__)
         CALLBACK = CFUNCTYPE(c_int, c_int, c_int, c_int, c_int, c_int)
-        # All this function does is call the callback with its args squared
+        # All this function does is call the callback mit its args squared
         func = dll._testfunc_cbk_reg_int
         func.argtypes = (c_int, c_int, c_int, c_int, c_int, CALLBACK)
         func.restype = c_int
@@ -230,11 +230,11 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
 
     def test_callback_register_double(self):
         # Issue #8275: buggy handling of callback args under Win64
-        # NOTE: should be run on release builds as well
+        # NOTE: should be run on release builds als well
         dll = CDLL(_ctypes_test.__file__)
         CALLBACK = CFUNCTYPE(c_double, c_double, c_double, c_double,
                              c_double, c_double)
-        # All this function does is call the callback with its args squared
+        # All this function does is call the callback mit its args squared
         func = dll._testfunc_cbk_reg_double
         func.argtypes = (c_double, c_double, c_double,
                          c_double, c_double, CALLBACK)
@@ -279,7 +279,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         func = dll._testfunc_cbk_large_struct
         func.argtypes = (X, CALLBACK)
         func.restype = Nichts
-        # the function just calls the callback with the passed structure
+        # the function just calls the callback mit the passed structure
         func(s, CALLBACK(functools.partial(callback, check)))
         self.assertEqual(check.first, s.first)
         self.assertEqual(check.second, s.second)
@@ -297,19 +297,19 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
         def func(*args):
             return len(args)
 
-        # valid call with nargs <= CTYPES_MAX_ARGCOUNT
+        # valid call mit nargs <= CTYPES_MAX_ARGCOUNT
         proto = CFUNCTYPE(c_int, *(c_int,) * CTYPES_MAX_ARGCOUNT)
         cb = proto(func)
         args1 = (1,) * CTYPES_MAX_ARGCOUNT
         self.assertEqual(cb(*args1), CTYPES_MAX_ARGCOUNT)
 
-        # invalid call with nargs > CTYPES_MAX_ARGCOUNT
+        # invalid call mit nargs > CTYPES_MAX_ARGCOUNT
         args2 = (1,) * (CTYPES_MAX_ARGCOUNT + 1)
-        with self.assertRaises(ArgumentError):
+        mit self.assertRaises(ArgumentError):
             cb(*args2)
 
-        # error when creating the type with too many arguments
-        with self.assertRaises(ArgumentError):
+        # error when creating the type mit too many arguments
+        mit self.assertRaises(ArgumentError):
             CFUNCTYPE(c_int, *(c_int,) * (CTYPES_MAX_ARGCOUNT + 1))
 
     def test_convert_result_error(self):
@@ -318,7 +318,7 @@ klasse SampleCallbacksTestCase(unittest.TestCase):
 
         proto = CFUNCTYPE(c_int)
         ctypes_func = proto(func)
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             # don't test the result since it is an uninitialized value
             result = ctypes_func()
 

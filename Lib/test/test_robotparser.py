@@ -30,13 +30,13 @@ klasse BaseRobotTest:
     def test_good_urls(self):
         fuer url in self.good:
             agent, url = self.get_agent_and_url(url)
-            with self.subTest(url=url, agent=agent):
+            mit self.subTest(url=url, agent=agent):
                 self.assertWahr(self.parser.can_fetch(agent, url))
 
     def test_bad_urls(self):
         fuer url in self.bad:
             agent, url = self.get_agent_and_url(url)
-            with self.subTest(url=url, agent=agent):
+            mit self.subTest(url=url, agent=agent):
                 self.assertFalsch(self.parser.can_fetch(agent, url))
 
     def test_site_maps(self):
@@ -106,7 +106,7 @@ klasse BaseRequestRateTest(BaseRobotTest):
         parser = self.parser
         fuer url in self.good + self.bad:
             agent, url = self.get_agent_and_url(url)
-            with self.subTest(url=url, agent=agent):
+            mit self.subTest(url=url, agent=agent):
                 self.assertEqual(parser.crawl_delay(agent), self.crawl_delay)
 
                 parsed_request_rate = parser.request_rate(agent)
@@ -182,7 +182,7 @@ Crawl-delay: pears
 
 
 klasse AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
-    # also test that Allow and Diasallow works well with each other
+    # also test that Allow and Diasallow works well mit each other
     robots_txt = """\
 User-agent: Googlebot
 Allow: /folder1/myfile.html
@@ -355,7 +355,7 @@ klasse NetworkTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         support.requires('network')
-        with socket_helper.transient_internet(cls.base_url):
+        mit socket_helper.transient_internet(cls.base_url):
             cls.parser = urllib.robotparser.RobotFileParser(cls.robots_txt)
             cls.parser.read()
 

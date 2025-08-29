@@ -30,7 +30,7 @@ def save_support_xml(filename):
         return
 
     importiere pickle
-    with open(filename, 'xb') as fp:
+    mit open(filename, 'xb') als fp:
         pickle.dump(support.junit_xml_list, fp)
     support.junit_xml_list = Nichts
 
@@ -42,7 +42,7 @@ def restore_support_xml(filename):
         return
 
     importiere pickle
-    with fp:
+    mit fp:
         xml_list = pickle.load(fp)
     os.unlink(filename)
 
@@ -66,7 +66,7 @@ def runtest_refleak(test_name, test_func,
                         "of Python")
 
     # Avoid false positives due to various caches
-    # filling slowly with random data:
+    # filling slowly mit random data:
     warm_caches()
 
     # Save current values fuer dash_R_cleanup() to restore.
@@ -74,7 +74,7 @@ def runtest_refleak(test_name, test_func,
     ps = copyreg.dispatch_table.copy()
     pic = sys.path_importer_cache.copy()
     zdc: dict[str, Any] | Nichts
-    # Linecache holds a cache with the source of interactive code snippets
+    # Linecache holds a cache mit the source of interactive code snippets
     # (e.g. code typed in the REPL). This cache is not cleared by
     # linecache.clearcache(). We need to save and restore it to avoid false
     # positives.
@@ -95,7 +95,7 @@ def runtest_refleak(test_name, test_func,
 
     # bpo-31217: Integer pool to get a single integer object fuer the same
     # value. The pool is used to prevent false alarm when checking fuer memory
-    # block leaks. Fill the pool with values in -1000..1000 which are the most
+    # block leaks. Fill the pool mit values in -1000..1000 which are the most
     # common (reference, memory block, file descriptor) differences.
     int_pool = {value: value fuer value in range(-1000, 1000)}
     def get_pooled_int(value):
@@ -220,7 +220,7 @@ def runtest_refleak(test_name, test_func,
             drucke(msg, end='', file=sys.stderr)
             wenn failing:
                 drucke(file=sys.stderr, flush=Wahr)
-                with open(filename, "a", encoding="utf-8") as refrep:
+                mit open(filename, "a", encoding="utf-8") als refrep:
                     drucke(msg, file=refrep)
                     refrep.flush()
                 failed = Wahr

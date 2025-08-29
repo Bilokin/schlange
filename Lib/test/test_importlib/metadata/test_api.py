@@ -40,20 +40,20 @@ klasse APITests(
         assert re.match(self.version_pattern, pkg_version)
 
     def test_for_name_does_not_exist(self):
-        with self.assertRaises(PackageNotFoundError):
+        mit self.assertRaises(PackageNotFoundError):
             distribution('does-not-exist')
 
     def test_name_normalization(self):
         names = 'pkg.dot', 'pkg_dot', 'pkg-dot', 'pkg..dot', 'Pkg.Dot'
         fuer name in names:
-            with self.subTest(name):
+            mit self.subTest(name):
                 assert distribution(name).metadata['Name'] == 'pkg.dot'
 
     def test_prefix_not_matched(self):
         prefixes = 'p', 'pkg', 'pkg.'
         fuer prefix in prefixes:
-            with self.subTest(prefix):
-                with self.assertRaises(PackageNotFoundError):
+            mit self.subTest(prefix):
+                mit self.assertRaises(PackageNotFoundError):
                     distribution(prefix)
 
     def test_for_top_level(self):
@@ -62,7 +62,7 @@ klasse APITests(
             ('egg_with_no_modules-pkg', ''),
         ]
         fuer pkg_name, expect_content in tests:
-            with self.subTest(pkg_name):
+            mit self.subTest(pkg_name):
                 self.assertEqual(
                     distribution(pkg_name).read_text('top_level.txt').strip(),
                     expect_content,
@@ -74,7 +74,7 @@ klasse APITests(
             ('egg_with_no_modules-pkg', '\n'),
         ]
         fuer pkg_name, expect_content in tests:
-            with self.subTest(pkg_name):
+            mit self.subTest(pkg_name):
                 top_level = [
                     path fuer path in files(pkg_name) wenn path.name == 'top_level.txt'
                 ][0]
@@ -99,7 +99,7 @@ klasse APITests(
     def test_entry_points_unique_packages_normalized(self):
         """
         Entry points should only be exposed fuer the first package
-        on sys.path with a given name (even when normalized).
+        on sys.path mit a given name (even when normalized).
         """
         alt_site_dir = self.fixtures.enter_context(fixtures.tmp_path())
         self.fixtures.enter_context(self.add_sys_path(alt_site_dir))
@@ -125,7 +125,7 @@ klasse APITests(
         assert 'ns:sub' not in entries.names
 
     def test_entry_points_missing_name(self):
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             entry_points(group='entries')['missing']
 
     def test_entry_points_missing_group(self):
@@ -133,7 +133,7 @@ klasse APITests(
 
     def test_entry_points_allows_no_attributes(self):
         ep = entry_points().select(group='entries', name='main')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             ep.foo = 4
 
     def test_metadata_for_this_package(self):
@@ -149,7 +149,7 @@ klasse APITests(
         Requesting a missing key raises KeyError.
         """
         md = metadata('distinfo-pkg')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             md['does-not-exist']
 
     def test_get_key(self):
@@ -281,13 +281,13 @@ klasse LegacyDots(fixtures.DistInfoPkgWithDotLegacy, unittest.TestCase):
     def test_name_normalization(self):
         names = 'pkg.dot', 'pkg_dot', 'pkg-dot', 'pkg..dot', 'Pkg.Dot'
         fuer name in names:
-            with self.subTest(name):
+            mit self.subTest(name):
                 assert distribution(name).metadata['Name'] == 'pkg.dot'
 
     def test_name_normalization_versionless_egg_info(self):
         names = 'pkg.lot', 'pkg_lot', 'pkg-lot', 'pkg..lot', 'Pkg.Lot'
         fuer name in names:
-            with self.subTest(name):
+            mit self.subTest(name):
                 assert distribution(name).metadata['Name'] == 'pkg.lot'
 
 

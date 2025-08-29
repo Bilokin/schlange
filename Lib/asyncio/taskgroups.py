@@ -1,4 +1,4 @@
-# Adapted with permission von the EdgeDB project;
+# Adapted mit permission von the EdgeDB project;
 # license: PSFL.
 
 
@@ -15,7 +15,7 @@ klasse TaskGroup:
 
     Example use:
 
-        async with asyncio.TaskGroup() as group:
+        async mit asyncio.TaskGroup() als group:
             task1 = group.create_task(some_coroutine(...))
             task2 = group.create_task(other_coroutine(...))
         drucke("Both tasks have completed now.")
@@ -24,7 +24,7 @@ klasse TaskGroup:
 
     Any exceptions other than `asyncio.CancelledError` raised within
     a task will cancel all remaining tasks and wait fuer them to exit.
-    The exceptions are then combined and raised as an `ExceptionGroup`.
+    The exceptions are then combined and raised als an `ExceptionGroup`.
     """
     def __init__(self):
         self._entered = Falsch
@@ -97,13 +97,13 @@ klasse TaskGroup:
             wenn not self._aborting:
                 # Our parent task is being cancelled:
                 #
-                #    async with TaskGroup() as g:
+                #    async mit TaskGroup() als g:
                 #        g.create_task(...)
                 #        await ...  # <- CancelledError
                 #
                 # or there's an exception in "async with":
                 #
-                #    async with TaskGroup() as g:
+                #    async mit TaskGroup() als g:
                 #        g.create_task(...)
                 #        1 / 0
                 #
@@ -119,12 +119,12 @@ klasse TaskGroup:
 
             try:
                 await self._on_completed_fut
-            except exceptions.CancelledError as ex:
+            except exceptions.CancelledError als ex:
                 wenn not self._aborting:
                     # Our parent task is being cancelled:
                     #
                     #    async def wrapper():
-                    #        async with TaskGroup() as g:
+                    #        async mit TaskGroup() als g:
                     #            g.create_task(foo)
                     #
                     # "wrapper" is being cancelled while "foo" is
@@ -199,7 +199,7 @@ klasse TaskGroup:
 
         # Always schedule the done callback even wenn the task is
         # already done (e.g. wenn the coro was able to complete eagerly),
-        # otherwise wenn the task completes with an exception then it will cancel
+        # otherwise wenn the task completes mit an exception then it will cancel
         # the current task too early. gh-128550, gh-128588
         self._tasks.add(task)
         task.add_done_callback(self._on_task_done)
@@ -265,7 +265,7 @@ klasse TaskGroup:
             #
             #    async def foo():
             #        try:
-            #            async with TaskGroup() as g:
+            #            async mit TaskGroup() als g:
             #                g.create_task(crash_soon())
             #                await something  # <- this needs to be canceled
             #                                 #    by the TaskGroup, e.g.

@@ -30,9 +30,9 @@ von http.cookies importiere Morsel
 try:
     von multiprocessing.managers importiere ValueProxy, DictProxy, ListProxy
     von multiprocessing.pool importiere ApplyResult
-    von multiprocessing.queues importiere SimpleQueue as MPSimpleQueue
-    von multiprocessing.queues importiere Queue as MPQueue
-    von multiprocessing.queues importiere JoinableQueue as MPJoinableQueue
+    von multiprocessing.queues importiere SimpleQueue als MPSimpleQueue
+    von multiprocessing.queues importiere Queue als MPQueue
+    von multiprocessing.queues importiere JoinableQueue als MPJoinableQueue
 except ImportError:
     # _multiprocessing module is optional
     ValueProxy = Nichts
@@ -157,7 +157,7 @@ klasse BaseTest(unittest.TestCase):
             wenn t is Nichts:
                 continue
             tname = t.__name__
-            with self.subTest(f"Testing {tname}"):
+            mit self.subTest(f"Testing {tname}"):
                 alias = t[int]
                 self.assertIs(alias.__origin__, t)
                 self.assertEqual(alias.__args__, (int,))
@@ -166,14 +166,14 @@ klasse BaseTest(unittest.TestCase):
     def test_unsubscriptable(self):
         fuer t in int, str, float, Sized, Hashable:
             tname = t.__name__
-            with self.subTest(f"Testing {tname}"):
-                with self.assertRaisesRegex(TypeError, tname):
+            mit self.subTest(f"Testing {tname}"):
+                mit self.assertRaisesRegex(TypeError, tname):
                     t[int]
 
     def test_instantiate(self):
         fuer t in tuple, list, dict, set, frozenset, defaultdict, deque:
             tname = t.__name__
-            with self.subTest(f"Testing {tname}"):
+            mit self.subTest(f"Testing {tname}"):
                 alias = t[int]
                 self.assertEqual(alias(), t())
                 wenn t is dict:
@@ -210,7 +210,7 @@ klasse BaseTest(unittest.TestCase):
 
     def test_no_chaining(self):
         t = list[int]
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             t[int]
 
     def test_generic_subclass(self):
@@ -335,13 +335,13 @@ klasse BaseTest(unittest.TestCase):
                          list[Callable[[str, int], str]])
         self.assertEqual(dict[T, List[int]][str], dict[str, List[int]])
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             list[int][int]
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dict[T, int][str, int]
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dict[str, T][str, int]
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dict[T, T][str, int]
 
     def test_equality(self):
@@ -357,13 +357,13 @@ klasse BaseTest(unittest.TestCase):
 
     def test_isinstance(self):
         self.assertWahr(isinstance([], list))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             isinstance([], list[str])
 
     def test_issubclass(self):
         klasse L(list): ...
         self.assertIsSubclass(L, list)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             issubclass(L, list[str])
 
     def test_type_generic(self):
@@ -377,14 +377,14 @@ klasse BaseTest(unittest.TestCase):
     def test_type_subclass_generic(self):
         klasse MyType(type):
             pass
-        with self.assertRaisesRegex(TypeError, 'MyType'):
+        mit self.assertRaisesRegex(TypeError, 'MyType'):
             MyType[int]
 
     def test_pickle(self):
         aliases = [GenericAlias(list, T)] + _UNPACKED_TUPLES
         fuer alias in aliases:
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(alias=alias, proto=proto):
+                mit self.subTest(alias=alias, proto=proto):
                     s = pickle.dumps(alias, proto)
                     loaded = pickle.loads(s)
                     self.assertEqual(loaded.__origin__, alias.__origin__)
@@ -405,7 +405,7 @@ klasse BaseTest(unittest.TestCase):
             GenericAlias(X, T)
         ] + _UNPACKED_TUPLES
         fuer alias in aliases:
-            with self.subTest(alias=alias):
+            mit self.subTest(alias=alias):
                 copied = copy.copy(alias)
                 self.assertEqual(copied.__origin__, alias.__origin__)
                 self.assertEqual(copied.__args__, alias.__args__)
@@ -442,13 +442,13 @@ klasse BaseTest(unittest.TestCase):
             wenn t is Nichts:
                 continue
             tname = t.__name__
-            with self.subTest(f"Testing {tname}"):
+            mit self.subTest(f"Testing {tname}"):
                 alias = t[int]
                 self.assertEqual(ref(alias)(), alias)
 
     def test_no_kwargs(self):
         # bpo-42576
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             GenericAlias(bad=float)
 
     def test_subclassing_types_genericalias(self):
@@ -459,7 +459,7 @@ klasse BaseTest(unittest.TestCase):
                 super().__new__(cls, *args, **kwargs)
 
         self.assertEqual(alias, list[int])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Bad(list, int, bad=int)
 
     def test_iter_creates_starred_tuple(self):
@@ -472,7 +472,7 @@ klasse BaseTest(unittest.TestCase):
         t = tuple[int, str]
         iter_t = iter(t)
         next(iter_t)
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(iter_t)
 
     def test_del_iter(self):
@@ -556,13 +556,13 @@ klasse TypeIterationTests(unittest.TestCase):
 
     def test_cannot_iterate(self):
         fuer test_type in self._UNITERABLE_TYPES:
-            with self.subTest(type=test_type):
+            mit self.subTest(type=test_type):
                 expected_error_regex = "object is not iterable"
-                with self.assertRaisesRegex(TypeError, expected_error_regex):
+                mit self.assertRaisesRegex(TypeError, expected_error_regex):
                     iter(test_type)
-                with self.assertRaisesRegex(TypeError, expected_error_regex):
+                mit self.assertRaisesRegex(TypeError, expected_error_regex):
                     list(test_type)
-                with self.assertRaisesRegex(TypeError, expected_error_regex):
+                mit self.assertRaisesRegex(TypeError, expected_error_regex):
                     fuer _ in test_type:
                         pass
 

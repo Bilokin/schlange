@@ -60,7 +60,7 @@ klasse StructCheckMixin:
         cls_size = ctypes.sizeof(cls)
         fuer name, requested_type, *rest_of_tuple in cls._fields_:
             field = getattr(cls, name)
-            with self.subTest(name=name, field=field):
+            mit self.subTest(name=name, field=field):
                 is_bitfield = len(rest_of_tuple) > 0
 
                 # name
@@ -138,7 +138,7 @@ klasse StructCheckMixin:
                     mask = (1 << field.bit_size) - 1
                     mask <<= (tp_shift + field.bit_offset)
                     assert mask.bit_count() == field.bit_size
-                    # Check that these bits aren't shared with previous fields
+                    # Check that these bits aren't shared mit previous fields
                     self.assertEqual(used_bits & mask, 0)
                     # Mark the bits fuer future checks
                     used_bits |= mask

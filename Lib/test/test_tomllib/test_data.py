@@ -36,19 +36,19 @@ assert INVALID_FILES, "Invalid TOML test files not found"
 klasse TestData(unittest.TestCase):
     def test_invalid(self):
         fuer invalid in INVALID_FILES:
-            with self.subTest(msg=invalid.stem):
+            mit self.subTest(msg=invalid.stem):
                 toml_bytes = invalid.read_bytes()
                 try:
                     toml_str = toml_bytes.decode()
                 except UnicodeDecodeError:
                     # Some BurntSushi tests are not valid UTF-8. Skip those.
                     continue
-                with self.assertRaises(tomllib.TOMLDecodeError):
+                mit self.assertRaises(tomllib.TOMLDecodeError):
                     tomllib.loads(toml_str)
 
     def test_valid(self):
         fuer valid, expected in zip(VALID_FILES, VALID_FILES_EXPECTED):
-            with self.subTest(msg=valid.stem):
+            mit self.subTest(msg=valid.stem):
                 wenn isinstance(expected, MissingFile):
                     # For a poor man's xfail, assert that this is one of the
                     # test cases where expected data is known to be missing.

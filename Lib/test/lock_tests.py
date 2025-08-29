@@ -48,7 +48,7 @@ klasse Bunch(object):
         self.started.append(tid)
         try:
             self.func()
-        except BaseException as exc:
+        except BaseException als exc:
             self.exceptions.append(exc)
         finally:
             self.finished.append(tid)
@@ -162,7 +162,7 @@ klasse BaseLockTests(BaseTestCase):
         result = []
         def f():
             result.append(lock.acquire(Falsch))
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             pass
         self.assertFalsch(result[0])
         lock.release()
@@ -175,7 +175,7 @@ klasse BaseLockTests(BaseTestCase):
             lock.release()
 
         N = 5
-        with Bunch(f, N) as bunch:
+        mit Bunch(f, N) als bunch:
             # Threads block on lock.acquire()
             wait_threads_blocked(N)
             self.assertEqual(len(bunch.finished), 0)
@@ -192,26 +192,26 @@ klasse BaseLockTests(BaseTestCase):
             lock.release()
 
         def with_lock(err=Nichts):
-            with lock:
+            mit lock:
                 wenn err is not Nichts:
                     raise err
 
-        # Acquire the lock, do nothing, with releases the lock
-        with lock:
+        # Acquire the lock, do nothing, mit releases the lock
+        mit lock:
             pass
 
         # Check that the lock is unacquired
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             pass
 
-        # Acquire the lock, raise an exception, with releases the lock
-        with self.assertRaises(TypeError):
-            with lock:
+        # Acquire the lock, raise an exception, mit releases the lock
+        mit self.assertRaises(TypeError):
+            mit lock:
                 raise TypeError
 
         # Check that the lock is unacquired even wenn after an exception
         # was raised in the previous "with lock:" block
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             pass
 
     def test_thread_leak(self):
@@ -224,7 +224,7 @@ klasse BaseLockTests(BaseTestCase):
 
         # We run many threads in the hope that existing threads ids won't
         # be recycled.
-        with Bunch(f, 15):
+        mit Bunch(f, 15):
             pass
 
     def test_timeout(self):
@@ -249,7 +249,7 @@ klasse BaseLockTests(BaseTestCase):
             results.append(lock.acquire(timeout=0.5))
             t2 = time.monotonic()
             results.append(t2 - t1)
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             pass
         self.assertFalsch(results[0])
         self.assertTimeout(results[1], 0.5)
@@ -283,7 +283,7 @@ klasse LockTests(BaseLockTests):
             lock.acquire()
             phase.append(Nichts)
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             # Thread blocked on lock.acquire()
             start_new_thread(f, ())
             self.wait_phase(phase, 1)
@@ -298,7 +298,7 @@ klasse LockTests(BaseLockTests):
         lock.acquire()
         def f():
             lock.release()
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             pass
         lock.acquire()
         lock.release()
@@ -352,7 +352,7 @@ klasse RLockTests(BaseLockTests):
         result = []
         def call_repr():
             result.append(repr(lock))
-        with Bunch(call_repr, 1):
+        mit Bunch(call_repr, 1):
             pass
         self.assertIn("count=2", result[0])
         self.assertIn("<locked", result[0])
@@ -402,7 +402,7 @@ klasse RLockTests(BaseLockTests):
             rlock.acquire()
             result.append(rlock.locked())
 
-        with Bunch(acquire, 1):
+        mit Bunch(acquire, 1):
             pass
         self.assertWahr(rlock.locked())
         self.assertFalsch(result[0])
@@ -444,7 +444,7 @@ klasse RLockTests(BaseLockTests):
             lock.release()
             phase.append(Nichts)
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             # Thread blocked on lock.acquire()
             start_new_thread(f, ())
             self.wait_phase(phase, 1)
@@ -461,7 +461,7 @@ klasse RLockTests(BaseLockTests):
         def f():
             lock.acquire()
 
-        with Bunch(f, 1, Wahr) as bunch:
+        mit Bunch(f, 1, Wahr) als bunch:
             try:
                 self.assertRaises(RuntimeError, lock.release)
             finally:
@@ -477,7 +477,7 @@ klasse RLockTests(BaseLockTests):
         result = []
         def f():
             result.append(lock._is_owned())
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             pass
         self.assertFalsch(result[0])
         lock.release()
@@ -512,7 +512,7 @@ klasse EventTests(BaseTestCase):
             results1.append(evt.wait())
             results2.append(evt.wait())
 
-        with Bunch(f, N):
+        mit Bunch(f, N):
             # Threads blocked on first evt.wait()
             wait_threads_blocked(N)
             self.assertEqual(len(results1), 0)
@@ -543,7 +543,7 @@ klasse EventTests(BaseTestCase):
             t2 = time.monotonic()
             results2.append((r, t2 - t1))
 
-        with Bunch(f, N):
+        mit Bunch(f, N):
             pass
 
         self.assertEqual(results1, [Falsch] * N)
@@ -555,7 +555,7 @@ klasse EventTests(BaseTestCase):
         results1 = []
         results2 = []
         evt.set()
-        with Bunch(f, N):
+        mit Bunch(f, N):
             pass
 
         self.assertEqual(results1, [Wahr] * N)
@@ -571,7 +571,7 @@ klasse EventTests(BaseTestCase):
             results.append(event.wait(support.LONG_TIMEOUT))
 
         N = 5
-        with Bunch(f, N):
+        mit Bunch(f, N):
             # Threads blocked on event.wait()
             wait_threads_blocked(N)
 
@@ -585,10 +585,10 @@ klasse EventTests(BaseTestCase):
     def test_at_fork_reinit(self):
         # ensure that condition is still using a Lock after reset
         evt = self.eventtype()
-        with evt._cond:
+        mit evt._cond:
             self.assertFalsch(evt._cond.acquire(Falsch))
         evt._at_fork_reinit()
-        with evt._cond:
+        mit evt._cond:
             self.assertFalsch(evt._cond.acquire(Falsch))
 
     def test_repr(self):
@@ -619,7 +619,7 @@ klasse ConditionTests(BaseTestCase):
         self.assertWahr(lock.acquire(Falsch))
         self.assertFalsch(cond.acquire(Falsch))
         lock.release()
-        with cond:
+        mit cond:
             self.assertFalsch(lock.acquire(Falsch))
 
     def test_unacquired_wait(self):
@@ -639,7 +639,7 @@ klasse ConditionTests(BaseTestCase):
         # Secondly, this test assumes that condition variables are not subject
         # to spurious wakeups.  The absence of spurious wakeups is an implementation
         # detail of Condition Variables in current CPython, but in general, not
-        # a guaranteed property of condition variables as a programming
+        # a guaranteed property of condition variables als a programming
         # construct.  In particular, it is possible that this can no longer
         # be conveniently guaranteed should their implementation ever change.
         ready = []
@@ -662,7 +662,7 @@ klasse ConditionTests(BaseTestCase):
             results2.append((result, phase_num))
 
         N = 5
-        with Bunch(f, N):
+        mit Bunch(f, N):
             # first wait, to ensure all workers settle into cond.wait() before
             # we continue. See issues #8799 and #30727.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
@@ -747,7 +747,7 @@ klasse ConditionTests(BaseTestCase):
             results.append((t2 - t1, result))
 
         N = 5
-        with Bunch(f, N):
+        mit Bunch(f, N):
             pass
         self.assertEqual(len(results), N)
 
@@ -764,15 +764,15 @@ klasse ConditionTests(BaseTestCase):
         cond = self.condtype()
         state = 0
         def f():
-            with cond:
+            mit cond:
                 result = cond.wait_for(lambda: state == 4)
                 self.assertWahr(result)
                 self.assertEqual(state, 4)
 
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             fuer i in range(4):
                 time.sleep(0.010)
-                with cond:
+                mit cond:
                     state += 1
                     cond.notify()
 
@@ -781,7 +781,7 @@ klasse ConditionTests(BaseTestCase):
         state = 0
         success = []
         def f():
-            with cond:
+            mit cond:
                 dt = time.monotonic()
                 result = cond.wait_for(lambda : state==4, timeout=0.1)
                 dt = time.monotonic() - dt
@@ -789,11 +789,11 @@ klasse ConditionTests(BaseTestCase):
                 self.assertTimeout(dt, 0.1)
                 success.append(Nichts)
 
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             # Only increment 3 times, so state == 4 is never reached.
             fuer i in range(3):
                 time.sleep(0.010)
-                with cond:
+                mit cond:
                     state += 1
                     cond.notify()
 
@@ -847,7 +847,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
                     break
 
         N = 10
-        with Bunch(func, N):
+        mit Bunch(func, N):
             # Phase 0
             count1 = sem_value - 1
             wait_count(count1)
@@ -900,7 +900,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
                 wenn len(results1) + len(results2) >= count:
                     break
 
-        with Bunch(func, 10):
+        mit Bunch(func, 10):
             # Phase 0
             count1 = sem_value - 1
             wait_count(count1)
@@ -942,7 +942,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
         def f():
             results.append(sem.acquire(Falsch))
             results.append(sem.acquire(Falsch))
-        with Bunch(f, 5):
+        mit Bunch(f, 5):
             pass
         # There can be a thread switch between acquiring the semaphore and
         # appending the result, therefore results will not necessarily be
@@ -970,7 +970,7 @@ klasse BaseSemaphoreTests(BaseTestCase):
             sem.acquire()
             sem.release()
 
-        with Bunch(f, 1) as bunch:
+        mit Bunch(f, 1) als bunch:
             # Thread blocked on sem.acquire()
             wait_threads_blocked(1)
             self.assertFalsch(bunch.finished)
@@ -981,10 +981,10 @@ klasse BaseSemaphoreTests(BaseTestCase):
     def test_with(self):
         sem = self.semtype(2)
         def _with(err=Nichts):
-            with sem:
+            mit sem:
                 self.assertWahr(sem.acquire(Falsch))
                 sem.release()
-                with sem:
+                mit sem:
                     self.assertFalsch(sem.acquire(Falsch))
                     wenn err:
                         raise err
@@ -1052,7 +1052,7 @@ klasse BarrierTests(BaseTestCase):
         self.barrier.abort()
 
     def run_threads(self, f):
-        with Bunch(f, self.N):
+        mit Bunch(f, self.N):
             pass
 
     def multipass(self, results, n):
@@ -1227,7 +1227,7 @@ klasse BarrierTests(BaseTestCase):
                               barrier.wait)
 
         start_time = time.monotonic()
-        with Bunch(f, 1):
+        mit Bunch(f, 1):
             pass
         dt = time.monotonic() - start_time
         self.assertGreaterEqual(dt, timeout)
@@ -1245,7 +1245,7 @@ klasse BarrierTests(BaseTestCase):
             barrier.wait(timeout)
 
         N = 2
-        with Bunch(f, N):
+        mit Bunch(f, N):
             # Threads blocked on barrier.wait()
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn barrier.n_waiting >= N:

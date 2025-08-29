@@ -51,7 +51,7 @@ klasse FunctionalTestCaseMixin:
 
         wenn addr is Nichts:
             wenn hasattr(socket, 'AF_UNIX') and family == socket.AF_UNIX:
-                with tempfile.NamedTemporaryFile() as tmp:
+                mit tempfile.NamedTemporaryFile() als tmp:
                     addr = tmp.name
             sonst:
                 addr = ('127.0.0.1', 0)
@@ -93,7 +93,7 @@ klasse FunctionalTestCaseMixin:
 
     @contextlib.contextmanager
     def unix_sock_name(self):
-        with tempfile.TemporaryDirectory() as td:
+        mit tempfile.TemporaryDirectory() als td:
             fn = os.path.join(td, 'sock')
             try:
                 yield fn
@@ -184,7 +184,7 @@ klasse TestThreadedClient(SocketThread):
     def run(self):
         try:
             self._prog(TestSocketWrapper(self._sock))
-        except Exception as ex:
+        except Exception als ex:
             self._test._abort_socket_test(ex)
 
 
@@ -251,9 +251,9 @@ klasse TestThreadedServer(SocketThread):
                     self._clients += 1
                     conn.settimeout(self._timeout)
                     try:
-                        with conn:
+                        mit conn:
                             self._handle_client(conn)
-                    except Exception as ex:
+                    except Exception als ex:
                         self._active = Falsch
                         try:
                             raise

@@ -31,9 +31,9 @@ TSAN_TESTS = [
     'test_free_threading',
 ]
 
-# Tests that should be run with `--parallel-threads=N` under TSAN. These tests
+# Tests that should be run mit `--parallel-threads=N` under TSAN. These tests
 # typically do not use threads, but are run multiple times in parallel by
-# the regression test runner with the `--parallel-threads` option enabled.
+# the regression test runner mit the `--parallel-threads` option enabled.
 TSAN_PARALLEL_TESTS = [
     'test_abc',
     'test_hashlib',

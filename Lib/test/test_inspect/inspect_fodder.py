@@ -41,7 +41,7 @@ klasse StupidGit:
     def argue(self, a, b, c):
         try:
             spam(a, b, c)
-        except BaseException as e:
+        except BaseException als e:
             self.ex = e
             self.tr = inspect.trace()
 
@@ -78,7 +78,7 @@ async def lobbest(grenade):
 currentframe = inspect.currentframe()
 try:
     raise Exception()
-except BaseException as e:
+except BaseException als e:
     tb = e.__traceback__
 
 klasse Callable:
@@ -115,6 +115,6 @@ klasse WhichComments:
   # after WhichComments - line 115
 
 # Test that getsource works on a line that includes
-# a closing parenthesis with the opening paren being in another line
+# a closing parenthesis mit the opening paren being in another line
 (
 ); after_closing = lambda: 1

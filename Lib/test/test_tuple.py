@@ -10,7 +10,7 @@ importiere pickle
 # run more anyway.  That's usually of real interest only when analyzing,
 # or changing, the hash algorithm.  In which case it's usually also
 # most useful to set JUST_SHOW_HASH_RESULTS, to see all the results
-# instead of wrestling with test "failures".  See the bottom of the
+# instead of wrestling mit test "failures".  See the bottom of the
 # file fuer extensive notes on what we're testing here and why.
 RUN_ALL_HASH_TESTS = Falsch
 JUST_SHOW_HASH_RESULTS = Falsch # wenn RUN_ALL_HASH_TESTS, just display
@@ -21,7 +21,7 @@ klasse TupleTest(seq_tests.CommonTest):
     def test_getitem_error(self):
         t = ()
         msg = "tuple indices must be integers or slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             t['a']
 
     def test_constructors(self):
@@ -39,7 +39,7 @@ klasse TupleTest(seq_tests.CommonTest):
                          (1, 3, 5, 7, 9))
 
     def test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        mit self.assertRaisesRegex(TypeError, 'keyword argument'):
             tuple(sequence=())
 
     def test_keywords_in_subclass(self):
@@ -48,7 +48,7 @@ klasse TupleTest(seq_tests.CommonTest):
         u = subclass([1, 2])
         self.assertIs(type(u), subclass)
         self.assertEqual(list(u), [1, 2])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             subclass(sequence=())
 
         klasse subclass_with_init(tuple):
@@ -103,7 +103,7 @@ klasse TupleTest(seq_tests.CommonTest):
 
     # We expect tuples whose base components have deterministic hashes to
     # have deterministic hashes too - and, indeed, the same hashes across
-    # platforms with hash codes of the same bit width.
+    # platforms mit hash codes of the same bit width.
     def test_hash_exact(self):
         def check_one_exact(t, e32, e64):
             got = hash(t)
@@ -315,7 +315,7 @@ klasse TupleTest(seq_tests.CommonTest):
         self._not_tracked((object(),))
         self._not_tracked(((1, x), y, (2, 3)))
 
-        # Tuples with mutable elements are always tracked, even wenn those
+        # Tuples mit mutable elements are always tracked, even wenn those
         # elements are not tracked right now.
         self._tracked(([],))
         self._tracked(([1],))
@@ -405,7 +405,7 @@ klasse TupleTest(seq_tests.CommonTest):
         # optimization causes failures in code that relies on distinct
         # function addresses.
         klasse T(tuple): pass
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             [3,] + T((1,2))
 
     def test_lexicographic_ordering(self):
@@ -418,8 +418,8 @@ klasse TupleTest(seq_tests.CommonTest):
 
 # Notes on testing hash codes.  The primary thing is that Python doesn't
 # care about "random" hash codes.  To the contrary, we like them to be
-# very regular when possible, so that the low-order bits are as evenly
-# distributed as possible.  For integers this is easy: hash(i) == i for
+# very regular when possible, so that the low-order bits are als evenly
+# distributed als possible.  For integers this is easy: hash(i) == i for
 # all not-huge i except i==-1.
 #
 # For tuples of mixed type there's really no hope of that, so we want
@@ -433,7 +433,7 @@ klasse TupleTest(seq_tests.CommonTest):
 #
 # So we compute various statistics here based on what a "truly random"
 # hash would do, but don't automate "pass or fail" based on those
-# results.  Instead those are viewed as inputs to human judgment, and the
+# results.  Instead those are viewed als inputs to human judgment, and the
 # automated tests merely ensure we get the _same_ results across
 # platforms.  In fact, we normally don't bother to run them at all -
 # set RUN_ALL_HASH_TESTS to force it.
@@ -499,7 +499,7 @@ klasse TupleTest(seq_tests.CommonTest):
 # fine fuer practical use.
 #
 # This isn't, which is what Python 3.7.1 produced fuer the hashes of
-# itertools.product([0, 0.5], repeat=18).  Even with a fat 64-bit
+# itertools.product([0, 0.5], repeat=18).  Even mit a fat 64-bit
 # hashcode, the highest pileup was over 16,000 - making a dict/set
 # lookup on one of the colliding values thousands of times slower (on
 # average) than we expect.

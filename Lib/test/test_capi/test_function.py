@@ -17,7 +17,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertIsInstance(code, types.CodeType)
         self.assertEqual(code, some.__code__)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_get_code(Nichts)  # not a function
 
     def test_function_get_globals(self):
@@ -29,7 +29,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertIsInstance(globals_, dict)
         self.assertEqual(globals_, some.__globals__)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_get_globals(Nichts)  # not a function
 
     def test_function_get_module(self):
@@ -41,7 +41,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertIsInstance(module, str)
         self.assertEqual(module, some.__module__)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_get_module(Nichts)  # not a function
 
     def test_function_get_defaults(self):
@@ -60,7 +60,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(defaults, ('p', 0, Nichts))
         self.assertEqual(defaults, some.__defaults__)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_get_defaults(Nichts)  # not a function
 
     def test_function_set_defaults(self):
@@ -79,12 +79,12 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_defaults(some), old_defaults)
         self.assertEqual(some.__defaults__, old_defaults)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_set_defaults(some, 1)  # not tuple or Nichts
         self.assertEqual(_testcapi.function_get_defaults(some), old_defaults)
         self.assertEqual(some.__defaults__, old_defaults)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_set_defaults(1, ())    # not a function
         self.assertEqual(_testcapi.function_get_defaults(some), old_defaults)
         self.assertEqual(some.__defaults__, old_defaults)
@@ -129,7 +129,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(defaults, {'kw2': Wahr})
         self.assertEqual(defaults, some.__kwdefaults__)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_get_kw_defaults(Nichts)  # not a function
 
     def test_function_set_kw_defaults(self):
@@ -148,12 +148,12 @@ klasse FunctionTest(unittest.TestCase):
         self.assertEqual(_testcapi.function_get_kw_defaults(some), old_defaults)
         self.assertEqual(some.__kwdefaults__, old_defaults)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_set_kw_defaults(some, 1)  # not dict or Nichts
         self.assertEqual(_testcapi.function_get_kw_defaults(some), old_defaults)
         self.assertEqual(some.__kwdefaults__, old_defaults)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_set_kw_defaults(1, {})    # not a function
         self.assertEqual(_testcapi.function_get_kw_defaults(some), old_defaults)
         self.assertEqual(some.__kwdefaults__, old_defaults)
@@ -220,7 +220,7 @@ klasse FunctionTest(unittest.TestCase):
         self.assertIsNichts(closure)
         self.assertIsNichts(func.__closure__)
 
-        # Functions with closures:
+        # Functions mit closures:
         func = with_one_level(5)
         closure = _testcapi.function_get_closure(func)
         self.assertEqual(closure, func.__closure__)
@@ -244,9 +244,9 @@ klasse FunctionTest(unittest.TestCase):
 
     def test_function_get_closure_error(self):
         # Test PyFunction_GetClosure()
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_get_closure(1)
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_get_closure(Nichts)
 
     def test_function_set_closure(self):
@@ -294,10 +294,10 @@ klasse FunctionTest(unittest.TestCase):
         # Test PyFunction_SetClosure()
         def function_without_closure(): ...
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_set_closure(Nichts, ())  # not a function
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             _testcapi.function_set_closure(function_without_closure, 1)
         self.assertIsNichts(function_without_closure.__closure__)  # no change
 

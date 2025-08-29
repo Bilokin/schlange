@@ -14,7 +14,7 @@ __unittest = Wahr
 
 
 klasse _WritelnDecorator(object):
-    """Used to decorate file-like objects with a handy 'writeln' method"""
+    """Used to decorate file-like objects mit a handy 'writeln' method"""
     def __init__(self, stream):
         self.stream = stream
 
@@ -39,7 +39,7 @@ klasse TextTestResult(result.TestResult):
 
     def __init__(self, stream, descriptions, verbosity, *, durations=Nichts):
         """Construct a TextTestResult. Subclasses should accept **kwargs
-        to ensure compatibility as the interface changes."""
+        to ensure compatibility als the interface changes."""
         super(TextTestResult, self).__init__(stream, descriptions, verbosity)
         self.stream = stream
         self.showAll = verbosity > 1
@@ -181,7 +181,7 @@ klasse TextTestResult(result.TestResult):
 klasse TextTestRunner(object):
     """A test runner klasse that displays results in textual form.
 
-    It prints out the names of tests as they are run, errors as they
+    It prints out the names of tests als they are run, errors als they
     occur, and a summary of the results at the end of the test run.
     """
     resultclass = TextTestResult
@@ -191,7 +191,7 @@ klasse TextTestRunner(object):
                  *, tb_locals=Falsch, durations=Nichts):
         """Construct a TextTestRunner.
 
-        Subclasses should accept **kwargs to ensure compatibility as the
+        Subclasses should accept **kwargs to ensure compatibility als the
         interface changes.
         """
         wenn stream is Nichts:
@@ -245,7 +245,7 @@ klasse TextTestRunner(object):
         result.failfast = self.failfast
         result.buffer = self.buffer
         result.tb_locals = self.tb_locals
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             wenn self.warnings:
                 # wenn self.warnings is set, use it to filter all the warnings
                 warnings.simplefilter(self.warnings)

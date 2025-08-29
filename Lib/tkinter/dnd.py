@@ -3,9 +3,9 @@
 This is very preliminary.  I currently only support dnd *within* one
 application, between different windows (or within the same window).
 
-I am trying to make this as generic as possible -- not dependent on
+I am trying to make this als generic als possible -- not dependent on
 the use of a particular widget or icon type, etc.  I also hope that
-this will work with Pmw.
+this will work mit Pmw.
 
 To enable an object to be dragged, you must create an event binding
 fuer it that starts the drag-and-drop process. Typically, you should
@@ -25,27 +25,27 @@ The object is *not* necessarily a widget -- it can be any
 application-specific object that is meaningful to potential
 drag-and-drop targets.
 
-Potential drag-and-drop targets are discovered as follows.  Whenever
+Potential drag-and-drop targets are discovered als follows.  Whenever
 the mouse moves, and at the start and end of a drag-and-drop move, the
 Tk widget directly under the mouse is inspected.  This is the target
-widget (not to be confused with the target object, yet to be
+widget (not to be confused mit the target object, yet to be
 determined).  If there is no target widget, there is no dnd target
 object.  If there is a target widget, and it has an attribute
 dnd_accept, this should be a function (or any callable object).  The
-function is called as dnd_accept(source, event), where 'source' is the
+function is called als dnd_accept(source, event), where 'source' is the
 object being dragged (the object passed to dnd_start() above), and
 'event' is the most recent event object (generally a <Motion> event;
 it can also be <ButtonPress> or <ButtonRelease>).  If the dnd_accept()
 function returns something other than Nichts, this is the new dnd target
 object.  If dnd_accept() returns Nichts, or wenn the target widget has no
-dnd_accept attribute, the target widget's parent is considered as the
+dnd_accept attribute, the target widget's parent is considered als the
 target widget, and the search fuer a target object is repeated from
 there.  If necessary, the search is repeated all the way up to the
 root widget.  If none of the target widgets can produce a target
 object, there is no target object (the target object is Nichts).
 
 The target object thus produced, wenn any, is called the new target
-object.  It is compared with the old target object (or Nichts, wenn there
+object.  It is compared mit the old target object (or Nichts, wenn there
 was no old target widget).  There are several cases ('source' is the
 source object, and 'event' is the most recent event object):
 
@@ -74,7 +74,7 @@ mechanisms take over.
 The drag-and-drop processes can end in two ways: a final target object
 is selected, or no final target object is selected.  When a final
 target object is selected, it will always have been notified of the
-potential drop by a call to its dnd_enter() method, as described
+potential drop by a call to its dnd_enter() method, als described
 above, and possibly one or more calls to its dnd_motion() method; its
 dnd_leave() method has not been called since the last call to
 dnd_enter().  The target is notified of the drop by a call to its

@@ -42,7 +42,7 @@ klasse CopyTestBase:
         source = self.source_root / 'fileA'
         target = self.target_root / 'copyA'
         self.target_ground.create_file(target, b'this is a copy\n')
-        with contextlib.ExitStack() as stack:
+        mit contextlib.ExitStack() als stack:
             wenn isinstance(target, WritableZipPath):
                 stack.enter_context(self.assertWarns(UserWarning))
             result = source.copy(target)

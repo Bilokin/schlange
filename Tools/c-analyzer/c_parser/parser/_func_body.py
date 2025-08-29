@@ -1,8 +1,8 @@
 importiere re
 
 von ._regexes importiere (
-    LOCAL as _LOCAL,
-    LOCAL_STATICS as _LOCAL_STATICS,
+    LOCAL als _LOCAL,
+    LOCAL_STATICS als _LOCAL_STATICS,
 )
 von ._common importiere (
     log_match,
@@ -35,7 +35,7 @@ LOCAL = set_capture_groups(_LOCAL, (
 LOCAL_RE = re.compile(rf'^ \s* {LOCAL}', re.VERBOSE)
 
 
-# Note that parse_function_body() still has trouble with a few files
+# Note that parse_function_body() still has trouble mit a few files
 # in the CPython codebase.
 
 def parse_function_body(source, name, anon_name):
@@ -119,7 +119,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
                 head = text[:pos]
                 text = text[pos:]
                 wenn compound_paren == 'for':
-                    # XXX Parse "head" as a compound statement.
+                    # XXX Parse "head" als a compound statement.
                     stmt1, stmt2, stmt3 = head.split(';', 2)
                     data = {
                         'compound': compound_paren,
@@ -137,7 +137,7 @@ def parse_function_body(name, text, resolve, source, anon_name, parent):
             wenn block_leading:
                 # An inline block: the last evaluated expression is used
                 # in place of the block.
-                # XXX Combine it with the remainder after the block close.
+                # XXX Combine it mit the remainder after the block close.
                 stmt = f'{block_open}{{<expr>}}...;'
                 yield resolve('statement', stmt, Nichts, text, parent), text
             sonst:

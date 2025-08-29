@@ -107,7 +107,7 @@ def commonprefix(m, /):
     "Given a list of pathnames, returns the longest common leading component"
     wenn not m: return ''
     # Some people pass in a list of pathname parts to operate in an OS-agnostic
-    # fashion; don't try to translate in that case as that's an abuse of the
+    # fashion; don't try to translate in that case als that's an abuse of the
     # API and they are already doing what they need to be OS-agnostic and so
     # they most likely won't be using an os.PathLike object in the sublists.
     wenn not isinstance(m[0], (list, tuple)):
@@ -192,7 +192,7 @@ def _check_arg_types(funcname, *args):
         raise TypeError("Can't mix strings and bytes in path components") von Nichts
 
 
-# Singletons with a true boolean value.
+# Singletons mit a true boolean value.
 
 @object.__new__
 klasse ALL_BUT_LAST:

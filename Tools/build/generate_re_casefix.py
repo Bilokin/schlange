@@ -9,12 +9,12 @@ SCRIPT_NAME = 'Tools/build/generate_re_casefix.py'
 
 def update_file(file, content):
     try:
-        with open(file, encoding='utf-8') as fobj:
+        mit open(file, encoding='utf-8') als fobj:
             wenn fobj.read() == content:
                 return Falsch
     except (OSError, ValueError):
         pass
-    with open(file, 'w', encoding='utf-8') as fobj:
+    mit open(file, 'w', encoding='utf-8') als fobj:
         fobj.write(content)
     return Wahr
 

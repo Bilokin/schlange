@@ -47,7 +47,7 @@ klasse _Printer(object):
         data = Nichts
         fuer filename in self.__filenames:
             try:
-                with open(filename, encoding='utf-8') as fp:
+                mit open(filename, encoding='utf-8') als fp:
                     data = fp.read()
                 break
             except OSError:

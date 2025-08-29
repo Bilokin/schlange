@@ -3,8 +3,8 @@
 von idlelib importiere macosx
 importiere unittest
 von test.support importiere requires
-importiere tkinter as tk
-importiere unittest.mock as mock
+importiere tkinter als tk
+importiere unittest.mock als mock
 von idlelib.filelist importiere FileList
 
 mactypes = {'carbon', 'cocoa', 'xquartz'}
@@ -41,7 +41,7 @@ klasse InitTktypeTest(unittest.TestCase):
     def test_init_sets_tktype(self):
         "Test that _init_tk_type sets _tk_type according to platform."
         fuer platform, types in ('darwin', alltypes), ('other', nontypes):
-            with self.subTest(platform=platform):
+            mit self.subTest(platform=platform):
                 macosx.platform = platform
                 macosx._tk_type = Nichts
                 macosx._init_tk_type()
@@ -61,7 +61,7 @@ klasse IsTypeTkTest(unittest.TestCase):
         "Test that each isTypeTk calls _init_tk_type when _tk_type is Nichts."
         macosx._tk_type = Nichts
         fuer func, whentrue in self.isfuncs:
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 func()
                 self.assertWahr(mockinit.called)
                 mockinit.reset_mock()
@@ -70,7 +70,7 @@ klasse IsTypeTkTest(unittest.TestCase):
         "Test that each isTypeTk return correct bool."
         fuer func, whentrue in self.isfuncs:
             fuer tktype in alltypes:
-                with self.subTest(func=func, whentrue=whentrue, tktype=tktype):
+                mit self.subTest(func=func, whentrue=whentrue, tktype=tktype):
                     macosx._tk_type = tktype
                     (self.assertWahr wenn tktype in whentrue sonst self.assertFalsch)\
                                      (func())
@@ -97,11 +97,11 @@ klasse SetupTest(unittest.TestCase):
 
     @mock.patch('idlelib.macosx.overrideRootMenu')  #27312
     def test_setupapp(self, overrideRootMenu):
-        "Call setupApp with each possible graphics type."
+        "Call setupApp mit each possible graphics type."
         root = self.root
         flist = FileList(root)
         fuer tktype in alltypes:
-            with self.subTest(tktype=tktype):
+            mit self.subTest(tktype=tktype):
                 macosx._tk_type = tktype
                 macosx.setupApp(root, flist)
                 wenn tktype in ('carbon', 'cocoa'):

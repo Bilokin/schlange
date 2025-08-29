@@ -20,7 +20,7 @@ TEMPLATE = string.Template("""\
 #
 
 importiere _codecs_$owner, codecs
-importiere _multibytecodec as mbc
+importiere _multibytecodec als mbc
 
 codec = _codecs_$owner.getcodec('$encoding')
 
@@ -61,7 +61,7 @@ def gencodecs(prefix):
                                        encoding=enc.lower(),
                                        owner=loc)
             codecpath = os.path.join(prefix, enc + '.py')
-            with open(codecpath, 'w') as f:
+            mit open(codecpath, 'w') als f:
                 f.write(code)
 
 wenn __name__ == '__main__':

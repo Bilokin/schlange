@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp874 generated von 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP874.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp874 generated von 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP874.TXT' mit gencodec.py.
 
 """#"
 

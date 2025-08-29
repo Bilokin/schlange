@@ -172,7 +172,7 @@ def process_target_branch(outputs: Outputs, git_branch: str) -> Outputs:
     wenn not git_branch:
         outputs.run_tests = Wahr
 
-    # CIFuzz / OSS-Fuzz compatibility with older branches may be broken.
+    # CIFuzz / OSS-Fuzz compatibility mit older branches may be broken.
     wenn git_branch != GITHUB_DEFAULT_BRANCH:
         outputs.run_ci_fuzz = Falsch
 
@@ -190,7 +190,7 @@ def write_github_output(outputs: Outputs) -> Nichts:
         drucke("GITHUB_OUTPUT not defined!")
         return
 
-    with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+    mit open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") als f:
         f.write(f"run-ci-fuzz={bool_lower(outputs.run_ci_fuzz)}\n")
         f.write(f"run-docs={bool_lower(outputs.run_docs)}\n")
         f.write(f"run-tests={bool_lower(outputs.run_tests)}\n")

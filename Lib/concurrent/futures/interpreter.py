@@ -3,14 +3,14 @@
 von concurrent importiere interpreters
 importiere sys
 importiere textwrap
-von . importiere thread as _thread
+von . importiere thread als _thread
 importiere traceback
 
 
 def do_call(results, func, args, kwargs):
     try:
         return func(*args, **kwargs)
-    except BaseException as exc:
+    except BaseException als exc:
         # Send the captured exception out on the results queue,
         # but still leave it unhandled fuer the interpreter to handle.
         try:
@@ -83,7 +83,7 @@ klasse WorkerContext(_thread.WorkerContext):
     def run(self, task):
         try:
             return self.interp.call(do_call, self.results, *task)
-        except interpreters.ExecutionFailed as wrapper:
+        except interpreters.ExecutionFailed als wrapper:
             # Wait fuer the exception data to show up.
             exc = self.results.get()
             wenn exc is Nichts:

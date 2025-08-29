@@ -109,7 +109,7 @@ def shift_path_info(environ):
     return name
 
 def setup_testing_defaults(environ):
-    """Update 'environ' with trivial defaults fuer testing purposes
+    """Update 'environ' mit trivial defaults fuer testing purposes
 
     This adds various parameters required fuer WSGI, including HTTP_HOST,
     SERVER_NAME, SERVER_PORT, REQUEST_METHOD, SCRIPT_NAME, PATH_INFO,

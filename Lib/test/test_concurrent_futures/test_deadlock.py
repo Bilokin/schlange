@@ -27,12 +27,12 @@ def _crash(delay=Nichts):
 
 
 def _crash_with_data(data):
-    """Induces a segfault with dummy data in input."""
+    """Induces a segfault mit dummy data in input."""
     _crash()
 
 
 def _exit():
-    """Induces a sys exit with exitcode 1."""
+    """Induces a sys exit mit exitcode 1."""
     sys.exit(1)
 
 
@@ -100,13 +100,13 @@ klasse ExecutorDeadlockTest:
         # composants.
         importiere faulthandler
         von tempfile importiere TemporaryFile
-        with TemporaryFile(mode="w+") as f:
+        mit TemporaryFile(mode="w+") als f:
             faulthandler.dump_traceback(file=f)
             f.seek(0)
             tb = f.read()
         fuer p in executor._processes.values():
             p.terminate()
-        # This should be safe to call executor.shutdown here as all possible
+        # This should be safe to call executor.shutdown here als all possible
         # deadlocks should have been broken.
         executor.shutdown(wait=Wahr)
         drucke(f"\nTraceback:\n {tb}", file=sys.__stderr__)
@@ -127,8 +127,8 @@ klasse ExecutorDeadlockTest:
             cm = contextlib.nullcontext()
 
         try:
-            with self.assertRaises(error):
-                with cm:
+            mit self.assertRaises(error):
+                mit cm:
                     res.result(timeout=self.TIMEOUT)
         except futures.TimeoutError:
             # If we did not recover before TIMEOUT seconds,
@@ -207,22 +207,22 @@ klasse ExecutorDeadlockTest:
         # Test that the pool calling shutdown do not cause deadlock
         # wenn a worker fails after the shutdown call.
         self.executor.shutdown(wait=Wahr)
-        with self.executor_type(max_workers=2,
-                                mp_context=self.get_context()) as executor:
+        mit self.executor_type(max_workers=2,
+                                mp_context=self.get_context()) als executor:
             self.executor = executor  # Allow clean up in fail_on_deadlock
             f = executor.submit(_crash, delay=.1)
             executor.shutdown(wait=Wahr)
-            with self.assertRaises(BrokenProcessPool):
+            mit self.assertRaises(BrokenProcessPool):
                 f.result()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_deadlock_pickle(self):
-        # Test that the pool calling shutdown with wait=Falsch does not cause
+        # Test that the pool calling shutdown mit wait=Falsch does not cause
         # a deadlock wenn a task fails at pickle after the shutdown call.
         # Reported in bpo-39104.
         self.executor.shutdown(wait=Wahr)
-        with self.executor_type(max_workers=2,
-                                mp_context=self.get_context()) as executor:
+        mit self.executor_type(max_workers=2,
+                                mp_context=self.get_context()) als executor:
             self.executor = executor  # Allow clean up in fail_on_deadlock
 
             # Start the executor and get the executor_manager_thread to collect
@@ -235,7 +235,7 @@ klasse ExecutorDeadlockTest:
             # without waiting
             f = executor.submit(id, ErrorAtPickle())
             executor.shutdown(wait=Falsch)
-            with self.assertRaises(PicklingError):
+            mit self.assertRaises(PicklingError):
                 f.result()
 
         # Make sure the executor is eventually shutdown and do not leave
@@ -251,10 +251,10 @@ klasse ExecutorDeadlockTest:
         # https://github.com/python/cpython/issues/94777
         self.executor.shutdown(wait=Wahr)
         data = "a" * support.PIPE_MAX_SIZE
-        with self.executor_type(max_workers=2,
-                                mp_context=self.get_context()) as executor:
+        mit self.executor_type(max_workers=2,
+                                mp_context=self.get_context()) als executor:
             self.executor = executor  # Allow clean up in fail_on_deadlock
-            with self.assertRaises(BrokenProcessPool):
+            mit self.assertRaises(BrokenProcessPool):
                 list(executor.map(_crash_with_data, [data] * 10))
 
         executor.shutdown(wait=Wahr)
@@ -303,12 +303,12 @@ klasse ExecutorDeadlockTest:
                 except queue.Empty:
                     pass
 
-        with (unittest.mock.patch.object(futures.process._ExecutorManagerThread,
+        mit (unittest.mock.patch.object(futures.process._ExecutorManagerThread,
                                          'run', mock_run),
               unittest.mock.patch('concurrent.futures.process._ThreadWakeup',
                                   MockWakeup)):
-            with self.executor_type(max_workers=2,
-                                    mp_context=self.get_context()) as executor:
+            mit self.executor_type(max_workers=2,
+                                    mp_context=self.get_context()) als executor:
                 self.executor = executor  # Allow clean up in fail_on_deadlock
 
                 job_num = 100

@@ -75,7 +75,7 @@ NL = 66
 ERRORTOKEN = 67
 ENCODING = 68
 N_TOKENS = 69
-# Special definitions fuer cooperation with parser
+# Special definitions fuer cooperation mit parser
 NT_OFFSET = 256
 
 tok_name = {value: name

@@ -17,7 +17,7 @@ klasse Test(TestEmailBase):
     def test_error_on_setitem_if_max_count_exceeded(self):
         m = self._str_msg("")
         m['To'] = 'abc@xyz'
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             m['To'] = 'xyz@abc'
 
     def test_rfc2043_auto_decoded_and_emailmessage_used(self):
@@ -551,7 +551,7 @@ klasse TestEmailMessageBase:
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
     # headers but payload is Nichts...this happening in practice would be very
-    # unusual, so treating it as wenn there were content seems reasonable.
+    # unusual, so treating it als wenn there were content seems reasonable.
     #    method          subtype           outcome
     subtype_params = (
         ('related',      'no_content',     'succeeds'),
@@ -598,7 +598,7 @@ klasse TestEmailMessageBase:
         return m, msg_headers, payload
 
     def _check_disallowed_subtype_raises(self, m, method_name, subtype, method):
-        with self.assertRaises(ValueError) as ar:
+        mit self.assertRaises(ValueError) als ar:
             getattr(m, method)()
         exc_text = str(ar.exception)
         self.assertIn(subtype, exc_text)
@@ -643,7 +643,7 @@ klasse TestEmailMessageBase:
         m = self.message()
         wenn outcome in ('', 'raises'):
             m['Content-Type'] = 'multipart/' + subtype
-            with self.assertRaises(ValueError) as cm:
+            mit self.assertRaises(ValueError) als cm:
                 getattr(m, 'make_' + method)()
             return
         wenn subtype == 'plain':
@@ -705,7 +705,7 @@ klasse TestEmailMessageBase:
         cm = self._TestSetRaisingContentManager()
         m = self.message(policy=self.policy.clone(content_manager=cm))
         fuer method in ('add_related', 'add_alternative', 'add_attachment'):
-            with self.assertRaises(self._TestSetRaisingContentManager.CustomError) as ar:
+            mit self.assertRaises(self._TestSetRaisingContentManager.CustomError) als ar:
                 getattr(m, method)('')
             self.assertEqual(str(ar.exception), 'test')
 
@@ -741,9 +741,9 @@ klasse TestEmailMessageBase:
     def test_iter_attachments_mutation(self):
         # We had a bug where iter_attachments was mutating the list.
         m = self._make_message()
-        m.set_content('arbitrary text as main part')
-        m.add_related('more text as a related part')
-        m.add_related('yet more text as a second "attachment"')
+        m.set_content('arbitrary text als main part')
+        m.add_related('more text als a related part')
+        m.add_related('yet more text als a second "attachment"')
         orig = m.get_payload().copy()
         self.assertEqual(len(list(m.iter_attachments())), 2)
         self.assertEqual(m.get_payload(), orig)
@@ -751,23 +751,23 @@ klasse TestEmailMessageBase:
     get_payload_surrogate_params = {
 
         'good_surrogateescape': (
-            "String that can be encod\udcc3\udcabd with surrogateescape",
-            b'String that can be encod\xc3\xabd with surrogateescape'
+            "String that can be encod\udcc3\udcabd mit surrogateescape",
+            b'String that can be encod\xc3\xabd mit surrogateescape'
             ),
 
         'string_with_utf8': (
-            "String with utf-8 charactër",
-            b'String with utf-8 charact\xebr'
+            "String mit utf-8 charactër",
+            b'String mit utf-8 charact\xebr'
             ),
 
         'surrogate_and_utf8': (
-            "String that cannot be ëncod\udcc3\udcabd with surrogateescape",
-             b'String that cannot be \xebncod\\udcc3\\udcabd with surrogateescape'
+            "String that cannot be ëncod\udcc3\udcabd mit surrogateescape",
+             b'String that cannot be \xebncod\\udcc3\\udcabd mit surrogateescape'
             ),
 
         'out_of_range_surrogate': (
-            "String with \udfff cannot be encoded with surrogateescape",
-             b'String with \\udfff cannot be encoded with surrogateescape'
+            "String mit \udfff cannot be encoded mit surrogateescape",
+             b'String mit \\udfff cannot be encoded mit surrogateescape'
             ),
     }
 
@@ -1010,8 +1010,8 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
             ('Tab\tHeader', 'contains tab'),
             ('Colon:Header', 'contains colon'),
             ('', 'Empty name'),
-            (' LeadingSpace', 'starts with space'),
-            ('TrailingSpace ', 'ends with space'),
+            (' LeadingSpace', 'starts mit space'),
+            ('TrailingSpace ', 'ends mit space'),
             ('Header\x7F', 'Non-ASCII character'),
             ('Header\x80', 'Extended ASCII'),
         ]
@@ -1021,10 +1021,10 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
                     self.do_test_invalid_header_names(email_policy, setter, name, value)
 
     def do_test_invalid_header_names(self, policy, setter, name, value):
-        with self.subTest(policy=policy, setter=setter, name=name, value=value):
+        mit self.subTest(policy=policy, setter=setter, name=name, value=value):
             message = EmailMessage(policy=policy)
             pattern = r'(?i)(?=.*invalid)(?=.*header)(?=.*name)'
-            with self.assertRaisesRegex(ValueError, pattern) as cm:
+            mit self.assertRaisesRegex(ValueError, pattern) als cm:
                  setter(message, name, value)
             self.assertIn(f"{name!r}", str(cm.exception))
 
@@ -1046,7 +1046,7 @@ klasse TestEmailMessage(TestEmailMessageBase, TestEmailBase):
             Content-Type: text/plain; charset=ISO-8859-1; format=flowed
             Content-Transfer-Encoding: 7bit
 
-            Your message is ready to be sent with the following file or link
+            Your message is ready to be sent mit the following file or link
             attachments:
             XU89 - 08.11.2017
             """)

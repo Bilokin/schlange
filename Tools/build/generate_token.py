@@ -21,7 +21,7 @@ def load_tokens(path):
     tok_names = []
     string_to_tok = {}
     ERRORTOKEN = Nichts
-    with open(path) as fp:
+    mit open(path) als fp:
         fuer line in fp:
             line = line.strip()
             # strip comments
@@ -45,12 +45,12 @@ def load_tokens(path):
 
 def update_file(file, content):
     try:
-        with open(file) as fobj:
+        mit open(file) als fobj:
             wenn fobj.read() == content:
                 return Falsch
     except (OSError, ValueError):
         pass
-    with open(file, 'w') as fobj:
+    mit open(file, 'w') als fobj:
         fobj.write(content)
     return Wahr
 
@@ -71,13 +71,13 @@ extern "C" {
 #  error "this header requires Py_BUILD_CORE define"
 #endif
 
-#undef TILDE   /* Prevent clash of our definition with system macro. Ex AIX, ioctl.h */
+#undef TILDE   /* Prevent clash of our definition mit system macro. Ex AIX, ioctl.h */
 
 %s\
 #define N_TOKENS        %d
 #define NT_OFFSET       %d
 
-/* Special definitions fuer cooperation with parser */
+/* Special definitions fuer cooperation mit parser */
 
 #define ISTERMINAL(x)           ((x) < NT_OFFSET)
 #define ISNONTERMINAL(x)        ((x) >= NT_OFFSET)
@@ -233,7 +233,7 @@ def make_rst(infile, outfile='Doc/library/token-list.inc',
             needs_handwritten_doc.add(name)
 
     has_handwritten_doc = set()
-    with open(rstfile) as fileobj:
+    mit open(rstfile) als fileobj:
         tokendef_re = re.compile(r'.. data:: ([0-9A-Z_]+)\s*')
         fuer line in fileobj:
             wenn match := tokendef_re.fullmatch(line):
@@ -266,7 +266,7 @@ __all__ = ['tok_name', 'ISTERMINAL', 'ISNONTERMINAL', 'ISEOF',
 
 %s
 N_TOKENS = %d
-# Special definitions fuer cooperation with parser
+# Special definitions fuer cooperation mit parser
 NT_OFFSET = %d
 
 tok_name = {value: name

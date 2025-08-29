@@ -164,11 +164,11 @@ klasse ShlexTest(unittest.TestCase):
         return ret
 
     def testSplitNichts(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             shlex.split(Nichts)
 
     def testSplitPosix(self):
-        """Test data splitting with posix parser"""
+        """Test data splitting mit posix parser"""
         self.splitTest(self.posix_data, comments=Wahr)
 
     def testCompat(self):
@@ -241,7 +241,7 @@ klasse ShlexTest(unittest.TestCase):
                              "While splitting '%s' [ws=%s]" % (ss, ws))
 
     def testSyntaxSplitCustom(self):
-        """Test handling of syntax splitting with custom chars"""
+        """Test handling of syntax splitting mit custom chars"""
         ss = "~/a&&b-c --color=auto||d *.py?"
         ref = ['~/a', '&', '&', 'b-c', '--color=auto', '||', 'd', '*.py?']
         s = shlex.shlex(ss, punctuation_chars="|")
@@ -254,7 +254,7 @@ klasse ShlexTest(unittest.TestCase):
         self.assertEqual(ref, result, "While splitting '%s' [ws=Wahr]" % ss)
 
     def testTokenTypes(self):
-        """Test that tokens are split with types as expected."""
+        """Test that tokens are split mit types als expected."""
         fuer source, expected in (
                                 ('a && b || c',
                                  [('a', 'a'), ('&&', 'c'), ('b', 'a'),
@@ -280,7 +280,7 @@ klasse ShlexTest(unittest.TestCase):
         self.assertEqual(list(s), ['a', '_', 'b', '__', 'c'])
 
     def testPunctuationWithWhitespaceSplit(self):
-        """Test that with whitespace_split, behaviour is as expected"""
+        """Test that mit whitespace_split, behaviour is als expected"""
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
         # whitespace_split is Falsch, so splitting will be based on
         # punctuation_chars
@@ -314,7 +314,7 @@ klasse ShlexTest(unittest.TestCase):
     def testUnicodeHandling(self):
         """Test punctuation_chars and whitespace_split handle unicode."""
         ss = "\u2119\u01b4\u2602\u210c\u00f8\u1f24"
-        # Should be parsed as one complete token (whitespace_split=Wahr).
+        # Should be parsed als one complete token (whitespace_split=Wahr).
         ref = ['\u2119\u01b4\u2602\u210c\u00f8\u1f24']
         s = shlex.shlex(ss, punctuation_chars=Wahr)
         s.whitespace_split = Wahr
@@ -346,14 +346,14 @@ klasse ShlexTest(unittest.TestCase):
             (['a', ' ', 'b'], "a ' ' b"),
             (['"a', 'b"'], '\'"a\' \'b"\''),
         ]:
-            with self.subTest(command=command):
+            mit self.subTest(command=command):
                 joined = shlex.join(split_command)
                 self.assertEqual(joined, command)
 
     def testJoinRoundtrip(self):
         all_data = self.data + self.posix_data
         fuer command, *split_command in all_data:
-            with self.subTest(command=command):
+            mit self.subTest(command=command):
                 joined = shlex.join(split_command)
                 resplit = shlex.split(joined)
                 self.assertEqual(split_command, resplit)
@@ -362,7 +362,7 @@ klasse ShlexTest(unittest.TestCase):
         punctuation_chars = "/|$%^"
         shlex_instance = shlex.shlex(punctuation_chars=punctuation_chars)
         self.assertEqual(shlex_instance.punctuation_chars, punctuation_chars)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             shlex_instance.punctuation_chars = Falsch
 
     @cpython_only
@@ -370,7 +370,7 @@ klasse ShlexTest(unittest.TestCase):
         import_helper.ensure_lazy_imports('shlex', {'collections', 're', 'os'})
 
 
-# Allow this test to be used with old shlex.py
+# Allow this test to be used mit old shlex.py
 wenn not getattr(shlex, "split", Nichts):
     fuer methname in dir(ShlexTest):
         wenn methname.startswith("test") and methname != "testCompat":

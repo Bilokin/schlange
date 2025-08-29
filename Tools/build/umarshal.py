@@ -37,7 +37,7 @@ klasse Type:
     SHORT_ASCII_INTERNED = ord('Z')
 
 
-FLAG_REF = 0x80  # with a type, add obj to index
+FLAG_REF = 0x80  # mit a type, add obj to index
 
 NULL = object()  # marker
 

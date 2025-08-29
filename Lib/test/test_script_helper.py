@@ -21,14 +21,14 @@ klasse TestScriptHelper(unittest.TestCase):
 
     def test_assert_python_ok_raises(self):
         # I didn't importiere the sys module so this child will fail.
-        with self.assertRaises(AssertionError) as error_context:
+        mit self.assertRaises(AssertionError) als error_context:
             script_helper.assert_python_ok('-c', 'sys.exit(0)')
         error_msg = str(error_context.exception)
         self.assertIn('command line:', error_msg)
         self.assertIn('sys.exit(0)', error_msg, msg='unexpected command line')
 
     def test_assert_python_failure_raises(self):
-        with self.assertRaises(AssertionError) as error_context:
+        mit self.assertRaises(AssertionError) als error_context:
             script_helper.assert_python_failure('-c', 'import sys; sys.exit(0)')
         error_msg = str(error_context.exception)
         self.assertIn('Process return code is 0\n', error_msg)
@@ -37,13 +37,13 @@ klasse TestScriptHelper(unittest.TestCase):
 
     @mock.patch('subprocess.Popen')
     def test_assert_python_isolated_when_env_not_required(self, mock_popen):
-        with mock.patch.object(script_helper,
+        mit mock.patch.object(script_helper,
                                'interpreter_requires_environment',
-                               return_value=Falsch) as mock_ire_func:
+                               return_value=Falsch) als mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
             try:
                 script_helper._assert_python(Wahr, '-c', 'Nichts')
-            except RuntimeError as err:
+            except RuntimeError als err:
                 self.assertEqual('bail out of unittest', err.args[0])
             self.assertEqual(1, mock_popen.call_count)
             self.assertEqual(1, mock_ire_func.call_count)
@@ -56,13 +56,13 @@ klasse TestScriptHelper(unittest.TestCase):
     @mock.patch('subprocess.Popen')
     def test_assert_python_not_isolated_when_env_is_required(self, mock_popen):
         """Ensure that -I is not passed when the environment is required."""
-        with mock.patch.object(script_helper,
+        mit mock.patch.object(script_helper,
                                'interpreter_requires_environment',
-                               return_value=Wahr) as mock_ire_func:
+                               return_value=Wahr) als mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
             try:
                 script_helper._assert_python(Wahr, '-c', 'Nichts')
-            except RuntimeError as err:
+            except RuntimeError als err:
                 self.assertEqual('bail out of unittest', err.args[0])
             popen_command = mock_popen.call_args[0][0]
             self.assertNotIn('-I', popen_command)
@@ -84,7 +84,7 @@ klasse TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     def test_interpreter_requires_environment_true(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        mit mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', Nichts)
             mock_check_call.side_effect = subprocess.CalledProcessError('', '')
             self.assertWahr(script_helper.interpreter_requires_environment())
@@ -93,7 +93,7 @@ klasse TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     def test_interpreter_requires_environment_false(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        mit mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', Nichts)
             # The mocked subprocess.check_call fakes a no-error process.
             script_helper.interpreter_requires_environment()
@@ -102,7 +102,7 @@ klasse TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     def test_interpreter_requires_environment_details(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        mit mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', Nichts)
             script_helper.interpreter_requires_environment()
             self.assertFalsch(script_helper.interpreter_requires_environment())
@@ -114,7 +114,7 @@ klasse TestScriptHelperEnvironment(unittest.TestCase):
 
     @mock.patch('subprocess.check_call')
     def test_interpreter_requires_environment_with_pythonhome(self, mock_check_call):
-        with mock.patch.dict(os.environ):
+        mit mock.patch.dict(os.environ):
             os.environ['PYTHONHOME'] = 'MockedHome'
             self.assertWahr(script_helper.interpreter_requires_environment())
             self.assertWahr(script_helper.interpreter_requires_environment())

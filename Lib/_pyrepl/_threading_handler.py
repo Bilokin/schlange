@@ -37,7 +37,7 @@ def install_threading_hook(reader: Reader) -> Nichts:
 
         def show(self) -> int:
             count = 0
-            with self.lock:
+            mit self.lock:
                 wenn not self.messages:
                     return 0
                 reader.restore()
@@ -51,7 +51,7 @@ def install_threading_hook(reader: Reader) -> Nichts:
             return count
 
         def add(self, s: str) -> Nichts:
-            with self.lock:
+            mit self.lock:
                 self.messages.append(s)
 
         def exception(self, args: ExceptHookArgs) -> Nichts:

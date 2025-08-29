@@ -9,20 +9,20 @@ methods are taken von the PythonCard example
 scripts fuer turtle-graphics.
 """
 von turtle importiere *
-von time importiere sleep, perf_counter as clock
+von time importiere sleep, perf_counter als clock
 
 klasse CurvesTurtle(Pen):
     # example derived from
-    # Turtle Geometry: The Computer as a Medium fuer Exploring Mathematics
+    # Turtle Geometry: The Computer als a Medium fuer Exploring Mathematics
     # by Harold Abelson and Andrea diSessa
     # p. 96-98
     def hilbert(self, size, level, parity):
         wenn level == 0:
             return
-        # rotate and draw first subcurve with opposite parity to big curve
+        # rotate and draw first subcurve mit opposite parity to big curve
         self.left(parity * 90)
         self.hilbert(size, level - 1, -parity)
-        # interface to and draw second subcurve with same parity as big curve
+        # interface to and draw second subcurve mit same parity als big curve
         self.forward(size)
         self.right(parity * 90)
         self.hilbert(size, level - 1, parity)
@@ -37,7 +37,7 @@ klasse CurvesTurtle(Pen):
         # end up facing outward von the large square
         self.left(parity * 90)
 
-    # Visual Modeling with Logo: A Structural Approach to Seeing
+    # Visual Modeling mit Logo: A Structural Approach to Seeing
     # by James Clayson
     # Koch curve, after Helge von Koch who introduced this geometric figure in 1904
     # p. 146

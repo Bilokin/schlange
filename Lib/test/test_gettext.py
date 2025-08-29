@@ -38,11 +38,11 @@ cyBmaWNoZXJvcyAoY29udGV4dCkAYmFjb24Ad2luayB3aW5rIChpbiAibXkgY29udGV4dCIpAHdp
 bmsgd2luayAoaW4gIm15IG90aGVyIGNvbnRleHQiKQB3aW5rIHdpbmsA
 '''
 
-# .mo file with an invalid magic number
+# .mo file mit an invalid magic number
 GNU_MO_DATA_BAD_MAGIC_NUMBER = base64.b64encode(b'ABCD')
 
 # This data contains an invalid major version number (5)
-# An unexpected major version number should be treated as an error when
+# An unexpected major version number should be treated als an error when
 # parsing a .mo file
 
 GNU_MO_DATA_BAD_MAJOR_VERSION = b'''\
@@ -95,7 +95,7 @@ ciBUQUgKdHJnZ3JrZyB6cmZmbnRyIHBuZ255YnQgeXZvZW5lbC4AYmFjb24Ad2luayB3aW5rAA==
 # msgid "foo"
 # msgstr "bar"
 #
-# with msgfmt --no-hash
+# mit msgfmt --no-hash
 #
 # The translation offset is changed to 0xFFFFFFFF,
 # making it larger than the file size, which should
@@ -177,21 +177,21 @@ klasse GettextBaseTest(unittest.TestCase):
         cls.addClassCleanup(os_helper.rmtree, os.path.split(LOCALEDIR)[0])
         wenn not os.path.isdir(LOCALEDIR):
             os.makedirs(LOCALEDIR)
-        with open(MOFILE, 'wb') as fp:
+        mit open(MOFILE, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA))
-        with open(MOFILE_BAD_MAGIC_NUMBER, 'wb') as fp:
+        mit open(MOFILE_BAD_MAGIC_NUMBER, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MAGIC_NUMBER))
-        with open(MOFILE_BAD_MAJOR_VERSION, 'wb') as fp:
+        mit open(MOFILE_BAD_MAJOR_VERSION, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MAJOR_VERSION))
-        with open(MOFILE_BAD_MINOR_VERSION, 'wb') as fp:
+        mit open(MOFILE_BAD_MINOR_VERSION, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BAD_MINOR_VERSION))
-        with open(MOFILE_CORRUPT, 'wb') as fp:
+        mit open(MOFILE_CORRUPT, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_CORRUPT))
-        with open(MOFILE_BIG_ENDIAN, 'wb') as fp:
+        mit open(MOFILE_BIG_ENDIAN, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_BIG_ENDIAN))
-        with open(UMOFILE, 'wb') as fp:
+        mit open(UMOFILE, 'wb') als fp:
             fp.write(base64.decodebytes(UMO_DATA))
-        with open(MMOFILE, 'wb') as fp:
+        mit open(MMOFILE, 'wb') als fp:
             fp.write(base64.decodebytes(MMO_DATA))
 
     def setUp(self):
@@ -244,7 +244,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
         eq = self.assertEqual
         neq = self.assertNotEqual
         # test the alternative interface
-        with open(self.mofile, 'rb') as fp:
+        mit open(self.mofile, 'rb') als fp:
             t = gettext.GNUTranslations(fp)
         # Install the translation object
         t.install()
@@ -280,8 +280,8 @@ klasse GettextTestCase2(GettextBaseTest):
         self.assertEqual(gettext.textdomain(), 'gettext')
 
     def test_bad_magic_number(self):
-        with open(MOFILE_BAD_MAGIC_NUMBER, 'rb') as fp:
-            with self.assertRaises(OSError) as cm:
+        mit open(MOFILE_BAD_MAGIC_NUMBER, 'rb') als fp:
+            mit self.assertRaises(OSError) als cm:
                 gettext.GNUTranslations(fp)
 
             exception = cm.exception
@@ -290,8 +290,8 @@ klasse GettextTestCase2(GettextBaseTest):
             self.assertEqual(exception.filename, MOFILE_BAD_MAGIC_NUMBER)
 
     def test_bad_major_version(self):
-        with open(MOFILE_BAD_MAJOR_VERSION, 'rb') as fp:
-            with self.assertRaises(OSError) as cm:
+        mit open(MOFILE_BAD_MAJOR_VERSION, 'rb') als fp:
+            mit self.assertRaises(OSError) als cm:
                 gettext.GNUTranslations(fp)
 
             exception = cm.exception
@@ -300,13 +300,13 @@ klasse GettextTestCase2(GettextBaseTest):
             self.assertEqual(exception.filename, MOFILE_BAD_MAJOR_VERSION)
 
     def test_bad_minor_version(self):
-        with open(MOFILE_BAD_MINOR_VERSION, 'rb') as fp:
-            # Check that no error is thrown with a bad minor version number
+        mit open(MOFILE_BAD_MINOR_VERSION, 'rb') als fp:
+            # Check that no error is thrown mit a bad minor version number
             gettext.GNUTranslations(fp)
 
     def test_corrupt_file(self):
-        with open(MOFILE_CORRUPT, 'rb') as fp:
-            with self.assertRaises(OSError) as cm:
+        mit open(MOFILE_CORRUPT, 'rb') als fp:
+            mit self.assertRaises(OSError) als cm:
                 gettext.GNUTranslations(fp)
 
             exception = cm.exception
@@ -315,7 +315,7 @@ klasse GettextTestCase2(GettextBaseTest):
             self.assertEqual(exception.filename, MOFILE_CORRUPT)
 
     def test_big_endian_file(self):
-        with open(MOFILE_BIG_ENDIAN, 'rb') as fp:
+        mit open(MOFILE_BIG_ENDIAN, 'rb') als fp:
             t = gettext.GNUTranslations(fp)
 
         self.assertEqual(t.gettext('foo'), 'bar')
@@ -366,22 +366,22 @@ klasse PluralFormsTests:
         self.assertEqual(x, tsingular)
 
         lineno = self._test_plural_forms.__code__.co_firstlineno + 12
-        with self.assertWarns(DeprecationWarning) as cm:
+        mit self.assertWarns(DeprecationWarning) als cm:
             x = ngettext(singular, plural, 1.0)
         self.assertEqual(cm.filename, __file__)
         self.assertEqual(cm.lineno, lineno)
         self.assertEqual(x, tsingular)
-        with self.assertWarns(DeprecationWarning) as cm:
+        mit self.assertWarns(DeprecationWarning) als cm:
             x = ngettext(singular, plural, 1.1)
         self.assertEqual(cm.filename, __file__)
         self.assertEqual(cm.lineno, lineno + 5)
         self.assertEqual(x, tplural)
 
         wenn numbers_only:
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 ngettext(singular, plural, Nichts)
         sonst:
-            with self.assertWarns(DeprecationWarning) as cm:
+            mit self.assertWarns(DeprecationWarning) als cm:
                 x = ngettext(singular, plural, Nichts)
             self.assertEqual(x, tplural)
 
@@ -459,7 +459,7 @@ klasse GNUTranslationsWithDomainPluralFormsTestCase(PluralFormsTests, GettextBas
 klasse GNUTranslationsClassPluralFormsTestCase(PluralFormsTests, GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
-        with open(MOFILE, 'rb') as fp:
+        mit open(MOFILE, 'rb') als fp:
             t = gettext.GNUTranslations(fp)
 
         self.gettext = t.gettext
@@ -585,7 +585,7 @@ klasse PluralFormsInternalTestCase(unittest.TestCase):
         self.assertEqual(gettext.c2py('('*20 + 'n' + ')'*20)(1), 1)
 
     def test_chained_comparison(self):
-        # C doesn't chain comparison as Python so 2 == 2 == 2 gets different results
+        # C doesn't chain comparison als Python so 2 == 2 == 2 gets different results
         f = gettext.c2py('n == n == n')
         self.assertEqual(''.join(str(f(x)) fuer x in range(3)), '010')
         f = gettext.c2py('1 < n == n')
@@ -604,7 +604,7 @@ klasse PluralFormsInternalTestCase(unittest.TestCase):
             'n>0x1', '+n', '-n', 'n()', 'n(1)', '1+', 'nn', 'n n', 'n ? 1 2'
         ]
         fuer expr in invalid_expressions:
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 gettext.c2py(expr)
 
     def test_negation(self):
@@ -631,11 +631,11 @@ klasse PluralFormsInternalTestCase(unittest.TestCase):
         f = gettext.c2py('n != 1')
         self.assertEqual(f(1), 0)
         self.assertEqual(f(2), 1)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(f(1.0), 0)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(f(2.0), 1)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(f(1.1), 1)
         self.assertRaises(TypeError, f, '2')
         self.assertRaises(TypeError, f, b'2')
@@ -645,9 +645,9 @@ klasse PluralFormsInternalTestCase(unittest.TestCase):
 
 klasse GNUTranslationParsingTest(GettextBaseTest):
     def test_plural_form_error_issue17898(self):
-        with open(MOFILE, 'wb') as fp:
+        mit open(MOFILE, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        with open(MOFILE, 'rb') as fp:
+        mit open(MOFILE, 'rb') als fp:
             # If this runs cleanly, the bug is fixed.
             t = gettext.GNUTranslations(fp)
 
@@ -658,9 +658,9 @@ klasse GNUTranslationParsingTest(GettextBaseTest):
 
         are ignored.
         """
-        with open(MOFILE, 'wb') as fp:
+        mit open(MOFILE, 'wb') als fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
-        with open(MOFILE, 'rb') as fp:
+        mit open(MOFILE, 'rb') als fp:
             t = gettext.GNUTranslations(fp)
             self.assertEqual(t.info()["plural-forms"], "nplurals=2; plural=(n != 1);")
 
@@ -668,7 +668,7 @@ klasse GNUTranslationParsingTest(GettextBaseTest):
 klasse UnicodeTranslationsTest(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
-        with open(UMOFILE, 'rb') as fp:
+        mit open(UMOFILE, 'rb') als fp:
             self.t = gettext.GNUTranslations(fp)
         self._ = self.t.gettext
         self.pgettext = self.t.pgettext
@@ -688,7 +688,7 @@ klasse UnicodeTranslationsTest(GettextBaseTest):
 klasse UnicodeTranslationsPluralTest(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
-        with open(MOFILE, 'rb') as fp:
+        mit open(MOFILE, 'rb') als fp:
             self.t = gettext.GNUTranslations(fp)
         self.ngettext = self.t.ngettext
         self.npgettext = self.t.npgettext
@@ -730,7 +730,7 @@ klasse UnicodeTranslationsPluralTest(GettextBaseTest):
 klasse WeirdMetadataTest(GettextBaseTest):
     def setUp(self):
         GettextBaseTest.setUp(self)
-        with open(MMOFILE, 'rb') as fp:
+        mit open(MMOFILE, 'rb') als fp:
             try:
                 self.t = gettext.GNUTranslations(fp)
             except:
@@ -802,7 +802,7 @@ klasse FallbackTestCase(GettextBaseTest):
                          'npgettext: context, foo, foos, 1')
 
     def test_gnu_translations_fallback(self):
-        with open(MOFILE, 'rb') as fp:
+        mit open(MOFILE, 'rb') als fp:
             t = gettext.GNUTranslations(fp)
         t.add_fallback(FallbackTranslations())
         self.assertEqual(t.gettext('foo'), 'gettext: foo')
@@ -851,8 +851,8 @@ klasse ExpandLangTestCase(unittest.TestCase):
                                      'cs.ISO8859-2', 'cs'],
         }
         fuer locale, expanded in locales.items():
-            with self.subTest(locale=locale):
-                with unittest.mock.patch("locale.normalize",
+            mit self.subTest(locale=locale):
+                mit unittest.mock.patch("locale.normalize",
                                          return_value=locale):
                     self.assertEqual(gettext._expand_lang(locale), expanded)
 
@@ -871,7 +871,7 @@ klasse FindTestCase(unittest.TestCase):
         mofile_dir = os.path.join(locale_dir, lang, "LC_MESSAGES")
         os.makedirs(mofile_dir)
         mo_file = os.path.join(mofile_dir, "mofile.mo")
-        with open(mo_file, "wb") as f:
+        mit open(mo_file, "wb") als f:
             f.write(GNU_MO_DATA)
         return mo_file
 
@@ -939,7 +939,7 @@ klasse MiscTestCase(unittest.TestCase):
 
 klasse TranslationFallbackTestCase(unittest.TestCase):
     def test_translation_fallback(self):
-        with os_helper.temp_cwd() as tempdir:
+        mit os_helper.temp_cwd() als tempdir:
             t = gettext.translation('gettext', localedir=tempdir, fallback=Wahr)
             self.assertIsInstance(t, gettext.NullTranslations)
 
@@ -1010,14 +1010,14 @@ msgstr ""
 "fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH\n"
 "trggrkg zrffntr pngnybt yvoenel."
 
-# Manually added, as neither pygettext nor xgettext support plural forms
+# Manually added, als neither pygettext nor xgettext support plural forms
 # in Python.
 msgid "There is %s file"
 msgid_plural "There are %s files"
 msgstr[0] "Hay %s fichero"
 msgstr[1] "Hay %s ficheros"
 
-# Manually added, as neither pygettext nor xgettext support plural forms
+# Manually added, als neither pygettext nor xgettext support plural forms
 # and context in Python.
 msgctxt "With context"
 msgid "There is %s file"

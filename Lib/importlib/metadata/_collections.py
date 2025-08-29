@@ -6,7 +6,7 @@ klasse FreezableDefaultDict(collections.defaultdict):
     """
     Often it is desirable to prevent the mutation of
     a default dict after its initial construction, such
-    as to prevent mutation during iteration.
+    als to prevent mutation during iteration.
 
     >>> dd = FreezableDefaultDict(list)
     >>> dd[0].append('1')

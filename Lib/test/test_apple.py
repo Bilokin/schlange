@@ -123,8 +123,8 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
     def test_non_str(self):
         # Non-string classes are not accepted.
         fuer obj in [b"", b"hello", Nichts, 42]:
-            with self.subTest(obj=obj):
-                with self.assertRaisesRegex(
+            mit self.subTest(obj=obj):
+                mit self.assertRaisesRegex(
                     TypeError,
                     fr"write\(\) argument must be str, not "
                     fr"{type(obj).__name__}"
@@ -146,8 +146,8 @@ klasse TestAppleSystemLogOutput(unittest.TestCase):
 
     def test_non_byteslike_in_buffer(self):
         fuer obj in ["hello", Nichts, 42]:
-            with self.subTest(obj=obj):
-                with self.assertRaisesRegex(
+            mit self.subTest(obj=obj):
+                mit self.assertRaisesRegex(
                     TypeError,
                     fr"write\(\) argument must be bytes-like, not "
                     fr"{type(obj).__name__}"

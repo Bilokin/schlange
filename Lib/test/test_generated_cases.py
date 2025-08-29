@@ -103,18 +103,18 @@ klasse TestGeneratedCases(unittest.TestCase):
         super().tearDown()
 
     def run_cases_test(self, input: str, expected: str):
-        with open(self.temp_input_filename, "w+") as temp_input:
+        mit open(self.temp_input_filename, "w+") als temp_input:
             temp_input.write(parser.BEGIN_MARKER)
             temp_input.write(input)
             temp_input.write(parser.END_MARKER)
             temp_input.flush()
 
-        with handle_stderr():
+        mit handle_stderr():
             tier1_generator.generate_tier1_from_files(
                 [self.temp_input_filename], self.temp_output_filename, Falsch
             )
 
-        with open(self.temp_output_filename) as temp_output:
+        mit open(self.temp_output_filename) als temp_output:
             lines = temp_output.read()
             _, rest = lines.split(tier1_generator.INSTRUCTION_START_MARKER)
             instructions, labels_with_prelude_and_postlude = rest.split(tier1_generator.INSTRUCTION_END_MARKER)
@@ -410,7 +410,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         }
         """
         output = ""
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, output)
 
     def test_error_if_plain(self):
@@ -1074,7 +1074,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         }
         """
         output = ""
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, output)
 
     def test_array_of_one(self):
@@ -1116,7 +1116,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, output)
 
     def test_unused_named_values(self):
@@ -1289,7 +1289,7 @@ klasse TestGeneratedCases(unittest.TestCase):
         }
 
         op(THIRD, (j, k --)) {
-            INPUTS_DEAD(); // Mark j and k as used
+            INPUTS_DEAD(); // Mark j and k als used
             ERROR_IF(cond);
         }
 
@@ -1432,7 +1432,7 @@ klasse TestGeneratedCases(unittest.TestCase):
 
         output = """
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, output)
 
     def test_array_size_inconsistency(self):
@@ -1451,7 +1451,7 @@ klasse TestGeneratedCases(unittest.TestCase):
 
         output = """
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, output)
 
     def test_stack_save_reload(self):
@@ -1526,7 +1526,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             DISPATCH();
         }
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, output)
 
     def test_stack_save_only(self):
@@ -1553,7 +1553,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             DISPATCH();
         }
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, output)
 
     def test_instruction_size_macro(self):
@@ -1587,8 +1587,8 @@ klasse TestGeneratedCases(unittest.TestCase):
         macro(OP2) = unused/1 + OP;
         """
 
-        output = ""  # No output needed as this should raise an error.
-        with self.assertRaisesRegex(SyntaxError, "All instructions containing a uop"):
+        output = ""  # No output needed als this should raise an error.
+        mit self.assertRaisesRegex(SyntaxError, "All instructions containing a uop"):
             self.run_cases_test(input, output)
 
     def test_escaping_call_next_to_cmacro(self):
@@ -1674,7 +1674,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             DEOPT_IF(escaping_call());
         }
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, "")
 
         input = """
@@ -1682,7 +1682,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             EXIT_IF(escaping_call());
         }
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, "")
 
         input = """
@@ -1690,7 +1690,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             ERROR_IF(escaping_call());
         }
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, "")
 
     def test_kill_in_wrong_order(self):
@@ -1701,7 +1701,7 @@ klasse TestGeneratedCases(unittest.TestCase):
             PyStackRef_CLOSE(b);
         }
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_cases_test(input, "")
 
     def test_complex_label(self):
@@ -1791,9 +1791,9 @@ klasse TestGeneratedCases(unittest.TestCase):
             goto one;
         }
         """
-        with self.assertRaisesRegex(SyntaxError, ".*reload.*"):
+        mit self.assertRaisesRegex(SyntaxError, ".*reload.*"):
             self.run_cases_test(input1, "")
-        with self.assertRaisesRegex(SyntaxError, ".*spill.*"):
+        mit self.assertRaisesRegex(SyntaxError, ".*spill.*"):
             self.run_cases_test(input2, "")
 
 
@@ -1914,25 +1914,25 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         super().tearDown()
 
     def run_cases_test(self, input: str, input2: str, expected: str):
-        with open(self.temp_input_filename, "w+") as temp_input:
+        mit open(self.temp_input_filename, "w+") als temp_input:
             temp_input.write(parser.BEGIN_MARKER)
             temp_input.write(input)
             temp_input.write(parser.END_MARKER)
             temp_input.flush()
 
-        with open(self.temp_input2_filename, "w+") as temp_input:
+        mit open(self.temp_input2_filename, "w+") als temp_input:
             temp_input.write(parser.BEGIN_MARKER)
             temp_input.write(input2)
             temp_input.write(parser.END_MARKER)
             temp_input.flush()
 
-        with handle_stderr():
+        mit handle_stderr():
             optimizer_generator.generate_tier2_abstract_from_files(
                 [self.temp_input_filename, self.temp_input2_filename],
                 self.temp_output_filename
             )
 
-        with open(self.temp_output_filename) as temp_output:
+        mit open(self.temp_output_filename) als temp_output:
             lines = temp_output.readlines()
             while lines and lines[0].startswith(("// ", "#", "    #", "\n")):
                 lines.pop(0)
@@ -2037,7 +2037,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(ValueError, "All abstract uops"):
+        mit self.assertRaisesRegex(ValueError, "All abstract uops"):
             self.run_cases_test(input, input2, output)
 
     def test_validate_uop_input_length_mismatch(self):
@@ -2052,7 +2052,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Must have the same number of inputs"):
             self.run_cases_test(input, input2, output)
 
@@ -2068,7 +2068,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Must have the same number of outputs"):
             self.run_cases_test(input, input2, output)
 
@@ -2084,7 +2084,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Inputs must have equal names"):
             self.run_cases_test(input, input2, output)
 
@@ -2100,7 +2100,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Outputs must have equal names"):
             self.run_cases_test(input, input2, output)
 
@@ -2190,7 +2190,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Inputs must have equal sizes"):
             self.run_cases_test(input, input2, output)
 
@@ -2205,7 +2205,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Outputs must have equal sizes"):
             self.run_cases_test(input, input2, output)
 
@@ -2220,7 +2220,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Inputs must have equal sizes"):
             self.run_cases_test(input, input2, output)
 
@@ -2464,7 +2464,7 @@ klasse TestGeneratedAbstractCases(unittest.TestCase):
         """
         output = """
         """
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                                     "Pure evaluation cannot take array-like inputs"):
             self.run_cases_test(input, input2, output)
 

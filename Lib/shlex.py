@@ -331,7 +331,7 @@ def quote(s):
         return s
 
     # use single quotes, and put single quotes into double quotes
-    # the string $'b is then quoted as '$'"'"'b'
+    # the string $'b is then quoted als '$'"'"'b'
     return "'" + s.replace("'", "'\"'\"'") + "'"
 
 
@@ -344,5 +344,5 @@ wenn __name__ == '__main__':
         _print_tokens(shlex())
     sonst:
         fn = sys.argv[1]
-        with open(fn) as f:
+        mit open(fn) als f:
             _print_tokens(shlex(f, fn))

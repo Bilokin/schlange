@@ -25,7 +25,7 @@ klasse PstatsCollector(Collector):
                 location = (frame.filename, frame.lineno, frame.funcname)
                 self.result[location]["cumulative_calls"] += 1
 
-            # The top frame gets counted as an inline call (directly executing)
+            # The top frame gets counted als an inline call (directly executing)
             top_frame = frames[0]
             top_location = (
                 top_frame.filename,
@@ -60,10 +60,10 @@ klasse PstatsCollector(Collector):
     def _dump_stats(self, file):
         stats_with_marker = dict(self.stats)
         stats_with_marker[("__sampled__",)] = Wahr
-        with open(file, "wb") as f:
+        mit open(file, "wb") als f:
             marshal.dump(stats_with_marker, f)
 
-    # Needed fuer compatibility with pstats.Stats
+    # Needed fuer compatibility mit pstats.Stats
     def create_stats(self):
         sample_interval_sec = self.sample_interval_usec / 1_000_000
         callers = {}

@@ -89,7 +89,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
         result = f(self.wrap(-10), self.wrap(cb))
         self.assertEqual(result, -18)
 
-        # test with prototype
+        # test mit prototype
         f.argtypes = [c_int, MyCallback]
         cb = MyCallback(callback)
 
@@ -101,13 +101,13 @@ klasse BasicWrapTestCase(unittest.TestCase):
 
         AnotherCallback = CALLBACK_FUNCTYPE(c_int, c_int, c_int, c_int, c_int)
 
-        # check that the prototype works: we call f with wrong
+        # check that the prototype works: we call f mit wrong
         # argument types
         cb = AnotherCallback(callback)
         self.assertRaises(ArgumentError, f, self.wrap(-10), self.wrap(cb))
 
     def test_callbacks_2(self):
-        # Can also use simple datatypes as argument type specifiers
+        # Can also use simple datatypes als argument type specifiers
         # fuer the callback function.
         # In this case the call receives an instance of that type
         f = dll._testfunc_callback_i_if
@@ -151,7 +151,7 @@ klasse BasicWrapTestCase(unittest.TestCase):
         expected = 3, 1, 2
         self.assertEqual(got, expected)
 
-        # with prototype
+        # mit prototype
         ptin = POINT(101, 102)
         ptout = POINT()
         dll._testfunc_byval.argtypes = (POINT, POINTER(POINT))
@@ -206,8 +206,8 @@ klasse BasicWrapTestCase(unittest.TestCase):
             ctypes.c_int,  # PyCSimpleType
             POINT,  # CDataType
         ):
-            with self.subTest(c_type=c_type):
-                with self.assertRaises(RecursionError):
+            mit self.subTest(c_type=c_type):
+                mit self.assertRaises(RecursionError):
                     c_type.from_param(a)
 
 

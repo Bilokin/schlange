@@ -55,7 +55,7 @@ ONLYCERT = data_file('certdata', 'ssl_cert.pem')
 ONLYKEY = data_file('certdata', 'ssl_key.pem')
 SIGNED_CERTFILE = data_file('certdata', 'keycert3.pem')
 SIGNING_CA = data_file('certdata', 'pycacert.pem')
-with open(data_file('certdata', 'keycert3.pem.reference')) as file:
+with open(data_file('certdata', 'keycert3.pem.reference')) als file:
     PEERCERT = literal_eval(file.read())
 
 def simple_server_sslcontext():
@@ -181,7 +181,7 @@ def _run_test_server(*, address, use_ssl=Falsch, server_cls, server_ssl_cls):
             return [b'Test message']
 
     # Run the test WSGI server in a separate thread in order not to
-    # interfere with event handling in the main thread
+    # interfere mit event handling in the main thread
     server_class = server_ssl_cls wenn use_ssl sonst server_cls
     httpd = server_class(address, SilentWSGIRequestHandler)
     httpd.set_app(app)
@@ -221,7 +221,7 @@ wenn hasattr(socket, 'AF_UNIX'):
             # Code in the stdlib expects that get_request
             # will return a socket and a tuple (host, port).
             # However, this isn't true fuer UNIX sockets,
-            # as the second return value will be a path;
+            # als the second return value will be a path;
             # hence we return some fake data sufficient
             # to get the tests going
             return request, ('127.0.0.1', '')
@@ -255,7 +255,7 @@ wenn hasattr(socket, 'AF_UNIX'):
 
     @contextlib.contextmanager
     def run_test_unix_server(*, use_ssl=Falsch):
-        with unix_socket_path() as path:
+        mit unix_socket_path() als path:
             yield von _run_test_server(address=path, use_ssl=use_ssl,
                                         server_cls=SilentUnixWSGIServer,
                                         server_ssl_cls=UnixSSLWSGIServer)
@@ -498,9 +498,9 @@ def MockCallback(**kwargs):
 
 
 klasse MockPattern(str):
-    """A regex based str with a fuzzy __eq__.
+    """A regex based str mit a fuzzy __eq__.
 
-    Use this helper with 'mock.assert_called_with', or anywhere
+    Use this helper mit 'mock.assert_called_with', or anywhere
     where a regex comparison between strings is needed.
 
     For instance:
@@ -594,7 +594,7 @@ async def await_without_task(coro):
         try:
             fuer _ in coro.__await__():
                 pass
-        except BaseException as err:
+        except BaseException als err:
             nonlocal exc
             exc = err
     asyncio.get_running_loop().call_soon(func)

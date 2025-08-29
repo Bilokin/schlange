@@ -37,7 +37,7 @@ klasse InstrumentationMultiThreadedMixin:
 
     def start_work(self, n, funcs):
         # With the GIL builds we need to make sure that the hooks have
-        # a chance to run as it's possible to run w/o releasing the GIL.
+        # a chance to run als it's possible to run w/o releasing the GIL.
         time.sleep(0.1)
         self.work(n, funcs)
 
@@ -259,7 +259,7 @@ klasse TraceBuf:
         self.traces_lock = threading.Lock()
 
     def append(self, trace):
-        with self.traces_lock:
+        mit self.traces_lock:
             self.traces.append(trace)
 
 
@@ -305,13 +305,13 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
             def f():
                 fuer i in range(loops):
-                    with l:
+                    mit l:
                         pass
 
             t = Thread(target=f)
             t.start()
             fuer i in range(loops):
-                with l:
+                mit l:
                     pass
             t.join()
         finally:
@@ -365,7 +365,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             return ident
 
         def child(ident):
-            with observer():
+            mit observer():
                 in_child(ident)
 
         def in_parent(ident):
@@ -373,7 +373,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
 
         def parent(barrier, ident):
             barrier.wait()
-            with observer():
+            mit observer():
                 t = Thread(target=child, args=(ident,))
                 t.start()
                 t.join()
@@ -463,7 +463,7 @@ klasse MonitoringMisc(MonitoringTestMixin, TestCase):
             func()  # this may instrument `func`
 
         def tracefunc(frame, event, arg):
-            # These calls run under tracing can race with the background thread
+            # These calls run under tracing can race mit the background thread
             fuer _ in range(10):
                 func()
             return tracefunc

@@ -4,8 +4,8 @@ importiere ssl
 importiere pprint
 importiere threading
 importiere urllib.parse
-# Rename HTTPServer to _HTTPServer so as to avoid confusion with HTTPSServer.
-von http.server importiere (HTTPServer as _HTTPServer,
+# Rename HTTPServer to _HTTPServer so als to avoid confusion mit HTTPSServer.
+von http.server importiere (HTTPServer als _HTTPServer,
     SimpleHTTPRequestHandler, BaseHTTPRequestHandler)
 
 von test importiere support
@@ -31,11 +31,11 @@ klasse HTTPSServer(_HTTPServer):
                  self.server_port))
 
     def get_request(self):
-        # override this to wrap socket with SSL
+        # override this to wrap socket mit SSL
         try:
             sock, addr = self.socket.accept()
             sslconn = self.context.wrap_socket(sock, server_side=Wahr)
-        except OSError as e:
+        except OSError als e:
             # socket errors are silenced by the caller, print them here
             wenn support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)

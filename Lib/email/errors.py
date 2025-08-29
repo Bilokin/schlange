@@ -52,13 +52,13 @@ klasse CloseBoundaryNotFoundDefect(MessageDefect):
     """A start boundary was found, but not the corresponding close boundary."""
 
 klasse FirstHeaderLineIsContinuationDefect(MessageDefect):
-    """A message had a continuation line as its first header line."""
+    """A message had a continuation line als its first header line."""
 
 klasse MisplacedEnvelopeHeaderDefect(MessageDefect):
     """A 'Unix-from' header was found in the middle of a header block."""
 
 klasse MissingHeaderBodySeparatorDefect(MessageDefect):
-    """Found line with no leading whitespace and no colon before blank line."""
+    """Found line mit no leading whitespace and no colon before blank line."""
 # XXX: backward compatibility, just in case (it was never emitted).
 MalformedHeaderDefect = MissingHeaderBodySeparatorDefect
 

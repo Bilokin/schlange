@@ -82,7 +82,7 @@ klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertNotIn('::img::test', self.root.image_names())
 
     def test_create_from_data(self):
-        with open(self.testfile, 'rb') as f:
+        mit open(self.testfile, 'rb') als f:
             data = f.read()
         image = tkinter.BitmapImage('::img::test', master=self.root,
                                     foreground='yellow', background='blue',
@@ -103,7 +103,7 @@ klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
     def test_configure_data(self):
         image = tkinter.BitmapImage('::img::test', master=self.root)
         self.assertEqual(image['data'], '-data {} {} {} {}')
-        with open(self.testfile, 'rb') as f:
+        mit open(self.testfile, 'rb') als f:
             data = f.read()
         image.configure(data=data)
         self.assertEqualStrList(image['data'],
@@ -146,10 +146,10 @@ klasse BitmapImageTest(AbstractTkTest, unittest.TestCase):
 
     def test_bug_100814(self):
         # gh-100814: Passing a callable option value causes AttributeError.
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             tkinter.BitmapImage('::img::test', master=self.root, spam=print)
         image = tkinter.BitmapImage('::img::test', master=self.root)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             image.configure(spam=print)
 
 
@@ -187,7 +187,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     def check_create_from_data(self, ext):
         testfile = support.findfile('python.' + ext, subdir='tkinterdata')
-        with open(testfile, 'rb') as f:
+        mit open(testfile, 'rb') als f:
             data = f.read()
         image = tkinter.PhotoImage('::img::test', master=self.root,
                                    data=data)
@@ -232,7 +232,7 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
     def test_configure_data(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['data'], '')
-        with open(self.testfile, 'rb') as f:
+        mit open(self.testfile, 'rb') als f:
             data = f.read()
         image.configure(data=data)
         self.assertEqual(image['data'], data wenn self.wantobjects
@@ -284,10 +284,10 @@ klasse PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     def test_bug_100814(self):
         # gh-100814: Passing a callable option value causes AttributeError.
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             tkinter.PhotoImage('::img::test', master=self.root, spam=print)
         image = tkinter.PhotoImage('::img::test', master=self.root)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             image.configure(spam=print)
 
     def test_blank(self):

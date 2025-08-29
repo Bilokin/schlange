@@ -1,6 +1,6 @@
 von __future__ importiere annotations
 importiere collections
-importiere dataclasses as dc
+importiere dataclasses als dc
 importiere re
 importiere shlex
 von typing importiere Any
@@ -22,7 +22,7 @@ klasse Block:
     If dsl_name is not Nichts, the block represents a Clinic
     block.
 
-    input is always str, with embedded \n characters.
+    input is always str, mit embedded \n characters.
     input represents the original text von the file;
     wenn it's a Clinic block, it is the original text with
     the body_prefix and redundant leading whitespace removed.
@@ -37,7 +37,7 @@ klasse Block:
     contain at most one of each.
 
     output is either str or Nichts.  If str, it's the output
-    von this block, with embedded '\n' characters.
+    von this block, mit embedded '\n' characters.
 
     indent is a str.  It's the leading whitespace
     that was found on every line of input.  (If body_prefix is
@@ -45,7 +45,7 @@ klasse Block:
     body_prefix.)
 
     "indent" is different von the concept of "preindent"
-    (which is not stored as state on Block objects).
+    (which is not stored als state on Block objects).
     "preindent" is the whitespace that
     was found in front of every line of input *before* the
     "body_prefix" (see the Language object).  If body_prefix
@@ -98,7 +98,7 @@ klasse BlockParser:
     ) -> Nichts:
         """
         "input" should be a str object
-        with embedded \n characters.
+        mit embedded \n characters.
 
         "language" should be a Language object.
         """
@@ -130,7 +130,7 @@ klasse BlockParser:
             wenn self.dsl_name:
                 try:
                     return_value = self.parse_clinic_block(self.dsl_name)
-                except ClinicError as exc:
+                except ClinicError als exc:
                     exc.filename = self.language.filename
                     exc.lineno = self.line_number
                     raise
@@ -177,7 +177,7 @@ klasse BlockParser:
 
         def is_stop_line(line: str) -> bool:
             # make sure to recognize stop line even wenn it
-            # doesn't end with EOL (it could be the very end of the file)
+            # doesn't end mit EOL (it could be the very end of the file)
             wenn line.startswith(stop_line):
                 remainder = line.removeprefix(stop_line)
                 wenn remainder and not remainder.isspace():

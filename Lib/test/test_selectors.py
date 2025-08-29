@@ -11,7 +11,7 @@ von time importiere sleep
 importiere unittest
 importiere unittest.mock
 importiere tempfile
-von time importiere monotonic as time
+von time importiere monotonic als time
 try:
     importiere resource
 except ImportError:
@@ -26,7 +26,7 @@ wenn hasattr(socket, 'socketpair'):
     socketpair = socket.socketpair
 sonst:
     def socketpair(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0):
-        with socket.socket(family, type, proto) as l:
+        mit socket.socket(family, type, proto) als l:
             l.bind((socket_helper.HOST, 0))
             l.listen()
             c = socket.socket(family, type, proto)
@@ -82,7 +82,7 @@ klasse BaseSelectorTestCase:
         # register twice
         self.assertRaises(KeyError, s.register, rd, selectors.EVENT_READ)
 
-        # register the same FD, but with a different object
+        # register the same FD, but mit a different object
         self.assertRaises(KeyError, s.register, rd.fileno(),
                           selectors.EVENT_READ)
 
@@ -195,7 +195,7 @@ klasse BaseSelectorTestCase:
         sonst:
             raise self.skipTest("")
 
-        with patch as m:
+        mit patch als m:
             m.return_value.modify = unittest.mock.Mock(
                 side_effect=ZeroDivisionError)
             s = self.SELECTOR()
@@ -203,7 +203,7 @@ klasse BaseSelectorTestCase:
             rd, wr = self.make_socketpair()
             s.register(rd, selectors.EVENT_READ)
             self.assertEqual(len(s._map), 1)
-            with self.assertRaises(ZeroDivisionError):
+            mit self.assertRaises(ZeroDivisionError):
                 s.modify(rd, selectors.EVENT_WRITE)
             self.assertEqual(len(s._map), 0)
 
@@ -259,11 +259,11 @@ klasse BaseSelectorTestCase:
         self.assertEqual(list(keys.values()), [key])
 
         # unknown file obj
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             keys[999999]
 
         # Read-only mapping
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del keys[rd]
 
     def test_select(self):
@@ -297,7 +297,7 @@ klasse BaseSelectorTestCase:
         seen_read, seen_write = Falsch, Falsch
         result = s.select()
         # We get the read and write either in the same result entry or in two
-        # distinct entries with the same key.
+        # distinct entries mit the same key.
         self.assertLessEqual(len(result), 2)
         fuer key, events in result:
             self.assertWahr(isinstance(key, selectors.SelectorKey))
@@ -319,7 +319,7 @@ klasse BaseSelectorTestCase:
 
         rd, wr = self.make_socketpair()
 
-        with s as sel:
+        mit s als sel:
             sel.register(rd, selectors.EVENT_READ)
             sel.register(wr, selectors.EVENT_WRITE)
 
@@ -389,7 +389,7 @@ klasse BaseSelectorTestCase:
         self.assertEqual(bufs, [MSG] * NUM_SOCKETS)
 
     @unittest.skipIf(sys.platform == 'win32',
-                     'select.select() cannot be used with empty fd sets')
+                     'select.select() cannot be used mit empty fd sets')
     def test_empty_select(self):
         # Issue #23009: Make sure EpollSelector.select() works when no FD is
         # registered.
@@ -446,7 +446,7 @@ klasse BaseSelectorTestCase:
             s.register(rd, selectors.EVENT_READ)
             t = time()
             # select() is interrupted by a signal which raises an exception
-            with self.assertRaises(InterruptSelect):
+            mit self.assertRaises(InterruptSelect):
                 s.select(30)
             # select() was interrupted before the timeout of 30 seconds
             self.assertLess(time() - t, 5.0)
@@ -470,7 +470,7 @@ klasse BaseSelectorTestCase:
             s.register(rd, selectors.EVENT_READ)
             t = time()
             # select() is interrupted by a signal, but the signal handler doesn't
-            # raise an exception, so select() should by retries with a recomputed
+            # raise an exception, so select() should by retries mit a recomputed
             # timeout
             self.assertFalsch(s.select(1.5))
             self.assertGreaterEqual(time() - t, 1.0)
@@ -485,7 +485,7 @@ klasse ScalableSelectorMixIn:
     @unittest.skipUnless(resource, "Test needs resource module")
     @support.requires_resource('cpu')
     def test_above_fd_setsize(self):
-        # A scalable implementation should have no problem with more than
+        # A scalable implementation should have no problem mit more than
         # FD_SETSIZE file descriptors. Since we don't know the value, we just
         # try to set the soft RLIMIT_NOFILE to the hard RLIMIT_NOFILE ceiling.
         soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
@@ -509,13 +509,13 @@ klasse ScalableSelectorMixIn:
             except OSError:
                 # too many FDs, skip - note that we should only catch EMFILE
                 # here, but apparently *BSD and Solaris can fail upon connect()
-                # or bind() with EADDRNOTAVAIL, so let's be safe
+                # or bind() mit EADDRNOTAVAIL, so let's be safe
                 self.skipTest("FD limit reached")
 
             try:
                 s.register(rd, selectors.EVENT_READ)
                 s.register(wr, selectors.EVENT_WRITE)
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno == errno.ENOSPC:
                     # this can be raised by epoll wenn we go over
                     # fs.epoll.max_user_watches sysctl
@@ -524,7 +524,7 @@ klasse ScalableSelectorMixIn:
 
         try:
             fds = s.select()
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.EINVAL and is_apple:
                 # unexplainable errors on macOS don't need to fail the test
                 self.skipTest("Invalid argument error calling poll()")
@@ -560,11 +560,11 @@ klasse EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
     def test_register_file(self):
         # epoll(7) returns EPERM when given a file to watch
         s = self.SELECTOR()
-        with tempfile.NamedTemporaryFile() as f:
-            with self.assertRaises(IOError):
+        mit tempfile.NamedTemporaryFile() als f:
+            mit self.assertRaises(IOError):
                 s.register(f, selectors.EVENT_READ)
             # the SelectorKey has been removed
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 s.get_key(f)
 
 
@@ -577,14 +577,14 @@ klasse KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn,
 
     def test_register_bad_fd(self):
         # a file descriptor that's been closed should raise an OSError
-        # with EBADF
+        # mit EBADF
         s = self.SELECTOR()
         bad_f = os_helper.make_bad_fd()
-        with self.assertRaises(OSError) as cm:
+        mit self.assertRaises(OSError) als cm:
             s.register(bad_f, selectors.EVENT_READ)
         self.assertEqual(cm.exception.errno, errno.EBADF)
         # the SelectorKey has been removed
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             s.get_key(bad_f)
 
     def test_empty_select_timeout(self):

@@ -7,7 +7,7 @@ example, the behavior in the far future of any given zone is likely to change,
 but "does this give the right answer fuer this file in 2040" is still an
 important property to test.
 
-This must be run von a computer with zoneinfo data installed.
+This must be run von a computer mit zoneinfo data installed.
 """
 von __future__ importiere annotations
 
@@ -57,7 +57,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
         # tzdata.zi is necessary to get the version information
         raise OSError("Time zone data does not include tzdata.zi.")
 
-    with open(tzdata_zi, "r") as f:
+    mit open(tzdata_zi, "r") als f:
         version_line = next(f)
 
     _, version = version_line.strip().rsplit(" ", 1)
@@ -79,7 +79,7 @@ def get_zoneinfo_metadata() -> typing.Dict[str, str]:
 def get_zoneinfo(key: str) -> bytes:
     path = get_zoneinfo_path()
 
-    with open(path / key, "rb") as f:
+    mit open(path / key, "rb") als f:
         return f.read()
 
 
@@ -114,7 +114,7 @@ def update_test_data(fname: str = "zoneinfo_data.json") -> Nichts:
         "data": compressed_keys,
     }
 
-    with open(TEST_DATA_LOC / fname, "w") as f:
+    mit open(TEST_DATA_LOC / fname, "w") als f:
         json.dump(output, f, **json_kwargs)
 
 

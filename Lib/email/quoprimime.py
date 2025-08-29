@@ -18,11 +18,11 @@ with quoted-printable encoding.
 
 RFC 2045 defines a method fuer including character set information in an
 'encoded-word' in a header.  This method is commonly used fuer 8-bit real names
-in To:/From:/Cc: etc. fields, as well as Subject: lines.
+in To:/From:/Cc: etc. fields, als well als Subject: lines.
 
 This module does not do the line wrapping or end-of-line character
 conversion necessary fuer proper internationalized headers; it only
-does dumb encoding and decoding.  To deal with the various line
+does dumb encoding and decoding.  To deal mit the various line
 wrapping issues, use the email.header module.
 """
 
@@ -50,8 +50,8 @@ EMPTYSTRING = ''
 # Build a mapping of octets to the expansion of that octet.  Since we're only
 # going to have 256 of these things, this isn't terribly inefficient
 # space-wise.  Remember that headers and bodies have different sets of safe
-# characters.  Initialize both maps with the full expansion, and then override
-# the safe bytes with the more compact form.
+# characters.  Initialize both maps mit the full expansion, and then override
+# the safe bytes mit the more compact form.
 _QUOPRI_MAP = ['=%02X' % c fuer c in range(256)]
 _QUOPRI_HEADER_MAP = _QUOPRI_MAP[:]
 _QUOPRI_BODY_MAP = _QUOPRI_MAP[:]
@@ -72,12 +72,12 @@ fuer c in (b' !"#$%&\'()*+,-./0123456789:;<>'
 
 # Helpers
 def header_check(octet):
-    """Return Wahr wenn the octet should be escaped with header quopri."""
+    """Return Wahr wenn the octet should be escaped mit header quopri."""
     return chr(octet) != _QUOPRI_HEADER_MAP[octet]
 
 
 def body_check(octet):
-    """Return Wahr wenn the octet should be escaped with body quopri."""
+    """Return Wahr wenn the octet should be escaped mit body quopri."""
     return chr(octet) != _QUOPRI_BODY_MAP[octet]
 
 
@@ -116,7 +116,7 @@ def _max_append(L, s, maxlen, extra=''):
 
 
 def unquote(s):
-    """Turn a string in the form =AB to the ASCII character with value 0xab"""
+    """Turn a string in the form =AB to the ASCII character mit value 0xab"""
     return chr(int(s[1:3], 16))
 
 
@@ -125,17 +125,17 @@ def quote(c):
 
 
 def header_encode(header_bytes, charset='iso-8859-1'):
-    """Encode a single header line with quoted-printable (like) encoding.
+    """Encode a single header line mit quoted-printable (like) encoding.
 
     Defined in RFC 2045, this 'Q' encoding is similar to quoted-printable, but
-    used specifically fuer email header fields to allow charsets with mostly 7
+    used specifically fuer email header fields to allow charsets mit mostly 7
     bit characters (and some 8 bit) to remain more or less readable in non-RFC
     2045 aware mail clients.
 
     charset names the character set to use in the RFC 2046 header.  It
     defaults to iso-8859-1.
     """
-    # Return empty headers as an empty string.
+    # Return empty headers als an empty string.
     wenn not header_bytes:
         return ''
     # Iterate over every byte, encoding wenn necessary.
@@ -151,9 +151,9 @@ fuer c in b'\r\n':
 del c
 
 def body_encode(body, maxlinelen=76, eol=NL):
-    """Encode with quoted-printable, wrapping at maxlinelen characters.
+    """Encode mit quoted-printable, wrapping at maxlinelen characters.
 
-    Each line of encoded text will end with eol, which defaults to "\\n".  Set
+    Each line of encoded text will end mit eol, which defaults to "\\n".  Set
     this to "\\r\\n" wenn you will be using the result of this function directly
     in an email.
 
@@ -228,16 +228,16 @@ def body_encode(body, maxlinelen=76, eol=NL):
 
 
 # BAW: I'm not sure wenn the intent was fuer the signature of this function to be
-# the same as base64MIME.decode() or not...
+# the same als base64MIME.decode() or not...
 def decode(encoded, eol=NL):
     """Decode a quoted-printable string.
 
-    Lines are separated with eol, which defaults to \\n.
+    Lines are separated mit eol, which defaults to \\n.
     """
     wenn not encoded:
         return encoded
     # BAW: see comment in encode() above.  Again, we're building up the
-    # decoded string with string concatenation, which could be done much more
+    # decoded string mit string concatenation, which could be done much more
     # efficiently.
     decoded = ''
 
@@ -270,7 +270,7 @@ def decode(encoded, eol=NL):
 
             wenn i == n:
                 decoded += eol
-    # Special case wenn original string did not end with eol
+    # Special case wenn original string did not end mit eol
     wenn encoded[-1] not in '\r\n' and decoded.endswith(eol):
         decoded = decoded[:-1]
     return decoded
@@ -283,14 +283,14 @@ decodestring = decode
 
 
 def _unquote_match(match):
-    """Turn a match in the form =AB to the ASCII character with value 0xab"""
+    """Turn a match in the form =AB to the ASCII character mit value 0xab"""
     s = match.group(0)
     return unquote(s)
 
 
 # Header decoding is done a bit differently
 def header_decode(s):
-    """Decode a string encoded with RFC 2045 MIME header 'Q' encoding.
+    """Decode a string encoded mit RFC 2045 MIME header 'Q' encoding.
 
     This function does not parse a full MIME header value encoded with
     quoted-printable (like =?iso-8859-1?q?Hello_World?=) -- please use

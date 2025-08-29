@@ -24,13 +24,13 @@ klasse LoaderTests(abc.LoaderTests):
         self.assertIn(module.__name__, sys.modules)
 
     def load_module(self, name):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             return self.machinery.BuiltinImporter.load_module(name)
 
     def test_module(self):
         # Common case.
-        with util.uncache(util.BUILTINS.good_name):
+        mit util.uncache(util.BUILTINS.good_name):
             module = self.load_module(util.BUILTINS.good_name)
             self.verify(module)
 
@@ -42,7 +42,7 @@ klasse LoaderTests(abc.LoaderTests):
 
     def test_module_reuse(self):
         # Test that the same module is used in a reload.
-        with util.uncache(util.BUILTINS.good_name):
+        mit util.uncache(util.BUILTINS.good_name):
             module1 = self.load_module(util.BUILTINS.good_name)
             module2 = self.load_module(util.BUILTINS.good_name)
             self.assertIs(module1, module2)
@@ -50,7 +50,7 @@ klasse LoaderTests(abc.LoaderTests):
     def test_unloadable(self):
         name = 'dssdsdfff'
         assert name not in sys.builtin_module_names
-        with self.assertRaises(ImportError) as cm:
+        mit self.assertRaises(ImportError) als cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
 
@@ -59,10 +59,10 @@ klasse LoaderTests(abc.LoaderTests):
         # still fail.
         module_name = 'builtin_reload_test'
         assert module_name not in sys.builtin_module_names
-        with util.uncache(module_name):
+        mit util.uncache(module_name):
             module = types.ModuleType(module_name)
             sys.modules[module_name] = module
-        with self.assertRaises(ImportError) as cm:
+        mit self.assertRaises(ImportError) als cm:
             self.load_module(module_name)
         self.assertEqual(cm.exception.name, module_name)
 
@@ -97,7 +97,7 @@ klasse InspectLoaderTests:
         # Modules not built-in should raise ImportError.
         fuer meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.BuiltinImporter, meth_name)
-        with self.assertRaises(ImportError) as cm:
+        mit self.assertRaises(ImportError) als cm:
             method(util.BUILTINS.bad_name)
 
 

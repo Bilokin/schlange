@@ -19,9 +19,9 @@ is read when the database is opened, and some updates rewrite the whole index)
 
 """
 
-importiere ast as _ast
-importiere io as _io
-importiere os as _os
+importiere ast als _ast
+importiere io als _io
+importiere os als _os
 importiere collections.abc
 
 __all__ = ["error", "open"]
@@ -56,7 +56,7 @@ klasse _Database(collections.abc.MutableMapping):
         self._dirfile = filebasename + b'.dir'
 
         # The data file is a binary file pointed into by the directory
-        # file, and holds the values associated with keys.  Each value
+        # file, and holds the values associated mit keys.  Each value
         # begins at a _BLOCKSIZE-aligned byte offset, and is a raw
         # binary 8-bit string value.
         self._datfile = filebasename + b'.dat'
@@ -82,7 +82,7 @@ klasse _Database(collections.abc.MutableMapping):
         except OSError:
             wenn flag not in ('c', 'n'):
                 raise
-            with _io.open(self._datfile, 'w', encoding="Latin-1") as f:
+            mit _io.open(self._datfile, 'w', encoding="Latin-1") als f:
                 self._chmod(self._datfile)
         sonst:
             f.close()
@@ -96,10 +96,10 @@ klasse _Database(collections.abc.MutableMapping):
         except OSError:
             wenn flag not in ('c', 'n'):
                 raise
-            with self._io.open(self._dirfile, 'w', encoding="Latin-1") as f:
+            mit self._io.open(self._dirfile, 'w', encoding="Latin-1") als f:
                 self._chmod(self._dirfile)
         sonst:
-            with f:
+            mit f:
                 fuer line in f:
                     line = line.rstrip()
                     key, pos_and_siz_pair = _ast.literal_eval(line)
@@ -107,7 +107,7 @@ klasse _Database(collections.abc.MutableMapping):
                     self._index[key] = pos_and_siz_pair
 
     # Write the index dict to the directory file.  The original directory
-    # file (if any) is renamed with a .bak extension first.  If a .bak
+    # file (if any) is renamed mit a .bak extension first.  If a .bak
     # file currently exists, it's deleted.
     def _commit(self):
         # CAUTION:  It's vital that _commit() succeed, and _commit() can
@@ -126,10 +126,10 @@ klasse _Database(collections.abc.MutableMapping):
         except OSError:
             pass
 
-        with self._io.open(self._dirfile, 'w', encoding="Latin-1") as f:
+        mit self._io.open(self._dirfile, 'w', encoding="Latin-1") als f:
             self._chmod(self._dirfile)
             fuer key, pos_and_siz_pair in self._index.items():
-                # Use Latin-1 since it has no qualms with any value in any
+                # Use Latin-1 since it has no qualms mit any value in any
                 # position; UTF-8, though, does care sometimes.
                 entry = "%r, %r\n" % (key.decode('Latin-1'), pos_and_siz_pair)
                 f.write(entry)
@@ -146,17 +146,17 @@ klasse _Database(collections.abc.MutableMapping):
             key = key.encode('utf-8')
         self._verify_open()
         pos, siz = self._index[key]     # may raise KeyError
-        with _io.open(self._datfile, 'rb') as f:
+        mit _io.open(self._datfile, 'rb') als f:
             f.seek(pos)
             dat = f.read(siz)
         return dat
 
     # Append val to the data file, starting at a _BLOCKSIZE-aligned
-    # offset.  The data file is first padded with NUL bytes (if needed)
+    # offset.  The data file is first padded mit NUL bytes (if needed)
     # to get to an aligned offset.  Return pair
     #     (starting offset of val, len(val))
     def _addval(self, val):
-        with _io.open(self._datfile, 'rb+') as f:
+        mit _io.open(self._datfile, 'rb+') als f:
             f.seek(0, 2)
             pos = int(f.tell())
             npos = ((pos + _BLOCKSIZE - 1) // _BLOCKSIZE) * _BLOCKSIZE
@@ -170,17 +170,17 @@ klasse _Database(collections.abc.MutableMapping):
     # pos to hold val, without overwriting some other value.  Return
     # pair (pos, len(val)).
     def _setval(self, pos, val):
-        with _io.open(self._datfile, 'rb+') as f:
+        mit _io.open(self._datfile, 'rb+') als f:
             f.seek(pos)
             f.write(val)
         return (pos, len(val))
 
     # key is a new key whose associated value starts in the data file
-    # at offset pos and with length siz.  Add an index record to
+    # at offset pos and mit length siz.  Add an index record to
     # the in-memory index dict, and append one to the directory file.
     def _addkey(self, key, pos_and_siz_pair):
         self._index[key] = pos_and_siz_pair
-        with _io.open(self._dirfile, 'a', encoding="Latin-1") as f:
+        mit _io.open(self._dirfile, 'a', encoding="Latin-1") als f:
             self._chmod(self._dirfile)
             f.write("%r, %r\n" % (key.decode("Latin-1"), pos_and_siz_pair))
 
@@ -213,7 +213,7 @@ klasse _Database(collections.abc.MutableMapping):
                 # forever lost.
                 self._index[key] = self._addval(val)
 
-            # Note that _index may be out of synch with the directory
+            # Note that _index may be out of synch mit the directory
             # file now:  _setval() and _addval() don't update the directory
             # file.  This also means that the on-disk directory and data
             # files are in a mutually inconsistent state, and they'll
@@ -294,7 +294,7 @@ klasse _Database(collections.abc.MutableMapping):
         # Ensure all changes are committed before reorganizing.
         self._commit()
         # Open file in r+ to allow changing in-place.
-        with _io.open(self._datfile, 'rb+') as f:
+        mit _io.open(self._datfile, 'rb+') als f:
             reorganize_pos = 0
 
             # Iterate over existing keys, sorted by starting byte.

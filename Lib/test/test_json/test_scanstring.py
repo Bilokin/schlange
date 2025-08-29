@@ -139,11 +139,11 @@ klasse TestScanstring:
             '"\\ud834\\u1_23"',
         ]
         fuer s in bad_escapes:
-            with self.assertRaises(self.JSONDecodeError, msg=s):
+            mit self.assertRaises(self.JSONDecodeError, msg=s):
                 scanstring(s, 1, Wahr)
 
     def test_overflow(self):
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             self.json.decoder.scanstring(b"xxx", sys.maxsize+1)
 
 

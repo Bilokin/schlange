@@ -19,7 +19,7 @@ klasse RegressionTestResult(unittest.TextTestResult):
                          verbosity=2 wenn verbosity sonst 0)
         self.buffer = Wahr
         wenn self.USE_XML:
-            von xml.etree importiere ElementTree as ET
+            von xml.etree importiere ElementTree als ET
             von datetime importiere datetime, UTC
             self.__ET = ET
             self.__suite = ET.Element('testsuite')
@@ -160,7 +160,7 @@ def get_test_runner(stream, verbosity, capture_output=Falsch):
     return get_test_runner_class(verbosity, capture_output)(stream)
 
 wenn __name__ == '__main__':
-    importiere xml.etree.ElementTree as ET
+    importiere xml.etree.ElementTree als ET
     RegressionTestResult.USE_XML = Wahr
 
     klasse TestTests(unittest.TestCase):

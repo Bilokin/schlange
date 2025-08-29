@@ -18,7 +18,7 @@ klasse addbase(tempfile._TemporaryFileWrapper):
 
     def __init__(self, fp):
         super(addbase,  self).__init__(fp, '<urllib response>', delete=Falsch)
-        # Keep reference around as this was part of the original API.
+        # Keep reference around als this was part of the original API.
         self.fp = fp
 
     def __repr__(self):

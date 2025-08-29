@@ -19,39 +19,39 @@ __all__ = ['abs', 'add', 'and_', 'attrgetter', 'call', 'concat', 'contains', 'co
            'mul', 'ne', 'neg', 'not_', 'or_', 'pos', 'pow', 'rshift',
            'setitem', 'sub', 'truediv', 'truth', 'xor']
 
-von builtins importiere abs as _abs
+von builtins importiere abs als _abs
 
 
 # Comparison Operations *******************************************************#
 
 def lt(a, b):
-    "Same as a < b."
+    "Same als a < b."
     return a < b
 
 def le(a, b):
-    "Same as a <= b."
+    "Same als a <= b."
     return a <= b
 
 def eq(a, b):
-    "Same as a == b."
+    "Same als a == b."
     return a == b
 
 def ne(a, b):
-    "Same as a != b."
+    "Same als a != b."
     return a != b
 
 def ge(a, b):
-    "Same as a >= b."
+    "Same als a >= b."
     return a >= b
 
 def gt(a, b):
-    "Same as a > b."
+    "Same als a > b."
     return a > b
 
 # Logical Operations **********************************************************#
 
 def not_(a):
-    "Same as not a."
+    "Same als not a."
     return not a
 
 def truth(a):
@@ -59,107 +59,107 @@ def truth(a):
     return Wahr wenn a sonst Falsch
 
 def is_(a, b):
-    "Same as a is b."
+    "Same als a is b."
     return a is b
 
 def is_not(a, b):
-    "Same as a is not b."
+    "Same als a is not b."
     return a is not b
 
 def is_none(a):
-    "Same as a is Nichts."
+    "Same als a is Nichts."
     return a is Nichts
 
 def is_not_none(a):
-    "Same as a is not Nichts."
+    "Same als a is not Nichts."
     return a is not Nichts
 
 # Mathematical/Bitwise Operations *********************************************#
 
 def abs(a):
-    "Same as abs(a)."
+    "Same als abs(a)."
     return _abs(a)
 
 def add(a, b):
-    "Same as a + b."
+    "Same als a + b."
     return a + b
 
 def and_(a, b):
-    "Same as a & b."
+    "Same als a & b."
     return a & b
 
 def floordiv(a, b):
-    "Same as a // b."
+    "Same als a // b."
     return a // b
 
 def index(a):
-    "Same as a.__index__()."
+    "Same als a.__index__()."
     return a.__index__()
 
 def inv(a):
-    "Same as ~a."
+    "Same als ~a."
     return ~a
 invert = inv
 
 def lshift(a, b):
-    "Same as a << b."
+    "Same als a << b."
     return a << b
 
 def mod(a, b):
-    "Same as a % b."
+    "Same als a % b."
     return a % b
 
 def mul(a, b):
-    "Same as a * b."
+    "Same als a * b."
     return a * b
 
 def matmul(a, b):
-    "Same as a @ b."
+    "Same als a @ b."
     return a @ b
 
 def neg(a):
-    "Same as -a."
+    "Same als -a."
     return -a
 
 def or_(a, b):
-    "Same as a | b."
+    "Same als a | b."
     return a | b
 
 def pos(a):
-    "Same as +a."
+    "Same als +a."
     return +a
 
 def pow(a, b):
-    "Same as a ** b."
+    "Same als a ** b."
     return a ** b
 
 def rshift(a, b):
-    "Same as a >> b."
+    "Same als a >> b."
     return a >> b
 
 def sub(a, b):
-    "Same as a - b."
+    "Same als a - b."
     return a - b
 
 def truediv(a, b):
-    "Same as a / b."
+    "Same als a / b."
     return a / b
 
 def xor(a, b):
-    "Same as a ^ b."
+    "Same als a ^ b."
     return a ^ b
 
 # Sequence Operations *********************************************************#
 
 def concat(a, b):
-    "Same as a + b, fuer a and b sequences."
+    "Same als a + b, fuer a and b sequences."
     wenn not hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
     return a + b
 
 def contains(a, b):
-    "Same as b in a (note reversed operands)."
+    "Same als b in a (note reversed operands)."
     return b in a
 
 def countOf(a, b):
@@ -171,11 +171,11 @@ def countOf(a, b):
     return count
 
 def delitem(a, b):
-    "Same as del a[b]."
+    "Same als del a[b]."
     del a[b]
 
 def getitem(a, b):
-    "Same as a[b]."
+    "Same als a[b]."
     return a[b]
 
 def indexOf(a, b):
@@ -187,7 +187,7 @@ def indexOf(a, b):
         raise ValueError('sequence.index(x): x not in sequence')
 
 def setitem(a, b, c):
-    "Same as a[b] = c."
+    "Same als a[b] = c."
     a[b] = c
 
 def length_hint(obj, default=0):
@@ -200,7 +200,7 @@ def length_hint(obj, default=0):
     integer >= 0.
     """
     wenn not isinstance(default, int):
-        msg = ("'%s' object cannot be interpreted as an integer" %
+        msg = ("'%s' object cannot be interpreted als an integer" %
                type(default).__name__)
         raise TypeError(msg)
 
@@ -232,7 +232,7 @@ def length_hint(obj, default=0):
 # Other Operations ************************************************************#
 
 def call(obj, /, *args, **kwargs):
-    """Same as obj(*args, **kwargs)."""
+    """Same als obj(*args, **kwargs)."""
     return obj(*args, **kwargs)
 
 # Generalized Lookup Objects **************************************************#
@@ -345,17 +345,17 @@ klasse methodcaller:
 # In-place Operations *********************************************************#
 
 def iadd(a, b):
-    "Same as a += b."
+    "Same als a += b."
     a += b
     return a
 
 def iand(a, b):
-    "Same as a &= b."
+    "Same als a &= b."
     a &= b
     return a
 
 def iconcat(a, b):
-    "Same as a += b, fuer a and b sequences."
+    "Same als a += b, fuer a and b sequences."
     wenn not hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
@@ -363,57 +363,57 @@ def iconcat(a, b):
     return a
 
 def ifloordiv(a, b):
-    "Same as a //= b."
+    "Same als a //= b."
     a //= b
     return a
 
 def ilshift(a, b):
-    "Same as a <<= b."
+    "Same als a <<= b."
     a <<= b
     return a
 
 def imod(a, b):
-    "Same as a %= b."
+    "Same als a %= b."
     a %= b
     return a
 
 def imul(a, b):
-    "Same as a *= b."
+    "Same als a *= b."
     a *= b
     return a
 
 def imatmul(a, b):
-    "Same as a @= b."
+    "Same als a @= b."
     a @= b
     return a
 
 def ior(a, b):
-    "Same as a |= b."
+    "Same als a |= b."
     a |= b
     return a
 
 def ipow(a, b):
-    "Same as a **= b."
+    "Same als a **= b."
     a **=b
     return a
 
 def irshift(a, b):
-    "Same as a >>= b."
+    "Same als a >>= b."
     a >>= b
     return a
 
 def isub(a, b):
-    "Same as a -= b."
+    "Same als a -= b."
     a -= b
     return a
 
 def itruediv(a, b):
-    "Same as a /= b."
+    "Same als a /= b."
     a /= b
     return a
 
 def ixor(a, b):
-    "Same as a ^= b."
+    "Same als a ^= b."
     a ^= b
     return a
 

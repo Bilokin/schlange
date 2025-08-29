@@ -2,7 +2,7 @@ von test.support importiere verbose, TestFailed
 importiere locale
 importiere sys
 importiere re
-importiere test.support as support
+importiere test.support als support
 importiere unittest
 von test.support.import_helper importiere import_module
 
@@ -11,7 +11,7 @@ maxsize = support.MAX_Py_ssize_t
 # test string formatting operator (I am not sure wenn this is being tested
 # elsewhere but, surely, some of the given cases are *not* tested because
 # they crash python)
-# test on bytes object as well
+# test on bytes object als well
 
 def testformat(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
     wenn verbose:
@@ -75,7 +75,7 @@ def testcommon(formatstr, args, output=Nichts, limit=Nichts, overflowok=Falsch):
 def test_exc(formatstr, args, exception, excmsg):
     try:
         testformat(formatstr, args)
-    except exception as exc:
+    except exception als exc:
         wenn str(exc) == excmsg:
             wenn verbose:
                 drucke("yes")
@@ -427,7 +427,7 @@ klasse FormatTest(unittest.TestCase):
         try:
             oldloc = locale.setlocale(locale.LC_ALL)
             locale.setlocale(locale.LC_ALL, '')
-        except locale.Error as err:
+        except locale.Error als err:
             self.skipTest("Cannot set locale: {}".format(err))
         try:
             localeconv = locale.localeconv()
@@ -472,13 +472,13 @@ klasse FormatTest(unittest.TestCase):
         f = 1.2
         self.assertEqual(format(f, ".0f"), "1")
         self.assertEqual(format(f, ".3f"), "1.200")
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             format(f, ".%sf" % (sys.maxsize + 1))
 
         c = complex(f)
         self.assertEqual(format(c, ".0f"), "1+0j")
         self.assertEqual(format(c, ".3f"), "1.200+0.000j")
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             format(c, ".%sf" % (sys.maxsize + 1))
 
     @support.cpython_only
@@ -487,11 +487,11 @@ klasse FormatTest(unittest.TestCase):
         INT_MAX = _testcapi.INT_MAX
 
         f = 1.2
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             format(f, ".%sf" % (INT_MAX + 1))
 
         c = complex(f)
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             format(c, ".%sf" % (INT_MAX + 1))
 
     def test_g_format_has_no_trailing_zeros(self):
@@ -506,54 +506,54 @@ klasse FormatTest(unittest.TestCase):
         self.assertEqual(format(12300050.0, "#.6g"), "1.23000e+07")
 
     def test_with_two_commas_in_format_specifier(self):
-        error_msg = re.escape("Cannot specify ',' with ','.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        error_msg = re.escape("Cannot specify ',' mit ','.")
+        mit self.assertRaisesRegex(ValueError, error_msg):
             '{:,,}'.format(1)
 
     def test_with_two_underscore_in_format_specifier(self):
-        error_msg = re.escape("Cannot specify '_' with '_'.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        error_msg = re.escape("Cannot specify '_' mit '_'.")
+        mit self.assertRaisesRegex(ValueError, error_msg):
             '{:__}'.format(1)
 
     def test_with_a_commas_and_an_underscore_in_format_specifier(self):
         error_msg = re.escape("Cannot specify both ',' and '_'.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             '{:,_}'.format(1)
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             '{:.,_f}'.format(1.1)
 
     def test_with_an_underscore_and_a_comma_in_format_specifier(self):
         error_msg = re.escape("Cannot specify both ',' and '_'.")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             '{:_,}'.format(1)
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             '{:._,f}'.format(1.1)
 
     def test_better_error_message_format(self):
         # https://bugs.python.org/issue20524
         fuer value in [12j, 12, 12.0, "12"]:
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 # The format spec must be invalid fuer all types we're testing.
                 # '%M' will suffice.
                 bad_format_spec = '%M'
                 err = re.escape("Invalid format specifier "
                                 f"'{bad_format_spec}' fuer object of type "
                                 f"'{type(value).__name__}'")
-                with self.assertRaisesRegex(ValueError, err):
+                mit self.assertRaisesRegex(ValueError, err):
                     f"xx{{value:{bad_format_spec}}}yy".format(value=value)
 
                 # Also test the builtin format() function.
-                with self.assertRaisesRegex(ValueError, err):
+                mit self.assertRaisesRegex(ValueError, err):
                     format(value, bad_format_spec)
 
                 # Also test f-strings.
-                with self.assertRaisesRegex(ValueError, err):
+                mit self.assertRaisesRegex(ValueError, err):
                     eval("f'xx{value:{bad_format_spec}}yy'")
 
     def test_unicode_in_error_message(self):
         str_err = re.escape(
             "Invalid format specifier '%ЫйЯЧ' fuer object of type 'str'")
-        with self.assertRaisesRegex(ValueError, str_err):
+        mit self.assertRaisesRegex(ValueError, str_err):
             "{a:%ЫйЯЧ}".format(a='a')
 
     def test_negative_zero(self):
@@ -615,21 +615,21 @@ klasse FormatTest(unittest.TestCase):
 
     def test_specifier_z_error(self):
         error_msg = re.compile("Invalid format specifier '.*z.*'")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f"{0:z+f}"  # wrong position
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f"{0:fz}"  # wrong position
 
         error_msg = re.escape("Negative zero coercion (z) not allowed")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f"{0:zd}"  # can't apply to int presentation type
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             f"{'x':zs}"  # can't apply to string
 
         error_msg = re.escape("unsupported format character 'z'")
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             "%z.1f" % 0  # not allowed in old style string interpolation
-        with self.assertRaisesRegex(ValueError, error_msg):
+        mit self.assertRaisesRegex(ValueError, error_msg):
             b"%z.1f" % 0
 
 

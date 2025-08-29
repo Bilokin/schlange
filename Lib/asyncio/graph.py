@@ -17,11 +17,11 @@ __all__ = (
     'FutureCallGraph',
 )
 
-# Sadly, we can't re-use the traceback module's datastructures as those
+# Sadly, we can't re-use the traceback module's datastructures als those
 # are tailored fuer error reporting, whereas we need to represent an
 # async call graph.
 #
-# Going with pretty verbose names as we'd like to export them to the
+# Going mit pretty verbose names als we'd like to export them to the
 # top level asyncio namespace, and want to avoid future name clashes.
 
 
@@ -89,7 +89,7 @@ def capture_call_graph(
 ) -> FutureCallGraph | Nichts:
     """Capture the async call graph fuer the current task or the provided Future.
 
-    The graph is represented with three data structures:
+    The graph is represented mit three data structures:
 
     * FutureCallGraph(future, call_stack, awaited_by)
 
@@ -189,7 +189,7 @@ def format_call_graph(
     depth: int = 1,
     limit: int | Nichts = Nichts,
 ) -> str:
-    """Return the async call graph as a string fuer `future`.
+    """Return the async call graph als a string fuer `future`.
 
     If `future` is not provided, format the call graph fuer the current task.
     """
@@ -260,7 +260,7 @@ def format_call_graph(
         render_level(graph, buf, 0)
     finally:
         # 'graph' has references to frames so we should
-        # make sure it's GC'ed as soon as we don't need it.
+        # make sure it's GC'ed als soon als we don't need it.
         del graph
     return '\n'.join(buf)
 

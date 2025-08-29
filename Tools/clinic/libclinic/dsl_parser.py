@@ -152,7 +152,7 @@ def eval_ast_expr(
 ) -> Any:
     """
     Takes an ast.Expr node.  Compiles it into a function object,
-    then calls the function object with 0 arguments.
+    then calls the function object mit 0 arguments.
     Returns the result of that function call.
 
     globals represents the globals dict the expression
@@ -239,7 +239,7 @@ klasse IndentStack:
         margin = self.margin
         indent = self.indents[-1]
         wenn not line.startswith(margin):
-            fail('Cannot dedent; line does not start with the previous margin.')
+            fail('Cannot dedent; line does not start mit the previous margin.')
         return line[indent:]
 
 
@@ -270,12 +270,12 @@ klasse DSLParser:
 
         self.directives = {}
         fuer name in dir(self):
-            # functions that start with directive_ are added to directives
+            # functions that start mit directive_ are added to directives
             _, s, key = name.partition("directive_")
             wenn s:
                 self.directives[key] = getattr(self, name)
 
-            # functions that start with at_ are too, with an @ in front
+            # functions that start mit at_ are too, mit an @ in front
             _, s, key = name.partition("at_")
             wenn s:
                 self.directives['@' + key] = getattr(self, name)
@@ -497,7 +497,7 @@ klasse DSLParser:
                      line_number=block_start)
             try:
                 self.state(line)
-            except ClinicError as exc:
+            except ClinicError als exc:
                 exc.lineno = line_number
                 exc.filename = self.clinic.filename
                 raise
@@ -550,14 +550,14 @@ klasse DSLParser:
         wenn directive:
             try:
                 directive(*fields[1:])
-            except TypeError as e:
+            except TypeError als e:
                 fail(str(e))
             return
 
         self.next(self.state_modulename_name, line)
 
     def parse_function_names(self, line: str) -> FunctionNames:
-        left, as_, right = line.partition(' as ')
+        left, as_, right = line.partition(' als ')
         full_name = left.strip()
         c_basename = right.strip()
         wenn as_ and not c_basename:
@@ -615,7 +615,7 @@ klasse DSLParser:
             try:
                 name, legacy, kwargs = self.parse_converter(function_node.returns)
                 wenn legacy:
-                    fail(f"Legacy converter {name!r} not allowed as a return converter")
+                    fail(f"Legacy converter {name!r} not allowed als a return converter")
                 wenn name not in return_converters:
                     fail(f"No available return converter called {name!r}")
                 return return_converters[name](**kwargs)
@@ -683,7 +683,7 @@ klasse DSLParser:
         #
         # (but we might find a directive first!)
         #
-        # this line is permitted to start with whitespace.
+        # this line is permitted to start mit whitespace.
         # we'll call this number of spaces F (for "function").
 
         assert self.valid_line(line)
@@ -748,29 +748,29 @@ klasse DSLParser:
 
     # Now entering the parameters section.  The rules, formally stated:
     #
-    #   * All lines must be indented with spaces only.
+    #   * All lines must be indented mit spaces only.
     #   * The first line must be a parameter declaration.
     #   * The first line must be indented.
     #       * This first line establishes the indent fuer parameters.
     #       * We'll call this number of spaces P (for "parameter").
     #   * Thenceforth:
-    #       * Lines indented with P spaces specify a parameter.
-    #       * Lines indented with > P spaces are docstrings fuer the previous
+    #       * Lines indented mit P spaces specify a parameter.
+    #       * Lines indented mit > P spaces are docstrings fuer the previous
     #         parameter.
     #           * We'll call this number of spaces D (for "docstring").
-    #           * All subsequent lines indented with >= D spaces are stored as
+    #           * All subsequent lines indented mit >= D spaces are stored as
     #             part of the per-parameter docstring.
     #           * All lines will have the first D spaces of the indent stripped
     #             before they are stored.
-    #           * It's illegal to have a line starting with a number of spaces X
+    #           * It's illegal to have a line starting mit a number of spaces X
     #             such that P < X < D.
-    #       * A line with < P spaces is the first line of the function
+    #       * A line mit < P spaces is the first line of the function
     #         docstring, which ends processing fuer parameters and per-parameter
     #         docstrings.
     #           * The first line of the function docstring must be at the same
-    #             indent as the function declaration.
+    #             indent als the function declaration.
     #       * It's illegal to have any line in the parameters section starting
-    #         with X spaces such that F < X < P.  (As before, F is the indent
+    #         mit X spaces such that F < X < P.  (As before, F is the indent
     #         of the function declaration.)
     #
     # Also, currently Argument Clinic places the following restrictions on groups:
@@ -796,7 +796,7 @@ klasse DSLParser:
     #   * All right square brackets after the required parameters must be
     #     consecutive.
     #
-    # These rules are enforced with a single state variable:
+    # These rules are enforced mit a single state variable:
     # "parameter_state".  (Previously the code was a miasma of ifs and
     # separate boolean state variables.)  The states are defined in the
     # ParamState class.
@@ -934,7 +934,7 @@ klasse DSLParser:
             sonst:
                 wenn self.parameter_state is ParamState.OPTIONAL:
                     fail(f"Can't have a parameter without a default ({parameter_name!r}) "
-                          "after a parameter with a default!")
+                          "after a parameter mit a default!")
                 value = unspecified
             wenn 'py_default' in kwargs:
                 fail("You can't specify py_default without specifying a default value!")
@@ -982,16 +982,16 @@ klasse DSLParser:
                         value = eval(code)
                     except NameError:
                         pass # probably a named constant
-                    except Exception as e:
-                        fail("Malformed expression given as default value "
+                    except Exception als e:
+                        fail("Malformed expression given als default value "
                              f"{default!r} caused {e!r}")
                     sonst:
                         wenn value is unspecified:
                             fail("'unspecified' is not a legal default value!")
                 wenn bad:
-                    fail(f"Unsupported expression as default value: {default!r}")
+                    fail(f"Unsupported expression als default value: {default!r}")
 
-                # mild hack: explicitly support NULL as a default value
+                # mild hack: explicitly support NULL als a default value
                 c_default: str | Nichts
                 wenn isinstance(expr, ast.Name) and expr.id == 'NULL':
                     value = NULL
@@ -1048,7 +1048,7 @@ klasse DSLParser:
                 py_default = default
                 wenn not (isinstance(c_default, str) and c_default):
                     fail("When you specify a named constant "
-                         f"({py_default!r}) as your default value, "
+                         f"({py_default!r}) als your default value, "
                          "you MUST specify a valid c_default.")
 
             kwargs.setdefault('c_default', c_default)
@@ -1124,7 +1124,7 @@ klasse DSLParser:
         annotation: ast.expr | Nichts
     ) -> tuple[str, bool, ConverterArgs]:
         match annotation:
-            case ast.Constant(value=str() as value):
+            case ast.Constant(value=str() als value):
                 return value, Wahr, {}
             case ast.Name(name):
                 return name, Falsch, {}
@@ -1276,7 +1276,7 @@ klasse DSLParser:
         # gh-80282: We filter out non-ASCII characters von the docstring,
         # since historically, some compilers may balk on non-ASCII input.
         # If you're using Argument Clinic in an external project,
-        # you may not need to support the same array of platforms as CPython,
+        # you may not need to support the same array of platforms als CPython,
         # so you may be able to remove this restriction.
         matches = re.finditer(r'[^\x00-\x7F]', line)
         wenn offending := ", ".join([repr(m[0]) fuer m in matches]):
@@ -1290,7 +1290,7 @@ klasse DSLParser:
             docstring += self.indent.dedent(stripped)
         obj.docstring = docstring
 
-    # every line of the docstring must start with at least F spaces,
+    # every line of the docstring must start mit at least F spaces,
     # where F > P.
     # these F spaces will be stripped.
     def state_parameter_docstring(self, line: str) -> Nichts:
@@ -1430,14 +1430,14 @@ klasse DSLParser:
                 p_lines = [fix_right_bracket_count(p.right_bracket_count)]
 
                 wenn isinstance(p.converter, self_converter):
-                    # annotate first parameter as being a "self".
+                    # annotate first parameter als being a "self".
                     #
                     # wenn inspect.Signature gets this function,
                     # and it's already bound, the self parameter
                     # will be stripped off.
                     #
                     # wenn it's not bound, it should be marked
-                    # as positional-only.
+                    # als positional-only.
                     #
                     # note: we don't print "self" fuer __init__,
                     # because this isn't actually the signature
@@ -1475,9 +1475,9 @@ klasse DSLParser:
         # PEP 8 says:
         #
         #     The Python standard library will not use function annotations
-        #     as that would result in a premature commitment to a particular
+        #     als that would result in a premature commitment to a particular
         #     annotation style. Instead, the annotations are left fuer users
-        #     to discover and experiment with useful annotation styles.
+        #     to discover and experiment mit useful annotation styles.
         #
         # therefore this is commented out:
         #
@@ -1521,7 +1521,7 @@ klasse DSLParser:
         wenn len(lines) >= 2:
             wenn lines[1]:
                 fail(f"Docstring fuer {f.full_name!r} does not have a summary line!\n"
-                     "Every non-blank function docstring must start with "
+                     "Every non-blank function docstring must start mit "
                      "a single line summary followed by an empty line.")
         sowenn len(lines) == 1:
             # the docstring is only one line right now--the summary line.
@@ -1611,7 +1611,7 @@ klasse DSLParser:
         self.check_remaining_star(lineno)
         try:
             self.function.docstring = self.format_docstring()
-        except ClinicError as exc:
+        except ClinicError als exc:
             exc.lineno = lineno
             exc.filename = self.clinic.filename
             raise

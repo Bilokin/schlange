@@ -30,7 +30,7 @@ von libclinic.app importiere Clinic
 # * allow mixing any two of {positional-only, positional-or-keyword,
 #   keyword-only}
 #       * dict constructor uses positional-only and keyword-only
-#       * max and min use positional only with an optional group
+#       * max and min use positional only mit an optional group
 #         and keyword-only
 #
 
@@ -65,7 +65,7 @@ def parse_file(
     except KeyError:
         raise ClinicError(f"Can't identify file type fuer file {filename!r}")
 
-    with open(filename, encoding="utf-8") as f:
+    mit open(filename, encoding="utf-8") als f:
         raw = f.read()
 
     # exit quickly wenn there are no clinic markers in the file
@@ -180,9 +180,9 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
 
     wenn ns.make:
         wenn ns.output or ns.filename:
-            parser.error("can't use -o or filenames with --make")
+            parser.error("can't use -o or filenames mit --make")
         wenn not ns.srcdir:
-            parser.error("--srcdir must not be empty with --make")
+            parser.error("--srcdir must not be empty mit --make")
         wenn ns.exclude:
             excludes = [os.path.join(ns.srcdir, f) fuer f in ns.exclude]
             excludes = [os.path.normpath(f) fuer f in excludes]
@@ -210,7 +210,7 @@ def run_clinic(parser: argparse.ArgumentParser, ns: argparse.Namespace) -> Nicht
         parser.error("no input files")
 
     wenn ns.output and len(ns.filename) > 1:
-        parser.error("can't use -o with multiple filenames")
+        parser.error("can't use -o mit multiple filenames")
 
     fuer filename in ns.filename:
         wenn ns.verbose:
@@ -224,7 +224,7 @@ def main(argv: list[str] | Nichts = Nichts) -> NoReturn:
     args = parser.parse_args(argv)
     try:
         run_clinic(parser, args)
-    except ClinicError as exc:
+    except ClinicError als exc:
         sys.stderr.write(exc.report())
         sys.exit(1)
     sonst:

@@ -36,7 +36,7 @@ klasse IterFunc:
         return v
 
 klasse IterGen:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined mit a generator'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -145,7 +145,7 @@ klasse CommonTest(unittest.TestCase):
         self.assertEqual(self.type2test(LyingTuple((2,))), self.type2test((1,)))
         self.assertEqual(self.type2test(LyingList([2])), self.type2test([1]))
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.type2test(unsupported_arg=[])
 
     def test_truth(self):
@@ -209,7 +209,7 @@ klasse CommonTest(unittest.TestCase):
         self.assertEqual(u[-100:100:-1], self.type2test([]))
         self.assertEqual(u[-100:100:2], self.type2test([0, 2, 4]))
 
-        # Test extreme cases with long ints
+        # Test extreme cases mit long ints
         a = self.type2test([0,1,2,3,4])
         self.assertEqual(a[ -pow(2,128): 3 ], self.type2test([0,1,2]))
         self.assertEqual(a[ 3: pow(2,145) ], self.type2test([3,4]))

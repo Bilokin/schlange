@@ -24,7 +24,7 @@ klasse TestResponse(unittest.TestCase):
         self.assertIsInstance(addbase, tempfile._TemporaryFileWrapper)
 
         def f():
-            with addbase as spam:
+            mit addbase als spam:
                 pass
         self.assertFalsch(self.fp.closed)
         f()

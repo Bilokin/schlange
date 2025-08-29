@@ -5,8 +5,8 @@ von ._bootstrap importiere BuiltinImporter
 von ._bootstrap importiere FrozenImporter
 von ._bootstrap_external importiere (
     SOURCE_SUFFIXES, BYTECODE_SUFFIXES, EXTENSION_SUFFIXES,
-    DEBUG_BYTECODE_SUFFIXES as _DEBUG_BYTECODE_SUFFIXES,
-    OPTIMIZED_BYTECODE_SUFFIXES as _OPTIMIZED_BYTECODE_SUFFIXES
+    DEBUG_BYTECODE_SUFFIXES als _DEBUG_BYTECODE_SUFFIXES,
+    OPTIMIZED_BYTECODE_SUFFIXES als _OPTIMIZED_BYTECODE_SUFFIXES
 )
 von ._bootstrap_external importiere WindowsRegistryFinder
 von ._bootstrap_external importiere PathFinder

@@ -10,10 +10,10 @@ klasse WidgetRedirector:
 
     Although a binding to <Key> could be made via tkinter, what we really want
     to do is to hook the Tk 'insert' operation itself.  For one thing, we want
-    a text.insert call in idle code to have the same effect as a key press.
+    a text.insert call in idle code to have the same effect als a key press.
 
     When a widget is instantiated, a Tcl command is created whose name is the
-    same as the pathname widget._w.  This command is used to invoke the various
+    same als the pathname widget._w.  This command is used to invoke the various
     widget operations, e.g. insert (for a Text widget). We are going to hook
     this command and provide a facility ('register') to intercept the widget
     operation.  We will also intercept method calls on the tkinter class
@@ -32,7 +32,7 @@ klasse WidgetRedirector:
         tk: widget.tk, a convenience attribute, probably not needed.
         orig: new name of the original tcl command.
 
-        Since renaming to orig fails with TclError when orig already
+        Since renaming to orig fails mit TclError when orig already
         exists, only one WidgetDirector can exist fuer a given widget.
         '''
         self._operations = {}
@@ -61,7 +61,7 @@ klasse WidgetRedirector:
         tk.deletecommand(w)
         tk.call("rename", self.orig, w)
         del self.widget, self.tk  # Should not be needed
-        # wenn instance is deleted after close, as in Percolator.
+        # wenn instance is deleted after close, als in Percolator.
 
     def register(self, operation, function):
         '''Return OriginalCommand(operation) after registering function.
@@ -136,8 +136,8 @@ klasse OriginalCommand:
         '''
         self.redir = redir
         self.operation = operation
-        self.tk = redir.tk  # redundant with self.redir
-        self.orig = redir.orig  # redundant with self.redir
+        self.tk = redir.tk  # redundant mit self.redir
+        self.orig = redir.orig  # redundant mit self.redir
         # These two could be deleted after checking recipient code.
         self.tk_call = redir.tk.call
         self.orig_and_operation = (redir.orig, operation)

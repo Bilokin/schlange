@@ -23,7 +23,7 @@ Class Differ:
     For producing human-readable deltas von sequences of lines of text.
 
 Class HtmlDiff:
-    For producing HTML side by side comparison with change highlights.
+    For producing HTML side by side comparison mit change highlights.
 """
 
 __all__ = ['get_close_matches', 'ndiff', 'restore', 'SequenceMatcher',
@@ -31,8 +31,8 @@ __all__ = ['get_close_matches', 'ndiff', 'restore', 'SequenceMatcher',
            'unified_diff', 'diff_bytes', 'HtmlDiff', 'Match']
 
 von _colorize importiere can_colorize, get_theme
-von heapq importiere nlargest as _nlargest
-von collections importiere namedtuple as _namedtuple
+von heapq importiere nlargest als _nlargest
+von collections importiere namedtuple als _namedtuple
 von types importiere GenericAlias
 
 Match = _namedtuple('Match', 'a b size')
@@ -46,7 +46,7 @@ klasse SequenceMatcher:
 
     """
     SequenceMatcher is a flexible klasse fuer comparing pairs of sequences of
-    any type, so long as the sequence elements are hashable.  The basic
+    any type, so long als the sequence elements are hashable.  The basic
     algorithm predates, and is a little fancier than, an algorithm
     published in the late 1980's by Ratcliff and Obershelp under the
     hyperbolic name "gestalt pattern matching".  The basic idea is to find
@@ -126,7 +126,7 @@ klasse SequenceMatcher:
         element is junk.  Nichts is equivalent to passing "lambda x: 0", i.e.
         no elements are considered to be junk.  For example, pass
             lambda x: x in " \\t"
-        wenn you're comparing lines as sequences of characters, and don't
+        wenn you're comparing lines als sequences of characters, and don't
         want to synch up on blanks or hard tabs.
 
         Optional arg a is the first of two sequences to be compared.  By
@@ -138,7 +138,7 @@ klasse SequenceMatcher:
         also .set_seqs() and .set_seq2().
 
         Optional arg autojunk should be set to Falsch to disable the
-        "automatic junk heuristic" that treats popular elements as junk
+        "automatic junk heuristic" that treats popular elements als junk
         (see module documentation fuer more information).
         """
 
@@ -146,7 +146,7 @@ klasse SequenceMatcher:
         # a
         #      first sequence
         # b
-        #      second sequence; differences are computed as "what do
+        #      second sequence; differences are computed als "what do
         #      we need to do to 'a' to change it into 'b'?"
         # b2j
         #      fuer x in b, b2j[x] is a list of the indices (into b)
@@ -175,7 +175,7 @@ klasse SequenceMatcher:
         # bjunk
         #      the items in b fuer which isjunk is Wahr.
         # bpopular
-        #      nonjunk items in b treated as junk by the heuristic (if used).
+        #      nonjunk items in b treated als junk by the heuristic (if used).
 
         self.isjunk = isjunk
         self.a = self.b = Nichts
@@ -257,8 +257,8 @@ klasse SequenceMatcher:
     # b2j also does not contain entries fuer "popular" elements, meaning
     # elements that account fuer more than 1 + 1% of the total elements, and
     # when the sequence is reasonably large (>= 200 elements); this can
-    # be viewed as an adaptive notion of semi-junk, and yields an enormous
-    # speedup when, e.g., comparing program files with hundreds of
+    # be viewed als an adaptive notion of semi-junk, and yields an enormous
+    # speedup when, e.g., comparing program files mit hundreds of
     # instances of "return NULL;" ...
     # note that this is only called when b changes; so fuer cross-product
     # kinds of matches, it's best to call set_seq2 once, then set_seq1
@@ -300,7 +300,7 @@ klasse SequenceMatcher:
             fuer elt, idxs in b2j.items():
                 wenn len(idxs) > ntest:
                     popular.add(elt)
-            fuer elt in popular: # ditto; as fast fuer 1% deletion
+            fuer elt in popular: # ditto; als fast fuer 1% deletion
                 del b2j[elt]
 
     def find_longest_match(self, alo=0, ahi=Nichts, blo=0, bhi=Nichts):
@@ -327,13 +327,13 @@ klasse SequenceMatcher:
         Match(a=0, b=4, size=5)
 
         If isjunk is defined, first the longest matching block is
-        determined as above, but with the additional restriction that no
+        determined als above, but mit the additional restriction that no
         junk element appears in the block.  Then that block is extended as
-        far as possible by matching (only) junk elements on both sides.  So
-        the resulting block never matches on junk except as identical junk
+        far als possible by matching (only) junk elements on both sides.  So
+        the resulting block never matches on junk except als identical junk
         happens to be adjacent to an "interesting" match.
 
-        Here's the same example as before, but considering blanks to be
+        Here's the same example als before, but considering blanks to be
         junk.  That prevents " abcd" von matching the " abcd" at the tail
         end of the second sequence directly.  Instead only the "abcd" can
         match, and matches the leftmost "abcd" in the second sequence:
@@ -354,11 +354,11 @@ klasse SequenceMatcher:
         #    ab
         #    acab
         # Longest matching block is "ab", but wenn common prefix is
-        # stripped, it's "a" (tied with "b").  UNIX(tm) diff does so
+        # stripped, it's "a" (tied mit "b").  UNIX(tm) diff does so
         # strip, so ends up claiming that ab is changed to acab by
         # inserting "ca" in the middle.  That's minimal but unintuitive:
         # "it's obvious" that someone inserted "ac" at the front.
-        # Windiff ends up at the same place as diff, but by pairing up
+        # Windiff ends up at the same place als diff, but by pairing up
         # the unique 'b's and then matching the first two 'a's.
 
         a, b, b2j, isbjunk = self.a, self.b, self.b2j, self.bjunk.__contains__
@@ -369,7 +369,7 @@ klasse SequenceMatcher:
         besti, bestj, bestsize = alo, blo, 0
         # find longest junk-free match
         # during an iteration of the loop, j2len[j] = length of longest
-        # junk-free match ending with a[i-1] and b[j]
+        # junk-free match ending mit a[i-1] and b[j]
         j2len = {}
         nothing = []
         fuer i in range(alo, ahi):
@@ -402,10 +402,10 @@ klasse SequenceMatcher:
             bestsize += 1
 
         # Now that we have a wholly interesting match (albeit possibly
-        # empty!), we may as well suck up the matching junk on each
+        # empty!), we may als well suck up the matching junk on each
         # side of it too.  Can't think of a good reason not to, and it
         # saves post-processing the (possibly considerable) expense of
-        # figuring out what to do with it.  In the case of an empty
+        # figuring out what to do mit it.  In the case of an empty
         # interesting match, this is clearly the right thing to do,
         # because no other kind of match is possible in the regions.
         while besti > alo and bestj > blo and \
@@ -431,7 +431,7 @@ klasse SequenceMatcher:
         blocks.
 
         The last triple is a dummy, (len(a), len(b), 0), and is the only
-        triple with n==0.
+        triple mit n==0.
 
         >>> s = SequenceMatcher(Nichts, "abxcd", "abcd")
         >>> list(s.get_matching_blocks())
@@ -442,7 +442,7 @@ klasse SequenceMatcher:
             return self.matching_blocks
         la, lb = len(self.a), len(self.b)
 
-        # This is most naturally expressed as a recursive algorithm, but
+        # This is most naturally expressed als a recursive algorithm, but
         # at least one user bumped into extreme use cases that exceeded
         # the recursion limit on their box.  So, now we maintain a list
         # ('queue`) of blocks we still need to look at, and append partial
@@ -454,7 +454,7 @@ klasse SequenceMatcher:
             alo, ahi, blo, bhi = queue.pop()
             i, j, k = x = self.find_longest_match(alo, ahi, blo, bhi)
             # a[alo:i] vs b[blo:j] unknown
-            # a[i:i+k] same as b[j:j+k]
+            # a[i:i+k] same als b[j:j+k]
             # a[i+k:ahi] vs b[j+k:bhi] unknown
             wenn k:   # wenn k is 0, there was no matching block
                 matching_blocks.append(x)
@@ -465,7 +465,7 @@ klasse SequenceMatcher:
         matching_blocks.sort()
 
         # It's possible that we have adjacent equal blocks in the
-        # matching_blocks list now.  Starting with 2.5, this code was added
+        # matching_blocks list now.  Starting mit 2.5, this code was added
         # to collapse them.
         i1 = j1 = k1 = 0
         non_adjacent = []
@@ -497,7 +497,7 @@ klasse SequenceMatcher:
         has i1 == j1 == 0, and remaining tuples have i1 == the i2 von the
         tuple preceding it, and likewise fuer j1 == the previous j2.
 
-        The tags are strings, with these meanings:
+        The tags are strings, mit these meanings:
 
         'replace':  a[i1:i2] should be replaced by b[j1:j2]
         'delete':   a[i1:i2] should be deleted.
@@ -540,16 +540,16 @@ klasse SequenceMatcher:
                 answer.append( (tag, i, ai, j, bj) )
             i, j = ai+size, bj+size
             # the list of matching blocks is terminated by a
-            # sentinel with size 0
+            # sentinel mit size 0
             wenn size:
                 answer.append( ('equal', ai, i, bj, j) )
         return answer
 
     def get_grouped_opcodes(self, n=3):
-        """ Isolate change clusters by eliminating ranges with no changes.
+        """ Isolate change clusters by eliminating ranges mit no changes.
 
-        Return a generator of groups with up to n lines of context.
-        Each group is in the same format as returned by get_opcodes().
+        Return a generator of groups mit up to n lines of context.
+        Each group is in the same format als returned by get_opcodes().
 
         >>> von pprint importiere pprint
         >>> a = list(map(str, range(1,40)))
@@ -585,7 +585,7 @@ klasse SequenceMatcher:
         group = []
         fuer tag, i1, i2, j1, j2 in codes:
             # End the current group and start a new one whenever
-            # there is a large range with no changes.
+            # there is a large range mit no changes.
             wenn tag == 'equal' and i2-i1 > nn:
                 group.append((tag, i1, min(i2, i1+n), j1, min(j2, j1+n)))
                 yield group
@@ -627,7 +627,7 @@ klasse SequenceMatcher:
         is faster to compute.
         """
 
-        # viewing a and b as multisets, set matches to the cardinality
+        # viewing a and b als multisets, set matches to the cardinality
         # of their intersection; this counts the number of matches
         # without regard to order, so is clearly an upper bound
         wenn self.fullbcount is Nichts:
@@ -684,7 +684,7 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
 
     >>> get_close_matches("appel", ["ape", "apple", "peach", "puppy"])
     ['apple', 'ape']
-    >>> importiere keyword as _keyword
+    >>> importiere keyword als _keyword
     >>> get_close_matches("wheel", _keyword.kwlist)
     ['while']
     >>> get_close_matches("Apple", _keyword.kwlist)
@@ -714,7 +714,7 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
 
 
 def _keep_original_ws(s, tag_s):
-    """Replace whitespace with the original whitespace characters in `s`"""
+    """Replace whitespace mit the original whitespace characters in `s`"""
     return ''.join(
         c wenn tag_c == " " and c.isspace() sonst tag_c
         fuer c, tag_c in zip(s, tag_s)
@@ -729,14 +729,14 @@ klasse Differ:
     SequenceMatcher both to compare sequences of lines, and to compare
     sequences of characters within similar (near-matching) lines.
 
-    Each line of a Differ delta begins with a two-letter code:
+    Each line of a Differ delta begins mit a two-letter code:
 
         '- '    line unique to sequence 1
         '+ '    line unique to sequence 2
         '  '    line common to both sequences
         '? '    line not present in either input sequence
 
-    Lines beginning with '? ' attempt to guide the eye to intraline
+    Lines beginning mit '? ' attempt to guide the eye to intraline
     differences, and were not present in either input sequence.  These lines
     can be confusing wenn the sequences contain tab characters.
 
@@ -749,7 +749,7 @@ klasse Differ:
     Example: Comparing two texts.
 
     First we set up the texts, sequences of individual single-line strings
-    ending with newlines (such sequences can also be obtained von the
+    ending mit newlines (such sequences can also be obtained von the
     `readlines()` method of file-like objects):
 
     >>> text1 = '''  1. Beautiful is better than ugly.
@@ -780,7 +780,7 @@ klasse Differ:
 
     'result' is a list of strings, so let's pretty-print it:
 
-    >>> von pprint importiere pprint as _pprint
+    >>> von pprint importiere pprint als _pprint
     >>> _pdrucke(result)
     ['    1. Beautiful is better than ugly.\n',
      '-   2. Explicit is better than implicit.\n',
@@ -810,7 +810,7 @@ klasse Differ:
 
     def __init__(self, linejunk=Nichts, charjunk=Nichts):
         """
-        Construct a text differencer, with optional filters.
+        Construct a text differencer, mit optional filters.
 
         The two optional keyword parameters are fuer filter functions:
 
@@ -893,8 +893,8 @@ klasse Differ:
 
     def _fancy_replace(self, a, alo, ahi, b, blo, bhi):
         r"""
-        When replacing one block of lines with another, search the blocks
-        fuer *similar* lines; the best-matching pair (if any) is used as a
+        When replacing one block of lines mit another, search the blocks
+        fuer *similar* lines; the best-matching pair (if any) is used als a
         synch point, and intraline difference marking is done on the
         similar pair. Lots of work, but often worth it.
 
@@ -911,7 +911,7 @@ klasse Differ:
         """
         # Don't synch up unless the lines have a similarity score above
         # cutoff. Previously only the smallest pair was handled here,
-        # and wenn there are many pairs with the best ratio, recursion
+        # and wenn there are many pairs mit the best ratio, recursion
         # could grow very deep, and runtime cubic. See:
         # https://github.com/python/cpython/issues/119105
         #
@@ -997,7 +997,7 @@ klasse Differ:
 
     def _qformat(self, aline, bline, atags, btags):
         r"""
-        Format "?" output and deal with tabs.
+        Format "?" output and deal mit tabs.
 
         Example:
 
@@ -1023,21 +1023,21 @@ klasse Differ:
             yield f"? {btags}\n"
 
 # With respect to junk, an earlier version of ndiff simply refused to
-# *start* a match with a junk element.  The result was cases like this:
+# *start* a match mit a junk element.  The result was cases like this:
 #     before: private Thread currentThread;
 #     after:  private volatile Thread currentThread;
 # If you consider whitespace to be junk, the longest contiguous match
-# not starting with junk is "e Thread currentThread".  So ndiff reported
+# not starting mit junk is "e Thread currentThread".  So ndiff reported
 # that "e volatil" was inserted between the 't' and the 'e' in "private".
 # While an accurate view, to people that's absurd.  The current version
 # looks fuer matching blocks that are entirely junk-free, then extends the
-# longest one of those as far as possible but only with matching junk.
+# longest one of those als far als possible but only mit matching junk.
 # So now "currentThread" is matched, then extended to suck up the
 # preceding blank; then "private" is matched, and extended to suck up the
 # following blank; then "Thread" is matched; and finally ndiff reports
 # that "volatile " was inserted before "Thread".  The only quibble
 # remaining is that perhaps it was really the case that " volatile"
-# was inserted after "private".  I can live with that <wink>.
+# was inserted after "private".  I can live mit that <wink>.
 
 def IS_LINE_JUNK(line, pat=Nichts):
     r"""
@@ -1056,7 +1056,7 @@ def IS_LINE_JUNK(line, pat=Nichts):
     wenn pat is Nichts:
         # Default: match '#' or the empty string
         return line.strip() in '#'
-   # Previous versions used the undocumented parameter 'pat' as a
+   # Previous versions used the undocumented parameter 'pat' als a
    # match function. Retain this behaviour fuer compatibility.
     return pat(line) is not Nichts
 
@@ -1086,7 +1086,7 @@ def IS_CHARACTER_JUNK(ch, ws=" \t"):
 def _format_range_unified(start, stop):
     'Convert range to the "ed" format'
     # Per the diff spec at http://www.unix.org/single_unix_specification/
-    beginning = start + 1     # lines start numbering with one
+    beginning = start + 1     # lines start numbering mit one
     length = stop - start
     wenn length == 1:
         return '{}'.format(beginning)
@@ -1097,14 +1097,14 @@ def _format_range_unified(start, stop):
 def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
                  tofiledate='', n=3, lineterm='\n', *, color=Falsch):
     r"""
-    Compare two sequences of lines; generate the delta as a unified diff.
+    Compare two sequences of lines; generate the delta als a unified diff.
 
     Unified diffs are a compact way of showing line changes and a few
     lines of context.  The number of context lines is set by 'n' which
     defaults to three.
 
-    By default, the diff control lines (those with ---, +++, or @@) are
-    created with a trailing newline.  This is helpful so that inputs
+    By default, the diff control lines (those mit ---, +++, or @@) are
+    created mit a trailing newline.  This is helpful so that inputs
     created von file.readlines() result in diffs that are suitable for
     file.writelines() since both the inputs and outputs have trailing
     newlines.
@@ -1114,7 +1114,7 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
 
     Set 'color' to Wahr to enable output in color, similar to
     'git diff --color'. Even wenn enabled, it can be
-    controlled using environment variables such as 'NO_COLOR'.
+    controlled using environment variables such als 'NO_COLOR'.
 
     The unidiff format normally has a header fuer filenames and modification
     times.  Any or all of these may be specified using strings for
@@ -1179,7 +1179,7 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
 def _format_range_context(start, stop):
     'Convert range to the "ed" format'
     # Per the diff spec at http://www.unix.org/single_unix_specification/
-    beginning = start + 1     # lines start numbering with one
+    beginning = start + 1     # lines start numbering mit one
     length = stop - start
     wenn not length:
         beginning -= 1        # empty ranges begin at line just before the range
@@ -1191,14 +1191,14 @@ def _format_range_context(start, stop):
 def context_diff(a, b, fromfile='', tofile='',
                  fromfiledate='', tofiledate='', n=3, lineterm='\n'):
     r"""
-    Compare two sequences of lines; generate the delta as a context diff.
+    Compare two sequences of lines; generate the delta als a context diff.
 
     Context diffs are a compact way of showing line changes and a few
     lines of context.  The number of context lines is set by 'n' which
     defaults to three.
 
-    By default, the diff control lines (those with *** or ---) are
-    created with a trailing newline.  This is helpful so that inputs
+    By default, the diff control lines (those mit *** or ---) are
+    created mit a trailing newline.  This is helpful so that inputs
     created von file.readlines() result in diffs that are suitable for
     file.writelines() since both the inputs and outputs have trailing
     newlines.
@@ -1267,7 +1267,7 @@ def context_diff(a, b, fromfile='', tofile='',
 def _check_types(a, b, *args):
     # Checking types is weird, but the alternative is garbled output when
     # someone passes mixed bytes and str to {unified,context}_diff(). E.g.
-    # without this check, passing filenames as bytes results in output like
+    # without this check, passing filenames als bytes results in output like
     #   --- b'oldfile.txt'
     #   +++ b'newfile.txt'
     # because of how str.format() incorporates bytes objects.
@@ -1290,7 +1290,7 @@ def _check_types(a, b, *args):
 def diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
                fromfiledate=b'', tofiledate=b'', n=3, lineterm=b'\n'):
     r"""
-    Compare `a` and `b`, two sequences of lines represented as bytes rather
+    Compare `a` and `b`, two sequences of lines represented als bytes rather
     than str. This is a wrapper fuer `dfunc`, which is typically either
     unified_diff() or context_diff(). Inputs are losslessly converted to
     strings so that `dfunc` only has to worry about strings, and encoded
@@ -1301,7 +1301,7 @@ def diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
     def decode(s):
         try:
             return s.decode('ascii', 'surrogateescape')
-        except AttributeError as err:
+        except AttributeError als err:
             msg = ('all arguments must be bytes, not %s (%r)' %
                    (type(s).__name__, s))
             raise TypeError(msg) von err
@@ -1371,7 +1371,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
 
     from/to line tuple -- (line num, line text)
         line num -- integer or Nichts (to indicate a context separation)
-        line text -- original line text with following markers inserted:
+        line text -- original line text mit following markers inserted:
             '\0+' -- marks start of added text
             '\0-' -- marks start of deleted text
             '\0^' -- marks start of changed text
@@ -1397,21 +1397,21 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
     diff_lines_iterator = ndiff(fromlines,tolines,linejunk,charjunk)
 
     def _make_line(lines, format_key, side, num_lines=[0,0]):
-        """Returns line of text with user's change markup and line formatting.
+        """Returns line of text mit user's change markup and line formatting.
 
         lines -- list of lines von the ndiff generator to produce a line of
                  text from.  When producing the line of text to return, the
                  lines used are removed von this list.
-        format_key -- '+' return first line in list with "add" markup around
+        format_key -- '+' return first line in list mit "add" markup around
                           the entire line.
-                      '-' return first line in list with "delete" markup around
+                      '-' return first line in list mit "delete" markup around
                           the entire line.
-                      '?' return first line in list with add/delete/change
+                      '?' return first line in list mit add/delete/change
                           intraline markup (indices obtained von second line)
-                      Nichts return first line in list with no markup
+                      Nichts return first line in list mit no markup
         side -- indice into the num_lines list (0=from,1=to)
         num_lines -- from/to current line number.  This is NOT intended to be a
-                     passed parameter.  It is present as a keyword argument to
+                     passed parameter.  It is present als a keyword argument to
                      maintain memory of the current line numbers between calls
                      of this function.
 
@@ -1421,7 +1421,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
         """
         num_lines[side] += 1
         # Handle case where no user markup is to be added, just return line of
-        # text with user's line format to allow fuer usage of the line number.
+        # text mit user's line format to allow fuer usage of the line number.
         wenn format_key is Nichts:
             return (num_lines[side],lines.pop(0)[2:])
         # Handle case of intraline changes
@@ -1448,12 +1448,12 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
             # insert marks that won't be noticed by an xml/html escaper.
             text = '\0' + format_key + text + '\1'
         # Return line of text, first allow user's line formatter to do its
-        # thing (such as adding the line number) then replace the special
-        # marks with what the user's change markup.
+        # thing (such als adding the line number) then replace the special
+        # marks mit what the user's change markup.
         return (num_lines[side],text)
 
     def _line_iterator():
-        """Yields from/to lines of text with a change indication.
+        """Yields from/to lines of text mit a change indication.
 
         This function is an iterator.  It itself pulls lines von a
         differencing iterator, processes them and yields them.  When it can
@@ -1541,7 +1541,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
                 yield from_line,to_line,Wahr
 
     def _line_pair_iterator():
-        """Yields from/to lines of text with a change indication.
+        """Yields from/to lines of text mit a change indication.
 
         This function is an iterator.  It itself pulls lines von the line
         iterator.  Its difference von that iterator is that this function
@@ -1572,7 +1572,7 @@ def _mdiff(fromlines, tolines, context=Nichts, linejunk=Nichts,
             yield (from_line,to_line,fromDiff or to_diff)
 
     # Handle case where user does not want context differencing, just yield
-    # them up without doing anything sonst with them.
+    # them up without doing anything sonst mit them.
     line_pair_iterator = _line_pair_iterator()
     wenn context is Nichts:
         yield von line_pair_iterator
@@ -1712,17 +1712,17 @@ _legend = """
     </table>"""
 
 klasse HtmlDiff(object):
-    """For producing HTML side by side comparison with change highlights.
+    """For producing HTML side by side comparison mit change highlights.
 
     This klasse can be used to create an HTML table (or a complete HTML file
     containing the table) showing a side by side, line by line comparison
-    of text with inter-line and intra-line change highlights.  The table can
+    of text mit inter-line and intra-line change highlights.  The table can
     be generated in either full or contextual difference mode.
 
     The following methods are provided fuer HTML generation:
 
     make_table -- generates HTML fuer a single side by side table
-    make_file -- generates complete HTML file with a single side by side table
+    make_file -- generates complete HTML file mit a single side by side table
 
     See Doc/includes/diff.py fuer an example usage of this class.
     """
@@ -1752,7 +1752,7 @@ klasse HtmlDiff(object):
 
     def make_file(self, fromlines, tolines, fromdesc='', todesc='',
                   context=Falsch, numlines=5, *, charset='utf-8'):
-        """Returns HTML file of side by side comparison with change highlights
+        """Returns HTML file of side by side comparison mit change highlights
 
         Arguments:
         fromlines -- list of "from" lines
@@ -1778,14 +1778,14 @@ klasse HtmlDiff(object):
         )).encode(charset, 'xmlcharrefreplace').decode(charset)
 
     def _tab_newline_replace(self,fromlines,tolines):
-        """Returns from/to line lists with tabs expanded and newlines removed.
+        """Returns from/to line lists mit tabs expanded and newlines removed.
 
         Instead of tab characters being replaced by the number of spaces
         needed to fill in to the next tab stop, this function will fill
-        the space with tab characters.  This is done so that the difference
+        the space mit tab characters.  This is done so that the difference
         algorithms can identify changes in a file when tabs are replaced by
         spaces and vice versa.  At the end of the HTML generation, the tab
-        characters will be replaced with a nonbreakable space.
+        characters will be replaced mit a nonbreakable space.
         """
         def expand_tabs(line):
             # hide real spaces
@@ -1793,7 +1793,7 @@ klasse HtmlDiff(object):
             # expand tabs into spaces
             line = line.expandtabs(self._tabsize)
             # replace spaces von expanded tabs back into tab characters
-            # (we'll replace them with markup after we do differencing)
+            # (we'll replace them mit markup after we do differencing)
             line = line.replace(' ','\t')
             return line.replace('\0',' ').rstrip('\n')
         fromlines = [expand_tabs(line) fuer line in fromlines]
@@ -1887,7 +1887,7 @@ klasse HtmlDiff(object):
         """Collects mdiff output into separate lists
 
         Before storing the mdiff from/to data into a list, it is converted
-        into a single line of text with HTML markup.
+        into a single line of text mit HTML markup.
         """
 
         fromlist,tolist,flaglist = [],[],[]
@@ -1918,7 +1918,7 @@ klasse HtmlDiff(object):
         except TypeError:
             # handle blank lines where linenum is '>' or ''
             id = ''
-        # replace those things that would get confused with HTML symbols
+        # replace those things that would get confused mit HTML symbols
         text=text.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;")
 
         # make space non-breakable so they don't get compressed or line wrapped
@@ -1987,7 +1987,7 @@ klasse HtmlDiff(object):
 
     def make_table(self,fromlines,tolines,fromdesc='',todesc='',context=Falsch,
                    numlines=5):
-        """Returns HTML table of side by side comparison with change highlights
+        """Returns HTML table of side by side comparison mit change highlights
 
         Arguments:
         fromlines -- list of "from" lines

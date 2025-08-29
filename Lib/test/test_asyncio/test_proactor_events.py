@@ -14,7 +14,7 @@ von asyncio.proactor_events importiere _ProactorDuplexPipeTransport
 von asyncio.proactor_events importiere _ProactorDatagramTransport
 von test.support importiere os_helper
 von test.support importiere socket_helper
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 
 
 def tearDownModule():
@@ -388,7 +388,7 @@ klasse ProactorSocketTransportTests(test_utils.TestCase):
         tr = _ProactorDuplexPipeTransport(
             self.loop, self.sock, self.protocol)
         self.assertFalsch(tr.can_write_eof())
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             tr.write_eof()
         close_transport(tr)
 
@@ -766,9 +766,9 @@ klasse BaseProactorEventLoopTests(test_utils.TestCase):
 
         self.ssock, self.csock = mock.Mock(), mock.Mock()
 
-        with mock.patch('asyncio.proactor_events.socket.socketpair',
+        mit mock.patch('asyncio.proactor_events.socket.socketpair',
                         return_value=(self.ssock, self.csock)):
-            with mock.patch('signal.set_wakeup_fd'):
+            mit mock.patch('signal.set_wakeup_fd'):
                 self.loop = BaseProactorEventLoop(self.proactor)
         self.set_event_loop(self.loop)
 
@@ -776,7 +776,7 @@ klasse BaseProactorEventLoopTests(test_utils.TestCase):
     def test_ctor(self, socketpair):
         ssock, csock = socketpair.return_value = (
             mock.Mock(), mock.Mock())
-        with mock.patch('signal.set_wakeup_fd'):
+        mit mock.patch('signal.set_wakeup_fd'):
             loop = BaseProactorEventLoop(self.proactor)
         self.assertIs(loop._ssock, ssock)
         self.assertIs(loop._csock, csock)
@@ -1003,7 +1003,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with open(os_helper.TESTFN, 'wb') as fp:
+        mit open(os_helper.TESTFN, 'wb') als fp:
             fp.write(cls.DATA)
         super().setUpClass()
 
@@ -1059,7 +1059,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     def test_sock_sendfile_not_a_file(self):
         sock, proto = self.prepare()
         f = object()
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Nichts))
@@ -1068,7 +1068,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     def test_sock_sendfile_iobuffer(self):
         sock, proto = self.prepare()
         f = io.BytesIO()
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Nichts))
@@ -1078,7 +1078,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         f = mock.Mock()
         f.fileno.return_value = -1
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Nichts))
@@ -1087,7 +1087,7 @@ klasse ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     def test_blocking_socket(self):
         self.loop.set_debug(Wahr)
         sock = self.make_socket(blocking=Wahr)
-        with self.assertRaisesRegex(ValueError, "must be non-blocking"):
+        mit self.assertRaisesRegex(ValueError, "must be non-blocking"):
             self.run_loop(self.loop.sock_sendfile(sock, self.file))
 
 wenn __name__ == '__main__':

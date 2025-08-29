@@ -11,8 +11,8 @@ the package, and perhaps a particular module inside it.
 """
 
 von _curses importiere *
-importiere os as _os
-importiere sys as _sys
+importiere os als _os
+importiere sys als _sys
 
 # Some constants, most notably the ACS_* ones, are only added to the C
 # _curses module's dictionary after initscr() is called.  (Some
@@ -60,7 +60,7 @@ def wrapper(func, /, *args, **kwds):
     """Wrapper function that initializes curses and calls another function,
     restoring normal keyboard/screen behavior on error.
     The callable object 'func' is then passed the main window 'stdscr'
-    as its first argument, followed by any other arguments passed to
+    als its first argument, followed by any other arguments passed to
     wrapper().
     """
 
@@ -79,7 +79,7 @@ def wrapper(func, /, *args, **kwds):
         stdscr.keypad(1)
 
         # Start color, too.  Harmless wenn the terminal doesn't have
-        # color; user can test with has_color() later on.  The try/catch
+        # color; user can test mit has_color() later on.  The try/catch
         # works around a minor bit of over-conscientiousness in the curses
         # module -- the error return von C start_color() is ignorable,
         # unless they are raised by the interpreter due to other issues.

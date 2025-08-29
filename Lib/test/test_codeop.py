@@ -207,7 +207,7 @@ klasse CodeopTests(unittest.TestCase):
         ai("try:\n pass\nexcept:\n pass\nfinally:")
 
         ai("with a:")
-        ai("with a as b:")
+        ai("with a als b:")
 
         ai("class a:")
         ai("class a(")
@@ -280,31 +280,31 @@ klasse CodeopTests(unittest.TestCase):
 
     def test_warning(self):
         # Test that the warning is only returned once.
-        with warnings_helper.check_warnings(
-                ('"is" with \'str\' literal', SyntaxWarning),
+        mit warnings_helper.check_warnings(
+                ('"is" mit \'str\' literal', SyntaxWarning),
                 ('"\\\\e" is an invalid escape sequence', SyntaxWarning),
-                ) as w:
+                ) als w:
             compile_command(r"'\e' is 0")
             self.assertEqual(len(w.warnings), 2)
 
-        # bpo-41520: check SyntaxWarning treated as an SyntaxError
-        with warnings.catch_warnings(), self.assertRaises(SyntaxError):
+        # bpo-41520: check SyntaxWarning treated als an SyntaxError
+        mit warnings.catch_warnings(), self.assertRaises(SyntaxError):
             warnings.simplefilter('error', SyntaxWarning)
             compile_command('1 is 1', symbol='exec')
 
-        # Check SyntaxWarning treated as an SyntaxError
-        with warnings.catch_warnings(), self.assertRaises(SyntaxError):
+        # Check SyntaxWarning treated als an SyntaxError
+        mit warnings.catch_warnings(), self.assertRaises(SyntaxError):
             warnings.simplefilter('error', SyntaxWarning)
             compile_command(r"'\e'", symbol='exec')
 
     def test_incomplete_warning(self):
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always')
             self.assertIncomplete("'\\e' + (")
         self.assertEqual(w, [])
 
     def test_invalid_warning(self):
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always')
             self.assertInvalid("'\\e' 1")
         self.assertEqual(len(w), 1)
@@ -313,8 +313,8 @@ klasse CodeopTests(unittest.TestCase):
         self.assertEqual(w[0].filename, '<input>')
 
     def assertSyntaxErrorMatches(self, code, message):
-        with self.subTest(code):
-            with self.assertRaisesRegex(SyntaxError, message):
+        mit self.subTest(code):
+            mit self.assertRaisesRegex(SyntaxError, message):
                 compile_command(code, symbol='exec')
 
     def test_syntax_errors(self):

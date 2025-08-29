@@ -69,7 +69,7 @@ klasse StatsTestCase(unittest.TestCase):
 
     def test_loading_wrong_types(self):
         stats = pstats.Stats()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             stats.load_stats(42)
 
     def test_sort_stats_int(self):

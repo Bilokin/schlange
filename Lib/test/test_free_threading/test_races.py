@@ -1,4 +1,4 @@
-# It's most useful to run these tests with ThreadSanitizer enabled.
+# It's most useful to run these tests mit ThreadSanitizer enabled.
 importiere sys
 importiere functools
 importiere threading
@@ -70,7 +70,7 @@ klasse TestRaces(TestBase):
             cell.cell_contents = old_value
             time.sleep(0)
 
-        # This revealed a race with cell_set_contents() since it was missing
+        # This revealed a race mit cell_set_contents() since it was missing
         # the critical section.
         do_race(nested_func2, mutate_func2)
 
@@ -107,19 +107,19 @@ klasse TestRaces(TestBase):
                     super().__init__
                     super().__init__()
                 except RuntimeError:
-                    pass  #  happens wenn __class__ is replaced with non-type
+                    pass  #  happens wenn __class__ is replaced mit non-type
 
         def access():
             C()
 
         def mutate():
-            # Swap out the super() global with a different one
+            # Swap out the super() global mit a different one
             real_super = super
             globals()["super"] = lambda s=1: s
             time.sleep(0)
             globals()["super"] = real_super
             time.sleep(0)
-            # Swap out the __class__ closure value with a non-type
+            # Swap out the __class__ closure value mit a non-type
             cell = C.__init__.__closure__[0]
             real_class = cell.cell_contents
             cell.cell_contents = 99
@@ -127,8 +127,8 @@ klasse TestRaces(TestBase):
             cell.cell_contents = real_class
 
         # The initial PR adding specialized opcodes fuer LOAD_SUPER_ATTR
-        # had some races (one with the super() global changing and one
-        # with the cell binding being changed).
+        # had some races (one mit the super() global changing and one
+        # mit the cell binding being changed).
         do_race(access, mutate)
 
     def test_racing_to_bool(self):
@@ -246,7 +246,7 @@ klasse TestRaces(TestBase):
         return a.__dict__
 
     def test_racing_store_attr_dict(self):
-        """Test STORE_ATTR with various dictionary types."""
+        """Test STORE_ATTR mit various dictionary types."""
         klasse C:
             pass
 

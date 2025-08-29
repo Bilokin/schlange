@@ -5,7 +5,7 @@
 #
 
 importiere _codecs_iso2022, codecs
-importiere _multibytecodec as mbc
+importiere _multibytecodec als mbc
 
 codec = _codecs_iso2022.getcodec('iso2022_kr')
 

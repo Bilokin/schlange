@@ -1,5 +1,5 @@
 # Test file locations
-von gettext importiere gettext as _
+von gettext importiere gettext als _
 
 # Duplicate strings
 _('foo')

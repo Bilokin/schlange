@@ -41,7 +41,7 @@ klasse Test_TestResult(unittest.TestCase):
     # other TestResult methods.
     #
     # Accordingly, tests fuer the aforenamed attributes are incorporated
-    # in with the tests fuer the defining methods.
+    # in mit the tests fuer the defining methods.
     ################################################################
 
     def test_init(self):
@@ -107,7 +107,7 @@ klasse Test_TestResult(unittest.TestCase):
 
         result.stopTest(test)
 
-        # Same tests as above; make sure nothing has changed
+        # Same tests als above; make sure nothing has changed
         self.assertWahr(result.wasSuccessful())
         self.assertEqual(len(result.errors), 0)
         self.assertEqual(len(result.failures), 0)
@@ -387,7 +387,7 @@ klasse Test_TestResult(unittest.TestCase):
         klasse Foo(unittest.TestCase):
             def test_1(self):
                 nonlocal subtest
-                with self.subTest(foo=1):
+                mit self.subTest(foo=1):
                     subtest = self._subtest
                     try:
                         1/0
@@ -469,14 +469,14 @@ klasse Test_TextTestResult(unittest.TestCase):
                 '.Test_TextTestResult.testGetDescriptionWithoutDocstring)')
 
     def testGetSubTestDescriptionWithoutDocstring(self):
-        with self.subTest(foo=1, bar=2):
+        mit self.subTest(foo=1, bar=2):
             result = unittest.TextTestResult(Nichts, Wahr, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
                     'testGetSubTestDescriptionWithoutDocstring (' + __name__ +
                     '.Test_TextTestResult.testGetSubTestDescriptionWithoutDocstring) (foo=1, bar=2)')
 
-        with self.subTest('some message'):
+        mit self.subTest('some message'):
             result = unittest.TextTestResult(Nichts, Wahr, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
@@ -484,7 +484,7 @@ klasse Test_TextTestResult(unittest.TestCase):
                     '.Test_TextTestResult.testGetSubTestDescriptionWithoutDocstring) [some message]')
 
     def testGetSubTestDescriptionWithoutDocstringAndParams(self):
-        with self.subTest():
+        mit self.subTest():
             result = unittest.TextTestResult(Nichts, Wahr, 1)
             self.assertEqual(
                     result.getDescription(self._subtest),
@@ -496,15 +496,15 @@ klasse Test_TextTestResult(unittest.TestCase):
         expected = 'testGetSubTestDescriptionForFalschValues (%s.Test_TextTestResult.testGetSubTestDescriptionForFalschValues) [%s]'
         result = unittest.TextTestResult(Nichts, Wahr, 1)
         fuer arg in [0, Nichts, []]:
-            with self.subTest(arg):
+            mit self.subTest(arg):
                 self.assertEqual(
                     result.getDescription(self._subtest),
                     expected % (__name__, arg)
                 )
 
     def testGetNestedSubTestDescriptionWithoutDocstring(self):
-        with self.subTest(foo=1):
-            with self.subTest(baz=2, bar=3):
+        mit self.subTest(foo=1):
+            mit self.subTest(baz=2, bar=3):
                 result = unittest.TextTestResult(Nichts, Wahr, 1)
                 self.assertEqual(
                         result.getDescription(self._subtest),
@@ -513,8 +513,8 @@ klasse Test_TextTestResult(unittest.TestCase):
                         '(baz=2, bar=3, foo=1)')
 
     def testGetDuplicatedNestedSubTestDescriptionWithoutDocstring(self):
-        with self.subTest(foo=1, bar=2):
-            with self.subTest(baz=3, bar=4):
+        mit self.subTest(foo=1, bar=2):
+            mit self.subTest(baz=3, bar=4):
                 result = unittest.TextTestResult(Nichts, Wahr, 1)
                 self.assertEqual(
                         result.getDescription(self._subtest),
@@ -522,34 +522,34 @@ klasse Test_TextTestResult(unittest.TestCase):
                         '(' + __name__ + '.Test_TextTestResult.testGetDuplicatedNestedSubTestDescriptionWithoutDocstring) (baz=3, bar=4, foo=1)')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def testGetDescriptionWithOneLineDocstring(self):
-        """Tests getDescription() fuer a method with a docstring."""
+        """Tests getDescription() fuer a method mit a docstring."""
         result = unittest.TextTestResult(Nichts, Wahr, 1)
         self.assertEqual(
                 result.getDescription(self),
                ('testGetDescriptionWithOneLineDocstring '
                 '(' + __name__ + '.Test_TextTestResult.testGetDescriptionWithOneLineDocstring)\n'
-                'Tests getDescription() fuer a method with a docstring.'))
+                'Tests getDescription() fuer a method mit a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def testGetSubTestDescriptionWithOneLineDocstring(self):
-        """Tests getDescription() fuer a method with a docstring."""
+        """Tests getDescription() fuer a method mit a docstring."""
         result = unittest.TextTestResult(Nichts, Wahr, 1)
-        with self.subTest(foo=1, bar=2):
+        mit self.subTest(foo=1, bar=2):
             self.assertEqual(
                 result.getDescription(self._subtest),
                ('testGetSubTestDescriptionWithOneLineDocstring '
                 '(' + __name__ + '.Test_TextTestResult.testGetSubTestDescriptionWithOneLineDocstring) '
                 '(foo=1, bar=2)\n'
 
-                'Tests getDescription() fuer a method with a docstring.'))
+                'Tests getDescription() fuer a method mit a docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def testGetDescriptionWithMultiLineDocstring(self):
-        """Tests getDescription() fuer a method with a longer docstring.
+        """Tests getDescription() fuer a method mit a longer docstring.
         The second line of the docstring.
         """
         result = unittest.TextTestResult(Nichts, Wahr, 1)
@@ -557,23 +557,23 @@ klasse Test_TextTestResult(unittest.TestCase):
                 result.getDescription(self),
                ('testGetDescriptionWithMultiLineDocstring '
                 '(' + __name__ + '.Test_TextTestResult.testGetDescriptionWithMultiLineDocstring)\n'
-                'Tests getDescription() fuer a method with a longer '
+                'Tests getDescription() fuer a method mit a longer '
                 'docstring.'))
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def testGetSubTestDescriptionWithMultiLineDocstring(self):
-        """Tests getDescription() fuer a method with a longer docstring.
+        """Tests getDescription() fuer a method mit a longer docstring.
         The second line of the docstring.
         """
         result = unittest.TextTestResult(Nichts, Wahr, 1)
-        with self.subTest(foo=1, bar=2):
+        mit self.subTest(foo=1, bar=2):
             self.assertEqual(
                 result.getDescription(self._subtest),
                ('testGetSubTestDescriptionWithMultiLineDocstring '
                 '(' + __name__ + '.Test_TextTestResult.testGetSubTestDescriptionWithMultiLineDocstring) '
                 '(foo=1, bar=2)\n'
-                'Tests getDescription() fuer a method with a longer '
+                'Tests getDescription() fuer a method mit a longer '
                 'docstring.'))
 
     klasse Test(unittest.TestCase):
@@ -592,18 +592,18 @@ klasse Test_TextTestResult(unittest.TestCase):
         def testUnexpectedSuccess(self):
             pass
         def testSubTestSuccess(self):
-            with self.subTest('one', a=1):
+            mit self.subTest('one', a=1):
                 pass
-            with self.subTest('two', b=2):
+            mit self.subTest('two', b=2):
                 pass
         def testSubTestMixed(self):
-            with self.subTest('success', a=1):
+            mit self.subTest('success', a=1):
                 pass
-            with self.subTest('skip', b=2):
+            mit self.subTest('skip', b=2):
                 self.skipTest('skip')
-            with self.subTest('fail', c=3):
+            mit self.subTest('fail', c=3):
                 self.fail('fail')
-            with self.subTest('error', d=4):
+            mit self.subTest('error', d=4):
                 raise Exception('error')
 
         tearDownError = Nichts
@@ -710,7 +710,7 @@ OldResult = type('OldResult', (object,), classDict)
 klasse Test_OldTestResult(unittest.TestCase):
 
     def assertOldResultWarning(self, test, failures):
-        with warnings_helper.check_warnings(
+        mit warnings_helper.check_warnings(
                 ("TestResult has no add.+ method,", RuntimeWarning)):
             result = OldResult()
             test.run(result)
@@ -887,7 +887,7 @@ klasse TestOutputBuffering(unittest.TestCase):
             self.assertMultiLineEqual(message, expectedFullMessage)
 
     def testBufferSetUp(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -909,7 +909,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferTearDown(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -931,7 +931,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferDoCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -961,7 +961,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferSetUp_DoCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1002,7 +1002,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferTearDown_DoCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1045,7 +1045,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferSetupClass(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1068,7 +1068,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferTearDownClass(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1091,7 +1091,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferDoClassCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1124,7 +1124,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferSetupClass_DoClassCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1163,7 +1163,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferTearDownClass_DoClassCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1205,7 +1205,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferSetUpModule(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1233,7 +1233,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferTearDownModule(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1261,7 +1261,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferDoModuleCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1299,7 +1299,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferSetUpModule_DoModuleCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 
@@ -1350,7 +1350,7 @@ klasse TestOutputBuffering(unittest.TestCase):
         self.assertIn(expected_out, formatted_exc)
 
     def testBufferTearDownModule_DoModuleCleanups(self):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             result = unittest.TestResult()
         result.buffer = Wahr
 

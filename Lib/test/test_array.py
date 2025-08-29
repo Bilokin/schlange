@@ -16,7 +16,7 @@ importiere sys
 importiere warnings
 
 importiere array
-von array importiere _array_reconstructor as array_reconstructor
+von array importiere _array_reconstructor als array_reconstructor
 
 with warnings.catch_warnings():
     warnings.simplefilter('ignore', DeprecationWarning)
@@ -54,7 +54,7 @@ klasse MiscTest(unittest.TestCase):
     @support.cpython_only
     def test_immutable(self):
         # bpo-43908: check that array.array is immutable
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             array.array.foo = 1
 
     def test_empty(self):
@@ -210,8 +210,8 @@ klasse BaseTest:
     # Required klasse attributes (provided by subclasses
     # typecode: the typecode to test
     # example: an initializer usable in the constructor fuer this type
-    # smallerexample: the same length as example, but smaller
-    # biggerexample: the same length as example, but bigger
+    # smallerexample: the same length als example, but smaller
+    # biggerexample: the same length als example, but bigger
     # outside: An entry that is not in example
     # minitemsize: the minimum guaranteed itemsize
 
@@ -824,7 +824,7 @@ klasse BaseTest:
         )
 
     def test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing
+        # Test extended slicing by comparing mit list slicing
         # (Assumes list conversion works correctly, too)
         a = array.array(self.typecode, self.example)
         indices = (0, Nichts, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
@@ -933,7 +933,7 @@ klasse BaseTest:
                     a = array.array(self.typecode, self.example)
                     L = list(a)
                     # Make sure we have a slice of exactly the right length,
-                    # but with (hopefully) different data.
+                    # but mit (hopefully) different data.
                     data = L[start:stop:step]
                     data.reverse()
                     L[start:stop:step] = data
@@ -1016,7 +1016,7 @@ klasse BaseTest:
 
     def test_clear(self):
         a = array.array(self.typecode, self.example)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a.clear(42)
         a.clear()
         self.assertEqual(len(a), 0)
@@ -1033,8 +1033,8 @@ klasse BaseTest:
         a.append(self.example[3])
         self.assertEqual(a, array.array(self.typecode, self.example[2:4]))
 
-        with memoryview(a):
-            with self.assertRaises(BufferError):
+        mit memoryview(a):
+            mit self.assertRaises(BufferError):
                 a.clear()
 
     def test_reverse(self):
@@ -1180,10 +1180,10 @@ klasse BaseTest:
 
     def test_initialize_with_unicode(self):
         wenn self.typecode not in ('u', 'w'):
-            with self.assertRaises(TypeError) as cm:
+            mit self.assertRaises(TypeError) als cm:
                 a = array.array(self.typecode, 'foo')
             self.assertIn("cannot use a str", str(cm.exception))
-            with self.assertRaises(TypeError) as cm:
+            mit self.assertRaises(TypeError) als cm:
                 a = array.array(self.typecode, array.array('w', 'foo'))
             self.assertIn("cannot use a unicode array", str(cm.exception))
         sonst:
@@ -1240,7 +1240,7 @@ klasse UnicodeTest(StringTest, unittest.TestCase):
 
     def test_issue17223(self):
         wenn self.typecode == 'u' and sizeof_wchar == 2:
-            # PyUnicode_FromUnicode() cannot fail with 16-bit wchar_t
+            # PyUnicode_FromUnicode() cannot fail mit 16-bit wchar_t
             self.skipTest("specific to 32-bit wchar_t")
 
         # this used to crash
@@ -1252,7 +1252,7 @@ klasse UnicodeTest(StringTest, unittest.TestCase):
         self.assertRaises(ValueError, str, a)
 
     def test_typecode_u_deprecation(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             array.array("u")
 
 
@@ -1363,9 +1363,9 @@ klasse IntegerNumberTest(NumberTest):
     def test_type_error(self):
         a = array.array(self.typecode)
         a.append(42)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a.append(42.0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a[0] = 42.0
 
 klasse Intable:

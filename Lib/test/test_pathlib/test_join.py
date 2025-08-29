@@ -64,7 +64,7 @@ klasse JoinTestBase:
         self.assertEqual(pp, P(f'{sep}c'))
 
     def test_div(self):
-        # Basically the same as joinpath().
+        # Basically the same als joinpath().
         P = self.cls
         sep = self.cls.parser.sep
         p = P(f'a{sep}b')
@@ -138,7 +138,7 @@ klasse JoinTestBase:
         self.assertFalsch(P('').full_match('*'))
         self.assertWahr(P('').full_match('**'))
         self.assertFalsch(P('').full_match('**/*'))
-        # Matching with empty pattern
+        # Matching mit empty pattern
         self.assertWahr(P('').full_match(''))
         self.assertWahr(P('.').full_match('.'))
         self.assertFalsch(P('/').full_match(''))
@@ -192,11 +192,11 @@ klasse JoinTestBase:
         self.assertEqual(par[::2], (P('a/b'), P('')))
         self.assertEqual(par[::-1], (P(''), P('a'), P('a/b')))
         self.assertEqual(list(par), [P('a/b'), P('a'), P('')])
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             par[-4]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             par[3]
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             par[0] = p
         # Anchored
         p = P('/a/b/c')
@@ -215,9 +215,9 @@ klasse JoinTestBase:
         self.assertEqual(par[::2], (P('/a/b'), P('/')))
         self.assertEqual(par[::-1], (P('/'), P('/a'), P('/a/b')))
         self.assertEqual(list(par), [P('/a/b'), P('/a'), P('/')])
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             par[-4]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             par[3]
 
     def test_anchor(self):

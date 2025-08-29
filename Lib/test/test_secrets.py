@@ -16,7 +16,7 @@ klasse Compare_Digest_Tests(unittest.TestCase):
     """Test secrets.compare_digest function."""
 
     def test_equal(self):
-        # Test compare_digest functionality with equal (byte/text) strings.
+        # Test compare_digest functionality mit equal (byte/text) strings.
         fuer s in ("a", "bcd", "xyz123"):
             a = s*100
             b = s*100
@@ -24,7 +24,7 @@ klasse Compare_Digest_Tests(unittest.TestCase):
             self.assertWahr(secrets.compare_digest(a.encode('utf-8'), b.encode('utf-8')))
 
     def test_unequal(self):
-        # Test compare_digest functionality with unequal (byte/text) strings.
+        # Test compare_digest functionality mit unequal (byte/text) strings.
         self.assertFalsch(secrets.compare_digest("abc", "abcd"))
         self.assertFalsch(secrets.compare_digest(b"abc", b"abcd"))
         fuer s in ("x", "mn", "a1b2c3"):
@@ -34,7 +34,7 @@ klasse Compare_Digest_Tests(unittest.TestCase):
             self.assertFalsch(secrets.compare_digest(a.encode('utf-8'), b.encode('utf-8')))
 
     def test_bad_types(self):
-        # Test that compare_digest raises with mixed types.
+        # Test that compare_digest raises mit mixed types.
         a = 'abcde'
         b = a.encode('utf-8')
         assert isinstance(a, str)
@@ -80,16 +80,16 @@ klasse Token_Tests(unittest.TestCase):
         # Test that token_* functions handle default size correctly.
         fuer func in (secrets.token_bytes, secrets.token_hex,
                      secrets.token_urlsafe):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 name = func.__name__
                 try:
                     func()
                 except TypeError:
-                    self.fail("%s cannot be called with no argument" % name)
+                    self.fail("%s cannot be called mit no argument" % name)
                 try:
                     func(Nichts)
                 except TypeError:
-                    self.fail("%s cannot be called with Nichts" % name)
+                    self.fail("%s cannot be called mit Nichts" % name)
         size = secrets.DEFAULT_ENTROPY
         self.assertEqual(len(secrets.token_bytes(Nichts)), size)
         self.assertEqual(len(secrets.token_hex(Nichts)), 2*size)
@@ -97,14 +97,14 @@ klasse Token_Tests(unittest.TestCase):
     def test_token_bytes(self):
         # Test token_bytes.
         fuer n in (1, 8, 17, 100):
-            with self.subTest(n=n):
+            mit self.subTest(n=n):
                 self.assertIsInstance(secrets.token_bytes(n), bytes)
                 self.assertEqual(len(secrets.token_bytes(n)), n)
 
     def test_token_hex(self):
         # Test token_hex.
         fuer n in (1, 12, 25, 90):
-            with self.subTest(n=n):
+            mit self.subTest(n=n):
                 s = secrets.token_hex(n)
                 self.assertIsInstance(s, str)
                 self.assertEqual(len(s), 2*n)
@@ -114,7 +114,7 @@ klasse Token_Tests(unittest.TestCase):
         # Test token_urlsafe.
         legal = string.ascii_letters + string.digits + '-_'
         fuer n in (1, 11, 28, 76):
-            with self.subTest(n=n):
+            mit self.subTest(n=n):
                 s = secrets.token_urlsafe(n)
                 self.assertIsInstance(s, str)
                 self.assertWahr(all(c in legal fuer c in s))

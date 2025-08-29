@@ -31,9 +31,9 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_pack_configure_after(self):
         pack, a, b, c, d = self.create2()
-        with self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
+        mit self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
             a.pack_configure(after=b)
-        with self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
+        mit self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
             a.pack_configure(after='.foo')
         a.pack_configure(side='top')
         b.pack_configure(side='top')
@@ -64,9 +64,9 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_pack_configure_before(self):
         pack, a, b, c, d = self.create2()
-        with self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
+        mit self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % b):
             a.pack_configure(before=b)
-        with self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
+        mit self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
             a.pack_configure(before='.foo')
         a.pack_configure(side='top')
         b.pack_configure(side='top')
@@ -113,10 +113,10 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
         a.pack_configure(in_=c)
         self.assertEqual(pack.pack_slaves(), [b, c, d])
         self.assertEqual(c.pack_slaves(), [a])
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 TclError, """can't pack "?%s"? inside itself""" % (a,)):
             a.pack_configure(in_=a)
-        with self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
+        mit self.assertRaisesRegex(TclError, 'bad window path name ".foo"'):
             a.pack_configure(in_='.foo')
 
     def test_pack_configure_padx_ipadx_fill(self):
@@ -231,7 +231,7 @@ klasse PackTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_pack_info(self):
         pack, a, b, c, d = self.create2()
-        with self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % a):
+        mit self.assertRaisesRegex(TclError, 'window "%s" isn\'t packed' % a):
             a.pack_info()
         a.pack_configure()
         b.pack_configure(side='right', in_=a, anchor='s', expand=Wahr, fill='x',
@@ -297,13 +297,13 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
     def test_place_configure_in(self):
         t, f, f2 = self.create2()
         self.assertEqual(f2.winfo_manager(), '')
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 TclError,
                 """can't place "?%s"? relative to itself"""
                  % re.escape(str(f2))):
             f2.place_configure(in_=f2)
         self.assertEqual(f2.winfo_manager(), '')
-        with self.assertRaisesRegex(TclError, 'bad window path name'):
+        mit self.assertRaisesRegex(TclError, 'bad window path name'):
             f2.place_configure(in_='spam')
         f2.place_configure(in_=f)
         self.assertEqual(f2.winfo_manager(), 'place')
@@ -322,7 +322,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['x'], '-10')
         self.root.update()
         self.assertEqual(f2.winfo_x(), 190)
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('spam')):
             f2.place_configure(in_=f, x='spam')
 
@@ -340,7 +340,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['y'], '-10')
         self.root.update()
         self.assertEqual(f2.winfo_y(), 110)
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('spam')):
             f2.place_configure(in_=f, y='spam')
 
@@ -358,7 +358,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['relx'], '1')
         self.root.update()
         self.assertEqual(f2.winfo_x(), 200)
-        with self.assertRaisesRegex(TclError, EXPECTED_FLOAT_ERRMSG.format('spam')):
+        mit self.assertRaisesRegex(TclError, EXPECTED_FLOAT_ERRMSG.format('spam')):
             f2.place_configure(in_=f, relx='spam')
 
     def test_place_configure_rely(self):
@@ -375,14 +375,14 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f2.place_info()['rely'], '1')
         self.root.update()
         self.assertEqual(f2.winfo_y(), 120)
-        with self.assertRaisesRegex(TclError, EXPECTED_FLOAT_ERRMSG.format('spam')):
+        mit self.assertRaisesRegex(TclError, EXPECTED_FLOAT_ERRMSG.format('spam')):
             f2.place_configure(in_=f, rely='spam')
 
     def test_place_configure_anchor(self):
         f = tkinter.Frame(self.root)
-        with self.assertRaisesRegex(TclError, 'bad anchor "j"'):
+        mit self.assertRaisesRegex(TclError, 'bad anchor "j"'):
             f.place_configure(anchor='j')
-        with self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
+        mit self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
             f.place_configure(anchor='')
         fuer value in 'n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw', 'center':
             f.place_configure(anchor=value)
@@ -396,7 +396,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(width='')
         self.root.update()
         self.assertEqual(f2.winfo_width(), 30)
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_OR_EMPTY_ERRMSG.format('abcd')):
             f2.place_configure(width='abcd')
 
@@ -408,7 +408,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(height='')
         self.root.update()
         self.assertEqual(f2.winfo_height(), 60)
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_OR_EMPTY_ERRMSG.format('abcd')):
             f2.place_configure(height='abcd')
 
@@ -420,7 +420,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(relwidth='')
         self.root.update()
         self.assertEqual(f2.winfo_width(), 30)
-        with self.assertRaisesRegex(TclError, EXPECTED_FLOAT_OR_EMPTY_ERRMSG.format('abcd')):
+        mit self.assertRaisesRegex(TclError, EXPECTED_FLOAT_OR_EMPTY_ERRMSG.format('abcd')):
             f2.place_configure(relwidth='abcd')
 
     def test_place_configure_relheight(self):
@@ -431,14 +431,14 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         f2.place_configure(relheight='')
         self.root.update()
         self.assertEqual(f2.winfo_height(), 60)
-        with self.assertRaisesRegex(TclError, EXPECTED_FLOAT_OR_EMPTY_ERRMSG.format('abcd')):
+        mit self.assertRaisesRegex(TclError, EXPECTED_FLOAT_OR_EMPTY_ERRMSG.format('abcd')):
             f2.place_configure(relheight='abcd')
 
     def test_place_configure_bordermode(self):
         f = tkinter.Frame(self.root)
-        with self.assertRaisesRegex(TclError, 'bad bordermode "j"'):
+        mit self.assertRaisesRegex(TclError, 'bad bordermode "j"'):
             f.place_configure(bordermode='j')
-        with self.assertRaisesRegex(TclError, 'ambiguous bordermode ""'):
+        mit self.assertRaisesRegex(TclError, 'ambiguous bordermode ""'):
             f.place_configure(bordermode='')
         fuer value in 'inside', 'outside', 'ignore':
             f.place_configure(bordermode=value)
@@ -451,7 +451,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         foo.place_forget()
         self.root.update()
         self.assertFalsch(foo.winfo_ismapped())
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             foo.place_forget(0)
 
     def test_place_info(self):
@@ -473,7 +473,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(info['bordermode'], 'outside')
         self.assertEqual(info['x'], '1')
         self.assertEqual(info['x'], '1')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f2.place_info(0)
 
     def test_place_slaves(self):
@@ -482,7 +482,7 @@ klasse PlaceTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(foo.place_slaves(), [])
         bar.place_configure(in_=foo)
         self.assertEqual(foo.place_slaves(), [bar])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             foo.place_slaves(0)
 
 
@@ -513,7 +513,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_column(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad column value "-1": '
+        mit self.assertRaisesRegex(TclError, 'bad column value "-1": '
                                     'must be a non-negative integer'):
             b.grid_configure(column=-1)
         b.grid_configure(column=2)
@@ -521,7 +521,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_columnspan(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad columnspan value "0": '
+        mit self.assertRaisesRegex(TclError, 'bad columnspan value "0": '
                                     'must be a positive integer'):
             b.grid_configure(columnspan=0)
         b.grid_configure(columnspan=2)
@@ -540,7 +540,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_ipadx(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad ipadx value "-1": '
+        mit self.assertRaisesRegex(TclError, 'bad ipadx value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(ipadx=-1)
         b.grid_configure(ipadx=1)
@@ -551,7 +551,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_ipady(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad ipady value "-1": '
+        mit self.assertRaisesRegex(TclError, 'bad ipady value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(ipady=-1)
         b.grid_configure(ipady=1)
@@ -562,7 +562,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_padx(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad pad value "-1": '
+        mit self.assertRaisesRegex(TclError, 'bad pad value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(padx=-1)
         b.grid_configure(padx=1)
@@ -575,7 +575,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_pady(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad pad value "-1": '
+        mit self.assertRaisesRegex(TclError, 'bad pad value "-1": '
                                     'must be positive screen distance'):
             b.grid_configure(pady=-1)
         b.grid_configure(pady=1)
@@ -588,7 +588,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_row(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad (row|grid) value "-1": '
+        mit self.assertRaisesRegex(TclError, 'bad (row|grid) value "-1": '
                                     'must be a non-negative integer'):
             b.grid_configure(row=-1)
         b.grid_configure(row=2)
@@ -596,7 +596,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_rownspan(self):
         b = tkinter.Button(self.root)
-        with self.assertRaisesRegex(TclError, 'bad rowspan value "0": '
+        mit self.assertRaisesRegex(TclError, 'bad rowspan value "0": '
                                     'must be a positive integer'):
             b.grid_configure(rowspan=0)
         b.grid_configure(rowspan=2)
@@ -604,7 +604,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_configure_sticky(self):
         f = tkinter.Frame(self.root, bg='red')
-        with self.assertRaisesRegex(TclError, 'bad stickyness value "glue"'):
+        mit self.assertRaisesRegex(TclError, 'bad stickyness value "glue"'):
             f.grid_configure(sticky='glue')
         f.grid_configure(sticky='ne')
         self.assertEqual(f.grid_info()['sticky'], 'ne')
@@ -612,20 +612,20 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f.grid_info()['sticky'], 'nesw')
 
     def test_grid_columnconfigure(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_columnconfigure()
         self.assertEqual(self.root.grid_columnconfigure(0),
                          {'minsize': 0, 'pad': 0, 'uniform': Nichts, 'weight': 0})
-        with self.assertRaisesRegex(TclError, 'bad option "-foo"'):
+        mit self.assertRaisesRegex(TclError, 'bad option "-foo"'):
             self.root.grid_columnconfigure(0, 'foo')
         self.root.grid_columnconfigure((0, 3), weight=2)
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                                     'must specify a single element on retrieval'):
             self.root.grid_columnconfigure((0, 3))
         b = tkinter.Button(self.root)
         b.grid_configure(column=0, row=0)
         self.root.grid_columnconfigure('all', weight=3)
-        with self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
             self.root.grid_columnconfigure('all')
         self.assertEqual(self.root.grid_columnconfigure(0, 'weight'), 3)
         self.assertEqual(self.root.grid_columnconfigure(3, 'weight'), 2)
@@ -634,7 +634,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_columnconfigure(0, 'weight'), 4)
 
     def test_grid_columnconfigure_minsize(self):
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('foo')):
             self.root.grid_columnconfigure(0, minsize='foo')
         self.root.grid_columnconfigure(0, minsize=10)
@@ -642,9 +642,9 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_columnconfigure(0)['minsize'], 10)
 
     def test_grid_columnconfigure_weight(self):
-        with self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
             self.root.grid_columnconfigure(0, weight='bad')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
+        mit self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
                                     'should be non-negative'):
             self.root.grid_columnconfigure(0, weight=-3)
         self.root.grid_columnconfigure(0, weight=3)
@@ -652,10 +652,10 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_columnconfigure(0)['weight'], 3)
 
     def test_grid_columnconfigure_pad(self):
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('foo')):
             self.root.grid_columnconfigure(0, pad='foo')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
+        mit self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
                                     'should be non-negative'):
             self.root.grid_columnconfigure(0, pad=-3)
         self.root.grid_columnconfigure(0, pad=3)
@@ -668,20 +668,20 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_columnconfigure(0)['uniform'], 'foo')
 
     def test_grid_rowconfigure(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_rowconfigure()
         self.assertEqual(self.root.grid_rowconfigure(0),
                          {'minsize': 0, 'pad': 0, 'uniform': Nichts, 'weight': 0})
-        with self.assertRaisesRegex(TclError, 'bad option "-foo"'):
+        mit self.assertRaisesRegex(TclError, 'bad option "-foo"'):
             self.root.grid_rowconfigure(0, 'foo')
         self.root.grid_rowconfigure((0, 3), weight=2)
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                                     'must specify a single element on retrieval'):
             self.root.grid_rowconfigure((0, 3))
         b = tkinter.Button(self.root)
         b.grid_configure(column=0, row=0)
         self.root.grid_rowconfigure('all', weight=3)
-        with self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "all"'):
             self.root.grid_rowconfigure('all')
         self.assertEqual(self.root.grid_rowconfigure(0, 'weight'), 3)
         self.assertEqual(self.root.grid_rowconfigure(3, 'weight'), 2)
@@ -690,7 +690,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_rowconfigure(0, 'weight'), 4)
 
     def test_grid_rowconfigure_minsize(self):
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('foo')):
             self.root.grid_rowconfigure(0, minsize='foo')
         self.root.grid_rowconfigure(0, minsize=10)
@@ -698,9 +698,9 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_rowconfigure(0)['minsize'], 10)
 
     def test_grid_rowconfigure_weight(self):
-        with self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "bad"'):
             self.root.grid_rowconfigure(0, weight='bad')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
+        mit self.assertRaisesRegex(TclError, 'invalid arg "-weight": '
                                     'should be non-negative'):
             self.root.grid_rowconfigure(0, weight=-3)
         self.root.grid_rowconfigure(0, weight=3)
@@ -708,10 +708,10 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_rowconfigure(0)['weight'], 3)
 
     def test_grid_rowconfigure_pad(self):
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('foo')):
             self.root.grid_rowconfigure(0, pad='foo')
-        with self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
+        mit self.assertRaisesRegex(TclError, 'invalid arg "-pad": '
                                     'should be non-negative'):
             self.root.grid_rowconfigure(0, pad=-3)
         self.root.grid_rowconfigure(0, pad=3)
@@ -780,11 +780,11 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(info['sticky'], 'ns')
 
     def test_grid_anchor(self):
-        with self.assertRaisesRegex(TclError, 'bad anchor "x"'):
+        mit self.assertRaisesRegex(TclError, 'bad anchor "x"'):
             self.root.grid_anchor('x')
-        with self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
+        mit self.assertRaisesRegex(TclError, 'ambiguous anchor ""'):
             self.root.grid_anchor('')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_anchor('se', 'nw')
         self.root.grid_anchor('se')
         self.assertEqual(self.root.tk.call('grid', 'anchor', self.root), 'se')
@@ -793,15 +793,15 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.root.grid_bbox(), (0, 0, 0, 0))
         self.assertEqual(self.root.grid_bbox(0, 0), (0, 0, 0, 0))
         self.assertEqual(self.root.grid_bbox(0, 0, 1, 1), (0, 0, 0, 0))
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox('x', 0)
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox(0, 'x')
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox(0, 0, 'x', 0)
-        with self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
+        mit self.assertRaisesRegex(TclError, 'expected integer but got "x"'):
             self.root.grid_bbox(0, 0, 0, 'x')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_bbox(0, 0, 0, 0, 0)
         t = self.root
         # de-maximize
@@ -821,16 +821,16 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(t.grid_bbox(10, 10, 12, 12), (165, 165, 0, 0))
 
     def test_grid_location(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_location()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_location(0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_location(0, 0, 0)
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('x')):
             self.root.grid_location('x', 'y')
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
                 EXPECTED_SCREEN_DISTANCE_ERRMSG.format('y')):
             self.root.grid_location('1c', 'y')
         t = self.root
@@ -856,7 +856,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
 
     def test_grid_propagate(self):
         self.assertEqual(self.root.grid_propagate(), Wahr)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_propagate(Falsch, Falsch)
         self.root.grid_propagate(Falsch)
         self.assertFalsch(self.root.grid_propagate())
@@ -877,7 +877,7 @@ klasse GridTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(f.winfo_height(), 85)
 
     def test_grid_size(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.root.grid_size(0)
         self.assertEqual(self.root.grid_size(), (0, 0))
         f = tkinter.Scale(self.root)

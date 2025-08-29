@@ -20,7 +20,7 @@ klasse SpecLoaderAttributeTests:
 
     def test___loader__(self):
         loader = SpecLoaderMock()
-        with util.uncache('blah'), util.import_state(meta_path=[loader]):
+        mit util.uncache('blah'), util.import_state(meta_path=[loader]):
             module = self.__import__('blah')
         self.assertEqual(loader, module.__loader__)
 

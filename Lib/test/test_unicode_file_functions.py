@@ -54,7 +54,7 @@ wenn not os.path.supports_unicode_filenames:
         fuer name in filenames:
             name.encode(fsencoding)
     except UnicodeEncodeError:
-        raise unittest.SkipTest("only NT+ and systems with "
+        raise unittest.SkipTest("only NT+ and systems mit "
                                 "Unicode-friendly filesystem encoding")
 
 
@@ -72,7 +72,7 @@ klasse UnicodeFileTests(unittest.TestCase):
         files = set()
         fuer name in self.files:
             name = os.path.join(os_helper.TESTFN, self.norm(name))
-            with open(name, 'wb') as f:
+            mit open(name, 'wb') als f:
                 f.write((name+'\n').encode("utf-8"))
             os.stat(name)
             files.add(name)
@@ -86,7 +86,7 @@ klasse UnicodeFileTests(unittest.TestCase):
     def _apply_failure(self, fn, filename,
                        expected_exception=FileNotFoundError,
                        check_filename=Wahr):
-        with self.assertRaises(expected_exception) as c:
+        mit self.assertRaises(expected_exception) als c:
             fn(filename)
         exc_filename = c.exception.filename
         wenn check_filename:
@@ -148,7 +148,7 @@ klasse UnicodeFileTests(unittest.TestCase):
     @unittest.skipIf(is_apple, 'irrelevant test on Apple platforms')
     def test_listdir(self):
         sf0 = set(self.files)
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             f1 = os.listdir(os_helper.TESTFN.encode(
                             sys.getfilesystemencoding()))
@@ -166,8 +166,8 @@ klasse UnicodeFileTests(unittest.TestCase):
         dirname = os.path.join(os_helper.TESTFN,
                                'Gr\xfc\xdf-\u66e8\u66e9\u66eb')
         filename = '\xdf-\u66e8\u66e9\u66eb'
-        with os_helper.temp_cwd(dirname):
-            with open(filename, 'wb') as f:
+        mit os_helper.temp_cwd(dirname):
+            mit open(filename, 'wb') als f:
                 f.write((filename + '\n').encode("utf-8"))
             os.access(filename,os.R_OK)
             os.remove(filename)

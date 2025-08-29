@@ -34,7 +34,7 @@ klasse PipeTests(unittest.TestCase):
             ERROR_IO_INCOMPLETE = 996
             try:
                 ov1.getresult()
-            except OSError as e:
+            except OSError als e:
                 self.assertEqual(e.winerror, ERROR_IO_INCOMPLETE)
             sonst:
                 raise RuntimeError('expected ERROR_IO_INCOMPLETE')
@@ -66,13 +66,13 @@ klasse PipeTests(unittest.TestCase):
         self.assertEqual(p.handle, h)
 
         # check garbage collection of p closes handle
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.filterwarnings("ignore", "",  ResourceWarning)
             del p
             support.gc_collect()
         try:
             _winapi.CloseHandle(h)
-        except OSError as e:
+        except OSError als e:
             self.assertEqual(e.winerror, 6)     # ERROR_INVALID_HANDLE
         sonst:
             raise RuntimeError('expected ERROR_INVALID_HANDLE')
@@ -125,7 +125,7 @@ klasse PopenTests(unittest.TestCase):
         self.assertStartsWith(b"stderr", err)
 
         # The context manager calls wait() and closes resources
-        with p:
+        mit p:
             pass
 
 

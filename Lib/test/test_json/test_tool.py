@@ -98,7 +98,7 @@ klasse TestMain(unittest.TestCase):
 
     def _create_infile(self, data=Nichts):
         infile = os_helper.TESTFN
-        with open(infile, "w", encoding="utf-8") as fp:
+        mit open(infile, "w", encoding="utf-8") als fp:
             self.addCleanup(os.remove, infile)
             fp.write(data or self.data)
         return infile
@@ -133,7 +133,7 @@ klasse TestMain(unittest.TestCase):
         rc, out, err = assert_python_ok('-m', self.module, infile, outfile,
                                         PYTHON_COLORS='0')
         self.addCleanup(os.remove, outfile)
-        with open(outfile, "r", encoding="utf-8") as fp:
+        mit open(outfile, "r", encoding="utf-8") als fp:
             self.assertEqual(fp.read(), self.expect)
         self.assertEqual(rc, 0)
         self.assertEqual(out, b'')
@@ -143,7 +143,7 @@ klasse TestMain(unittest.TestCase):
         infile = self._create_infile()
         rc, out, err = assert_python_ok('-m', self.module, infile, infile,
                                         PYTHON_COLORS='0')
-        with open(infile, "r", encoding="utf-8") as fp:
+        mit open(infile, "r", encoding="utf-8") als fp:
             self.assertEqual(fp.read(), self.expect)
         self.assertEqual(rc, 0)
         self.assertEqual(out, b'')
@@ -219,7 +219,7 @@ klasse TestMain(unittest.TestCase):
         self.addCleanup(os.remove, outfile)
         assert_python_ok('-m', self.module, '--no-ensure-ascii', infile,
                          outfile, PYTHON_COLORS='0')
-        with open(outfile, "rb") as f:
+        mit open(outfile, "rb") als f:
             lines = f.read().splitlines()
         # asserting utf-8 encoded output file
         expected = [b'{', b'    "key": "\xf0\x9f\x92\xa9"', b"}"]
@@ -230,14 +230,14 @@ klasse TestMain(unittest.TestCase):
         outfile = os_helper.TESTFN + '.out'
         self.addCleanup(os.remove, outfile)
         assert_python_ok('-m', self.module, infile, outfile, PYTHON_COLORS='0')
-        with open(outfile, "rb") as f:
+        mit open(outfile, "rb") als f:
             lines = f.read().splitlines()
         # asserting an ascii encoded output file
         expected = [b'{', rb'    "key": "\ud83d\udca9"', b"}"]
         self.assertEqual(lines, expected)
 
     @force_not_colorized
-    @unittest.skipIf(sys.platform =="win32", "The test is failed with ValueError on Windows")
+    @unittest.skipIf(sys.platform =="win32", "The test is failed mit ValueError on Windows")
     def test_broken_pipe_error(self):
         cmd = [sys.executable, '-m', self.module]
         proc = subprocess.Popen(cmd,
@@ -306,8 +306,8 @@ klasse TestMain(unittest.TestCase):
         )
 
         fuer input_, expected in cases:
-            with self.subTest(input=input_):
-                with open(infile, "w", encoding="utf-8") as fp:
+            mit self.subTest(input=input_):
+                mit open(infile, "w", encoding="utf-8") als fp:
                     fp.write(input_)
                 _, stdout_b, _ = assert_python_ok(
                     '-m', self.module, infile, FORCE_COLOR='1', __isolated='1'

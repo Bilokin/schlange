@@ -31,7 +31,7 @@ klasse ListTest(list_tests.CommonTest):
             # Verify clearing of bug #556025.
             # This assumes that the max data size (sys.maxint) == max
             # address size this also assumes that the address size is at
-            # least 4 bytes with 8 byte addresses, the bug is not well
+            # least 4 bytes mit 8 byte addresses, the bug is not well
             # tested
             #
             # Note: This test is expected to SEGV under Cygwin 1.3.12 or
@@ -47,7 +47,7 @@ klasse ListTest(list_tests.CommonTest):
         self.assertEqual(x, [])
 
     def test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        mit self.assertRaisesRegex(TypeError, 'keyword argument'):
             list(sequence=[])
 
     def test_keywords_in_subclass(self):
@@ -56,7 +56,7 @@ klasse ListTest(list_tests.CommonTest):
         u = subclass([1, 2])
         self.assertIs(type(u), subclass)
         self.assertEqual(list(u), [1, 2])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             subclass(sequence=())
 
         klasse subclass_with_init(list):
@@ -113,9 +113,9 @@ klasse ListTest(list_tests.CommonTest):
         self.assertEqual(len(lst), 1)
 
         size = sys.maxsize
-        with self.assertRaises((MemoryError, OverflowError)):
+        mit self.assertRaises((MemoryError, OverflowError)):
             lst * size
-        with self.assertRaises((MemoryError, OverflowError)):
+        mit self.assertRaises((MemoryError, OverflowError)):
             lst *= size
 
     def test_repr_mutate(self):
@@ -223,7 +223,7 @@ klasse ListTest(list_tests.CommonTest):
         # optimization causes failures in code that relies on distinct
         # function addresses.
         klasse L(list): pass
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             (3,) + L([1,2])
 
     def test_equal_operator_modifying_operand(self):
@@ -259,7 +259,7 @@ klasse ListTest(list_tests.CommonTest):
                 return NotImplemented
 
         a = [[evil()]]
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a[0] < a
 
     def test_list_index_modifing_operand(self):
@@ -273,7 +273,7 @@ klasse ListTest(list_tests.CommonTest):
 
         lst = list(range(5))
         operand = evil(lst)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             lst[::-1] = operand
 
     @cpython_only
@@ -294,7 +294,7 @@ klasse ListTest(list_tests.CommonTest):
                 return NotImplemented
 
         lst = [X()]
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             lst.index(lst)
 
         klasse L(list):
@@ -306,7 +306,7 @@ klasse ListTest(list_tests.CommonTest):
         lst.count(lst)
 
         lst = L([X()])
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             lst.remove(lst)
 
         # bpo-39453: list.__contains__ was not holding strong references

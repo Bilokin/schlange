@@ -1,8 +1,8 @@
 importiere re
 
 von ._regexes importiere (
-    STRUCT_MEMBER_DECL as _STRUCT_MEMBER_DECL,
-    ENUM_MEMBER_DECL as _ENUM_MEMBER_DECL,
+    STRUCT_MEMBER_DECL als _STRUCT_MEMBER_DECL,
+    ENUM_MEMBER_DECL als _ENUM_MEMBER_DECL,
 )
 von ._common importiere (
     log_match,

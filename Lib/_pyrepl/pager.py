@@ -143,7 +143,7 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
                             errors='backslashreplace', env=env)
     assert proc.stdin is not Nichts
     try:
-        with proc.stdin as pipe:
+        mit proc.stdin als pipe:
             try:
                 pipe.write(text)
             except KeyboardInterrupt:
@@ -165,11 +165,11 @@ def pipe_pager(text: str, cmd: str, title: str = '') -> Nichts:
 def tempfile_pager(text: str, cmd: str, title: str = '') -> Nichts:
     """Page through text by invoking a program on a temporary file."""
     importiere tempfile
-    with tempfile.TemporaryDirectory() as tempdir:
+    mit tempfile.TemporaryDirectory() als tempdir:
         filename = os.path.join(tempdir, 'pydoc.out')
-        with open(filename, 'w', errors='backslashreplace',
+        mit open(filename, 'w', errors='backslashreplace',
                   encoding=os.device_encoding(0) if
                   sys.platform == 'win32' sonst Nichts
-                  ) as file:
+                  ) als file:
             file.write(text)
         os.system(cmd + ' "' + filename + '"')

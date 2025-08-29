@@ -9,7 +9,7 @@ klasse classonly:
     """A non-data descriptor that makes a value only visible on the class.
 
     This is like the "classmethod" builtin, but does not show up on
-    instances of the class.  It may be used as a decorator.
+    instances of the class.  It may be used als a decorator.
     """
 
     def __init__(self, value):

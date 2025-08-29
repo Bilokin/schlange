@@ -22,15 +22,15 @@ klasse FrameTest(unittest.TestCase):
         x = 1
         self.assertEqual(_testcapi.frame_getvar(current_frame, "x"), 1)
         self.assertEqual(_testcapi.frame_getvarstring(current_frame, b"x"), 1)
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             _testcapi.frame_getvar(current_frame, "y")
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             _testcapi.frame_getvarstring(current_frame, b"y")
 
         # wrong name type
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _testcapi.frame_getvar(current_frame, b'x')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _testcapi.frame_getvar(current_frame, 123)
 
     def getgenframe(self):
@@ -43,7 +43,7 @@ klasse FrameTest(unittest.TestCase):
 
     def test_frame_fback_api(self):
         """Test that accessing `f_back` does not cause a segmentation fault on
-        a frame created with `PyFrame_New` (GH-99110)."""
+        a frame created mit `PyFrame_New` (GH-99110)."""
         def dummy():
             pass
 

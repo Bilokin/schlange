@@ -1,6 +1,6 @@
 # Tests universal newline support fuer both reading and parsing files.
 importiere io
-importiere _pyio as pyio
+importiere _pyio als pyio
 importiere unittest
 importiere os
 importiere sys
@@ -47,7 +47,7 @@ klasse TestGenericUnivNewlines:
         data = self.DATA
         wenn "b" in self.WRITEMODE:
             data = data.encode("ascii")
-        with self.open(os_helper.TESTFN, self.WRITEMODE) as fp:
+        mit self.open(os_helper.TESTFN, self.WRITEMODE) als fp:
             fp.write(data)
 
     def tearDown(self):
@@ -57,19 +57,19 @@ klasse TestGenericUnivNewlines:
             pass
 
     def test_read(self):
-        with self.open(os_helper.TESTFN, self.READMODE) as fp:
+        mit self.open(os_helper.TESTFN, self.READMODE) als fp:
             data = fp.read()
         self.assertEqual(data, DATA_LF)
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
 
     def test_readlines(self):
-        with self.open(os_helper.TESTFN, self.READMODE) as fp:
+        mit self.open(os_helper.TESTFN, self.READMODE) als fp:
             data = fp.readlines()
         self.assertEqual(data, DATA_SPLIT)
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
 
     def test_readline(self):
-        with self.open(os_helper.TESTFN, self.READMODE) as fp:
+        mit self.open(os_helper.TESTFN, self.READMODE) als fp:
             data = []
             d = fp.readline()
             while d:
@@ -79,7 +79,7 @@ klasse TestGenericUnivNewlines:
         self.assertEqual(repr(fp.newlines), repr(self.NEWLINE))
 
     def test_seek(self):
-        with self.open(os_helper.TESTFN, self.READMODE) as fp:
+        mit self.open(os_helper.TESTFN, self.READMODE) als fp:
             fp.readline()
             pos = fp.tell()
             data = fp.readlines()
@@ -106,7 +106,7 @@ klasse TestCRLFNewlines(TestGenericUnivNewlines):
     DATA = DATA_CRLF
 
     def test_tell(self):
-        with self.open(os_helper.TESTFN, self.READMODE) as fp:
+        mit self.open(os_helper.TESTFN, self.READMODE) als fp:
             self.assertEqual(repr(fp.newlines), repr(Nichts))
             data = fp.readline()
             pos = fp.tell()

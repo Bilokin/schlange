@@ -204,14 +204,14 @@ klasse CFunctions(unittest.TestCase):
                 self._dll.tf_b.restype = c_byte
                 self._dll.tf_b.argtypes = (c_byte,)
 
-        with threading_helper.catch_threading_exception() as exc:
-            with threading_helper.start_threads((Thread(target=concurrent) fuer _ in range(10))):
+        mit threading_helper.catch_threading_exception() als exc:
+            mit threading_helper.start_threads((Thread(target=concurrent) fuer _ in range(10))):
                 pass
 
             self.assertIsNichts(exc.exc_value)
 
 
-# The following repeats the above tests with stdcall functions (where
+# The following repeats the above tests mit stdcall functions (where
 # they are available)
 wenn hasattr(ctypes, 'WinDLL'):
     klasse stdcall_dll(ctypes.WinDLL):

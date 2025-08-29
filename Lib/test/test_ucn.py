@@ -139,20 +139,20 @@ klasse UnicodeNamesTest(unittest.TestCase):
             self.assertNotEqual(name, alias)
             self.assertEqual(unicodedata.lookup(alias),
                              unicodedata.lookup(name))
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(alias)
 
     def test_aliases_names_in_pua_range(self):
         # We are storing aliases in the PUA 15, but their names shouldn't leak
         fuer cp in range(0xf0000, 0xf0100):
-            with self.assertRaises(ValueError) as cm:
+            mit self.assertRaises(ValueError) als cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
     def test_named_sequences_names_in_pua_range(self):
         # We are storing named seq in the PUA 15, but their names shouldn't leak
         fuer cp in range(0xf0100, 0xf0fff):
-            with self.assertRaises(ValueError) as cm:
+            mit self.assertRaises(ValueError) als cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
@@ -167,9 +167,9 @@ klasse UnicodeNamesTest(unittest.TestCase):
         ]
         fuer seqname, codepoints in sequences:
             self.assertEqual(unicodedata.lookup(seqname), codepoints)
-            with self.assertRaises(SyntaxError):
+            mit self.assertRaises(SyntaxError):
                 self.checkletter(seqname, Nichts)
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
     def test_named_sequences_full(self):
@@ -182,12 +182,12 @@ klasse UnicodeNamesTest(unittest.TestCase):
         try:
             testdata = support.open_urlresource(url, encoding="utf-8",
                                                 check=check_version)
-        except urllib.error.HTTPError as exc:
+        except urllib.error.HTTPError als exc:
             exc.close()
             self.skipTest(f"Could not retrieve {url}: {exc!r}")
-        except (OSError, HTTPException) as exc:
+        except (OSError, HTTPException) als exc:
             self.skipTest(f"Could not retrieve {url}: {exc!r}")
-        with testdata:
+        mit testdata:
             fuer line in testdata:
                 line = line.strip()
                 wenn not line or line.startswith('#'):
@@ -195,9 +195,9 @@ klasse UnicodeNamesTest(unittest.TestCase):
                 seqname, codepoints = line.split(';')
                 codepoints = ''.join(chr(int(cp, 16)) fuer cp in codepoints.split())
                 self.assertEqual(unicodedata.lookup(seqname), codepoints)
-                with self.assertRaises(SyntaxError):
+                mit self.assertRaises(SyntaxError):
                     self.checkletter(seqname, Nichts)
-                with self.assertRaises(KeyError):
+                mit self.assertRaises(KeyError):
                     unicodedata.ucd_3_2_0.lookup(seqname)
 
     def test_errors(self):

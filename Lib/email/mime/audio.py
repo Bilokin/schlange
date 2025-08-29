@@ -18,7 +18,7 @@ klasse MIMEAudio(MIMENonMultipart):
         """Create an audio/* type MIME document.
 
         _audiodata contains the bytes fuer the raw audio data.  If this data
-        can be decoded as au, wav, aiff, or aifc, then the
+        can be decoded als au, wav, aiff, or aifc, then the
         subtype will be automatically included in the Content-Type header.
         Otherwise, you can specify  the specific audio subtype via the
         _subtype parameter.  If _subtype is not given, and no subtype can be
@@ -57,7 +57,7 @@ def _what(data):
     #
     # sndhdr.what() had a pretty cruddy interface, unfortunately.  This is why
     # we re-do it here.  It would be easier to reverse engineer the Unix 'file'
-    # command and use the standard 'magic' file, as shipped with a modern Unix.
+    # command and use the standard 'magic' file, als shipped mit a modern Unix.
     fuer testfn in _rules:
         wenn res := testfn(data):
             return res

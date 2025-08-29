@@ -73,7 +73,7 @@ klasse BaseTest(unittest.TestCase):
     test_size = 0
     BIG_TEXT = bytearray(128*1024)
     fuer fname in glob.glob(os.path.join(glob.escape(os.path.dirname(__file__)), '*.py')):
-        with open(fname, 'rb') as fh:
+        mit open(fname, 'rb') als fh:
             test_size += fh.readinto(memoryview(BIG_TEXT)[test_size:])
         wenn test_size > 128*1024:
             break
@@ -91,7 +91,7 @@ klasse BZ2FileTest(BaseTest):
     "Test the BZ2File class."
 
     def createTempFile(self, streams=1, suffix=b""):
-        with open(self.filename, "wb") as f:
+        mit open(self.filename, "wb") als f:
             f.write(self.DATA * streams)
             f.write(suffix)
 
@@ -108,29 +108,29 @@ klasse BZ2FileTest(BaseTest):
 
     def testRead(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(), self.TEXT)
 
     def testReadBadFile(self):
         self.createTempFile(streams=0, suffix=self.BAD_DATA)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(OSError, bz2f.read)
 
     def testReadMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(), self.TEXT * 5)
 
     def testReadMonkeyMultiStream(self):
         # Test BZ2File.read() on a multi-stream archive where a stream
-        # boundary coincides with the end of the raw read buffer.
+        # boundary coincides mit the end of the raw read buffer.
         buffer_size = _streams.BUFFER_SIZE
         _streams.BUFFER_SIZE = len(self.DATA)
         try:
             self.createTempFile(streams=5)
-            with BZ2File(self.filename) as bz2f:
+            mit BZ2File(self.filename) als bz2f:
                 self.assertRaises(TypeError, bz2f.read, float())
                 self.assertEqual(bz2f.read(), self.TEXT * 5)
         finally:
@@ -138,23 +138,23 @@ klasse BZ2FileTest(BaseTest):
 
     def testReadTrailingJunk(self):
         self.createTempFile(suffix=self.BAD_DATA)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertEqual(bz2f.read(), self.TEXT)
 
     def testReadMultiStreamTrailingJunk(self):
         self.createTempFile(streams=5, suffix=self.BAD_DATA)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertEqual(bz2f.read(), self.TEXT * 5)
 
     def testRead0(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(0), b"")
 
     def testReadChunk10(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             text = b''
             while Wahr:
                 str = bz2f.read(10)
@@ -165,7 +165,7 @@ klasse BZ2FileTest(BaseTest):
 
     def testReadChunk10MultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             text = b''
             while Wahr:
                 str = bz2f.read(10)
@@ -176,12 +176,12 @@ klasse BZ2FileTest(BaseTest):
 
     def testRead100(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertEqual(bz2f.read(100), self.TEXT[:100])
 
     def testPeek(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             pdata = bz2f.peek()
             self.assertNotEqual(len(pdata), 0)
             self.assertStartsWith(self.TEXT, pdata)
@@ -189,7 +189,7 @@ klasse BZ2FileTest(BaseTest):
 
     def testReadInto(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             n = 128
             b = bytearray(n)
             self.assertEqual(bz2f.readinto(b), n)
@@ -201,38 +201,38 @@ klasse BZ2FileTest(BaseTest):
 
     def testReadLine(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.readline, Nichts)
             fuer line in self.TEXT_LINES:
                 self.assertEqual(bz2f.readline(), line)
 
     def testReadLineMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.readline, Nichts)
             fuer line in self.TEXT_LINES * 5:
                 self.assertEqual(bz2f.readline(), line)
 
     def testReadLines(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.readlines, Nichts)
             self.assertEqual(bz2f.readlines(), self.TEXT_LINES)
 
     def testReadLinesMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.readlines, Nichts)
             self.assertEqual(bz2f.readlines(), self.TEXT_LINES * 5)
 
     def testIterator(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertEqual(list(iter(bz2f)), self.TEXT_LINES)
 
     def testIteratorMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertEqual(list(iter(bz2f)), self.TEXT_LINES * 5)
 
     def testClosedIteratorDeadlock(self):
@@ -245,14 +245,14 @@ klasse BZ2FileTest(BaseTest):
         self.assertRaises(ValueError, bz2f.readlines)
 
     def testWrite(self):
-        with BZ2File(self.filename, "w") as bz2f:
+        mit BZ2File(self.filename, "w") als bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
-        with open(self.filename, 'rb') as f:
+        mit open(self.filename, 'rb') als f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
     def testWriteChunks10(self):
-        with BZ2File(self.filename, "w") as bz2f:
+        mit BZ2File(self.filename, "w") als bz2f:
             n = 0
             while Wahr:
                 str = self.TEXT[n*10:(n+1)*10]
@@ -260,68 +260,68 @@ klasse BZ2FileTest(BaseTest):
                     break
                 bz2f.write(str)
                 n += 1
-        with open(self.filename, 'rb') as f:
+        mit open(self.filename, 'rb') als f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
     def testWriteNonDefaultCompressLevel(self):
         expected = bz2.compress(self.TEXT, compresslevel=5)
-        with BZ2File(self.filename, "w", compresslevel=5) as bz2f:
+        mit BZ2File(self.filename, "w", compresslevel=5) als bz2f:
             bz2f.write(self.TEXT)
-        with open(self.filename, "rb") as f:
+        mit open(self.filename, "rb") als f:
             self.assertEqual(f.read(), expected)
 
     def testWriteLines(self):
-        with BZ2File(self.filename, "w") as bz2f:
+        mit BZ2File(self.filename, "w") als bz2f:
             self.assertRaises(TypeError, bz2f.writelines)
             bz2f.writelines(self.TEXT_LINES)
         # Issue #1535500: Calling writelines() on a closed BZ2File
         # should raise an exception.
         self.assertRaises(ValueError, bz2f.writelines, ["a"])
-        with open(self.filename, 'rb') as f:
+        mit open(self.filename, 'rb') als f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
     def testWriteMethodsOnReadOnlyFile(self):
-        with BZ2File(self.filename, "w") as bz2f:
+        mit BZ2File(self.filename, "w") als bz2f:
             bz2f.write(b"abc")
 
-        with BZ2File(self.filename, "r") as bz2f:
+        mit BZ2File(self.filename, "r") als bz2f:
             self.assertRaises(OSError, bz2f.write, b"a")
             self.assertRaises(OSError, bz2f.writelines, [b"a"])
 
     def testAppend(self):
-        with BZ2File(self.filename, "w") as bz2f:
+        mit BZ2File(self.filename, "w") als bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
-        with BZ2File(self.filename, "a") as bz2f:
+        mit BZ2File(self.filename, "a") als bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
-        with open(self.filename, 'rb') as f:
+        mit open(self.filename, 'rb') als f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT * 2)
 
     def testSeekForward(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.seek)
             bz2f.seek(150)
             self.assertEqual(bz2f.read(), self.TEXT[150:])
 
     def testSeekForwardAcrossStreams(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertRaises(TypeError, bz2f.seek)
             bz2f.seek(len(self.TEXT) + 150)
             self.assertEqual(bz2f.read(), self.TEXT[150:])
 
     def testSeekBackwards(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.read(500)
             bz2f.seek(-150, 1)
             self.assertEqual(bz2f.read(), self.TEXT[500-150:])
 
     def testSeekBackwardsAcrossStreams(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             readto = len(self.TEXT) + 100
             while readto > 0:
                 readto -= len(bz2f.read(readto))
@@ -330,33 +330,33 @@ klasse BZ2FileTest(BaseTest):
 
     def testSeekBackwardsFromEnd(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(-150, 2)
             self.assertEqual(bz2f.read(), self.TEXT[len(self.TEXT)-150:])
 
     def testSeekBackwardsFromEndAcrossStreams(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(-1000, 2)
             self.assertEqual(bz2f.read(), (self.TEXT * 2)[-1000:])
 
     def testSeekPostEnd(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT))
             self.assertEqual(bz2f.read(), b"")
 
     def testSeekPostEndMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT) * 5)
             self.assertEqual(bz2f.read(), b"")
 
     def testSeekPostEndTwice(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(150000)
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT))
@@ -364,7 +364,7 @@ klasse BZ2FileTest(BaseTest):
 
     def testSeekPostEndTwiceMultiStream(self):
         self.createTempFile(streams=5)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(150000)
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT) * 5)
@@ -372,21 +372,21 @@ klasse BZ2FileTest(BaseTest):
 
     def testSeekPreStart(self):
         self.createTempFile()
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(-150)
             self.assertEqual(bz2f.tell(), 0)
             self.assertEqual(bz2f.read(), self.TEXT)
 
     def testSeekPreStartMultiStream(self):
         self.createTempFile(streams=2)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.seek(-150)
             self.assertEqual(bz2f.tell(), 0)
             self.assertEqual(bz2f.read(), self.TEXT * 2)
 
     def testFileno(self):
         self.createTempFile()
-        with open(self.filename, 'rb') as rawf:
+        mit open(self.filename, 'rb') als rawf:
             bz2f = BZ2File(rawf)
             try:
                 self.assertEqual(bz2f.fileno(), rawf.fileno())
@@ -466,29 +466,29 @@ klasse BZ2FileTest(BaseTest):
     def testReadlinesNoNewline(self):
         # Issue #1191043: readlines() fails on a file containing no newline.
         data = b'BZh91AY&SY\xd9b\x89]\x00\x00\x00\x03\x80\x04\x00\x02\x00\x0c\x00 \x00!\x9ah3M\x13<]\xc9\x14\xe1BCe\x8a%t'
-        with open(self.filename, "wb") as f:
+        mit open(self.filename, "wb") als f:
             f.write(data)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             lines = bz2f.readlines()
         self.assertEqual(lines, [b'Test'])
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             xlines = list(bz2f.readlines())
         self.assertEqual(xlines, [b'Test'])
 
     def testContextProtocol(self):
-        with BZ2File(self.filename, "wb") as f:
+        mit BZ2File(self.filename, "wb") als f:
             f.write(b"xxx")
         f = BZ2File(self.filename, "rb")
         f.close()
         try:
-            with f:
+            mit f:
                 pass
         except ValueError:
             pass
         sonst:
             self.fail("__enter__ on a closed file didn't raise an exception")
         try:
-            with BZ2File(self.filename, "wb") as f:
+            mit BZ2File(self.filename, "wb") als f:
                 1/0
         except ZeroDivisionError:
             pass
@@ -500,27 +500,27 @@ klasse BZ2FileTest(BaseTest):
         # Issue #7205: Using a BZ2File von several threads shouldn't deadlock.
         data = b"1" * 2**20
         nthreads = 10
-        with BZ2File(self.filename, 'wb') as f:
+        mit BZ2File(self.filename, 'wb') als f:
             def comp():
                 fuer i in range(5):
                     f.write(data)
             threads = [threading.Thread(target=comp) fuer i in range(nthreads)]
-            with threading_helper.start_threads(threads):
+            mit threading_helper.start_threads(threads):
                 pass
 
     def testMixedIterationAndReads(self):
         self.createTempFile()
         linelen = len(self.TEXT_LINES[0])
         halflen = linelen // 2
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.read(halflen)
             self.assertEqual(next(bz2f), self.TEXT_LINES[0][halflen:])
             self.assertEqual(bz2f.read(), self.TEXT[linelen:])
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.readline()
             self.assertEqual(next(bz2f), self.TEXT_LINES[1])
             self.assertEqual(bz2f.readline(), self.TEXT_LINES[2])
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             bz2f.readlines()
             self.assertRaises(StopIteration, next, bz2f)
             self.assertEqual(bz2f.readlines(), [])
@@ -529,15 +529,15 @@ klasse BZ2FileTest(BaseTest):
         # Test the ordering of streams when reading a multi-stream archive.
         data1 = b"foo" * 1000
         data2 = b"bar" * 1000
-        with BZ2File(self.filename, "w") as bz2f:
+        mit BZ2File(self.filename, "w") als bz2f:
             bz2f.write(data1)
-        with BZ2File(self.filename, "a") as bz2f:
+        mit BZ2File(self.filename, "a") als bz2f:
             bz2f.write(data2)
-        with BZ2File(self.filename) as bz2f:
+        mit BZ2File(self.filename) als bz2f:
             self.assertEqual(bz2f.read(), data1 + data2)
 
     def testOpenFilename(self):
-        with BZ2File(self.filename, "wb") as f:
+        mit BZ2File(self.filename, "wb") als f:
             f.write(b'content')
             self.assertEqual(f.name, self.filename)
             self.assertIsInstance(f.fileno(), int)
@@ -547,7 +547,7 @@ klasse BZ2FileTest(BaseTest):
             self.assertIs(f.seekable(), Falsch)
             self.assertIs(f.closed, Falsch)
         self.assertIs(f.closed, Wahr)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             f.name
         self.assertRaises(ValueError, f.fileno)
         self.assertEqual(f.mode, 'wb')
@@ -555,7 +555,7 @@ klasse BZ2FileTest(BaseTest):
         self.assertRaises(ValueError, f.writable)
         self.assertRaises(ValueError, f.seekable)
 
-        with BZ2File(self.filename, "ab") as f:
+        mit BZ2File(self.filename, "ab") als f:
             f.write(b'appendix')
             self.assertEqual(f.name, self.filename)
             self.assertIsInstance(f.fileno(), int)
@@ -565,7 +565,7 @@ klasse BZ2FileTest(BaseTest):
             self.assertIs(f.seekable(), Falsch)
             self.assertIs(f.closed, Falsch)
         self.assertIs(f.closed, Wahr)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             f.name
         self.assertRaises(ValueError, f.fileno)
         self.assertEqual(f.mode, 'wb')
@@ -573,7 +573,7 @@ klasse BZ2FileTest(BaseTest):
         self.assertRaises(ValueError, f.writable)
         self.assertRaises(ValueError, f.seekable)
 
-        with BZ2File(self.filename, 'rb') as f:
+        mit BZ2File(self.filename, 'rb') als f:
             self.assertEqual(f.read(), b'contentappendix')
             self.assertEqual(f.name, self.filename)
             self.assertIsInstance(f.fileno(), int)
@@ -583,7 +583,7 @@ klasse BZ2FileTest(BaseTest):
             self.assertIs(f.seekable(), Wahr)
             self.assertIs(f.closed, Falsch)
         self.assertIs(f.closed, Wahr)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             f.name
         self.assertRaises(ValueError, f.fileno)
         self.assertEqual(f.mode, 'rb')
@@ -592,8 +592,8 @@ klasse BZ2FileTest(BaseTest):
         self.assertRaises(ValueError, f.seekable)
 
     def testOpenFileWithName(self):
-        with open(self.filename, 'wb') as raw:
-            with BZ2File(raw, 'wb') as f:
+        mit open(self.filename, 'wb') als raw:
+            mit BZ2File(raw, 'wb') als f:
                 f.write(b'content')
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
@@ -603,7 +603,7 @@ klasse BZ2FileTest(BaseTest):
                 self.assertIs(f.seekable(), Falsch)
                 self.assertIs(f.closed, Falsch)
             self.assertIs(f.closed, Wahr)
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
             self.assertEqual(f.mode, 'wb')
@@ -611,8 +611,8 @@ klasse BZ2FileTest(BaseTest):
             self.assertRaises(ValueError, f.writable)
             self.assertRaises(ValueError, f.seekable)
 
-        with open(self.filename, 'ab') as raw:
-            with BZ2File(raw, 'ab') as f:
+        mit open(self.filename, 'ab') als raw:
+            mit BZ2File(raw, 'ab') als f:
                 f.write(b'appendix')
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
@@ -622,7 +622,7 @@ klasse BZ2FileTest(BaseTest):
                 self.assertIs(f.seekable(), Falsch)
                 self.assertIs(f.closed, Falsch)
             self.assertIs(f.closed, Wahr)
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
             self.assertEqual(f.mode, 'wb')
@@ -630,8 +630,8 @@ klasse BZ2FileTest(BaseTest):
             self.assertRaises(ValueError, f.writable)
             self.assertRaises(ValueError, f.seekable)
 
-        with open(self.filename, 'rb') as raw:
-            with BZ2File(raw, 'rb') as f:
+        mit open(self.filename, 'rb') als raw:
+            mit BZ2File(raw, 'rb') als f:
                 self.assertEqual(f.read(), b'contentappendix')
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
@@ -641,7 +641,7 @@ klasse BZ2FileTest(BaseTest):
                 self.assertIs(f.seekable(), Wahr)
                 self.assertIs(f.closed, Falsch)
             self.assertIs(f.closed, Wahr)
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
             self.assertEqual(f.mode, 'rb')
@@ -651,91 +651,91 @@ klasse BZ2FileTest(BaseTest):
 
     def testOpenFileWithoutName(self):
         bio = BytesIO()
-        with BZ2File(bio, 'wb') as f:
+        mit BZ2File(bio, 'wb') als f:
             f.write(b'content')
-            with self.assertRaises(AttributeError):
+            mit self.assertRaises(AttributeError):
                 f.name
             self.assertRaises(io.UnsupportedOperation, f.fileno)
             self.assertEqual(f.mode, 'wb')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             f.name
         self.assertRaises(ValueError, f.fileno)
 
-        with BZ2File(bio, 'ab') as f:
+        mit BZ2File(bio, 'ab') als f:
             f.write(b'appendix')
-            with self.assertRaises(AttributeError):
+            mit self.assertRaises(AttributeError):
                 f.name
             self.assertRaises(io.UnsupportedOperation, f.fileno)
             self.assertEqual(f.mode, 'wb')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             f.name
         self.assertRaises(ValueError, f.fileno)
 
         bio.seek(0)
-        with BZ2File(bio, 'rb') as f:
+        mit BZ2File(bio, 'rb') als f:
             self.assertEqual(f.read(), b'contentappendix')
-            with self.assertRaises(AttributeError):
+            mit self.assertRaises(AttributeError):
                 f.name
             self.assertRaises(io.UnsupportedOperation, f.fileno)
             self.assertEqual(f.mode, 'rb')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             f.name
         self.assertRaises(ValueError, f.fileno)
 
     def testOpenFileWithIntName(self):
         fd = os.open(self.filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC)
-        with open(fd, 'wb') as raw:
-            with BZ2File(raw, 'wb') as f:
+        mit open(fd, 'wb') als raw:
+            mit BZ2File(raw, 'wb') als f:
                 f.write(b'content')
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
                 self.assertEqual(f.mode, 'wb')
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
 
         fd = os.open(self.filename, os.O_WRONLY | os.O_CREAT | os.O_APPEND)
-        with open(fd, 'ab') as raw:
-            with BZ2File(raw, 'ab') as f:
+        mit open(fd, 'ab') als raw:
+            mit BZ2File(raw, 'ab') als f:
                 f.write(b'appendix')
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
                 self.assertEqual(f.mode, 'wb')
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
 
         fd = os.open(self.filename, os.O_RDONLY)
-        with open(fd, 'rb') as raw:
-            with BZ2File(raw, 'rb') as f:
+        mit open(fd, 'rb') als raw:
+            mit BZ2File(raw, 'rb') als f:
                 self.assertEqual(f.read(), b'contentappendix')
                 self.assertEqual(f.name, raw.name)
                 self.assertEqual(f.fileno(), raw.fileno())
                 self.assertEqual(f.mode, 'rb')
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 f.name
             self.assertRaises(ValueError, f.fileno)
 
     def testOpenBytesFilename(self):
         str_filename = self.filename
         bytes_filename = os.fsencode(str_filename)
-        with BZ2File(bytes_filename, "wb") as f:
+        mit BZ2File(bytes_filename, "wb") als f:
             f.write(self.DATA)
             self.assertEqual(f.name, bytes_filename)
-        with BZ2File(bytes_filename, "rb") as f:
+        mit BZ2File(bytes_filename, "rb") als f:
             self.assertEqual(f.read(), self.DATA)
             self.assertEqual(f.name, bytes_filename)
         # Sanity check that we are actually operating on the right file.
-        with BZ2File(str_filename, "rb") as f:
+        mit BZ2File(str_filename, "rb") als f:
             self.assertEqual(f.read(), self.DATA)
             self.assertEqual(f.name, str_filename)
 
     def testOpenPathLikeFilename(self):
         filename = FakePath(self.filename)
-        with BZ2File(filename, "wb") as f:
+        mit BZ2File(filename, "wb") als f:
             f.write(self.DATA)
             self.assertEqual(f.name, self.filename)
-        with BZ2File(filename, "rb") as f:
+        mit BZ2File(filename, "rb") als f:
             self.assertEqual(f.read(), self.DATA)
             self.assertEqual(f.name, self.filename)
 
@@ -754,44 +754,44 @@ klasse BZ2FileTest(BaseTest):
     # Tests fuer a BZ2File wrapping another file object:
 
     def testReadBytesIO(self):
-        with BytesIO(self.DATA) as bio:
-            with BZ2File(bio) as bz2f:
+        mit BytesIO(self.DATA) als bio:
+            mit BZ2File(bio) als bz2f:
                 self.assertRaises(TypeError, bz2f.read, float())
                 self.assertEqual(bz2f.read(), self.TEXT)
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     bz2.name
                 self.assertEqual(bz2f.mode, 'rb')
             self.assertFalsch(bio.closed)
 
     def testPeekBytesIO(self):
-        with BytesIO(self.DATA) as bio:
-            with BZ2File(bio) as bz2f:
+        mit BytesIO(self.DATA) als bio:
+            mit BZ2File(bio) als bz2f:
                 pdata = bz2f.peek()
                 self.assertNotEqual(len(pdata), 0)
                 self.assertStartsWith(self.TEXT, pdata)
                 self.assertEqual(bz2f.read(), self.TEXT)
 
     def testWriteBytesIO(self):
-        with BytesIO() as bio:
-            with BZ2File(bio, "w") as bz2f:
+        mit BytesIO() als bio:
+            mit BZ2File(bio, "w") als bz2f:
                 self.assertRaises(TypeError, bz2f.write)
                 bz2f.write(self.TEXT)
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     bz2.name
                 self.assertEqual(bz2f.mode, 'wb')
             self.assertEqual(ext_decompress(bio.getvalue()), self.TEXT)
             self.assertFalsch(bio.closed)
 
     def testSeekForwardBytesIO(self):
-        with BytesIO(self.DATA) as bio:
-            with BZ2File(bio) as bz2f:
+        mit BytesIO(self.DATA) als bio:
+            mit BZ2File(bio) als bz2f:
                 self.assertRaises(TypeError, bz2f.seek)
                 bz2f.seek(150)
                 self.assertEqual(bz2f.read(), self.TEXT[150:])
 
     def testSeekBackwardsBytesIO(self):
-        with BytesIO(self.DATA) as bio:
-            with BZ2File(bio) as bz2f:
+        mit BytesIO(self.DATA) als bio:
+            mit BZ2File(bio) als bz2f:
                 bz2f.read(500)
                 bz2f.seek(-150, 1)
                 self.assertEqual(bz2f.read(), self.TEXT[500-150:])
@@ -799,21 +799,21 @@ klasse BZ2FileTest(BaseTest):
     def test_read_truncated(self):
         # Drop the eos_magic field (6 bytes) and CRC (4 bytes).
         truncated = self.DATA[:-10]
-        with BZ2File(BytesIO(truncated)) as f:
+        mit BZ2File(BytesIO(truncated)) als f:
             self.assertRaises(EOFError, f.read)
-        with BZ2File(BytesIO(truncated)) as f:
+        mit BZ2File(BytesIO(truncated)) als f:
             self.assertEqual(f.read(len(self.TEXT)), self.TEXT)
             self.assertRaises(EOFError, f.read, 1)
         # Incomplete 4-byte file header, and block header of at least 146 bits.
         fuer i in range(22):
-            with BZ2File(BytesIO(truncated[:i])) as f:
+            mit BZ2File(BytesIO(truncated[:i])) als f:
                 self.assertRaises(EOFError, f.read, 1)
 
     def test_issue44439(self):
         q = array.array('Q', [1, 2, 3, 4, 5])
         LENGTH = len(q) * q.itemsize
 
-        with BZ2File(BytesIO(), 'w') as f:
+        mit BZ2File(BytesIO(), 'w') als f:
             self.assertEqual(f.write(q), LENGTH)
             self.assertEqual(f.tell(), LENGTH)
 
@@ -848,7 +848,7 @@ klasse BZ2CompressorTest(BaseTest):
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=2)
     def testCompress4G(self, size):
-        # "Test BZ2Compressor.compress()/flush() with >4GiB input"
+        # "Test BZ2Compressor.compress()/flush() mit >4GiB input"
         bz2c = BZ2Compressor()
         data = b"x" * size
         try:
@@ -865,7 +865,7 @@ klasse BZ2CompressorTest(BaseTest):
 
     def testPickle(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 pickle.dumps(BZ2Compressor(), proto)
 
 
@@ -907,7 +907,7 @@ klasse BZ2DecompressorTest(BaseTest):
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=3.3)
     def testDecompress4G(self, size):
-        # "Test BZ2Decompressor.decompress() with >4GiB input"
+        # "Test BZ2Decompressor.decompress() mit >4GiB input"
         blocksize = min(10 * 1024 * 1024, size)
         block = random.randbytes(blocksize)
         try:
@@ -923,7 +923,7 @@ klasse BZ2DecompressorTest(BaseTest):
 
     def testPickle(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 pickle.dumps(BZ2Decompressor(), proto)
 
     def testDecompressorChunksMaxsize(self):
@@ -990,7 +990,7 @@ klasse BZ2DecompressorTest(BaseTest):
                                         max_length=0), b'')
         out.append(bzd.decompress(b''))
 
-        # Fill buffer with new data
+        # Fill buffer mit new data
         out.append(bzd.decompress(self.DATA[200:280], 2))
 
         # Append some more data, not enough to require resize
@@ -1086,16 +1086,16 @@ klasse OpenTest(BaseTest):
         fuer mode in ("wb", "xb"):
             wenn mode == "xb":
                 unlink(self.filename)
-            with self.open(self.filename, mode) as f:
+            mit self.open(self.filename, mode) als f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") as f:
+            mit open(self.filename, "rb") als f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT)
-            with self.open(self.filename, "rb") as f:
+            mit self.open(self.filename, "rb") als f:
                 self.assertEqual(f.read(), self.TEXT)
-            with self.open(self.filename, "ab") as f:
+            mit self.open(self.filename, "ab") als f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") as f:
+            mit open(self.filename, "rb") als f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT * 2)
 
@@ -1104,16 +1104,16 @@ klasse OpenTest(BaseTest):
         fuer mode in ("w", "x"):
             wenn mode == "x":
                 unlink(self.filename)
-            with self.open(self.filename, mode) as f:
+            mit self.open(self.filename, mode) als f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") as f:
+            mit open(self.filename, "rb") als f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT)
-            with self.open(self.filename, "r") as f:
+            mit self.open(self.filename, "r") als f:
                 self.assertEqual(f.read(), self.TEXT)
-            with self.open(self.filename, "a") as f:
+            mit self.open(self.filename, "a") als f:
                 f.write(self.TEXT)
-            with open(self.filename, "rb") as f:
+            mit open(self.filename, "rb") als f:
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT * 2)
 
@@ -1123,16 +1123,16 @@ klasse OpenTest(BaseTest):
         fuer mode in ("wt", "xt"):
             wenn mode == "xt":
                 unlink(self.filename)
-            with self.open(self.filename, mode, encoding="ascii") as f:
+            mit self.open(self.filename, mode, encoding="ascii") als f:
                 f.write(text)
-            with open(self.filename, "rb") as f:
+            mit open(self.filename, "rb") als f:
                 file_data = ext_decompress(f.read()).decode("ascii")
                 self.assertEqual(file_data, text_native_eol)
-            with self.open(self.filename, "rt", encoding="ascii") as f:
+            mit self.open(self.filename, "rt", encoding="ascii") als f:
                 self.assertEqual(f.read(), text)
-            with self.open(self.filename, "at", encoding="ascii") as f:
+            mit self.open(self.filename, "at", encoding="ascii") als f:
                 f.write(text)
-            with open(self.filename, "rb") as f:
+            mit open(self.filename, "rb") als f:
                 file_data = ext_decompress(f.read()).decode("ascii")
                 self.assertEqual(file_data, text_native_eol * 2)
 
@@ -1140,19 +1140,19 @@ klasse OpenTest(BaseTest):
         fuer mode in ("x", "xb", "xt"):
             unlink(self.filename)
             encoding = "utf-8" wenn "t" in mode sonst Nichts
-            with self.open(self.filename, mode, encoding=encoding) as f:
+            mit self.open(self.filename, mode, encoding=encoding) als f:
                 pass
-            with self.assertRaises(FileExistsError):
-                with self.open(self.filename, mode) as f:
+            mit self.assertRaises(FileExistsError):
+                mit self.open(self.filename, mode) als f:
                     pass
 
     def test_fileobj(self):
-        with self.open(BytesIO(self.DATA), "r") as f:
+        mit self.open(BytesIO(self.DATA), "r") als f:
             self.assertEqual(f.read(), self.TEXT)
-        with self.open(BytesIO(self.DATA), "rb") as f:
+        mit self.open(BytesIO(self.DATA), "rb") als f:
             self.assertEqual(f.read(), self.TEXT)
         text = self.TEXT.decode("ascii")
-        with self.open(BytesIO(self.DATA), "rt", encoding="utf-8") as f:
+        mit self.open(BytesIO(self.DATA), "rt", encoding="utf-8") als f:
             self.assertEqual(f.read(), text)
 
     def test_bad_params(self):
@@ -1172,28 +1172,28 @@ klasse OpenTest(BaseTest):
         # Test non-default encoding.
         text = self.TEXT.decode("ascii")
         text_native_eol = text.replace("\n", os.linesep)
-        with self.open(self.filename, "wt", encoding="utf-16-le") as f:
+        mit self.open(self.filename, "wt", encoding="utf-16-le") als f:
             f.write(text)
-        with open(self.filename, "rb") as f:
+        mit open(self.filename, "rb") als f:
             file_data = ext_decompress(f.read()).decode("utf-16-le")
             self.assertEqual(file_data, text_native_eol)
-        with self.open(self.filename, "rt", encoding="utf-16-le") as f:
+        mit self.open(self.filename, "rt", encoding="utf-16-le") als f:
             self.assertEqual(f.read(), text)
 
     def test_encoding_error_handler(self):
-        # Test with non-default encoding error handler.
-        with self.open(self.filename, "wb") as f:
+        # Test mit non-default encoding error handler.
+        mit self.open(self.filename, "wb") als f:
             f.write(b"foo\xffbar")
-        with self.open(self.filename, "rt", encoding="ascii", errors="ignore") \
-                as f:
+        mit self.open(self.filename, "rt", encoding="ascii", errors="ignore") \
+                als f:
             self.assertEqual(f.read(), "foobar")
 
     def test_newline(self):
-        # Test with explicit newline (universal newline mode disabled).
+        # Test mit explicit newline (universal newline mode disabled).
         text = self.TEXT.decode("ascii")
-        with self.open(self.filename, "wt", encoding="utf-8", newline="\n") as f:
+        mit self.open(self.filename, "wt", encoding="utf-8", newline="\n") als f:
             f.write(text)
-        with self.open(self.filename, "rt", encoding="utf-8", newline="\r") as f:
+        mit self.open(self.filename, "rt", encoding="utf-8", newline="\r") als f:
             self.assertEqual(f.readlines(), [text])
 
 

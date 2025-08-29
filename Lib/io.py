@@ -6,23 +6,23 @@ defines the basic interface to a stream. Note, however, that there is no
 separation between reading and writing to streams; implementations are
 allowed to raise an OSError wenn they do not support a given operation.
 
-Extending IOBase is RawIOBase which deals simply with the reading and
+Extending IOBase is RawIOBase which deals simply mit the reading and
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
 an interface to OS files.
 
-BufferedIOBase deals with buffering on a raw byte stream (RawIOBase). Its
+BufferedIOBase deals mit buffering on a raw byte stream (RawIOBase). Its
 subclasses, BufferedWriter, BufferedReader, and BufferedRWPair buffer
 streams that are readable, writable, and both respectively.
 BufferedRandom provides a buffered interface to random access
 streams. BytesIO is a simple stream of in-memory bytes.
 
-Another IOBase subclass, TextIOBase, deals with the encoding and decoding
+Another IOBase subclass, TextIOBase, deals mit the encoding and decoding
 of streams into text. TextIOWrapper, which extends it, is a buffered text
 interface to a buffered raw stream (`BufferedIOBase`). Finally, StringIO
 is an in-memory stream fuer text.
 
 Argument names are not part of the specification, and only the arguments
-of open() are intended to be used as keyword arguments.
+of open() are intended to be used als keyword arguments.
 
 data:
 

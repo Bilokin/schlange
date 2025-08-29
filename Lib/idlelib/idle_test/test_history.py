@@ -4,9 +4,9 @@ von idlelib.history importiere History
 importiere unittest
 von test.support importiere requires
 
-importiere tkinter as tk
-von tkinter importiere Text as tkText
-von idlelib.idle_test.mock_tk importiere Text as mkText
+importiere tkinter als tk
+von tkinter importiere Text als tkText
+von idlelib.idle_test.mock_tk importiere Text als mkText
 von idlelib.config importiere idleConf
 
 line1 = 'a = 7'
@@ -14,7 +14,7 @@ line2 = 'b = a'
 
 
 klasse StoreTest(unittest.TestCase):
-    '''Tests History.__init__ and History.store with mock Text'''
+    '''Tests History.__init__ and History.store mit mock Text'''
 
     @classmethod
     def setUpClass(cls):
@@ -66,7 +66,7 @@ klasse TextWrapper:
 
 
 klasse FetchTest(unittest.TestCase):
-    '''Test History.fetch with wrapped tk.Text.
+    '''Test History.fetch mit wrapped tk.Text.
     '''
     @classmethod
     def setUpClass(cls):
@@ -88,7 +88,7 @@ klasse FetchTest(unittest.TestCase):
         del cls.root
 
     def fetch_test(self, reverse, line, prefix, index, *, bell=Falsch):
-        # Perform one fetch as invoked by Alt-N or Alt-P
+        # Perform one fetch als invoked by Alt-N or Alt-P
         # Test the result. The line test is the most important.
         # The last two are diagnostic of fetch internals.
         History = self.history
@@ -117,7 +117,7 @@ klasse FetchTest(unittest.TestCase):
         test(Falsch, line2, prefix, 1)
         test(Falsch, prefix, Nichts, Nichts, bell=Wahr)
 
-    # Prefix 'a' tests skip line2, which starts with 'b'
+    # Prefix 'a' tests skip line2, which starts mit 'b'
     def test_fetch_prev_prefix(self):
         prefix = 'a'
         self.text.insert('iomark', prefix)

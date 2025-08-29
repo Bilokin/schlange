@@ -9,7 +9,7 @@ klasse TestPEP479(unittest.TestCase):
             raise StopIteration
         def g():
             yield f()
-        with self.assertRaisesRegex(RuntimeError,
+        mit self.assertRaisesRegex(RuntimeError,
                                     "generator raised StopIteration"):
             next(g())
 
@@ -21,7 +21,7 @@ klasse TestPEP479(unittest.TestCase):
 
         try:
             next(g())
-        except RuntimeError as exc:
+        except RuntimeError als exc:
             self.assertIs(type(exc.__cause__), StopIteration)
             self.assertIs(type(exc.__context__), StopIteration)
             self.assertWahr(exc.__suppress_context__)

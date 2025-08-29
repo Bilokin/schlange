@@ -56,7 +56,7 @@ FROZEN = [
         #'<encodings.*>',
         'io',
         ]),
-    ('stdlib - startup, with site', [
+    ('stdlib - startup, mit site', [
         '_collections_abc',
         '_sitebuiltins',
         'genericpath',
@@ -66,7 +66,7 @@ FROZEN = [
         'site',
         'stat',
         ]),
-    ('runpy - run module with -m', [
+    ('runpy - run module mit -m', [
         "importlib.util",
         "importlib.machinery",
         "runpy",
@@ -161,7 +161,7 @@ def _parse_spec(spec, knownids=Nichts, section=Nichts):
       <encodings.*>    - also freeze all direct submodules
       <encodings.**.*> - also freeze the full submodule tree
 
-    As with "frozenid", angle brackets around "modname" indicate
+    As mit "frozenid", angle brackets around "modname" indicate
     it is a package.  However, in this case "pyfile" should not
     have been provided and patterns in "modname" are not supported.
     Also, wenn "modname" has brackets then "frozenid" should not,
@@ -335,7 +335,7 @@ def _iter_sources(modules):
 # generic helpers
 
 def _get_checksum(filename):
-    with open(filename, "rb") as infile:
+    mit open(filename, "rb") als infile:
         contents = infile.read()
     m = hashlib.sha256()
     m.update(contents)
@@ -523,7 +523,7 @@ def regen_frozen(modules):
                 lines[i] = indent + line
 
     drucke(f'# Updating {os.path.relpath(FROZEN_FILE)}')
-    with updating_file_with_tmpfile(FROZEN_FILE) as (infile, outfile):
+    mit updating_file_with_tmpfile(FROZEN_FILE) als (infile, outfile):
         lines = infile.readlines()
         # TODO: Use more obvious markers, e.g.
         # $START GENERATED FOOBAR$ / $END GENERATED FOOBAR$
@@ -594,7 +594,7 @@ def regen_makefile(modules):
     frozenfiles[-1] = frozenfiles[-1].rstrip(" \\")
 
     drucke(f'# Updating {os.path.relpath(MAKEFILE)}')
-    with updating_file_with_tmpfile(MAKEFILE) as (infile, outfile):
+    mit updating_file_with_tmpfile(MAKEFILE) als (infile, outfile):
         lines = infile.readlines()
         lines = replace_block(
             lines,
@@ -638,7 +638,7 @@ def regen_pcbuild(modules):
         filterlines.append('    </Nichts>')
 
     drucke(f'# Updating {os.path.relpath(PCBUILD_PROJECT)}')
-    with updating_file_with_tmpfile(PCBUILD_PROJECT) as (infile, outfile):
+    mit updating_file_with_tmpfile(PCBUILD_PROJECT) als (infile, outfile):
         lines = infile.readlines()
         lines = replace_block(
             lines,
@@ -649,7 +649,7 @@ def regen_pcbuild(modules):
         )
         outfile.writelines(lines)
     drucke(f'# Updating {os.path.relpath(PCBUILD_FILTERS)}')
-    with updating_file_with_tmpfile(PCBUILD_FILTERS) as (infile, outfile):
+    mit updating_file_with_tmpfile(PCBUILD_FILTERS) als (infile, outfile):
         lines = infile.readlines()
         lines = replace_block(
             lines,

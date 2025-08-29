@@ -29,7 +29,7 @@ importiere time
 
 
 def write_tests(filename, tests):
-    with open(filename, "w") as fp:
+    mit open(filename, "w") als fp:
         fuer name in tests:
             drucke(name, file=fp)
         fp.flush()
@@ -65,7 +65,7 @@ def list_cases(args):
     exitcode = proc.returncode
     wenn exitcode:
         cmd = format_shell_args(cmd)
-        drucke("Failed to list tests: %s failed with exit code %s"
+        drucke("Failed to list tests: %s failed mit exit code %s"
               % (cmd, exitcode))
         sys.exit(exitcode)
     tests = proc.stdout.splitlines()
@@ -120,12 +120,12 @@ def main():
             drucke()
 
     wenn args.input:
-        with open(args.input) as fp:
+        mit open(args.input) als fp:
             tests = [line.strip() fuer line in fp]
     sonst:
         tests = list_cases(args)
 
-    drucke("Start bisection with %s tests" % len(tests))
+    drucke("Start bisection mit %s tests" % len(tests))
     drucke("Test arguments: %s" % format_shell_args(args.test_args))
     drucke("Bisection will stop when getting %s or less tests "
           "(-n/--max-tests option), or after %s iterations "
@@ -151,7 +151,7 @@ def main():
             drucke("ran %s tests/%s" % (ntest, len(tests)))
             drucke("exit", exitcode)
             wenn exitcode:
-                drucke("Tests failed: continuing with this subtest")
+                drucke("Tests failed: continuing mit this subtest")
                 tests = subtests
                 output = write_output(args.output, tests)
             sonst:

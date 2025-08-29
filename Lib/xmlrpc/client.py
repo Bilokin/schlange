@@ -8,7 +8,7 @@
 # implement XML-RPC servers.
 #
 # Notes:
-# this version is designed to work with Python 2.1 or newer.
+# this version is designed to work mit Python 2.1 or newer.
 #
 # History:
 # 1999-01-14 fl  Created
@@ -17,7 +17,7 @@
 # 1999-01-19 fl  Fixed array data element (from Skip Montanaro)
 # 1999-01-21 fl  Fixed dateTime constructor, etc.
 # 1999-02-02 fl  Added fault handling, handle empty sequences, etc.
-# 1999-02-10 fl  Fixed problem with empty responses (from Skip Montanaro)
+# 1999-02-10 fl  Fixed problem mit empty responses (from Skip Montanaro)
 # 1999-06-20 fl  Speed improvements, pluggable parsers/transports (0.9.8)
 # 2000-11-28 fl  Changed boolean to check the truth value of its argument
 # 2001-02-24 fl  Added encoding/Unicode/SafeTransport patches
@@ -28,18 +28,18 @@
 # 2001-08-20 fl  Base xmlrpclib.Error on built-in Exception (from Paul Prescod)
 # 2001-09-03 fl  Allow Transport subclass to override getparser
 # 2001-09-10 fl  Lazy importiere of urllib, cgi, xmllib (20x importiere speedup)
-# 2001-10-01 fl  Remove containers von memo cache when done with them
+# 2001-10-01 fl  Remove containers von memo cache when done mit them
 # 2001-10-01 fl  Use faster escape method (80% dumps speedup)
 # 2001-10-02 fl  More dumps microtuning
 # 2001-10-04 fl  Make sure importiere expat gets a parser (from Guido van Rossum)
-# 2001-10-10 sm  Allow long ints to be passed as ints wenn they don't overflow
+# 2001-10-10 sm  Allow long ints to be passed als ints wenn they don't overflow
 # 2001-10-17 sm  Test fuer int and long overflow (allows use on 64-bit systems)
 # 2001-11-12 fl  Use repr() to marshal doubles (from Paul Felix)
 # 2002-03-17 fl  Avoid buffered read when possible (from James Rucker)
 # 2002-04-07 fl  Added pythondoc comments
 # 2002-04-16 fl  Added __str__ methods to datetime/binary wrappers
 # 2002-05-15 fl  Added error constants (from Andrew Kuchling)
-# 2002-06-27 fl  Merged with Python CVS version
+# 2002-06-27 fl  Merged mit Python CVS version
 # 2002-10-22 fl  Added basic authentication (based on code von Phillip Eby)
 # 2003-01-22 sm  Add support fuer the bool type
 # 2003-02-27 gvr Remove apply calls
@@ -65,7 +65,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# and will comply mit the following terms and conditions:
 #
 # Permission to use, copy, modify, and distribute this software and
 # its associated documentation fuer any purpose and without fee is
@@ -224,7 +224,7 @@ klasse ResponseError(Error):
 ##
 # Indicates an XML-RPC fault response package.  This exception is
 # raised by the unmarshalling layer, wenn the XML-RPC response contains
-# a fault string.  This exception can also be used as a class, to
+# a fault string.  This exception can also be used als a class, to
 # generate a fault XML-RPC message.
 #
 # @param faultCode The XML-RPC fault code.
@@ -333,7 +333,7 @@ klasse DateTime:
     ##
     # Get date/time value.
     #
-    # @return Date/time value, as an ISO 8601 string.
+    # @return Date/time value, als an ISO 8601 string.
 
     def __str__(self):
         return self.value
@@ -380,7 +380,7 @@ klasse Binary:
     ##
     # Get buffer contents.
     #
-    # @return Buffer contents, as an 8-bit string.
+    # @return Buffer contents, als an 8-bit string.
 
     def __str__(self):
         return str(self.data, "latin-1")  # XXX encoding?!
@@ -440,14 +440,14 @@ klasse ExpatParser:
 # XML-RPC marshaller.
 #
 # @param encoding Default encoding fuer 8-bit strings.  The default
-#     value is Nichts (interpreted as UTF-8).
+#     value is Nichts (interpreted als UTF-8).
 # @see dumps
 
 klasse Marshaller:
     """Generate an XML-RPC params chunk von a Python data structure.
 
     Create a Marshaller instance fuer each set of parameters, and use
-    the "dumps" method to convert your data (represented as a tuple)
+    the "dumps" method to convert your data (represented als a tuple)
     to an XML-RPC params chunk.  To write a fault response, pass a
     Fault instance instead.  You may prefer to use the "dumps" module
     function fuer this purpose.
@@ -495,7 +495,7 @@ klasse Marshaller:
         try:
             f = self.dispatch[type(value)]
         except KeyError:
-            # check wenn this object can be marshalled as a structure
+            # check wenn this object can be marshalled als a structure
             wenn not hasattr(value, '__dict__'):
                 raise TypeError("cannot marshal %s objects" % type(value))
             # check wenn this klasse is a sub-class of a basic type,
@@ -504,7 +504,7 @@ klasse Marshaller:
             fuer type_ in type(value).__mro__:
                 wenn type_ in self.dispatch.keys():
                     raise TypeError("cannot marshal %s objects" % type(value))
-            # XXX(twouters): using "_arbitrary_instance" as key as a quick-fix
+            # XXX(twouters): using "_arbitrary_instance" als key als a quick-fix
             # fuer the p3yk merge, this should probably be fixed more neatly.
             f = self.dispatch["_arbitrary_instance"]
         f(self, value, write)
@@ -597,11 +597,11 @@ klasse Marshaller:
             value.encode(self)
             del self.write
         sonst:
-            # store instance attributes as a struct (really?)
+            # store instance attributes als a struct (really?)
             self.dump_struct(value.__dict__, write)
     dispatch[DateTime] = dump_instance
     dispatch[Binary] = dump_instance
-    # XXX(twouters): using "_arbitrary_instance" as key as a quick-fix
+    # XXX(twouters): using "_arbitrary_instance" als key als a quick-fix
     # fuer the p3yk merge, this should probably be fixed more neatly.
     dispatch["_arbitrary_instance"] = dump_instance
 
@@ -780,8 +780,8 @@ klasse Unmarshaller:
     dispatch["dateTime.iso8601"] = end_dateTime
 
     def end_value(self, data):
-        # wenn we stumble upon a value element with no internal
-        # elements, treat it as a string element
+        # wenn we stumble upon a value element mit no internal
+        # elements, treat it als a string element
         wenn self._value:
             self.end_string(data)
     dispatch["value"] = end_value
@@ -910,7 +910,7 @@ def getparser(use_datetime=Falsch, use_builtin_types=Falsch):
 # @keyparam methodname If given, create a methodCall request for
 #     this method name.
 # @keyparam methodresponse If given, create a methodResponse packet.
-#     If used with a tuple, the tuple must be a singleton (that is,
+#     If used mit a tuple, the tuple must be a singleton (that is,
 #     it must contain exactly one element).
 # @keyparam encoding The packet encoding.
 # @return A string containing marshalled data.
@@ -923,12 +923,12 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
     request (or response, wenn the methodresponse option is used).
 
     In addition to the data object, the following options can be given
-    as keyword arguments:
+    als keyword arguments:
 
         methodname: the method name fuer a methodCall packet
 
         methodresponse: true to create a methodResponse packet.
-        If this option is used with a tuple, the tuple must be
+        If this option is used mit a tuple, the tuple must be
         a singleton (i.e. it can contain only one element).
 
         encoding: the packet encoding (default is UTF-8)
@@ -978,14 +978,14 @@ def dumps(params, methodname=Nichts, methodresponse=Nichts, encoding=Nichts,
             "</methodResponse>\n"
             )
     sonst:
-        return data # return as is
+        return data # return als is
     return "".join(data)
 
 ##
 # Convert an XML-RPC packet to a Python object.  If the XML-RPC packet
 # represents a fault condition, this function raises a Fault exception.
 #
-# @param data An XML-RPC packet, given as an 8-bit string.
+# @param data An XML-RPC packet, given als an 8-bit string.
 # @return A tuple containing the unpacked data, and the method name
 #     (Nichts wenn not present).
 # @see Fault
@@ -1005,9 +1005,9 @@ def loads(data, use_datetime=Falsch, use_builtin_types=Falsch):
     return u.close(), u.getmethodname()
 
 ##
-# Encode a string using the gzip content encoding such as specified by the
+# Encode a string using the gzip content encoding such als specified by the
 # Content-Encoding: gzip
-# in the HTTP header, as described in RFC 1952
+# in the HTTP header, als described in RFC 1952
 #
 # @param data the unencoded data
 # @return the encoded data
@@ -1015,19 +1015,19 @@ def loads(data, use_datetime=Falsch, use_builtin_types=Falsch):
 def gzip_encode(data):
     """data -> gzip encoded data
 
-    Encode data using the gzip content encoding as described in RFC 1952
+    Encode data using the gzip content encoding als described in RFC 1952
     """
     wenn not gzip:
         raise NotImplementedError
     f = BytesIO()
-    with gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) as gzf:
+    mit gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) als gzf:
         gzf.write(data)
     return f.getvalue()
 
 ##
-# Decode a string using the gzip content encoding such as specified by the
+# Decode a string using the gzip content encoding such als specified by the
 # Content-Encoding: gzip
-# in the HTTP header, as described in RFC 1952
+# in the HTTP header, als described in RFC 1952
 #
 # @param data The encoded data
 # @keyparam max_decode Maximum bytes to decode (20 MiB default), use negative
@@ -1039,11 +1039,11 @@ def gzip_encode(data):
 def gzip_decode(data, max_decode=20971520):
     """gzip encoded data -> unencoded data
 
-    Decode data using the gzip content encoding as described in RFC 1952
+    Decode data using the gzip content encoding als described in RFC 1952
     """
     wenn not gzip:
         raise NotImplementedError
-    with gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) as gzf:
+    mit gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) als gzf:
         try:
             wenn max_decode < 0: # no limit
                 decoded = gzf.read()
@@ -1057,14 +1057,14 @@ def gzip_decode(data, max_decode=20971520):
 
 ##
 # Return a decoded file-like object fuer the gzip encoding
-# as described in RFC 1952.
+# als described in RFC 1952.
 #
 # @param response A stream supporting a read() method
 # @return a file-like object that the decoded data can be read() from
 
 klasse GzipDecodedResponse(gzip.GzipFile wenn gzip sonst object):
-    """a file-like object to decode a response encoded with the gzip
-    method, as described in RFC 1952.
+    """a file-like object to decode a response encoded mit the gzip
+    method, als described in RFC 1952.
     """
     def __init__(self, response):
         #response doesn't support tell() and read(), required by
@@ -1141,7 +1141,7 @@ klasse Transport:
             except http.client.RemoteDisconnected:
                 wenn i:
                     raise
-            except OSError as e:
+            except OSError als e:
                 wenn i or e.errno not in (errno.ECONNRESET, errno.ECONNABORTED,
                                         errno.EPIPE):
                     raise
@@ -1357,12 +1357,12 @@ klasse SafeTransport(Transport):
 # Standard server proxy.  This klasse establishes a virtual connection
 # to an XML-RPC server.
 # <p>
-# This klasse is available as ServerProxy and Server.  New code should
+# This klasse is available als ServerProxy and Server.  New code should
 # use ServerProxy, to avoid confusion.
 #
 # @def ServerProxy(uri, **options)
 # @param uri The connection point on the server.
-# @keyparam transport A transport factory, compatible with the
+# @keyparam transport A transport factory, compatible mit the
 #    standard transport class.
 # @keyparam encoding The default encoding used fuer 8-bit strings
 #    (default is UTF-8).
@@ -1383,7 +1383,7 @@ klasse ServerProxy:
     If the target part and the slash preceding it are both omitted,
     "/RPC2" is assumed.
 
-    The following options can be given as keyword arguments:
+    The following options can be given als keyword arguments:
 
         transport: a transport factory
         encoding: the request encoding (default is UTF-8)
@@ -1454,12 +1454,12 @@ klasse ServerProxy:
         # magic method dispatcher
         return _Method(self.__request, name)
 
-    # note: to call a remote object with a non-standard name, use
+    # note: to call a remote object mit a non-standard name, use
     # result getattr(server, "strange-python-name")(args)
 
     def __call__(self, attr):
         """A workaround to get special attributes on the ServerProxy
-           without interfering with the magic __getattr__
+           without interfering mit the magic __getattr__
         """
         wenn attr == "close":
             return self.__close
@@ -1489,7 +1489,7 @@ wenn __name__ == "__main__":
 
     try:
         drucke(server.currentTime.getCurrentTime())
-    except Error as v:
+    except Error als v:
         drucke("ERROR", v)
 
     multi = MultiCall(server)
@@ -1499,5 +1499,5 @@ wenn __name__ == "__main__":
     try:
         fuer response in multi():
             drucke(response)
-    except Error as v:
+    except Error als v:
         drucke("ERROR", v)

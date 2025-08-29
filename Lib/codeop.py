@@ -22,14 +22,14 @@ CommandCompiler():
     signature to compile_command; the difference is that wenn the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' and compiles all subsequent program texts
-    with the statement in force.
+    mit the statement in force.
 
 The module also provides another class:
 
 Compile():
 
     Instances of this klasse act like the built-in function compile,
-    but with 'memory' in the sense described above.
+    but mit 'memory' in the sense described above.
 """
 
 importiere __future__
@@ -55,10 +55,10 @@ def _maybe_compile(compiler, source, filename, symbol, flags):
             break               # Leave it alone.
     sonst:
         wenn symbol != "eval":
-            source = "pass"     # Replace it with a 'pass' statement
+            source = "pass"     # Replace it mit a 'pass' statement
 
     # Disable compiler warnings when checking fuer incomplete input.
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.simplefilter("ignore", (SyntaxWarning, DeprecationWarning))
         try:
             compiler(source, filename, symbol, flags=flags)
@@ -66,9 +66,9 @@ def _maybe_compile(compiler, source, filename, symbol, flags):
             try:
                 compiler(source + "\n", filename, symbol, flags=flags)
                 return Nichts
-            except _IncompleteInputError as e:
+            except _IncompleteInputError als e:
                 return Nichts
-            except SyntaxError as e:
+            except SyntaxError als e:
                 pass
                 # fallthrough
 
@@ -105,7 +105,7 @@ klasse Compile:
     """Instances of this klasse behave much like the built-in compile
     function, but wenn one is used to compile text containing a future
     statement, it "remembers" and compiles all subsequent program texts
-    with the statement in force."""
+    mit the statement in force."""
     def __init__(self):
         self.flags = PyCF_DONT_IMPLY_DEDENT | PyCF_ALLOW_INCOMPLETE_INPUT
 
@@ -127,7 +127,7 @@ klasse CommandCompiler:
     signature to compile_command; the difference is that wenn the
     instance compiles program text containing a __future__ statement,
     the instance 'remembers' and compiles all subsequent program texts
-    with the statement in force."""
+    mit the statement in force."""
 
     def __init__(self,):
         self.compiler = Compile()

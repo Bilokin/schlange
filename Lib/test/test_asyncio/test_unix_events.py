@@ -4,7 +4,7 @@ importiere contextlib
 importiere errno
 importiere io
 importiere multiprocessing
-von multiprocessing.util importiere _cleanup_tests as multiprocessing_cleanup_tests
+von multiprocessing.util importiere _cleanup_tests als multiprocessing_cleanup_tests
 importiere os
 importiere signal
 importiere socket
@@ -26,7 +26,7 @@ wenn sys.platform == 'win32':
 
 importiere asyncio
 von asyncio importiere unix_events
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 
 
 def tearDownModule():
@@ -105,7 +105,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         self.addCleanup(coro_obj.close)
         fuer func in (coro_func, coro_obj):
             self.assertRaisesRegex(
-                TypeError, 'coroutines cannot be used with add_signal_handler',
+                TypeError, 'coroutines cannot be used mit add_signal_handler',
                 self.loop.add_signal_handler,
                 signal.SIGINT, func)
 
@@ -269,7 +269,7 @@ klasse SelectorEventLoopSignalTests(test_utils.TestCase):
         m_sys.is_finalizing.return_value = Wahr
         m_signal.signal.reset_mock()
 
-        with self.assertWarnsRegex(ResourceWarning,
+        mit self.assertWarnsRegex(ResourceWarning,
                                    "skipping signal handlers removal"):
             self.loop.close()
 
@@ -288,7 +288,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
     @socket_helper.skip_unless_bind_unix_socket
     def test_create_unix_server_existing_path_sock(self):
-        with test_utils.unix_socket_path() as path:
+        mit test_utils.unix_socket_path() als path:
             sock = socket.socket(socket.AF_UNIX)
             sock.bind(path)
             sock.listen(1)
@@ -301,7 +301,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
     @socket_helper.skip_unless_bind_unix_socket
     def test_create_unix_server_pathlike(self):
-        with test_utils.unix_socket_path() as path:
+        mit test_utils.unix_socket_path() als path:
             path = os_helper.FakePath(path)
             srv_coro = self.loop.create_unix_server(lambda: Nichts, path)
             srv = self.loop.run_until_complete(srv_coro)
@@ -309,10 +309,10 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
             self.loop.run_until_complete(srv.wait_closed())
 
     def test_create_unix_connection_pathlike(self):
-        with test_utils.unix_socket_path() as path:
+        mit test_utils.unix_socket_path() als path:
             path = os_helper.FakePath(path)
             coro = self.loop.create_unix_connection(lambda: Nichts, path)
-            with self.assertRaises(FileNotFoundError):
+            mit self.assertRaises(FileNotFoundError):
                 # If path-like object weren't supported, the exception would be
                 # different.
                 self.loop.run_until_complete(coro)
@@ -324,38 +324,38 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
         open(path, "wb").close()
 
         coro = self.loop.create_unix_server(lambda: Nichts, path)
-        with self.assertRaisesRegex(OSError,
+        mit self.assertRaisesRegex(OSError,
                                     'Address.*is already in use'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_server_ssl_bool(self):
         coro = self.loop.create_unix_server(lambda: Nichts, path='spam',
                                             ssl=Wahr)
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                                     'ssl argument must be an SSLContext'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_server_nopath_nosock(self):
         coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts)
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                                     'path was not specified, and no sock'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_server_path_inetsock(self):
         sock = socket.socket()
-        with sock:
+        mit sock:
             coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts,
                                                 sock=sock)
-            with self.assertRaisesRegex(ValueError,
+            mit self.assertRaisesRegex(ValueError,
                                         'A UNIX Domain Stream.*was expected'):
                 self.loop.run_until_complete(coro)
 
     def test_create_unix_server_path_dgram(self):
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
-        with sock:
+        mit sock:
             coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts,
                                                 sock=sock)
-            with self.assertRaisesRegex(ValueError,
+            mit self.assertRaisesRegex(ValueError,
                                         'A UNIX Domain Stream.*was expected'):
                 self.loop.run_until_complete(coro)
 
@@ -368,7 +368,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
         sock = socket.socket(socket.AF_UNIX,
                              socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
-        with sock:
+        mit sock:
             sock.bind(fn)
             coro = self.loop.create_unix_server(lambda: Nichts, path=Nichts,
                                                 sock=sock)
@@ -379,17 +379,17 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_server_ssl_timeout_with_plain_sock(self):
         coro = self.loop.create_unix_server(lambda: Nichts, path='spam',
                                             ssl_handshake_timeout=1)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful with ssl'):
+                'ssl_handshake_timeout is only meaningful mit ssl'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_path_inetsock(self):
         sock = socket.socket()
-        with sock:
+        mit sock:
             coro = self.loop.create_unix_connection(lambda: Nichts,
                                                     sock=sock)
-            with self.assertRaisesRegex(ValueError,
+            mit self.assertRaisesRegex(ValueError,
                                         'A UNIX Domain Stream.*was expected'):
                 self.loop.run_until_complete(coro)
 
@@ -401,33 +401,33 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
         sock.bind.side_effect = OSError
         coro = self.loop.create_unix_server(lambda: Nichts, path="/test")
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             self.loop.run_until_complete(coro)
         self.assertWahr(sock.close.called)
 
         sock.bind.side_effect = MemoryError
         coro = self.loop.create_unix_server(lambda: Nichts, path="/test")
-        with self.assertRaises(MemoryError):
+        mit self.assertRaises(MemoryError):
             self.loop.run_until_complete(coro)
         self.assertWahr(sock.close.called)
 
     def test_create_unix_connection_path_sock(self):
         coro = self.loop.create_unix_connection(
             lambda: Nichts, os.devnull, sock=object())
-        with self.assertRaisesRegex(ValueError, 'path and sock can not be'):
+        mit self.assertRaisesRegex(ValueError, 'path and sock can not be'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_nopath_nosock(self):
         coro = self.loop.create_unix_connection(
             lambda: Nichts, Nichts)
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                                     'no path and sock were specified'):
             self.loop.run_until_complete(coro)
 
     def test_create_unix_connection_nossl_serverhost(self):
         coro = self.loop.create_unix_connection(
             lambda: Nichts, os.devnull, server_hostname='spam')
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                                     'server_hostname is only meaningful'):
             self.loop.run_until_complete(coro)
 
@@ -435,7 +435,7 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
         coro = self.loop.create_unix_connection(
             lambda: Nichts, os.devnull, ssl=Wahr)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             ValueError, 'you have to pass server_hostname when using ssl'):
 
             self.loop.run_until_complete(coro)
@@ -443,9 +443,9 @@ klasse SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     def test_create_unix_connection_ssl_timeout_with_plain_sock(self):
         coro = self.loop.create_unix_connection(lambda: Nichts, path='spam',
                                             ssl_handshake_timeout=1)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful with ssl'):
+                'ssl_handshake_timeout is only meaningful mit ssl'):
             self.loop.run_until_complete(coro)
 
 
@@ -481,7 +481,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        with open(os_helper.TESTFN, 'wb') as fp:
+        mit open(os_helper.TESTFN, 'wb') als fp:
             fp.write(cls.DATA)
         super().setUpClass()
 
@@ -533,8 +533,8 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
     def test_sock_sendfile_not_available(self):
         sock, proto = self.prepare()
-        with mock.patch('asyncio.unix_events.os', spec=[]):
-            with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit mock.patch('asyncio.unix_events.os', spec=[]):
+            mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                         "os[.]sendfile[(][)] is not available"):
                 self.run_loop(self.loop._sock_sendfile_native(sock, self.file,
                                                               0, Nichts))
@@ -543,7 +543,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     def test_sock_sendfile_not_a_file(self):
         sock, proto = self.prepare()
         f = object()
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Nichts))
@@ -552,7 +552,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
     def test_sock_sendfile_iobuffer(self):
         sock, proto = self.prepare()
         f = io.BytesIO()
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Nichts))
@@ -562,7 +562,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         sock, proto = self.prepare()
         f = mock.Mock()
         f.fileno.return_value = -1
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not a regular file"):
             self.run_loop(self.loop._sock_sendfile_native(sock, f,
                                                           0, Nichts))
@@ -576,9 +576,9 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         self.loop._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
                                              0, Nichts, len(self.DATA), 0)
         fut.cancel()
-        with contextlib.suppress(asyncio.CancelledError):
+        mit contextlib.suppress(asyncio.CancelledError):
             self.run_loop(fut)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
 
     def test_sock_sendfile_cancel2(self):
@@ -591,7 +591,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         fut.cancel()
         self.loop._sock_sendfile_native_impl(fut, sock.fileno(), sock, fileno,
                                              0, Nichts, len(self.DATA), 0)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
 
     def test_sock_sendfile_blocking_error(self):
@@ -600,7 +600,7 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         fileno = self.file.fileno()
         fut = mock.Mock()
         fut.cancelled.return_value = Falsch
-        with mock.patch('os.sendfile', side_effect=BlockingIOError()):
+        mit mock.patch('os.sendfile', side_effect=BlockingIOError()):
             self.loop._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
                                                  0, Nichts, len(self.DATA), 0)
         key = self.loop._selector.get_key(sock)
@@ -612,10 +612,10 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
         fileno = self.file.fileno()
         fut = self.loop.create_future()
-        with mock.patch('os.sendfile', side_effect=OSError()):
+        mit mock.patch('os.sendfile', side_effect=OSError()):
             self.loop._sock_sendfile_native_impl(fut, Nichts, sock, fileno,
                                                  0, Nichts, len(self.DATA), 0)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
         exc = fut.exception()
         self.assertIsInstance(exc, asyncio.SendfileNotAvailableError)
@@ -627,12 +627,12 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         fileno = self.file.fileno()
         fut = self.loop.create_future()
         err = OSError()
-        with mock.patch('os.sendfile', side_effect=err):
+        mit mock.patch('os.sendfile', side_effect=err):
             self.loop._sock_sendfile_native_impl(fut, sock.fileno(),
                                                  sock, fileno,
                                                  1000, Nichts, len(self.DATA),
                                                  1000)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
         exc = fut.exception()
         self.assertIs(exc, err)
@@ -644,12 +644,12 @@ klasse SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
         fileno = self.file.fileno()
         fut = self.loop.create_future()
         err = asyncio.SendfileNotAvailableError()
-        with mock.patch('os.sendfile', side_effect=err):
+        mit mock.patch('os.sendfile', side_effect=err):
             self.loop._sock_sendfile_native_impl(fut, sock.fileno(),
                                                  sock, fileno,
                                                  1000, Nichts, len(self.DATA),
                                                  1000)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             self.loop._selector.get_key(sock)
         exc = fut.exception()
         self.assertIs(exc, err)
@@ -1125,14 +1125,14 @@ klasse TestFunctional(unittest.TestCase):
 
         cb = lambda: Nichts
 
-        with assert_raises():
+        mit assert_raises():
             self.loop.add_reader(object(), cb)
-        with assert_raises():
+        mit assert_raises():
             self.loop.add_writer(object(), cb)
 
-        with assert_raises():
+        mit assert_raises():
             self.loop.remove_reader(object())
-        with assert_raises():
+        mit assert_raises():
             self.loop.remove_writer(object())
 
     def test_add_reader_or_writer_transport_fd(self):
@@ -1148,24 +1148,24 @@ klasse TestFunctional(unittest.TestCase):
             try:
                 cb = lambda: Nichts
 
-                with assert_raises():
+                mit assert_raises():
                     self.loop.add_reader(rsock, cb)
-                with assert_raises():
+                mit assert_raises():
                     self.loop.add_reader(rsock.fileno(), cb)
 
-                with assert_raises():
+                mit assert_raises():
                     self.loop.remove_reader(rsock)
-                with assert_raises():
+                mit assert_raises():
                     self.loop.remove_reader(rsock.fileno())
 
-                with assert_raises():
+                mit assert_raises():
                     self.loop.add_writer(rsock, cb)
-                with assert_raises():
+                mit assert_raises():
                     self.loop.add_writer(rsock.fileno(), cb)
 
-                with assert_raises():
+                mit assert_raises():
                     self.loop.remove_writer(rsock)
-                with assert_raises():
+                mit assert_raises():
                     self.loop.remove_writer(rsock.fileno())
 
             finally:
@@ -1183,8 +1183,8 @@ klasse TestFunctional(unittest.TestCase):
 klasse TestFork(unittest.IsolatedAsyncioTestCase):
 
     async def test_fork_not_share_event_loop(self):
-        with warnings_helper.ignore_fork_in_thread_deprecation_warnings():
-            # The forked process should not share the event loop with the parent
+        mit warnings_helper.ignore_fork_in_thread_deprecation_warnings():
+            # The forked process should not share the event loop mit the parent
             loop = asyncio.get_running_loop()
             r, w = os.pipe()
             self.addCleanup(os.close, r)
@@ -1197,7 +1197,7 @@ klasse TestFork(unittest.IsolatedAsyncioTestCase):
                     os.write(w, b'LOOP:' + str(id(loop)).encode())
                 except RuntimeError:
                     os.write(w, b'NO LOOP')
-                except BaseException as e:
+                except BaseException als e:
                     os.write(w, b'ERROR:' + ascii(e).encode())
                 finally:
                     os._exit(0)

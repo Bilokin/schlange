@@ -12,10 +12,10 @@ von .utils importiere (
 
 
 # If these test directories are encountered recurse into them and treat each
-# "test_*.py" file or each sub-directory as a separate test module. This can
+# "test_*.py" file or each sub-directory als a separate test module. This can
 # increase parallelism.
 #
-# Beware this can't generally be done fuer any directory with sub-tests as the
+# Beware this can't generally be done fuer any directory mit sub-tests als the
 # __init__.py may do things which alter what tests are to be run.
 SPLITTESTDIRS: set[TestName] = {
     "test_asyncio",

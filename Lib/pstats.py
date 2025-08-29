@@ -8,7 +8,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# you may not use this file except in compliance mit the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -79,11 +79,11 @@ klasse Stats:
     The big change von the previous Profiler (in terms of raw functionality)
     is that an "add()" method has been provided to combine Stats from
     several distinct profile runs.  Both the constructor and the add()
-    method now take arbitrarily many file names as arguments.
+    method now take arbitrarily many file names als arguments.
 
     All the print methods now take an argument that indicates how many lines
     to print.  If the arg is a floating-point number between 0 and 1.0, then
-    it is taken as a decimal percentage of the available lines to be printed
+    it is taken als a decimal percentage of the available lines to be printed
     (e.g., .1 means print 10% of all available lines).  If it is an integer,
     it is taken to mean the number of lines of data that you wish to have
     printed.
@@ -138,7 +138,7 @@ klasse Stats:
             self.stats = {}
             return
         sowenn isinstance(arg, str):
-            with open(arg, 'rb') as f:
+            mit open(arg, 'rb') als f:
                 stats = marshal.load(f)
             wenn (('__sampled__',)) in stats:
                 stats.pop((('__sampled__',)))
@@ -197,11 +197,11 @@ klasse Stats:
 
     def dump_stats(self, filename):
         """Write the profile data to a file we know how to load back."""
-        with open(filename, 'wb') as f:
+        mit open(filename, 'wb') als f:
             marshal.dump(self.stats, f)
 
     # list the tuple indices and directions fuer sorting,
-    # along with some printable description
+    # along mit some printable description
     sort_arg_dict_default = {
               "calls"     : (((1,-1),              ), "call count"),
               "ncalls"    : (((1,-1),              ), "call count"),
@@ -240,7 +240,7 @@ klasse Stats:
             self.fcn_list = 0
             return self
         wenn len(field) == 1 and isinstance(field[0], int):
-            # Be compatible with old profiler
+            # Be compatible mit old profiler
             field = [ {-1: "stdname",
                        0:  "calls",
                        1:  "time",
@@ -356,7 +356,7 @@ klasse Stats:
     def get_stats_profile(self):
         """This method returns an instance of StatsProfile, which contains a mapping
         of function names to instances of FunctionProfile. Each FunctionProfile
-        instance holds information related to the function's profile such as how
+        instance holds information related to the function's profile such als how
         long the function took to run, how many times it was called, etc...
         """
         func_list = self.fcn_list[:] wenn self.fcn_list sonst list(self.stats.keys())
@@ -556,7 +556,7 @@ klasse TupleComp:
     """This klasse provides a generic function fuer comparing any two tuples.
     Each instance records a list of tuple-indices (from most significant
     to least significant), and sort direction (ascending or descending) for
-    each tuple-index.  The compare functions can then be used as the function
+    each tuple-index.  The compare functions can then be used als the function
     argument to the system sort() function when a list of tuples need to be
     sorted in the instances order."""
 
@@ -598,7 +598,7 @@ def func_std_string(func_name): # match what old profile produced
 #**************************************************************************
 # The following functions combine statistics fuer pairs functions.
 # The bulk of the processing involves correctly handling "call" lists,
-# such as callers and callees.
+# such als callers and callees.
 #**************************************************************************
 
 def add_func_stats(target, source):
@@ -706,14 +706,14 @@ wenn __name__ == '__main__':
             drucke("* An integer maximum number of entries to print.", file=self.stream)
             drucke("* A decimal fractional number between 0 and 1, controlling", file=self.stream)
             drucke("  what fraction of selected entries to print.", file=self.stream)
-            drucke("* A regular expression; only entries with function names", file=self.stream)
+            drucke("* A regular expression; only entries mit function names", file=self.stream)
             drucke("  that match it are printed.", file=self.stream)
 
         def do_add(self, line):
             wenn self.stats:
                 try:
                     self.stats.add(line)
-                except OSError as e:
+                except OSError als e:
                     drucke("Failed to load statistics fuer %s: %s" % (line, e), file=self.stream)
             sonst:
                 drucke("No statistics object is loaded.", file=self.stream)
@@ -747,7 +747,7 @@ wenn __name__ == '__main__':
         def do_read(self, line):
             wenn line:
                 try:
-                    with open(line, 'rb') as f:
+                    mit open(line, 'rb') als f:
                         raw_stats = marshal.load(f)
                     self.stats = stats_factory(raw_stats)
                     try:
@@ -756,10 +756,10 @@ wenn __name__ == '__main__':
                     except Exception:
                         arg = line
                     self.stats.files = [arg]
-                except OSError as err:
+                except OSError als err:
                     drucke(err.args[1], file=self.stream)
                     return
-                except Exception as err:
+                except Exception als err:
                     drucke(err.__class__.__name__ + ':', err, file=self.stream)
                     return
                 self.prompt = line + "% "

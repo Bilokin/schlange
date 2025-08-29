@@ -111,7 +111,7 @@ klasse TestLoader(object):
         wenn load_tests is not Nichts:
             try:
                 return load_tests(self, tests, pattern)
-            except Exception as e:
+            except Exception als e:
                 error_case, error_message = _make_failed_load_tests(
                     module.__name__, e, self.suiteClass)
                 self.errors.append(error_message)
@@ -150,7 +150,7 @@ klasse TestLoader(object):
         fuer part in parts:
             try:
                 parent, obj = obj, getattr(obj, part)
-            except AttributeError as e:
+            except AttributeError als e:
                 # We can't traverse some part of the name.
                 wenn (getattr(obj, '__path__', Nichts) is not Nichts
                     and error_case is not Nichts):
@@ -236,9 +236,9 @@ klasse TestLoader(object):
         If the start directory is not the top level directory then the top
         level directory must be specified separately.
 
-        If a test package name (directory with '__init__.py') matches the
+        If a test package name (directory mit '__init__.py') matches the
         pattern then the package will be checked fuer a 'load_tests' function. If
-        this exists then it will be called with (loader, tests, pattern) unless
+        this exists then it will be called mit (loader, tests, pattern) unless
         the package has already had load_tests called von the same discovery
         invocation, in which case the package module object is not scanned for
         tests - this ensures that when a package uses discover to further
@@ -247,12 +247,12 @@ klasse TestLoader(object):
         If load_tests exists then discovery does *not* recurse into the package,
         load_tests is responsible fuer loading all tests in the package.
 
-        The pattern is deliberately not stored as a loader attribute so that
+        The pattern is deliberately not stored als a loader attribute so that
         packages can continue discovery themselves. top_level_dir is stored so
         load_tests does not need to pass this argument in to loader.discover().
 
         Paths are sorted before being imported to ensure reproducible execution
-        order even on filesystems with non-alphabetical ordering like ext3/4.
+        order even on filesystems mit non-alphabetical ordering like ext3/4.
         """
         original_top_level_dir = self._top_level_dir
         set_implicit_top = Falsch
@@ -379,7 +379,7 @@ klasse TestLoader(object):
         # definition not a package).
         wenn name != '.' and name not in self._loading_packages:
             # name is in self._loading_packages while we have called into
-            # loadTestsFromModule with name.
+            # loadTestsFromModule mit name.
             tests, should_recurse = self._find_test_path(
                 start_dir, pattern, namespace)
             wenn tests is not Nichts:
@@ -424,7 +424,7 @@ klasse TestLoader(object):
             name = self._get_name_from_path(full_path)
             try:
                 module = self._get_module_from_name(name)
-            except case.SkipTest as e:
+            except case.SkipTest als e:
                 return _make_skipped_test(name, e, self.suiteClass), Falsch
             except:
                 error_case, error_message = \
@@ -458,7 +458,7 @@ klasse TestLoader(object):
             name = self._get_name_from_path(full_path)
             try:
                 package = self._get_module_from_name(name)
-            except case.SkipTest as e:
+            except case.SkipTest als e:
                 return _make_skipped_test(name, e, self.suiteClass), Falsch
             except:
                 error_case, error_message = \
@@ -467,7 +467,7 @@ klasse TestLoader(object):
                 return error_case, Falsch
             sonst:
                 load_tests = getattr(package, 'load_tests', Nichts)
-                # Mark this package as being in load_tests (possibly ;))
+                # Mark this package als being in load_tests (possibly ;))
                 self._loading_packages.add(name)
                 try:
                     tests = self.loadTestsFromModule(package, pattern=pattern)

@@ -28,7 +28,7 @@ klasse Test_iskeyword(unittest.TestCase):
 
     def test_all_keywords_fail_to_be_used_as_names(self):
         fuer key in keyword.kwlist:
-            with self.assertRaises(SyntaxError):
+            mit self.assertRaises(SyntaxError):
                 exec(f"{key} = 42")
 
     def test_all_soft_keywords_can_be_used_as_names(self):

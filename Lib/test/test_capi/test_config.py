@@ -118,7 +118,7 @@ klasse CAPITests(unittest.TestCase):
             ))
 
         fuer name, option_type, sys_attr in options:
-            with self.subTest(name=name, option_type=option_type,
+            mit self.subTest(name=name, option_type=option_type,
                               sys_attr=sys_attr):
                 value = config_get(name)
                 wenn isinstance(option_type, types.GenericAlias):
@@ -141,7 +141,7 @@ klasse CAPITests(unittest.TestCase):
                     self.assertEqual(expected, value)
 
                     override = TEST_VALUE[option_type]
-                    with support.swap_attr(sys, sys_attr, override):
+                    mit support.swap_attr(sys, sys_attr, override):
                         self.assertEqual(config_get(name), override)
 
         # check that the test checks all options
@@ -152,7 +152,7 @@ klasse CAPITests(unittest.TestCase):
         # Test PyConfig_Get()
         config_get = _testcapi.config_get
 
-        # compare config options with sys.flags
+        # compare config options mit sys.flags
         fuer flag, name, negate in (
             ("debug", "parser_debug", Falsch),
             ("inspect", "inspect", Falsch),
@@ -174,7 +174,7 @@ klasse CAPITests(unittest.TestCase):
             ("int_max_str_digits", "int_max_str_digits", Falsch),
             # "gil", "thread_inherit_context" and "context_aware_warnings" are tested below
         ):
-            with self.subTest(flag=flag, name=name, negate=negate):
+            mit self.subTest(flag=flag, name=name, negate=negate):
                 value = config_get(name)
                 wenn negate:
                     value = not value
@@ -200,18 +200,18 @@ klasse CAPITests(unittest.TestCase):
         config_get = _testcapi.config_get
         nonexistent_key = 'NONEXISTENT_KEY'
         err_msg = f'unknown config option name: {nonexistent_key}'
-        with self.assertRaisesRegex(ValueError, err_msg):
+        mit self.assertRaisesRegex(ValueError, err_msg):
             config_get(nonexistent_key)
 
     def test_config_get_write_bytecode(self):
         # PyConfig_Get("write_bytecode") gets sys.dont_write_bytecode
-        # as an integer
+        # als an integer
         config_get = _testcapi.config_get
-        with support.swap_attr(sys, "dont_write_bytecode", 0):
+        mit support.swap_attr(sys, "dont_write_bytecode", 0):
             self.assertEqual(config_get('write_bytecode'), 1)
-        with support.swap_attr(sys, "dont_write_bytecode", "yes"):
+        mit support.swap_attr(sys, "dont_write_bytecode", "yes"):
             self.assertEqual(config_get('write_bytecode'), 0)
-        with support.swap_attr(sys, "dont_write_bytecode", []):
+        mit support.swap_attr(sys, "dont_write_bytecode", []):
             self.assertEqual(config_get('write_bytecode'), 1)
 
     def test_config_getint(self):
@@ -231,7 +231,7 @@ klasse CAPITests(unittest.TestCase):
         self.assertIsInstance(config_getint('allocator'), int)
 
         # platlibdir type is str
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             config_getint('platlibdir')
 
     def test_get_config_names(self):
@@ -241,7 +241,7 @@ klasse CAPITests(unittest.TestCase):
             self.assertIsInstance(name, str)
 
     def test_config_set_sys_attr(self):
-        # Test PyConfig_Set() with sys attributes
+        # Test PyConfig_Set() mit sys attributes
         config_get = _testcapi.config_get
         config_set = _testcapi.config_set
 
@@ -261,7 +261,7 @@ klasse CAPITests(unittest.TestCase):
             ('warnoptions', 'warnoptions', list[str]),
             ('xoptions', '_xoptions', dict[str, str | bool]),
         ):
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 wenn option_type == str:
                     test_values = ('TEST_REPLACE',)
                     invalid_types = (1, Nichts)
@@ -286,14 +286,14 @@ klasse CAPITests(unittest.TestCase):
                         self.assertEqual(getattr(sys, sys_attr), value)
 
                     fuer value in invalid_types:
-                        with self.assertRaises(TypeError):
+                        mit self.assertRaises(TypeError):
                             config_set(name, value)
                 finally:
                     setattr(sys, sys_attr, old_sys_value)
                     config_set(name, old_opt_value)
 
     def test_config_set_sys_flag(self):
-        # Test PyConfig_Set() with sys.flags
+        # Test PyConfig_Set() mit sys.flags
         config_get = _testcapi.config_get
         config_set = _testcapi.config_set
 
@@ -348,7 +348,7 @@ klasse CAPITests(unittest.TestCase):
                 invalid_values = (-5,)
                 invalid_types = (1.0, "abc")
 
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 old_value = config_get(name)
                 try:
                     fuer value in new_values:
@@ -365,11 +365,11 @@ klasse CAPITests(unittest.TestCase):
                                              expect_flag)
 
                     fuer value in invalid_values:
-                        with self.assertRaises(ValueError):
+                        mit self.assertRaises(ValueError):
                             config_set(name, value)
 
                     fuer value in invalid_types:
-                        with self.assertRaises(TypeError):
+                        mit self.assertRaises(TypeError):
                             config_set(name, value)
                 finally:
                     config_set(name, old_value)
@@ -394,8 +394,8 @@ klasse CAPITests(unittest.TestCase):
             ("dev_mode", Wahr),
             ("filesystem_encoding", "utf-8"),
         ):
-            with self.subTest(name=name, value=value):
-                with self.assertRaisesRegex(ValueError, r"read-only"):
+            mit self.subTest(name=name, value=value):
+                mit self.assertRaisesRegex(ValueError, r"read-only"):
                     config_set(name, value)
 
 

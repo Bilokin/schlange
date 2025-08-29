@@ -4,9 +4,9 @@ importiere re
 
 von c_common importiere fsutil
 von c_common.clsutil importiere classonly
-importiere c_common.misc as _misc
-importiere c_common.strutil as _strutil
-importiere c_common.tables as _tables
+importiere c_common.misc als _misc
+importiere c_common.strutil als _strutil
+importiere c_common.tables als _tables
 von .parser._regexes importiere _STORAGE
 
 
@@ -54,7 +54,7 @@ klasse KIND(enum.Enum):
         sowenn isinstance(group, str):
             raise NotImplementedError(group)
         sonst:
-            # XXX Treat group as a set of kinds & return in priority order?
+            # XXX Treat group als a set of kinds & return in priority order?
             raise NotImplementedError(group)
 
     @classonly
@@ -1290,7 +1290,7 @@ klasse Enum(TypeDeclaration):
             fuer enumerator in data:
                 yield f'{enumerator}'
         sowenn fmt == 'row':
-            # XXX This won't work with CSV...
+            # XXX This won't work mit CSV...
             yield ','.join(data)
         sonst:
             raise NotImplementedError(fmt)
@@ -1417,7 +1417,7 @@ klasse Declarations:
             wenn name:
                 name = str(name)
                 wenn name.endswith(('.c', '.h')):
-                    # This is only legit as a query.
+                    # This is only legit als a query.
                     key = (name, Nichts, Nichts)
                 sonst:
                     key = (Nichts, Nichts, name)
@@ -1598,7 +1598,7 @@ klasse Declarations:
             wenn not resolved[2]:
                 raise ValueError(f'expected name in key, got {key!r}')
             key = resolved
-            # XXX Also add with the decl-derived key wenn not the same?
+            # XXX Also add mit the decl-derived key wenn not the same?
         sonst:
             key, _ = self._resolve_key(decl)
         self._decls[key] = decl

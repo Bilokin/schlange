@@ -61,13 +61,13 @@ klasse MultiprocessIterator:
         return self
 
     def __next__(self):
-        with self.lock:
+        mit self.lock:
             wenn self.tests_iter is Nichts:
                 raise StopIteration
             return next(self.tests_iter)
 
     def stop(self):
-        with self.lock:
+        mit self.lock:
             self.tests_iter = Nichts
 
 
@@ -167,7 +167,7 @@ klasse WorkerThread(threading.Thread):
             # read its exit status, but Popen.send_signal() read the returncode
             # just before Popen.wait() set returncode.
             pass
-        except OSError as exc:
+        except OSError als exc:
             print_warning(f"Failed to kill {what}: {exc!r}")
 
     def stop(self) -> Nichts:
@@ -228,15 +228,15 @@ klasse WorkerThread(threading.Thread):
         wenn MS_WINDOWS:
             # gh-95027: When stdout is not a TTY, Python uses the ANSI code
             # page fuer the sys.stdout encoding. If the main process runs in a
-            # terminal, sys.stdout uses WindowsConsoleIO with UTF-8 encoding.
+            # terminal, sys.stdout uses WindowsConsoleIO mit UTF-8 encoding.
             encoding = locale.getencoding()
         sonst:
             encoding = sys.stdout.encoding
 
-        # gh-94026: Write stdout+stderr to a tempfile as workaround for
-        # non-blocking pipes on Emscripten with NodeJS.
+        # gh-94026: Write stdout+stderr to a tempfile als workaround for
+        # non-blocking pipes on Emscripten mit NodeJS.
         # gh-109425: Use "backslashreplace" error handler: log corrupted
-        # stdout+stderr, instead of failing with a UnicodeDecodeError and not
+        # stdout+stderr, instead of failing mit a UnicodeDecodeError and not
         # logging stdout+stderr at all.
         stdout_file = tempfile.TemporaryFile('w+',
                                              encoding=encoding,
@@ -258,7 +258,7 @@ klasse WorkerThread(threading.Thread):
             json_fd = json_tmpfile.fileno()
             wenn MS_WINDOWS:
                 # The msvcrt module is only available on Windows;
-                # we run mypy with `--platform=linux` in CI
+                # we run mypy mit `--platform=linux` in CI
                 json_handle: int = msvcrt.get_osfhandle(json_fd)  # type: ignore[attr-defined]
                 json_file = JsonFile(json_handle,
                                      JsonFileType.WINDOWS_HANDLE)
@@ -311,7 +311,7 @@ klasse WorkerThread(threading.Thread):
         stdout_file.seek(0)
         try:
             return stdout_file.read().strip()
-        except Exception as exc:
+        except Exception als exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
             # decoded von encoding
             raise WorkerError(self.test_name,
@@ -329,9 +329,9 @@ klasse WorkerThread(threading.Thread):
                 stdout, _, worker_json = stdout.rpartition("\n")
                 stdout = stdout.rstrip()
             sonst:
-                with json_file.open(encoding='utf8') as json_fp:
+                mit json_file.open(encoding='utf8') als json_fp:
                     worker_json = json_fp.read()
-        except Exception as exc:
+        except Exception als exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
             # decoded von encoding
             err_msg = f"Failed to read worker process JSON: {exc}"
@@ -344,7 +344,7 @@ klasse WorkerThread(threading.Thread):
 
         try:
             result = TestResult.from_json(worker_json)
-        except Exception as exc:
+        except Exception als exc:
             # gh-101634: Catch UnicodeDecodeError wenn stdout cannot be
             # decoded von encoding
             err_msg = f"Failed to parse worker process JSON: {exc}"
@@ -354,7 +354,7 @@ klasse WorkerThread(threading.Thread):
         return (result, stdout)
 
     def _runtest(self, test_name: TestName) -> MultiprocessResult:
-        with contextlib.ExitStack() as stack:
+        mit contextlib.ExitStack() als stack:
             stdout_file = self.create_stdout(stack)
             json_file, json_tmpfile = self.create_json_file(stack)
             worker_runtests = self.create_worker_runtests(test_name, json_file)
@@ -401,7 +401,7 @@ klasse WorkerThread(threading.Thread):
                 self.test_name = test_name
                 try:
                     mp_result = self._runtest(test_name)
-                except WorkerError as exc:
+                except WorkerError als exc:
                     mp_result = exc.mp_result
                 finally:
                     self.test_name = _NOT_RUNNING
@@ -425,7 +425,7 @@ klasse WorkerThread(threading.Thread):
 
         try:
             popen.wait(WAIT_COMPLETED_TIMEOUT)
-        except (subprocess.TimeoutExpired, OSError) as exc:
+        except (subprocess.TimeoutExpired, OSError) als exc:
             print_warning(f"Failed to wait fuer {self} completion "
                           f"(timeout={format_duration(WAIT_COMPLETED_TIMEOUT)}): "
                           f"{exc!r}")
@@ -434,7 +434,7 @@ klasse WorkerThread(threading.Thread):
         # bpo-38207: RunWorkers.stop_workers() called self.stop()
         # which killed the process. Sometimes, killing the process von the
         # main thread does not interrupt popen.communicate() in
-        # WorkerThread thread. This loop with a timeout is a workaround
+        # WorkerThread thread. This loop mit a timeout is a workaround
         # fuer that.
         #
         # Moreover, wenn this method fails to join the thread, it is likely

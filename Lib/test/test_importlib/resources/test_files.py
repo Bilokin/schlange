@@ -14,7 +14,7 @@ von test.support importiere os_helper, import_helper
 
 @contextlib.contextmanager
 def suppress_known_deprecation():
-    with warnings.catch_warnings(record=Wahr) as ctx:
+    mit warnings.catch_warnings(record=Wahr) als ctx:
         warnings.simplefilter('default', category=DeprecationWarning)
         yield ctx
 
@@ -43,7 +43,7 @@ klasse FilesTests:
         Files used to take a 'package' parameter. Make sure anyone
         passing by name is still supported.
         """
-        with suppress_known_deprecation():
+        mit suppress_known_deprecation():
             resources.files(package=self.data)
 
 
@@ -121,7 +121,7 @@ klasse ModuleFilesZipTests(DirectSpec, util.ZipSetup, ModulesFiles, unittest.Tes
 klasse ImplicitContextFiles:
     set_val = textwrap.dedent(
         f"""
-        importiere {resources.__name__} as res
+        importiere {resources.__name__} als res
         val = res.files().joinpath('res.txt').read_text(encoding='utf-8')
         """
     )
@@ -139,13 +139,13 @@ klasse ImplicitContextFiles:
 
     def test_implicit_files_package(self):
         """
-        Without any parameter, files() will infer the location as the caller.
+        Without any parameter, files() will infer the location als the caller.
         """
         assert importlib.import_module('somepkg').val == 'resources are the best'
 
     def test_implicit_files_submodule(self):
         """
-        Without any parameter, files() will infer the location as the caller.
+        Without any parameter, files() will infer the location als the caller.
         """
         assert importlib.import_module('somepkg.submod').val == 'resources are the best'
 
@@ -153,7 +153,7 @@ klasse ImplicitContextFiles:
         """
         Make a compiled-only copy of the importlib resources package.
 
-        Currently only code is copied, as importlib resources doesn't itself
+        Currently only code is copied, als importlib resources doesn't itself
         have any resources.
         """
         bin_site = self.fixtures.enter_context(os_helper.temp_dir())

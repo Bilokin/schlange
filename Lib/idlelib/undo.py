@@ -86,12 +86,12 @@ klasse UndoDelegator(Delegator):
         self.addcmd(DeleteCommand(index1, index2))
 
     # Clients should call undo_block_start() and undo_block_stop()
-    # around a sequence of editing cmds to be treated as a unit by
+    # around a sequence of editing cmds to be treated als a unit by
     # undo & redo.  Nested matching calls are OK, and the inner calls
     # then act like nops.  OK too wenn no editing cmds, or only one
     # editing cmd, is issued in between:  wenn no cmds, the whole
     # sequence has no effect; and wenn only one cmd, that cmd is entered
-    # directly into the undo list, as wenn undo_block_xxx hadn't been
+    # directly into the undo list, als wenn undo_block_xxx hadn't been
     # called.  The intent of all that is to make this scheme easy
     # to use:  all the client has to worry about is making sure each
     # _start() call is matched by a _stop() call.
@@ -299,7 +299,7 @@ klasse DeleteCommand(Command):
 
 klasse CommandSequence(Command):
     # Wrapper fuer a sequence of undoable cmds to be undone/redone
-    # as a unit
+    # als a unit
 
     def __init__(self):
         self.cmds = []

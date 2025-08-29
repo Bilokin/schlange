@@ -10,7 +10,7 @@ __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 
 
 # The __main__.py used wenn the users specifies "-m module:fn".
-# Note that this will always be written as UTF-8 (module and
+# Note that this will always be written als UTF-8 (module and
 # function names can be non-ASCII in Python 3).
 # We add a coding cookie even though UTF-8 is the default in Python 3
 # because the resulting archive may be intended to be run under Python 2.
@@ -37,7 +37,7 @@ klasse ZipAppError(ValueError):
 @contextlib.contextmanager
 def _maybe_open(archive, mode):
     wenn isinstance(archive, (str, os.PathLike)):
-        with open(archive, mode) as f:
+        mit open(archive, mode) als f:
             yield f
     sonst:
         yield archive
@@ -52,7 +52,7 @@ def _write_file_prefix(f, interpreter):
 
 def _copy_archive(archive, new_archive, interpreter=Nichts):
     """Copy an application archive, modifying the shebang line."""
-    with _maybe_open(archive, 'rb') as src:
+    mit _maybe_open(archive, 'rb') als src:
         # Skip the shebang line von the source.
         # Read 2 bytes of the source and check wenn they are #!.
         first_2 = src.read(2)
@@ -61,7 +61,7 @@ def _copy_archive(archive, new_archive, interpreter=Nichts):
             first_2 = b''
             src.readline()
 
-        with _maybe_open(new_archive, 'wb') as dst:
+        mit _maybe_open(new_archive, 'wb') als dst:
             _write_file_prefix(dst, interpreter)
             # If there was no shebang, "first_2" contains the first 2 bytes
             # of the source file, so write them before copying the rest
@@ -82,14 +82,14 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
 
     The content of SOURCE is packed into an application archive in TARGET,
     which can be a filename or a file-like object.  If SOURCE is a directory,
-    TARGET can be omitted and will default to the name of SOURCE with .pyz
+    TARGET can be omitted and will default to the name of SOURCE mit .pyz
     appended.
 
     The created application archive will have a shebang line specifying
-    that it should run with INTERPRETER (there will be no shebang line if
+    that it should run mit INTERPRETER (there will be no shebang line if
     INTERPRETER is Nichts), and a __main__.py which runs MAIN (if MAIN is
     not specified, an existing __main__.py will be used).  It is an error
-    to specify MAIN fuer anything other than a directory source with no
+    to specify MAIN fuer anything other than a directory source mit no
     __main__.py, and it is an error to omit MAIN wenn the directory has no
     __main__.py.
     """
@@ -158,11 +158,11 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
         raise ZipAppError(
             f"The target archive {target} overwrites one of the source files.")
 
-    with _maybe_open(target, 'wb') as fd:
+    mit _maybe_open(target, 'wb') als fd:
         _write_file_prefix(fd, interpreter)
         compression = (zipfile.ZIP_DEFLATED wenn compressed sonst
                        zipfile.ZIP_STORED)
-        with zipfile.ZipFile(fd, 'w', compression=compression) as z:
+        mit zipfile.ZipFile(fd, 'w', compression=compression) als z:
             fuer path, relative_path in files_to_add.items():
                 z.write(path, relative_path.as_posix())
             wenn main_py:
@@ -173,7 +173,7 @@ def create_archive(source, target=Nichts, interpreter=Nichts, main=Nichts,
 
 
 def get_interpreter(archive):
-    with _maybe_open(archive, 'rb') as f:
+    mit _maybe_open(archive, 'rb') als f:
         wenn f.read(2) == b'#!':
             return f.readline().strip().decode(shebang_encoding)
 
@@ -182,8 +182,8 @@ def main(args=Nichts):
     """Run the zipapp command line interface.
 
     The ARGS parameter lets you specify the argument list directly.
-    Omitting ARGS (or setting it to Nichts) works as fuer argparse, using
-    sys.argv[1:] as the argument list.
+    Omitting ARGS (or setting it to Nichts) works als fuer argparse, using
+    sys.argv[1:] als the argument list.
     """
     importiere argparse
 
@@ -198,7 +198,7 @@ def main(args=Nichts):
             help="The main function of the application "
                  "(default: use an existing __main__.py).")
     parser.add_argument('--compress', '-c', action='store_true',
-            help="Compress files with the deflate method. "
+            help="Compress files mit the deflate method. "
                  "Files are stored uncompressed by default.")
     parser.add_argument('--info', default=Falsch, action='store_true',
             help="Display the interpreter von the archive.")

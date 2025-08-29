@@ -10,7 +10,7 @@ von typing importiere Literal, Final
 def write_file(filename: str, new_contents: str) -> Nichts:
     """Write new content to file, iff the content changed."""
     try:
-        with open(filename, encoding="utf-8") as fp:
+        mit open(filename, encoding="utf-8") als fp:
             old_contents = fp.read()
 
         wenn old_contents == new_contents:
@@ -20,7 +20,7 @@ def write_file(filename: str, new_contents: str) -> Nichts:
         pass
     # Atomic write using a temporary file and os.replace()
     filename_new = f"{filename}.new"
-    with open(filename_new, "w", encoding="utf-8") as fp:
+    mit open(filename_new, "w", encoding="utf-8") als fp:
         fp.write(new_contents)
     try:
         os.replace(filename_new, filename)

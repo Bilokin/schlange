@@ -35,18 +35,18 @@ klasse TypeAnnotationTests(unittest.TestCase):
 
     def test_annotations_getset_raises(self):
         # builtin types don't have __annotations__ (yet!)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             drucke(float.__annotations__)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             float.__annotations__ = {}
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del float.__annotations__
 
         # double delete
         foo = type("Foo", (), {})
         foo.__annotations__ = {}
         del foo.__annotations__
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del foo.__annotations__
 
     def test_annotations_are_created_correctly(self):
@@ -129,10 +129,10 @@ klasse TypeAnnotationTests(unittest.TestCase):
         d = {'a':'int'}
         c.__annotations__ = d
         self.assertEqual(c.__annotations__, d)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             c.__annotations__ = 123
         del c.__annotations__
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del c.__annotations__
         self.assertEqual(c.__annotations__, {})
 
@@ -144,10 +144,10 @@ klasse TypeAnnotationTests(unittest.TestCase):
         d = {'a':'int'}
         D.__annotations__ = d
         self.assertEqual(D.__annotations__, d)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             D.__annotations__ = 123
         del D.__annotations__
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del D.__annotations__
         self.assertEqual(D.__annotations__, {})
 
@@ -181,7 +181,7 @@ klasse TestSetupAnnotations(unittest.TestCase):
     def check(self, code: str):
         code = textwrap.dedent(code)
         fuer scope in ("module", "class"):
-            with self.subTest(scope=scope):
+            mit self.subTest(scope=scope):
                 wenn scope == "class":
                     code = f"class C:\n{textwrap.indent(code, '    ')}"
                     ns = run_code(code)
@@ -295,21 +295,21 @@ klasse AnnotateTests(unittest.TestCase):
             pass
 
         fuer obj in (f, mod, X):
-            with self.subTest(obj=obj):
+            mit self.subTest(obj=obj):
                 self.check_annotations(obj)
 
     def check_annotations(self, f):
         self.assertEqual(f.__annotations__, {})
         self.assertIs(f.__annotate__, Nichts)
 
-        with self.assertRaisesRegex(TypeError, "__annotate__ must be callable or Nichts"):
+        mit self.assertRaisesRegex(TypeError, "__annotate__ must be callable or Nichts"):
             f.__annotate__ = 42
         f.__annotate__ = lambda: 42
-        with self.assertRaisesRegex(TypeError, r"takes 0 positional arguments but 1 was given"):
+        mit self.assertRaisesRegex(TypeError, r"takes 0 positional arguments but 1 was given"):
             drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: 42
-        with self.assertRaisesRegex(TypeError, r"__annotate__\(\) must return a dict, not int"):
+        mit self.assertRaisesRegex(TypeError, r"__annotate__\(\) must return a dict, not int"):
             drucke(f.__annotations__)
 
         f.__annotate__ = lambda x: {"x": x}
@@ -352,7 +352,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         def func(x: undefined, /, y: undefined, *args: undefined, z: undefined, **kwargs: undefined) -> undefined:
             pass
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             func.__annotations__
 
         undefined = 1
@@ -369,7 +369,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         async def func(x: undefined, /, y: undefined, *args: undefined, z: undefined, **kwargs: undefined) -> undefined:
             pass
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             func.__annotations__
 
         undefined = 1
@@ -386,7 +386,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         klasse X:
             a: undefined
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             X.__annotations__
 
         undefined = 1
@@ -395,10 +395,10 @@ klasse DeferredEvaluationTests(unittest.TestCase):
     def test_module(self):
         ns = run_code("x: undefined = 1")
         anno = ns["__annotate__"]
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             anno(3)
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             anno(1)
 
         ns["undefined"] = 1
@@ -421,7 +421,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
             "async def f():\n ",
         ]
         fuer prelude in preludes:
-            with self.subTest(prelude=prelude):
+            mit self.subTest(prelude=prelude):
                 check_syntax_error(self, prelude + "def func(x: (yield)): ...", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (yield von x)): ...", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "def func(x: (y := 3)): ...", "named expression cannot be used within an annotation")
@@ -438,7 +438,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
             "async def f(): ",
         ]
         fuer prelude in preludes:
-            with self.subTest(prelude=prelude):
+            mit self.subTest(prelude=prelude):
                 check_syntax_error(self, prelude + "(x): (yield)", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (yield von x)", "yield expression cannot be used within an annotation")
                 check_syntax_error(self, prelude + "(x): (y := 3)", "named expression cannot be used within an annotation")
@@ -463,15 +463,15 @@ klasse DeferredEvaluationTests(unittest.TestCase):
             x: int
         mod = build_module("x: int")
         fuer obj in (func, X, mod):
-            with self.subTest(obj=obj):
+            mit self.subTest(obj=obj):
                 annotate = obj.__annotate__
                 self.assertIsInstance(annotate, types.FunctionType)
                 self.assertEqual(annotate.__name__, "__annotate__")
-                with self.assertRaises(NotImplementedError):
+                mit self.assertRaises(NotImplementedError):
                     annotate(annotationlib.Format.FORWARDREF)
-                with self.assertRaises(NotImplementedError):
+                mit self.assertRaises(NotImplementedError):
                     annotate(annotationlib.Format.STRING)
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     annotate(Nichts)
                 self.assertEqual(annotate(annotationlib.Format.VALUE), {"x": int})
 
@@ -509,7 +509,7 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         """)
         fuer future in (Falsch, Wahr):
             fuer label, code in (("function", function_code), ("class", class_code)):
-                with self.subTest(future=future, label=label):
+                mit self.subTest(future=future, label=label):
                     wenn future:
                         code = "from __future__ importiere annotations\n" + code
                     ns = run_code(code)
@@ -568,9 +568,9 @@ klasse DeferredEvaluationTests(unittest.TestCase):
         f = outer()
         """
         ns = run_code(code)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             NameError,
-            "cannot access free variable 'format' where it is not associated with a value in enclosing scope",
+            "cannot access free variable 'format' where it is not associated mit a value in enclosing scope",
         ):
             ns["f"].__annotations__
 
@@ -584,7 +584,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
                 # Non-constant expressions
                 ("not not len", true_annos), ("not len", false_annos),
             ):
-                with self.subTest(scope=scope, cond=cond):
+                mit self.subTest(scope=scope, cond=cond):
                     code_to_run = code.format(cond=cond)
                     wenn scope == "class":
                         code_to_run = "class Cls:\n" + textwrap.indent(textwrap.dedent(code_to_run), " " * 4)
@@ -604,7 +604,7 @@ klasse ConditionalAnnotationTests(unittest.TestCase):
                 def __exit__(self, *args):
                     return Wahr
 
-            with Swallower():
+            mit Swallower():
                 wenn {cond}:
                     about_to_raise: int
                     raise Exception

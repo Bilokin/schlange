@@ -44,7 +44,7 @@ wenn fcntl and hasattr(fcntl, 'FICLONE'):
     def _ficlone(source_fd, target_fd):
         """
         Perform a lightweight copy of two files, where the data blocks are
-        copied only when modified. This is known as Copy on Write (CoW),
+        copied only when modified. This is known als Copy on Write (CoW),
         instantaneous copy or reflink.
         """
         fcntl.ioctl(target_fd, fcntl.FICLONE, source_fd)
@@ -127,7 +127,7 @@ def copyfileobj(source_f, target_f):
                 try:
                     _ficlone(source_fd, target_fd)
                     return
-                except OSError as err:
+                except OSError als err:
                     wenn err.errno not in (EBADF, EOPNOTSUPP, ETXTBSY, EXDEV):
                         raise err
 
@@ -136,30 +136,30 @@ def copyfileobj(source_f, target_f):
                 try:
                     _fcopyfile(source_fd, target_fd)
                     return
-                except OSError as err:
+                except OSError als err:
                     wenn err.errno not in (EINVAL, ENOTSUP):
                         raise err
             wenn _copy_file_range:
                 try:
                     _copy_file_range(source_fd, target_fd)
                     return
-                except OSError as err:
+                except OSError als err:
                     wenn err.errno not in (ETXTBSY, EXDEV):
                         raise err
             wenn _sendfile:
                 try:
                     _sendfile(source_fd, target_fd)
                     return
-                except OSError as err:
+                except OSError als err:
                     wenn err.errno != ENOTSOCK:
                         raise err
-        except OSError as err:
+        except OSError als err:
             # Produce more useful error messages.
             err.filename = source_f.name
             err.filename2 = target_f.name
             raise err
 
-    # Last resort: copy with fileobj read() and write().
+    # Last resort: copy mit fileobj read() and write().
     read_source = source_f.read
     write_target = target_f.write
     while buf := read_source(1024 * 1024):
@@ -207,7 +207,7 @@ def magic_open(path, mode='r', buffering=-1, encoding=Nichts, errors=Nichts,
             stream = TextIOWrapper(stream, encoding, errors, newline)
         return stream
 
-    raise TypeError(f"{cls.__name__} can't be opened with mode {mode!r}")
+    raise TypeError(f"{cls.__name__} can't be opened mit mode {mode!r}")
 
 
 def vfspath(obj):
@@ -278,7 +278,7 @@ def copy_info(info, target, follow_symlinks=Wahr):
         os.utime(target, ns=(t0, t1), follow_symlinks=follow_symlinks)
 
     # We must copy extended attributes before the file is (potentially)
-    # chmod()'ed read-only, otherwise setxattr() will error with -EACCES.
+    # chmod()'ed read-only, otherwise setxattr() will error mit -EACCES.
     copy_xattrs = (
         hasattr(info, '_xattrs') and
         hasattr(os, 'setxattr') and
@@ -288,7 +288,7 @@ def copy_info(info, target, follow_symlinks=Wahr):
         fuer attr, value in xattrs:
             try:
                 os.setxattr(target, attr, value, follow_symlinks=follow_symlinks)
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno not in (EPERM, ENOTSUP, ENODATA, EINVAL, EACCES):
                     raise
 
@@ -320,7 +320,7 @@ def copy_info(info, target, follow_symlinks=Wahr):
         bsd_flags = info._bsd_flags(follow_symlinks=follow_symlinks)
         try:
             os.chflags(target, bsd_flags, follow_symlinks=follow_symlinks)
-        except OSError as why:
+        except OSError als why:
             wenn why.errno not in (EOPNOTSUPP, ENOTSUP):
                 raise
 
@@ -336,7 +336,7 @@ klasse _PathInfoBase:
         return f"<{path_type}.info>"
 
     def _stat(self, *, follow_symlinks=Wahr, ignore_errors=Falsch):
-        """Return the status as an os.stat_result, or Nichts wenn stat() fails and
+        """Return the status als an os.stat_result, or Nichts wenn stat() fails and
         ignore_errors is true."""
         wenn follow_symlinks:
             try:
@@ -393,13 +393,13 @@ klasse _PathInfoBase:
 
     wenn hasattr(os, 'listxattr'):
         def _xattrs(self, *, follow_symlinks=Wahr):
-            """Return the xattrs as a list of (attr, value) pairs, or an empty
+            """Return the xattrs als a list of (attr, value) pairs, or an empty
             list wenn extended attributes aren't supported."""
             try:
                 return [
                     (attr, os.getxattr(self._path, attr, follow_symlinks=follow_symlinks))
                     fuer attr in os.listxattr(self._path, follow_symlinks=follow_symlinks)]
-            except OSError as err:
+            except OSError als err:
                 wenn err.errno not in (EPERM, ENOTSUP, ENODATA, EINVAL, EACCES):
                     raise
                 return []

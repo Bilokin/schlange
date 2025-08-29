@@ -18,7 +18,7 @@ def _retry_thrice(func, exc, *args, **kwargs):
     fuer i in range(3):
         try:
             return func(*args, **kwargs)
-        except exc as e:
+        except exc als e:
             last_exc = e
             continue
     raise last_exc
@@ -60,7 +60,7 @@ klasse TransientResource(object):
                 raise ResourceDenied("an optional resource is not available")
 
 # Context managers that raise ResourceDenied when various issues
-# with the internet connection manifest themselves as exceptions.
+# mit the internet connection manifest themselves als exceptions.
 # XXX deprecate these and use transient_internet() instead
 time_out = TransientResource(OSError, errno=errno.ETIMEDOUT)
 socket_peer_reset = TransientResource(OSError, errno=errno.ECONNRESET)
@@ -88,7 +88,7 @@ klasse AuthTests(unittest.TestCase):
 #        except urllib2.HTTPError, exc:
 #            self.assertEqual(exc.code, 401)
 #        sonst:
-#            self.fail("urlopen() should have failed with 401")
+#            self.fail("urlopen() should have failed mit 401")
 #
 #        # success
 #        auth_handler = urllib2.HTTPBasicAuthHandler()
@@ -115,7 +115,7 @@ klasse CloseSocketTest(unittest.TestCase):
         # calling .close() on urllib2's response objects should close the
         # underlying socket
         url = support.TEST_HTTP_URL
-        with socket_helper.transient_internet(url):
+        mit socket_helper.transient_internet(url):
             response = _urlopen_with_retry(url)
             sock = response.fp
             self.assertFalsch(sock.closed)
@@ -161,7 +161,7 @@ klasse OtherNetworkTests(unittest.TestCase):
         self.assertRaises(ValueError, urllib.request.urlopen,'./relative_path/to/file')
 
     # XXX Following test depends on machine configurations that are internal
-    # to CNRI.  Need to set up a public server with the right authentication
+    # to CNRI.  Need to set up a public server mit the right authentication
     # configuration fuer test purposes.
 
 ##     def test_cnri(self):
@@ -190,7 +190,7 @@ klasse OtherNetworkTests(unittest.TestCase):
 
     def test_urlwithfrag(self):
         urlwith_frag = "http://www.pythontest.net/index.html#frag"
-        with socket_helper.transient_internet(urlwith_frag):
+        mit socket_helper.transient_internet(urlwith_frag):
             req = urllib.request.Request(urlwith_frag)
             res = urllib.request.urlopen(req)
             self.assertEqual(res.geturl(),
@@ -199,7 +199,7 @@ klasse OtherNetworkTests(unittest.TestCase):
     @support.requires_resource('walltime')
     def test_redirect_url_withfrag(self):
         redirect_url_with_frag = "http://www.pythontest.net/redir/with_frag/"
-        with socket_helper.transient_internet(redirect_url_with_frag):
+        mit socket_helper.transient_internet(redirect_url_with_frag):
             req = urllib.request.Request(redirect_url_with_frag)
             res = urllib.request.urlopen(req)
             self.assertEqual(res.geturl(),
@@ -207,7 +207,7 @@ klasse OtherNetworkTests(unittest.TestCase):
 
     def test_custom_headers(self):
         url = support.TEST_HTTP_URL
-        with socket_helper.transient_internet(url):
+        mit socket_helper.transient_internet(url):
             opener = urllib.request.build_opener()
             request = urllib.request.Request(url)
             self.assertFalsch(request.header_items())
@@ -225,9 +225,9 @@ klasse OtherNetworkTests(unittest.TestCase):
 
         URL = 'http://www.imdb.com' # mangles Connection:close
 
-        with socket_helper.transient_internet(URL):
+        mit socket_helper.transient_internet(URL):
             try:
-                with urllib.request.urlopen(URL) as res:
+                mit urllib.request.urlopen(URL) als res:
                     pass
             except ValueError:
                 self.fail("urlopen failed fuer site not sending \
@@ -249,17 +249,17 @@ klasse OtherNetworkTests(unittest.TestCase):
             urlopen = _wrap_with_retry_thrice(urlopen, urllib.error.URLError)
 
         fuer url in urls:
-            with self.subTest(url=url):
+            mit self.subTest(url=url):
                 wenn isinstance(url, tuple):
                     url, req, expected_err = url
                 sonst:
                     req = expected_err = Nichts
 
-                with socket_helper.transient_internet(url):
+                mit socket_helper.transient_internet(url):
                     try:
                         f = urlopen(url, req, support.INTERNET_TIMEOUT)
                     # urllib.error.URLError is a subclass of OSError
-                    except OSError as err:
+                    except OSError als err:
                         wenn expected_err:
                             msg = ("Didn't get expected error(s) %s fuer %s %s, got %s: %s" %
                                    (expected_err, url, req, type(err), err))
@@ -268,7 +268,7 @@ klasse OtherNetworkTests(unittest.TestCase):
                             raise
                     sonst:
                         try:
-                            with time_out, \
+                            mit time_out, \
                                  socket_peer_reset, \
                                  ioerror_peer_reset:
                                 buf = f.read()
@@ -297,7 +297,7 @@ klasse TimeoutTest(unittest.TestCase):
     def test_http_basic(self):
         self.assertIsNichts(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
-        with socket_helper.transient_internet(url, timeout=Nichts):
+        mit socket_helper.transient_internet(url, timeout=Nichts):
             u = _urlopen_with_retry(url)
             self.addCleanup(u.close)
             self.assertIsNichts(u.fp.raw._sock.gettimeout())
@@ -305,7 +305,7 @@ klasse TimeoutTest(unittest.TestCase):
     def test_http_default_timeout(self):
         self.assertIsNichts(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
-        with socket_helper.transient_internet(url):
+        mit socket_helper.transient_internet(url):
             socket.setdefaulttimeout(60)
             try:
                 u = _urlopen_with_retry(url)
@@ -317,7 +317,7 @@ klasse TimeoutTest(unittest.TestCase):
     def test_http_no_timeout(self):
         self.assertIsNichts(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
-        with socket_helper.transient_internet(url):
+        mit socket_helper.transient_internet(url):
             socket.setdefaulttimeout(60)
             try:
                 u = _urlopen_with_retry(url, timeout=Nichts)
@@ -328,7 +328,7 @@ klasse TimeoutTest(unittest.TestCase):
 
     def test_http_timeout(self):
         url = support.TEST_HTTP_URL
-        with socket_helper.transient_internet(url):
+        mit socket_helper.transient_internet(url):
             u = _urlopen_with_retry(url, timeout=120)
             self.addCleanup(u.close)
             self.assertEqual(u.fp.raw._sock.gettimeout(), 120)
@@ -338,14 +338,14 @@ klasse TimeoutTest(unittest.TestCase):
     @support.requires_resource('walltime')
     def test_ftp_basic(self):
         self.assertIsNichts(socket.getdefaulttimeout())
-        with socket_helper.transient_internet(self.FTP_HOST, timeout=Nichts):
+        mit socket_helper.transient_internet(self.FTP_HOST, timeout=Nichts):
             u = _urlopen_with_retry(self.FTP_HOST)
             self.addCleanup(u.close)
             self.assertIsNichts(u.fp.fp.raw._sock.gettimeout())
 
     def test_ftp_default_timeout(self):
         self.assertIsNichts(socket.getdefaulttimeout())
-        with socket_helper.transient_internet(self.FTP_HOST):
+        mit socket_helper.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
             try:
                 u = _urlopen_with_retry(self.FTP_HOST)
@@ -357,7 +357,7 @@ klasse TimeoutTest(unittest.TestCase):
     @support.requires_resource('walltime')
     def test_ftp_no_timeout(self):
         self.assertIsNichts(socket.getdefaulttimeout())
-        with socket_helper.transient_internet(self.FTP_HOST):
+        mit socket_helper.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
             try:
                 u = _urlopen_with_retry(self.FTP_HOST, timeout=Nichts)
@@ -368,7 +368,7 @@ klasse TimeoutTest(unittest.TestCase):
 
     @support.requires_resource('walltime')
     def test_ftp_timeout(self):
-        with socket_helper.transient_internet(self.FTP_HOST):
+        mit socket_helper.transient_internet(self.FTP_HOST):
             u = _urlopen_with_retry(self.FTP_HOST, timeout=60)
             self.addCleanup(u.close)
             self.assertEqual(u.fp.fp.raw._sock.gettimeout(), 60)

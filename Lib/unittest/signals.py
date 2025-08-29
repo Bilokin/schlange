@@ -15,7 +15,7 @@ klasse _InterruptHandler(object):
                 # Pretend it's signal.default_int_handler instead.
                 default_handler = signal.default_int_handler
             sowenn default_handler == signal.SIG_IGN:
-                # Not quite the same thing as SIG_IGN, but the closest we
+                # Not quite the same thing als SIG_IGN, but the closest we
                 # can make it: do nothing.
                 def default_handler(unused_signum, unused_frame):
                     pass

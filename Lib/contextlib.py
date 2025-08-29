@@ -64,7 +64,7 @@ klasse AbstractAsyncContextManager(abc.ABC):
 
 
 klasse ContextDecorator(object):
-    "A base klasse or mixin that enables context managers to work as decorators."
+    "A base klasse or mixin that enables context managers to work als decorators."
 
     def _recreate_cm(self):
         """Return a recreated instance of self.
@@ -81,13 +81,13 @@ klasse ContextDecorator(object):
     def __call__(self, func):
         @wraps(func)
         def inner(*args, **kwds):
-            with self._recreate_cm():
+            mit self._recreate_cm():
                 return func(*args, **kwds)
         return inner
 
 
 klasse AsyncContextDecorator(object):
-    "A base klasse or mixin that enables async context managers to work as decorators."
+    "A base klasse or mixin that enables async context managers to work als decorators."
 
     def _recreate_cm(self):
         """Return a recreated instance of self.
@@ -97,7 +97,7 @@ klasse AsyncContextDecorator(object):
     def __call__(self, func):
         @wraps(func)
         async def inner(*args, **kwds):
-            async with self._recreate_cm():
+            async mit self._recreate_cm():
                 return await func(*args, **kwds)
         return inner
 
@@ -160,12 +160,12 @@ klasse _GeneratorContextManager(
                 value = typ()
             try:
                 self.gen.throw(value)
-            except StopIteration as exc:
+            except StopIteration als exc:
                 # Suppress StopIteration *unless* it's the same exception that
                 # was passed to throw().  This prevents a StopIteration
                 # raised inside the "with" statement von being suppressed.
                 return exc is not value
-            except RuntimeError as exc:
+            except RuntimeError als exc:
                 # Don't re-raise the passed in exception. (issue27122)
                 wenn exc is value:
                     exc.__traceback__ = traceback
@@ -183,7 +183,7 @@ klasse _GeneratorContextManager(
                     value.__traceback__ = traceback
                     return Falsch
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 # only re-raise wenn it's *not* the exception that was
                 # passed to throw(), because __exit__() must not raise
                 # an exception unless __exit__() itself failed.  But throw()
@@ -233,12 +233,12 @@ klasse _AsyncGeneratorContextManager(
                 value = typ()
             try:
                 await self.gen.athrow(value)
-            except StopAsyncIteration as exc:
+            except StopAsyncIteration als exc:
                 # Suppress StopIteration *unless* it's the same exception that
                 # was passed to throw().  This prevents a StopIteration
                 # raised inside the "with" statement von being suppressed.
                 return exc is not value
-            except RuntimeError as exc:
+            except RuntimeError als exc:
                 # Don't re-raise the passed in exception. (issue27122)
                 wenn exc is value:
                     exc.__traceback__ = traceback
@@ -256,7 +256,7 @@ klasse _AsyncGeneratorContextManager(
                     value.__traceback__ = traceback
                     return Falsch
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 # only re-raise wenn it's *not* the exception that was
                 # passed to throw(), because __exit__() must not raise
                 # an exception unless __exit__() itself failed.  But throw()
@@ -288,7 +288,7 @@ def contextmanager(func):
 
     This makes this:
 
-        with some_generator(<arguments>) as <variable>:
+        mit some_generator(<arguments>) als <variable>:
             <body>
 
     equivalent to this:
@@ -321,7 +321,7 @@ def asynccontextmanager(func):
 
     This makes this:
 
-        async with some_async_generator(<arguments>) as <variable>:
+        async mit some_async_generator(<arguments>) als <variable>:
             <body>
 
     equivalent to this:
@@ -344,7 +344,7 @@ klasse closing(AbstractContextManager):
 
     Code like this:
 
-        with closing(<module>.open(<arguments>)) as f:
+        mit closing(<module>.open(<arguments>)) als f:
             <block>
 
     is equivalent to this:
@@ -366,11 +366,11 @@ klasse closing(AbstractContextManager):
 
 klasse aclosing(AbstractAsyncContextManager):
     """Async context manager fuer safely finalizing an asynchronously cleaned-up
-    resource such as an async generator, calling its ``aclose()`` method.
+    resource such als an async generator, calling its ``aclose()`` method.
 
     Code like this:
 
-        async with aclosing(<module>.fetch(<arguments>)) as agen:
+        async mit aclosing(<module>.fetch(<arguments>)) als agen:
             <block>
 
     is equivalent to this:
@@ -412,12 +412,12 @@ klasse redirect_stdout(_RedirectStream):
     """Context manager fuer temporarily redirecting stdout to another file.
 
         # How to send help() to stderr
-        with redirect_stdout(sys.stderr):
+        mit redirect_stdout(sys.stderr):
             help(dir)
 
         # How to write help() to a file
-        with open('help.txt', 'w') as f:
-            with redirect_stdout(f):
+        mit open('help.txt', 'w') als f:
+            mit redirect_stdout(f):
                 help(pow)
     """
 
@@ -433,10 +433,10 @@ klasse redirect_stderr(_RedirectStream):
 klasse suppress(AbstractContextManager):
     """Context manager to suppress specified exceptions
 
-    After the exception is suppressed, execution proceeds with the next
-    statement following the with statement.
+    After the exception is suppressed, execution proceeds mit the next
+    statement following the mit statement.
 
-         with suppress(FileNotFoundError):
+         mit suppress(FileNotFoundError):
              os.remove(somefile)
          # Execution still resumes here wenn the file was already removed
     """
@@ -493,10 +493,10 @@ klasse _BaseExitStack:
         return new_stack
 
     def push(self, exit):
-        """Registers a callback with the standard __exit__ method signature.
+        """Registers a callback mit the standard __exit__ method signature.
 
         Can suppress exceptions the same way __exit__ method can.
-        Also accepts any object with an __exit__ method (registering a call
+        Also accepts any object mit an __exit__ method (registering a call
         to the method instead of the object itself).
         """
         # We use an unbound method rather than a bound method to follow
@@ -510,12 +510,12 @@ klasse _BaseExitStack:
             self._push_exit_callback(exit)
         sonst:
             self._push_cm_exit(exit, exit_method)
-        return exit  # Allow use as a decorator.
+        return exit  # Allow use als a decorator.
 
     def enter_context(self, cm):
         """Enters the supplied context manager.
 
-        If successful, also pushes its __exit__ method as a callback and
+        If successful, also pushes its __exit__ method als a callback and
         returns the result of the __enter__ method.
         """
         # We look up the special methods on the type to match the with
@@ -539,10 +539,10 @@ klasse _BaseExitStack:
         _exit_wrapper = self._create_cb_wrapper(callback, *args, **kwds)
 
         # We changed the signature, so using @wraps is not appropriate, but
-        # setting __wrapped__ may still help with introspection.
+        # setting __wrapped__ may still help mit introspection.
         _exit_wrapper.__wrapped__ = callback
         self._push_exit_callback(_exit_wrapper)
-        return callback  # Allow use as a decorator
+        return callback  # Allow use als a decorator
 
     def _push_cm_exit(self, cm, cm_exit):
         """Helper to correctly register callbacks to __exit__ methods."""
@@ -558,10 +558,10 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
     """Context manager fuer dynamic management of a stack of exit callbacks.
 
     For example:
-        with ExitStack() as stack:
+        mit ExitStack() als stack:
             files = [stack.enter_context(open(fname)) fuer fname in filenames]
             # All opened files will automatically be closed at the end of
-            # the with statement, even wenn attempts to open files later
+            # the mit statement, even wenn attempts to open files later
             # in the list raise an exception.
     """
 
@@ -572,8 +572,8 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
         exc = exc_details[1]
         received_exc = exc is not Nichts
 
-        # We manipulate the exception state so it behaves as though
-        # we were actually nesting multiple with statements
+        # We manipulate the exception state so it behaves als though
+        # we were actually nesting multiple mit statements
         frame_exc = sys.exception()
         def _fix_exception_context(new_exc, old_exc):
             # Context may not be correct, so find the end of the chain
@@ -605,7 +605,7 @@ klasse ExitStack(_BaseExitStack, AbstractContextManager):
                     suppressed_exc = Wahr
                     pending_raise = Falsch
                     exc = Nichts
-            except BaseException as new_exc:
+            except BaseException als new_exc:
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc, exc)
                 pending_raise = Wahr
@@ -633,11 +633,11 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
     callbacks.
 
     For example:
-        async with AsyncExitStack() as stack:
+        async mit AsyncExitStack() als stack:
             connections = [await stack.enter_async_context(get_connection())
                 fuer i in range(5)]
             # All opened connections will automatically be released at the
-            # end of the async with statement, even wenn attempts to open a
+            # end of the async mit statement, even wenn attempts to open a
             # connection later in the list raise an exception.
     """
 
@@ -654,7 +654,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
     async def enter_async_context(self, cm):
         """Enters the supplied async context manager.
 
-        If successful, also pushes its __aexit__ method as a callback and
+        If successful, also pushes its __aexit__ method als a callback and
         returns the result of the __aenter__ method.
         """
         cls = type(cm)
@@ -670,11 +670,11 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         return result
 
     def push_async_exit(self, exit):
-        """Registers a coroutine function with the standard __aexit__ method
+        """Registers a coroutine function mit the standard __aexit__ method
         signature.
 
         Can suppress exceptions the same way __aexit__ method can.
-        Also accepts any object with an __aexit__ method (registering a call
+        Also accepts any object mit an __aexit__ method (registering a call
         to the method instead of the object itself).
         """
         _cb_type = type(exit)
@@ -685,7 +685,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
             self._push_exit_callback(exit, Falsch)
         sonst:
             self._push_async_cm_exit(exit, exit_method)
-        return exit  # Allow use as a decorator
+        return exit  # Allow use als a decorator
 
     def push_async_callback(self, callback, /, *args, **kwds):
         """Registers an arbitrary coroutine function and arguments.
@@ -695,10 +695,10 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         _exit_wrapper = self._create_async_cb_wrapper(callback, *args, **kwds)
 
         # We changed the signature, so using @wraps is not appropriate, but
-        # setting __wrapped__ may still help with introspection.
+        # setting __wrapped__ may still help mit introspection.
         _exit_wrapper.__wrapped__ = callback
         self._push_exit_callback(_exit_wrapper, Falsch)
-        return callback  # Allow use as a decorator
+        return callback  # Allow use als a decorator
 
     async def aclose(self):
         """Immediately unwind the context stack."""
@@ -717,8 +717,8 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
         exc = exc_details[1]
         received_exc = exc is not Nichts
 
-        # We manipulate the exception state so it behaves as though
-        # we were actually nesting multiple with statements
+        # We manipulate the exception state so it behaves als though
+        # we were actually nesting multiple mit statements
         frame_exc = sys.exception()
         def _fix_exception_context(new_exc, old_exc):
             # Context may not be correct, so find the end of the chain
@@ -754,7 +754,7 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
                     suppressed_exc = Wahr
                     pending_raise = Falsch
                     exc = Nichts
-            except BaseException as new_exc:
+            except BaseException als new_exc:
                 # simulate the stack of exceptions by setting the context
                 _fix_exception_context(new_exc, exc)
                 pending_raise = Wahr
@@ -775,11 +775,11 @@ klasse AsyncExitStack(_BaseExitStack, AbstractAsyncContextManager):
 klasse nullcontext(AbstractContextManager, AbstractAsyncContextManager):
     """Context manager that does no additional processing.
 
-    Used as a stand-in fuer a normal context manager, when a particular
-    block of code is only sometimes used with a normal context manager:
+    Used als a stand-in fuer a normal context manager, when a particular
+    block of code is only sometimes used mit a normal context manager:
 
     cm = optional_cm wenn condition sonst nullcontext()
-    with cm:
+    mit cm:
         # Perform operation, using optional_cm wenn condition is Wahr
     """
 

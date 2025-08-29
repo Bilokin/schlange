@@ -104,7 +104,7 @@ klasse TestSuper(unittest.TestCase):
             def f():
                 __class__
         self.assertIs(X.x, type(self))
-        with self.assertRaises(NameError) as e:
+        mit self.assertRaises(NameError) als e:
             exec("""class X:
                 __class__
                 def f():
@@ -150,7 +150,7 @@ klasse TestSuper(unittest.TestCase):
 
     def test___class___new(self):
         # See issue #23722
-        # Ensure zero-arg super() works as soon as type.__new__() is completed
+        # Ensure zero-arg super() works als soon als type.__new__() is completed
         test_class = Nichts
 
         klasse Meta(type):
@@ -232,7 +232,7 @@ klasse TestSuper(unittest.TestCase):
         self.assertEqual(len(method_closure), 1)
         self.assertIs(class_cell, method_closure[0])
         # Ensure the cell reference *doesn't* get turned into an attribute
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             WithClassRef.__classcell__
 
     def test___classcell___missing(self):
@@ -253,22 +253,22 @@ klasse TestSuper(unittest.TestCase):
         # __class__ was not set, and asking wenn __classcell__ was propagated
         # to type.__new__.
         expected_error = '__class__ not set.*__classcell__ propagated'
-        with self.assertRaisesRegex(RuntimeError, expected_error):
+        mit self.assertRaisesRegex(RuntimeError, expected_error):
             klasse WithClassRef(metaclass=Meta):
                 def f(self):
                     return __class__
 
     def test___classcell___overwrite(self):
         # See issue #23722
-        # Overwriting __classcell__ with nonsense is explicitly prohibited
+        # Overwriting __classcell__ mit nonsense is explicitly prohibited
         klasse Meta(type):
             def __new__(cls, name, bases, namespace, cell):
                 namespace['__classcell__'] = cell
                 return super().__new__(cls, name, bases, namespace)
 
         fuer bad_cell in (Nichts, 0, "", object()):
-            with self.subTest(bad_cell=bad_cell):
-                with self.assertRaises(TypeError):
+            mit self.subTest(bad_cell=bad_cell):
+                mit self.assertRaises(TypeError):
                     klasse A(metaclass=Meta, cell=bad_cell):
                         pass
 
@@ -281,7 +281,7 @@ klasse TestSuper(unittest.TestCase):
                 B = type("B", (), namespace)
                 return cls
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse A(metaclass=Meta):
                 def f(self):
                     return __class__
@@ -289,19 +289,19 @@ klasse TestSuper(unittest.TestCase):
     def test_obscure_super_errors(self):
         def f():
             super()
-        with self.assertRaisesRegex(RuntimeError, r"no arguments"):
+        mit self.assertRaisesRegex(RuntimeError, r"no arguments"):
             f()
 
         klasse C:
             def f():
                 super()
-        with self.assertRaisesRegex(RuntimeError, r"no arguments"):
+        mit self.assertRaisesRegex(RuntimeError, r"no arguments"):
             C.f()
 
         def f(x):
             del x
             super()
-        with self.assertRaisesRegex(RuntimeError, r"arg\[0\] deleted"):
+        mit self.assertRaisesRegex(RuntimeError, r"arg\[0\] deleted"):
             f(Nichts)
 
         klasse X:
@@ -309,7 +309,7 @@ klasse TestSuper(unittest.TestCase):
                 nonlocal __class__
                 del __class__
                 super()
-        with self.assertRaisesRegex(RuntimeError, r"empty __class__ cell"):
+        mit self.assertRaisesRegex(RuntimeError, r"empty __class__ cell"):
             X().f()
 
     def test_cell_as_self(self):
@@ -335,11 +335,11 @@ klasse TestSuper(unittest.TestCase):
             super.__init__(sp, int, i)
 
     def test_super_argcount(self):
-        with self.assertRaisesRegex(TypeError, "expected at most"):
+        mit self.assertRaisesRegex(TypeError, "expected at most"):
             super(int, int, int)
 
     def test_super_argtype(self):
-        with self.assertRaisesRegex(TypeError, "argument 1 must be a type"):
+        mit self.assertRaisesRegex(TypeError, "argument 1 must be a type"):
             super(1, int)
 
     def test_shadowed_global(self):
@@ -353,7 +353,7 @@ klasse TestSuper(unittest.TestCase):
                     return super().msg
             """,
         )
-        with import_helper.ready_to_import(name="shadowed_super", source=source):
+        mit import_helper.ready_to_import(name="shadowed_super", source=source):
             importiere shadowed_super
         self.assertEqual(shadowed_super.C().method(), "truly super")
         import_helper.unload("shadowed_super")
@@ -376,7 +376,7 @@ klasse TestSuper(unittest.TestCase):
             def method(self):
                 return super().msg
 
-        with patch(f"{__name__}.super", MySuper) as m:
+        mit patch(f"{__name__}.super", MySuper) als m:
             self.assertEqual(C().method(), "super super")
 
     def test_shadowed_dynamic_two_arg(self):
@@ -390,7 +390,7 @@ klasse TestSuper(unittest.TestCase):
             def method(self):
                 return super(1, 2).msg
 
-        with patch(f"{__name__}.super", MySuper) as m:
+        mit patch(f"{__name__}.super", MySuper) als m:
             self.assertEqual(C().method(), "super super")
             self.assertEqual(call_args, [(1, 2)])
 
@@ -399,7 +399,7 @@ klasse TestSuper(unittest.TestCase):
             def method(self):
                 return super().msg
 
-        with self.assertRaisesRegex(AttributeError, "'super' object has no attribute 'msg'"):
+        mit self.assertRaisesRegex(AttributeError, "'super' object has no attribute 'msg'"):
             C().method()
 
     def test_bad_first_arg(self):
@@ -407,7 +407,7 @@ klasse TestSuper(unittest.TestCase):
             def method(self):
                 return super(1, self).method()
 
-        with self.assertRaisesRegex(TypeError, "argument 1 must be a type"):
+        mit self.assertRaisesRegex(TypeError, "argument 1 must be a type"):
             C().method()
 
     def test_supercheck_fail(self):
@@ -430,11 +430,11 @@ klasse TestSuper(unittest.TestCase):
         )
 
         fuer case in cases:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 type_, obj, type_str, obj_str, instance_or_type = case
                 regex = err_msg.format(instance_or_type, obj_str, type_str)
 
-                with self.assertRaisesRegex(TypeError, regex):
+                mit self.assertRaisesRegex(TypeError, regex):
                     c.method(type_, obj)
 
     def test_super___class__(self):
@@ -512,7 +512,7 @@ klasse TestSuper(unittest.TestCase):
     def test___class___modification_multithreaded(self):
         """ Note: this test isn't actually testing anything on its own.
         It requires a sys audithook to be set to crash on older Python.
-        This should be the case anyways as our test suite sets
+        This should be the case anyways als our test suite sets
         an audit hook.
         """
 
@@ -558,7 +558,7 @@ klasse TestSuper(unittest.TestCase):
         e.x = 1
         s = super(C, e)
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 u = pickle.loads(pickle.dumps(s, proto))
                 self.assertEqual(u.f(), s.f())
                 self.assertIs(type(u), type(s))
@@ -569,7 +569,7 @@ klasse TestSuper(unittest.TestCase):
 
         s = super(C, E)
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 u = pickle.loads(pickle.dumps(s, proto))
                 self.assertEqual(u.cm(), s.cm())
                 self.assertEqual(u.f, s.f)

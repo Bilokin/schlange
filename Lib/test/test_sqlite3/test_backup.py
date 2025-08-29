@@ -1,4 +1,4 @@
-importiere sqlite3 as sqlite
+importiere sqlite3 als sqlite
 importiere unittest
 
 von .util importiere memory_database
@@ -20,46 +20,46 @@ klasse BackupTests(unittest.TestCase):
         self.assertEqual(result[1][0], 4)
 
     def test_bad_target(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.cx.backup(Nichts)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.cx.backup()
 
     def test_bad_target_filename(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.cx.backup('some_file_name.db')
 
     def test_bad_target_same_connection(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.cx.backup(self.cx)
 
     def test_bad_target_closed_connection(self):
-        with memory_database() as bck:
+        mit memory_database() als bck:
             bck.close()
-            with self.assertRaises(sqlite.ProgrammingError):
+            mit self.assertRaises(sqlite.ProgrammingError):
                 self.cx.backup(bck)
 
     def test_bad_source_closed_connection(self):
-        with memory_database() as bck:
+        mit memory_database() als bck:
             source = sqlite.connect(":memory:")
             source.close()
-            with self.assertRaises(sqlite.ProgrammingError):
+            mit self.assertRaises(sqlite.ProgrammingError):
                 source.backup(bck)
 
     def test_bad_target_in_transaction(self):
-        with memory_database() as bck:
+        mit memory_database() als bck:
             bck.execute('CREATE TABLE bar (key INTEGER)')
             bck.executemany('INSERT INTO bar (key) VALUES (?)', [(3,), (4,)])
-            with self.assertRaises(sqlite.OperationalError) as cm:
+            mit self.assertRaises(sqlite.OperationalError) als cm:
                 self.cx.backup(bck)
 
     def test_keyword_only_args(self):
-        with self.assertRaises(TypeError):
-            with memory_database() as bck:
+        mit self.assertRaises(TypeError):
+            mit memory_database() als bck:
                 self.cx.backup(bck, 1)
 
     def test_simple(self):
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck)
             self.verify_backup(bck)
 
@@ -69,7 +69,7 @@ klasse BackupTests(unittest.TestCase):
         def progress(status, remaining, total):
             journal.append(status)
 
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck, pages=1, progress=progress)
             self.verify_backup(bck)
 
@@ -83,7 +83,7 @@ klasse BackupTests(unittest.TestCase):
         def progress(status, remaining, total):
             journal.append(remaining)
 
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck, progress=progress)
             self.verify_backup(bck)
 
@@ -96,7 +96,7 @@ klasse BackupTests(unittest.TestCase):
         def progress(status, remaining, total):
             journal.append(remaining)
 
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck, pages=-1, progress=progress)
             self.verify_backup(bck)
 
@@ -104,8 +104,8 @@ klasse BackupTests(unittest.TestCase):
         self.assertEqual(journal[0], 0)
 
     def test_non_callable_progress(self):
-        with self.assertRaises(TypeError) as cm:
-            with memory_database() as bck:
+        mit self.assertRaises(TypeError) als cm:
+            mit memory_database() als bck:
                 self.cx.backup(bck, pages=1, progress='bar')
         self.assertEqual(str(cm.exception), 'progress argument must be a callable')
 
@@ -118,7 +118,7 @@ klasse BackupTests(unittest.TestCase):
                 self.cx.commit()
             journal.append(remaining)
 
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck, pages=1, progress=progress)
             self.verify_backup(bck)
 
@@ -136,18 +136,18 @@ klasse BackupTests(unittest.TestCase):
         def progress(status, remaining, total):
             raise SystemError('nearly out of space')
 
-        with self.assertRaises(SystemError) as err:
-            with memory_database() as bck:
+        mit self.assertRaises(SystemError) als err:
+            mit memory_database() als bck:
                 self.cx.backup(bck, progress=progress)
         self.assertEqual(str(err.exception), 'nearly out of space')
 
     def test_database_source_name(self):
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck, name='main')
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck, name='temp')
-        with self.assertRaises(sqlite.OperationalError) as cm:
-            with memory_database() as bck:
+        mit self.assertRaises(sqlite.OperationalError) als cm:
+            mit memory_database() als bck:
                 self.cx.backup(bck, name='non-existing')
         self.assertIn("unknown database", str(cm.exception))
 
@@ -155,7 +155,7 @@ klasse BackupTests(unittest.TestCase):
         self.cx.execute('CREATE TABLE attached_db.foo (key INTEGER)')
         self.cx.executemany('INSERT INTO attached_db.foo (key) VALUES (?)', [(3,), (4,)])
         self.cx.commit()
-        with memory_database() as bck:
+        mit memory_database() als bck:
             self.cx.backup(bck, name='attached_db')
             self.verify_backup(bck)
 

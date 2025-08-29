@@ -1,7 +1,7 @@
 """BaseHTTPServer that implements the Python WSGI protocol (PEP 3333)
 
 This is both an example of how WSGI can be implemented, and a basis fuer running
-simple web applications on a local machine, such as might be done when testing
+simple web applications on a local machine, such als might be done when testing
 or debugging an application.  It has not been reviewed fuer security issues,
 however, and we strongly recommend that you use a "real" web server for
 production use.
@@ -153,7 +153,7 @@ def make_server(
 
 
 wenn __name__ == '__main__':
-    with make_server('', 8000, demo_app) as httpd:
+    mit make_server('', 8000, demo_app) als httpd:
         sa = httpd.socket.getsockname()
         drucke("Serving HTTP on", sa[0], "port", sa[1], "...")
         importiere webbrowser

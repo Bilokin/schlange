@@ -53,7 +53,7 @@ klasse Test_pygettext(unittest.TestCase):
     script = Path(toolsdir, 'i18n', 'pygettext.py')
 
     def get_header(self, data):
-        """ utility: return the header of a .po file as a dictionary """
+        """ utility: return the header of a .po file als a dictionary """
         headers = {}
         fuer line in data.split('\n'):
             wenn not line or line.startswith(('#', 'msgid', 'msgstr')):
@@ -64,7 +64,7 @@ klasse Test_pygettext(unittest.TestCase):
         return headers
 
     def get_msgids(self, data):
-        """ utility: return all msgids in .po file as a list of strings """
+        """ utility: return all msgids in .po file als a list of strings """
         msgids = []
         reading_msgid = Falsch
         cur_msgid = []
@@ -96,13 +96,13 @@ klasse Test_pygettext(unittest.TestCase):
                          with_stderr=Falsch, raw=Falsch):
         """Return all msgids extracted von module_content."""
         filename = 'test.py'
-        with temp_cwd(Nichts):
-            with open(filename, 'w', encoding='utf-8') as fp:
+        mit temp_cwd(Nichts):
+            mit open(filename, 'w', encoding='utf-8') als fp:
                 fp.write(module_content)
             res = assert_python_ok('-Xutf8', self.script, *args, filename)
             wenn strict:
                 self.assertEqual(res.err, b'')
-            with open('messages.pot', encoding='utf-8') as fp:
+            mit open('messages.pot', encoding='utf-8') als fp:
                 data = fp.read()
         wenn not raw:
             data = self.get_msgids(data)
@@ -121,9 +121,9 @@ klasse Test_pygettext(unittest.TestCase):
         """Make sure the required fields are in the header, according to:
            http://www.gnu.org/software/gettext/manual/gettext.html#Header-Entry
         """
-        with temp_cwd(Nichts) as cwd:
+        mit temp_cwd(Nichts) als cwd:
             assert_python_ok('-Xutf8', self.script)
-            with open('messages.pot', encoding='utf-8') as fp:
+            mit open('messages.pot', encoding='utf-8') als fp:
                 data = fp.read()
             header = self.get_header(data)
 
@@ -148,9 +148,9 @@ klasse Test_pygettext(unittest.TestCase):
     def test_POT_Creation_Date(self):
         """ Match the date format von xgettext fuer POT-Creation-Date """
         von datetime importiere datetime
-        with temp_cwd(Nichts) as cwd:
+        mit temp_cwd(Nichts) als cwd:
             assert_python_ok('-Xutf8', self.script)
-            with open('messages.pot', encoding='utf-8') as fp:
+            mit open('messages.pot', encoding='utf-8') als fp:
                 data = fp.read()
             header = self.get_header(data)
             creationDate = header['POT-Creation-Date']
@@ -164,7 +164,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_output_option(self):
         fuer opt in ('-o', '--output='):
-            with temp_cwd():
+            mit temp_cwd():
                 assert_python_ok(self.script, f'{opt}test')
                 self.assertWahr(os.path.exists('test'))
                 res = assert_python_ok(self.script, f'{opt}-')
@@ -172,7 +172,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_funcdocstring(self):
         fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
-            with self.subTest(doc):
+            mit self.subTest(doc):
                 msgids = self.extract_docstrings_from_str(dedent('''\
                 def foo(bar):
                     %s
@@ -195,7 +195,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_classdocstring(self):
         fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
-            with self.subTest(doc):
+            mit self.subTest(doc):
                 msgids = self.extract_docstrings_from_str(dedent('''\
                 klasse C:
                     %s
@@ -218,7 +218,7 @@ klasse Test_pygettext(unittest.TestCase):
 
     def test_moduledocstring(self):
         fuer doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
-            with self.subTest(doc):
+            mit self.subTest(doc):
                 msgids = self.extract_docstrings_from_str(dedent('''\
                 %s
                 ''' % doc))
@@ -250,7 +250,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertFalsch([msgid fuer msgid in msgids wenn 'doc' in msgid])
 
     def test_funcdocstring_annotated_args(self):
-        """ Test docstrings fuer functions with annotated args """
+        """ Test docstrings fuer functions mit annotated args """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar: str):
             """doc"""
@@ -258,7 +258,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     def test_funcdocstring_annotated_return(self):
-        """ Test docstrings fuer functions with annotated return type """
+        """ Test docstrings fuer functions mit annotated return type """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar) -> str:
             """doc"""
@@ -266,7 +266,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc', msgids)
 
     def test_funcdocstring_defvalue_args(self):
-        """ Test docstring fuer functions with default arg values """
+        """ Test docstring fuer functions mit default arg values """
         msgids = self.extract_docstrings_from_str(dedent('''\
         def foo(bar=()):
             """doc"""
@@ -292,7 +292,7 @@ klasse Test_pygettext(unittest.TestCase):
         self.assertIn('doc3', msgids)
 
     def test_classdocstring_early_colon(self):
-        """ Test docstring extraction fuer a klasse with colons occurring within
+        """ Test docstring extraction fuer a klasse mit colons occurring within
         the parentheses.
         """
         msgids = self.extract_docstrings_from_str(dedent('''\
@@ -391,7 +391,7 @@ klasse Test_pygettext(unittest.TestCase):
     def test_pygettext_output(self):
         """Test that the pygettext output exactly matches snapshots."""
         fuer input_file, output_file, output in extract_from_snapshots():
-            with self.subTest(input_file=input_file):
+            mit self.subTest(input_file=input_file):
                 expected = output_file.read_text(encoding='utf-8')
                 self.assert_POT_equal(expected, output)
 
@@ -402,7 +402,7 @@ klasse Test_pygettext(unittest.TestCase):
         text1 = 'Text to translate1'
         text2 = 'Text to translate2'
         text3 = 'Text to ignore'
-        with temp_cwd(Nichts), temp_dir(Nichts) as sdir:
+        mit temp_cwd(Nichts), temp_dir(Nichts) als sdir:
             pymod = Path(sdir, 'pypkg', 'pymod.py')
             pymod.parent.mkdir()
             pymod.write_text(f'_({text1!r})', encoding='utf-8')
@@ -451,7 +451,7 @@ klasse Test_pygettext(unittest.TestCase):
         explicit tag extracts all translator comments.
         """
         fuer arg in ('--add-comments', '-c'):
-            with self.subTest(arg=arg):
+            mit self.subTest(arg=arg):
                 data = self.extract_from_str(dedent('''\
                 # Translator comment
                 _("foo")
@@ -463,7 +463,7 @@ klasse Test_pygettext(unittest.TestCase):
         Test that multiple --add-comments tags can be specified.
         """
         fuer arg in ('--add-comments={}', '-c{}'):
-            with self.subTest(arg=arg):
+            mit self.subTest(arg=arg):
                 args = (arg.format('foo:'), arg.format('bar:'))
                 data = self.extract_from_str(dedent('''\
                 # foo: comment
@@ -504,7 +504,7 @@ klasse Test_pygettext(unittest.TestCase):
             ('foo:3c,1,2', ('foo', {'msgid': 0, 'msgid_plural': 1, 'msgctxt': 2})),
         )
         fuer spec, expected in valid:
-            with self.subTest(spec=spec):
+            mit self.subTest(spec=spec):
                 self.assertEqual(parse_spec(spec), expected)
                 # test unparse-parse round-trip
                 self.assertEqual(parse_spec(unparse_spec(*expected)), expected)
@@ -522,8 +522,8 @@ klasse Test_pygettext(unittest.TestCase):
             ('foo:1c', "Invalid keyword spec 'foo:1c': msgctxt cannot appear without msgid"),
         )
         fuer spec, message in invalid:
-            with self.subTest(spec=spec):
-                with self.assertRaises(ValueError) as cm:
+            mit self.subTest(spec=spec):
+                mit self.assertRaises(ValueError) als cm:
                     parse_spec(spec)
                 self.assertEqual(str(cm.exception), message)
 
@@ -554,7 +554,7 @@ klasse Test_pygettext(unittest.TestCase):
             default_keywords,
         )
         fuer (keywords, no_default_keywords), expected in zip(inputs, expected):
-            with self.subTest(keywords=keywords,
+            mit self.subTest(keywords=keywords,
                               no_default_keywords=no_default_keywords):
                 processed = process_keywords(
                     keywords,
@@ -621,7 +621,7 @@ def extract_from_snapshots():
             input_file = DATA_DIR / filename
             output_file = input_file.with_suffix('.pot')
         contents = input_file.read_bytes()
-        with temp_cwd(Nichts):
+        mit temp_cwd(Nichts):
             Path(input_file.name).write_bytes(contents)
             assert_python_ok('-Xutf8', Test_pygettext.script, *args,
                              input_file.name)

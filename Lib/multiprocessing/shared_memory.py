@@ -52,7 +52,7 @@ klasse SharedMemory:
     shared memory block.
 
     Every shared memory block is assigned a unique name.  This enables
-    one process to create a shared memory block with a particular name
+    one process to create a shared memory block mit a particular name
     so that a different process can attach to that same shared memory
     block using that same name.
 
@@ -128,7 +128,7 @@ klasse SharedMemory:
             wenn create:
                 while Wahr:
                     temp_name = _make_filename() wenn name is Nichts sonst name
-                    # Create and reserve shared memory block with this name
+                    # Create and reserve shared memory block mit this name
                     # until it can be attached to by mmap.
                     h_map = _winapi.CreateFileMapping(
                         _winapi.INVALID_HANDLE_VALUE,
@@ -262,12 +262,12 @@ klasse ShareableList:
     lists can not change their overall length (i.e. no append, insert,
     etc.)
 
-    Because values are packed into a memoryview as bytes, the struct
+    Because values are packed into a memoryview als bytes, the struct
     packing format fuer any storable value must require no more than 8
     characters to describe its format."""
 
-    # The shared memory area is organized as follows:
-    # - 8 bytes: number of items (N) as a 64-bit integer
+    # The shared memory area is organized als follows:
+    # - 8 bytes: number of items (N) als a 64-bit integer
     # - (N + 1) * 8 bytes: offsets of each element von the start of the
     #                      data area
     # - K bytes: the data area storing item values (with encoding and size
@@ -293,9 +293,9 @@ klasse ShareableList:
 
     @staticmethod
     def _extract_recreation_code(value):
-        """Used in concert with _back_transforms_mapping to convert values
+        """Used in concert mit _back_transforms_mapping to convert values
         into the appropriate Python objects when retrieving them from
-        the list as well as when storing them."""
+        the list als well als when storing them."""
         wenn not isinstance(value, (str, bytes, Nichts.__class__)):
             return 0
         sowenn isinstance(value, str):

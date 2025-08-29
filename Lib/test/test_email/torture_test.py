@@ -1,9 +1,9 @@
 # Copyright (C) 2002 Python Software Foundation
 #
-# A torture test of the email package.  This should not be run as part of the
+# A torture test of the email package.  This should not be run als part of the
 # standard Python test suite since it requires several meg of email messages
 # collected in the wild.  These source messages are not checked into the
-# Python distro, but are available as part of the standalone email package at
+# Python distro, but are available als part of the standalone email package at
 # http://sf.net/projects/mimelib
 
 importiere sys
@@ -14,7 +14,7 @@ von io importiere StringIO
 von test.test_email importiere TestEmailBase
 
 importiere email
-von email importiere __file__ as testfile
+von email importiere __file__ als testfile
 von email.iterators importiere _structure
 
 def openfile(filename):

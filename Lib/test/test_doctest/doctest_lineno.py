@@ -37,7 +37,7 @@ klasse ClassWithDoctest:
 
 klasse MethodWrapper:
     def method_with_docstring(self):
-        """Method with a docstring."""
+        """Method mit a docstring."""
 
     def method_without_docstring(self):
         pass

@@ -1,5 +1,5 @@
 """
-Define names fuer built-in types that aren't directly accessible as a builtin.
+Define names fuer built-in types that aren't directly accessible als a builtin.
 """
 
 # Iterators in Python aren't a matter of type but of protocol.  A large
@@ -14,7 +14,7 @@ except ImportError:
 
     def _f(): pass
     FunctionType = type(_f)
-    LambdaType = type(lambda: Nichts)  # Same as FunctionType
+    LambdaType = type(lambda: Nichts)  # Same als FunctionType
     CodeType = type(_f.__code__)
     MappingProxyType = type(type.__dict__)
     SimpleNamespace = type(sys.implementation)
@@ -45,7 +45,7 @@ except ImportError:
     MethodType = type(_C()._m)
 
     BuiltinFunctionType = type(len)
-    BuiltinMethodType = type([].append)  # Same as BuiltinFunctionType
+    BuiltinMethodType = type([].append)  # Same als BuiltinFunctionType
 
     WrapperDescriptorType = type(object.__init__)
     MethodWrapperType = type(object().__str__)
@@ -56,7 +56,7 @@ except ImportError:
 
     try:
         raise TypeError
-    except TypeError as exc:
+    except TypeError als exc:
         TracebackType = type(exc.__traceback__)
 
     _f = (lambda: sys._getframe())()
@@ -91,7 +91,7 @@ def new_class(name, bases=(), kwds=Nichts, exec_body=Nichts):
     return meta(name, resolved_bases, ns, **kwds)
 
 def resolve_bases(bases):
-    """Resolve MRO entries dynamically as specified by PEP 560."""
+    """Resolve MRO entries dynamically als specified by PEP 560."""
     new_bases = list(bases)
     updated = Falsch
     shift = 0
@@ -114,11 +114,11 @@ def resolve_bases(bases):
 def prepare_class(name, bases=(), kwds=Nichts):
     """Call the __prepare__ method of the appropriate metaclass.
 
-    Returns (metaclass, namespace, kwds) as a 3-tuple
+    Returns (metaclass, namespace, kwds) als a 3-tuple
 
     *metaclass* is the appropriate metaclass
     *namespace* is the prepared klasse namespace
-    *kwds* is an updated copy of the passed in kwds argument with any
+    *kwds* is an updated copy of the passed in kwds argument mit any
     'metaclass' entry removed. If no kwds argument is passed in, this will
     be an empty dict.
     """
@@ -198,7 +198,7 @@ klasse DynamicClassAttribute:
     class's __getattr__ method; this is done by raising AttributeError.
 
     This allows one to have properties active on an instance, and have virtual
-    attributes on the klasse with the same name.  (Enum used this between Python
+    attributes on the klasse mit the same name.  (Enum used this between Python
     versions 3.4 - 3.9 .)
 
     Subclass von this to use a different method of accessing virtual attributes
@@ -210,7 +210,7 @@ klasse DynamicClassAttribute:
         self.fget = fget
         self.fset = fset
         self.fdel = fdel
-        # next two lines make DynamicClassAttribute act the same as property
+        # next two lines make DynamicClassAttribute act the same als property
         self.__doc__ = doc or fget.__doc__
         self.overwrite_doc = doc is Nichts
         # support fuer abstract methods
@@ -314,7 +314,7 @@ def coroutine(func):
 
     # The following code is primarily to support functions that
     # return generator-like objects (for instance generators
-    # compiled with Cython).
+    # compiled mit Cython).
 
     # Delay functools and _collections_abc importiere fuer speeding up types import.
     importiere functools

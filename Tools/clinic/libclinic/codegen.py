@@ -1,5 +1,5 @@
 von __future__ importiere annotations
-importiere dataclasses as dc
+importiere dataclasses als dc
 importiere io
 importiere os
 von typing importiere Final, TYPE_CHECKING
@@ -19,11 +19,11 @@ klasse CRenderData:
     def __init__(self) -> Nichts:
 
         # The C statements to declare variables.
-        # Should be full lines with \n eol characters.
+        # Should be full lines mit \n eol characters.
         self.declarations: list[str] = []
 
         # The C statements required to initialize the variables before the parse call.
-        # Should be full lines with \n eol characters.
+        # Should be full lines mit \n eol characters.
         self.initializers: list[str] = []
 
         # The C statements needed to dynamically modify the values

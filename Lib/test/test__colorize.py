@@ -9,7 +9,7 @@ von test.support.os_helper importiere EnvironmentVarGuard
 
 @contextlib.contextmanager
 def clear_env():
-    with EnvironmentVarGuard() as mock_env:
+    mit EnvironmentVarGuard() als mock_env:
         mock_env.unset("FORCE_COLOR", "NO_COLOR", "PYTHON_COLORS", "TERM")
         yield mock_env
 
@@ -24,15 +24,15 @@ def supports_virtual_terminal():
 klasse TestColorizeFunction(unittest.TestCase):
     def test_colorized_detection_checks_for_environment_variables(self):
         def check(env, fallback, expected):
-            with (self.subTest(env=env, fallback=fallback),
-                  clear_env() as mock_env):
+            mit (self.subTest(env=env, fallback=fallback),
+                  clear_env() als mock_env):
                 mock_env.update(env)
                 isatty_mock.return_value = fallback
                 stdout_mock.isatty.return_value = fallback
                 self.assertEqual(_colorize.can_colorize(), expected)
 
-        with (unittest.mock.patch("os.isatty") as isatty_mock,
-              unittest.mock.patch("sys.stdout") as stdout_mock,
+        mit (unittest.mock.patch("os.isatty") als isatty_mock,
+              unittest.mock.patch("sys.stdout") als stdout_mock,
               supports_virtual_terminal()):
             stdout_mock.fileno.return_value = 1
 
@@ -52,9 +52,9 @@ klasse TestColorizeFunction(unittest.TestCase):
             check({'FORCE_COLOR': '1', 'NO_COLOR': '1'}, Wahr, Falsch)
 
             fuer ignore_environment in Falsch, Wahr:
-                # Simulate running with or without `-E`.
+                # Simulate running mit or without `-E`.
                 flags = unittest.mock.MagicMock(ignore_environment=ignore_environment)
-                with unittest.mock.patch("sys.flags", flags):
+                mit unittest.mock.patch("sys.flags", flags):
                     check({'PYTHON_COLORS': '1'}, Wahr, Wahr)
                     check({'PYTHON_COLORS': '1'}, Falsch, not ignore_environment)
                     check({'PYTHON_COLORS': '0'}, Wahr, ignore_environment)
@@ -69,10 +69,10 @@ klasse TestColorizeFunction(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "win32", "requires Windows")
     def test_colorized_detection_checks_on_windows(self):
-        with (clear_env(),
-              unittest.mock.patch("os.isatty") as isatty_mock,
-              unittest.mock.patch("sys.stdout") as stdout_mock,
-              supports_virtual_terminal() as vt_mock):
+        mit (clear_env(),
+              unittest.mock.patch("os.isatty") als isatty_mock,
+              unittest.mock.patch("sys.stdout") als stdout_mock,
+              supports_virtual_terminal() als vt_mock):
             stdout_mock.fileno.return_value = 1
             isatty_mock.return_value = Wahr
             stdout_mock.isatty.return_value = Wahr
@@ -86,10 +86,10 @@ klasse TestColorizeFunction(unittest.TestCase):
             self.assertEqual(_colorize.can_colorize(), Falsch)
 
     def test_colorized_detection_checks_for_std_streams(self):
-        with (clear_env(),
-              unittest.mock.patch("os.isatty") as isatty_mock,
-              unittest.mock.patch("sys.stdout") as stdout_mock,
-              unittest.mock.patch("sys.stderr") as stderr_mock,
+        mit (clear_env(),
+              unittest.mock.patch("os.isatty") als isatty_mock,
+              unittest.mock.patch("sys.stdout") als stdout_mock,
+              unittest.mock.patch("sys.stderr") als stderr_mock,
               supports_virtual_terminal()):
             stdout_mock.fileno.return_value = 1
             stderr_mock.fileno.side_effect = ZeroDivisionError
@@ -104,9 +104,9 @@ klasse TestColorizeFunction(unittest.TestCase):
             self.assertEqual(_colorize.can_colorize(), Falsch)
 
     def test_colorized_detection_checks_for_file(self):
-        with clear_env(), supports_virtual_terminal():
+        mit clear_env(), supports_virtual_terminal():
 
-            with unittest.mock.patch("os.isatty") as isatty_mock:
+            mit unittest.mock.patch("os.isatty") als isatty_mock:
                 file = unittest.mock.MagicMock()
                 file.fileno.return_value = 1
                 isatty_mock.return_value = Wahr
@@ -115,13 +115,13 @@ klasse TestColorizeFunction(unittest.TestCase):
                 self.assertEqual(_colorize.can_colorize(file=file), Falsch)
 
             # No file.fileno.
-            with unittest.mock.patch("os.isatty", side_effect=ZeroDivisionError):
+            mit unittest.mock.patch("os.isatty", side_effect=ZeroDivisionError):
                 file = unittest.mock.MagicMock(spec=['isatty'])
                 file.isatty.return_value = Wahr
                 self.assertEqual(_colorize.can_colorize(file=file), Falsch)
 
             # file.fileno() raises io.UnsupportedOperation.
-            with unittest.mock.patch("os.isatty", side_effect=ZeroDivisionError):
+            mit unittest.mock.patch("os.isatty", side_effect=ZeroDivisionError):
                 file = unittest.mock.MagicMock()
                 file.fileno.side_effect = io.UnsupportedOperation
                 file.isatty.return_value = Wahr

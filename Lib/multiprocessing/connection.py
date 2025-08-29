@@ -213,7 +213,7 @@ klasse _ConnectionBase:
 
     def recv_bytes(self, maxlength=Nichts):
         """
-        Receive bytes data as a bytes object.
+        Receive bytes data als a bytes object.
         """
         self._check_closed()
         self._check_readable()
@@ -231,7 +231,7 @@ klasse _ConnectionBase:
         """
         self._check_closed()
         self._check_readable()
-        with memoryview(buf) as m:
+        mit memoryview(buf) als m:
             # Get bytesize of arbitrary buffer
             itemsize = m.itemsize
             bytesize = itemsize * len(m)
@@ -275,7 +275,7 @@ wenn _winapi:
         """
         Connection klasse based on a Windows named pipe.
         Overlapped I/O is used, so the handles must have been created
-        with FILE_FLAG_OVERLAPPED.
+        mit FILE_FLAG_OVERLAPPED.
         """
         _got_empty_message = Falsch
         _send_ov = Nichts
@@ -348,7 +348,7 @@ wenn _winapi:
 
                     wenn return_value is not sentinel:
                         return return_value
-                except OSError as e:
+                except OSError als e:
                     wenn e.winerror == _winapi.ERROR_BROKEN_PIPE:
                         raise EOFError
                     sonst:
@@ -429,7 +429,7 @@ klasse Connection(_ConnectionBase):
             self._send(header)
             self._send(buf)
         sonst:
-            # For wire compatibility with 3.7 and lower
+            # For wire compatibility mit 3.7 and lower
             header = struct.pack("!i", n)
             wenn n > 16384:
                 # The payload is large so Nagle's algorithm won't be triggered
@@ -659,7 +659,7 @@ def SocketClient(address):
     Return a connection object connected to the socket given by `address`
     '''
     family = address_type(address)
-    with socket.socket( getattr(socket, family) ) as s:
+    mit socket.socket( getattr(socket, family) ) als s:
         s.setblocking(Wahr)
         s.connect(address)
         return Connection(s.detach())
@@ -679,7 +679,7 @@ wenn sys.platform == 'win32':
             self._handle_queue = [self._new_handle(first=Wahr)]
 
             self._last_accepted = Nichts
-            util.sub_debug('listener created with address=%r', self._address)
+            util.sub_debug('listener created mit address=%r', self._address)
             self.close = util.Finalize(
                 self, PipeListener._finalize_pipe_listener,
                 args=(self._handle_queue, self._address), exitpriority=0
@@ -702,7 +702,7 @@ wenn sys.platform == 'win32':
             handle = self._handle_queue.pop(0)
             try:
                 ov = _winapi.ConnectNamedPipe(handle, overlapped=Wahr)
-            except OSError as e:
+            except OSError als e:
                 wenn e.winerror != _winapi.ERROR_NO_DATA:
                     raise
                 # ERROR_NO_DATA can occur wenn a client has already connected,
@@ -722,7 +722,7 @@ wenn sys.platform == 'win32':
 
         @staticmethod
         def _finalize_pipe_listener(queue, address):
-            util.sub_debug('closing listener with address=%r', address)
+            util.sub_debug('closing listener mit address=%r', address)
             fuer handle in queue:
                 _winapi.CloseHandle(handle)
 
@@ -739,7 +739,7 @@ wenn sys.platform == 'win32':
                     0, _winapi.NULL, _winapi.OPEN_EXISTING,
                     _winapi.FILE_FLAG_OVERLAPPED, _winapi.NULL
                     )
-            except OSError as e:
+            except OSError als e:
                 wenn e.winerror not in (_winapi.ERROR_SEM_TIMEOUT,
                                       _winapi.ERROR_PIPE_BUSY) or _check_timeout(t):
                     raise
@@ -767,9 +767,9 @@ _FAILURE = b'#FAILURE#'
 # (as documented fuer reference after reading the existing code)
 # =============================================================================
 #
-# On Windows: native pipes with "overlapped IO" are used to send the bytes,
+# On Windows: native pipes mit "overlapped IO" are used to send the bytes,
 # instead of the length prefix SIZE scheme described below. (ie: the OS deals
-# with message sizes fuer us)
+# mit message sizes fuer us)
 #
 # Protocol error behaviors:
 #
@@ -794,9 +794,9 @@ _FAILURE = b'#FAILURE#'
 # 3.  send 4 byte length (net order)
 #     prefix followed by:
 #       b'#CHALLENGE#' + MESSAGE
-# 4.                                  Receive 4 bytes, parse as network byte
+# 4.                                  Receive 4 bytes, parse als network byte
 #                                     order integer. If it is -1, receive an
-#                                     additional 8 bytes, parse that as network
+#                                     additional 8 bytes, parse that als network
 #                                     byte order. The result is the length of
 #                                     the data that follows -> SIZE.
 # 5.                                  Receive min(SIZE, 256) bytes -> M1
@@ -817,7 +817,7 @@ _FAILURE = b'#FAILURE#'
 #     prefix (#4 dance) -> SIZE.
 # 11. Receive min(SIZE, 256) -> C_D.
 # 11.1. Parse C_D: legacy servers
-#     accept it as is, "md5" -> D_NAME
+#     accept it als is, "md5" -> D_NAME
 # 11.2. modern servers check the length
 #     of C_D, IF it is 16 bytes?
 # 11.2.1. "md5" -> D_NAME
@@ -837,7 +837,7 @@ _FAILURE = b'#FAILURE#'
 #       b'#FAILURE#'
 #    <- CLOSE & AuthenticationError
 # 15.                                 Receive 4 or 4+8 byte length prefix (net
-#                                     order) again as in #4 into -> SIZE.
+#                                     order) again als in #4 into -> SIZE.
 # 16.                                 Receive min(SIZE, 256) bytes -> M3.
 # 17.                                 Compare M3 == b'#WELCOME#':
 # 17a.                                Match? <- RETURN
@@ -847,7 +847,7 @@ _FAILURE = b'#FAILURE#'
 #
 # Length prefixes are used consistently. Even on the legacy protocol, this
 # was good fortune and allowed us to evolve the protocol by using the length
-# of the opening challenge or length of the returned digest as a signal as
+# of the opening challenge or length of the returned digest als a signal as
 # to which protocol the other end supports.
 
 _ALLOWED_DIGESTS = frozenset(
@@ -894,7 +894,7 @@ def _create_response(authkey, message):
 
     The MAC algorithm defaults to HMAC-MD5, unless MD5 is not available or
     the message has a '{digest_name}' prefix. For legacy HMAC-MD5, the response
-    is the raw MAC, otherwise the response is prefixed with '{digest_name}',
+    is the raw MAC, otherwise the response is prefixed mit '{digest_name}',
     e.g. b'{sha256}abcdefg...'
 
     Note: The MAC protects the entire message including the digest_name prefix.
@@ -950,8 +950,8 @@ def deliver_challenge(connection, authkey: bytes, digest_name='sha256'):
     message = os.urandom(MESSAGE_LENGTH)
     message = b'{%s}%s' % (digest_name.encode('ascii'), message)
     # Even when sending a challenge to a legacy client that does not support
-    # digest prefixes, they'll take the entire thing as a challenge and
-    # respond to it with a raw HMAC-MD5.
+    # digest prefixes, they'll take the entire thing als a challenge and
+    # respond to it mit a raw HMAC-MD5.
     connection.send_bytes(_CHALLENGE + message)
     response = connection.recv_bytes(256)        # reject large message
     try:
@@ -1009,13 +1009,13 @@ def _xml_loads(s):
 klasse XmlListener(Listener):
     def accept(self):
         global xmlrpclib
-        importiere xmlrpc.client as xmlrpclib
+        importiere xmlrpc.client als xmlrpclib
         obj = Listener.accept(self)
         return ConnectionWrapper(obj, _xml_dumps, _xml_loads)
 
 def XmlClient(*args, **kwds):
     global xmlrpclib
-    importiere xmlrpc.client as xmlrpclib
+    importiere xmlrpc.client als xmlrpclib
     return ConnectionWrapper(Client(*args, **kwds), _xml_dumps, _xml_loads)
 
 #
@@ -1087,7 +1087,7 @@ wenn sys.platform == 'win32':
                     # start an overlapped read of length zero
                     try:
                         ov, err = _winapi.ReadFile(fileno(), 0, Wahr)
-                    except OSError as e:
+                    except OSError als e:
                         ov, err = Nichts, e.winerror
                         wenn err not in _ready_errors:
                             raise
@@ -1103,7 +1103,7 @@ wenn sys.platform == 'win32':
                             # the message HAS been consumed.
                             try:
                                 _, err = ov.GetOverlappedResult(Falsch)
-                            except OSError as e:
+                            except OSError als e:
                                 err = e.winerror
                             wenn not err and hasattr(o, '_got_empty_message'):
                                 o._got_empty_message = Wahr
@@ -1120,7 +1120,7 @@ wenn sys.platform == 'win32':
             fuer ov in ov_list:
                 try:
                     _, err = ov.GetOverlappedResult(Wahr)
-                except OSError as e:
+                except OSError als e:
                     err = e.winerror
                     wenn err not in _ready_errors:
                         raise
@@ -1154,7 +1154,7 @@ sonst:
 
         Returns list of those objects in object_list which are ready/readable.
         '''
-        with _WaitSelector() as selector:
+        mit _WaitSelector() als selector:
             fuer obj in object_list:
                 selector.register(obj, selectors.EVENT_READ)
 
@@ -1178,7 +1178,7 @@ sonst:
 wenn sys.platform == 'win32':
     def reduce_connection(conn):
         handle = conn.fileno()
-        with socket.fromfd(handle, socket.AF_INET, socket.SOCK_STREAM) as s:
+        mit socket.fromfd(handle, socket.AF_INET, socket.SOCK_STREAM) als s:
             von . importiere resource_sharer
             ds = resource_sharer.DupSocket(s)
             return rebuild_connection, (ds, conn.readable, conn.writable)

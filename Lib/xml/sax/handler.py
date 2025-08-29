@@ -1,9 +1,9 @@
 """
 This module contains the core classes of version 2.0 of SAX fuer Python.
-This file provides only default classes with absolutely minimum
+This file provides only default classes mit absolutely minimum
 functionality, von which drivers and applications can be subclassed.
 
-Many of these classes are empty and are included only as documentation
+Many of these classes are empty and are included only als documentation
 of the interfaces.
 
 $Id$
@@ -23,11 +23,11 @@ klasse ErrorHandler:
     """Basic interface fuer SAX error handlers.
 
     If you create an object that implements this interface, then
-    register the object with your XMLReader, the parser will call the
+    register the object mit your XMLReader, the parser will call the
     methods in your object to report all warnings and errors. There
     are three levels of errors available: warnings, (possibly)
     recoverable errors, and unrecoverable errors. All methods take a
-    SAXParseException as the only parameter."""
+    SAXParseException als the only parameter."""
 
     def error(self, exception):
         "Handle a recoverable error."
@@ -70,7 +70,7 @@ klasse ContentHandler:
         this information fuer reporting its own errors (such as
         character content that does not match an application's
         business rules). The information returned by the locator is
-        probably not sufficient fuer use with a search engine.
+        probably not sufficient fuer use mit a search engine.
 
         Note that the locator will return correct information only
         during the invocation of the events in this interface. The
@@ -127,7 +127,7 @@ klasse ContentHandler:
         """Signals the start of an element in non-namespace mode.
 
         The name parameter contains the raw XML 1.0 name of the
-        element type as a string and the attrs parameter holds an
+        element type als a string and the attrs parameter holds an
         instance of the Attributes klasse containing the attributes of
         the element."""
 
@@ -135,12 +135,12 @@ klasse ContentHandler:
         """Signals the end of an element in non-namespace mode.
 
         The name parameter contains the name of the element type, just
-        as with the startElement event."""
+        als mit the startElement event."""
 
     def startElementNS(self, name, qname, attrs):
         """Signals the start of an element in namespace mode.
 
-        The name parameter contains the name of the element type as a
+        The name parameter contains the name of the element type als a
         (uri, localname) tuple, the qname parameter the raw XML 1.0
         name used in the source document, and the attrs parameter
         holds an instance of the Attributes klasse containing the
@@ -153,7 +153,7 @@ klasse ContentHandler:
         """Signals the end of an element in namespace mode.
 
         The name parameter contains the name of the element type, just
-        as with the startElementNS event."""
+        als mit the startElementNS event."""
 
     def characters(self, content):
         """Receive notification of character data.
@@ -222,14 +222,14 @@ klasse DTDHandler:
 
 klasse EntityResolver:
     """Basic interface fuer resolving entities. If you create an object
-    implementing this interface, then register the object with your
+    implementing this interface, then register the object mit your
     Parser, the parser will call the method in your object to
     resolve all external entities. Note that DefaultHandler implements
-    this interface with the default behaviour."""
+    this interface mit the default behaviour."""
 
     def resolveEntity(self, publicId, systemId):
         """Resolve the system identifier of an entity and return either
-        the system identifier to read von as a string, or an InputSource
+        the system identifier to read von als a string, or an InputSource
         to read from."""
         return systemId
 
@@ -348,11 +348,11 @@ klasse LexicalHandler:
     This handler is used to obtain lexical information about an XML
     document, that is, information about how the document was encoded
     (as opposed to what it contains, which is reported to the
-    ContentHandler), such as comments and CDATA marked section
+    ContentHandler), such als comments and CDATA marked section
     boundaries.
 
     To set the LexicalHandler of an XMLReader, use the setProperty
-    method with the property identifier
+    method mit the property identifier
     'http://xml.org/sax/properties/lexical-handler'."""
 
     def comment(self, content):

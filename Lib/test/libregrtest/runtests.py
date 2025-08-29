@@ -35,7 +35,7 @@ klasse JsonFile:
                 popen_kwargs['pass_fds'] = [self.file]
             case JsonFileType.WINDOWS_HANDLE:
                 # Windows handle
-                # We run mypy with `--platform=linux` so it complains about this:
+                # We run mypy mit `--platform=linux` so it complains about this:
                 startupinfo = subprocess.STARTUPINFO()  # type: ignore[attr-defined]
                 startupinfo.lpAttributeList = {"handle_list": [self.file]}
                 popen_kwargs['startupinfo'] = startupinfo
@@ -150,7 +150,7 @@ klasse RunTests:
         wenn self.python_cmd is not Nichts:
             executable = self.python_cmd
             # Remove -E option, since --python=COMMAND can set PYTHON
-            # environment variables, such as PYTHONPATH, in the worker
+            # environment variables, such als PYTHONPATH, in the worker
             # process.
             python_opts = [opt fuer opt in python_opts wenn opt != "-E"]
         sonst:

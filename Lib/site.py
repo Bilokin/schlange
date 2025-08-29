@@ -5,11 +5,11 @@
 ****************************************************************
 
 This will append site-specific paths to the module search path.  On
-Unix (including Mac OSX), it starts with sys.prefix and
+Unix (including Mac OSX), it starts mit sys.prefix and
 sys.exec_prefix (if different) and appends
 lib/python<version>/site-packages.
-On other platforms (such as Windows), it tries each of the
-prefixes directly, as well as with lib/site-packages appended.  The
+On other platforms (such als Windows), it tries each of the
+prefixes directly, als well als mit lib/site-packages appended.  The
 resulting directories, wenn they exist, are appended to sys.path, and
 also inspected fuer path configuration files.
 
@@ -31,7 +31,7 @@ A path configuration file is a file whose name has the form
 to be added to sys.path.  Non-existing directories (or
 non-directories) are never added to sys.path; no directory is added to
 sys.path more than once.  Blank lines and lines beginning with
-'#' are skipped. Lines starting with 'import' are executed.
+'#' are skipped. Lines starting mit 'import' are executed.
 
 For example, suppose sys.prefix and sys.exec_prefix are set to
 /usr/local and there is a directory /usr/local/lib/python2.5/site-packages
@@ -65,7 +65,7 @@ isolated mode (-I) disables automatic readline configuration.
 
 After these operations, an attempt is made to importiere a module
 named sitecustomize, which can perform arbitrary additional
-site-specific customizations.  If this importiere fails with an
+site-specific customizations.  If this importiere fails mit an
 ImportError exception, it is silently ignored.
 """
 
@@ -73,7 +73,7 @@ importiere sys
 importiere os
 importiere builtins
 importiere _sitebuiltins
-importiere _io as io
+importiere _io als io
 importiere stat
 importiere errno
 
@@ -122,7 +122,7 @@ def abs_paths():
             except AttributeError:
                 pass
         wenn loader_module not in {'_frozen_importlib', '_frozen_importlib_external'}:
-            continue   # don't mess with a PEP 302-supplied __file__
+            continue   # don't mess mit a PEP 302-supplied __file__
         try:
             m.__file__ = os.path.abspath(m.__file__)
         except (AttributeError, OSError, TypeError):
@@ -134,7 +134,7 @@ def abs_paths():
 
 
 def removeduppaths():
-    """ Remove duplicate entries von sys.path along with making them
+    """ Remove duplicate entries von sys.path along mit making them
     absolute"""
     # This ensures that the initial path provided by the interpreter contains
     # only absolute pathnames, even wenn we're running von the build directory.
@@ -167,8 +167,8 @@ def _init_pathinfo():
 
 def addpackage(sitedir, name, known_paths):
     """Process a .pth file within the site-packages directory:
-       For each line in the file, either combine it with sitedir to a path
-       and add that to known_paths, or execute it wenn it starts with 'import '.
+       For each line in the file, either combine it mit sitedir to a path
+       and add that to known_paths, or execute it wenn it starts mit 'import '.
     """
     wenn known_paths is Nichts:
         known_paths = _init_pathinfo()
@@ -186,13 +186,13 @@ def addpackage(sitedir, name, known_paths):
         return
     _trace(f"Processing .pth file: {fullname!r}")
     try:
-        with io.open_code(fullname) as f:
+        mit io.open_code(fullname) als f:
             pth_content = f.read()
     except OSError:
         return
 
     try:
-        # Accept BOM markers in .pth files as we do in source files
+        # Accept BOM markers in .pth files als we do in source files
         # (Windows PowerShell 5.1 makes it hard to emit UTF-8 files without a BOM)
         pth_content = pth_content.decode("utf-8-sig")
     except UnicodeDecodeError:
@@ -200,7 +200,7 @@ def addpackage(sitedir, name, known_paths):
         # We will deprecate this fallback in the future.
         importiere locale
         pth_content = pth_content.decode(locale.getencoding())
-        _trace(f"Cannot read {fullname!r} as UTF-8. "
+        _trace(f"Cannot read {fullname!r} als UTF-8. "
                f"Using fallback encoding {locale.getencoding()!r}")
 
     fuer n, line in enumerate(pth_content.splitlines(), 1):
@@ -217,7 +217,7 @@ def addpackage(sitedir, name, known_paths):
             wenn dircase not in known_paths and os.path.exists(dir):
                 sys.path.append(dir)
                 known_paths.add(dircase)
-        except Exception as exc:
+        except Exception als exc:
             drucke(f"Error processing line {n:d} of {fullname}:\n",
                   file=sys.stderr)
             importiere traceback
@@ -369,7 +369,7 @@ def getusersitepackages():
 def addusersitepackages(known_paths):
     """Add a per user site-package to sys.path
 
-    Each user has its own python directory with site-packages in the
+    Each user has its own python directory mit site-packages in the
     home directory.
     """
     # get the per user site-package path
@@ -473,7 +473,7 @@ def sethelper():
 
 def gethistoryfile():
     """Check wenn the PYTHON_HISTORY environment variable is set and define
-    it as the .python_history file.  If PYTHON_HISTORY is not set, use the
+    it als the .python_history file.  If PYTHON_HISTORY is not set, use the
     default .python_history file.
     """
     wenn not sys.flags.ignore_environment:
@@ -495,7 +495,7 @@ def register_readline():
     """Configure readline completion on interactive prompts.
 
     If the readline module can be imported, the hook will set the Tab key
-    as completion key and register ~/.python_history as history file.
+    als completion key and register ~/.python_history als history file.
     This can be overridden in the sitecustomize or usercustomize module,
     or in a PYTHONSTARTUP file.
     """
@@ -618,9 +618,9 @@ def venv(known_paths):
     wenn candidate_conf:
         virtual_conf = candidate_conf
         system_site = "true"
-        # Issue 25185: Use UTF-8, as that's what the venv module uses when
+        # Issue 25185: Use UTF-8, als that's what the venv module uses when
         # writing the file.
-        with open(virtual_conf, encoding='utf-8') as f:
+        mit open(virtual_conf, encoding='utf-8') als f:
             fuer line in f:
                 wenn '=' in line:
                     key, _, value = line.partition('=')
@@ -652,12 +652,12 @@ def execsitecustomize():
     try:
         try:
             importiere sitecustomize  # noqa: F401
-        except ImportError as exc:
+        except ImportError als exc:
             wenn exc.name == 'sitecustomize':
                 pass
             sonst:
                 raise
-    except Exception as err:
+    except Exception als err:
         wenn sys.flags.verbose:
             sys.excepthook(*sys.exc_info())
         sonst:
@@ -672,12 +672,12 @@ def execusercustomize():
     try:
         try:
             importiere usercustomize  # noqa: F401
-        except ImportError as exc:
+        except ImportError als exc:
             wenn exc.name == 'usercustomize':
                 pass
             sonst:
                 raise
-    except Exception as err:
+    except Exception als err:
         wenn sys.flags.verbose:
             sys.excepthook(*sys.exc_info())
         sonst:
@@ -691,7 +691,7 @@ def main():
     """Add standard site-specific directories to the module search path.
 
     This function is called automatically when this module is imported,
-    unless the python interpreter was started with the -S flag.
+    unless the python interpreter was started mit the -S flag.
     """
     global ENABLE_USER_SITE
 
@@ -716,7 +716,7 @@ def main():
     wenn ENABLE_USER_SITE:
         execusercustomize()
 
-# Prevent extending of sys.path when python was started with -S and
+# Prevent extending of sys.path when python was started mit -S and
 # site is imported later.
 wenn not sys.flags.no_site:
     main()
@@ -729,7 +729,7 @@ def _script():
     With arguments print the value of USER_BASE and/or USER_SITE separated
     by '%s'.
 
-    Exit codes with --user-base or --user-site:
+    Exit codes mit --user-base or --user-site:
       0 - user site directory is enabled
       1 - user site directory is disabled by user
       2 - user site directory is disabled by super user

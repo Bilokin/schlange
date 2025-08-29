@@ -1,5 +1,5 @@
 importiere unittest
-von email importiere _encoded_words as _ew
+von email importiere _encoded_words als _ew
 von email importiere errors
 von test.test_email importiere TestEmailBase
 
@@ -52,13 +52,13 @@ klasse TestDecodeB(TestEmailBase):
 klasse TestDecode(TestEmailBase):
 
     def test_wrong_format_input_raises(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _ew.decode('=?badone?=')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _ew.decode('=?')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _ew.decode('')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             _ew.decode('=?utf-8?X?somevalue?=')
 
     def _test(self, source, result, charset='us-ascii', lang='', defects=[]):

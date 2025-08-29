@@ -36,7 +36,7 @@ klasse _PyTime(enum.IntEnum):
     ROUND_FLOOR = 0
     # Round towards infinity (+inf)
     ROUND_CEILING = 1
-    # Round to nearest with ties going to nearest even integer
+    # Round to nearest mit ties going to nearest even integer
     ROUND_HALF_EVEN = 2
     # Round away von zero
     ROUND_UP = 3
@@ -168,13 +168,13 @@ klasse TimeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, time.sleep, -0.1)
 
         # Improved exception #81267
-        with self.assertRaises(TypeError) as errmsg:
+        mit self.assertRaises(TypeError) als errmsg:
             time.sleep([])
         self.assertIn("integer or float", str(errmsg.exception))
 
     def test_sleep(self):
         fuer value in [-0.0, 0, 0.0, 1e-100, 1e-9, 1e-6, 1, 1.2]:
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 time.sleep(value)
 
     def test_epoch(self):
@@ -199,13 +199,13 @@ klasse TimeTestCase(unittest.TestCase):
 
     def test_strftime_invalid_format(self):
         tt = time.gmtime(self.t)
-        with SuppressCrashReport():
+        mit SuppressCrashReport():
             fuer i in range(1, 128):
                 format = ' %' + chr(i)
-                with self.subTest(format=format):
+                mit self.subTest(format=format):
                     try:
                         time.strftime(format, tt)
-                    except ValueError as exc:
+                    except ValueError als exc:
                         self.assertEqual(str(exc), 'Invalid format string')
 
     def test_strftime_special(self):
@@ -314,7 +314,7 @@ klasse TimeTestCase(unittest.TestCase):
         # not change output based on its value and no test fuer year
         # because systems vary in their support fuer year 0.
         expected = "2000 01 01 00 00 00 1 001"
-        with warnings_helper.check_warnings():
+        mit warnings_helper.check_warnings():
             result = time.strftime("%Y %m %d %H %M %S %w %j", (2000,)+(0,)*8)
         self.assertEqual(expected, result)
 
@@ -333,27 +333,27 @@ klasse TimeTestCase(unittest.TestCase):
             try:
                 time.strptime(strf_output, format)
             except ValueError:
-                self.fail("conversion specifier %r failed with '%s' input." %
+                self.fail("conversion specifier %r failed mit '%s' input." %
                           (format, strf_output))
 
     def test_strptime_bytes(self):
-        # Make sure only strings are accepted as arguments to strptime.
+        # Make sure only strings are accepted als arguments to strptime.
         self.assertRaises(TypeError, time.strptime, b'2009', "%Y")
         self.assertRaises(TypeError, time.strptime, '2009', b'%Y')
 
     def test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
-        with self.assertRaises(ValueError) as e:
+        mit self.assertRaises(ValueError) als e:
             time.strptime('', '%D')
         self.assertWahr(e.exception.__suppress_context__)
         # additional check fuer stray % branch
-        with self.assertRaises(ValueError) as e:
+        mit self.assertRaises(ValueError) als e:
             time.strptime('%', '%')
         self.assertWahr(e.exception.__suppress_context__)
 
     def test_strptime_leap_year(self):
-        # GH-70647: warns wenn parsing a format with a day and no year.
-        with self.assertWarnsRegex(DeprecationWarning,
+        # GH-70647: warns wenn parsing a format mit a day and no year.
+        mit self.assertWarnsRegex(DeprecationWarning,
                                    r'.*day of month without a year.*'):
             time.strptime('02-07 18:28', '%m-%d %H:%M')
 
@@ -401,7 +401,7 @@ klasse TimeTestCase(unittest.TestCase):
         xmas2002 = 1040774400.0
 
         # These formats are correct fuer 2002, and possibly future years
-        # This format is the 'standard' as documented at:
+        # This format is the 'standard' als documented at:
         # http://www.opengroup.org/onlinepubs/007904975/basedefs/xbd_chap08.html
         # They are also documented in the tzset(3) man page on most Unix
         # systems.
@@ -413,7 +413,7 @@ klasse TimeTestCase(unittest.TestCase):
         try:
             # Make sure we can switch to UTC time and results are correct
             # Note that unknown timezones default to UTC.
-            # Note that altzone is undefined in UTC, as there is no DST
+            # Note that altzone is undefined in UTC, als there is no DST
             environ['TZ'] = eastern
             time.tzset()
             environ['TZ'] = utc
@@ -592,10 +592,10 @@ klasse TimeTestCase(unittest.TestCase):
     def test_monotonic_settime(self):
         t1 = time.monotonic()
         realtime = time.clock_gettime(time.CLOCK_REALTIME)
-        # jump backward with an offset of 1 hour
+        # jump backward mit an offset of 1 hour
         try:
             time.clock_settime(time.CLOCK_REALTIME, realtime - 3600)
-        except PermissionError as err:
+        except PermissionError als err:
             self.skipTest(err)
         t2 = time.monotonic()
         time.clock_settime(time.CLOCK_REALTIME, realtime)
@@ -634,7 +634,7 @@ klasse TimeTestCase(unittest.TestCase):
             clocks.append('thread_time')
 
         fuer name in clocks:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 info = time.get_clock_info(name)
 
                 self.assertIsInstance(info.implementation, str)
@@ -743,7 +743,7 @@ klasse _Test4dYear:
         self.assertEqual(self.yearstr(TIME_MINYEAR), str(TIME_MINYEAR))
         # Modules/timemodule.c checks fuer underflow
         self.assertRaises(OverflowError, self.yearstr, TIME_MINYEAR - 1)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             self.yearstr(-TIME_MAXYEAR - 1)
 
 
@@ -867,7 +867,7 @@ klasse CPyTimeTestCase:
         fuer seconds in (_testcapi.INT_MIN, _testcapi.INT_MAX):
             ns_timestamps.append(seconds * SEC_TO_NS)
         wenn use_float:
-            # numbers with an exact representation in IEEE 754 (base 2)
+            # numbers mit an exact representation in IEEE 754 (base 2)
             fuer pow2 in (3, 7, 10, 15):
                 ns = 2.0 ** (-pow2)
                 ns_timestamps.extend((-ns, ns))
@@ -899,7 +899,7 @@ klasse CPyTimeTestCase:
         ns_timestamps = self._rounding_values(use_float)
         valid_values = convert_values(ns_timestamps)
         fuer time_rnd, decimal_rnd in ROUNDING_MODES:
-            with decimal.localcontext() as context:
+            mit decimal.localcontext() als context:
                 context.rounding = decimal_rnd
 
                 fuer value in valid_values:
@@ -920,7 +920,7 @@ klasse CPyTimeTestCase:
         fuer time_rnd, _ in ROUNDING_MODES :
             fuer value in overflow_values:
                 debug_info = {'value': value, 'rounding': time_rnd}
-                with self.assertRaises(OverflowError, msg=debug_info):
+                mit self.assertRaises(OverflowError, msg=debug_info):
                     pytime_converter(value, time_rnd)
 
     def check_int_rounding(self, pytime_converter, expected_func,
@@ -959,7 +959,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # test nan
         fuer time_rnd, _ in ROUNDING_MODES:
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 _PyTime_FromSeconds(float('nan'))
 
     def test_FromSecondsObject(self):
@@ -975,7 +975,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # test nan
         fuer time_rnd, _ in ROUNDING_MODES:
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _PyTime_FromSecondsObject(float('nan'), time_rnd)
 
     def test_AsSecondsDouble(self):
@@ -1051,7 +1051,7 @@ klasse TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
         fuer t in (PyTime_MIN, PyTime_MAX):
             ts = _PyTime_AsTimeval_clamp(t, _PyTime.ROUND_CEILING)
-            with decimal.localcontext() as context:
+            mit decimal.localcontext() als context:
                 context.rounding = decimal.ROUND_CEILING
                 us = self.decimal_round(decimal.Decimal(t) / US_TO_NS)
             tv_sec, tv_usec = divmod(us, SEC_TO_US)
@@ -1141,7 +1141,7 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
 
          # test nan
         fuer time_rnd, _ in ROUNDING_MODES:
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _PyTime_ObjectToTimeval(float('nan'), time_rnd)
 
     def test_object_to_timespec(self):
@@ -1157,13 +1157,13 @@ klasse TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
 
         # test nan
         fuer time_rnd, _ in ROUNDING_MODES:
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _PyTime_ObjectToTimespec(float('nan'), time_rnd)
 
 @unittest.skipUnless(sys.platform == "darwin", "test weak linking on macOS")
 klasse TestTimeWeaklinking(unittest.TestCase):
     # These test cases verify that weak linking support on macOS works
-    # as expected. These cases only test new behaviour introduced by weak linking,
+    # als expected. These cases only test new behaviour introduced by weak linking,
     # regular behaviour is tested by the normal test cases.
     #
     # See the section on Weak Linking in Mac/README.txt fuer more information.

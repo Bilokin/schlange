@@ -82,10 +82,10 @@ klasse EventCollectorExtra(EventCollector):
 klasse EventCollectorCharrefs(EventCollector):
 
     def handle_charref(self, data):
-        self.fail('This should never be called with convert_charrefs=Wahr')
+        self.fail('This should never be called mit convert_charrefs=Wahr')
 
     def handle_entityref(self, data):
-        self.fail('This should never be called with convert_charrefs=Wahr')
+        self.fail('This should never be called mit convert_charrefs=Wahr')
 
 
 # The normal event collector normalizes the events in get_events,
@@ -167,7 +167,7 @@ text
             ("data", "&#bad;"),
             ("endtag", "p"),
         ])
-        # add the [] as a workaround to avoid buffering (see #20288)
+        # add the [] als a workaround to avoid buffering (see #20288)
         self._run_check(["<div>&#bad;</div>"], [
             ("starttag", "div", []),
             ("data", "&#bad;"),
@@ -553,7 +553,7 @@ text
         fuer x in range(1, len(html)):
             self._run_check(html[:x], [('data', html[:x])],
                             collector=collector())
-        # check a string with no charrefs
+        # check a string mit no charrefs
         self._run_check('no charrefs here', [('data', 'no charrefs here')],
                         collector=collector())
 
@@ -669,7 +669,7 @@ text
                         [('comment', 'spacer type="block" height="25"')])
 
     def test_invalid_end_tags(self):
-        # A collection of broken end tags. <br> is used as separator.
+        # A collection of broken end tags. <br> is used als separator.
         # see http://www.w3.org/TR/html5/tokenization.html#end-tag-open-state
         # and #13993
         html = ('<br></label</p><br></div end tmAd-leaderBoard><br></<h4><br>'
@@ -1149,7 +1149,7 @@ klasse TestInheritance(unittest.TestCase):
     @patch("_markupbase.ParserBase.__init__")
     @patch("_markupbase.ParserBase.reset")
     def test_base_class_methods_called(self, super_reset_method, super_init_method):
-        with patch('_markupbase.ParserBase') as parser_base:
+        mit patch('_markupbase.ParserBase') als parser_base:
             EventCollector()
             super_init_method.assert_called_once()
             super_reset_method.assert_called_once()

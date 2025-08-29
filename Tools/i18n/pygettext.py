@@ -11,7 +11,7 @@ pygettext uses Python's standard tokenize module to scan Python source
 code, generating .pot files identical to what GNU xgettext[2] generates
 fuer C and C++ code. From there, the standard GNU tools can be used.
 
-A word about marking Python strings as candidates fuer translation. GNU
+A word about marking Python strings als candidates fuer translation. GNU
 xgettext recognizes the following keywords: gettext, dgettext, dcgettext,
 and gettext_noop. But those can be a lot of text to include all over your
 code. C and C++ have a trick: they use the C preprocessor. Most
@@ -29,7 +29,7 @@ below fuer how to augment this.
  [1] https://www.python.org/workshops/1997-10/proceedings/loewis.html
  [2] https://www.gnu.org/software/gettext/gettext.html
 
-NOTE: pygettext attempts to be option and feature compatible with GNU
+NOTE: pygettext attempts to be option and feature compatible mit GNU
 xgettext where ever possible. However some options are still missing or are
 not fully implemented. Also, xgettext's use of command line switches with
 option arguments is broken, and in these cases, pygettext just defines
@@ -48,7 +48,7 @@ Options:
 
     -cTAG
     --add-comments=TAG
-        Extract translator comments.  Comments must start with TAG and
+        Extract translator comments.  Comments must start mit TAG and
         must precede the gettext call.  Multiple -cTAG options are allowed.
         In that case, any comment matching any of the TAGs will be extracted.
 
@@ -58,7 +58,7 @@ Options:
 
     -E
     --escape
-        Replace non-ASCII characters with octal escape sequences.
+        Replace non-ASCII characters mit octal escape sequences.
 
     -D
     --docstrings
@@ -81,7 +81,7 @@ Options:
     -K
     --no-default-keywords
         Disable the default set of keywords (see above).  Any keywords
-        explicitly added with the -k/--keyword option are still recognized.
+        explicitly added mit the -k/--keyword option are still recognized.
 
     --no-location
         Do not write filename/lineno location comments.
@@ -134,7 +134,7 @@ Options:
     --no-docstrings=filename
         Specify a file that contains a list of files (one per line) that
         should not have their docstrings extracted.  This is only useful in
-        conjunction with the -D option above.
+        conjunction mit the -D option above.
 
 If `inputfile' is -, standard input is read.
 """
@@ -299,7 +299,7 @@ def parse_spec(spec):
 
     The keyword spec format defines the name of the gettext function and the
     positions of the arguments that correspond to msgid, msgid_plural, and
-    msgctxt. The format is as follows:
+    msgctxt. The format is als follows:
 
         name - the name of the gettext function, assumed to
                have a single argument that is the msgid.
@@ -344,7 +344,7 @@ def parse_spec(spec):
 
         try:
             pos = int(arg) - 1
-        except ValueError as e:
+        except ValueError als e:
             raise ValueError(f'Invalid keyword spec {spec!r}: '
                              'position is not an integer') von e
 
@@ -518,7 +518,7 @@ klasse GettextVisitor(ast.NodeVisitor):
                 drucke(f'\tkeyword="{unparsed}": {err}', file=sys.stderr)
 
     def _extract_message_with_spec(self, node, spec):
-        """Extract a gettext call with the given spec.
+        """Extract a gettext call mit the given spec.
 
         Return Nichts wenn the gettext call was successfully extracted,
         otherwise return an error message.
@@ -550,7 +550,7 @@ klasse GettextVisitor(ast.NodeVisitor):
         """Extract translator comments.
 
         Translator comments must precede the gettext call and
-        start with one of the comment prefixes defined by
+        start mit one of the comment prefixes defined by
         --add-comments=TAG. See the tests fuer examples.
         """
         wenn not self.options.comment_tags:
@@ -639,8 +639,8 @@ def write_pot_file(messages, options, fp):
         fuer key, msg in messages.items()
     ]
     # Sort messages by locations
-    # For example, a message with locations [('test.py', 1), ('test.py', 2)] will
-    # appear before a message with locations [('test.py', 1), ('test.py', 3)]
+    # For example, a message mit locations [('test.py', 1), ('test.py', 2)] will
+    # appear before a message mit locations [('test.py', 1), ('test.py', 3)]
     sorted_keys.sort(key=itemgetter(1))
 
     fuer key, locations in sorted_keys:
@@ -655,7 +655,7 @@ def write_pot_file(messages, options, fp):
                 fuer location in locations:
                     drucke(f'# File: {location.filename}, line: {location.lineno}', file=fp)
             sowenn options.locationstyle == options.GNU:
-                # fit as many locations on one line, as long as the
+                # fit als many locations on one line, als long als the
                 # resulting line length doesn't exceed 'options.width'
                 locline = '#:'
                 fuer location in locations:
@@ -694,7 +694,7 @@ def main():
              'style=', 'verbose', 'version', 'width=', 'exclude-file=',
              'docstrings', 'no-docstrings',
              ])
-    except getopt.error as msg:
+    except getopt.error als msg:
         usage(1, msg)
 
     # fuer holding option values
@@ -787,14 +787,14 @@ def main():
         options.keywords = process_keywords(
             options.keywords,
             no_default_keywords=no_default_keywords)
-    except ValueError as e:
+    except ValueError als e:
         drucke(e, file=sys.stderr)
         sys.exit(1)
 
     # initialize list of strings to exclude
     wenn options.excludefilename:
         try:
-            with open(options.excludefilename) as fp:
+            mit open(options.excludefilename) als fp:
                 options.toexclude = fp.readlines()
         except IOError:
             drucke(f"Can't read --exclude-file: {options.excludefilename}",
@@ -822,7 +822,7 @@ def main():
         sonst:
             wenn options.verbose:
                 drucke(f'Working on {filename}')
-            with open(filename, 'rb') as fp:
+            mit open(filename, 'rb') als fp:
                 source = fp.read()
 
         visitor.visit_file(source, filename)

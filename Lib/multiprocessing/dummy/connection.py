@@ -61,7 +61,7 @@ klasse Connection(object):
             return Wahr
         wenn timeout <= 0.0:
             return Falsch
-        with self._in.not_empty:
+        mit self._in.not_empty:
             self._in.not_empty.wait(timeout)
         return self._in.qsize() > 0
 

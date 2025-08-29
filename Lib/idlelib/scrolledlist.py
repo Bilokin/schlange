@@ -9,7 +9,7 @@ klasse ScrolledList:
     default = "(Nichts)"
 
     def __init__(self, master, **options):
-        # Create top frame, with scrollbar and listbox
+        # Create top frame, mit scrollbar and listbox
         self.master = master
         self.frame = frame = Frame(master)
         self.frame.pack(fill="both", expand=1)
@@ -33,7 +33,7 @@ klasse ScrolledList:
             listbox.bind("<ButtonPress-3>", self.popup_event)
         listbox.bind("<Key-Up>", self.up_event)
         listbox.bind("<Key-Down>", self.down_event)
-        # Mark as empty
+        # Mark als empty
         self.clear()
 
     def close(self):

@@ -92,7 +92,7 @@ klasse TestBasic(unittest.TestCase):
         self.assertEqual(deque('abc', maxlen=4).maxlen, 4)
         self.assertEqual(deque('abc', maxlen=2).maxlen, 2)
         self.assertEqual(deque('abc', maxlen=0).maxlen, 0)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             d = deque('abc')
             d.maxlen = 10
 
@@ -157,13 +157,13 @@ klasse TestBasic(unittest.TestCase):
         # Test detection of mutation during iteration
         d = deque(range(n))
         d[n//2] = MutateCmp(d, Falsch)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             n in d
 
         # Test detection of comparison exceptions
         d = deque(range(n))
         d[n//2] = BadCmp()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             n in d
 
     def test_contains_count_index_stop_crashes(self):
@@ -172,14 +172,14 @@ klasse TestBasic(unittest.TestCase):
                 d.clear()
                 return NotImplemented
         d = deque([A(), A()])
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             _ = 3 in d
         d = deque([A(), A()])
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             _ = d.count(3)
 
         d = deque([A()])
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             d.index(0)
 
     def test_extend(self):
@@ -207,7 +207,7 @@ klasse TestBasic(unittest.TestCase):
         h = deque('gh')
         self.assertEqual(g + h, deque('efgh'))
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             deque('abc') + 'def'
 
     def test_iadd(self):
@@ -256,19 +256,19 @@ klasse TestBasic(unittest.TestCase):
             fuer i in range(n):
                 self.assertEqual(d.index(i), i)
 
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 d.index(n+1)
 
             # Test detection of mutation during iteration
             d = deque(range(n))
             d[n//2] = MutateCmp(d, Falsch)
-            with self.assertRaises(RuntimeError):
+            mit self.assertRaises(RuntimeError):
                 d.index(n)
 
             # Test detection of comparison exceptions
             d = deque(range(n))
             d[n//2] = BadCmp()
-            with self.assertRaises(RuntimeError):
+            mit self.assertRaises(RuntimeError):
                 d.index(n)
 
         # Test start and stop arguments behavior matches list.index()
@@ -282,7 +282,7 @@ klasse TestBasic(unittest.TestCase):
                     try:
                         target = s.index(element, start, stop)
                     except ValueError:
-                        with self.assertRaises(ValueError):
+                        mit self.assertRaises(ValueError):
                             d.index(element, start, stop)
                     sonst:
                         self.assertEqual(d.index(element, start, stop), target)
@@ -292,12 +292,12 @@ klasse TestBasic(unittest.TestCase):
         fuer step in range(100):
             i = d.index(8500, 700)
             self.assertEqual(d[i], 8500)
-            # Repeat test with a different internal offset
+            # Repeat test mit a different internal offset
             d.rotate()
 
     def test_index_bug_24913(self):
         d = deque('A' * 3)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             i = d.index("Hello world", 0, 4)
 
     def test_insert(self):
@@ -313,7 +313,7 @@ klasse TestBasic(unittest.TestCase):
     def test_insert_bug_26194(self):
         data = 'ABC'
         d = deque(data, maxlen=len(data))
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             d.insert(2, Nichts)
 
         elements = 'ABCDEFGHI'
@@ -720,7 +720,7 @@ klasse TestBasic(unittest.TestCase):
     def test_gc_doesnt_blowup(self):
         importiere gc
         # This used to assert-fail in deque_traverse() under a debug
-        # build, or run wild with a NULL pointer in a release build.
+        # build, or run wild mit a NULL pointer in a release build.
         d = deque()
         fuer i in range(100):
             d.append(1)
@@ -888,9 +888,9 @@ klasse TestSubclass(unittest.TestCase):
         def bad___new__(cls, *args, **kwargs):
             return [42]
         X.__new__ = bad___new__
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             d * 42  # shouldn't crash
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             d + deque([1, 2, 3])  # shouldn't crash
 
 
@@ -928,7 +928,7 @@ libreftest = """
 Example von the Library Reference:  Doc/lib/libcollections.tex
 
 >>> von collections importiere deque
->>> d = deque('ghi')                 # make a new deque with three items
+>>> d = deque('ghi')                 # make a new deque mit three items
 >>> fuer elem in d:                   # iterate over the deque's elements
 ...     drucke(elem.upper())
 G

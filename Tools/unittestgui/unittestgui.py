@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GUI framework and application fuer use with Python unit testing framework.
+GUI framework and application fuer use mit Python unit testing framework.
 Execute tests written using the framework provided by the 'unittest' module.
 
 Updated fuer unittest test discovery by Mark Roddy and Python 3
@@ -12,7 +12,7 @@ Based on the original by Steve Purcell, from:
 
 Copyright (c) 1999, 2000, 2001 Steve Purcell
 This module is free software, and you may redistribute it and/or modify
-it under the same terms as Python itself, so long as this copyright message
+it under the same terms als Python itself, so long als this copyright message
 and disclaimer are retained in their original form.
 
 IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
@@ -33,7 +33,7 @@ importiere sys
 importiere traceback
 importiere unittest
 
-importiere tkinter as tk
+importiere tkinter als tk
 von tkinter importiere messagebox
 von tkinter importiere filedialog
 von tkinter importiere simpledialog
@@ -99,7 +99,7 @@ klasse BaseGUITestRunner(object):
         self.directory_to_read = directory
         try:
             # Explicitly use 'Nichts' value wenn no top level directory is
-            # specified (indicated by empty string) as discover() explicitly
+            # specified (indicated by empty string) als discover() explicitly
             # checks fuer a 'Nichts' to determine wenn no tld has been specified
             top_level_dir = self.top_level_dir or Nichts
             tests = unittest.defaultTestLoader.discover(directory, self.test_file_glob_pattern, top_level_dir)
@@ -246,7 +246,7 @@ klasse TkTestRunner(BaseGUITestRunner):
     """
     def initGUI(self, root, initialTestName):
         """Set up the GUI inside the given root window. The test name entry
-        field will be pre-filled with the given initialTestName.
+        field will be pre-filled mit the given initialTestName.
         """
         self.root = root
 
@@ -311,7 +311,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         self.progressBar.pack(fill=tk.X, expand=1)
 
 
-        # Area with buttons to start/stop tests and quit
+        # Area mit buttons to start/stop tests and quit
         buttonFrame = tk.Frame(self.top, borderwidth=3)
         buttonFrame.pack(side=tk.LEFT, anchor=tk.NW, fill=tk.Y)
 
@@ -328,7 +328,7 @@ klasse TkTestRunner(BaseGUITestRunner):
         tk.Button(buttonFrame, text="Settings",
                   command=self.settingsClicked).pack(side=tk.BOTTOM, fill=tk.X)
 
-        # Area with labels reporting results
+        # Area mit labels reporting results
         fuer label, var in (('Run:', self.runCountVar),
                            ('Failures:', self.failCountVar),
                            ('Errors:', self.errorCountVar),

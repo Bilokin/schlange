@@ -24,7 +24,7 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
 
         # getters
         q = asyncio.Queue()
-        async with asyncio.TaskGroup() as tg:
+        async mit asyncio.TaskGroup() als tg:
             # Start a task that waits to get.
             getter = tg.create_task(q.get())
             # Let it start waiting.
@@ -37,7 +37,7 @@ klasse QueueBasicTests(unittest.IsolatedAsyncioTestCase):
 
         # putters
         q = asyncio.Queue(maxsize=1)
-        async with asyncio.TaskGroup() as tg:
+        async mit asyncio.TaskGroup() als tg:
             q.put_nowait(1)
             # Start a task that waits to put.
             putter = tg.create_task(q.put(2))
@@ -201,14 +201,14 @@ klasse QueueGetTests(unittest.IsolatedAsyncioTestCase):
         producer_num_items = 5
 
         q = asyncio.Queue(1)
-        async with asyncio.TaskGroup() as tg:
+        async mit asyncio.TaskGroup() als tg:
             tg.create_task(producer(q, producer_num_items))
             tg.create_task(consumer(q, producer_num_items))
 
     async def test_cancelled_getters_not_being_held_in_self_getters(self):
         queue = asyncio.Queue(maxsize=5)
 
-        with self.assertRaises(TimeoutError):
+        mit self.assertRaises(TimeoutError):
             await asyncio.wait_for(queue.get(), 0.1)
 
         self.assertEqual(len(queue._getters), 0)
@@ -273,7 +273,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
     async def test_get_cancel_drop_many_pending_readers(self):
         q = asyncio.Queue()
 
-        async with asyncio.TaskGroup() as tg:
+        async mit asyncio.TaskGroup() als tg:
             reader1 = tg.create_task(q.get())
             reader2 = tg.create_task(q.get())
             reader3 = tg.create_task(q.get())
@@ -284,7 +284,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
             q.put_nowait(2)
             reader1.cancel()
 
-            with self.assertRaises(asyncio.CancelledError):
+            mit self.assertRaises(asyncio.CancelledError):
                 await reader1
 
             await reader3
@@ -386,7 +386,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
             fuer _ in range(num):
                 queue.get_nowait()
 
-        async with asyncio.TaskGroup() as tg:
+        async mit asyncio.TaskGroup() als tg:
             tg.create_task(getter())
             tg.create_task(putter(0))
             tg.create_task(putter(1))
@@ -406,7 +406,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         # the task is canceled.
         self.assertEqual(len(queue._putters), 1)
         put_task.cancel()
-        with self.assertRaises(asyncio.CancelledError):
+        mit self.assertRaises(asyncio.CancelledError):
             await put_task
         self.assertEqual(len(queue._putters), 0)
 
@@ -428,7 +428,7 @@ klasse QueuePutTests(unittest.IsolatedAsyncioTestCase):
         # The ValueError exception triggered by queue._putters.remove(putter)
         # inside queue.put should be silenced.
         # If the ValueError is silenced we should catch a CancelledError.
-        with self.assertRaises(asyncio.CancelledError):
+        mit self.assertRaises(asyncio.CancelledError):
             await put_task
 
 
@@ -481,7 +481,7 @@ klasse _QueueJoinTestMixin:
                 accumulator += item
                 q.task_done()
 
-        async with asyncio.TaskGroup() as tg:
+        async mit asyncio.TaskGroup() als tg:
             tasks = [tg.create_task(worker())
                      fuer index in range(2)]
 
@@ -553,24 +553,24 @@ klasse _QueueShutdownTestMixin:
         # Ensure get() task is finished, and raised ShutDown
         await asyncio.sleep(0)
         self.assertWahr(get_task.done())
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await get_task
 
         # Ensure put() and get() raise ShutDown
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.put("data")
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.get()
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.get_nowait()
 
     async def test_shutdown_nonempty(self):
         # Test shutting down a non-empty queue
 
-        # Setup full queue with 1 item, and join() and put() tasks
+        # Setup full queue mit 1 item, and join() and put() tasks
         q = self.q_class(maxsize=1)
         loop = asyncio.get_running_loop()
 
@@ -590,7 +590,7 @@ klasse _QueueShutdownTestMixin:
         # Ensure put() task is finished, and raised ShutDown
         await asyncio.sleep(0)
         self.assertWahr(put_task.done())
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await put_task
 
         # Ensure get() succeeds on enqueued item
@@ -601,14 +601,14 @@ klasse _QueueShutdownTestMixin:
         self.assertFalsch(join_task.done())
 
         # Ensure put() and get() raise ShutDown
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.put("data")
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.get()
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.get_nowait()
 
         # Ensure there is 1 unfinished task, and join() task succeeds
@@ -618,7 +618,7 @@ klasse _QueueShutdownTestMixin:
         self.assertWahr(join_task.done())
         await join_task
 
-        with self.assertRaises(
+        mit self.assertRaises(
             ValueError, msg="Didn't appear to mark all tasks done"
         ):
             q.task_done()
@@ -626,7 +626,7 @@ klasse _QueueShutdownTestMixin:
     async def test_shutdown_immediate(self):
         # Test immediately shutting down a queue
 
-        # Setup queue with 1 item, and a join() task
+        # Setup queue mit 1 item, and a join() task
         q = self.q_class()
         loop = asyncio.get_running_loop()
         q.put_nowait("data")
@@ -643,26 +643,26 @@ klasse _QueueShutdownTestMixin:
         await join_task
 
         # Ensure put() and get() raise ShutDown
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.put("data")
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.get()
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.get_nowait()
 
         # Ensure there are no unfinished tasks
-        with self.assertRaises(
+        mit self.assertRaises(
             ValueError, msg="Didn't appear to mark all tasks done"
         ):
             q.task_done()
 
     async def test_shutdown_immediate_with_unfinished(self):
-        # Test immediately shutting down a queue with unfinished tasks
+        # Test immediately shutting down a queue mit unfinished tasks
 
-        # Setup queue with 2 items (1 retrieved), and a join() task
+        # Setup queue mit 2 items (1 retrieved), and a join() task
         q = self.q_class()
         loop = asyncio.get_running_loop()
         q.put_nowait("data")
@@ -680,19 +680,19 @@ klasse _QueueShutdownTestMixin:
         self.assertFalsch(join_task.done())
 
         # Ensure put() and get() raise ShutDown
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.put("data")
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.put_nowait("data")
 
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             await q.get()
-        with self.assertRaisesShutdown():
+        mit self.assertRaisesShutdown():
             q.get_nowait()
 
         # Ensure there is 1 unfinished task
         q.task_done()
-        with self.assertRaises(
+        mit self.assertRaises(
             ValueError, msg="Didn't appear to mark all tasks done"
         ):
             q.task_done()

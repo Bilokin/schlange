@@ -1,6 +1,6 @@
 """Shared support fuer scanning document type declarations in HTML and XHTML.
 
-This module is used as a foundation fuer the html.parser module.  It has no
+This module is used als a foundation fuer the html.parser module.  It has no
 documented public API and should not be used directly.
 
 """
@@ -81,12 +81,12 @@ klasse ParserBase:
         # A simple, practical version could look like: ((name|stringlit) S*) + '>'
         n = len(rawdata)
         wenn rawdata[j:j+2] == '--': #comment
-            # Locate --.*-- as the body of the comment
+            # Locate --.*-- als the body of the comment
             return self.parse_comment(i)
         sowenn rawdata[j] == '[': #marked section
-            # Locate [statusWord [...arbitrary SGML...]] as the body of the marked section
+            # Locate [statusWord [...arbitrary SGML...]] als the body of the marked section
             # Where statusWord is one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
-            # Note that this is extended by Microsoft Office "Save as Web" function
+            # Note that this is extended by Microsoft Office "Save als Web" function
             # to include [if...] and [endif].
             return self.parse_marked_section(i)
         sonst: #all other declaration elements

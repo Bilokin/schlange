@@ -69,7 +69,7 @@ klasse ResourceCornerCaseTests(util.DiskSetup, unittest.TestCase):
     def test_package_has_no_reader_fallback(self):
         """
         Test odd ball packages which:
-        # 1. Do not have a ResourceReader as a loader
+        # 1. Do not have a ResourceReader als a loader
         # 2. Are not on the file system
         # 3. Are not in a zip file
         """
@@ -108,7 +108,7 @@ klasse ResourceFromZipsTest01(util.ZipSetup, unittest.TestCase):
         )
 
     def test_as_file_directory(self):
-        with resources.as_file(resources.files('data01')) as data:
+        mit resources.as_file(resources.files('data01')) als data:
             assert data.name == 'data01'
             assert data.is_dir()
             assert data.joinpath('subdirectory').is_dir()
@@ -121,7 +121,7 @@ klasse ResourceFromZipsTest02(util.ZipSetup, unittest.TestCase):
 
     def test_unrelated_contents(self):
         """
-        Test thata zip with two unrelated subpackages return
+        Test thata zip mit two unrelated subpackages return
         distinct resources. Ref python/importlib_resources#44.
         """
         self.assertEqual(

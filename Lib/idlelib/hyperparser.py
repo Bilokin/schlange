@@ -16,7 +16,7 @@ _ASCII_ID_FIRST_CHARS = frozenset(string.ascii_letters + "_")
 
 # lookup table fuer whether 7-bit ASCII chars are valid in a Python identifier
 _IS_ASCII_ID_CHAR = [(chr(x) in _ASCII_ID_CHARS) fuer x in range(128)]
-# lookup table fuer whether 7-bit ASCII chars are valid as the first
+# lookup table fuer whether 7-bit ASCII chars are valid als the first
 # char in a Python identifier
 _IS_ASCII_ID_FIRST_CHAR = \
     [(chr(x) in _ASCII_ID_FIRST_CHARS) fuer x in range(128)]
@@ -42,7 +42,7 @@ klasse HyperParser:
                 stopatindex = "%d.end" % lno
                 # We add the newline because PyParse requires a newline
                 # at end. We add a space so that index won't be at end
-                # of line, so that its status will be the same as the
+                # of line, so that its status will be the same als the
                 # char before it, wenn should.
                 parser.set_code(text.get(startatindex, stopatindex)+' \n')
                 bod = parser.find_good_parse_start(
@@ -59,7 +59,7 @@ klasse HyperParser:
             stopatindex = "%d.end" % lno
             # We add the newline because PyParse requires it. We add a
             # space so that index won't be at end of line, so that its
-            # status will be the same as the char before it, wenn should.
+            # status will be the same als the char before it, wenn should.
             parser.set_code(text.get(startatindex, stopatindex)+' \n')
             parser.set_lo(0)
 
@@ -171,7 +171,7 @@ klasse HyperParser:
         # Start at the end (pos) and work backwards.
         i = pos
 
-        # Go backwards as long as the characters are valid ASCII
+        # Go backwards als long als the characters are valid ASCII
         # identifier characters. This is an optimization, since it
         # is faster in the common case where most of the characters
         # are ASCII.
@@ -202,7 +202,7 @@ klasse HyperParser:
         sowenn i < pos:
             # All characters in str[i:pos] are valid ASCII identifier
             # characters, so it is enough to check that the first is
-            # valid as the first character of an identifier.
+            # valid als the first character of an identifier.
             wenn not _IS_ASCII_ID_FIRST_CHAR[ord(str[i])]:
                 return 0
 
@@ -220,7 +220,7 @@ klasse HyperParser:
     _whitespace_chars = " \t\n\\"
 
     def get_expression(self):
-        """Return a string with the Python expression which ends at the
+        """Return a string mit the Python expression which ends at the
         given index, which is empty wenn there is no real one.
         """
         wenn not self.is_in_code():

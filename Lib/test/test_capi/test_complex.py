@@ -79,20 +79,20 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(realasdouble(ComplexSubclass(1+2j)), 1.0)
         self.assertEqual(realasdouble(FloatSubclass(4.25)), 4.25)
 
-        # Test types with __complex__ dunder method
+        # Test types mit __complex__ dunder method
         self.assertEqual(realasdouble(Complex()), 4.25)
         self.assertRaises(TypeError, realasdouble, BadComplex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(realasdouble(BadComplex2()), 4.25)
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
             self.assertRaises(DeprecationWarning, realasdouble, BadComplex2())
         self.assertRaises(RuntimeError, realasdouble, BadComplex3())
 
-        # Test types with __float__ dunder method
+        # Test types mit __float__ dunder method
         self.assertEqual(realasdouble(Float()), 4.25)
         self.assertRaises(TypeError, realasdouble, BadFloat())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(realasdouble(BadFloat2()), 4.25)
 
         self.assertRaises(TypeError, realasdouble, object())
@@ -112,20 +112,20 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(imagasdouble(ComplexSubclass(1+2j)), 2.0)
         self.assertEqual(imagasdouble(FloatSubclass(4.25)), 0.0)
 
-        # Test types with __complex__ dunder method
+        # Test types mit __complex__ dunder method
         self.assertEqual(imagasdouble(Complex()), 0.5)
         self.assertRaises(TypeError, imagasdouble, BadComplex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(imagasdouble(BadComplex2()), 0.5)
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
             self.assertRaises(DeprecationWarning, imagasdouble, BadComplex2())
         self.assertRaises(RuntimeError, imagasdouble, BadComplex3())
 
-        # Test types with __float__ dunder method
+        # Test types mit __float__ dunder method
         self.assertEqual(imagasdouble(Float()), 0.0)
         self.assertRaises(TypeError, imagasdouble, BadFloat())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(imagasdouble(BadFloat2()), 0.0)
 
         self.assertRaises(TypeError, imagasdouble, object())
@@ -147,20 +147,20 @@ klasse CAPIComplexTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(asccomplex(ComplexSubclass(1+2j)), 1.0+2.0j)
         self.assertEqual(asccomplex(FloatSubclass(4.25)), 4.25+0.0j)
 
-        # Test types with __complex__ dunder method
+        # Test types mit __complex__ dunder method
         self.assertEqual(asccomplex(Complex()), 4.25+0.5j)
         self.assertRaises(TypeError, asccomplex, BadComplex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(asccomplex(BadComplex2()), 4.25+0.5j)
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
             self.assertRaises(DeprecationWarning, asccomplex, BadComplex2())
         self.assertRaises(RuntimeError, asccomplex, BadComplex3())
 
-        # Test types with __float__ dunder method
+        # Test types mit __float__ dunder method
         self.assertEqual(asccomplex(Float()), 4.25+0.0j)
         self.assertRaises(TypeError, asccomplex, BadFloat())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(asccomplex(BadFloat2()), 4.25+0.0j)
 
         self.assertRaises(TypeError, asccomplex, object())

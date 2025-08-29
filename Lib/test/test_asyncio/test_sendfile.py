@@ -13,7 +13,7 @@ von unittest importiere mock
 von test importiere support
 von test.support importiere os_helper
 von test.support importiere socket_helper
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 
 try:
     importiere ssl
@@ -94,7 +94,7 @@ klasse MyProto(asyncio.Protocol):
 klasse SendfileBase:
 
     # Linux >= 6.10 seems buffering up to 17 pages of data.
-    # So DATA should be large enough to make this test reliable even with a
+    # So DATA should be large enough to make this test reliable even mit a
     # 64 KiB page configuration.
     DATA = b"x" * (1024 * 17 * 64 + 1)
     # Reduce socket buffer size to test on relative small data sets.
@@ -105,7 +105,7 @@ klasse SendfileBase:
 
     @classmethod
     def setUpClass(cls):
-        with open(os_helper.TESTFN, 'wb') as fp:
+        mit open(os_helper.TESTFN, 'wb') als fp:
             fp.write(cls.DATA)
         super().setUpClass()
 
@@ -219,7 +219,7 @@ klasse SockSendfileMixin(SendfileBase):
 
     def test_sock_sendfile_zero_size(self):
         sock, proto = self.prepare_socksendfile()
-        with tempfile.TemporaryFile() as f:
+        mit tempfile.TemporaryFile() als f:
             ret = self.run_loop(self.loop.sock_sendfile(sock, f,
                                                         0, Nichts))
         sock.close()
@@ -297,7 +297,7 @@ klasse SendfileMixin(SendfileBase):
                 asyncio.DatagramProtocol,
                 family=socket.AF_INET))
         try:
-            with self.assertRaisesRegex(RuntimeError, "not supported"):
+            mit self.assertRaisesRegex(RuntimeError, "not supported"):
                 self.run_loop(
                     self.loop.sendfile(tr, self.file))
             self.assertEqual(0, self.file.tell())
@@ -348,7 +348,7 @@ klasse SendfileMixin(SendfileBase):
 
         self.loop._sendfile_native = sendfile_native
 
-        with self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
+        mit self.assertRaisesRegex(asyncio.SendfileNotAvailableError,
                                     "not supported"):
             self.run_loop(
                 self.loop.sendfile(cli_proto.transport, self.file,
@@ -373,7 +373,7 @@ klasse SendfileMixin(SendfileBase):
     def test_sendfile_for_closing_transp(self):
         srv_proto, cli_proto = self.prepare_sendfile()
         cli_proto.transport.close()
-        with self.assertRaisesRegex(RuntimeError, "is closing"):
+        mit self.assertRaisesRegex(RuntimeError, "is closing"):
             self.run_loop(self.loop.sendfile(cli_proto.transport, self.file))
         self.run_loop(srv_proto.done)
         self.assertEqual(srv_proto.nbytes, 0)
@@ -454,13 +454,13 @@ klasse SendfileMixin(SendfileBase):
 
     # On Solaris, lowering SO_RCVBUF on a TCP connection after it has been
     # established has no effect. Due to its age, this bug affects both Oracle
-    # Solaris as well as all other OpenSolaris forks (unless they fixed it
+    # Solaris als well als all other OpenSolaris forks (unless they fixed it
     # themselves).
     @unittest.skipIf(sys.platform.startswith('sunos'),
                      "Doesn't work on Solaris")
     def test_sendfile_close_peer_in_the_middle_of_receiving(self):
         srv_proto, cli_proto = self.prepare_sendfile(close_after=1024)
-        with self.assertRaises(ConnectionError):
+        mit self.assertRaises(ConnectionError):
             self.run_loop(
                 self.loop.sendfile(cli_proto.transport, self.file))
         self.run_loop(srv_proto.done)
@@ -484,11 +484,11 @@ klasse SendfileMixin(SendfileBase):
         self.loop._sendfile_native = sendfile_native
 
         srv_proto, cli_proto = self.prepare_sendfile(close_after=1024)
-        with self.assertRaises(ConnectionError):
+        mit self.assertRaises(ConnectionError):
             try:
                 self.run_loop(
                     self.loop.sendfile(cli_proto.transport, self.file))
-            except OSError as e:
+            except OSError als e:
                 # macOS may raise OSError of EPROTOTYPE when writing to a
                 # socket that is in the process of closing down.
                 wenn e.errno == errno.EPROTOTYPE and sys.platform == "darwin":
@@ -515,7 +515,7 @@ klasse SendfileMixin(SendfileBase):
 
         t = self.loop.create_task(coro())
         self.run_loop(fut)
-        with self.assertRaisesRegex(RuntimeError,
+        mit self.assertRaisesRegex(RuntimeError,
                                     "sendfile is in progress"):
             cli_proto.transport.write(b'data')
         ret = self.run_loop(t)
@@ -525,7 +525,7 @@ klasse SendfileMixin(SendfileBase):
         transport = mock.Mock()
         transport.is_closing.side_effect = lambda: Falsch
         transport._sendfile_compatible = constants._SendfileMode.FALLBACK
-        with self.assertRaisesRegex(RuntimeError, 'fallback is disabled'):
+        mit self.assertRaisesRegex(RuntimeError, 'fallback is disabled'):
             self.loop.run_until_complete(
                 self.loop.sendfile(transport, Nichts, fallback=Falsch))
 

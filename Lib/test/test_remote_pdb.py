@@ -26,7 +26,7 @@ wenn not sys.is_remote_debug_enabled():
 @contextmanager
 def kill_on_error(proc):
     """Context manager killing the subprocess wenn a Python exception is raised."""
-    with proc:
+    mit proc:
         try:
             yield proc
         except:
@@ -121,7 +121,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 readline_mock.get_begidx.return_value = req["begidx"]
                 readline_mock.get_endidx.return_value = req["endidx"]
                 unittest.mock.seal(readline_mock)
-                with unittest.mock.patch.dict(sys.modules, {"readline": readline_mock}):
+                mit unittest.mock.patch.dict(sys.modules, {"readline": readline_mock}):
                     fuer param in itertools.count():
                         prefix = req["line"][req["begidx"] : req["endidx"]]
                         completion = client.complete(prefix, param)
@@ -136,7 +136,7 @@ klasse PdbClientTestCase(unittest.TestCase):
                 return reply
             return reply()
 
-        with ExitStack() as stack:
+        mit ExitStack() als stack:
             client_sock, server_sock = socket.socketpair()
             stack.enter_context(closing(client_sock))
             stack.enter_context(closing(server_sock))
@@ -247,7 +247,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         )
 
     def test_handling_info_message(self):
-        """Test handling a message payload with type='info'."""
+        """Test handling a message payload mit type='info'."""
         incoming = [
             ("server", {"message": "Some message or other\n", "type": "info"}),
         ]
@@ -258,7 +258,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         )
 
     def test_handling_error_message(self):
-        """Test handling a message payload with type='error'."""
+        """Test handling a message payload mit type='error'."""
         incoming = [
             ("server", {"message": "Some message or other.", "type": "error"}),
         ]
@@ -269,7 +269,7 @@ klasse PdbClientTestCase(unittest.TestCase):
         )
 
     def test_handling_other_message(self):
-        """Test handling a message payload with an unrecognized type."""
+        """Test handling a message payload mit an unrecognized type."""
         incoming = [
             ("server", {"message": "Some message.\n", "type": "unknown"}),
         ]
@@ -478,7 +478,7 @@ klasse PdbClientTestCase(unittest.TestCase):
             ("server", {"message": "Some message or other\n", "type": "info"}),
         ]
         fuer use_interrupt_socket in [Falsch, Wahr]:
-            with self.subTest(use_interrupt_socket=use_interrupt_socket):
+            mit self.subTest(use_interrupt_socket=use_interrupt_socket):
                 self.do_test(
                     incoming=incoming,
                     simulate_sigint_during_stdout_write=Wahr,
@@ -878,13 +878,13 @@ klasse RemotePdbTestCase(unittest.TestCase):
         """Test reading EOF command."""
         # Simulate socket closure
         self.pdb._write_failed = Wahr
-        with self.assertRaises(EOFError):
+        mit self.assertRaises(EOFError):
             self.pdb._read_reply()
 
     def test_completion(self):
         """Test handling completion requests."""
         # Mock completenames to return specific values
-        with unittest.mock.patch.object(self.pdb, 'completenames',
+        mit unittest.mock.patch.object(self.pdb, 'completenames',
                                        return_value=["continue", "clear"]):
 
             # Add a completion request
@@ -929,18 +929,18 @@ klasse RemotePdbTestCase(unittest.TestCase):
         self.assertIsInstance(self.pdb._interact_state, dict)
 
         # Test running code in interact mode
-        with unittest.mock.patch.object(self.pdb, '_error_exc') as mock_error:
+        mit unittest.mock.patch.object(self.pdb, '_error_exc') als mock_error:
             self.pdb._run_in_python_repl("drucke('test')")
             mock_error.assert_not_called()
 
-            # Test with syntax error
+            # Test mit syntax error
             self.pdb._run_in_python_repl("if:")
             mock_error.assert_called_once()
 
     def test_registering_commands(self):
         """Test registering breakpoint commands."""
         # Mock get_bpbynumber
-        with unittest.mock.patch.object(self.pdb, 'get_bpbynumber'):
+        mit unittest.mock.patch.object(self.pdb, 'get_bpbynumber'):
             # Queue up some input to send
             self.sockfile.add_input({"reply": "commands 1"})
             self.sockfile.add_input({"reply": "silent"})
@@ -968,15 +968,15 @@ klasse RemotePdbTestCase(unittest.TestCase):
 
     def test_detach(self):
         """Test the detach method."""
-        with unittest.mock.patch.object(self.sockfile, 'close') as mock_close:
+        mit unittest.mock.patch.object(self.sockfile, 'close') als mock_close:
             self.pdb.detach()
             mock_close.assert_called_once()
             self.assertFalsch(self.pdb.quitting)
 
     def test_cmdloop(self):
-        """Test the command loop with various commands."""
+        """Test the command loop mit various commands."""
         # Mock onecmd to track command execution
-        with unittest.mock.patch.object(self.pdb, 'onecmd', return_value=Falsch) as mock_onecmd:
+        mit unittest.mock.patch.object(self.pdb, 'onecmd', return_value=Falsch) als mock_onecmd:
             # Add commands to the queue
             self.pdb.cmdqueue = ['help', 'list']
 
@@ -1041,7 +1041,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                     def dummy_function():
                         x = 42
                         # Call connect to establish connection
-                        # with the test server
+                        # mit the test server
                         frame = sys._getframe()  # Get the current frame
                         pdb._connect(
                             host='127.0.0.1',
@@ -1062,7 +1062,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 """)
 
         self.script_path = TESTFN + "_connect_test.py"
-        with open(self.script_path, 'w') as f:
+        mit open(self.script_path, 'w') als f:
             f.write(script)
 
     def tearDown(self):
@@ -1113,7 +1113,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         self._create_script()
         process, client_file = self._connect_and_get_client_file()
 
-        with kill_on_error(process):
+        mit kill_on_error(process):
             # We should receive initial data von the debugger
             data = client_file.readline()
             initial_data = json.loads(data.decode())
@@ -1166,7 +1166,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         """Test setting and hitting breakpoints."""
         self._create_script()
         process, client_file = self._connect_and_get_client_file()
-        with kill_on_error(process):
+        mit kill_on_error(process):
             # Skip initial messages until we get to the prompt
             self._read_until_prompt(client_file)
 
@@ -1241,7 +1241,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         signal_sock, _ = self.server_sock.accept()
         self.addCleanup(signal_sock.close)
 
-        with kill_on_error(process):
+        mit kill_on_error(process):
             # Skip initial messages until we get to the prompt
             self._read_until_prompt(client_file)
 
@@ -1264,7 +1264,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
             expected_msg = [msg fuer msg in interrupt_msgs wenn "bar()" in msg]
             self.assertGreater(len(expected_msg), 0)
 
-            # Continue to end as fast as we can
+            # Continue to end als fast als we can
             self._send_command(client_file, "iterations = 0")
             self._send_command(client_file, "c")
             stdout, _ = process.communicate(timeout=SHORT_TIMEOUT)
@@ -1276,7 +1276,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         self._create_script()
         process, client_file = self._connect_and_get_client_file()
 
-        with kill_on_error(process):
+        mit kill_on_error(process):
             # Skip initial messages until we get to the prompt
             self._read_until_prompt(client_file)
 
@@ -1305,7 +1305,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
                 # Use a fake version number that's definitely incompatible
                 fake_version = 0x01010101 # A fake version that doesn't match any real Python version
 
-                # Connect with the wrong version
+                # Connect mit the wrong version
                 pdb._connect(
                     host='127.0.0.1',
                     port={self.port},
@@ -1326,7 +1326,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         self._create_script(script=script)
         process, client_file = self._connect_and_get_client_file()
 
-        with kill_on_error(process):
+        mit kill_on_error(process):
             # First message should be an error about protocol version mismatch
             data = client_file.readline()
             message = json.loads(data.decode())
@@ -1349,7 +1349,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         self._create_script()
         process, client_file = self._connect_and_get_client_file()
 
-        with kill_on_error(process):
+        mit kill_on_error(process):
             # Skip initial messages until we get to the prompt
             self._read_until_prompt(client_file)
 
@@ -1388,7 +1388,7 @@ klasse PdbConnectTestCase(unittest.TestCase):
         self._create_script()
         process, client_file = self._connect_and_get_client_file()
 
-        with kill_on_error(process):
+        mit kill_on_error(process):
             # Skip initial messages until we get to the prompt
             self._read_until_prompt(client_file)
 
@@ -1500,7 +1500,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
         )
 
         self.script_path = TESTFN + "_connect_test.py"
-        with open(self.script_path, 'w') as f:
+        mit open(self.script_path, 'w') als f:
             f.write(script)
 
     def tearDown(self):
@@ -1534,7 +1534,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
         self.addCleanup(client_stderr.close)
         self.addCleanup(process.wait)
 
-        with (
+        mit (
             unittest.mock.patch("sys.stdin", client_stdin),
             redirect_stdout(client_stdout),
             redirect_stderr(client_stderr),
@@ -1567,7 +1567,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
         }
 
     def test_attach_to_process_without_colors(self):
-        with force_color(Falsch):
+        mit force_color(Falsch):
             output = self.do_integration_test("ll\nx=42\n")
         self.assertEqual(output["client"]["stderr"], "")
         self.assertEqual(output["server"]["stderr"], "")
@@ -1577,7 +1577,7 @@ klasse PdbAttachTestCase(unittest.TestCase):
         self.assertNotIn("\x1b", output["client"]["stdout"])
 
     def test_attach_to_process_with_colors(self):
-        with force_color(Wahr):
+        mit force_color(Wahr):
             output = self.do_integration_test("ll\nx=42\n")
         self.assertEqual(output["client"]["stderr"], "")
         self.assertEqual(output["server"]["stderr"], "")

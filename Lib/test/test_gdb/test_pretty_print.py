@@ -16,7 +16,7 @@ klasse PrettyPrintTests(DebuggerTests):
                      cmds_after_breakpoint=Nichts,
                      import_site=Falsch):
         # Given an input python source representation of data,
-        # run "python -c'id(DATA)'" under gdb with a breakpoint on
+        # run "python -c'id(DATA)'" under gdb mit a breakpoint on
         # builtin_id and scrape out gdb's representation of the "op"
         # parameter, and verify that the gdb displays the same string
         #
@@ -25,7 +25,7 @@ klasse PrettyPrintTests(DebuggerTests):
         # For a nested structure, the first time we hit the breakpoint will
         # give us the top-level structure
 
-        # NOTE: avoid decoding too much of the traceback as some
+        # NOTE: avoid decoding too much of the traceback als some
         # undecodable characters may lurk there in optimized mode
         # (issue #19743).
         cmds_after_breakpoint = cmds_after_breakpoint or ["backtrace 1"]
@@ -94,7 +94,7 @@ klasse PrettyPrintTests(DebuggerTests):
         'Verify the pretty-printing of bytes'
         self.assertGdbRepr(b'')
         self.assertGdbRepr(b'And now fuer something hopefully the same')
-        self.assertGdbRepr(b'string with embedded NUL here \0 and then some more text')
+        self.assertGdbRepr(b'string mit embedded NUL here \0 and then some more text')
         self.assertGdbRepr(b'this is a tab:\t'
                            b' this is a slash-N:\n'
                            b' this is a slash-R:\r'
@@ -108,9 +108,9 @@ klasse PrettyPrintTests(DebuggerTests):
     def test_strings(self):
         'Verify the pretty-printing of unicode strings'
         # We cannot simply call locale.getpreferredencoding() here,
-        # as GDB might have been linked against a different version
-        # of Python with a different encoding and coercion policy
-        # with respect to PEP 538 and PEP 540.
+        # als GDB might have been linked against a different version
+        # of Python mit a different encoding and coercion policy
+        # mit respect to PEP 538 and PEP 540.
         stdout, stderr = run_gdb(
             '--eval-command',
             'python importiere locale; drucke(locale.getpreferredencoding())')
@@ -133,7 +133,7 @@ klasse PrettyPrintTests(DebuggerTests):
 
         self.assertGdbRepr('')
         self.assertGdbRepr('And now fuer something hopefully the same')
-        self.assertGdbRepr('string with embedded NUL here \0 and then some more text')
+        self.assertGdbRepr('string mit embedded NUL here \0 and then some more text')
 
         # Test printing a single character:
         #    U+2620 SKULL AND CROSSBONES
@@ -193,7 +193,7 @@ id(s)''')
         gdb_repr, gdb_output = self.get_gdb_repr('''
 try:
     raise RuntimeError("I am an error")
-except RuntimeError as e:
+except RuntimeError als e:
     id(e)
 ''')
         self.assertEqual(gdb_repr,
@@ -204,7 +204,7 @@ except RuntimeError as e:
         gdb_repr, gdb_output = self.get_gdb_repr('''
 try:
     a = 1 / 0
-except ZeroDivisionError as e:
+except ZeroDivisionError als e:
     id(e)
 ''')
         self.assertEqual(gdb_repr,
@@ -291,24 +291,24 @@ id(foo)''')
         self.assertEqual(gdb_repr, '0x0')
 
     def test_NULL_ob_type(self):
-        'Ensure that a PyObject* with NULL ob_type is handled gracefully'
+        'Ensure that a PyObject* mit NULL ob_type is handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0')
 
     def test_corrupt_ob_type(self):
-        'Ensure that a PyObject* with a corrupt ob_type is handled gracefully'
+        'Ensure that a PyObject* mit a corrupt ob_type is handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0xDEADBEEF',
                         exprepr='42')
 
     def test_corrupt_tp_flags(self):
-        'Ensure that a PyObject* with a type with corrupt tp_flags is handled'
+        'Ensure that a PyObject* mit a type mit corrupt tp_flags is handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_flags=0x0',
                         exprepr='42')
 
     def test_corrupt_tp_name(self):
-        'Ensure that a PyObject* with a type with corrupt tp_name is handled'
+        'Ensure that a PyObject* mit a type mit corrupt tp_name is handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_name=0xDEADBEEF',
                         exprepr='42')

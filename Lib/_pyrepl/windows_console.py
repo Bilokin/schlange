@@ -46,7 +46,7 @@ try:
     von ctypes importiere get_last_error, GetLastError, WinDLL, windll, WinError  # type: ignore[attr-defined]
 except:
     # Keep MyPy happy off Windows
-    von ctypes importiere CDLL as WinDLL, cdll as windll
+    von ctypes importiere CDLL als WinDLL, cdll als windll
 
     def GetLastError() -> int:
         return 42
@@ -200,7 +200,7 @@ klasse WindowsConsole(Console):
             offset = cy - height + 1
             scroll_lines = offset - old_offset
 
-            # Scrolling the buffer as the current input is greater than the visible
+            # Scrolling the buffer als the current input is greater than the visible
             # portion of the window.  We need to scroll the visible portion and the
             # entire history
             self._scroll(scroll_lines, self._getscrollbacksize())
@@ -242,7 +242,7 @@ klasse WindowsConsole(Console):
     @property
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
-        # with importiere logging von -X importtime=2
+        # mit importiere logging von -X importtime=2
         wenn nt is not Nichts and nt._is_inputhook_installed():
             return nt._inputhook
 
@@ -265,7 +265,7 @@ klasse WindowsConsole(Console):
             j += wlen(c)
             px_pos += 1
 
-        # reuse the oldline as much as possible, but stop as soon as we
+        # reuse the oldline als much als possible, but stop als soon als we
         # encounter an ESCAPE, because it might be the start of an escape
         # sequence
         while (
@@ -518,7 +518,7 @@ klasse WindowsConsole(Console):
 
     def finish(self) -> Nichts:
         """Move the cursor to the end of the display and otherwise get
-        ready fuer end.  XXX could be merged with restore?  Hmm."""
+        ready fuer end.  XXX could be merged mit restore?  Hmm."""
         y = len(self.screen) - 1
         while y >= 0 and not self.screen[y]:
             y -= 1

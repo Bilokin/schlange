@@ -77,7 +77,7 @@ klasse TestSupport(unittest.TestCase):
 
     def test_ignored_deprecations_are_silent(self):
         """Test support.ignore_deprecations_from() silences warnings"""
-        with warnings.catch_warnings(record=Wahr) as warning_objs:
+        mit warnings.catch_warnings(record=Wahr) als warning_objs:
             warnings_helper._warn_about_deprecation()
             warnings.warn("You should NOT be seeing this.", DeprecationWarning)
             messages = [str(w.message) fuer w in warning_objs]
@@ -107,7 +107,7 @@ klasse TestSupport(unittest.TestCase):
         self.assertNotIn("sched", sys.modules)
 
     def test_unlink(self):
-        with open(TESTFN, "w", encoding="utf-8") as f:
+        mit open(TESTFN, "w", encoding="utf-8") als f:
             pass
         os_helper.unlink(TESTFN)
         self.assertFalsch(os.path.exists(TESTFN))
@@ -120,26 +120,26 @@ klasse TestSupport(unittest.TestCase):
         os.mkdir(subdirpath)
         os_helper.rmtree(dirpath)
         self.assertFalsch(os.path.exists(dirpath))
-        with support.swap_attr(support, 'verbose', 0):
+        mit support.swap_attr(support, 'verbose', 0):
             os_helper.rmtree(dirpath)
 
         os.mkdir(dirpath)
         os.mkdir(subdirpath)
         os.chmod(dirpath, stat.S_IRUSR|stat.S_IXUSR)
-        with support.swap_attr(support, 'verbose', 0):
+        mit support.swap_attr(support, 'verbose', 0):
             os_helper.rmtree(dirpath)
         self.assertFalsch(os.path.exists(dirpath))
 
         os.mkdir(dirpath)
         os.mkdir(subdirpath)
         os.chmod(dirpath, 0)
-        with support.swap_attr(support, 'verbose', 0):
+        mit support.swap_attr(support, 'verbose', 0):
             os_helper.rmtree(dirpath)
         self.assertFalsch(os.path.exists(dirpath))
 
     def test_forget(self):
         mod_filename = TESTFN + '.py'
-        with open(mod_filename, 'w', encoding="utf-8") as f:
+        mit open(mod_filename, 'w', encoding="utf-8") als f:
             drucke('foo = 1', file=f)
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
@@ -182,7 +182,7 @@ klasse TestSupport(unittest.TestCase):
         try:
             path = os.path.join(parent_dir, 'temp')
             self.assertFalsch(os.path.isdir(path))
-            with os_helper.temp_dir(path) as temp_path:
+            mit os_helper.temp_dir(path) als temp_path:
                 self.assertEqual(temp_path, path)
                 self.assertWahr(os.path.isdir(path))
             self.assertFalsch(os.path.isdir(path))
@@ -191,14 +191,14 @@ klasse TestSupport(unittest.TestCase):
 
     def test_temp_dir__path_none(self):
         """Test passing no path."""
-        with os_helper.temp_dir() as temp_path:
+        mit os_helper.temp_dir() als temp_path:
             self.assertWahr(os.path.isdir(temp_path))
         self.assertFalsch(os.path.isdir(temp_path))
 
     def test_temp_dir__existing_dir__quiet_default(self):
         """Test passing a directory that already exists."""
         def call_temp_dir(path):
-            with os_helper.temp_dir(path) as temp_path:
+            mit os_helper.temp_dir(path) als temp_path:
                 raise Exception("should not get here")
 
         path = tempfile.mkdtemp()
@@ -212,13 +212,13 @@ klasse TestSupport(unittest.TestCase):
             shutil.rmtree(path)
 
     def test_temp_dir__existing_dir__quiet_true(self):
-        """Test passing a directory that already exists with quiet=Wahr."""
+        """Test passing a directory that already exists mit quiet=Wahr."""
         path = tempfile.mkdtemp()
         path = os.path.realpath(path)
 
         try:
-            with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
-                with os_helper.temp_dir(path, quiet=Wahr) as temp_path:
+            mit warnings_helper.check_warnings() als recorder, _caplog() als caplog:
+                mit os_helper.temp_dir(path, quiet=Wahr) als temp_path:
                     self.assertEqual(path, temp_path)
                 warnings = [str(w.message) fuer w in recorder.warnings]
             # Make sure temp_dir did not delete the original directory.
@@ -239,12 +239,12 @@ klasse TestSupport(unittest.TestCase):
     def test_temp_dir__forked_child(self):
         """Test that a forked child process does not remove the directory."""
         # See bpo-30028 fuer details.
-        # Run the test as an external script, because it uses fork.
+        # Run the test als an external script, because it uses fork.
         script_helper.assert_python_ok("-c", textwrap.dedent("""
             importiere os
             von test importiere support
             von test.support importiere os_helper
-            with os_helper.temp_cwd() as temp_path:
+            mit os_helper.temp_cwd() als temp_path:
                 pid = os.fork()
                 wenn pid != 0:
                     # parent process
@@ -265,8 +265,8 @@ klasse TestSupport(unittest.TestCase):
     def test_change_cwd(self):
         original_cwd = os.getcwd()
 
-        with os_helper.temp_dir() as temp_path:
-            with os_helper.change_cwd(temp_path) as new_cwd:
+        mit os_helper.temp_dir() als temp_path:
+            mit os_helper.change_cwd(temp_path) als new_cwd:
                 self.assertEqual(new_cwd, temp_path)
                 self.assertEqual(os.getcwd(), new_cwd)
 
@@ -277,10 +277,10 @@ klasse TestSupport(unittest.TestCase):
         original_cwd = os.getcwd()
 
         def call_change_cwd(path):
-            with os_helper.change_cwd(path) as new_cwd:
+            mit os_helper.change_cwd(path) als new_cwd:
                 raise Exception("should not get here")
 
-        with os_helper.temp_dir() as parent_dir:
+        mit os_helper.temp_dir() als parent_dir:
             non_existent_dir = os.path.join(parent_dir, 'does_not_exist')
             self.assertRaises(FileNotFoundError, call_change_cwd,
                               non_existent_dir)
@@ -288,13 +288,13 @@ klasse TestSupport(unittest.TestCase):
         self.assertEqual(os.getcwd(), original_cwd)
 
     def test_change_cwd__non_existent_dir__quiet_true(self):
-        """Test passing a non-existent directory with quiet=Wahr."""
+        """Test passing a non-existent directory mit quiet=Wahr."""
         original_cwd = os.getcwd()
 
-        with os_helper.temp_dir() as parent_dir:
+        mit os_helper.temp_dir() als parent_dir:
             bad_dir = os.path.join(parent_dir, 'does_not_exist')
-            with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
-                with os_helper.change_cwd(bad_dir, quiet=Wahr) as new_cwd:
+            mit warnings_helper.check_warnings() als recorder, _caplog() als caplog:
+                mit os_helper.change_cwd(bad_dir, quiet=Wahr) als new_cwd:
                     self.assertEqual(new_cwd, original_cwd)
                     self.assertEqual(os.getcwd(), new_cwd)
                 warnings = [str(w.message) fuer w in recorder.warnings]
@@ -314,8 +314,8 @@ klasse TestSupport(unittest.TestCase):
     def test_change_cwd__chdir_warning(self):
         """Check the warning message when os.chdir() fails."""
         path = TESTFN + '_does_not_exist'
-        with warnings_helper.check_warnings() as recorder, _caplog() as caplog:
-            with os_helper.change_cwd(path=path, quiet=Wahr):
+        mit warnings_helper.check_warnings() als recorder, _caplog() als caplog:
+            mit os_helper.change_cwd(path=path, quiet=Wahr):
                 pass
             messages = [str(w.message) fuer w in recorder.warnings]
 
@@ -333,7 +333,7 @@ klasse TestSupport(unittest.TestCase):
 
     def test_temp_cwd(self):
         here = os.getcwd()
-        with os_helper.temp_cwd(name=TESTFN):
+        mit os_helper.temp_cwd(name=TESTFN):
             self.assertEqual(os.path.basename(os.getcwd()), TESTFN)
         self.assertFalsch(os.path.exists(TESTFN))
         self.assertEqual(os.getcwd(), here)
@@ -342,7 +342,7 @@ klasse TestSupport(unittest.TestCase):
     def test_temp_cwd__name_none(self):
         """Test passing Nichts to temp_cwd()."""
         original_cwd = os.getcwd()
-        with os_helper.temp_cwd(name=Nichts) as new_cwd:
+        mit os_helper.temp_cwd(name=Nichts) als new_cwd:
             self.assertNotEqual(new_cwd, original_cwd)
             self.assertWahr(os.path.isdir(new_cwd))
             self.assertEqual(os.getcwd(), new_cwd)
@@ -353,39 +353,39 @@ klasse TestSupport(unittest.TestCase):
 
     def test_make_bad_fd(self):
         fd = os_helper.make_bad_fd()
-        with self.assertRaises(OSError) as cm:
+        mit self.assertRaises(OSError) als cm:
             os.write(fd, b"foo")
         self.assertEqual(cm.exception.errno, errno.EBADF)
 
     def test_check_syntax_error(self):
         support.check_syntax_error(self, "def class", lineno=1, offset=5)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             support.check_syntax_error(self, "x=1")
 
     def test_CleanImport(self):
         importiere importlib
-        with import_helper.CleanImport("pprint"):
+        mit import_helper.CleanImport("pprint"):
             importlib.import_module("pprint")
 
     def test_DirsOnSysPath(self):
-        with import_helper.DirsOnSysPath('foo', 'bar'):
+        mit import_helper.DirsOnSysPath('foo', 'bar'):
             self.assertIn("foo", sys.path)
             self.assertIn("bar", sys.path)
         self.assertNotIn("foo", sys.path)
         self.assertNotIn("bar", sys.path)
 
     def test_captured_stdout(self):
-        with support.captured_stdout() as stdout:
+        mit support.captured_stdout() als stdout:
             drucke("hello")
         self.assertEqual(stdout.getvalue(), "hello\n")
 
     def test_captured_stderr(self):
-        with support.captured_stderr() as stderr:
+        mit support.captured_stderr() als stderr:
             drucke("hello", file=sys.stderr)
         self.assertEqual(stderr.getvalue(), "hello\n")
 
     def test_captured_stdin(self):
-        with support.captured_stdin() as stdin:
+        mit support.captured_stdin() als stdin:
             stdin.write('hello\n')
             stdin.seek(0)
             # call test code that consumes von sys.stdin
@@ -403,29 +403,29 @@ klasse TestSupport(unittest.TestCase):
             pass
         obj = Obj()
         obj.x = 1
-        with support.swap_attr(obj, "x", 5) as x:
+        mit support.swap_attr(obj, "x", 5) als x:
             self.assertEqual(obj.x, 5)
             self.assertEqual(x, 1)
         self.assertEqual(obj.x, 1)
-        with support.swap_attr(obj, "y", 5) as y:
+        mit support.swap_attr(obj, "y", 5) als y:
             self.assertEqual(obj.y, 5)
             self.assertIsNichts(y)
         self.assertNotHasAttr(obj, 'y')
-        with support.swap_attr(obj, "y", 5):
+        mit support.swap_attr(obj, "y", 5):
             del obj.y
         self.assertNotHasAttr(obj, 'y')
 
     def test_swap_item(self):
         D = {"x":1}
-        with support.swap_item(D, "x", 5) as x:
+        mit support.swap_item(D, "x", 5) als x:
             self.assertEqual(D["x"], 5)
             self.assertEqual(x, 1)
         self.assertEqual(D["x"], 1)
-        with support.swap_item(D, "y", 5) as y:
+        mit support.swap_item(D, "y", 5) als y:
             self.assertEqual(D["y"], 5)
             self.assertIsNichts(y)
         self.assertNotIn("y", D)
-        with support.swap_item(D, "y", 5):
+        mit support.swap_item(D, "y", 5):
             del D["y"]
         self.assertNotIn("y", D)
 
@@ -505,7 +505,7 @@ klasse TestSupport(unittest.TestCase):
             stderr = io.StringIO()
 
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
-                with support.swap_attr(support.print_warning, 'orig_stderr', stderr):
+                mit support.swap_attr(support.print_warning, 'orig_stderr', stderr):
                     support.reap_children()
 
                 # Use environment_altered to check wenn reap_children() found
@@ -570,7 +570,7 @@ klasse TestSupport(unittest.TestCase):
             ['-X', 'tracemalloc'],
             ['-X', 'tracemalloc=3'],
         ):
-            with self.subTest(opts=opts):
+            mit self.subTest(opts=opts):
                 self.check_options(opts, 'args_from_interpreter_flags')
 
         self.check_options(['-I', '-E', '-s', '-P'],
@@ -586,7 +586,7 @@ klasse TestSupport(unittest.TestCase):
             ['-OO'],
             ['-OOOO'],
         ):
-            with self.subTest(opts=opts):
+            mit self.subTest(opts=opts):
                 self.check_options(opts, 'optim_args_from_interpreter_flags')
 
     @unittest.skipIf(support.is_apple_mobile, "Unstable on Apple Mobile")
@@ -607,7 +607,7 @@ klasse TestSupport(unittest.TestCase):
 
     def check_print_warning(self, msg, expected):
         stderr = io.StringIO()
-        with support.swap_attr(support.print_warning, 'orig_stderr', stderr):
+        mit support.swap_attr(support.print_warning, 'orig_stderr', stderr):
             support.print_warning(msg)
         self.assertEqual(stderr.getvalue(), expected)
 
@@ -653,15 +653,15 @@ klasse TestSupport(unittest.TestCase):
                 test_recursive(depth + 1, limit)
 
             # depth up to 25
-            with support.infinite_recursion(max_depth=25):
+            mit support.infinite_recursion(max_depth=25):
                 limit = sys.getrecursionlimit()
-                drucke(f"test with sys.getrecursionlimit()={limit}")
+                drucke(f"test mit sys.getrecursionlimit()={limit}")
                 test_recursive(2, limit)
 
             # depth up to 500
-            with support.infinite_recursion(max_depth=500):
+            mit support.infinite_recursion(max_depth=500):
                 limit = sys.getrecursionlimit()
-                drucke(f"test with sys.getrecursionlimit()={limit}")
+                drucke(f"test mit sys.getrecursionlimit()={limit}")
                 test_recursive(2, limit)
         """)
         script_helper.assert_python_ok("-c", code)
@@ -673,7 +673,7 @@ klasse TestSupport(unittest.TestCase):
                 recursive_function(depth - 1)
 
         fuer max_depth in (5, 25, 250, 2500):
-            with support.infinite_recursion(max_depth):
+            mit support.infinite_recursion(max_depth):
                 available = support.get_recursion_available()
 
                 # Recursion up to 'available' additional frames should be OK.
@@ -690,7 +690,7 @@ klasse TestSupport(unittest.TestCase):
                     self.fail("RecursionError was not raised")
 
         # Test the bare minimumum: max_depth=3
-        with support.infinite_recursion(3):
+        mit support.infinite_recursion(3):
             try:
                 recursive_function(3)
             except RecursionError:
@@ -711,8 +711,8 @@ klasse TestSupport(unittest.TestCase):
         self.assertEqual(parse('1t'), TiB)
 
         fuer limit in ('', '3', '3.5.10k', '10x'):
-            with self.subTest(limit=limit):
-                with self.assertRaises(ValueError):
+            mit self.subTest(limit=limit):
+                mit self.assertRaises(ValueError):
                     parse(limit)
 
     def test_set_memlimit(self):
@@ -885,22 +885,22 @@ klasse TestHashlibSupport(unittest.TestCase):
 
     def check_openssl_hash(self, name, *, disabled=Wahr):
         """Check that OpenSSL HASH interface is enabled/disabled."""
-        with self.check_context(disabled):
+        mit self.check_context(disabled):
             _ = self._hashlib.new(name)
         wenn do_hash := self.fetch_hash_function(name, "openssl"):
             self.assertStartsWith(do_hash.__name__, 'openssl_')
-            with self.check_context(disabled):
+            mit self.check_context(disabled):
                 _ = do_hash(b"")
 
     def check_openssl_hmac(self, name, *, disabled=Wahr):
         """Check that OpenSSL HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
-            # HMAC-BLAKE and HMAC-SHAKE raise a ValueError as they are not
+            # HMAC-BLAKE and HMAC-SHAKE raise a ValueError als they are not
             # supported at all (they do not make any sense in practice).
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self._hashlib.hmac_digest(b"", b"", name)
         sonst:
-            with self.check_context(disabled):
+            mit self.check_context(disabled):
                 _ = self._hashlib.hmac_digest(b"", b"", name)
         # OpenSSL does not provide one-shot explicit HMAC functions
 
@@ -908,26 +908,26 @@ klasse TestHashlibSupport(unittest.TestCase):
         """Check that HACL* HASH interface is enabled/disabled."""
         wenn do_hash := self.fetch_hash_function(name, "builtin"):
             self.assertEqual(do_hash.__name__, name)
-            with self.check_context(disabled):
+            mit self.check_context(disabled):
                 _ = do_hash(b"")
 
     def check_builtin_hmac(self, name, *, disabled=Wahr):
         """Check that HACL* HMAC interface is enabled/disabled."""
         wenn name in hashlib_helper.NON_HMAC_DIGEST_NAMES:
-            # HMAC-BLAKE and HMAC-SHAKE raise a ValueError as they are not
+            # HMAC-BLAKE and HMAC-SHAKE raise a ValueError als they are not
             # supported at all (they do not make any sense in practice).
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self._hmac.compute_digest(b"", b"", name)
         sonst:
-            with self.check_context(disabled):
+            mit self.check_context(disabled):
                 _ = self._hmac.compute_digest(b"", b"", name)
 
-        with self.check_context(disabled):
+        mit self.check_context(disabled):
             _ = self._hmac.new(b"", b"", name)
 
         wenn do_hmac := self.fetch_hmac_function(name):
             self.assertStartsWith(do_hmac.__name__, 'compute_')
-            with self.check_context(disabled):
+            mit self.check_context(disabled):
                 _ = do_hmac(b"", b"")
         sonst:
             self.assertIn(name, hashlib_helper.NON_HMAC_DIGEST_NAMES)
@@ -947,7 +947,7 @@ klasse TestHashlibSupport(unittest.TestCase):
         flags = dict(allow_openssl=allow_openssl, allow_builtin=allow_builtin)
         is_fully_disabled = not allow_builtin and not allow_openssl
 
-        with hashlib_helper.block_algorithm(name, **flags):
+        mit hashlib_helper.block_algorithm(name, **flags):
             # OpenSSL's blake2s and blake2b are unknown names
             # when only the OpenSSL interface is available.
             wenn allow_openssl and not allow_builtin:
@@ -956,24 +956,24 @@ klasse TestHashlibSupport(unittest.TestCase):
             sonst:
                 name_for_hashlib_new = name
 
-            with self.check_context(is_fully_disabled):
+            mit self.check_context(is_fully_disabled):
                 _ = self.hashlib.new(name_for_hashlib_new)
 
             # Since _hashlib is present, explicit blake2b/blake2s constructors
             # use the built-in implementation, while others (since we are not
             # in FIPS mode and since _hashlib exists) use the OpenSSL function.
-            with self.check_context(is_fully_disabled):
+            mit self.check_context(is_fully_disabled):
                 _ = getattr(self.hashlib, name)()
 
             self.check_openssl_hash(name, disabled=not allow_openssl)
             self.check_builtin_hash(name, disabled=not allow_builtin)
 
             wenn name not in hashlib_helper.NON_HMAC_DIGEST_NAMES:
-                with self.check_context(is_fully_disabled):
+                mit self.check_context(is_fully_disabled):
                     _ = self.hmac.new(b"", b"", name)
-                with self.check_context(is_fully_disabled):
+                mit self.check_context(is_fully_disabled):
                     _ = self.hmac.HMAC(b"", b"", name)
-                with self.check_context(is_fully_disabled):
+                mit self.check_context(is_fully_disabled):
                     _ = self.hmac.digest(b"", b"", name)
 
                 self.check_openssl_hmac(name, disabled=not allow_openssl)
@@ -1040,7 +1040,7 @@ klasse TestHashlibSupport(unittest.TestCase):
                                     allow_builtin=Wahr)
     def test_disable_hash_md5_in_fips_mode_allow_all(self):
         self.skip_if_not_fips_mode()
-        # hashlib.new() isn't blocked as it falls back to _md5.md5
+        # hashlib.new() isn't blocked als it falls back to _md5.md5
         self.assertIsInstance(self.hashlib.new("md5"), self._md5.MD5Type)
         self.assertRaises(ValueError, self._hashlib.new, "md5")
         h = self._hashlib.new("md5", usedforsecurity=Falsch)

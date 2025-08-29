@@ -6,7 +6,7 @@ def get_cache_token():
 
     The token is an opaque object (supporting equality testing) identifying the
     current version of the ABC cache fuer virtual subclasses. The token changes
-    with every call to ``register()`` on any ABC.
+    mit every call to ``register()`` on any ABC.
     """
     return ABCMeta._abc_invalidation_counter
 
@@ -15,9 +15,9 @@ klasse ABCMeta(type):
     """Metaclass fuer defining Abstract Base Classes (ABCs).
 
     Use this metaclass to create an ABC.  An ABC can be subclassed
-    directly, and then acts as a mix-in class.  You can also register
+    directly, and then acts als a mix-in class.  You can also register
     unrelated concrete classes (even built-in classes) and unrelated
-    ABCs as 'virtual subclasses' -- these and their descendants will
+    ABCs als 'virtual subclasses' -- these and their descendants will
     be considered subclasses of the registering ABC by the built-in
     issubclass() function, but the registering ABC won't show up in
     their MRO (Method Resolution Order) nor will method
@@ -26,7 +26,7 @@ klasse ABCMeta(type):
     """
 
     # A global counter that is incremented each time a klasse is
-    # registered as a virtual subclass of anything.  It forces the
+    # registered als a virtual subclass of anything.  It forces the
     # negative cache to be cleared before its next use.
     # Note: this counter is private. Use `abc.get_cache_token()` for
     #       external code.
@@ -54,14 +54,14 @@ klasse ABCMeta(type):
     def register(cls, subclass):
         """Register a virtual subclass of an ABC.
 
-        Returns the subclass, to allow usage as a klasse decorator.
+        Returns the subclass, to allow usage als a klasse decorator.
         """
         wenn not isinstance(subclass, type):
             raise TypeError("Can only register classes")
         wenn issubclass(subclass, cls):
             return subclass  # Already a subclass
         # Subtle: test fuer cycles *after* testing fuer "already a subclass";
-        # this means we allow X.register(X) and interpret it as a no-op.
+        # this means we allow X.register(X) and interpret it als a no-op.
         wenn issubclass(cls, subclass):
             # This would create a cycle, which is bad fuer the algorithm below
             raise RuntimeError("Refusing to create an inheritance cycle")

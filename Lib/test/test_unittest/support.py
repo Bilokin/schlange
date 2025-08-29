@@ -2,7 +2,7 @@ importiere unittest
 
 
 klasse TestEquality(object):
-    """Used as a mixin fuer TestCase"""
+    """Used als a mixin fuer TestCase"""
 
     # Check fuer a valid __eq__ implementation
     def test_eq(self):
@@ -17,7 +17,7 @@ klasse TestEquality(object):
             self.assertNotEqual(obj_2, obj_1)
 
 klasse TestHashing(object):
-    """Used as a mixin fuer TestCase"""
+    """Used als a mixin fuer TestCase"""
 
     # Check fuer a valid __hash__ implementation
     def test_hash(self):
@@ -25,7 +25,7 @@ klasse TestHashing(object):
             try:
                 wenn not hash(obj_1) == hash(obj_2):
                     self.fail("%r and %r do not hash equal" % (obj_1, obj_2))
-            except Exception as e:
+            except Exception als e:
                 self.fail("Problem hashing %r and %r: %s" % (obj_1, obj_2, e))
 
         fuer obj_1, obj_2 in self.ne_pairs:
@@ -33,7 +33,7 @@ klasse TestHashing(object):
                 wenn hash(obj_1) == hash(obj_2):
                     self.fail("%s and %s hash equal, but shouldn't" %
                               (obj_1, obj_2))
-            except Exception as e:
+            except Exception als e:
                 self.fail("Problem hashing %s and %s: %s" % (obj_1, obj_2, e))
 
 

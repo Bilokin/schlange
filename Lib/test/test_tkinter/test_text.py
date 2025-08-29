@@ -35,7 +35,7 @@ klasse TextTest(AbstractTkTest, unittest.TestCase):
         # Invalid text index.
         self.assertRaises(tkinter.TclError, text.search, '', 0)
 
-        # Check wenn we are getting the indices as strings -- you are likely
+        # Check wenn we are getting the indices als strings -- you are likely
         # to get Tcl_Obj under Tk 8.5 wenn Tkinter doesn't convert it.
         text.insert('1.0', 'hi-test')
         self.assertEqual(text.search('-test', '1.0', 'end'), '1.2')

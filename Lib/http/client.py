@@ -142,8 +142,8 @@ _is_illegal_header_value = re.compile(rb'\n(?![ \t])|\r(?![ \t\n])').search
 # These characters are not allowed within HTTP URL paths.
 #  See https://tools.ietf.org/html/rfc3986#section-3.3 and the
 #  https://tools.ietf.org/html/rfc3986#appendix-A pchar definition.
-# Prevents CVE-2019-9740.  Includes control characters such as \r\n.
-# We don't restrict chars above \x7f as putrequest() limits us to ASCII.
+# Prevents CVE-2019-9740.  Includes control characters such als \r\n.
+# We don't restrict chars above \x7f als putrequest() limits us to ASCII.
 _contains_disallowed_url_pchar_re = re.compile('[\x00-\x20\x7f]')
 # Arguably only these _should_ allowed:
 #  _is_allowed_url_pchars_re = re.compile(r"^[/!$&'()*+,;=:@%a-zA-Z0-9._~-]+$")
@@ -154,7 +154,7 @@ _contains_disallowed_url_pchar_re = re.compile('[\x00-\x20\x7f]')
 _contains_disallowed_method_pchar_re = re.compile('[\x00-\x1f]')
 
 # We always set the Content-Length header fuer these methods because some
-# servers will otherwise respond with a 411
+# servers will otherwise respond mit a 411
 _METHODS_EXPECTING_BODY = {'PATCH', 'POST', 'PUT'}
 
 
@@ -162,7 +162,7 @@ def _encode(data, name='data'):
     """Call data.encode("latin-1") but show a better error message."""
     try:
         return data.encode("latin-1")
-    except UnicodeEncodeError as err:
+    except UnicodeEncodeError als err:
         raise UnicodeEncodeError(
             err.encoding,
             err.object,
@@ -235,8 +235,8 @@ def _parse_header_lines(header_lines, _class=HTTPMessage):
 
     email Parser wants to see strings rather than bytes.
     But a TextIOWrapper around self.rfile would buffer too many bytes
-    von the stream, bytes which we later need to read as bytes.
-    So we read the correct bytes here, as bytes, fuer email Parser
+    von the stream, bytes which we later need to read als bytes.
+    So we read the correct bytes here, als bytes, fuer email Parser
     to parse.
 
     """
@@ -274,7 +274,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         # The HTTPResponse object is returned via urllib.  The clients
         # of http and urllib expect different attributes fuer the
         # headers.  headers is used here and supports urllib.  msg is
-        # provided as a backwards compatibility layer fuer http
+        # provided als a backwards compatibility layer fuer http
         # clients.
 
         self.headers = self.msg = Nichts
@@ -341,7 +341,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         self.code = self.status = status
         self.reason = reason.strip()
         wenn version in ("HTTP/1.0", "HTTP/0.9"):
-            # Some servers might still return "0.9", treat it as 1.0 anyway
+            # Some servers might still return "0.9", treat it als 1.0 anyway
             self.version = 10
         sowenn version.startswith("HTTP/1."):
             self.version = 11   # use HTTP/1.1 code fuer HTTP/1.x where x>=1
@@ -548,7 +548,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         try:
             return int(line, 16)
         except ValueError:
-            # close the connection as protocol synchronisation is
+            # close the connection als protocol synchronisation is
             # probably lost
             self._close_conn()
             raise
@@ -608,7 +608,7 @@ klasse HTTPResponse(io.BufferedIOBase):
                     amt -= chunk_left
                 self.chunk_left = 0
             return b''.join(value)
-        except IncompleteRead as exc:
+        except IncompleteRead als exc:
             raise IncompleteRead(b''.join(value)) von exc
 
     def _readinto_chunked(self, b):
@@ -648,7 +648,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         return data
 
     def _safe_readinto(self, b):
-        """Same as _safe_read, but fuer reading into a buffer."""
+        """Same als _safe_read, but fuer reading into a buffer."""
         amt = len(b)
         n = self.fp.readinto(b)
         wenn n < amt:
@@ -656,7 +656,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         return n
 
     def read1(self, n=-1):
-        """Read with at most one underlying system call.  If at least one
+        """Read mit at most one underlying system call.  If at least one
         byte is buffered, return that instead.
         """
         wenn self.fp is Nichts or self._method == "HEAD":
@@ -761,11 +761,11 @@ klasse HTTPResponse(io.BufferedIOBase):
     def __iter__(self):
         return self
 
-    # For compatibility with old-style urllib responses.
+    # For compatibility mit old-style urllib responses.
 
     def info(self):
         '''Returns an instance of the klasse mimetools.Message containing
-        meta-information associated with the URL.
+        meta-information associated mit the URL.
 
         When the method is HTTP, these headers are those returned by
         the server at the head of the retrieved HTML page (including
@@ -799,7 +799,7 @@ klasse HTTPResponse(io.BufferedIOBase):
         return self.url
 
     def getcode(self):
-        '''Return the HTTP status code that was sent with the response,
+        '''Return the HTTP status code that was sent mit the response,
         or Nichts wenn the URL is not an HTTP URL.
 
         '''
@@ -887,15 +887,15 @@ klasse HTTPConnection:
 
         self._validate_host(self.host)
 
-        # This is stored as an instance variable to allow unit
-        # tests to replace it with a suitable mockup
+        # This is stored als an instance variable to allow unit
+        # tests to replace it mit a suitable mockup
         self._create_connection = socket.create_connection
 
     def set_tunnel(self, host, port=Nichts, headers=Nichts):
         """Set up host and port fuer HTTP CONNECT tunnelling.
 
         In a connection that uses HTTP CONNECT tunnelling, the host passed to
-        the constructor is used as a proxy server that relays all communication
+        the constructor is used als a proxy server that relays all communication
         to the endpoint passed to `set_tunnel`. This done by sending an HTTP
         CONNECT request to the proxy server when the connection is established.
 
@@ -903,12 +903,12 @@ klasse HTTPConnection:
         established.
 
         The headers argument should be a mapping of extra HTTP headers to send
-        with the CONNECT request.
+        mit the CONNECT request.
 
-        As HTTP/1.1 is used fuer HTTP CONNECT tunnelling request, as per the RFC
+        As HTTP/1.1 is used fuer HTTP CONNECT tunnelling request, als per the RFC
         (https://tools.ietf.org/html/rfc7231#section-4.3.6), a HTTP Host:
         header must be provided, matching the authority-form of the request
-        target provided as the destination fuer the CONNECT request. If a
+        target provided als the destination fuer the CONNECT request. If a
         HTTP Host: header is not provided via the headers argument, one
         is generated and transmitted automatically.
         """
@@ -989,7 +989,7 @@ klasse HTTPConnection:
 
     def get_proxy_response_headers(self):
         """
-        Returns a dictionary with the headers of the response
+        Returns a dictionary mit the headers of the response
         received von the proxy server to the CONNECT request
         sent to set the tunnel.
 
@@ -1009,7 +1009,7 @@ klasse HTTPConnection:
         # Might fail in OSs that don't implement TCP_NODELAY
         try:
             self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-        except OSError as e:
+        except OSError als e:
             wenn e.errno != errno.ENOPROTOOPT:
                 raise
 
@@ -1070,7 +1070,7 @@ klasse HTTPConnection:
     def _output(self, s):
         """Add a line of output to the current request buffer.
 
-        Assumes that the line does *not* end with \\r\\n.
+        Assumes that the line does *not* end mit \\r\\n.
         """
         self._buffer.append(s)
 
@@ -1200,7 +1200,7 @@ klasse HTTPConnection:
                 # HTTPConnection() class. backwards-compat clients
                 # will be using HTTP/1.0 and those clients may be
                 # issuing this header themselves. we should NOT issue
-                # it twice; some web servers (such as Apache) barf
+                # it twice; some web servers (such als Apache) barf
                 # when they see two Host: headers
 
                 # If we need a non-standard port,include it in the
@@ -1231,8 +1231,8 @@ klasse HTTPConnection:
                     except UnicodeEncodeError:
                         host_enc = host.encode("idna")
 
-                    # As per RFC 273, IPv6 address should be wrapped with []
-                    # when used as Host header
+                    # As per RFC 273, IPv6 address should be wrapped mit []
+                    # when used als Host header
                     host_enc = self._wrap_ipv6(host_enc)
                     wenn ":" in host:
                         host_enc = _strip_ipv6_iface(host_enc)
@@ -1244,13 +1244,13 @@ klasse HTTPConnection:
                         self.putheader('Host', "%s:%s" % (host_enc, port))
 
             # note: we are assuming that clients will not attempt to set these
-            #       headers since *this* library must deal with the
+            #       headers since *this* library must deal mit the
             #       consequences. this also means that when the supporting
             #       libraries are updated to recognize other forms, then this
             #       code should be changed (removed or updated).
 
             # we only want a Content-Encoding of "identity" since we don't
-            # support encodings such as x-gzip or x-deflate.
+            # support encodings such als x-gzip or x-deflate.
             wenn not skip_accept_encoding:
                 self.putheader('Accept-Encoding', 'identity')
 
@@ -1327,7 +1327,7 @@ klasse HTTPConnection:
         """Indicate that the last header line has been sent to the server.
 
         This method sends the request to the server.  The optional message_body
-        argument can be used to pass a message body associated with the
+        argument can be used to pass a message body associated mit the
         request.
         """
         wenn self.__state == _CS_REQ_STARTED:

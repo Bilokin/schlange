@@ -19,7 +19,7 @@ importiere types
 
 
 def bench(name, cleanup=lambda: Nichts, *, seconds=1, repeat=3):
-    """Bench the given statement as many times as necessary until total
+    """Bench the given statement als many times als necessary until total
     executions take one second."""
     stmt = "__import__({!r})".format(name)
     timer = timeit.Timer(stmt)
@@ -44,7 +44,7 @@ def from_cache(seconds, repeat):
     module = types.ModuleType(name)
     module.__file__ = '<test>'
     module.__package__ = ''
-    with util.uncache(name):
+    mit util.uncache(name):
         sys.modules[name] = module
         yield von bench(name, repeat=repeat, seconds=seconds)
 
@@ -65,7 +65,7 @@ def source_wo_bytecode(seconds, repeat):
     try:
         name = '__importlib_test_benchmark__'
         # Clears out sys.modules and puts an entry at the front of sys.path.
-        with util.create_modules(name) as mapping:
+        mit util.create_modules(name) als mapping:
             assert not os.path.exists(cache_from_source(mapping[name]))
             sys.meta_path.append(importlib.machinery.PathFinder)
             loader = (importlib.machinery.SourceFileLoader,
@@ -102,7 +102,7 @@ def source_writing_bytecode(seconds, repeat):
     """Source writing bytecode: small"""
     assert not sys.dont_write_bytecode
     name = '__importlib_test_benchmark__'
-    with util.create_modules(name) as mapping:
+    mit util.create_modules(name) als mapping:
         sys.meta_path.append(importlib.machinery.PathFinder)
         loader = (importlib.machinery.SourceFileLoader,
                   importlib.machinery.SOURCE_SUFFIXES)
@@ -136,7 +136,7 @@ decimal_writing_bytecode = _writing_bytecode(decimal)
 def source_using_bytecode(seconds, repeat):
     """Source w/ bytecode: small"""
     name = '__importlib_test_benchmark__'
-    with util.create_modules(name) as mapping:
+    mit util.create_modules(name) als mapping:
         sys.meta_path.append(importlib.machinery.PathFinder)
         loader = (importlib.machinery.SourceFileLoader,
                   importlib.machinery.SOURCE_SUFFIXES)
@@ -165,7 +165,7 @@ decimal_using_bytecode = _using_bytecode(decimal)
 
 def main(import_, options):
     wenn options.source_file:
-        with open(options.source_file, 'r', encoding='utf-8') as source_file:
+        mit open(options.source_file, 'r', encoding='utf-8') als source_file:
             prev_results = json.load(source_file)
     sonst:
         prev_results = {}
@@ -192,7 +192,7 @@ def main(import_, options):
     repeat = 3
     header = ('Measuring imports/second over {} second{}, best out of {}\n'
               'Entire benchmark run should take about {} seconds\n'
-              'Using {!r} as __import__\n')
+              'Using {!r} als __import__\n')
     drucke(header.format(seconds, seconds_plural, repeat,
                         len(benchmarks) * seconds * repeat, __import__))
     new_results = {}
@@ -218,7 +218,7 @@ def main(import_, options):
                                               new_result/old_result)
             drucke(benchmark_name, ':', result)
     wenn options.dest_file:
-        with open(options.dest_file, 'w', encoding='utf-8') as dest_file:
+        mit open(options.dest_file, 'w', encoding='utf-8') als dest_file:
             json.dump(new_results, dest_file, indent=2)
 
 

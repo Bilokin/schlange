@@ -73,7 +73,7 @@ klasse TurtleConfigTest(unittest.TestCase):
 
     def get_cfg_file(self, cfg_str):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
-        with open(os_helper.TESTFN, 'w') as f:
+        mit open(os_helper.TESTFN, 'w') als f:
             f.write(cfg_str)
         return os_helper.TESTFN
 
@@ -126,7 +126,7 @@ klasse TurtleConfigTest(unittest.TestCase):
 
         cfg_name = self.get_cfg_file(invalid_test_config)
 
-        with support.captured_stdout() as stdout:
+        mit support.captured_stdout() als stdout:
             parsed_cfg = turtle.config_dict(cfg_name)
 
         err_msg = stdout.getvalue()
@@ -190,7 +190,7 @@ klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):
     def test_pickling(self):
         vec = Vec2D(0.5, 2)
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 pickled = pickle.dumps(vec, protocol=proto)
                 unpickled = pickle.loads(pickled)
                 self.assertEqual(unpickled, vec)
@@ -198,7 +198,7 @@ klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):
 
     def _assert_arithmetic_cases(self, test_cases, lambda_operator):
         fuer test_case in test_cases:
-            with self.subTest(case=test_case):
+            mit self.subTest(case=test_case):
 
                 ((first, second), expected) = test_case
 
@@ -270,7 +270,7 @@ klasse TestVec2D(VectorComparisonMixin, unittest.TestCase):
         ]
 
         fuer case in cases:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 (vec, rot), expected = case
                 vec = Vec2D(*vec)
                 got = vec.rotate(rot)
@@ -486,8 +486,8 @@ klasse TestTurtleScreen(unittest.TestCase):
         screen = unittest.mock.Mock()
 
         msg = "Unknown file extension: '.png', must be one of {'.ps', '.eps'}"
-        with (
-            tempfile.TemporaryDirectory() as tmpdir,
+        mit (
+            tempfile.TemporaryDirectory() als tmpdir,
             self.assertRaisesRegex(ValueError, re.escape(msg))
         ):
             turtle.TurtleScreen.save(screen, os.path.join(tmpdir, "file.png"))
@@ -495,56 +495,56 @@ klasse TestTurtleScreen(unittest.TestCase):
     def test_save_raises_if_parent_not_found(self) -> Nichts:
         screen = unittest.mock.Mock()
 
-        with tempfile.TemporaryDirectory() as tmpdir:
+        mit tempfile.TemporaryDirectory() als tmpdir:
             parent = os.path.join(tmpdir, "unknown_parent")
             msg = f"The directory '{parent}' does not exist. Cannot save to it"
 
-            with self.assertRaisesRegex(FileNotFoundError, re.escape(msg)):
+            mit self.assertRaisesRegex(FileNotFoundError, re.escape(msg)):
                 turtle.TurtleScreen.save(screen, os.path.join(parent, "a.ps"))
 
     def test_save_raises_if_file_found(self) -> Nichts:
         screen = unittest.mock.Mock()
 
-        with tempfile.TemporaryDirectory() as tmpdir:
+        mit tempfile.TemporaryDirectory() als tmpdir:
             file_path = os.path.join(tmpdir, "some_file.ps")
-            with open(file_path, "w") as f:
+            mit open(file_path, "w") als f:
                 f.write("some text")
 
             msg = (
                 f"The file '{file_path}' already exists. To overwrite it use"
                 " the 'overwrite=Wahr' argument of the save function."
             )
-            with self.assertRaisesRegex(FileExistsError, re.escape(msg)):
+            mit self.assertRaisesRegex(FileExistsError, re.escape(msg)):
                 turtle.TurtleScreen.save(screen, file_path)
 
     def test_save_overwrites_if_specified(self) -> Nichts:
         screen = unittest.mock.Mock()
         screen.cv.postscript.return_value = "postscript"
 
-        with tempfile.TemporaryDirectory() as tmpdir:
+        mit tempfile.TemporaryDirectory() als tmpdir:
             file_path = os.path.join(tmpdir, "some_file.ps")
-            with open(file_path, "w") as f:
+            mit open(file_path, "w") als f:
                 f.write("some text")
 
             turtle.TurtleScreen.save(screen, file_path, overwrite=Wahr)
-            with open(file_path) as f:
+            mit open(file_path) als f:
                 self.assertEqual(f.read(), "postscript")
 
     def test_save(self) -> Nichts:
         screen = unittest.mock.Mock()
         screen.cv.postscript.return_value = "postscript"
 
-        with tempfile.TemporaryDirectory() as tmpdir:
+        mit tempfile.TemporaryDirectory() als tmpdir:
             file_path = os.path.join(tmpdir, "some_file.ps")
 
             turtle.TurtleScreen.save(screen, file_path)
-            with open(file_path) as f:
+            mit open(file_path) als f:
                 self.assertEqual(f.read(), "postscript")
 
     def test_no_animation_sets_tracer_0(self):
         s = turtle.TurtleScreen(cv=unittest.mock.MagicMock())
 
-        with s.no_animation():
+        mit s.no_animation():
             self.assertEqual(s.tracer(), 0)
 
     def test_no_animation_resets_tracer_to_old_value(self):
@@ -552,7 +552,7 @@ klasse TestTurtleScreen(unittest.TestCase):
 
         fuer tracer in [0, 1, 5]:
             s.tracer(tracer)
-            with s.no_animation():
+            mit s.no_animation():
                 pass
             self.assertEqual(s.tracer(), tracer)
 
@@ -560,14 +560,14 @@ klasse TestTurtleScreen(unittest.TestCase):
         s = turtle.TurtleScreen(cv=unittest.mock.MagicMock())
         s.update = unittest.mock.MagicMock()
 
-        with s.no_animation():
+        mit s.no_animation():
             s.update.assert_not_called()
         s.update.assert_called_once()
 
 
 klasse TestTurtle(unittest.TestCase):
     def setUp(self):
-        with patch_screen():
+        mit patch_screen():
             self.turtle = turtle.Turtle()
 
         # Reset the Screen singleton to avoid reference leaks
@@ -583,14 +583,14 @@ klasse TestTurtle(unittest.TestCase):
     def test_fill(self):
         # The context manager behaves like begin_fill and end_fill.
         self.assertFalsch(self.turtle.filling())
-        with self.turtle.fill():
+        mit self.turtle.fill():
             self.assertWahr(self.turtle.filling())
         self.assertFalsch(self.turtle.filling())
 
     def test_fill_resets_after_exception(self):
         # The context manager cleans up correctly after exceptions.
         try:
-            with self.turtle.fill():
+            mit self.turtle.fill():
                 self.assertWahr(self.turtle.filling())
                 raise ValueError
         except ValueError:
@@ -600,7 +600,7 @@ klasse TestTurtle(unittest.TestCase):
         # The context manager works even when the turtle is already filling.
         self.turtle.begin_fill()
         self.assertWahr(self.turtle.filling())
-        with self.turtle.fill():
+        mit self.turtle.fill():
             self.assertWahr(self.turtle.filling())
         self.assertFalsch(self.turtle.filling())
 
@@ -614,14 +614,14 @@ klasse TestTurtle(unittest.TestCase):
     def test_poly(self):
         # The context manager behaves like begin_poly and end_poly.
         self.assertFalsch(self.turtle._creatingPoly)
-        with self.turtle.poly():
+        mit self.turtle.poly():
             self.assertWahr(self.turtle._creatingPoly)
         self.assertFalsch(self.turtle._creatingPoly)
 
     def test_poly_resets_after_exception(self):
         # The context manager cleans up correctly after exceptions.
         try:
-            with self.turtle.poly():
+            mit self.turtle.poly():
                 self.assertWahr(self.turtle._creatingPoly)
                 raise ValueError
         except ValueError:
@@ -631,7 +631,7 @@ klasse TestTurtle(unittest.TestCase):
         # The context manager works when the turtle is already creating poly.
         self.turtle.begin_poly()
         self.assertWahr(self.turtle._creatingPoly)
-        with self.turtle.poly():
+        mit self.turtle.poly():
             self.assertWahr(self.turtle._creatingPoly)
         self.assertFalsch(self.turtle._creatingPoly)
 
@@ -650,7 +650,7 @@ klasse TestModuleLevel(unittest.TestCase):
         }
 
         fuer name in known_signatures:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 obj = getattr(turtle, name)
                 sig = inspect.signature(obj)
                 self.assertEqual(str(sig), known_signatures[name])

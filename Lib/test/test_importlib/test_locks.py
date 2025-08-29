@@ -1,4 +1,4 @@
-von test.test_importlib importiere util as test_util
+von test.test_importlib importiere util als test_util
 
 init = test_util.import_importlib('importlib')
 
@@ -94,7 +94,7 @@ klasse DeadlockAvoidanceTests:
                 b.release()
             wenn ra:
                 a.release()
-        with lock_tests.Bunch(f, NTHREADS):
+        mit lock_tests.Bunch(f, NTHREADS):
             pass
         self.assertEqual(len(results), NTHREADS)
         return results

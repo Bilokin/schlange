@@ -28,7 +28,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 verbose = Falsch
 
-# This must be kept in sync with Tools/cases_generator/analyzer.py
+# This must be kept in sync mit Tools/cases_generator/analyzer.py
 RESUME = 128
 
 def isprintable(b: bytes) -> bool:
@@ -131,7 +131,7 @@ klasse Printer:
 
     def get_identifiers_and_strings(self) -> tuple[set[str], dict[str, str]]:
         filename = os.path.join(ROOT, "Include", "internal", "pycore_global_strings.h")
-        with open(filename) as fp:
+        mit open(filename) als fp:
             lines = fp.readlines()
         identifiers: set[str] = set()
         strings: dict[str, str] = {}
@@ -157,7 +157,7 @@ klasse Printer:
     @contextlib.contextmanager
     def block(self, prefix: str, suffix: str = "") -> Iterator[Nichts]:
         self.write(prefix + " {")
-        with self.indent():
+        mit self.indent():
             yield
         self.write("}" + suffix)
 
@@ -176,12 +176,12 @@ klasse Printer:
         wenn len(b) == 1:
             return f"(PyObject *)&_Py_SINGLETON(bytes_characters[{b[0]}])"
         self.write("static")
-        with self.indent():
-            with self.block("struct"):
+        mit self.indent():
+            mit self.block("struct"):
                 self.write("PyObject_VAR_HEAD")
                 self.write("Py_hash_t ob_shash;")
                 self.write(f"char ob_sval[{len(b) + 1}];")
-        with self.block(f"{name} =", ";"):
+        mit self.block(f"{name} =", ";"):
             self.object_var_head("PyBytes_Type", len(b))
             self.write(".ob_shash = -1,")
             self.write(f".ob_sval = {make_string_literal(b)},")
@@ -208,20 +208,20 @@ klasse Printer:
         sonst:
             datatype = "uint32_t"
         self.write("static")
-        with self.indent():
-            with self.block("struct"):
+        mit self.indent():
+            mit self.block("struct"):
                 wenn ascii:
                     self.write("PyASCIIObject _ascii;")
                 sonst:
                     self.write("PyCompactUnicodeObject _compact;")
                 self.write(f"{datatype} _data[{len(s)+1}];")
-        with self.block(f"{name} =", ";"):
+        mit self.block(f"{name} =", ";"):
             wenn ascii:
-                with self.block("._ascii =", ","):
+                mit self.block("._ascii =", ","):
                     self.object_head("PyUnicode_Type")
                     self.write(f".length = {len(s)},")
                     self.write(".hash = -1,")
-                    with self.block(".state =", ","):
+                    mit self.block(".state =", ","):
                         self.write(".kind = 1,")
                         self.write(".compact = 1,")
                         self.write(".ascii = 1,")
@@ -229,12 +229,12 @@ klasse Printer:
                 self.write(f"._data = {make_string_literal(s.encode('ascii'))},")
                 return f"& {name}._ascii.ob_base"
             sonst:
-                with self.block("._compact =", ","):
-                    with self.block("._base =", ","):
+                mit self.block("._compact =", ","):
+                    mit self.block("._base =", ","):
                         self.object_head("PyUnicode_Type")
                         self.write(f".length = {len(s)},")
                         self.write(".hash = -1,")
-                        with self.block(".state =", ","):
+                        mit self.block(".state =", ","):
                             self.write(f".kind = {kind},")
                             self.write(".compact = 1,")
                             self.write(".ascii = 0,")
@@ -242,7 +242,7 @@ klasse Printer:
                     utf8 = s.encode('utf-8')
                     self.write(f'.utf8 = {make_string_literal(utf8)},')
                     self.write(f'.utf8_length = {len(utf8)},')
-                with self.block(f"._data =", ","):
+                mit self.block(f"._data =", ","):
                     fuer i in range(0, len(s), 16):
                         data = s[i:i+16]
                         self.write(", ".join(map(str, map(ord, data))) + ",")
@@ -277,9 +277,9 @@ klasse Printer:
             get_localsplus_counts(code, localsplusnames, localspluskinds)
         co_code_adaptive = make_string_literal(code.co_code)
         self.write("static")
-        with self.indent():
+        mit self.indent():
             self.write(f"struct _PyCode_DEF({len(code.co_code)})")
-        with self.block(f"{name} =", ";"):
+        mit self.block(f"{name} =", ";"):
             self.object_var_head("PyCode_Type", len(code.co_code) // 2)
             # But the ordering here must match that in cpython/code.h
             # (which is a pain because we tend to reorder those fuer perf)
@@ -291,7 +291,7 @@ klasse Printer:
             self.field(code, "co_argcount")
             self.field(code, "co_posonlyargcount")
             self.field(code, "co_kwonlyargcount")
-            # The following should remain in sync with _PyFrame_NumSlotsForCodeObject
+            # The following should remain in sync mit _PyFrame_NumSlotsForCodeObject
             self.write(f".co_framesize = {code.co_stacksize + len(localsplusnames)} + FRAME_SPECIALS_SIZE,")
             self.field(code, "co_stacksize")
             self.field(code, "co_firstlineno")
@@ -325,18 +325,18 @@ klasse Printer:
             return f"(PyObject *)& _Py_SINGLETON(tuple_empty)"
         items = [self.generate(f"{name}_{i}", it) fuer i, it in enumerate(t)]
         self.write("static")
-        with self.indent():
-            with self.block("struct"):
+        mit self.indent():
+            mit self.block("struct"):
                 self.write("PyGC_Head _gc_head;")
-                with self.block("struct", "_object;"):
+                mit self.block("struct", "_object;"):
                     self.write("PyObject_VAR_HEAD")
                     wenn t:
                         self.write(f"PyObject *ob_item[{len(t)}];")
-        with self.block(f"{name} =", ";"):
-            with self.block("._object =", ","):
+        mit self.block(f"{name} =", ";"):
+            mit self.block("._object =", ","):
                 self.object_var_head("PyTuple_Type", len(t))
                 wenn items:
-                    with self.block(f".ob_item =", ","):
+                    mit self.block(f".ob_item =", ","):
                         fuer item in items:
                             self.write(item + ",")
         return f"& {name}._object.ob_base.ob_base"
@@ -349,12 +349,12 @@ klasse Printer:
             i, rem = divmod(i, digit)
             digits.append(rem)
         self.write("static")
-        with self.indent():
-            with self.block("struct"):
+        mit self.indent():
+            mit self.block("struct"):
                 self.write("PyObject ob_base;")
                 self.write("uintptr_t lv_tag;")
                 self.write(f"digit ob_digit[{max(1, len(digits))}];")
-        with self.block(f"{name} =", ";"):
+        mit self.block(f"{name} =", ";"):
             self.object_head("PyLong_Type")
             self.write(f".lv_tag = TAG_FROM_SIGN_AND_SIZE({sign}, {len(digits)}),")
             wenn digits:
@@ -383,13 +383,13 @@ klasse Printer:
         return f"& {name}.ob_base"
 
     def generate_float(self, name: str, x: float) -> str:
-        with self.block(f"static PyFloatObject {name} =", ";"):
+        mit self.block(f"static PyFloatObject {name} =", ";"):
             self.object_head("PyFloat_Type")
             self.write(f".ob_fval = {x},")
         return f"&{name}.ob_base"
 
     def generate_complex(self, name: str, z: complex) -> str:
-        with self.block(f"static PyComplexObject {name} =", ";"):
+        mit self.block(f"static PyComplexObject {name} =", ";"):
             self.object_head("PyComplex_Type")
             self.write(f".cval = {{ {z.real}, {z.imag} }},")
         return f"&{name}.ob_base"
@@ -398,7 +398,7 @@ klasse Printer:
         try:
             fs_sorted = sorted(fs)
         except TypeError:
-            # frozen set with incompatible types, fallback to repr()
+            # frozen set mit incompatible types, fallback to repr()
             fs_sorted = sorted(fs, key=repr)
         ret = self.generate_tuple(name, tuple(fs_sorted))
         self.write("// TODO: The above tuple should be a frozenset")
@@ -480,19 +480,19 @@ def generate(args: list[str], output: TextIO) -> Nichts:
     printer = Printer(output)
     fuer arg in args:
         file, modname = arg.rsplit(':', 1)
-        with open(file, encoding="utf8") as fd:
+        mit open(file, encoding="utf8") als fd:
             source = fd.read()
             wenn is_frozen_header(source):
                 code = decode_frozen_data(source)
             sonst:
                 code = compile(fd.read(), f"<frozen {modname}>", "exec")
             printer.generate_file(modname, code)
-    with printer.block(f"void\n_Py_Deepfreeze_Fini(void)"):
+    mit printer.block(f"void\n_Py_Deepfreeze_Fini(void)"):
         fuer p in printer.finis:
             printer.write(p)
-    with printer.block(f"int\n_Py_Deepfreeze_Init(void)"):
+    mit printer.block(f"int\n_Py_Deepfreeze_Init(void)"):
         fuer p in printer.inits:
-            with printer.block(f"if ({p} < 0)"):
+            mit printer.block(f"if ({p} < 0)"):
                 printer.write("return -1;")
         printer.write("return 0;")
     printer.write(f"\nuint32_t _Py_next_func_version = {next_code_version};\n")
@@ -528,13 +528,13 @@ def main() -> Nichts:
     wenn args.file:
         wenn verbose:
             drucke(f"Reading targets von {args.file}")
-        with open(args.file, encoding="utf-8-sig") as fin:
+        mit open(args.file, encoding="utf-8-sig") als fin:
             rules = [x.strip() fuer x in fin]
     sonst:
         rules = args.args
 
-    with open(output, "w", encoding="utf-8") as file:
-        with report_time("generate"):
+    mit open(output, "w", encoding="utf-8") als file:
+        mit report_time("generate"):
             generate(rules, file)
     wenn verbose:
         drucke(f"Wrote {os.path.getsize(output)} bytes to {output}")

@@ -20,9 +20,9 @@ klasse HelperMixin:
         new = marshal.loads(marshal.dumps(sample, *extra))
         self.assertEqual(sample, new)
         try:
-            with open(os_helper.TESTFN, "wb") as f:
+            mit open(os_helper.TESTFN, "wb") als f:
                 marshal.dump(sample, f, *extra)
-            with open(os_helper.TESTFN, "rb") as f:
+            mit open(os_helper.TESTFN, "rb") als f:
                 new = marshal.load(f)
             self.assertEqual(sample, new)
         finally:
@@ -45,7 +45,7 @@ klasse IntTestCase(unittest.TestCase, HelperMixin):
             n = n >> 1
 
     def test_int64(self):
-        # Simulate int marshaling with TYPE_INT64.
+        # Simulate int marshaling mit TYPE_INT64.
         maxint64 = (1 << 63) - 1
         minint64 = -maxint64-1
         fuer base in maxint64, minint64, -maxint64, -(minint64 >> 1):
@@ -85,7 +85,7 @@ klasse FloatTestCase(unittest.TestCase, HelperMixin):
         s = marshal.dumps(f, 2)
         got = marshal.loads(s)
         self.assertEqual(f, got)
-        # and with version <= 1 (floats marshalled differently then)
+        # and mit version <= 1 (floats marshalled differently then)
         s = marshal.dumps(f, 1)
         got = marshal.loads(s)
         self.assertEqual(f, got)
@@ -149,27 +149,27 @@ klasse CodeTestCase(unittest.TestCase):
         data = {'a': [({co, 0},)]}
         dump = marshal.dumps(data, allow_code=Wahr)
         self.assertEqual(marshal.loads(dump, allow_code=Wahr), data)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             marshal.dumps(data, allow_code=Falsch)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             marshal.loads(dump, allow_code=Falsch)
 
         marshal.dump(data, io.BytesIO(), allow_code=Wahr)
         self.assertEqual(marshal.load(io.BytesIO(dump), allow_code=Wahr), data)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             marshal.dump(data, io.BytesIO(), allow_code=Falsch)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             marshal.load(io.BytesIO(dump), allow_code=Falsch)
 
     @requires_debug_ranges()
     def test_minimal_linetable_with_no_debug_ranges(self):
-        # Make sure when demarshalling objects with `-X no_debug_ranges`
+        # Make sure when demarshalling objects mit `-X no_debug_ranges`
         # that the columns are Nichts.
         co = ExceptionTestCase.test_exceptions.__code__
         code = textwrap.dedent("""
         importiere sys
         importiere marshal
-        with open(sys.argv[1], 'rb') as f:
+        mit open(sys.argv[1], 'rb') als f:
             co = marshal.load(f)
             positions = list(co.co_positions())
             assert positions[0][2] is Nichts
@@ -177,7 +177,7 @@ klasse CodeTestCase(unittest.TestCase):
         """)
 
         try:
-            with open(os_helper.TESTFN, 'wb') as f:
+            mit open(os_helper.TESTFN, 'wb') als f:
                 marshal.dump(co, f)
 
             assert_python_ok('-X', 'no_debug_ranges',
@@ -301,7 +301,7 @@ klasse BugsTestCase(unittest.TestCase):
             last.append([0])
             last = last[-1]
 
-        # Verify we don't blow out the stack with dumps/load.
+        # Verify we don't blow out the stack mit dumps/load.
         data = marshal.dumps(head)
         new_head = marshal.loads(data)
         # Don't use == to compare objects, it can exceed the recursion limit.
@@ -337,20 +337,20 @@ klasse BugsTestCase(unittest.TestCase):
 
     def test_multiple_dumps_and_loads(self):
         # Issue 12291: marshal.load() should be callable multiple times
-        # with interleaved data written by non-marshal code
+        # mit interleaved data written by non-marshal code
         # Adapted von a patch by Engelbert Gruber.
         data = (1, 'abc', b'def', 1.0, (2, 'a', ['b', b'c']))
         fuer interleaved in (b'', b'0123'):
             ilen = len(interleaved)
             positions = []
             try:
-                with open(os_helper.TESTFN, 'wb') as f:
+                mit open(os_helper.TESTFN, 'wb') als f:
                     fuer d in data:
                         marshal.dump(d, f)
                         wenn ilen:
                             f.write(interleaved)
                         positions.append(f.tell())
-                with open(os_helper.TESTFN, 'rb') as f:
+                mit open(os_helper.TESTFN, 'rb') als f:
                     fuer i, d in enumerate(data):
                         self.assertEqual(d, marshal.load(f))
                         wenn ilen:
@@ -387,14 +387,14 @@ klasse BugsTestCase(unittest.TestCase):
         fuer kind in ("set", "frozenset"):
             fuer elements in (
                 "float('nan'), b'a', b'b', b'c', 'x', 'y', 'z'",
-                # Also test fuer bad interactions with backreferencing:
+                # Also test fuer bad interactions mit backreferencing:
                 "('Spam', 0), ('Spam', 1), ('Spam', 2), ('Spam', 3), ('Spam', 4), ('Spam', 5)",
             ):
                 s = f"{kind}([{elements}])"
-                with self.subTest(s):
+                mit self.subTest(s):
                     # First, make sure that our test case still has different
                     # orders under hash seeds 0 and 1. If this check fails, we
-                    # need to update this test with different elements. Skip
+                    # need to update this test mit different elements. Skip
                     # this part wenn we are configured to use any other hash
                     # algorithm (for example, using Py_HASH_EXTERNAL):
                     wenn sys.hash_info.algorithm in {"fnv", "siphash24"}:
@@ -483,7 +483,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
             self.assertEqual(n3, n0)
 
         wenn not recursive:
-            #can compare with version 2
+            #can compare mit version 2
             s2 = marshal.dumps(sample, 2)
             n2 = CollectObjectIDs(set(), marshal.loads(s2))
             #old format generated more instances
@@ -546,7 +546,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
             self.helper3(dictobj)
 
     def testModule(self):
-        with open(__file__, "rb") as f:
+        mit open(__file__, "rb") als f:
             code = f.read()
         wenn __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
@@ -564,7 +564,7 @@ klasse InstancingTestCase(unittest.TestCase, HelperMixin):
 
 klasse CompatibilityTestCase(unittest.TestCase):
     def _test(self, version):
-        with open(__file__, "rb") as f:
+        mit open(__file__, "rb") als f:
             code = f.read()
         wenn __file__.endswith(".py"):
             code = compile(code, __file__, "exec")
@@ -607,11 +607,11 @@ klasse SliceTestCase(unittest.TestCase, HelperMixin):
             slice(Nichts), slice(1), slice(1, 2), slice(1, 2, 3),
             slice({'set'}, ('tuple', {'with': 'dict'}, ), self.helper.__code__)
         ):
-            with self.subTest(obj=str(obj)):
+            mit self.subTest(obj=str(obj)):
                 self.helper(obj)
 
                 fuer version in range(4):
-                    with self.assertRaises(ValueError):
+                    mit self.assertRaises(ValueError):
                         marshal.dumps(obj, version)
 
 @support.cpython_only
@@ -621,7 +621,7 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
     def test_write_long_to_file(self):
         fuer v in range(marshal.version + 1):
             _testcapi.pymarshal_write_long_to_file(0x12345678, os_helper.TESTFN, v)
-            with open(os_helper.TESTFN, 'rb') as f:
+            mit open(os_helper.TESTFN, 'rb') als f:
                 data = f.read()
             os_helper.unlink(os_helper.TESTFN)
             self.assertEqual(data, b'\x78\x56\x34\x12')
@@ -630,36 +630,36 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j, 'long line '*1000)
         fuer v in range(marshal.version + 1):
             _testcapi.pymarshal_write_object_to_file(obj, os_helper.TESTFN, v)
-            with open(os_helper.TESTFN, 'rb') as f:
+            mit open(os_helper.TESTFN, 'rb') als f:
                 data = f.read()
             os_helper.unlink(os_helper.TESTFN)
             self.assertEqual(marshal.loads(data), obj)
 
     def test_read_short_from_file(self):
-        with open(os_helper.TESTFN, 'wb') as f:
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(b'\x34\x12xxxx')
         r, p = _testcapi.pymarshal_read_short_from_file(os_helper.TESTFN)
         os_helper.unlink(os_helper.TESTFN)
         self.assertEqual(r, 0x1234)
         self.assertEqual(p, 2)
 
-        with open(os_helper.TESTFN, 'wb') as f:
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(b'\x12')
-        with self.assertRaises(EOFError):
+        mit self.assertRaises(EOFError):
             _testcapi.pymarshal_read_short_from_file(os_helper.TESTFN)
         os_helper.unlink(os_helper.TESTFN)
 
     def test_read_long_from_file(self):
-        with open(os_helper.TESTFN, 'wb') as f:
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(b'\x78\x56\x34\x12xxxx')
         r, p = _testcapi.pymarshal_read_long_from_file(os_helper.TESTFN)
         os_helper.unlink(os_helper.TESTFN)
         self.assertEqual(r, 0x12345678)
         self.assertEqual(p, 4)
 
-        with open(os_helper.TESTFN, 'wb') as f:
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(b'\x56\x34\x12')
-        with self.assertRaises(EOFError):
+        mit self.assertRaises(EOFError):
             _testcapi.pymarshal_read_long_from_file(os_helper.TESTFN)
         os_helper.unlink(os_helper.TESTFN)
 
@@ -667,15 +667,15 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
         fuer v in range(marshal.version + 1):
             data = marshal.dumps(obj, v)
-            with open(os_helper.TESTFN, 'wb') as f:
+            mit open(os_helper.TESTFN, 'wb') als f:
                 f.write(data + b'xxxx')
             r, p = _testcapi.pymarshal_read_last_object_from_file(os_helper.TESTFN)
             os_helper.unlink(os_helper.TESTFN)
             self.assertEqual(r, obj)
 
-            with open(os_helper.TESTFN, 'wb') as f:
+            mit open(os_helper.TESTFN, 'wb') als f:
                 f.write(omit_last_byte(data))
-            with self.assertRaises(EOFError):
+            mit self.assertRaises(EOFError):
                 _testcapi.pymarshal_read_last_object_from_file(os_helper.TESTFN)
             os_helper.unlink(os_helper.TESTFN)
 
@@ -683,16 +683,16 @@ klasse CAPI_TestCase(unittest.TestCase, HelperMixin):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
         fuer v in range(marshal.version + 1):
             data = marshal.dumps(obj, v)
-            with open(os_helper.TESTFN, 'wb') as f:
+            mit open(os_helper.TESTFN, 'wb') als f:
                 f.write(data + b'xxxx')
             r, p = _testcapi.pymarshal_read_object_from_file(os_helper.TESTFN)
             os_helper.unlink(os_helper.TESTFN)
             self.assertEqual(r, obj)
             self.assertEqual(p, len(data))
 
-            with open(os_helper.TESTFN, 'wb') as f:
+            mit open(os_helper.TESTFN, 'wb') als f:
                 f.write(omit_last_byte(data))
-            with self.assertRaises(EOFError):
+            mit self.assertRaises(EOFError):
                 _testcapi.pymarshal_read_object_from_file(os_helper.TESTFN)
             os_helper.unlink(os_helper.TESTFN)
 

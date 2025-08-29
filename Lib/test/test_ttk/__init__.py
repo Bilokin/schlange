@@ -26,7 +26,7 @@ def setUpModule():
         button = ttk.Button(root)
         button.destroy()
         del button
-    except TclError as msg:
+    except TclError als msg:
         # assuming ttk is not available
         raise unittest.SkipTest("ttk not available: %s" % msg)
     finally:

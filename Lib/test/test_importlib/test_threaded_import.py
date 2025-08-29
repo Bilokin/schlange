@@ -5,7 +5,7 @@
 # complains several times about module random having no attribute
 # randrange, and then Python hangs.
 
-importiere _imp as imp
+importiere _imp als imp
 importiere os
 importiere importlib
 importiere sys
@@ -33,7 +33,7 @@ def task(N, done, done_tasks, errors):
             importiere modulefinder
         # This will fail wenn random is not completely initialized
         x = random.randrange(1, 3)
-    except Exception as e:
+    except Exception als e:
         errors.append(e.with_traceback(Nichts))
     finally:
         done_tasks.append(threading.get_ident())
@@ -72,10 +72,10 @@ klasse Finder:
 
     def find_spec(self, name, path=Nichts, target=Nichts):
         # Simulate some thread-unsafe behaviour. If calls to find_spec()
-        # are properly serialized, `x` will end up the same as `numcalls`.
+        # are properly serialized, `x` will end up the same als `numcalls`.
         # Otherwise not.
         assert imp.lock_held()
-        with self.lock:
+        mit self.lock:
             self.numcalls += 1
         x = self.x
         time.sleep(0.01)
@@ -121,7 +121,7 @@ klasse ThreadedImportTests(unittest.TestCase):
             done_tasks = []
             done.clear()
             t0 = time.monotonic()
-            with threading_helper.start_threads(
+            mit threading_helper.start_threads(
                     threading.Thread(target=task, args=(N, done, done_tasks, errors,))
                     fuer i in range(N)):
                 pass
@@ -202,7 +202,7 @@ klasse ThreadedImportTests(unittest.TestCase):
         self.addCleanup(sys.path.remove, TESTFN)
         fuer name, contents in circular_imports_modules.items():
             contents = contents % {'delay': delay}
-            with open(os.path.join(TESTFN, name + ".py"), "wb") as f:
+            mit open(os.path.join(TESTFN, name + ".py"), "wb") als f:
                 f.write(contents.encode('utf-8'))
             self.addCleanup(forget, name)
 
@@ -235,13 +235,13 @@ klasse ThreadedImportTests(unittest.TestCase):
         sys.path.insert(0, os.curdir)
         self.addCleanup(sys.path.remove, os.curdir)
         filename = TESTFN + ".py"
-        with open(filename, "wb") as f:
+        mit open(filename, "wb") als f:
             f.write(code.encode('utf-8'))
         self.addCleanup(unlink, filename)
         self.addCleanup(forget, TESTFN)
         self.addCleanup(rmtree, '__pycache__')
         importlib.invalidate_caches()
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             __import__(TESTFN)
         del sys.modules[TESTFN]
 

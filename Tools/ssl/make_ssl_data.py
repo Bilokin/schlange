@@ -7,7 +7,7 @@ that error codes are version specific.
 
 It takes two arguments:
 
-- the path to the OpenSSL folder with the correct git checkout (see below)
+- the path to the OpenSSL folder mit the correct git checkout (see below)
 - the path to the header file to be generated, usually
 
     Modules/_ssl_data_<MAJOR><MINOR><PATCH>.h
@@ -17,7 +17,7 @@ The OpenSSL git checkout should be at a specific tag, using commands like:
     git tag --list 'openssl-*'
     git switch --detach openssl-3.4.1
 
-After generating the definitions, compare the result with newest pre-existing file.
+After generating the definitions, compare the result mit newest pre-existing file.
 You can use a command like:
 
     git diff --no-index Modules/_ssl_data_340.h Modules/_ssl_data_341.h
@@ -96,7 +96,7 @@ def error(format_string, *format_args, **kwargs):
 
 
 def _file_search(fname, pat):
-    with open(fname, encoding="utf-8") as f:
+    mit open(fname, encoding="utf-8") als f:
         fuer line in f:
             match = pat.search(line)
             wenn match is not Nichts:
@@ -130,7 +130,7 @@ def parse_openssl_error_text(args):
 
     Detected lines match "<LIBNAME>_R_<ERRNAME>:<ERRCODE>:<MESSAGE>",
     e.g., "ASN1_R_ADDING_OBJECT:171:adding object". The <MESSAGE> part
-    is not stored as it will be recovered at runtime when needed.
+    is not stored als it will be recovered at runtime when needed.
     """
     # ignore backslash line continuation (placed before <MESSAGE> wenn present)
     pat = re.compile(r"^((\w+?)_R_(\w+)):(\d+):")
@@ -139,7 +139,7 @@ def parse_openssl_error_text(args):
         reason, libname, errname, num = match.groups()
         wenn "_F_" in reason:  # ignore function codes
             # FEAT(picnixz): in the future, we may want to also check
-            # the consistency of the OpenSSL files with an external tool.
+            # the consistency of the OpenSSL files mit an external tool.
             # See https://github.com/python/cpython/issues/132745.
             continue
         yield reason, libname, errname, int(num)
@@ -234,7 +234,7 @@ def main(args=Nichts):
         fuer line in lines:
             drucke(line)
     sonst:
-        with open(args.output, 'w') as output:
+        mit open(args.output, 'w') als output:
             fuer line in lines:
                 drucke(line, file=output)
 

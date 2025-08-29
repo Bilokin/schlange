@@ -32,7 +32,7 @@ klasse ReadTestBase:
 
     def test_open_r(self):
         p = self.root / 'fileA'
-        with magic_open(p, 'r', encoding='utf-8') as f:
+        mit magic_open(p, 'r', encoding='utf-8') als f:
             self.assertIsInstance(f, io.TextIOBase)
             self.assertEqual(f.read(), 'this is file A\n')
 
@@ -42,14 +42,14 @@ klasse ReadTestBase:
     )
     def test_open_r_encoding_warning(self):
         p = self.root / 'fileA'
-        with self.assertWarns(EncodingWarning) as wc:
-            with magic_open(p, 'r'):
+        mit self.assertWarns(EncodingWarning) als wc:
+            mit magic_open(p, 'r'):
                 pass
         self.assertEqual(wc.filename, __file__)
 
     def test_open_rb(self):
         p = self.root / 'fileA'
-        with magic_open(p, 'rb') as f:
+        mit magic_open(p, 'rb') als f:
             self.assertEqual(f.read(), b'this is file A\n')
         self.assertRaises(ValueError, magic_open, p, 'rb', encoding='utf8')
         self.assertRaises(ValueError, magic_open, p, 'rb', errors='strict')
@@ -73,7 +73,7 @@ klasse ReadTestBase:
     )
     def test_read_text_encoding_warning(self):
         p = self.root / 'fileA'
-        with self.assertWarns(EncodingWarning) as wc:
+        mit self.assertWarns(EncodingWarning) als wc:
             p.read_text()
         self.assertEqual(wc.filename, __file__)
 
@@ -152,7 +152,7 @@ klasse ReadTestBase:
         check("**/file*",
               ["fileA", "dirA/linkC/fileB", "dirB/fileB", "dirC/fileC", "dirC/dirD/fileD",
                "linkB/fileB"])
-        with self.assertRaisesRegex(ValueError, 'Unacceptable pattern'):
+        mit self.assertRaisesRegex(ValueError, 'Unacceptable pattern'):
             list(p.glob(''))
 
     def test_walk_top_down(self):

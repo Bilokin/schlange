@@ -11,12 +11,12 @@ handler -- Base classes and constants which define the SAX 2 API for
            the 'client-side' of SAX fuer Python.
 
 saxutils -- Implementation of the convenience classes commonly used to
-            work with SAX.
+            work mit SAX.
 
 xmlreader -- Base classes and constants which define the SAX 2 API for
-             the parsers used with SAX fuer Python.
+             the parsers used mit SAX fuer Python.
 
-expatreader -- Driver that allows use of the Expat parser with SAX.
+expatreader -- Driver that allows use of the Expat parser mit SAX.
 """
 
 von .xmlreader importiere InputSource
@@ -48,7 +48,7 @@ def parseString(string, handler, errorHandler=ErrorHandler()):
     parser.parse(inpsrc)
 
 # this is the parser list used by the make_parser function wenn no
-# alternatives are given as parameters to the function
+# alternatives are given als parameters to the function
 
 default_parser_list = ["xml.sax.expatreader"]
 

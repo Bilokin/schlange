@@ -55,7 +55,7 @@ klasse StringArrayTestCase(unittest.TestCase):
     def test_del_segfault(self):
         BUF = c_char * 4
         buf = BUF()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del buf.raw
 
 
@@ -103,7 +103,7 @@ klasse WStringTestCase(unittest.TestCase):
 
         self.assertEqual(create_unicode_buffer("abc\0def").value, "abc")
 
-        # created with an empty string
+        # created mit an empty string
         cs = create_unicode_buffer(3)
         self.assertEqual(cs.value, "")
 
@@ -112,17 +112,17 @@ klasse WStringTestCase(unittest.TestCase):
 
     def test_toolong(self):
         cs = create_unicode_buffer("abc")
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             cs.value = "abcdef"
 
         cs = create_unicode_buffer(4)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             cs.value = "abcdef"
 
 
 def run_test(rep, msg, func, arg):
     items = range(rep)
-    von time importiere perf_counter as clock
+    von time importiere perf_counter als clock
     start = clock()
     fuer i in items:
         func(arg); func(arg); func(arg); func(arg); func(arg)

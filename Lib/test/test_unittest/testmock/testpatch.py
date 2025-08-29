@@ -110,7 +110,7 @@ klasse PatchTest(unittest.TestCase):
 
     def test_patchobject_with_string_as_target(self):
         msg = "'Something' must be the actual object to be patched, not a str"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             patch.object('Something', 'do_something')
 
     def test_patchobject_with_none(self):
@@ -226,7 +226,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertEqual(mock, Test.something,
                              "Mock not passed into test function")
             self.assertIsInstance(mock, MagicMock,
-                            "patch with two arguments did not create a mock")
+                            "patch mit two arguments did not create a mock")
 
         test()
 
@@ -242,9 +242,9 @@ klasse PatchTest(unittest.TestCase):
             self.assertEqual(mock2, Test.something,
                              "Second Mock not passed into test function")
             self.assertIsInstance(mock2, MagicMock,
-                            "patch with two arguments did not create a mock")
+                            "patch mit two arguments did not create a mock")
             self.assertIsInstance(mock2, MagicMock,
-                            "patch with two arguments did not create a mock")
+                            "patch mit two arguments did not create a mock")
 
             # A hack to test that new mocks are passed the second time
             self.assertNotEqual(outerMock1, mock1, "unexpected value fuer mock1")
@@ -370,7 +370,7 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_patch_wont_create_by_default(self):
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             @patch('%s.frooble' % builtin_string, sentinel.Frooble)
             def test(): pass
 
@@ -379,7 +379,7 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_patchobject_wont_create_by_default(self):
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             @patch.object(SomeClass, 'ord', sentinel.Frooble)
             def test(): pass
             test()
@@ -628,7 +628,7 @@ klasse PatchTest(unittest.TestCase):
 
     def test_patch_dict_as_context_manager(self):
         foo = {'a': 'b'}
-        with patch.dict(foo, a='c') as patched:
+        mit patch.dict(foo, a='c') als patched:
             self.assertEqual(patched, {'a': 'c'})
         self.assertEqual(foo, {'a': 'b'})
 
@@ -652,7 +652,7 @@ klasse PatchTest(unittest.TestCase):
         def test():
             raise NameError('Konrad')
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             test()
 
         self.assertEqual(foo, {})
@@ -667,7 +667,7 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_patch_dict_decorator_resolution(self):
-        # bpo-35512: Ensure that patch with a string target resolves to
+        # bpo-35512: Ensure that patch mit a string target resolves to
         # the new dictionary during function call
         original = support.target.copy()
 
@@ -747,7 +747,7 @@ klasse PatchTest(unittest.TestCase):
 
     def test_exit_idempotent(self):
         patcher = patch(foo_name, 'bar', 3)
-        with patcher:
+        mit patcher:
             patcher.__exit__(Nichts, Nichts, Nichts)
 
 
@@ -762,7 +762,7 @@ klasse PatchTest(unittest.TestCase):
 
     def test_second_enter_failure(self):
         patcher = patch(foo_name, 'bar', 3)
-        with patcher:
+        mit patcher:
             self.assertRaises(RuntimeError, patcher.start)
 
 
@@ -778,7 +778,7 @@ klasse PatchTest(unittest.TestCase):
         mock_object = Mock()
         mock_bar = mock_object.bar
         patcher = patch.object(mock_object, 'bar', 'x')
-        with patcher:
+        mit patcher:
             self.assertEqual(patcher.is_local, Falsch)
             self.assertIs(patcher.target, mock_object)
             self.assertEqual(patcher.temp_original, mock_bar)
@@ -788,7 +788,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertEqual(patcher.is_local, Wahr)
             self.assertIs(patcher.target, mock_bar)
             self.assertEqual(patcher.temp_original, mock_object)
-        # wenn changes are left intact, they may lead to disruption as shown below (it might be what someone needs though)
+        # wenn changes are left intact, they may lead to disruption als shown below (it might be what someone needs though)
         self.assertEqual(mock_bar.bar, mock_object)
         self.assertEqual(mock_object.bar, 'x')
 
@@ -1035,26 +1035,26 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_autospec_staticmethod(self):
-        with patch('%s.Foo.static_method' % __name__, autospec=Wahr) as method:
+        mit patch('%s.Foo.static_method' % __name__, autospec=Wahr) als method:
             Foo.static_method()
             method.assert_called_once_with()
 
 
     def test_autospec_classmethod(self):
-        with patch('%s.Foo.class_method' % __name__, autospec=Wahr) as method:
+        mit patch('%s.Foo.class_method' % __name__, autospec=Wahr) als method:
             Foo.class_method()
             method.assert_called_once_with()
 
 
     def test_autospec_staticmethod_signature(self):
-        # Patched methods which are decorated with @staticmethod should have the same signature
+        # Patched methods which are decorated mit @staticmethod should have the same signature
         klasse Foo:
             @staticmethod
             def static_method(a, b=10, *, c): pass
 
         Foo.static_method(1, 2, c=3)
 
-        with patch.object(Foo, 'static_method', autospec=Wahr) as method:
+        mit patch.object(Foo, 'static_method', autospec=Wahr) als method:
             method(1, 2, c=3)
             self.assertRaises(TypeError, method)
             self.assertRaises(TypeError, method, 1)
@@ -1062,14 +1062,14 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_autospec_classmethod_signature(self):
-        # Patched methods which are decorated with @classmethod should have the same signature
+        # Patched methods which are decorated mit @classmethod should have the same signature
         klasse Foo:
             @classmethod
             def class_method(cls, a, b=10, *, c): pass
 
         Foo.class_method(1, 2, c=3)
 
-        with patch.object(Foo, 'class_method', autospec=Wahr) as method:
+        mit patch.object(Foo, 'class_method', autospec=Wahr) als method:
             method(1, 2, c=3)
             self.assertRaises(TypeError, method)
             self.assertRaises(TypeError, method, 1)
@@ -1482,7 +1482,7 @@ klasse PatchTest(unittest.TestCase):
 
     def test_patch_multiple_spec_set(self):
         # wenn spec_set works then we can assume that spec and autospec also
-        # work as the underlying machinery is the same
+        # work als the underlying machinery is the same
         patcher = patch.multiple(Foo, foo=DEFAULT, spec_set=['a', 'b'])
         result = patcher.start()
         try:
@@ -1694,7 +1694,7 @@ klasse PatchTest(unittest.TestCase):
 
 
     def test_patch_nested_autospec_repr(self):
-        with patch('test.test_unittest.testmock.support', autospec=Wahr) as m:
+        mit patch('test.test_unittest.testmock.support', autospec=Wahr) als m:
             self.assertIn(" name='support.SomeClass.wibble()'",
                           repr(m.SomeClass.wibble()))
             self.assertIn(" name='support.SomeClass().wibble()'",
@@ -1733,7 +1733,7 @@ klasse PatchTest(unittest.TestCase):
         p1 = patch('squizz.squozz')
         self.assertRaises(ImportError, p1.start)
 
-        with uncache('squizz'):
+        mit uncache('squizz'):
             squizz = Mock()
             sys.modules['squizz'] = squizz
 
@@ -1765,7 +1765,7 @@ klasse PatchTest(unittest.TestCase):
         def test(mock):
             raise RuntimeError
 
-        with uncache('squizz'):
+        mit uncache('squizz'):
             squizz = Mock()
             sys.modules['squizz'] = squizz
 
@@ -1791,20 +1791,20 @@ klasse PatchTest(unittest.TestCase):
         def check_error(name):
             p = patch(name)
             self.assertRaises(AttributeError, p.start)
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             check('package3.submodule.A.attr')
             check_error('package3.submodule.B.attr')
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             check('package3.submodule:A.attr')
             check_error('package3.submodule:B.attr')
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             check('package3:submodule.B.attr')
             check_error('package3:submodule.A.attr')
             check('package3.submodule.A.attr')
             check_error('package3.submodule.B.attr')
             check('package3:submodule.B.attr')
             check_error('package3:submodule.A.attr')
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             check('package3:submodule.B.attr')
             check_error('package3:submodule.A.attr')
             check('package3.submodule:A.attr')
@@ -1821,20 +1821,20 @@ klasse PatchTest(unittest.TestCase):
         def check_error(name):
             p = patch(name)
             self.assertRaises(AttributeError, p.start)
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             check('package4.submodule.A.attr')
             check_error('package4.submodule.B.attr')
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             check('package4.submodule:A.attr')
             check_error('package4.submodule:B.attr')
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             check('package4:submodule.B.attr')
             check_error('package4:submodule.A.attr')
             check('package4.submodule.A.attr')
             check_error('package4.submodule.B.attr')
             check('package4:submodule.A.attr')
             check_error('package4:submodule.B.attr')
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             check('package4:submodule.B.attr')
             check_error('package4:submodule.A.attr')
             check('package4.submodule:A.attr')
@@ -1850,7 +1850,7 @@ klasse PatchTest(unittest.TestCase):
             self.assertRaises(TypeError, p.start)
             self.assertRaises(NameError, lambda: doesnotexist)
 
-            # check that spec with create is innocuous wenn the original exists
+            # check that spec mit create is innocuous wenn the original exists
             p = patch(MODNAME, create=Wahr, **{kwarg: Wahr})
             p.start()
             p.stop()
@@ -2016,26 +2016,26 @@ klasse PatchTest(unittest.TestCase):
         def foo(x=0):
             """TEST"""
             return x
-        with patch.object(foo, '__defaults__', (1, )):
+        mit patch.object(foo, '__defaults__', (1, )):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)
 
         orig_doc = foo.__doc__
-        with patch.object(foo, '__doc__', "FUN"):
+        mit patch.object(foo, '__doc__', "FUN"):
             self.assertEqual(foo.__doc__, "FUN")
         self.assertEqual(foo.__doc__, orig_doc)
 
-        with patch.object(foo, '__module__', "testpatch2"):
+        mit patch.object(foo, '__module__', "testpatch2"):
             self.assertEqual(foo.__module__, "testpatch2")
         self.assertEqual(foo.__module__, __name__)
 
-        with patch.object(foo, '__annotations__', dict([('s', 1, )])):
+        mit patch.object(foo, '__annotations__', dict([('s', 1, )])):
             self.assertEqual(foo.__annotations__, dict([('s', 1, )]))
         self.assertEqual(foo.__annotations__, dict())
 
         def foo(*a, x=0):
             return x
-        with patch.object(foo, '__kwdefaults__', dict([('x', 1, )])):
+        mit patch.object(foo, '__kwdefaults__', dict([('x', 1, )])):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)
 
@@ -2048,12 +2048,12 @@ klasse PatchTest(unittest.TestCase):
         update_values = list(zip('cdefghijklmnopqrstuvwxyz', range(26)))
         patched_values = list(foo.items()) + update_values
 
-        with patch.dict(foo, OrderedDict(update_values)):
+        mit patch.dict(foo, OrderedDict(update_values)):
             self.assertEqual(list(foo.items()), patched_values)
 
         self.assertEqual(foo, original)
 
-        with patch.dict(foo, update_values):
+        mit patch.dict(foo, update_values):
             self.assertEqual(list(foo.items()), patched_values)
 
         self.assertEqual(foo, original)
@@ -2064,7 +2064,7 @@ klasse PatchTest(unittest.TestCase):
         # make sure it's there
         importiere test.test_unittest.testmock.support
         # now make sure it's not:
-        with patch.dict('sys.modules'):
+        mit patch.dict('sys.modules'):
             del sys.modules['test.test_unittest.testmock.support']
             del sys.modules['test.test_unittest.testmock']
             del sys.modules['test.test_unittest']
@@ -2082,15 +2082,15 @@ klasse PatchTest(unittest.TestCase):
             pass
 
         fuer target in ['', 12, Foo()]:
-            with self.subTest(target=target):
-                with self.assertRaises(TypeError):
+            mit self.subTest(target=target):
+                mit self.assertRaises(TypeError):
                     patch(target)
 
 
     def test_cant_set_kwargs_when_passing_a_mock(self):
         @patch('test.test_unittest.testmock.support.X', new=object(), x=1)
         def test(): pass
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             test()
 
     def test_patch_proxy_object(self):

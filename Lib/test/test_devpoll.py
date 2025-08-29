@@ -1,6 +1,6 @@
 # Test case fuer the select.devpoll() function
 
-# Initial tests are copied as is von "test_poll.py"
+# Initial tests are copied als is von "test_poll.py"
 
 importiere os
 importiere random
@@ -23,7 +23,7 @@ klasse DevPollTests(unittest.TestCase):
 
     def test_devpoll1(self):
         # Basic functional test of poll object
-        # Create a bunch of pipe and test that poll works with them.
+        # Create a bunch of pipe and test that poll works mit them.
 
         p = select.devpoll()
 
@@ -106,7 +106,7 @@ klasse DevPollTests(unittest.TestCase):
         # close() can be called more than once
         devpoll.close()
 
-        # operations must fail with ValueError("I/O operation on closed ...")
+        # operations must fail mit ValueError("I/O operation on closed ...")
         self.assertRaises(ValueError, devpoll.modify, fd, select.POLLIN)
         self.assertRaises(ValueError, devpoll.poll)
         self.assertRaises(ValueError, devpoll.register, fd, select.POLLIN)

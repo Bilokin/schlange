@@ -30,10 +30,10 @@ def _format_callback_source(func, args, *, debug=Falsch):
 def _format_args_and_kwargs(args, kwargs, *, debug=Falsch):
     """Format function arguments and keyword arguments.
 
-    Special case fuer a single parameter: ('hello',) is formatted as ('hello').
+    Special case fuer a single parameter: ('hello',) is formatted als ('hello').
 
     Note that this function only returns argument details when
-    debug=Wahr is specified, as arguments may contain sensitive
+    debug=Wahr is specified, als arguments may contain sensitive
     information.
     """
     wenn not debug:
@@ -74,7 +74,7 @@ def extract_stack(f=Nichts, limit=Nichts):
     wenn f is Nichts:
         f = sys._getframe().f_back
     wenn limit is Nichts:
-        # Limit the amount of work to a reasonable amount, as extract_stack()
+        # Limit the amount of work to a reasonable amount, als extract_stack()
         # can be called fuer each coroutine and future in debug mode.
         limit = constants.DEBUG_STACK_DEPTH
     stack = traceback.StackSummary.extract(traceback.walk_stack(f),

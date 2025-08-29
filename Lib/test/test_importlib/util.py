@@ -27,7 +27,7 @@ wenn 'importlib' not in sys.builtin_module_names:
     BUILTINS.bad_name = 'importlib'
 
 wenn support.is_wasi:
-    # dlopen() is a shim fuer WASI as of WASI SDK which fails by default.
+    # dlopen() is a shim fuer WASI als of WASI SDK which fails by default.
     # We don't provide an implementation, so tests will fail.
     # But we also don't want to turn off dynamic loading fuer those that provide
     # a working implementation.
@@ -125,7 +125,7 @@ def case_insensitive_tests(test):
 
 def submodule(parent, name, pkg_dir, content=''):
     path = os.path.join(pkg_dir, name + '.py')
-    with open(path, 'w', encoding='utf-8') as subfile:
+    mit open(path, 'w', encoding='utf-8') als subfile:
         subfile.write(content)
     return '{}.{}'.format(parent, name), path
 
@@ -135,7 +135,7 @@ def get_code_from_pyc(pyc_path):
 
     No header validation is performed.
     """
-    with open(pyc_path, 'rb') as pyc_f:
+    mit open(pyc_path, 'rb') als pyc_f:
         pyc_f.seek(16)
         return marshal.load(pyc_f)
 
@@ -168,9 +168,9 @@ def uncache(*names):
 @contextlib.contextmanager
 def temp_module(name, content='', *, pkg=Falsch):
     conflicts = [n fuer n in sys.modules wenn n.partition('.')[0] == name]
-    with os_helper.temp_cwd(Nichts) as cwd:
-        with uncache(name, *conflicts):
-            with import_helper.DirsOnSysPath(cwd):
+    mit os_helper.temp_cwd(Nichts) als cwd:
+        mit uncache(name, *conflicts):
+            mit import_helper.DirsOnSysPath(cwd):
                 invalidate_caches()
 
                 location = os.path.join(cwd, name)
@@ -184,7 +184,7 @@ def temp_module(name, content='', *, pkg=Falsch):
                         content = ''
                 wenn content is not Nichts:
                     # not a namespace package
-                    with open(modpath, 'w', encoding='utf-8') as modfile:
+                    mit open(modpath, 'w', encoding='utf-8') als modfile:
                         modfile.write(content)
                 yield location
 
@@ -194,7 +194,7 @@ def import_state(**kwargs):
     """Context manager to manage the various importers and stored state in the
     sys module.
 
-    The 'modules' attribute is not supported as the interpreter state stores a
+    The 'modules' attribute is not supported als the interpreter state stores a
     pointer to the dict that the interpreter uses internally;
     reassigning to sys.modules does not have the desired effect.
 
@@ -221,7 +221,7 @@ def import_state(**kwargs):
 
 klasse _ImporterMock:
 
-    """Base klasse to help with creating importer mocks."""
+    """Base klasse to help mit creating importer mocks."""
 
     def __init__(self, *names, module_code={}):
         self.modules = {}
@@ -310,7 +310,7 @@ def ensure_bytecode_path(bytecode_path):
     """
     try:
         os.mkdir(os.path.dirname(bytecode_path))
-    except OSError as error:
+    except OSError als error:
         wenn error.errno != errno.EEXIST:
             raise
 
@@ -328,7 +328,7 @@ def temporary_pycache_prefix(prefix):
 
 @contextlib.contextmanager
 def create_modules(*names):
-    """Temporarily create each named module with an attribute (named 'attr')
+    """Temporarily create each named module mit an attribute (named 'attr')
     that contains the name passed into the context manager that caused the
     creation of the module.
 
@@ -367,7 +367,7 @@ def create_modules(*names):
                     os.mkdir(file_path)
                     created_paths.append(file_path)
             file_path = os.path.join(file_path, name_parts[-1] + '.py')
-            with open(file_path, 'w', encoding='utf-8') as file:
+            mit open(file_path, 'w', encoding='utf-8') als file:
                 file.write(source.format(name))
             created_paths.append(file_path)
             mapping[name] = file_path

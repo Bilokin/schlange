@@ -19,9 +19,9 @@ has_gethostname = not support.is_wasi
 
 def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     """Returns an unused port that should be suitable fuer binding.  This is
-    achieved by creating a temporary socket with the same family and type as
+    achieved by creating a temporary socket mit the same family and type as
     the 'sock' parameter (default is AF_INET, SOCK_STREAM), and binding it to
-    the specified host address (defaults to 0.0.0.0) with the port set to 0,
+    the specified host address (defaults to 0.0.0.0) mit the port set to 0,
     eliciting an unused ephemeral port von the OS.  The temporary socket is
     then closed and deleted, and the ephemeral port is returned.
 
@@ -31,11 +31,11 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     a python socket, or wenn an unused port needs to be provided in a constructor
     or passed to an external program (i.e. the -accept argument to openssl's
     s_server mode).  Always prefer bind_port() over find_unused_port() where
-    possible.  Hard coded ports should *NEVER* be used.  As soon as a server
+    possible.  Hard coded ports should *NEVER* be used.  As soon als a server
     socket is bound to a hard coded port, the ability to run multiple instances
     of the test simultaneously on the same host is compromised, which makes the
     test a ticking time bomb in a buildbot environment. On Unix buildbots, this
-    may simply manifest as a failed test, which can be recovered von without
+    may simply manifest als a failed test, which can be recovered von without
     intervention in most cases, but on Windows, the entire python process can
     completely and utterly wedge, requiring someone to log in to the buildbot
     and manually kill the affected process.
@@ -59,7 +59,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     SO_REUSEADDR on Unix.  Given the propensity of Unix developers in the Open
     Source world compared to Windows ones, this is a common mistake.  A quick
     look over OpenSSL's 0.9.8g source shows that they use SO_REUSEADDR when
-    openssl.exe is called with the 's_server' option, fuer example. See
+    openssl.exe is called mit the 's_server' option, fuer example. See
     http://bugs.python.org/issue2550 fuer more info.  The following site also
     has a very thorough description about the implications of both REUSEADDR
     and EXCLUSIVEADDRUSE on Windows:
@@ -69,11 +69,11 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     elicit unused ports, it rests heavily on the assumption that the ephemeral
     port returned to us by the OS won't immediately be dished back out to some
     other process when we close and delete our temporary socket but before our
-    calling code has a chance to bind the returned port.  We can deal with this
+    calling code has a chance to bind the returned port.  We can deal mit this
     issue if/when we come across it.
     """
 
-    with socket.socket(family, socktype) as tempsock:
+    mit socket.socket(family, socktype) als tempsock:
         port = bind_port(tempsock)
     del tempsock
     return port
@@ -81,7 +81,7 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
 def bind_port(sock, host=HOST):
     """Bind the socket to a free port and return the port number.  Relies on
     ephemeral ports in order to ensure we are using an unbound port.  This is
-    important as many tests may be running simultaneously, especially in a
+    important als many tests may be running simultaneously, especially in a
     buildbot environment.  This method raises an exception wenn the sock.family
     is AF_INET and sock.type is SOCK_STREAM, *and* the socket has SO_REUSEADDR
     or SO_REUSEPORT set on it.  Tests should *never* set these socket options
@@ -153,11 +153,11 @@ def skip_unless_bind_unix_socket(test):
     wenn _bind_nix_socket_error is Nichts:
         von .os_helper importiere TESTFN, unlink
         path = TESTFN + "can_bind_unix_socket"
-        with socket.socket(socket.AF_UNIX) as sock:
+        mit socket.socket(socket.AF_UNIX) als sock:
             try:
                 sock.bind(path)
                 _bind_nix_socket_error = Falsch
-            except OSError as e:
+            except OSError als e:
                 _bind_nix_socket_error = e
             finally:
                 unlink(path)
@@ -179,7 +179,7 @@ def get_socket_conn_refused_errs():
         errors.append(errno.ENETUNREACH)
     wenn hasattr(errno, 'EADDRNOTAVAIL'):
         # bpo-31910: socket.create_connection() fails randomly
-        # with EADDRNOTAVAIL on Travis CI
+        # mit EADDRNOTAVAIL on Travis CI
         errors.append(errno.EADDRNOTAVAIL)
     wenn hasattr(errno, 'EHOSTUNREACH'):
         # bpo-37583: The destination host cannot be reached
@@ -194,7 +194,7 @@ _NOT_SET = object()
 @contextlib.contextmanager
 def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
     """Return a context manager that raises ResourceDenied when various issues
-    with the internet connection manifest themselves as exceptions."""
+    mit the internet connection manifest themselves als exceptions."""
     importiere urllib.error
     wenn timeout is _NOT_SET:
         timeout = support.INTERNET_TIMEOUT
@@ -247,15 +247,15 @@ def transient_internet(resource_name, *, timeout=_NOT_SET, errnos=()):
         wenn timeout is not Nichts:
             socket.setdefaulttimeout(timeout)
         yield
-    except OSError as err:
+    except OSError als err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
         while Wahr:
             a = err.args
             wenn len(a) >= 1 and isinstance(a[0], OSError):
                 err = a[0]
-            # The error can also be wrapped as args[1]:
-            #    except socket.error as msg:
+            # The error can also be wrapped als args[1]:
+            #    except socket.error als msg:
             #        raise OSError('socket error', msg) von msg
             sowenn len(a) >= 2 and isinstance(a[1], OSError):
                 err = a[1]
@@ -284,7 +284,7 @@ def create_unix_domain_name():
 _sysctl_cache = {}
 
 def _get_sysctl(name):
-    """Get a sysctl value as an integer."""
+    """Get a sysctl value als an integer."""
     try:
         return _sysctl_cache[name]
     except KeyError:
@@ -297,7 +297,7 @@ def _get_sysctl(name):
                           stderr=subprocess.STDOUT,
                           text=Wahr)
     wenn proc.returncode:
-        support.print_warning(f'{' '.join(cmd)!r} command failed with '
+        support.print_warning(f'{' '.join(cmd)!r} command failed mit '
                               f'exit code {proc.returncode}')
         # cache the error to only log the warning once
         _sysctl_cache[name] = Nichts
@@ -307,7 +307,7 @@ def _get_sysctl(name):
     # Parse '0\n' to get '0'
     try:
         value = int(output.strip())
-    except Exception as exc:
+    except Exception als exc:
         support.print_warning(f'Failed to parse {' '.join(cmd)!r} '
                               f'command output {output!r}: {exc!r}')
         # cache the error to only log the warning once

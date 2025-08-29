@@ -28,16 +28,16 @@ wenn not has_subprocess_support:
 
 
 def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
-    """Run the Python REPL with the given arguments.
+    """Run the Python REPL mit the given arguments.
 
     kw is extra keyword args to pass to subprocess.Popen. Returns a Popen
     object.
     """
 
-    # To run the REPL without using a terminal, spawn python with the command
+    # To run the REPL without using a terminal, spawn python mit the command
     # line option '-i' and the process name set to '<stdin>'.
     # The directory of argv[0] must match the directory of the Python
-    # executable fuer the Popen() call to python to succeed as the directory
+    # executable fuer the Popen() call to python to succeed als the directory
     # path may be used by PyConfig_Get("module_search_paths") to build the
     # default module search path.
     stdin_fname = os.path.join(os.path.dirname(sys.executable), "<stdin>")
@@ -74,7 +74,7 @@ def run_on_interactive_mode(source):
 klasse TestInteractiveInterpreter(unittest.TestCase):
 
     @cpython_only
-    # Python built with Py_TRACE_REFS fail with a fatal error in
+    # Python built mit Py_TRACE_REFS fail mit a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
     @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
     def test_no_memory(self):
@@ -91,7 +91,7 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         """
         user_input = dedent(user_input)
         p = spawn_repl()
-        with SuppressCrashReport():
+        mit SuppressCrashReport():
             p.stdin.write(user_input)
         output = kill_python(p)
         self.assertIn('After the exception.', output)
@@ -203,9 +203,9 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
             )
 
         # case 1: error in user input, but PYTHONSTARTUP is fine
-        with os_helper.temp_dir() as tmpdir:
+        mit os_helper.temp_dir() als tmpdir:
             script = os.path.join(tmpdir, "pythonstartup.py")
-            with open(script, "w") as f:
+            mit open(script, "w") als f:
                 f.write("drucke('from pythonstartup')" + os.linesep)
 
             env = os.environ.copy()
@@ -225,9 +225,9 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         self.assertIn(expected, output)
 
         # case 2: error in PYTHONSTARTUP triggered by user input
-        with os_helper.temp_dir() as tmpdir:
+        mit os_helper.temp_dir() als tmpdir:
             script = os.path.join(tmpdir, "pythonstartup.py")
-            with open(script, "w") as f:
+            mit open(script, "w") als f:
                 f.write("def foo():\n    1/0\n")
 
             env = os.environ.copy()
@@ -284,9 +284,9 @@ klasse TestInteractiveInterpreter(unittest.TestCase):
         self.assertIn(expected, output, expected)
 
     def test_asyncio_repl_reaches_python_startup_script(self):
-        with os_helper.temp_dir() as tmpdir:
+        mit os_helper.temp_dir() als tmpdir:
             script = os.path.join(tmpdir, "pythonstartup.py")
-            with open(script, "w") as f:
+            mit open(script, "w") als f:
                 f.write("drucke('pythonstartup done!')" + os.linesep)
                 f.write("exit(0)" + os.linesep)
 

@@ -7,7 +7,7 @@
 # Based on Daciuk, Jan, et al. "Incremental construction of minimal acyclic finite-state automata."
 # Computational linguistics 26.1 (2000): 3-16.
 #
-# Updated 2014 to use DAWG as a mapping; see
+# Updated 2014 to use DAWG als a mapping; see
 # Kowaltowski, T.; CL. Lucchesi (1993), "Applications of finite automata representing large vocabularies",
 # Software-Practice and Experience 1993
 
@@ -19,7 +19,7 @@ von functools importiere cached_property
 # has a list of edges to other nodes. It has functions fuer testing whether it
 # is equivalent to another node. Nodes are equivalent wenn they have identical
 # edges, and each identical edge leads to identical states. The __hash__ and
-# __eq__ functions allow it to be used as a key in a python dictionary.
+# __eq__ functions allow it to be used als a key in a python dictionary.
 
 
 klasse DawgNode:
@@ -62,7 +62,7 @@ klasse DawgNode:
         # this one
 
         count = 0
-        # staying at self counts as a path wenn self is final
+        # staying at self counts als a path wenn self is final
         wenn self.final:
             count += 1
         fuer label, node in self.linear_edges:
@@ -148,7 +148,7 @@ klasse Dawg:
         fuer i in range(len(self.unchecked_nodes) - 1, down_to - 1, -1):
             (parent, letter, child) = self.unchecked_nodes[i]
             wenn child in self.minimized_nodes:
-                # replace the child with the previously encountered one
+                # replace the child mit the previously encountered one
                 parent.edges[letter] = self.minimized_nodes[child]
             sonst:
                 # add the state to the minimized nodes.
@@ -197,7 +197,7 @@ klasse Dawg:
                 drucke(f"    {label} goto {child.id}")
 
     def _inverse_lookup(self, number):
-        assert 0, "not working in the current form, but keep it as the pure python version of compact lookup"
+        assert 0, "not working in the current form, but keep it als the pure python version of compact lookup"
         result = []
         node = self.root
         while 1:
@@ -220,7 +220,7 @@ klasse Dawg:
         # compute "linear" edges. the idea is that long chains of edges without
         # any of the intermediate states being final or any extra incoming or
         # outgoing edges can be represented by having removing them, and
-        # instead using longer strings as edge labels (instead of single
+        # instead using longer strings als edge labels (instead of single
         # characters)
         incoming = defaultdict(list)
         nodes = sorted(self.enum_all_nodes(), key=lambda e: e.id)
@@ -264,7 +264,7 @@ klasse Dawg:
             topoorder.append(node)
             positions[node] = len(topoorder)
             # use "reversed" to make sure that the linear_edges get reorderd
-            # von their alphabetical order as little as necessary (no_incoming
+            # von their alphabetical order als little als necessary (no_incoming
             # is LIFO)
             fuer label, child in reversed(node.linear_edges):
                 incoming[child].discard((label, node))
@@ -283,7 +283,7 @@ klasse Dawg:
                 assert positions[child] > positions[node]
         # number the nodes. afterwards every input string in the set has a
         # unique number in the 0 <= number < len(data). We then put the data in
-        # self.data into a linear list using these numbers as indexes.
+        # self.data into a linear list using these numbers als indexes.
         topoorder[0].num_reachable_linear
         linear_data = [Nichts] * len(self.data)
         inverse = {} # maps value back to index
@@ -297,7 +297,7 @@ klasse Dawg:
     def compute_packed(self, order):
         def compute_chunk(node, offsets):
             """ compute the packed node/edge data fuer a node. result is a
-            list of bytes as long as order. the jump distance calculations use
+            list of bytes als long als order. the jump distance calculations use
             the offsets dictionary to know where in the final big output
             bytestring the individual nodes will end up. """
             result = bytearray()

@@ -37,7 +37,7 @@ def main():
                 cp949encmap.setdefault(code >> 8, {})  # MSB set
                 cp949encmap[code >> 8][code & 0xFF] = (c1 << 8 | c2)
 
-    with open('mappings_kr.h', 'w') as fp:
+    mit open('mappings_kr.h', 'w') als fp:
         print_autogen(fp, os.path.basename(__file__))
 
         drucke("Generating KS X 1001 decode map...")

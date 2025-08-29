@@ -28,7 +28,7 @@ klasse CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: keebler='E=mc2'>",
              'output': 'Set-Cookie: keebler=E=mc2'},
 
-            # Cookies with ':' character in their name. Though not mentioned in
+            # Cookies mit ':' character in their name. Though not mentioned in
             # RFC, servers / browsers allow it.
 
              {'data': 'key:term=value:term',
@@ -36,8 +36,8 @@ klasse CookieTests(unittest.TestCase):
              'repr': "<SimpleCookie: key:term='value:term'>",
              'output': 'Set-Cookie: key:term=value:term'},
 
-            # issue22931 - Adding '[' and ']' as valid characters in cookie
-            # values as defined in RFC 6265
+            # issue22931 - Adding '[' and ']' als valid characters in cookie
+            # values als defined in RFC 6265
             {
                 'data': 'a=b; c=[; d=r; f=h',
                 'dict': {'a':'b', 'c':'[', 'd':'r', 'f':'h'},
@@ -83,7 +83,7 @@ klasse CookieTests(unittest.TestCase):
                 self.assertEqual(C[k].value, v)
 
     def test_obsolete_rfc850_date_format(self):
-        # Test cases with different days and dates in obsolete RFC 850 format
+        # Test cases mit different days and dates in obsolete RFC 850 format
         test_cases = [
             # von RFC 850, change EST to GMT
             # https://datatracker.ietf.org/doc/html/rfc850#section-2
@@ -117,7 +117,7 @@ klasse CookieTests(unittest.TestCase):
         ]
 
         fuer case in test_cases:
-            with self.subTest(data=case['data']):
+            mit self.subTest(data=case['data']):
                 C = cookies.SimpleCookie()
                 C.load(case['data'])
 
@@ -147,7 +147,7 @@ klasse CookieTests(unittest.TestCase):
             (r'a="b=\134\042"', 'b=\\"'),
         ]
         fuer encoded, decoded in cases:
-            with self.subTest(encoded):
+            mit self.subTest(encoded):
                 C = cookies.SimpleCookie()
                 C.load(encoded)
                 self.assertEqual(C['a'].value, decoded)
@@ -156,7 +156,7 @@ klasse CookieTests(unittest.TestCase):
     def test_unquote_large(self):
         n = 10**6
         fuer encoded in r'\\', r'\134':
-            with self.subTest(encoded):
+            mit self.subTest(encoded):
                 data = 'a="b=' + encoded*n + ';"'
                 C = cookies.SimpleCookie()
                 C.load(data)
@@ -239,7 +239,7 @@ klasse CookieTests(unittest.TestCase):
     def test_samesite_attrs(self):
         samesite_values = ['Strict', 'Lax', 'strict', 'lax']
         fuer val in samesite_values:
-            with self.subTest(val=val):
+            mit self.subTest(val=val):
                 C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
                 C['Customer']['samesite'] = val
                 self.assertEqual(C.output(),
@@ -281,7 +281,7 @@ klasse CookieTests(unittest.TestCase):
             'Set-Cookie: eggs=scrambled; Path=bar; Secure\r\nSet-Cookie: foo=foo')
 
     def test_quoted_meta(self):
-        # Try cookie with quoted meta-data
+        # Try cookie mit quoted meta-data
         C = cookies.SimpleCookie()
         C.load('Customer="WILE_E_COYOTE"; Version="1"; Path="/acme"')
         self.assertEqual(C['Customer'].value, 'WILE_E_COYOTE')
@@ -325,14 +325,14 @@ klasse CookieTests(unittest.TestCase):
         self.assertEqual(C.output(), expected_output)
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 C1 = pickle.loads(pickle.dumps(C, protocol=proto))
                 self.assertEqual(C1.output(), expected_output)
 
     def test_illegal_chars(self):
         rawdata = "a=b; c,d=e"
         C = cookies.SimpleCookie()
-        with self.assertRaises(cookies.CookieError):
+        mit self.assertRaises(cookies.CookieError):
             C.load(rawdata)
 
     def test_comment_quoting(self):
@@ -362,7 +362,7 @@ klasse MorselTests(unittest.TestCase):
         M = cookies.Morsel()
         # tests valid and invalid reserved keys fuer Morsels
         fuer i in M._reserved:
-            # Test that all valid keys are reported as reserved and set them
+            # Test that all valid keys are reported als reserved and set them
             self.assertWahr(M.isReservedKey(i))
             M[i] = '%s_value' % i
         fuer i in M._reserved:
@@ -383,7 +383,7 @@ klasse MorselTests(unittest.TestCase):
         fuer i in "thou cast _the- !holy! ^hand| +*grenade~".split():
             # Try typical use case. Setting decent values.
             # Check output and js_output.
-            M['path'] = '/foo' # Try a reserved key as well
+            M['path'] = '/foo' # Try a reserved key als well
             M.set(i, "%s_val" % i, "%s_coded_val" % i)
             self.assertEqual(M.key, i)
             self.assertEqual(M.value, "%s_val" % i)
@@ -406,11 +406,11 @@ klasse MorselTests(unittest.TestCase):
 
     def test_set_properties(self):
         morsel = cookies.Morsel()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             morsel.key = ''
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             morsel.value = ''
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             morsel.coded_value = ''
 
     def test_eq(self):
@@ -435,7 +435,7 @@ klasse MorselTests(unittest.TestCase):
             ('mismatch', 'value', '"value"'),
         )
         fuer case_b in cases:
-            with self.subTest(case_b):
+            mit self.subTest(case_b):
                 morsel_b = cookies.Morsel()
                 morsel_b.update(attribs)
                 morsel_b.set(*case_b)
@@ -491,7 +491,7 @@ klasse MorselTests(unittest.TestCase):
         morsel['DOMAIN'] = 'example.com'
         self.assertEqual(morsel['domain'], 'example.com')
 
-        with self.assertRaises(cookies.CookieError):
+        mit self.assertRaises(cookies.CookieError):
             morsel['invalid'] = 'value'
         self.assertNotIn('invalid', morsel)
 
@@ -509,7 +509,7 @@ klasse MorselTests(unittest.TestCase):
         self.assertEqual(morsel.setdefault('DOMAIN', 'value'), 'example.com')
         self.assertEqual(morsel['domain'], 'example.com')
 
-        with self.assertRaises(cookies.CookieError):
+        mit self.assertRaises(cookies.CookieError):
             morsel.setdefault('invalid', 'value')
         self.assertNotIn('invalid', morsel)
 
@@ -534,7 +534,7 @@ klasse MorselTests(unittest.TestCase):
         self.assertEqual(morsel['version'], 2)
         self.assertEqual(morsel['domain'], 'example.com')
 
-        with self.assertRaises(cookies.CookieError):
+        mit self.assertRaises(cookies.CookieError):
             morsel.update({'invalid': 'value'})
         self.assertNotIn('invalid', morsel)
         self.assertRaises(TypeError, morsel.update)
@@ -548,7 +548,7 @@ klasse MorselTests(unittest.TestCase):
             'comment': 'foo',
         })
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 morsel_b = pickle.loads(pickle.dumps(morsel_a, proto))
                 self.assertIsInstance(morsel_b, cookies.Morsel)
                 self.assertEqual(morsel_b, morsel_a)

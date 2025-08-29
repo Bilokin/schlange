@@ -7,5 +7,5 @@ wenn __name__ == '__main__':
             break
         try:
             os.write(1, b'OUT:'+buf)
-        except OSError as ex:
+        except OSError als ex:
             os.write(2, b'ERR:' + ex.__class__.__name__.encode('ascii'))

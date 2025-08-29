@@ -81,7 +81,7 @@ klasse TestMailbox(TestBase):
         self.assertEqual(len(self._box), 5)
         keys.append(self._box.add(_bytes_sample_message))
         self.assertEqual(len(self._box), 6)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             keys.append(self._box.add(
                 io.TextIOWrapper(io.BytesIO(_bytes_sample_message), encoding="utf-8")))
         self.assertEqual(len(self._box), 7)
@@ -110,7 +110,7 @@ klasse TestMailbox(TestBase):
             'YWwuIE3hciByZW5kZWx06Ww/?=\n\n')
 
     def test_add_nonascii_string_header_raises(self):
-        with self.assertRaisesRegex(ValueError, "ASCII-only"):
+        mit self.assertRaisesRegex(ValueError, "ASCII-only"):
             self._box.add(self._nonascii_msg)
         self._box.flush()
         self.assertEqual(len(self._box), 0)
@@ -123,7 +123,7 @@ klasse TestMailbox(TestBase):
         def raiser(*args, **kw):
             raise CustomError(exc_msg)
         support.patch(self, email.generator.BytesGenerator, 'flatten', raiser)
-        with self.assertRaisesRegex(CustomError, exc_msg):
+        mit self.assertRaisesRegex(CustomError, exc_msg):
             self._box.add(email.message_from_string("From: Alphöso"))
         self.assertEqual(len(self._box), 0)
         self._box.close()
@@ -145,7 +145,7 @@ klasse TestMailbox(TestBase):
         key = self._box.add(self._non_latin_bin_msg)
         self.assertEqual(self._box.get_bytes(key),
                          self._non_latin_bin_msg)
-        with self._box.get_file(key) as f:
+        mit self._box.get_file(key) als f:
             self.assertEqual(f.read(),
                              self._non_latin_bin_msg.replace(b'\n',
                                 os.linesep.encode()))
@@ -153,7 +153,7 @@ klasse TestMailbox(TestBase):
                         "Да, они летят.\n")
 
     def test_add_binary_file(self):
-        with tempfile.TemporaryFile('wb+') as f:
+        mit tempfile.TemporaryFile('wb+') als f:
             f.write(_bytes_sample_message)
             f.seek(0)
             key = self._box.add(f)
@@ -161,7 +161,7 @@ klasse TestMailbox(TestBase):
             _bytes_sample_message.split(b'\n'))
 
     def test_add_binary_nonascii_file(self):
-        with tempfile.TemporaryFile('wb+') as f:
+        mit tempfile.TemporaryFile('wb+') als f:
             f.write(self._non_latin_bin_msg)
             f.seek(0)
             key = self._box.add(f)
@@ -169,22 +169,22 @@ klasse TestMailbox(TestBase):
             self._non_latin_bin_msg.split(b'\n'))
 
     def test_add_text_file_warns(self):
-        with tempfile.TemporaryFile('w+', encoding='utf-8') as f:
+        mit tempfile.TemporaryFile('w+', encoding='utf-8') als f:
             f.write(_sample_message)
             f.seek(0)
-            with self.assertWarns(DeprecationWarning):
+            mit self.assertWarns(DeprecationWarning):
                 key = self._box.add(f)
         self.assertEqual(self._box.get_bytes(key).split(b'\n'),
             _bytes_sample_message.split(b'\n'))
 
     def test_add_StringIO_warns(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             key = self._box.add(io.StringIO(self._template % "0"))
         self.assertEqual(self._box.get_string(key), self._template % "0")
 
     def test_add_nonascii_StringIO_raises(self):
-        with self.assertWarns(DeprecationWarning):
-            with self.assertRaisesRegex(ValueError, "ASCII-only"):
+        mit self.assertWarns(DeprecationWarning):
+            mit self.assertRaisesRegex(ValueError, "ASCII-only"):
                 self._box.add(io.StringIO(self._nonascii_msg))
         self.assertEqual(len(self._box), 0)
         self._box.close()
@@ -287,9 +287,9 @@ klasse TestMailbox(TestBase):
         # Get file representations of messages
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(_sample_message)
-        with self._box.get_file(key0) as file:
+        mit self._box.get_file(key0) als file:
             data0 = file.read()
-        with self._box.get_file(key1) as file:
+        mit self._box.get_file(key1) als file:
             data1 = file.read()
         self.assertEqual(data0.decode('ascii').replace(os.linesep, '\n'),
                          self._template % 0)
@@ -628,7 +628,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         self.assertEqual(msg_returned.get_flags(), 'FR')
 
     def test_set_MM(self):
-        # Set with a MaildirMessage instance
+        # Set mit a MaildirMessage instance
         msg0 = mailbox.MaildirMessage(self._template % 0)
         msg0.set_flags('TP')
         key = self._box.add(msg0)
@@ -688,7 +688,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
             os.mkdir(os.path.normpath(os.path.join(self._path, subdir)))
         fuer subdir in 'tmp', 'new', 'cur':
             fname = os.path.join(self._path, subdir, '.foo' + subdir)
-            with open(fname, 'wb') as f:
+            mit open(fname, 'wb') als f:
                 f.write(b"@")
         self._box = mailbox.Maildir(self._path)
         self.assertNotIn('.footmp', self._box)
@@ -746,9 +746,9 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # Remove old files von 'tmp'
         foo_path = os.path.join(self._path, 'tmp', 'foo')
         bar_path = os.path.join(self._path, 'tmp', 'bar')
-        with open(foo_path, 'w', encoding='utf-8') as f:
+        mit open(foo_path, 'w', encoding='utf-8') als f:
             f.write("@")
-        with open(bar_path, 'w', encoding='utf-8') as f:
+        mit open(bar_path, 'w', encoding='utf-8') als f:
             f.write("@")
         self._box.clean()
         self.assertWahr(os.path.exists(foo_path))
@@ -968,7 +968,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
         # Create a stray directory
         os.mkdir(os.path.join(self._path, 'cur', 'stray-dir'))
 
-        # Check that looping still works with the directory present.
+        # Check that looping still works mit the directory present.
         fuer msg in self._box:
             pass
 
@@ -988,7 +988,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     def test_folder_file_perms(self):
         # From bug #3228, we want to verify that the file created inside a Maildir
-        # subfolder isn't marked as executable.
+        # subfolder isn't marked als executable.
         orig_umask = os.umask(0)
         try:
             subfolder = self._box.add_folder('subfolder')
@@ -1033,7 +1033,7 @@ klasse TestMaildir(TestMailbox, unittest.TestCase):
 
         # Now, write something into cur and remove it.  This changes
         # the mtime and should cause a re-read. Note that "sleep
-        # emulation" is still in effect, as skewfactor is -3.
+        # emulation" is still in effect, als skewfactor is -3.
         filename = os.path.join(self._path, 'cur', 'stray-file')
         os_helper.create_empty_file(filename)
         os.unlink(filename)
@@ -1107,7 +1107,7 @@ klasse _TestSingleFile(TestMailbox):
             os.chown(self._path, other_uid, other_gid)
         except OSError:
             self.skipTest('test needs root privilege')
-        # Change permissions as in test_permissions_after_flush.
+        # Change permissions als in test_permissions_after_flush.
         mode = st.st_mode | 0o666
         os.chmod(self._path, mode)
 
@@ -1133,11 +1133,11 @@ klasse _TestMboxMMDF(_TestSingleFile):
             os_helper.unlink(lock_remnant)
 
     def assertMailboxEmpty(self):
-        with open(self._path, 'rb') as f:
+        mit open(self._path, 'rb') als f:
             self.assertEqual(f.readlines(), [])
 
     def test_get_bytes_from(self):
-        # Get bytes representations of messages with _unixfrom.
+        # Get bytes representations of messages mit _unixfrom.
         unixfrom = 'From foo@bar blah\n'
         key0 = self._box.add(unixfrom + self._template % 0)
         key1 = self._box.add(unixfrom + _sample_message)
@@ -1151,7 +1151,7 @@ klasse _TestMboxMMDF(_TestSingleFile):
             unixfrom.encode('ascii') + _bytes_sample_message)
 
     def test_get_string_from(self):
-        # Get string representations of messages with _unixfrom.
+        # Get string representations of messages mit _unixfrom.
         unixfrom = 'From foo@bar blah\n'
         key0 = self._box.add(unixfrom + self._template % 0)
         key1 = self._box.add(unixfrom + _sample_message)
@@ -1165,14 +1165,14 @@ klasse _TestMboxMMDF(_TestSingleFile):
                          (unixfrom + _sample_message).split('\n'))
 
     def test_add_from_string(self):
-        # Add a string starting with 'From ' to the mailbox
+        # Add a string starting mit 'From ' to the mailbox
         key = self._box.add('From foo@bar blah\nFrom: foo\n\n0\n')
         self.assertEqual(self._box[key].get_from(), 'foo@bar blah')
         self.assertEqual(self._box[key].get_unixfrom(), 'From foo@bar blah')
         self.assertEqual(self._box[key].get_payload(), '0\n')
 
     def test_add_from_bytes(self):
-        # Add a byte string starting with 'From ' to the mailbox
+        # Add a byte string starting mit 'From ' to the mailbox
         key = self._box.add(b'From foo@bar blah\nFrom: foo\n\n0\n')
         self.assertEqual(self._box[key].get_from(), 'foo@bar blah')
         self.assertEqual(self._box[key].get_unixfrom(), 'From foo@bar blah')
@@ -1208,7 +1208,7 @@ klasse _TestMboxMMDF(_TestSingleFile):
         self._box._file.seek(0)
         contents = self._box._file.read()
         self._box.close()
-        with open(self._path, 'rb') as f:
+        mit open(self._path, 'rb') als f:
             self.assertEqual(contents, f.read())
         self._box = self._factory(self._path)
 
@@ -1302,12 +1302,12 @@ klasse TestMbox(_TestMboxMMDF, unittest.TestCase):
     def test_message_separator(self):
         # Check there's always a single blank line after each message
         self._box.add('From: foo\n\n0')  # No newline at the end
-        with open(self._path, encoding='utf-8') as f:
+        mit open(self._path, encoding='utf-8') als f:
             data = f.read()
             self.assertEndsWith(data, '0\n\n')
 
         self._box.add('From: foo\n\n0\n')  # Newline at the end
-        with open(self._path, encoding='utf-8') as f:
+        mit open(self._path, encoding='utf-8') als f:
             data = f.read()
             self.assertEndsWith(data, '0\n\n')
 
@@ -1479,7 +1479,7 @@ klasse TestBabyl(_TestSingleFile, unittest.TestCase):
     _factory = lambda self, path, factory=Nichts: mailbox.Babyl(path, factory)
 
     def assertMailboxEmpty(self):
-        with open(self._path, 'rb') as f:
+        mit open(self._path, 'rb') als f:
             self.assertEqual(f.readlines(), [])
 
     def tearDown(self):
@@ -1564,7 +1564,7 @@ klasse TestMessage(TestBase, unittest.TestCase):
 
     def test_initialize_with_file(self):
         # Initialize based on contents of file
-        with open(self._path, 'w+', encoding='utf-8') as f:
+        mit open(self._path, 'w+', encoding='utf-8') als f:
             f.write(_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1573,7 +1573,7 @@ klasse TestMessage(TestBase, unittest.TestCase):
 
     def test_initialize_with_binary_file(self):
         # Initialize based on contents of binary file
-        with open(self._path, 'wb+') as f:
+        mit open(self._path, 'wb+') als f:
             f.write(_bytes_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1592,7 +1592,7 @@ klasse TestMessage(TestBase, unittest.TestCase):
         self.assertIsNichts(msg.get_payload())
 
     def test_initialize_incorrectly(self):
-        # Initialize with invalid argument
+        # Initialize mit invalid argument
         self.assertRaises(TypeError, lambda: self._factory(object()))
 
     def test_all_eMM_attributes_exist(self):
@@ -1707,7 +1707,7 @@ klasse _TestMboxMMDFMessage:
         self._check_from(msg)
 
     def test_initialize_with_unixfrom(self):
-        # Initialize with a message that already has a _unixfrom attribute
+        # Initialize mit a message that already has a _unixfrom attribute
         msg = mailbox.Message(_sample_message)
         msg.set_unixfrom('From foo@bar blah')
         msg = mailbox.mboxMessage(msg)
@@ -2340,7 +2340,7 @@ klasse MaildirTestCase(unittest.TestCase):
         filename = ".".join((str(t), str(pid), "myhostname", "mydomain"))
         tmpname = os.path.join(self._dir, "tmp", filename)
         newname = os.path.join(self._dir, dir, filename)
-        with open(tmpname, "w", encoding="utf-8") as fp:
+        mit open(tmpname, "w", encoding="utf-8") als fp:
             self._msgfiles.append(tmpname)
             wenn mbox:
                 fp.write(FROM_)
@@ -2348,7 +2348,7 @@ klasse MaildirTestCase(unittest.TestCase):
         try:
             os.link(tmpname, newname)
         except (AttributeError, PermissionError):
-            with open(newname, "w") as fp:
+            mit open(newname, "w") als fp:
                 fp.write(DUMMY_MESSAGE)
         self._msgfiles.append(newname)
         return tmpname
@@ -2397,14 +2397,14 @@ Return-Path: <gkj@gregorykjohnson.com>
 X-Original-To: gkj+person@localhost
 Delivered-To: gkj+person@localhost
 Received: von localhost (localhost [127.0.0.1])
-        by andy.gregorykjohnson.com (Postfix) with ESMTP id 356ED9DD17
+        by andy.gregorykjohnson.com (Postfix) mit ESMTP id 356ED9DD17
         fuer <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
 Delivered-To: gkj@sundance.gregorykjohnson.com
 Received: von localhost [127.0.0.1]
-        by localhost with POP3 (fetchmail-6.2.5)
+        by localhost mit POP3 (fetchmail-6.2.5)
         fuer gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)
 Received: von andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
-        by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
+        by sundance.gregorykjohnson.com (Postfix) mit ESMTP id 5B056316746
         fuer <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
 Received: by andy.gregorykjohnson.com (Postfix, von userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)
@@ -2446,14 +2446,14 @@ _sample_headers = [
     ("X-Original-To", "gkj+person@localhost"),
     ("Delivered-To", "gkj+person@localhost"),
     ("Received", """from localhost (localhost [127.0.0.1])
-        by andy.gregorykjohnson.com (Postfix) with ESMTP id 356ED9DD17
+        by andy.gregorykjohnson.com (Postfix) mit ESMTP id 356ED9DD17
         fuer <gkj+person@localhost>; Wed, 13 Jul 2005 17:23:16 -0400 (EDT)"""),
     ("Delivered-To", "gkj@sundance.gregorykjohnson.com"),
     ("Received", """from localhost [127.0.0.1]
-        by localhost with POP3 (fetchmail-6.2.5)
+        by localhost mit POP3 (fetchmail-6.2.5)
         fuer gkj+person@localhost (single-drop); Wed, 13 Jul 2005 17:23:16 -0400 (EDT)"""),
     ("Received", """from andy.gregorykjohnson.com (andy.gregorykjohnson.com [64.32.235.228])
-        by sundance.gregorykjohnson.com (Postfix) with ESMTP id 5B056316746
+        by sundance.gregorykjohnson.com (Postfix) mit ESMTP id 5B056316746
         fuer <gkj@gregorykjohnson.com>; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)"""),
     ("Received", """by andy.gregorykjohnson.com (Postfix, von userid 1000)
         id 490CD9DD17; Wed, 13 Jul 2005 17:23:11 -0400 (EDT)"""),

@@ -25,7 +25,7 @@ klasse ArrayTestCase(unittest.TestCase):
 
     def test_type_flags(self):
         fuer cls in Array, PyCArrayType:
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 self.assertWahr(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalsch(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
@@ -34,15 +34,15 @@ klasse ArrayTestCase(unittest.TestCase):
         # instantiated directly
         NewArray = PyCArrayType.__new__(PyCArrayType, 'NewArray', (Array,), {})
         fuer cls in Array, NewArray:
-            with self.subTest(cls=cls):
-                with self.assertRaisesRegex(TypeError, "abstract class"):
+            mit self.subTest(cls=cls):
+                mit self.assertRaisesRegex(TypeError, "abstract class"):
                     obj = cls()
 
         # Cannot call the metaclass __init__ more than once
         klasse T(Array):
             _type_ = c_int
             _length_ = 13
-        with self.assertRaisesRegex(SystemError, "already initialized"):
+        mit self.assertRaisesRegex(SystemError, "already initialized"):
             PyCArrayType.__init__(T, 'ptr', (), {})
 
     def test_simple(self):
@@ -64,8 +64,8 @@ klasse ArrayTestCase(unittest.TestCase):
             self.assertEqual(values, init)
 
             # out-of-bounds accesses should be caught
-            with self.assertRaises(IndexError): ia[alen]
-            with self.assertRaises(IndexError): ia[-alen-1]
+            mit self.assertRaises(IndexError): ia[alen]
+            mit self.assertRaises(IndexError): ia[-alen-1]
 
             # change the items
             new_values = list(range(42, 42+alen))
@@ -100,7 +100,7 @@ klasse ArrayTestCase(unittest.TestCase):
         self.assertEqual(len(ca), 3)
 
         # cannot delete items
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del ca[0]
 
     def test_step_overflow(self):
@@ -141,7 +141,7 @@ klasse ArrayTestCase(unittest.TestCase):
         self.assertIs(ARRAY(c_int, 3), ARRAY(c_int, 3))
 
     def test_from_address(self):
-        # Failed with 0.9.8, reported by JUrner
+        # Failed mit 0.9.8, reported by JUrner
         p = create_string_buffer(b"foo")
         sz = (c_char * 3).from_address(addressof(p))
         self.assertEqual(sz[:], b"foo")
@@ -207,30 +207,30 @@ klasse ArrayTestCase(unittest.TestCase):
         self.assertEqual(Y()._length_, 187)
 
     def test_bad_subclass(self):
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             klasse T(Array):
                 pass
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             klasse T2(Array):
                 _type_ = c_int
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             klasse T3(Array):
                 _length_ = 13
 
     def test_bad_length(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse T(Array):
                 _type_ = c_int
                 _length_ = - sys.maxsize * 2
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse T2(Array):
                 _type_ = c_int
                 _length_ = -1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse T3(Array):
                 _type_ = c_int
                 _length_ = 1.87
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             klasse T4(Array):
                 _type_ = c_int
                 _length_ = sys.maxsize * 2
@@ -259,7 +259,7 @@ klasse ArrayTestCase(unittest.TestCase):
     def test_bpo36504_signed_int_overflow(self):
         # The overflow check in PyCArrayType_new() could cause signed integer
         # overflow.
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             c_char * sys.maxsize * 2
 
     @unittest.skipUnless(sys.maxsize > 2**32, 'requires 64bit platform')
@@ -279,9 +279,9 @@ klasse ArrayTestCase(unittest.TestCase):
                 buffer.value = b"hello"
                 buffer[0] = b"j"
 
-        with threading_helper.catch_threading_exception() as cm:
+        mit threading_helper.catch_threading_exception() als cm:
             threads = (Thread(target=run) fuer _ in range(25))
-            with threading_helper.start_threads(threads):
+            mit threading_helper.start_threads(threads):
                 pass
 
             wenn cm.exc_value:

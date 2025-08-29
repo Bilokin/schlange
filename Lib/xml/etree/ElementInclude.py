@@ -20,7 +20,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# and will comply mit the following terms and conditions:
 #
 # Permission to use, copy, modify, and distribute this software and
 # its associated documentation fuer any purpose and without fee is
@@ -86,12 +86,12 @@ klasse LimitedRecursiveIncludeError(FatalIncludeError):
 
 def default_loader(href, parse, encoding=Nichts):
     wenn parse == "xml":
-        with open(href, 'rb') as file:
+        mit open(href, 'rb') als file:
             data = ElementTree.parse(file).getroot()
     sonst:
         wenn not encoding:
             encoding = 'UTF-8'
-        with open(href, 'r', encoding=encoding) as file:
+        mit open(href, 'r', encoding=encoding) als file:
             data = file.read()
     return data
 
@@ -101,7 +101,7 @@ def default_loader(href, parse, encoding=Nichts):
 # @param elem Root Element or any ElementTree of a tree to be expanded
 # @param loader Optional resource loader.  If omitted, it defaults
 #     to {@link default_loader}.  If given, it should be a callable
-#     that implements the same interface as <b>default_loader</b>.
+#     that implements the same interface als <b>default_loader</b>.
 # @param base_url The base URL of the original file, to resolve
 #     relative include file references.
 # @param max_depth The maximum number of recursive inclusions.
@@ -150,9 +150,9 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                 node = loader(href, parse)
                 wenn node is Nichts:
                     raise FatalIncludeError(
-                        "cannot load %r as %r" % (href, parse)
+                        "cannot load %r als %r" % (href, parse)
                         )
-                node = copy.copy(node)  # FIXME: this makes little sense with recursive includes
+                node = copy.copy(node)  # FIXME: this makes little sense mit recursive includes
                 _include(node, loader, href, max_depth - 1, _parent_hrefs)
                 _parent_hrefs.remove(href)
                 wenn e.tail:
@@ -162,7 +162,7 @@ def _include(elem, loader, base_url, max_depth, _parent_hrefs):
                 text = loader(href, parse, e.get("encoding"))
                 wenn text is Nichts:
                     raise FatalIncludeError(
-                        "cannot load %r as %r" % (href, parse)
+                        "cannot load %r als %r" % (href, parse)
                         )
                 wenn e.tail:
                     text += e.tail

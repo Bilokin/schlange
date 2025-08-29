@@ -41,20 +41,20 @@ klasse FunctionTestCase(unittest.TestCase):
         # wasn't checked, and it even crashed Python.
         # Found by Greg Chapman.
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse X(object, Array):
                 _length_ = 5
                 _type_ = "i"
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse X2(object, _Pointer):
                 pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse X3(object, _SimpleCData):
                 _type_ = "i"
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse X4(object, Structure):
                 _fields_ = []
 
@@ -67,7 +67,7 @@ klasse FunctionTestCase(unittest.TestCase):
 
         self.assertEqual(callback(b"a"), 0)
 
-        with self.assertRaises(ArgumentError) as cm:
+        mit self.assertRaises(ArgumentError) als cm:
             callback(b"abc")
 
         self.assertEqual(str(cm.exception),
@@ -82,26 +82,26 @@ klasse FunctionTestCase(unittest.TestCase):
         self.assertEqual(result, 139)
         self.assertEqual(type(result), int)
 
-        with self.assertRaises(ArgumentError) as cm:
+        mit self.assertRaises(ArgumentError) als cm:
             f(1, 2, 3, 4, 5.0, 6.0)
         self.assertEqual(str(cm.exception),
                          "argument 2: TypeError: a unicode character expected, "
                          "not instance of int")
 
-        with self.assertRaises(ArgumentError) as cm:
+        mit self.assertRaises(ArgumentError) als cm:
             f(1, "abc", 3, 4, 5.0, 6.0)
         self.assertEqual(str(cm.exception),
                          "argument 2: TypeError: a unicode character expected, "
                          "not a string of length 3")
 
-        with self.assertRaises(ArgumentError) as cm:
+        mit self.assertRaises(ArgumentError) als cm:
             f(1, "", 3, 4, 5.0, 6.0)
         self.assertEqual(str(cm.exception),
                          "argument 2: TypeError: a unicode character expected, "
                          "not a string of length 0")
 
         wenn sizeof(c_wchar) < 4:
-            with self.assertRaises(ArgumentError) as cm:
+            mit self.assertRaises(ArgumentError) als cm:
                 f(1, "\U0001f40d", 3, 4, 5.0, 6.0)
             self.assertEqual(str(cm.exception),
                              "argument 2: TypeError: the string '\\U0001f40d' "
@@ -116,12 +116,12 @@ klasse FunctionTestCase(unittest.TestCase):
         callback = proto(callback)
         self.assertEqual(callback(b"abc"), 0)
 
-        with self.assertRaises(ArgumentError) as cm:
+        mit self.assertRaises(ArgumentError) als cm:
             callback(10)
 
         self.assertEqual(str(cm.exception),
                          "argument 1: TypeError: 'int' object cannot be "
-                         "interpreted as ctypes.c_char_p")
+                         "interpreted als ctypes.c_char_p")
 
     def test_c_wchar_p_parm(self):
         """Test the error message when converting an incompatible type to c_wchar_p."""
@@ -132,12 +132,12 @@ klasse FunctionTestCase(unittest.TestCase):
         callback = proto(callback)
         self.assertEqual(callback("abc"), 0)
 
-        with self.assertRaises(ArgumentError) as cm:
+        mit self.assertRaises(ArgumentError) als cm:
             callback(10)
 
         self.assertEqual(str(cm.exception),
                          "argument 1: TypeError: 'int' object cannot be "
-                         "interpreted as ctypes.c_wchar_p")
+                         "interpreted als ctypes.c_wchar_p")
 
     def test_c_void_p_parm(self):
         """Test the error message when converting an incompatible type to c_void_p."""
@@ -148,12 +148,12 @@ klasse FunctionTestCase(unittest.TestCase):
         callback = proto(callback)
         self.assertEqual(callback(5), 0)
 
-        with self.assertRaises(ArgumentError) as cm:
+        mit self.assertRaises(ArgumentError) als cm:
             callback(2.5)
 
         self.assertEqual(str(cm.exception),
                          "argument 1: TypeError: 'float' object cannot be "
-                         "interpreted as ctypes.c_void_p")
+                         "interpreted als ctypes.c_void_p")
 
     def test_wchar_result(self):
         f = dll._testfunc_i_bhilfd
@@ -193,7 +193,7 @@ klasse FunctionTestCase(unittest.TestCase):
         self.assertEqual(result, 21)
         self.assertEqual(type(result), int)
 
-        # You cannot assign character format codes as restype any longer
+        # You cannot assign character format codes als restype any longer
         self.assertRaises(TypeError, setattr, f, "restype", "i")
 
     def test_floatresult(self):
@@ -321,7 +321,7 @@ klasse FunctionTestCase(unittest.TestCase):
         result = f(-10, cb)
         self.assertEqual(result, -18)
 
-        # test with prototype
+        # test mit prototype
         f.argtypes = [c_int, MyCallback]
         cb = MyCallback(callback)
         result = f(-10, cb)
@@ -329,14 +329,14 @@ klasse FunctionTestCase(unittest.TestCase):
 
         AnotherCallback = WINFUNCTYPE(c_int, c_int, c_int, c_int, c_int)
 
-        # check that the prototype works: we call f with wrong
+        # check that the prototype works: we call f mit wrong
         # argument types
         cb = AnotherCallback(callback)
         self.assertRaises(ArgumentError, f, -10, cb)
 
 
     def test_callbacks_2(self):
-        # Can also use simple datatypes as argument type specifiers
+        # Can also use simple datatypes als argument type specifiers
         # fuer the callback function.
         # In this case the call receives an instance of that type
         f = dll._testfunc_callback_i_if
@@ -386,7 +386,7 @@ klasse FunctionTestCase(unittest.TestCase):
         expected = 3, 1, 2
         self.assertEqual(got, expected)
 
-        # with prototype
+        # mit prototype
         ptin = POINT(101, 102)
         ptout = POINT()
         dll._testfunc_byval.argtypes = (POINT, POINTER(POINT))

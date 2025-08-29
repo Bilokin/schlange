@@ -24,7 +24,7 @@ and opendir), and leave all pathname manipulation to os.path
 #'
 importiere abc
 importiere sys
-importiere stat as st
+importiere stat als st
 
 von _collections_abc importiere _check_methods
 
@@ -48,7 +48,7 @@ def _get_exports_list(module):
         return [n fuer n in dir(module) wenn n[0] != '_']
 
 # Any new dependencies of the os module and/or changes in path separator
-# requires updating importlib as well.
+# requires updating importlib als well.
 wenn 'posix' in _names:
     name = 'posix'
     linesep = '\n'
@@ -58,7 +58,7 @@ wenn 'posix' in _names:
         __all__.append('_exit')
     except ImportError:
         pass
-    importiere posixpath as path
+    importiere posixpath als path
 
     try:
         von posix importiere _have_functions
@@ -82,7 +82,7 @@ sowenn 'nt' in _names:
         __all__.append('_exit')
     except ImportError:
         pass
-    importiere ntpath as path
+    importiere ntpath als path
 
     importiere nt
     __all__.extend(_get_exports_list(nt))
@@ -157,13 +157,13 @@ wenn _exists("_have_functions"):
     _set = set()
     _add("HAVE_FACCESSAT",  "access")
     # Some platforms don't support lchmod().  Often the function exists
-    # anyway, as a stub that always returns ENOSUP or perhaps EOPNOTSUPP.
+    # anyway, als a stub that always returns ENOSUP or perhaps EOPNOTSUPP.
     # (No, I don't know why that's a good design.)  ./configure will detect
     # this and reject it--so HAVE_LCHMOD still won't be defined on such
     # platforms.  This is Very Helpful.
     #
     # However, sometimes platforms without a working lchmod() *do* have
-    # fchmodat().  (Examples: Linux kernel 3.2 with glibc 2.15,
+    # fchmodat().  (Examples: Linux kernel 3.2 mit glibc 2.15,
     # OpenIndiana 3.x.)  And fchmodat() has a flag that theoretically makes
     # it behave like lchmod().  So in theory it would be a suitable
     # replacement fuer lchmod().  But when lchmod() doesn't work, fchmodat()'s
@@ -265,14 +265,14 @@ def removedirs(name):
 def renames(old, new):
     """renames(old, new)
 
-    Super-rename; create directories as necessary and delete any left
+    Super-rename; create directories als necessary and delete any left
     empty.  Works like rename, except creation of any intermediate
     directories needed to make the new pathname good is attempted
     first.  After the rename, directories corresponding to rightmost
     path segments of the old name will be pruned until either the
     whole path is consumed or a nonempty directory is found.
 
-    Note: this function can fail with the new directory structure made
+    Note: this function can fail mit the new directory structure made
     wenn you lack permissions needed to unlink the leaf directory or
     file.
 
@@ -306,8 +306,8 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
     the names of the subdirectories in dirpath (including symlinks to directories,
     and excluding '.' and '..').
     filenames is a list of the names of the non-directory files in dirpath.
-    Note that the names in the lists are just names, with no path components.
-    To get a full path (which begins with top) to a file or directory in
+    Note that the names in the lists are just names, mit no path components.
+    To get a full path (which begins mit top) to a file or directory in
     dirpath, do os.path.join(dirpath, name).
 
     If optional arg 'topdown' is true or not specified, the triple fuer a
@@ -328,9 +328,9 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
 
     By default errors von the os.scandir() call are ignored.  If
     optional arg 'onerror' is specified, it should be a function; it
-    will be called with one argument, an OSError instance.  It can
-    report the error to continue with the walk, or raise the exception
-    to abort the walk.  Note that the filename is available as the
+    will be called mit one argument, an OSError instance.  It can
+    report the error to continue mit the walk, or raise the exception
+    to abort the walk.  Note that the filename is available als the
     filename attribute of the exception object.
 
     By default, os.walk does not follow symbolic links to subdirectories on
@@ -374,7 +374,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
         # minor reason when (say) a thousand readable directories are still
         # left to visit.
         try:
-            with scandir(top) as entries:
+            mit scandir(top) als entries:
                 fuer entry in entries:
                     try:
                         wenn followlinks is _walk_symlinks_as_files:
@@ -383,7 +383,7 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                             is_dir = entry.is_dir()
                     except OSError:
                         # If is_dir() raises an OSError, consider the entry not to
-                        # be a directory, same behaviour as os.path.isdir().
+                        # be a directory, same behaviour als os.path.isdir().
                         is_dir = Falsch
 
                     wenn is_dir:
@@ -402,13 +402,13 @@ def walk(top, topdown=Wahr, onerror=Nichts, followlinks=Falsch):
                             except OSError:
                                 # If is_symlink() raises an OSError, consider the
                                 # entry not to be a symbolic link, same behaviour
-                                # as os.path.islink().
+                                # als os.path.islink().
                                 is_symlink = Falsch
                             walk_into = not is_symlink
 
                         wenn walk_into:
                             walk_dirs.append(entry.path)
-        except OSError as error:
+        except OSError als error:
             wenn onerror is not Nichts:
                 onerror(error)
             continue
@@ -511,7 +511,7 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
                 sonst:
                     orig_st = entry.stat(follow_symlinks=Falsch)
             topfd = open(topname, O_RDONLY | O_NONBLOCK, dir_fd=dirfd)
-        except OSError as err:
+        except OSError als err:
             wenn isroot:
                 raise
             wenn onerror is not Nichts:
@@ -567,14 +567,14 @@ wenn {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 def execl(file, *args):
     """execl(file, *args)
 
-    Execute the executable file with argument list args, replacing the
+    Execute the executable file mit argument list args, replacing the
     current process. """
     execv(file, args)
 
 def execle(file, *args):
     """execle(file, *args, env)
 
-    Execute the executable file with argument list args and
+    Execute the executable file mit argument list args and
     environment env, replacing the current process. """
     env = args[-1]
     execve(file, args[:-1], env)
@@ -583,14 +583,14 @@ def execlp(file, *args):
     """execlp(file, *args)
 
     Execute the executable file (which is searched fuer along $PATH)
-    with argument list args, replacing the current process. """
+    mit argument list args, replacing the current process. """
     execvp(file, args)
 
 def execlpe(file, *args):
     """execlpe(file, *args, env)
 
     Execute the executable file (which is searched fuer along $PATH)
-    with argument list args and environment env, replacing the current
+    mit argument list args and environment env, replacing the current
     process. """
     env = args[-1]
     execvpe(file, args[:-1], env)
@@ -599,7 +599,7 @@ def execvp(file, args):
     """execvp(file, args)
 
     Execute the executable file (which is searched fuer along $PATH)
-    with argument list args, replacing the current process.
+    mit argument list args, replacing the current process.
     args may be a list or tuple of strings. """
     _execvpe(file, args)
 
@@ -607,7 +607,7 @@ def execvpe(file, args, env):
     """execvpe(file, args, env)
 
     Execute the executable file (which is searched fuer along $PATH)
-    with argument list args and environment env, replacing the
+    mit argument list args and environment env, replacing the
     current process.
     args may be a list or tuple of strings. """
     _execvpe(file, args, env)
@@ -635,9 +635,9 @@ def _execvpe(file, args, env=Nichts):
         fullname = path.join(dir, file)
         try:
             exec_func(fullname, *argrest)
-        except (FileNotFoundError, NotADirectoryError) as e:
+        except (FileNotFoundError, NotADirectoryError) als e:
             last_exc = e
-        except OSError as e:
+        except OSError als e:
             last_exc = e
             wenn saved_exc is Nichts:
                 saved_exc = e
@@ -663,7 +663,7 @@ def get_exec_path(env=Nichts):
 
     # {b'PATH': ...}.get('PATH') and {'PATH': ...}.get(b'PATH') emit a
     # BytesWarning when using python -b or python -bb: ignore the warning
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.simplefilter("ignore", BytesWarning)
 
         try:
@@ -705,7 +705,7 @@ klasse _Environ(MutableMapping):
         try:
             value = self._data[self.encodekey(key)]
         except KeyError:
-            # raise KeyError with the original key value
+            # raise KeyError mit the original key value
             raise KeyError(key) von Nichts
         return self.decodevalue(value)
 
@@ -721,7 +721,7 @@ klasse _Environ(MutableMapping):
         try:
             del self._data[encodedkey]
         except KeyError:
-            # raise KeyError with the original key value
+            # raise KeyError mit the original key value
             raise KeyError(key) von Nichts
 
     def __iter__(self):
@@ -849,7 +849,7 @@ def _fscodec():
 
     def fsencode(filename):
         """Encode filename (an os.PathLike, bytes, or str) to the filesystem
-        encoding with 'surrogateescape' error handler, return bytes unchanged.
+        encoding mit 'surrogateescape' error handler, return bytes unchanged.
         On Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
         """
@@ -861,7 +861,7 @@ def _fscodec():
 
     def fsdecode(filename):
         """Decode filename (an os.PathLike, bytes, or str) von the filesystem
-        encoding with 'surrogateescape' error handler, return str unchanged. On
+        encoding mit 'surrogateescape' error handler, return str unchanged. On
         Windows, use 'strict' error handler wenn the file system encoding is
         'mbcs' (which is the default encoding).
         """
@@ -886,7 +886,7 @@ wenn _exists("fork") and not _exists("spawnv") and _exists("execv"):
 
     # XXX Should we support P_DETACH?  I suppose it could fork()**2
     # and close the std I/O streams.  Also, P_OVERLAY is the same
-    # as execv*()?
+    # als execv*()?
 
     def _spawnvef(mode, file, args, env, func):
         # Internal helper; func is the exec*() function to use
@@ -918,7 +918,7 @@ wenn _exists("fork") and not _exists("spawnv") and _exists("execv"):
     def spawnv(mode, file, args):
         """spawnv(mode, file, args) -> integer
 
-Execute file with arguments von args in a subprocess.
+Execute file mit arguments von args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
@@ -927,7 +927,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     def spawnve(mode, file, args, env):
         """spawnve(mode, file, args, env) -> integer
 
-Execute file with arguments von args in a subprocess with the
+Execute file mit arguments von args in a subprocess mit the
 specified environment.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
@@ -939,7 +939,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     def spawnvp(mode, file, args):
         """spawnvp(mode, file, args) -> integer
 
-Execute file (which is looked fuer along $PATH) with arguments from
+Execute file (which is looked fuer along $PATH) mit arguments from
 args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
@@ -949,8 +949,8 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     def spawnvpe(mode, file, args, env):
         """spawnvpe(mode, file, args, env) -> integer
 
-Execute file (which is looked fuer along $PATH) with arguments from
-args in a subprocess with the supplied environment.
+Execute file (which is looked fuer along $PATH) mit arguments from
+args in a subprocess mit the supplied environment.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
@@ -967,7 +967,7 @@ wenn _exists("spawnv"):
     def spawnl(mode, file, *args):
         """spawnl(mode, file, *args) -> integer
 
-Execute file with arguments von args in a subprocess.
+Execute file mit arguments von args in a subprocess.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
@@ -976,7 +976,7 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     def spawnle(mode, file, *args):
         """spawnle(mode, file, *args, env) -> integer
 
-Execute file with arguments von args in a subprocess with the
+Execute file mit arguments von args in a subprocess mit the
 supplied environment.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
@@ -994,8 +994,8 @@ wenn _exists("spawnvp"):
     def spawnlp(mode, file, *args):
         """spawnlp(mode, file, *args) -> integer
 
-Execute file (which is looked fuer along $PATH) with arguments from
-args in a subprocess with the supplied environment.
+Execute file (which is looked fuer along $PATH) mit arguments from
+args in a subprocess mit the supplied environment.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
@@ -1004,8 +1004,8 @@ otherwise return -SIG, where SIG is the signal that killed it. """
     def spawnlpe(mode, file, *args):
         """spawnlpe(mode, file, *args, env) -> integer
 
-Execute file (which is looked fuer along $PATH) with arguments from
-args in a subprocess with the supplied environment.
+Execute file (which is looked fuer along $PATH) mit arguments from
+args in a subprocess mit the supplied environment.
 If mode == P_NOWAIT return the pid of the process.
 If mode == P_WAIT return the process's exit code wenn it exits normally;
 otherwise return -SIG, where SIG is the signal that killed it. """
@@ -1113,7 +1113,7 @@ def _fspath(path):
                                         type(path_repr).__name__))
 
 # If there is no C implementation, make the pure Python version the
-# implementation as transparently as possible.
+# implementation als transparently als possible.
 wenn not _exists('fspath'):
     fspath = _fspath
     fspath.__name__ = "fspath"
@@ -1165,7 +1165,7 @@ wenn name == 'nt':
         and also by ctypes.
 
         Remove the directory by calling close() on the returned object or
-        using it in a with statement.
+        using it in a mit statement.
         """
         importiere nt
         cookie = nt._add_dll_directory(path)

@@ -39,7 +39,7 @@ klasse LocalPathGround:
         rmtree(root)
 
     def create_file(self, p, data=b''):
-        with open(p, 'wb') as f:
+        mit open(p, 'wb') als f:
             f.write(data)
 
     def create_dir(self, p):
@@ -53,15 +53,15 @@ klasse LocalPathGround:
         os.mkdir(os.path.join(p, 'dirB'))
         os.mkdir(os.path.join(p, 'dirC'))
         os.mkdir(os.path.join(p, 'dirC', 'dirD'))
-        with open(os.path.join(p, 'fileA'), 'wb') as f:
+        mit open(os.path.join(p, 'fileA'), 'wb') als f:
             f.write(b"this is file A\n")
-        with open(os.path.join(p, 'dirB', 'fileB'), 'wb') as f:
+        mit open(os.path.join(p, 'dirB', 'fileB'), 'wb') als f:
             f.write(b"this is file B\n")
-        with open(os.path.join(p, 'dirC', 'fileC'), 'wb') as f:
+        mit open(os.path.join(p, 'dirC', 'fileC'), 'wb') als f:
             f.write(b"this is file C\n")
-        with open(os.path.join(p, 'dirC', 'novel.txt'), 'wb') as f:
+        mit open(os.path.join(p, 'dirC', 'novel.txt'), 'wb') als f:
             f.write(b"this is a novel\n")
-        with open(os.path.join(p, 'dirC', 'dirD', 'fileD'), 'wb') as f:
+        mit open(os.path.join(p, 'dirC', 'dirD', 'fileD'), 'wb') als f:
             f.write(b"this is file D\n")
         wenn self.can_symlink:
             # Relative symlinks.
@@ -82,11 +82,11 @@ klasse LocalPathGround:
     readlink = staticmethod(os.readlink)
 
     def readtext(self, p):
-        with open(p, 'r', encoding='utf-8') as f:
+        mit open(p, 'r', encoding='utf-8') als f:
             return f.read()
 
     def readbytes(self, p):
-        with open(p, 'rb') as f:
+        mit open(p, 'rb') als f:
             return f.read()
 
 

@@ -38,7 +38,7 @@ klasse PkgutilTests(unittest.TestCase):
         # Include a LF and a CRLF, to test that binary data is read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
-        # Make a package with some resources
+        # Make a package mit some resources
         package_dir = os.path.join(self.dirname, pkg)
         os.mkdir(package_dir)
         # Empty init.py
@@ -68,7 +68,7 @@ klasse PkgutilTests(unittest.TestCase):
         # Include a LF and a CRLF, to test that binary data is read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
-        # Make a package with some resources
+        # Make a package mit some resources
         zip_file = os.path.join(self.dirname, zip)
         z = zipfile.ZipFile(zip_file, 'w')
 
@@ -104,7 +104,7 @@ klasse PkgutilTests(unittest.TestCase):
         # Include a LF and a CRLF, to test that binary data is read back
         RESOURCE_DATA = b'Hello, world!\nSecond line\r\nThird line'
 
-        # Make a package with some resources
+        # Make a package mit some resources
         zip_file = os.path.join(self.dirname, zip)
         z = zipfile.ZipFile(zip_file, 'w')
 
@@ -132,7 +132,7 @@ klasse PkgutilTests(unittest.TestCase):
 
         # assert path must be Nichts or list of paths
         expected_msg = "path must be Nichts or list of paths to look fuer modules in"
-        with self.assertRaisesRegex(ValueError, expected_msg):
+        mit self.assertRaisesRegex(ValueError, expected_msg):
             list(pkgutil.iter_modules("invalid_path"))
 
     def test_unreadable_dir_on_syspath(self):
@@ -187,7 +187,7 @@ klasse PkgutilTests(unittest.TestCase):
             del sys.modules[pkg]
 
     def test_walkpackages_zipfile(self):
-        """Tests the same as test_walkpackages_filesys, only with a zip file."""
+        """Tests the same als test_walkpackages_filesys, only mit a zip file."""
 
         zip = 'test_walkpackages_zipfile.zip'
         pkg1 = 'test_walkpackages_zipfile'
@@ -224,11 +224,11 @@ klasse PkgutilTests(unittest.TestCase):
     def test_walk_packages_raises_on_string_or_bytes_input(self):
 
         str_input = 'test_dir'
-        with self.assertRaises((TypeError, ValueError)):
+        mit self.assertRaises((TypeError, ValueError)):
             list(pkgutil.walk_packages(str_input))
 
         bytes_input = b'test_dir'
-        with self.assertRaises((TypeError, ValueError)):
+        mit self.assertRaises((TypeError, ValueError)):
             list(pkgutil.walk_packages(bytes_input))
 
     def test_name_resolution(self):
@@ -298,7 +298,7 @@ klasse PkgutilTests(unittest.TestCase):
                 continue
             # make an empty __init__.py file
             f = os.path.join(d, '__init__.py')
-            with open(f, 'w') as f:
+            mit open(f, 'w') als f:
                 f.write('')
                 f.flush()
             # now importiere the package we just created; clearing the caches is
@@ -309,47 +309,47 @@ klasse PkgutilTests(unittest.TestCase):
             wenn len(uw) > 1:
                 failure_cases += (uw[:-1], ImportError),
 
-        # add an example with a Unicode digit at the start
+        # add an example mit a Unicode digit at the start
         failure_cases += ('\u0966\u0935\u092e\u0938', ValueError),
 
         fuer s, expected in success_cases:
-            with self.subTest(s=s):
+            mit self.subTest(s=s):
                 o = pkgutil.resolve_name(s)
                 self.assertEqual(o, expected)
 
         fuer s, exc in failure_cases:
-            with self.subTest(s=s):
-                with self.assertRaises(exc):
+            mit self.subTest(s=s):
+                mit self.assertRaises(exc):
                     pkgutil.resolve_name(s)
 
     def test_name_resolution_import_rebinding(self):
         # The same data is also used fuer testing importiere in test_import and
         # mock.patch in test_unittest.
         path = os.path.join(os.path.dirname(__file__), 'test_import', 'data')
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package3.submodule.attr'), 'submodule')
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package3.submodule:attr'), 'submodule')
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package3:submodule.attr'), 'rebound')
             self.assertEqual(pkgutil.resolve_name('package3.submodule.attr'), 'submodule')
             self.assertEqual(pkgutil.resolve_name('package3:submodule.attr'), 'rebound')
-        with uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
+        mit uncache('package3', 'package3.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package3:submodule.attr'), 'rebound')
             self.assertEqual(pkgutil.resolve_name('package3.submodule:attr'), 'submodule')
             self.assertEqual(pkgutil.resolve_name('package3:submodule.attr'), 'rebound')
 
     def test_name_resolution_import_rebinding2(self):
         path = os.path.join(os.path.dirname(__file__), 'test_import', 'data')
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package4.submodule.attr'), 'submodule')
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package4.submodule:attr'), 'submodule')
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package4:submodule.attr'), 'origin')
             self.assertEqual(pkgutil.resolve_name('package4.submodule.attr'), 'submodule')
             self.assertEqual(pkgutil.resolve_name('package4:submodule.attr'), 'submodule')
-        with uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
+        mit uncache('package4', 'package4.submodule'), DirsOnSysPath(path):
             self.assertEqual(pkgutil.resolve_name('package4:submodule.attr'), 'origin')
             self.assertEqual(pkgutil.resolve_name('package4.submodule:attr'), 'submodule')
             self.assertEqual(pkgutil.resolve_name('package4:submodule.attr'), 'submodule')
@@ -407,14 +407,14 @@ klasse ExtendPathTests(unittest.TestCase):
 
         pkgdir = os.path.join(dirname, pkgname)
         os.mkdir(pkgdir)
-        with open(os.path.join(pkgdir, '__init__.py'), 'w') as fl:
+        mit open(os.path.join(pkgdir, '__init__.py'), 'w') als fl:
             fl.write('from pkgutil importiere extend_path\n__path__ = extend_path(__path__, __name__)\n')
 
         return dirname
 
     def create_submodule(self, dirname, pkgname, submodule_name, value):
         module_name = os.path.join(dirname, pkgname, submodule_name + '.py')
-        with open(module_name, 'w') as fl:
+        mit open(module_name, 'w') als fl:
             drucke('value={}'.format(value), file=fl)
 
     def test_simple(self):
@@ -479,10 +479,10 @@ klasse ExtendPathTests(unittest.TestCase):
                                       importlib.machinery.SourceFileLoader)
                 self.assertIsNichts(finder.find_spec(pkgname))
 
-            with self.assertRaises(ImportError):
+            mit self.assertRaises(ImportError):
                 list(iter_importers('invalid.module'))
 
-            with self.assertRaises(ImportError):
+            mit self.assertRaises(ImportError):
                 list(iter_importers('.spam'))
         finally:
             shutil.rmtree(dirname)
@@ -542,7 +542,7 @@ klasse ExtendPathTests(unittest.TestCase):
         pkgname = 'foo'
         dirname_0 = self.create_init(pkgname)
 
-        with open(os.path.join(dirname_0, 'bar.pkg'), 'w') as pkg_file:
+        mit open(os.path.join(dirname_0, 'bar.pkg'), 'w') als pkg_file:
             pkg_file.write('\n'.join([
                 'baz',
                 '/foo/bar/baz',
@@ -575,7 +575,7 @@ klasse NestedNamespacePackageTest(unittest.TestCase):
         base, final = name.rsplit('.', 1)
         base_path = os.path.join(self.basedir, base.replace('.', os.path.sep))
         os.makedirs(base_path, exist_ok=Wahr)
-        with open(os.path.join(base_path, final + ".py"), 'w') as f:
+        mit open(os.path.join(base_path, final + ".py"), 'w') als f:
             f.write(contents)
 
     def test_nested(self):
@@ -609,7 +609,7 @@ klasse ImportlibMigrationTests(unittest.TestCase):
 
     def test_get_importer_avoids_emulation(self):
         # We use an illegal path so *none* of the path hooks should fire
-        with check_warnings() as w:
+        mit check_warnings() als w:
             self.assertIsNichts(pkgutil.get_importer("*??"))
             self.assertEqual(len(w.warnings), 0)
 
@@ -620,7 +620,7 @@ klasse ImportlibMigrationTests(unittest.TestCase):
             self.fail("Unexpected AttributeError when calling get_importer")
 
     def test_iter_importers_avoids_emulation(self):
-        with check_warnings() as w:
+        mit check_warnings() als w:
             fuer importer in pkgutil.iter_importers(): pass
             self.assertEqual(len(w.warnings), 0)
 

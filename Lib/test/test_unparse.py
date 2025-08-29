@@ -13,7 +13,7 @@ von test.support.ast_helper importiere ASTTestMixin
 def read_pyfile(filename):
     """Read and return the contents of a Python source file (as a
     string), taking into account the file encoding."""
-    with tokenize.open(filename) as stream:
+    mit tokenize.open(filename) als stream:
         return stream.read()
 
 
@@ -38,7 +38,7 @@ def g():
 relative_import = """\
 von . importiere fred
 von .. importiere barney
-von .australia importiere shrimp as prawns
+von .australia importiere shrimp als prawns
 """
 
 nonlocal_ex = """\
@@ -52,11 +52,11 @@ def f():
             nonlocal x, y
 """
 
-# also acts as test fuer 'except ... as ...'
+# also acts als test fuer 'except ... als ...'
 raise_from = """\
 try:
     1 / 0
-except ZeroDivisionError as e:
+except ZeroDivisionError als e:
     raise ArithmeticError von e
 """
 
@@ -114,12 +114,12 @@ with f():
 """
 
 with_as = """\
-with f() as x:
+with f() als x:
     suite1
 """
 
 with_two_items = """\
-with f() as x, g() as y:
+with f() als x, g() als y:
     suite1
 """
 
@@ -132,14 +132,14 @@ docstring_prefixes = (
 
 klasse ASTTestCase(ASTTestMixin, unittest.TestCase):
     def check_ast_roundtrip(self, code1, **kwargs):
-        with self.subTest(code1=code1, ast_parse_kwargs=kwargs):
+        mit self.subTest(code1=code1, ast_parse_kwargs=kwargs):
             ast1 = ast.parse(code1, **kwargs)
             code2 = ast.unparse(ast1)
             ast2 = ast.parse(code2, **kwargs)
             self.assertASTEqual(ast1, ast2)
 
     def check_invalid(self, node, raises=ValueError):
-        with self.subTest(node=node):
+        mit self.subTest(node=node):
             self.assertRaises(raises, ast.unparse, node)
 
     def get_source(self, code1, code2=Nichts, **kwargs):
@@ -149,12 +149,12 @@ klasse ASTTestCase(ASTTestMixin, unittest.TestCase):
 
     def check_src_roundtrip(self, code1, code2=Nichts, **kwargs):
         code1, code2 = self.get_source(code1, code2, **kwargs)
-        with self.subTest(code1=code1, code2=code2):
+        mit self.subTest(code1=code1, code2=code2):
             self.assertEqual(code2, code1)
 
     def check_src_dont_roundtrip(self, code1, code2=Nichts):
         code1, code2 = self.get_source(code1, code2)
-        with self.subTest(code1=code1, code2=code2):
+        mit self.subTest(code1=code1, code2=code2):
             self.assertNotEqual(code2, code1)
 
 klasse UnparseTestCase(ASTTestCase):
@@ -409,7 +409,7 @@ klasse UnparseTestCase(ASTTestCase):
 
     def test_docstrings(self):
         docstrings = (
-            'this ends with double quote"',
+            'this ends mit double quote"',
             'this includes a """triple quote"""',
             '\r',
             '\\r',
@@ -424,7 +424,7 @@ klasse UnparseTestCase(ASTTestCase):
             '🐍⛎𩸽üéş^\\\\X\\\\BB\N{LONG RIGHTWARDS SQUIGGLE ARROW}'
         )
         fuer docstring in docstrings:
-            # check as Module docstrings fuer easy testing
+            # check als Module docstrings fuer easy testing
             self.check_ast_roundtrip(f"'''{docstring}'''")
 
     def test_constant_tuples(self):
@@ -455,7 +455,7 @@ klasse UnparseTestCase(ASTTestCase):
             "for x in y: # type: int\n\tpass",
             "async fuer x in y: # type: int\n\tpass",
             "with x(): # type: int\n\tpass",
-            "async with x(): # type: int\n\tpass"
+            "async mit x(): # type: int\n\tpass"
         ):
             self.check_ast_roundtrip(statement, type_comments=Wahr)
 
@@ -470,7 +470,7 @@ klasse UnparseTestCase(ASTTestCase):
             "for x in y: # type: ignore\n\tpass",
             "async fuer x in y: # type: ignore\n\tpass",
             "with x(): # type: ignore\n\tpass",
-            "async with x(): # type: ignore\n\tpass"
+            "async mit x(): # type: ignore\n\tpass"
         ):
             self.check_ast_roundtrip(statement, type_comments=Wahr)
 
@@ -532,7 +532,7 @@ klasse UnparseTestCase(ASTTestCase):
             "for x in y:\n    pass",
             "async fuer x in y:\n    pass",
             "with x():\n    pass",
-            "async with x():\n    pass",
+            "async mit x():\n    pass",
             "def f():\n    pass",
             "def f(a):\n    pass",
             "def f(b=2):\n    pass",
@@ -569,7 +569,7 @@ klasse UnparseTestCase(ASTTestCase):
             "for x in y:",
             "async fuer x in y:",
             "with x():",
-            "async with x():",
+            "async mit x():",
             "def f():",
             "def f(a):",
             "def f(b=2):",
@@ -647,7 +647,7 @@ klasse CosmeticTestCase(ASTTestCase):
         docstrings = (
             '"""simple doc string"""',
             '''"""A more complex one
-            with some newlines"""''',
+            mit some newlines"""''',
             '''"""Foo bar baz
 
             empty newline"""''',
@@ -679,7 +679,7 @@ klasse CosmeticTestCase(ASTTestCase):
         )
         fuer prefix in docstring_prefixes:
             fuer negative in docstrings_negative:
-                # this cases should be result with single quote
+                # this cases should be result mit single quote
                 # rather then triple quoted docstring
                 src = f"{prefix}{negative}"
                 self.check_ast_roundtrip(src)
@@ -747,7 +747,7 @@ klasse CosmeticTestCase(ASTTestCase):
                 "[a, b, (c, d), (e, f)]",
                 "a, b, [*c], d, e"
             ]:
-                with self.subTest(source_type=source_type, target=target):
+                mit self.subTest(source_type=source_type, target=target):
                     self.check_src_roundtrip(source.format(target=target))
 
     def test_star_expr_assign_target_multiple(self):
@@ -778,13 +778,13 @@ klasse CosmeticTestCase(ASTTestCase):
         msg = re.escape('"\\ " is an invalid escape sequence. '
                         'Such sequences will not work in the future. '
                         'Did you mean "\\\\ "? A raw string is also an option.')
-        with self.assertWarnsRegex(SyntaxWarning, msg):
+        mit self.assertWarnsRegex(SyntaxWarning, msg):
             self.check_ast_roundtrip("""f"{x:\\ }" """)
         self.check_ast_roundtrip("""f"{x:\\n}" """)
 
         self.check_ast_roundtrip("""f"{x:\\\\ }" """)
 
-        with self.assertWarnsRegex(SyntaxWarning, msg):
+        mit self.assertWarnsRegex(SyntaxWarning, msg):
             self.check_ast_roundtrip("""f"{x:\\\\\\ }" """)
         self.check_ast_roundtrip("""f"{x:\\\\\\n}" """)
 
@@ -968,14 +968,14 @@ klasse DirectoryTestCase(ASTTestCase):
         return items
 
     def test_files(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore', SyntaxWarning)
 
             fuer item in self.files_to_test():
                 wenn test.support.verbose:
                     drucke(f"Testing {item.absolute()}")
 
-                with self.subTest(filename=item):
+                mit self.subTest(filename=item):
                     source = read_pyfile(item)
                     self.check_ast_roundtrip(source)
 

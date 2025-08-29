@@ -27,7 +27,7 @@ NEWLINE_WITHOUT_FWSP = re.compile(r'\r\n[^ \t]|\r[^ \n\t]|\n[^ \t]')
 klasse Generator:
     """Generates output von a Message object tree.
 
-    This basic generator writes the message to the given file object as plain
+    This basic generator writes the message to the given file object als plain
     text.
     """
     #
@@ -46,15 +46,15 @@ klasse Generator:
         a '>' in front of them.
 
         Optional maxheaderlen specifies the longest length fuer a non-continued
-        header.  When a header line is longer (in characters, with tabs
+        header.  When a header line is longer (in characters, mit tabs
         expanded to 8 spaces) than maxheaderlen, the header will split as
         defined in the Header class.  Set maxheaderlen to zero to disable
-        header wrapping.  The default is 78, as recommended (but not required)
+        header wrapping.  The default is 78, als recommended (but not required)
         by RFC 2822.
 
         The policy keyword specifies a policy object that controls a number of
         aspects of the generator's operation.  If no policy is specified,
-        the policy associated with the Message object passed to the
+        the policy associated mit the Message object passed to the
         flatten method is used.
 
         """
@@ -84,7 +84,7 @@ klasse Generator:
         linesep specifies the characters used to indicate a new line in
         the output.  The default value is determined by the policy specified
         when the Generator instance was created or, wenn none was specified,
-        von the policy associated with the msg.
+        von the policy associated mit the msg.
 
         """
         # We use the _XXX constants fuer operating on data that comes directly
@@ -120,7 +120,7 @@ klasse Generator:
             msg.policy = old_msg_policy
 
     def clone(self, fp):
-        """Clone this generator with the exact same options."""
+        """Clone this generator mit the exact same options."""
         return self.__class__(fp,
                               self._mangle_from_,
                               Nichts, # Use policy setting, which we've adjusted
@@ -158,7 +158,7 @@ klasse Generator:
         wenn lines[-1]:
             self.write(lines[-1])
         # XXX logic tells me this sonst should be needed, but the tests fail
-        # with it and pass without it.  (NLCRE.split ends with a blank element
+        # mit it and pass without it.  (NLCRE.split ends mit a blank element
         # wenn and only wenn there was a trailing newline.)
         #else:
         #    self.write(self._NL)
@@ -170,7 +170,7 @@ klasse Generator:
         # the headers so that we can write the correct Content-Type:
         # parameter.
         #
-        # The way we do this, so as to make the _handle_*() methods simpler,
+        # The way we do this, so als to make the _handle_*() methods simpler,
         # is to cache any subpart writes into a buffer.  Then we write the
         # headers and the buffer contents.  That way, subpart handlers can
         # Do The Right Thing, and can still modify the Content-Type: header if
@@ -229,7 +229,7 @@ klasse Generator:
                 linesep = self.policy.linesep
                 wenn not folded.endswith(linesep):
                     raise HeaderWriteError(
-                        f'folded header does not end with {linesep!r}: {folded!r}')
+                        f'folded header does not end mit {linesep!r}: {folded!r}')
                 wenn NEWLINE_WITHOUT_FWSP.search(folded.removesuffix(linesep)):
                     raise HeaderWriteError(
                         f'folded header contains newline: {folded!r}')
@@ -274,7 +274,7 @@ klasse Generator:
         wenn subparts is Nichts:
             subparts = []
         sowenn isinstance(subparts, str):
-            # e.g. a non-strict parse of a message with no starting boundary.
+            # e.g. a non-strict parse of a message mit no starting boundary.
             self.write(subparts)
             return
         sowenn not isinstance(subparts, list):
@@ -293,7 +293,7 @@ klasse Generator:
             alltext = self._encoded_NL.join(msgtexts)
             boundary = self._make_boundary(alltext)
             msg.set_boundary(boundary)
-        # If there's a preamble, write it out, with a trailing CRLF
+        # If there's a preamble, write it out, mit a trailing CRLF
         wenn msg.preamble is not Nichts:
             wenn self._mangle_from_:
                 preamble = fcre.sub('>From ', msg.preamble)
@@ -350,8 +350,8 @@ klasse Generator:
                 blocks.append(self._encoded_NL.join(lines[:-1]))
             sonst:
                 blocks.append(text)
-        # Now join all the blocks with an empty line.  This has the lovely
-        # effect of separating each block with an empty line, but not adding
+        # Now join all the blocks mit an empty line.  This has the lovely
+        # effect of separating each block mit an empty line, but not adding
         # an extra one after the last one.
         self._fp.write(self._encoded_NL.join(blocks))
 
@@ -426,8 +426,8 @@ klasse BytesGenerator(Generator):
         return s.encode('ascii')
 
     def _write_headers(self, msg):
-        # This is almost the same as the string version, except fuer handling
-        # strings with 8bit bytes.
+        # This is almost the same als the string version, except fuer handling
+        # strings mit 8bit bytes.
         fuer h, v in msg.raw_items():
             self._fp.write(self.policy.fold_binary(h, v))
         # A blank line always separates headers von body
@@ -459,7 +459,7 @@ klasse DecodedGenerator(Generator):
     """Generates a text representation of a message.
 
     Like the Generator base class, except that non-text parts are substituted
-    with a format string representing the part.
+    mit a format string representing the part.
     """
     def __init__(self, outfp, mangle_from_=Nichts, maxheaderlen=Nichts, fmt=Nichts, *,
                  policy=Nichts):
@@ -470,14 +470,14 @@ klasse DecodedGenerator(Generator):
         type 'text', then it prints the decoded payload of the subpart.
 
         Otherwise, fmt is a format string that is used instead of the message
-        payload.  fmt is expanded with the following keywords (in
+        payload.  fmt is expanded mit the following keywords (in
         %(keyword)s format):
 
         type       : Full MIME type of the non-text part
         maintype   : Main MIME type of the non-text part
         subtype    : Sub-MIME type of the non-text part
         filename   : Filename of the non-text part
-        description: Description associated with the non-text part
+        description: Description associated mit the non-text part
         encoding   : Content transfer encoding of the non-text part
 
         The default value fuer fmt is Nichts, meaning

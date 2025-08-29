@@ -6,7 +6,7 @@
     1) GNU GPLv2
     2) PSF license fuer Python 2.2
 
-    The robots.txt Exclusion Protocol is implemented as specified in
+    The robots.txt Exclusion Protocol is implemented als specified in
     http://www.robotstxt.org/norobots-rfc.txt
 """
 
@@ -61,7 +61,7 @@ klasse RobotFileParser:
         """Reads the robots.txt URL and feeds it to the parser."""
         try:
             f = urllib.request.urlopen(self.url)
-        except urllib.error.HTTPError as err:
+        except urllib.error.HTTPError als err:
             wenn err.code in (401, 403):
                 self.disallow_all = Wahr
             sowenn err.code >= 400 and err.code < 500:

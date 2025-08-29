@@ -49,7 +49,7 @@ def unpickle_code(ms):
     return co
 
 def pickle_code(co):
-    "Return unpickle function and tuple with marshalled co code object."
+    "Return unpickle function and tuple mit marshalled co code object."
     assert isinstance(co, types.CodeType)
     ms = marshal.dumps(co)
     return unpickle_code, (ms,)
@@ -204,7 +204,7 @@ klasse SocketIO:
             raise
         except OSError:
             raise
-        except Exception as ex:
+        except Exception als ex:
             return ("CALLEXC", ex)
         except:
             msg = "*** Internal Error: rpc.py:SocketIO.localcall()\n\n"\
@@ -400,19 +400,19 @@ klasse SocketIO:
         Some messages received may be asynchronous 'call' or 'queue' requests,
         and some may be responses fuer other threads.
 
-        'call' requests are passed to self.localcall() with the expectation of
+        'call' requests are passed to self.localcall() mit the expectation of
         immediate execution, during which time the socket is not serviced.
 
         'queue' requests are used fuer tasks (which may block or hang) to be
         processed in a different thread.  These requests are fed into
         request_queue by self.localcall().  Responses to queued requests are
-        taken von response_queue and sent across the link with the associated
+        taken von response_queue and sent across the link mit the associated
         sequence numbers.  Messages in the queues are (sequence_number,
         request/response) tuples and code using this module removing messages
         von the request_queue is responsible fuer returning the correct
         sequence number in the response_queue.
 
-        pollresponse() will loop until a response message with the myseq
+        pollresponse() will loop until a response message mit the myseq
         sequence number is received, and will save other responses in
         self.responses and notify the owning thread.
 

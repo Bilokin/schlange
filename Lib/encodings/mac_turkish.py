@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec mac_turkish generated von 'MAPPINGS/VENDORS/APPLE/TURKISH.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_turkish generated von 'MAPPINGS/VENDORS/APPLE/TURKISH.TXT' mit gencodec.py.
 
 """#"
 

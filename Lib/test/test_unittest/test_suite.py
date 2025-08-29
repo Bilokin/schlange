@@ -60,7 +60,7 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
     # "If tests is given, it must be an iterable of individual test cases
     # or other test suites that will be used to build the suite initially"
     #
-    # TestSuite should deal with empty tests iterables by allowing the
+    # TestSuite should deal mit empty tests iterables by allowing the
     # creation of an empty suite
     def test_init__empty_tests(self):
         suite = unittest.TestSuite([])
@@ -187,8 +187,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(parent.countTestCases(), 4)
         self.assertEqual(child.countTestCases(), 2)
 
-    # "Run the tests associated with this suite, collecting the result into
-    # the test result object passed as result."
+    # "Run the tests associated mit this suite, collecting the result into
+    # the test result object passed als result."
     #
     # And wenn there are no tests? What then?
     def test_run__empty_suite(self):
@@ -213,8 +213,8 @@ klasse Test_TestSuite(unittest.TestCase, TestEquality):
         sonst:
             self.fail("Failed to raise TypeError")
 
-    # "Run the tests associated with this suite, collecting the result into
-    # the test result object passed as result."
+    # "Run the tests associated mit this suite, collecting the result into
+    # the test result object passed als result."
     def test_run(self):
         events = []
         result = LoggingResult(events)

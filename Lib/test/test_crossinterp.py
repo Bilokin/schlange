@@ -11,13 +11,13 @@ _testinternalcapi = import_helper.import_module('_testinternalcapi')
 _interpreters = import_helper.import_module('_interpreters')
 von _interpreters importiere NotShareableError
 
-von test importiere _code_definitions as code_defs
-von test importiere _crossinterp_definitions as defs
+von test importiere _code_definitions als code_defs
+von test importiere _crossinterp_definitions als defs
 
 
 @contextlib.contextmanager
 def ignore_byteswarning():
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=BytesWarning)
         yield
 
@@ -39,7 +39,7 @@ BUILTIN_TYPES = [
 
 try:
     raise Exception
-except Exception as exc:
+except Exception als exc:
     CAUGHT = exc
 EXCEPTIONS_WITH_SPECIAL_SIG = {
     BaseExceptionGroup: (lambda msg: (msg, [CAUGHT])),
@@ -84,7 +84,7 @@ BUILTIN_FUNCTIONS = [
 ]
 assert 'emptymod' not in sys.modules
 with import_helper.ready_to_import('emptymod', ''):
-    importiere emptymod as EMPTYMOD
+    importiere emptymod als EMPTYMOD
 MODULES = [
     sys,
     defs,
@@ -172,7 +172,7 @@ ns = {}
 exec("""
 try:
     raise Exception
-except Exception as exc:
+except Exception als exc:
     TRACEBACK = exc.__traceback__
     FRAME = TRACEBACK.tb_frame
 """, ns, ns)
@@ -292,9 +292,9 @@ assert not any(isinstance(o, types.MappingProxyType) fuer o in PICKLEABLE)
 # helpers
 
 DEFS = defs
-with open(code_defs.__file__) as infile:
+with open(code_defs.__file__) als infile:
     _code_defs_text = infile.read()
-with open(DEFS.__file__) as infile:
+with open(DEFS.__file__) als infile:
     _defs_text = infile.read()
     _defs_text = _defs_text.replace('from ', '# von ')
 DEFS_TEXT = f"""
@@ -348,10 +348,10 @@ def using___main__():
     """Make sure __main__ module exists (and clean up after)."""
     modname = '__main__'
     wenn modname not in sys.modules:
-        with import_helper.isolated_modules():
+        mit import_helper.isolated_modules():
             yield import_helper.add_module(modname)
     sonst:
-        with import_helper.module_restored(modname) as mod:
+        mit import_helper.module_restored(modname) als mod:
             yield mod
 
 
@@ -359,7 +359,7 @@ def using___main__():
 def temp_module(modname):
     """Create the module and add to sys.modules, then remove it after."""
     assert modname not in sys.modules, (modname,)
-    with import_helper.isolated_modules():
+    mit import_helper.isolated_modules():
         yield import_helper.add_module(modname)
 
 
@@ -367,10 +367,10 @@ def temp_module(modname):
 def missing_defs_module(modname, *, prep=Falsch):
     assert modname not in sys.modules, (modname,)
     wenn prep:
-        with import_helper.ready_to_import(modname, DEFS_TEXT):
+        mit import_helper.ready_to_import(modname, DEFS_TEXT):
             yield modname
     sonst:
-        with import_helper.isolated_modules():
+        mit import_helper.isolated_modules():
             yield modname
 
 
@@ -464,14 +464,14 @@ klasse _GetXIDataTests(unittest.TestCase):
     def assert_roundtrip_identical(self, values, *, mode=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
-            with self.subTest(repr(obj)):
+            mit self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIs(got, obj)
 
     def assert_roundtrip_equal(self, values, *, mode=Nichts, expecttype=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
-            with self.subTest(repr(obj)):
+            mit self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 wenn got is obj:
                     continue
@@ -483,7 +483,7 @@ klasse _GetXIDataTests(unittest.TestCase):
                                              mode=Nichts, expecttype=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
-            with self.subTest(repr(obj)):
+            mit self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIsNot(got, obj)
                 self.assertIs(type(got),
@@ -494,7 +494,7 @@ klasse _GetXIDataTests(unittest.TestCase):
                                    mode=Nichts, expecttype=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
-            with self.subTest(repr(obj)):
+            mit self.subTest(repr(obj)):
                 got = self._get_roundtrip(obj, mode)
                 self.assertIsNot(got, obj)
                 self.assertIs(type(got),
@@ -504,8 +504,8 @@ klasse _GetXIDataTests(unittest.TestCase):
     def assert_not_shareable(self, values, exctype=Nichts, *, mode=Nichts):
         mode = self._resolve_mode(mode)
         fuer obj in values:
-            with self.subTest(repr(obj)):
-                with self.assertRaises(NotShareableError) as cm:
+            mit self.subTest(repr(obj)):
+                mit self.assertRaises(NotShareableError) als cm:
                     _testinternalcapi.get_crossinterp_data(obj, mode)
                 wenn exctype is not Nichts:
                     self.assertIsInstance(cm.exception.__cause__, exctype)
@@ -522,7 +522,7 @@ klasse PickleTests(_GetXIDataTests):
     MODE = 'pickle'
 
     def test_shareable(self):
-        with ignore_byteswarning():
+        mit ignore_byteswarning():
             fuer obj in SHAREABLE:
                 wenn obj in PICKLEABLE:
                     self.assert_roundtrip_equal([obj])
@@ -530,12 +530,12 @@ klasse PickleTests(_GetXIDataTests):
                     self.assert_not_shareable([obj])
 
     def test_not_shareable(self):
-        with ignore_byteswarning():
+        mit ignore_byteswarning():
             fuer obj in NOT_SHAREABLE:
                 wenn type(obj) is types.MappingProxyType:
                     self.assert_not_shareable([obj])
                 sowenn obj in PICKLEABLE:
-                    with self.subTest(repr(obj)):
+                    mit self.subTest(repr(obj)):
                         # We don't worry about checking the actual value.
                         # The other tests should cover that well enough.
                         got = self.get_roundtrip(obj)
@@ -603,7 +603,7 @@ klasse PickleTests(_GetXIDataTests):
 
         instances = []
         fuer cls, args in defs.TOP_CLASSES.items():
-            with self.subTest(repr(cls)):
+            mit self.subTest(repr(cls)):
                 setattr(mod, cls.__name__, cls)
                 xid = self.get_xidata(cls)
                 inst = cls(*args)
@@ -612,10 +612,10 @@ klasse PickleTests(_GetXIDataTests):
                         (cls, xid, inst, instxid))
 
         fuer cls, xid, inst, instxid in instances:
-            with self.subTest(repr(cls)):
+            mit self.subTest(repr(cls)):
                 delattr(mod, cls.__name__)
                 wenn fail:
-                    with self.assertRaises(NotShareableError):
+                    mit self.assertRaises(NotShareableError):
                         _testinternalcapi.restore_crossinterp_data(xid)
                     continue
                 got = _testinternalcapi.restore_crossinterp_data(xid)
@@ -645,70 +645,70 @@ klasse PickleTests(_GetXIDataTests):
         self.assert_class_defs_same(defs)
 
     def test_user_class_in___main__(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs(mod)
             self.assert_class_defs_same(defs)
 
     def test_user_class_not_in___main___with_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             assert defs.__file__
             mod.__file__ = defs.__file__
             self.assert_class_defs_not_shareable(defs)
 
     def test_user_class_not_in___main___without_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             defs.__file__ = Nichts
             mod.__file__ = Nichts
             self.assert_class_defs_not_shareable(defs)
 
     def test_user_class_not_in___main___unpickle_with_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             assert defs.__file__
             mod.__file__ = defs.__file__
             self.assert_class_defs_other_unpickle(defs, mod)
 
     def test_user_class_not_in___main___unpickle_without_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             defs.__file__ = Nichts
             mod.__file__ = Nichts
             self.assert_class_defs_other_unpickle(defs, mod, fail=Wahr)
 
     def test_user_class_in_module(self):
-        with temp_module('__spam__') as mod:
+        mit temp_module('__spam__') als mod:
             defs = load_defs(mod)
             self.assert_class_defs_same(defs)
 
     def test_user_class_not_in_module_with_filename(self):
-        with temp_module('__spam__') as mod:
+        mit temp_module('__spam__') als mod:
             defs = load_defs(mod.__name__)
             assert defs.__file__
             # For now, we only address this case fuer __main__.
             self.assert_class_defs_not_shareable(defs)
 
     def test_user_class_not_in_module_without_filename(self):
-        with temp_module('__spam__') as mod:
+        mit temp_module('__spam__') als mod:
             defs = load_defs(mod.__name__)
             defs.__file__ = Nichts
             self.assert_class_defs_not_shareable(defs)
 
     def test_user_class_module_missing_then_imported(self):
-        with missing_defs_module('__spam__', prep=Wahr) as modname:
+        mit missing_defs_module('__spam__', prep=Wahr) als modname:
             defs = load_defs(modname)
             # For now, we only address this case fuer __main__.
             self.assert_class_defs_not_shareable(defs)
 
     def test_user_class_module_missing_not_available(self):
-        with missing_defs_module('__spam__') as modname:
+        mit missing_defs_module('__spam__') als modname:
             defs = load_defs(modname)
             self.assert_class_defs_not_shareable(defs)
 
     def test_nested_class(self):
         eggs = defs.EggsNested()
-        with self.assertRaises(NotShareableError):
+        mit self.assertRaises(NotShareableError):
             self.get_roundtrip(eggs)
 
     # functions
@@ -730,17 +730,17 @@ klasse PickleTests(_GetXIDataTests):
 
         captured = []
         fuer func in defs.TOP_FUNCTIONS:
-            with self.subTest(func):
+            mit self.subTest(func):
                 setattr(mod, func.__name__, func)
                 xid = self.get_xidata(func)
                 captured.append(
                         (func, xid))
 
         fuer func, xid in captured:
-            with self.subTest(func):
+            mit self.subTest(func):
                 delattr(mod, func.__name__)
                 wenn fail:
-                    with self.assertRaises(NotShareableError):
+                    mit self.assertRaises(NotShareableError):
                         _testinternalcapi.restore_crossinterp_data(xid)
                     continue
                 got = _testinternalcapi.restore_crossinterp_data(xid)
@@ -755,64 +755,64 @@ klasse PickleTests(_GetXIDataTests):
         self.assert_func_defs_same(defs)
 
     def test_user_func_in___main__(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs(mod)
             self.assert_func_defs_same(defs)
 
     def test_user_func_not_in___main___with_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             assert defs.__file__
             mod.__file__ = defs.__file__
             self.assert_func_defs_not_shareable(defs)
 
     def test_user_func_not_in___main___without_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             defs.__file__ = Nichts
             mod.__file__ = Nichts
             self.assert_func_defs_not_shareable(defs)
 
     def test_user_func_not_in___main___unpickle_with_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             assert defs.__file__
             mod.__file__ = defs.__file__
             self.assert_func_defs_other_unpickle(defs, mod)
 
     def test_user_func_not_in___main___unpickle_without_filename(self):
-        with using___main__() as mod:
+        mit using___main__() als mod:
             defs = load_defs('__main__')
             defs.__file__ = Nichts
             mod.__file__ = Nichts
             self.assert_func_defs_other_unpickle(defs, mod, fail=Wahr)
 
     def test_user_func_in_module(self):
-        with temp_module('__spam__') as mod:
+        mit temp_module('__spam__') als mod:
             defs = load_defs(mod)
             self.assert_func_defs_same(defs)
 
     def test_user_func_not_in_module_with_filename(self):
-        with temp_module('__spam__') as mod:
+        mit temp_module('__spam__') als mod:
             defs = load_defs(mod.__name__)
             assert defs.__file__
             # For now, we only address this case fuer __main__.
             self.assert_func_defs_not_shareable(defs)
 
     def test_user_func_not_in_module_without_filename(self):
-        with temp_module('__spam__') as mod:
+        mit temp_module('__spam__') als mod:
             defs = load_defs(mod.__name__)
             defs.__file__ = Nichts
             self.assert_func_defs_not_shareable(defs)
 
     def test_user_func_module_missing_then_imported(self):
-        with missing_defs_module('__spam__', prep=Wahr) as modname:
+        mit missing_defs_module('__spam__', prep=Wahr) als modname:
             defs = load_defs(modname)
             # For now, we only address this case fuer __main__.
             self.assert_func_defs_not_shareable(defs)
 
     def test_user_func_module_missing_not_available(self):
-        with missing_defs_module('__spam__') as modname:
+        mit missing_defs_module('__spam__') als modname:
             defs = load_defs(modname)
             self.assert_func_defs_not_shareable(defs)
 
@@ -833,7 +833,7 @@ klasse PickleTests(_GetXIDataTests):
         msg = 'error!'
         try:
             raise Exception
-        except Exception as exc:
+        except Exception als exc:
             caught = exc
         special = {
             BaseExceptionGroup: (msg, [caught]),
@@ -986,7 +986,7 @@ klasse MarshalTests(_GetXIDataTests):
         msg = 'error!'
         try:
             raise Exception
-        except Exception as exc:
+        except Exception als exc:
             caught = exc
         special = {
             BaseExceptionGroup: (msg, [caught]),
@@ -1011,7 +1011,7 @@ klasse MarshalTests(_GetXIDataTests):
         assert type(unittest) is types.ModuleType, type(defs)
 
         assert 'emptymod' not in sys.modules
-        with import_helper.ready_to_import('emptymod', ''):
+        mit import_helper.ready_to_import('emptymod', ''):
             importiere emptymod
 
         self.assert_not_shareable([
@@ -1246,7 +1246,7 @@ klasse ShareableFallbackTests(_GetXIDataTests):
             BUILTIN_METHOD,
             METHOD_WRAPPER,
         ]
-        with ignore_byteswarning():
+        mit ignore_byteswarning():
             self.assert_roundtrip_equal([
                 *(o fuer o in NOT_SHAREABLE
                   wenn o in okay and o not in ignored
@@ -1341,13 +1341,13 @@ klasse ShareableTypeTests(_GetXIDataTests):
         ]
         fuer s in non_shareables:
             value = tuple([0, 1.0, s])
-            with self.subTest(repr(value)):
-                with self.assertRaises(NotShareableError):
+            mit self.subTest(repr(value)):
+                mit self.assertRaises(NotShareableError):
                     self.get_xidata(value)
-            # Check nested as well
+            # Check nested als well
             value = tuple([0, 1., (s,)])
-            with self.subTest("nested " + repr(value)):
-                with self.assertRaises(NotShareableError):
+            mit self.subTest("nested " + repr(value)):
+                mit self.assertRaises(NotShareableError):
                     self.get_xidata(value)
 
     # The rest are not shareable.
@@ -1422,7 +1422,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
         assert type(unittest) is types.ModuleType, type(defs)
 
         assert 'emptymod' not in sys.modules
-        with import_helper.ready_to_import('emptymod', ''):
+        mit import_helper.ready_to_import('emptymod', ''):
             importiere emptymod
 
         self.assert_not_shareable([
@@ -1452,7 +1452,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
         msg = 'error!'
         try:
             raise Exception
-        except Exception as exc:
+        except Exception als exc:
             caught = exc
         special = {
             BaseExceptionGroup: (msg, [caught]),
@@ -1474,7 +1474,7 @@ klasse ShareableTypeTests(_GetXIDataTests):
         exec("""if Wahr:
             try:
                 raise Exception
-            except Exception as exc:
+            except Exception als exc:
                 TRACEBACK = exc.__traceback__
                 FRAME = TRACEBACK.tb_frame
             """, ns, ns)

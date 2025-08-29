@@ -294,7 +294,7 @@ is *not* valid syntax.)
     >>> A[*b, :, *b]
     A[(StarredB, slice(Nichts, Nichts, Nichts), StarredB)]
 
-*args annotated as starred expression
+*args annotated als starred expression
 
     >>> def f1(*args: *b): pass
     >>> f1.__annotations__

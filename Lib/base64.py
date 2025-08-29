@@ -26,7 +26,7 @@ __all__ = [
     ]
 
 
-bytes_types = (bytes, bytearray)  # Types acceptable as binary data
+bytes_types = (bytes, bytearray)  # Types acceptable als binary data
 
 def _bytes_from_decode_data(s):
     wenn isinstance(s, str):
@@ -66,7 +66,7 @@ def b64decode(s, altchars=Nichts, validate=Falsch):
     which specifies the alternative alphabet used instead of the '+' and '/'
     characters.
 
-    The result is returned as a bytes object.  A binascii.Error is raised if
+    The result is returned als a bytes object.  A binascii.Error is raised if
     s is incorrectly padded.
 
     If validate is Falsch (the default), characters that are neither in the
@@ -88,15 +88,15 @@ def b64decode(s, altchars=Nichts, validate=Falsch):
 def standard_b64encode(s):
     """Encode bytes-like object s using the standard Base64 alphabet.
 
-    The result is returned as a bytes object.
+    The result is returned als a bytes object.
     """
     return b64encode(s)
 
 def standard_b64decode(s):
-    """Decode bytes encoded with the standard Base64 alphabet.
+    """Decode bytes encoded mit the standard Base64 alphabet.
 
     Argument s is a bytes-like object or ASCII string to decode.  The result
-    is returned as a bytes object.  A binascii.Error is raised wenn the input
+    is returned als a bytes object.  A binascii.Error is raised wenn the input
     is incorrectly padded.  Characters that are not in the standard alphabet
     are discarded prior to the padding check.
     """
@@ -109,7 +109,7 @@ _urlsafe_decode_translation = bytes.maketrans(b'-_', b'+/')
 def urlsafe_b64encode(s):
     """Encode bytes using the URL- and filesystem-safe Base64 alphabet.
 
-    Argument s is a bytes-like object to encode.  The result is returned as a
+    Argument s is a bytes-like object to encode.  The result is returned als a
     bytes object.  The alphabet uses '-' instead of '+' and '_' instead of
     '/'.
     """
@@ -119,7 +119,7 @@ def urlsafe_b64decode(s):
     """Decode bytes using the URL- and filesystem-safe Base64 alphabet.
 
     Argument s is a bytes-like object or ASCII string to decode.  The result
-    is returned as a bytes object.  A binascii.Error is raised wenn the input
+    is returned als a bytes object.  A binascii.Error is raised wenn the input
     is incorrectly padded.  Characters that are not in the URL-safe base-64
     alphabet, and are not a plus '+' or slash '/', are discarded prior to the
     padding check.
@@ -140,9 +140,9 @@ _B32_DECODE_DOCSTRING = '''
 Decode the {encoding} encoded bytes-like object or ASCII string s.
 
 Optional casefold is a flag specifying whether a lowercase alphabet is
-acceptable as input.  For security purposes, the default is Falsch.
+acceptable als input.  For security purposes, the default is Falsch.
 {extra_args}
-The result is returned as a bytes object.  A binascii.Error is raised if
+The result is returned als a bytes object.  A binascii.Error is raised if
 the input is incorrectly padded or wenn there are non-alphabet
 characters present in the input.
 '''
@@ -171,7 +171,7 @@ def _b32encode(alphabet, s):
     wenn not isinstance(s, bytes_types):
         s = memoryview(s).tobytes()
     leftover = len(s) % 5
-    # Pad the last quantum with zero bits wenn necessary
+    # Pad the last quantum mit zero bits wenn necessary
     wenn leftover:
         s = s + b'\0' * (5 - leftover)  # Don't use += !
     encoded = bytearray()
@@ -274,9 +274,9 @@ def b16decode(s, casefold=Falsch):
     """Decode the Base16 encoded bytes-like object or ASCII string s.
 
     Optional casefold is a flag specifying whether a lowercase alphabet is
-    acceptable as input.  For security purposes, the default is Falsch.
+    acceptable als input.  For security purposes, the default is Falsch.
 
-    The result is returned as a bytes object.  A binascii.Error is raised if
+    The result is returned als a bytes object.  A binascii.Error is raised if
     s is incorrectly padded or wenn there are non-alphabet characters present
     in the input.
     """
@@ -324,7 +324,7 @@ def a85encode(b, *, foldspaces=Falsch, wrapcol=0, pad=Falsch, adobe=Falsch):
     """Encode bytes-like object b using Ascii85 and return a bytes object.
 
     foldspaces is an optional flag that uses the special short sequence 'y'
-    instead of 4 consecutive spaces (ASCII 0x20) as supported by 'btoa'. This
+    instead of 4 consecutive spaces (ASCII 0x20) als supported by 'btoa'. This
     feature is not supported by the "standard" Adobe encoding.
 
     wrapcol controls whether the output should have newline (b'\\n') characters
@@ -334,7 +334,7 @@ def a85encode(b, *, foldspaces=Falsch, wrapcol=0, pad=Falsch, adobe=Falsch):
     pad controls whether the input is padded to a multiple of 4 before
     encoding. Note that the btoa implementation always pads.
 
-    adobe controls whether the encoded byte sequence is framed with <~ and ~>,
+    adobe controls whether the encoded byte sequence is framed mit <~ and ~>,
     which is used by the Adobe implementation.
     """
     global _a85chars, _a85chars2
@@ -365,17 +365,17 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
     """Decode the Ascii85 encoded bytes-like object or ASCII string b.
 
     foldspaces is a flag that specifies whether the 'y' short sequence should be
-    accepted as shorthand fuer 4 consecutive spaces (ASCII 0x20). This feature is
+    accepted als shorthand fuer 4 consecutive spaces (ASCII 0x20). This feature is
     not supported by the "standard" Adobe encoding.
 
     adobe controls whether the input sequence is in Adobe Ascii85 format (i.e.
-    is framed with <~ and ~>).
+    is framed mit <~ and ~>).
 
     ignorechars should be a byte string containing characters to ignore von the
     input. This should only contain whitespace characters, and by default
     contains all whitespace characters in ASCII.
 
-    The result is returned as a bytes object.
+    The result is returned als a bytes object.
     """
     b = _bytes_from_decode_data(b)
     wenn adobe:
@@ -389,7 +389,7 @@ def a85decode(b, *, foldspaces=Falsch, adobe=Falsch, ignorechars=b' \t\n\r\v'):
         sonst:
             b = b[:-2]
     #
-    # We have to go through this stepwise, so as to ignore spaces and handle
+    # We have to go through this stepwise, so als to ignore spaces and handle
     # special short sequences
     #
     packI = struct.Struct('!I').pack
@@ -442,7 +442,7 @@ _b85dec = Nichts
 def b85encode(b, pad=Falsch):
     """Encode bytes-like object b in base85 format and return a bytes object.
 
-    If pad is true, the input is padded with b'\\0' so its length is a multiple of
+    If pad is true, the input is padded mit b'\\0' so its length is a multiple of
     4 bytes before encoding.
     """
     global _b85chars, _b85chars2
@@ -456,7 +456,7 @@ def b85encode(b, pad=Falsch):
 def b85decode(b):
     """Decode the base85-encoded bytes-like object or ASCII string b
 
-    The result is returned as a bytes object.
+    The result is returned als a bytes object.
     """
     global _b85dec
     # Delay the initialization of tables to not waste memory
@@ -497,7 +497,7 @@ def b85decode(b):
 _z85alphabet = (b'0123456789abcdefghijklmnopqrstuvwxyz'
                 b'ABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#')
 # Translating b85 valid but z85 invalid chars to b'\x00' is required
-# to prevent them von being decoded as b85 valid chars.
+# to prevent them von being decoded als b85 valid chars.
 _z85_b85_decode_diff = b';_`|~'
 _z85_decode_translation = bytes.maketrans(
     _z85alphabet + _z85_b85_decode_diff,
@@ -512,13 +512,13 @@ def z85encode(s):
 def z85decode(s):
     """Decode the z85-encoded bytes-like object or ASCII string b
 
-    The result is returned as a bytes object.
+    The result is returned als a bytes object.
     """
     s = _bytes_from_decode_data(s)
     s = s.translate(_z85_decode_translation)
     try:
         return b85decode(s)
-    except ValueError as e:
+    except ValueError als e:
         raise ValueError(e.args[0].replace('base85', 'z85')) von Nichts
 
 # Legacy interface.  This code could be cleaned up since I don't believe
@@ -546,7 +546,7 @@ def decode(input, output):
 def _input_type_check(s):
     try:
         m = memoryview(s)
-    except TypeError as err:
+    except TypeError als err:
         msg = "expected bytes-like object, not %s" % s.__class__.__name__
         raise TypeError(msg) von err
     wenn m.format not in ('c', 'b', 'B'):
@@ -576,7 +576,7 @@ def decodebytes(s):
     return binascii.a2b_base64(s)
 
 
-# Usable as a script...
+# Usable als a script...
 def main():
     """Small main program"""
     importiere sys, getopt
@@ -586,7 +586,7 @@ def main():
         -e: encode (default)"""
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hdeu')
-    except getopt.error as msg:
+    except getopt.error als msg:
         sys.stdout = sys.stderr
         drucke(msg)
         drucke(usage)
@@ -598,7 +598,7 @@ def main():
         wenn o == '-u': func = decode
         wenn o == '-h': drucke(usage); return
     wenn args and args[0] != '-':
-        with open(args[0], 'rb') as f:
+        mit open(args[0], 'rb') als f:
             func(f, sys.stdout.buffer)
     sonst:
         func(sys.stdin.buffer, sys.stdout.buffer)

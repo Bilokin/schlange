@@ -1,7 +1,7 @@
 importiere unittest
 importiere builtins
 importiere os
-von platform importiere system as platform_system
+von platform importiere system als platform_system
 
 
 klasse ExceptionClassTests(unittest.TestCase):
@@ -108,7 +108,7 @@ klasse ExceptionClassTests(unittest.TestCase):
         self.interface_test_driver(results)
 
     def test_interface_no_arg(self):
-        # Make sure that with no args that interface is correct
+        # Make sure that mit no args that interface is correct
         exc = Exception()
         results = ([len(exc.args), 0], [exc.args, tuple()],
                 [str(exc), ''],
@@ -172,7 +172,7 @@ klasse UsageTests(unittest.TestCase):
         except TypeError:
             return
         except Exception:
-            self.fail("TypeError expected when catching %s as specified in a "
+            self.fail("TypeError expected when catching %s als specified in a "
                         "tuple" % type(object_))
 
     def test_raise_new_style_non_exception(self):

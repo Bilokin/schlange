@@ -6,8 +6,8 @@ importiere threading
 importiere unittest
 
 von test.support importiere socket_helper
-von test.test_asyncio importiere utils as test_utils
-von test.test_asyncio importiere functional as func_tests
+von test.test_asyncio importiere utils als test_utils
+von test.test_asyncio importiere functional als func_tests
 
 
 def tearDownModule():
@@ -44,7 +44,7 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
             await writer.wait_closed()
 
         async def main(srv):
-            async with srv:
+            async mit srv:
                 await srv.serve_forever()
 
         srv = self.loop.run_until_complete(asyncio.start_server(
@@ -55,8 +55,8 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
         main_task = self.loop.create_task(main(srv))
 
         addr = srv.sockets[0].getsockname()
-        with self.assertRaises(asyncio.CancelledError):
-            with self.tcp_client(lambda sock: client(sock, addr)):
+        mit self.assertRaises(asyncio.CancelledError):
+            mit self.tcp_client(lambda sock: client(sock, addr)):
                 self.loop.run_until_complete(main_task)
 
         self.assertEqual(srv.sockets, ())
@@ -65,7 +65,7 @@ klasse BaseStartServer(func_tests.FunctionalTestCaseMixin):
         self.assertIsNichts(srv._waiters)
         self.assertFalsch(srv.is_serving())
 
-        with self.assertRaisesRegex(RuntimeError, r'is closed'):
+        mit self.assertRaisesRegex(RuntimeError, r'is closed'):
             self.loop.run_until_complete(srv.serve_forever())
 
 
@@ -95,21 +95,21 @@ klasse SelectorStartServerTests(BaseStartServer, unittest.TestCase):
             await writer.wait_closed()
 
         async def main(srv):
-            async with srv:
+            async mit srv:
                 self.assertFalsch(srv.is_serving())
                 await srv.start_serving()
                 self.assertWahr(srv.is_serving())
                 started.set()
                 await srv.serve_forever()
 
-        with test_utils.unix_socket_path() as addr:
+        mit test_utils.unix_socket_path() als addr:
             srv = self.loop.run_until_complete(asyncio.start_unix_server(
                 serve, addr, start_serving=Falsch))
 
             main_task = self.loop.create_task(main(srv))
 
-            with self.assertRaises(asyncio.CancelledError):
-                with self.unix_client(lambda sock: client(sock, addr)):
+            mit self.assertRaises(asyncio.CancelledError):
+                mit self.unix_client(lambda sock: client(sock, addr)):
                     self.loop.run_until_complete(main_task)
 
             self.assertEqual(srv.sockets, ())
@@ -118,7 +118,7 @@ klasse SelectorStartServerTests(BaseStartServer, unittest.TestCase):
             self.assertIsNichts(srv._waiters)
             self.assertFalsch(srv.is_serving())
 
-            with self.assertRaisesRegex(RuntimeError, r'is closed'):
+            mit self.assertRaisesRegex(RuntimeError, r'is closed'):
                 self.loop.run_until_complete(srv.serve_forever())
 
 
@@ -272,7 +272,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_addr_cleanup(self):
         # Default scenario
-        with test_utils.unix_socket_path() as addr:
+        mit test_utils.unix_socket_path() als addr:
             async def serve(*args):
                 pass
 
@@ -284,11 +284,11 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_sock_cleanup(self):
         # Using already bound socket
-        with test_utils.unix_socket_path() as addr:
+        mit test_utils.unix_socket_path() als addr:
             async def serve(*args):
                 pass
 
-            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+            mit socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) als sock:
                 sock.bind(addr)
 
                 srv = await asyncio.start_unix_server(serve, sock=sock)
@@ -299,11 +299,11 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_cleanup_gone(self):
         # Someone sonst has already cleaned up the socket
-        with test_utils.unix_socket_path() as addr:
+        mit test_utils.unix_socket_path() als addr:
             async def serve(*args):
                 pass
 
-            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+            mit socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) als sock:
                 sock.bind(addr)
 
                 srv = await asyncio.start_unix_server(serve, sock=sock)
@@ -314,15 +314,15 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
 
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_cleanup_replaced(self):
-        # Someone sonst has replaced the socket with their own
-        with test_utils.unix_socket_path() as addr:
+        # Someone sonst has replaced the socket mit their own
+        mit test_utils.unix_socket_path() als addr:
             async def serve(*args):
                 pass
 
             srv = await asyncio.start_unix_server(serve, addr)
 
             os.unlink(addr)
-            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+            mit socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) als sock:
                 sock.bind(addr)
 
                 srv.close()
@@ -331,7 +331,7 @@ klasse UnixServerCleanupTests(unittest.IsolatedAsyncioTestCase):
     @socket_helper.skip_unless_bind_unix_socket
     async def test_unix_server_cleanup_prevented(self):
         # Automatic cleanup explicitly disabled
-        with test_utils.unix_socket_path() as addr:
+        mit test_utils.unix_socket_path() als addr:
             async def serve(*args):
                 pass
 

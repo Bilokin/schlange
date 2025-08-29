@@ -15,7 +15,7 @@ def callback_func(arg):
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
 klasse call_function_TestCase(unittest.TestCase):
     # _ctypes.call_function is deprecated and private, but used by
-    # Gary Bishp's readline module.  If we have it, we must test it as well.
+    # Gary Bishp's readline module.  If we have it, we must test it als well.
 
     def test(self):
         kernel32 = ctypes.windll.kernel32
@@ -44,7 +44,7 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
 
     @contextlib.contextmanager
     def expect_unraisable(self, exc_type, exc_msg=Nichts):
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             yield
 
             self.assertIsInstance(cm.unraisable.exc_value, exc_type)
@@ -57,23 +57,23 @@ klasse CallbackTracbackTestCase(unittest.TestCase):
 
     def test_ValueError(self):
         cb = CFUNCTYPE(c_int, c_int)(callback_func)
-        with self.expect_unraisable(ValueError, '42'):
+        mit self.expect_unraisable(ValueError, '42'):
             cb(42)
 
     def test_IntegerDivisionError(self):
         cb = CFUNCTYPE(c_int, c_int)(callback_func)
-        with self.expect_unraisable(ZeroDivisionError):
+        mit self.expect_unraisable(ZeroDivisionError):
             cb(0)
 
     def test_FloatDivisionError(self):
         cb = CFUNCTYPE(c_int, c_double)(callback_func)
-        with self.expect_unraisable(ZeroDivisionError):
+        mit self.expect_unraisable(ZeroDivisionError):
             cb(0.0)
 
     def test_TypeErrorDivisionError(self):
         cb = CFUNCTYPE(c_int, c_char_p)(callback_func)
         err_msg = "unsupported operand type(s) fuer /: 'int' and 'bytes'"
-        with self.expect_unraisable(TypeError, err_msg):
+        mit self.expect_unraisable(TypeError, err_msg):
             cb(b"spam")
 
 

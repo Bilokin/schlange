@@ -23,7 +23,7 @@ klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_case_sensitive(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.unset('PYTHONCASEOK')
             self.caseok_env_changed(should_exist=Falsch)
             spec = self.find_spec()
@@ -31,7 +31,7 @@ klasse ExtensionModuleCaseSensitivityTest(util.CASEOKTestBase):
 
     @unittest.skipIf(sys.flags.ignore_environment, 'ignore_environment flag was set')
     def test_case_insensitivity(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.set('PYTHONCASEOK', '1')
             self.caseok_env_changed(should_exist=Wahr)
             spec = self.find_spec()

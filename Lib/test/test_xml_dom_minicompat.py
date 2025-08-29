@@ -18,9 +18,9 @@ klasse EmptyNodeListTestCase(unittest.TestCase):
         self.assertIsNichts(node_list.item(0))
         self.assertIsNichts(node_list.item(-1)) # invalid item
 
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             node_list[0]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             node_list[-1]
 
     def test_emptynodelist_length(self):
@@ -28,7 +28,7 @@ klasse EmptyNodeListTestCase(unittest.TestCase):
         # Reading
         self.assertEqual(node_list.length, 0)
         # Writing
-        with self.assertRaises(xml.dom.NoModificationAllowedErr):
+        mit self.assertRaises(xml.dom.NoModificationAllowedErr):
             node_list.length = 111
 
     def test_emptynodelist___add__(self):
@@ -51,12 +51,12 @@ klasse NodeListTestCase(unittest.TestCase):
         self.assertIsNichts(node_list.item(0))
         self.assertIsNichts(node_list.item(-1))
 
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             node_list[0]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             node_list[-1]
 
-        # Now, use a NodeList with items.
+        # Now, use a NodeList mit items.
         node_list.append(111)
         node_list.append(999)
 
@@ -71,7 +71,7 @@ klasse NodeListTestCase(unittest.TestCase):
         # Reading
         self.assertEqual(node_list.length, 2)
         # Writing
-        with self.assertRaises(xml.dom.NoModificationAllowedErr):
+        mit self.assertRaises(xml.dom.NoModificationAllowedErr):
             node_list.length = 111
 
     def test_nodelist___add__(self):

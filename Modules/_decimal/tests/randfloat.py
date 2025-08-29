@@ -9,7 +9,7 @@ TEST_SIZE = 2
 
 
 def test_short_halfway_cases():
-    # exact halfway cases with a small number of significant digits
+    # exact halfway cases mit a small number of significant digits
     fuer k in 0, 5, 10, 15, 20:
         # upper = smallest integer >= 2**54/5**k
         upper = -(-2**54//5**k)
@@ -20,7 +20,7 @@ def test_short_halfway_cases():
         fuer i in range(10 * TEST_SIZE):
             # Select a random odd n in [2**53/5**k,
             # 2**54/5**k). Then n * 10**k gives a halfway case
-            # with small number of significant digits.
+            # mit small number of significant digits.
             n, e = random.randrange(lower, upper, 2), k
 
             # Remove any additional powers of 5.
@@ -34,18 +34,18 @@ def test_short_halfway_cases():
             while digits < 10**20:
                 s = '{}e{}'.format(digits, exponent)
                 yield s
-                # Same again, but with extra trailing zeros.
+                # Same again, but mit extra trailing zeros.
                 s = '{}e{}'.format(digits * 10**40, exponent - 40)
                 yield s
                 digits *= 2
 
             # Try numbers of the form n * 5**p2 * 10**(e - p5), p5
-            # >= 0, with n * 5**p5 < 10**20.
+            # >= 0, mit n * 5**p5 < 10**20.
             digits, exponent = n, e
             while digits < 10**20:
                 s = '{}e{}'.format(digits, exponent)
                 yield s
-                # Same again, but with extra trailing zeros.
+                # Same again, but mit extra trailing zeros.
                 s = '{}e{}'.format(digits * 10**40, exponent - 40)
                 yield s
                 digits *= 5
@@ -79,7 +79,7 @@ def test_halfway_cases():
             yield s
 
 def test_boundaries():
-    # boundaries expressed as triples (n, e, u), where
+    # boundaries expressed als triples (n, e, u), where
     # n*10**e is an approximation to the boundary value and
     # u*10**e is 1ulp
     boundaries = [
@@ -102,7 +102,7 @@ def test_boundaries():
 def test_underflow_boundary():
     # test values close to 2**-1075, the underflow boundary; similar
     # to boundary_tests, except that the random error doesn't scale
-    # with n
+    # mit n
     fuer exponent in range(-400, -320):
         base = 10**-exponent // 2**1075
         fuer j in range(TEST_SIZE):

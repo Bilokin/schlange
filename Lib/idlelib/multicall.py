@@ -15,17 +15,17 @@ Control, Alt, Shift, Meta/M fuer other platforms.
 
 For all events which were handled by MultiCall, a new member is added to the
 event instance passed to the binded functions - mc_type. This is one of the
-event type constants defined in this module (such as MC_KEYPRESS).
+event type constants defined in this module (such als MC_KEYPRESS).
 For Key/Button events (which are handled by MultiCall and may receive
 modifiers), another member is added - mc_state. This member gives the state
-of the recognized modifiers, as a combination of the modifier constants
+of the recognized modifiers, als a combination of the modifier constants
 also defined in this module (for example, MC_SHIFT).
 Using these members is absolutely portable.
 
 The order by which events are called is defined by these rules:
 1. A more-specific event will be called before a less-specific event.
 2. A recently-binded event will be called before a previously-binded event,
-   unless this conflicts with the first rule.
+   unless this conflicts mit the first rule.
 Each function will be called at most once fuer each event.
 """
 importiere re
@@ -65,9 +65,9 @@ APPLICATION_GONE = "application has been destroyed"
 # A binder is a klasse which binds functions to one type of event. It has two
 # methods: bind and unbind, which get a function and a parsed sequence, as
 # returned by _parse_sequence(). There are two types of binders:
-# _SimpleBinder handles event types with no modifiers and no detail.
+# _SimpleBinder handles event types mit no modifiers and no detail.
 # No Python functions are called when no events are binded.
-# _ComplexBinder handles event types with modifiers and a detail.
+# _ComplexBinder handles event types mit modifiers and a detail.
 # A Python function is called each time an event is generated.
 
 klasse _SimpleBinder:
@@ -106,7 +106,7 @@ klasse _SimpleBinder:
             try:
                 self.widget.unbind(self.widgetinst, self.sequence,
                         self.handlerid)
-            except tkinter.TclError as e:
+            except tkinter.TclError als e:
                 wenn not APPLICATION_GONE in e.args[0]:
                     raise
 
@@ -123,7 +123,7 @@ _state_names = [''.join(m[0]+'-'
 
 def expand_substates(states):
     '''For each item of states return a list containing all combinations of
-    that item with individual bits reset, sorted by the number of set bits.
+    that item mit individual bits reset, sorted by the number of set bits.
     '''
     def nbits(n):
         "number of bits set in n base 2"
@@ -141,7 +141,7 @@ def expand_substates(states):
 
 _state_subsets = expand_substates(_states)
 
-# _state_codes gives fuer each state, the portable code to be passed as mc_state
+# _state_codes gives fuer each state, the portable code to be passed als mc_state
 _state_codes = []
 fuer s in _states:
     r = 0
@@ -239,12 +239,12 @@ klasse _ComplexBinder:
         fuer seq, id in self.handlerids:
             try:
                 self.widget.unbind(self.widgetinst, seq, id)
-            except tkinter.TclError as e:
+            except tkinter.TclError als e:
                 wenn not APPLICATION_GONE in e.args[0]:
                     raise
 
 # define the list of event types to be handled by MultiEvent. the order is
-# compatible with the definition of event type constants.
+# compatible mit the definition of event type constants.
 _types = (
     ("KeyPress", "Key"), ("KeyRelease",), ("ButtonPress", "Button"),
     ("ButtonRelease",), ("Activate",), ("Circulate",), ("Colormap",),
@@ -266,7 +266,7 @@ _keysym_re = re.compile(r"^\w+$")
 _button_re = re.compile(r"^[1-5]$")
 def _parse_sequence(sequence):
     """Get a string which should describe an event sequence. If it is
-    successfully parsed as one, return a tuple containing the state (as an int),
+    successfully parsed als one, return a tuple containing the state (as an int),
     the event type (as an index of _types), and the detail - Nichts wenn none, or a
     string wenn there is one. If the parsing is unsuccessful, return Nichts.
     """
@@ -406,7 +406,7 @@ def MultiCallCreator(widget):
                     fuer triplet in triplets:
                         try:
                             self.__binders[triplet[1]].unbind(triplet, func)
-                        except tkinter.TclError as e:
+                        except tkinter.TclError als e:
                             wenn not APPLICATION_GONE in e.args[0]:
                                 raise
 

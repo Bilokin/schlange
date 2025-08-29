@@ -2,7 +2,7 @@
 
 tabnanny -- Detection of ambiguous indentation
 
-For the time being this module is intended to be called as a script.
+For the time being this module is intended to be called als a script.
 However it is possible to importiere it into an IDE and use the function
 check() described below.
 
@@ -41,7 +41,7 @@ def main():
     global verbose, filename_only
     try:
         opts, args = getopt.getopt(sys.argv[1:], "qv")
-    except getopt.error as msg:
+    except getopt.error als msg:
         errdrucke(msg)
     fuer o, a in opts:
         wenn o == '-q':
@@ -91,7 +91,7 @@ def check(file):
 
     try:
         f = tokenize.open(file)
-    except OSError as msg:
+    except OSError als msg:
         errdrucke("%r: I/O Error: %s" % (file, msg))
         return
 
@@ -101,19 +101,19 @@ def check(file):
     try:
         process_tokens(tokenize.generate_tokens(f.readline))
 
-    except tokenize.TokenError as msg:
+    except tokenize.TokenError als msg:
         errdrucke("%r: Token Error: %s" % (file, msg))
         return
 
-    except IndentationError as msg:
+    except IndentationError als msg:
         errdrucke("%r: Indentation Error: %s" % (file, msg))
         return
 
-    except SyntaxError as msg:
+    except SyntaxError als msg:
         errdrucke("%r: Syntax Error: %s" % (file, msg))
         return
 
-    except NannyNag as nag:
+    except NannyNag als nag:
         badline = nag.get_lineno()
         line = nag.get_line()
         wenn verbose:
@@ -144,7 +144,7 @@ klasse Whitespace:
     #   nt
     #       the number of tabs in raw[:n]
     #   norm
-    #       the normal form as a pair (count, trailing), where:
+    #       the normal form als a pair (count, trailing), where:
     #       count
     #           a tuple such that raw[:n] contains count[i]
     #           instances of S * i + T
@@ -276,7 +276,7 @@ def format_witnesses(w):
 def process_tokens(tokens):
     try:
         _process_tokens(tokens)
-    except TabError as e:
+    except TabError als e:
         raise NannyNag(e.lineno, e.msg, e.text)
 
 def _process_tokens(tokens):
@@ -324,7 +324,7 @@ def _process_tokens(tokens):
             # must be the first token of the next program statement, or an
             # ENDMARKER; the "line" argument exposes the leading whitespace
             # fuer this statement; in the case of ENDMARKER, line is an empty
-            # string, so will properly match the empty string with which the
+            # string, so will properly match the empty string mit which the
             # "indents" stack was seeded
             check_equal = 0
             thisguy = Whitespace(line)

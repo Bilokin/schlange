@@ -81,29 +81,29 @@ klasse MimeTypesTestCase(unittest.TestCase):
         # Unreadable file returns Nichts
         self.assertIsNichts(mimetypes.read_mime_types("non-existent"))
 
-        with os_helper.temp_dir() as directory:
+        mit os_helper.temp_dir() als directory:
             data = "x-application/x-unittest pyunit\n"
             file = os.path.join(directory, "sample.mimetype")
-            with open(file, 'w', encoding="utf-8") as f:
+            mit open(file, 'w', encoding="utf-8") als f:
                 f.write(data)
             mime_dict = mimetypes.read_mime_types(file)
             eq(mime_dict[".pyunit"], "x-application/x-unittest")
 
             data = "x-application/x-unittest2 pyunit2\n"
             file = os.path.join(directory, "sample2.mimetype")
-            with open(file, 'w', encoding="utf-8") as f:
+            mit open(file, 'w', encoding="utf-8") als f:
                 f.write(data)
             mime_dict = mimetypes.read_mime_types(os_helper.FakePath(file))
             eq(mime_dict[".pyunit2"], "x-application/x-unittest2")
 
-        # bpo-41048: read_mime_types should read the rule file with 'utf-8' encoding.
-        # Not with locale encoding. _bootlocale has been imported because io.open(...)
+        # bpo-41048: read_mime_types should read the rule file mit 'utf-8' encoding.
+        # Not mit locale encoding. _bootlocale has been imported because io.open(...)
         # uses it.
         data = "application/no-mans-land  Fran\u00E7ais"
         filename = "filename"
         fp = io.StringIO(data)
-        with unittest.mock.patch.object(mimetypes, 'open',
-                                        return_value=fp) as mock_open:
+        mit unittest.mock.patch.object(mimetypes, 'open',
+                                        return_value=fp) als mock_open:
             mime_dict = mimetypes.read_mime_types(filename)
             mock_open.assert_called_with(filename, encoding='utf-8')
         eq(mime_dict[".Français"], "application/no-mans-land")
@@ -122,8 +122,8 @@ klasse MimeTypesTestCase(unittest.TestCase):
 
     def test_filename_with_url_delimiters(self):
         # bpo-38449: URL delimiters cases should be handled also.
-        # They would have different mime types wenn interpreted as URL as
-        # compared to when interpreted as filename because of the semicolon.
+        # They would have different mime types wenn interpreted als URL as
+        # compared to when interpreted als filename because of the semicolon.
         eq = self.assertEqual
         gzip_expected = ('application/x-tar', 'gzip')
         fuer name in (
@@ -139,13 +139,13 @@ klasse MimeTypesTestCase(unittest.TestCase):
                            'c:', 'c:/', 'c:\\', 'c:/d/', 'c:\\d\\',
                            '//share/server/', '\\\\share\\server\\'):
                 path = prefix + name
-                with self.subTest(path=path):
+                mit self.subTest(path=path):
                     eq(self.db.guess_file_type(path), gzip_expected)
                     eq(self.db.guess_type(path), gzip_expected)
             expected = (Nichts, Nichts) wenn os.name == 'nt' sonst gzip_expected
             fuer prefix in ('//', '\\\\', '//share/', '\\\\share\\'):
                 path = prefix + name
-                with self.subTest(path=path):
+                mit self.subTest(path=path):
                     eq(self.db.guess_file_type(path), expected)
                     eq(self.db.guess_type(path), expected)
         eq(self.db.guess_file_type(r" \"\`;b&b&c |.tar.gz"), gzip_expected)
@@ -290,7 +290,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
                 ("video/x-m4v", ".m4v"),
                 ("video/x-ms-wmv", ".wmv"),
             ):
-                with self.subTest(mime_type=mime_type, ext=ext):
+                mit self.subTest(mime_type=mime_type, ext=ext):
                     self.assertEqual(mimetypes.guess_extension(mime_type), ext)
 
         check_extensions()
@@ -309,7 +309,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
                 ("video/mpeg", ".mpeg"),
                 ("video/mpeg", ".mpg"),
             ):
-                with self.subTest(mime_type=mime_type, ext=ext):
+                mit self.subTest(mime_type=mime_type, ext=ext):
                     result, _ = mimetypes.guess_file_type(f"filename{ext}")
                     self.assertEqual(result, mime_type)
 
@@ -387,7 +387,7 @@ klasse MimeTypesTestCase(unittest.TestCase):
         self.assertEqual(mime_type, 'testing/type')
 
     def test_add_type_with_undotted_extension_deprecated(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             mimetypes.add_type("testing/type", "undotted")
 
 
@@ -501,7 +501,7 @@ klasse CommandLineTest(unittest.TestCase):
             ("-e image/jpg", "error: unknown type image/jpg"),
             ("foo.bar_ext", "error: media type unknown fuer foo.bar_ext"),
         ]:
-            with self.subTest(command=command):
+            mit self.subTest(command=command):
                 result = "\n".join(mimetypes._main(shlex.split(command)))
                 self.assertEqual(result, expected)
 

@@ -8,7 +8,7 @@ von test importiere support
 
 importiere gc
 importiere io
-importiere _pyio as pyio
+importiere _pyio als pyio
 importiere pickle
 importiere sys
 importiere weakref
@@ -488,12 +488,12 @@ klasse PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         a = [buf]
         a.append(a)
         # The Python implementation emits an unraisable exception.
-        with support.catch_unraisable_exception():
+        mit support.catch_unraisable_exception():
             del memio
         del buf
         del a
         # The C implementation emits an unraisable exception.
-        with support.catch_unraisable_exception():
+        mit support.catch_unraisable_exception():
             gc.collect()
         self.assertIsNichts(memiowr())
         self.assertIsNichts(bufwr())

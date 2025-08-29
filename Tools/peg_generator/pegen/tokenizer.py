@@ -81,7 +81,7 @@ klasse Tokenizer:
             lines = {}
             count = 0
             seen = 0
-            with open(self._path) as f:
+            mit open(self._path) als f:
                 fuer l in f:
                     count += 1
                     wenn count in line_numbers:

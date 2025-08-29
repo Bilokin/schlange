@@ -113,13 +113,13 @@ klasse StructSeqTest(unittest.TestCase):
         t = time.struct_time
 
         error_message = re.escape("got duplicate or unexpected field name(s)")
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("1234567890", dict={"tm_zone": "some zone"})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("1234567890", dict={"tm_zone": "some zone", "tm_mon": 1})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("1234567890", dict={"error": 0, "tm_zone": "some zone"})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("1234567890", dict={"error": 0, "tm_zone": "some zone", "tm_mon": 1})
 
     def test_constructor_with_duplicate_unnamed_fields(self):
@@ -134,7 +134,7 @@ klasse StructSeqTest(unittest.TestCase):
         self.assertEqual(r.st_atime, -1.0)
         self.assertEqual(r, tuple(range(n_visible_fields)))
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                                     re.escape("got duplicate or unexpected field name(s)")):
             os.stat_result((*range(n_visible_fields), -1.0), {'st_atime': -1.0})
 
@@ -142,19 +142,19 @@ klasse StructSeqTest(unittest.TestCase):
         t = time.struct_time
 
         error_message = re.escape("got duplicate or unexpected field name(s)")
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"tm_year": 0})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"tm_year": 0, "tm_mon": 1})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"tm_zone": "some zone", "tm_mon": 1})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"tm_zone": "some zone", "error": 0})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"error": 0, "tm_zone": "some zone", "tm_mon": 1})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"error": 0})
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             t("123456789", dict={"tm_zone": "some zone", "error": 0})
 
     def test_eviltuple(self):
@@ -244,7 +244,7 @@ klasse StructSeqTest(unittest.TestCase):
         self.assertIsNot(r3.st_atime_ns, r.st_atime_ns)
 
     def test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing.
+        # Test extended slicing by comparing mit list slicing.
         t = time.gmtime()
         L = list(t)
         indices = (0, Nichts, 1, 3, 19, 300, -1, -2, -31, -300)
@@ -280,9 +280,9 @@ klasse StructSeqTest(unittest.TestCase):
         self.assertEqual(copy.replace(t, user=1.5, system=2.5), (1.5, 2.5, *t[2:]))
 
         # unknown fields
-        with self.assertRaisesRegex(TypeError, 'unexpected field name'):
+        mit self.assertRaisesRegex(TypeError, 'unexpected field name'):
             copy.replace(t, error=-1)
-        with self.assertRaisesRegex(TypeError, 'unexpected field name'):
+        mit self.assertRaisesRegex(TypeError, 'unexpected field name'):
             copy.replace(t, user=1, error=-1)
 
     def test_copy_replace_with_invisible_fields(self):
@@ -308,7 +308,7 @@ klasse StructSeqTest(unittest.TestCase):
 
         # named invisible fields
         self.assertHasAttr(t, 'tm_zone')
-        with self.assertRaisesRegex(AttributeError, 'readonly attribute'):
+        mit self.assertRaisesRegex(AttributeError, 'readonly attribute'):
             t.tm_zone = 'some other zone'
         self.assertEqual(t2.tm_zone, t.tm_zone)
         self.assertEqual(t3.tm_zone, t.tm_zone)
@@ -322,11 +322,11 @@ klasse StructSeqTest(unittest.TestCase):
         self.assertEqual(t7.tm_zone, 'some other zone')
 
         # unknown fields
-        with self.assertRaisesRegex(TypeError, 'unexpected field name'):
+        mit self.assertRaisesRegex(TypeError, 'unexpected field name'):
             copy.replace(t, error=2)
-        with self.assertRaisesRegex(TypeError, 'unexpected field name'):
+        mit self.assertRaisesRegex(TypeError, 'unexpected field name'):
             copy.replace(t, tm_year=2000, error=2)
-        with self.assertRaisesRegex(TypeError, 'unexpected field name'):
+        mit self.assertRaisesRegex(TypeError, 'unexpected field name'):
             copy.replace(t, tm_zone='some other zone', error=2)
 
     def test_copy_replace_with_unnamed_fields(self):
@@ -335,18 +335,18 @@ klasse StructSeqTest(unittest.TestCase):
         r = os.stat_result(range(os.stat_result.n_sequence_fields))
 
         error_message = re.escape('__replace__() is not supported')
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             copy.replace(r)
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             copy.replace(r, st_mode=1)
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             copy.replace(r, error=2)
-        with self.assertRaisesRegex(TypeError, error_message):
+        mit self.assertRaisesRegex(TypeError, error_message):
             copy.replace(r, st_mode=1, error=2)
 
     def test_reference_cycle(self):
         # gh-122527: Check that a structseq that's part of a reference cycle
-        # with its own type doesn't crash. Previously, wenn the type's dictionary
+        # mit its own type doesn't crash. Previously, wenn the type's dictionary
         # was cleared first, the structseq instance would crash in the
         # destructor.
         script_helper.assert_python_ok("-c", textwrap.dedent(r"""

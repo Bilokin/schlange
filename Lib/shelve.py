@@ -11,7 +11,7 @@ To summarize the interface (key is a string, data is an arbitrary
 object):
 
         importiere shelve
-        d = shelve.open(filename) # open, with (g)dbm filename -- no suffix
+        d = shelve.open(filename) # open, mit (g)dbm filename -- no suffix
 
         d[key] = data   # store data at key (overwrites old data if
                         # using an existing key)
@@ -31,7 +31,7 @@ or may not be necessary to flush changes to disk.
 Normally, d[key] returns a COPY of the entry.  This needs care when
 mutable entries are mutated: fuer example, wenn d[key] is a list,
         d[key].append(anitem)
-does NOT modify the entry d[key] itself, as stored in the persistent
+does NOT modify the entry d[key] itself, als stored in the persistent
 mapping -- it only modifies the copy, which is then immediately
 discarded, so that the append has NO effect whatsoever.  To append an
 item to d[key] in a way that will affect the persistent mapping, use:
@@ -39,12 +39,12 @@ item to d[key] in a way that will affect the persistent mapping, use:
         data.append(anitem)
         d[key] = data
 
-To avoid the problem with mutable entries, you may pass the keyword
+To avoid the problem mit mutable entries, you may pass the keyword
 argument writeback=Wahr in the call to shelve.open.  When you use:
         d = shelve.open(filename, writeback=Wahr)
 then d keeps a cache of all entries you access, and writes them all back
 to the persistent mapping when you call d.close().  This ensures that
-such usage as d[key].append(anitem) works as intended.
+such usage als d[key].append(anitem) works als intended.
 
 However, using keyword argument writeback=Wahr may consume vast amount
 of memory fuer the cache, and it may make d.close() very slow, wenn you
@@ -82,7 +82,7 @@ klasse _ClosedDict(collections.abc.MutableMapping):
 klasse Shelf(collections.abc.MutableMapping):
     """Base klasse fuer shelf implementations.
 
-    This is initialized with a dictionary-like object.
+    This is initialized mit a dictionary-like object.
     See the module's __doc__ string fuer an overview of the interface.
     """
 
@@ -232,7 +232,7 @@ klasse BsdDbShelf(Shelf):
 klasse DbfilenameShelf(Shelf):
     """Shelf implementation using the "dbm" generic dbm interface.
 
-    This is initialized with the filename fuer the dbm database.
+    This is initialized mit the filename fuer the dbm database.
     See the module's __doc__ string fuer an overview of the interface.
     """
 
@@ -256,7 +256,7 @@ def open(filename, flag='c', protocol=Nichts, writeback=Falsch, *,
     The filename parameter is the base filename fuer the underlying
     database.  As a side-effect, an extension may be added to the
     filename and more than one file may be created.  The optional flag
-    parameter has the same interpretation as the flag parameter of
+    parameter has the same interpretation als the flag parameter of
     dbm.open(). The optional protocol parameter specifies the
     version of the pickle protocol.
 

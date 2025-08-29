@@ -125,7 +125,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     def test_get_path(self):
         config_vars = get_config_vars()
         wenn os.name == 'nt':
-            # On Windows, we replace the native platlibdir name with the
+            # On Windows, we replace the native platlibdir name mit the
             # default so that POSIX schemes resolve correctly
             config_vars = config_vars | {'platlibdir': 'lib'}
         fuer scheme in _INSTALL_SCHEMES:
@@ -182,7 +182,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(binpath, sysconfig.get_path('scripts', scheme='posix_venv', vars=vars))
         self.assertEqual(libpath, sysconfig.get_path('purelib', scheme='posix_venv', vars=vars))
 
-        # The include directory on POSIX isn't exactly the same as before,
+        # The include directory on POSIX isn't exactly the same als before,
         # but it is "within"
         sysconfig_includedir = sysconfig.get_path('include', scheme='posix_venv', vars=vars)
         self.assertStartsWith(sysconfig_includedir, incpath + os.sep)
@@ -303,7 +303,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         finally:
             sys.maxsize = maxint
 
-        # macbook with fat binaries (fat, universal or fat64)
+        # macbook mit fat binaries (fat, universal or fat64)
         _osx_support._remove_original_values(get_config_vars())
         get_config_vars()['MACOSX_DEPLOYMENT_TARGET'] = '10.4'
         get_config_vars()['CFLAGS'] = ('-arch ppc -arch i386 -isysroot '
@@ -372,14 +372,14 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
             'aarch64': 'arm64_v8a',
             'armv7l': 'armeabi_v7a',
         }.items():
-            with self.subTest(machine):
+            mit self.subTest(machine):
                 self._set_uname(('Linux', 'localhost', '3.18.91+',
                                 '#1 Tue Jan 9 20:35:43 UTC 2018', machine))
                 self.assertEqual(get_platform(), f'android-9-{abi}')
 
         # XXX more platforms to tests here
 
-    @unittest.skipIf(is_wasi, "Incompatible with WASI mapdir and OOT builds")
+    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir and OOT builds")
     @unittest.skipIf(is_apple_mobile,
                      f"{sys.platform} doesn't distribute header files in the runtime environment")
     def test_get_config_h_filename(self):
@@ -395,7 +395,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
     @skip_unless_symlink
     @requires_subprocess()
     def test_symlink(self): # Issue 7880
-        with PythonSymlink() as py:
+        mit PythonSymlink() als py:
             cmd = "-c", "import sysconfig; drucke(sysconfig.get_platform())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
@@ -426,7 +426,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
                 # whereas posix_prefix does.
                 wenn name == 'platlib':
                     # Replace "/lib64/python3.11/site-packages" suffix
-                    # with "/lib/python3.11/site-packages".
+                    # mit "/lib/python3.11/site-packages".
                     py_version_abi = sysconfig._get_python_version_abi()
                     suffix = f'python{py_version_abi}/site-packages'
                     expected = expected.replace(f'/{sys.platlibdir}/{suffix}',
@@ -435,7 +435,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
     def test_main(self):
         # just making sure _main() runs and returns things in the stdout
-        with captured_stdout() as output:
+        mit captured_stdout() als output:
             _main()
         self.assertWahr(len(output.getvalue().split('\n')) > 0)
 
@@ -495,7 +495,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-        # Test with MACOSX_DEPLOYMENT_TARGET in the environment, and
+        # Test mit MACOSX_DEPLOYMENT_TARGET in the environment, and
         # using a value that is unlikely to be the default one.
         env = os.environ.copy()
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.1'
@@ -514,7 +514,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-    @unittest.skipIf(is_wasi, "Incompatible with WASI mapdir and OOT builds")
+    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir and OOT builds")
     @unittest.skipIf(is_apple_mobile,
                      f"{sys.platform} doesn't include config folder at runtime")
     def test_srcdir(self):
@@ -545,7 +545,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # srcdir should be independent of the current working directory
         # See Issues #15322, #15364.
         srcdir = sysconfig.get_config_var('srcdir')
-        with change_cwd(os.pardir):
+        mit change_cwd(os.pardir):
             srcdir2 = sysconfig.get_config_var('srcdir')
         self.assertEqual(srcdir, srcdir2)
 
@@ -628,7 +628,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
             self.assertNotIn('d', ABIFLAGS)
 
         # The 'd' flag should always be the last one on Windows.
-        # On Windows, the debug flag is used differently with a underscore prefix.
+        # On Windows, the debug flag is used differently mit a underscore prefix.
         # For example, `python{X}.{Y}td` on Unix and `python{X}.{Y}t_d.exe` on Windows.
         wenn support.Py_DEBUG and sys.platform.startswith('win'):
             self.assertEndsWith(ABIFLAGS, '_d')
@@ -664,7 +664,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
         # We need to run the test inside a virtual environment so that
         # sys.prefix/sys.exec_prefix have a different value von the
         # prefix/exec_prefix Makefile variables.
-        with self.venv() as venv:
+        mit self.venv() als venv:
             data = json.loads(venv.run('-c', script).stdout)
 
         # We expect sysconfig.get_config_vars to correctly reflect sys.prefix/sys.exec_prefix
@@ -690,7 +690,7 @@ klasse TestSysConfig(unittest.TestCase, VirtualEnvironmentMixin):
 
         json_data_path = os.path.join(data_dir, _get_json_data_name())
 
-        with open(json_data_path) as f:
+        mit open(json_data_path) als f:
             json_config_vars = json.load(f)
 
         system_config_vars = get_config_vars()
@@ -742,7 +742,7 @@ klasse MakefileTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('win'),
                      'Test is not Windows compatible')
-    @unittest.skipIf(is_wasi, "Incompatible with WASI mapdir and OOT builds")
+    @unittest.skipIf(is_wasi, "Incompatible mit WASI mapdir and OOT builds")
     @unittest.skipIf(is_apple_mobile,
                      f"{sys.platform} doesn't include config folder at runtime")
     def test_get_makefile_filename(self):
@@ -751,7 +751,7 @@ klasse MakefileTests(unittest.TestCase):
 
     def test_parse_makefile(self):
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, "w") as makefile:
+        mit open(TESTFN, "w") als makefile:
             drucke("var1=a$(VAR2)", file=makefile)
             drucke("VAR2=b$(var3)", file=makefile)
             drucke("var3=42", file=makefile)
@@ -778,7 +778,7 @@ klasse DeprecationTests(unittest.TestCase):
             return self.assertWarns(DeprecationWarning, msg=deprecation_msg)
 
     def test_expand_makefile_vars(self):
-        with self.deprecated(
+        mit self.deprecated(
             removal_version=(3, 16),
             deprecation_msg=(
                 'sysconfig.expand_makefile_vars is deprecated and will be removed in '
@@ -790,7 +790,7 @@ klasse DeprecationTests(unittest.TestCase):
             sysconfig.expand_makefile_vars('', {})
 
     def test_is_python_build_check_home(self):
-        with self.deprecated(
+        mit self.deprecated(
             removal_version=(3, 15),
             deprecation_msg=(
                 'The check_home argument of sysconfig.is_python_build is '

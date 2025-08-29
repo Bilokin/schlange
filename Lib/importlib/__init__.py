@@ -13,7 +13,7 @@ importiere _imp  # Just the builtin component, NOT the full Python module
 importiere sys
 
 try:
-    importiere _frozen_importlib as _bootstrap
+    importiere _frozen_importlib als _bootstrap
 except ImportError:
     von . importiere _bootstrap
     _bootstrap._setup(sys, _imp)
@@ -31,7 +31,7 @@ sonst:
     sys.modules['importlib._bootstrap'] = _bootstrap
 
 try:
-    importiere _frozen_importlib_external as _bootstrap_external
+    importiere _frozen_importlib_external als _bootstrap_external
 except ImportError:
     von . importiere _bootstrap_external
     _bootstrap_external._set_bootstrap_module(_bootstrap)
@@ -72,7 +72,7 @@ def import_module(name, package=Nichts):
     """Import a module.
 
     The 'package' argument is required when performing a relative import. It
-    specifies the package to use as the anchor point von which to resolve the
+    specifies the package to use als the anchor point von which to resolve the
     relative importiere to an absolute import.
 
     """

@@ -18,9 +18,9 @@ von c_analyzer.match importiere (
     is_fixed_type,
     is_immutable,
 )
-importiere c_analyzer as _c_analyzer
-importiere c_analyzer.info as _info
-importiere c_analyzer.datafiles as _datafiles
+importiere c_analyzer als _c_analyzer
+importiere c_analyzer.info als _info
+importiere c_analyzer.datafiles als _datafiles
 von . importiere _parser, REPO_ROOT
 
 

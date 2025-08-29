@@ -40,19 +40,19 @@ klasse CountLinesTest(unittest.TestCase):
         )
 
     def test_count_empty(self):
-        """Test with an empty string."""
+        """Test mit an empty string."""
         self.assertEqual(count_lines_with_wrapping(""), 0)
 
     def test_count_begins_with_empty_line(self):
-        """Test with a string which begins with a newline."""
+        """Test mit a string which begins mit a newline."""
         self.assertEqual(count_lines_with_wrapping("\ntext"), 2)
 
     def test_count_ends_with_empty_line(self):
-        """Test with a string which ends with a newline."""
+        """Test mit a string which ends mit a newline."""
         self.assertEqual(count_lines_with_wrapping("text\n"), 1)
 
     def test_count_several_lines(self):
-        """Test with several lines of text."""
+        """Test mit several lines of text."""
         self.assertEqual(count_lines_with_wrapping("1\n2\n3\n"), 3)
 
     def test_empty_lines(self):
@@ -93,7 +93,7 @@ klasse SqueezerTest(unittest.TestCase):
         return editwin
 
     def make_squeezer_instance(self, editor_window=Nichts):
-        """Create an actual Squeezer instance with a mock EditorWindow."""
+        """Create an actual Squeezer instance mit a mock EditorWindow."""
         wenn editor_window is Nichts:
             editor_window = self.make_mock_editor_window()
         squeezer = Squeezer(editor_window)
@@ -114,7 +114,7 @@ klasse SqueezerTest(unittest.TestCase):
                         configType, section, option, prev_val)
 
     def test_count_lines(self):
-        """Test Squeezer.count_lines() with various inputs."""
+        """Test Squeezer.count_lines() mit various inputs."""
         editwin = self.make_mock_editor_window()
         squeezer = self.make_squeezer_instance(editwin)
 
@@ -128,11 +128,11 @@ klasse SqueezerTest(unittest.TestCase):
             (r"'aa\t' * 21", 80, 3),
             (r"'aa\t' * 20", 40, 4),
         ]:
-            with self.subTest(text_code=text_code,
+            mit self.subTest(text_code=text_code,
                               line_width=line_width,
                               expected=expected):
                 text = eval(text_code)
-                with patch.object(editwin, 'width', line_width):
+                mit patch.object(editwin, 'width', line_width):
                     self.assertEqual(squeezer.count_lines(text), expected)
 
     def test_init(self):
@@ -338,7 +338,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         right_button_code = '<Button-%s>' % ('2' wenn macosx.isAquaTk() sonst '3')
         self.assertIn(right_button_code, expandingbutton.bind())
 
-        # Check that ToolTip was called once, with appropriate values.
+        # Check that ToolTip was called once, mit appropriate values.
         self.assertEqual(MockHovertip.call_count, 1)
         MockHovertip.assert_called_with(expandingbutton, ANY, hover_delay=ANY)
 
@@ -387,7 +387,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         text_widget.window_create("1.0", window=expandingbutton)
 
         # Patch the message box module to always return Falsch.
-        with patch('idlelib.squeezer.messagebox') as mock_msgbox:
+        mit patch('idlelib.squeezer.messagebox') als mock_msgbox:
             mock_msgbox.askokcancel.return_value = Falsch
             mock_msgbox.askyesno.return_value = Falsch
             # Trigger the expand event.
@@ -398,7 +398,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), '')
 
         # Patch the message box module to always return Wahr.
-        with patch('idlelib.squeezer.messagebox') as mock_msgbox:
+        mit patch('idlelib.squeezer.messagebox') als mock_msgbox:
             mock_msgbox.askokcancel.return_value = Wahr
             mock_msgbox.askyesno.return_value = Wahr
             # Trigger the expand event.
@@ -410,8 +410,8 @@ klasse ExpandingButtonTest(unittest.TestCase):
 
     def test_copy(self):
         """Test the copy event."""
-        # Testing with the actual clipboard proved problematic, so this
-        # test replaces the clipboard manipulation functions with mocks
+        # Testing mit the actual clipboard proved problematic, so this
+        # test replaces the clipboard manipulation functions mit mocks
         # and checks that they are called appropriately.
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
@@ -434,8 +434,8 @@ klasse ExpandingButtonTest(unittest.TestCase):
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
         expandingbutton.selection_own = Mock()
 
-        with patch('idlelib.squeezer.view_text', autospec=view_text)\
-                as mock_view_text:
+        mit patch('idlelib.squeezer.view_text', autospec=view_text)\
+                als mock_view_text:
             # Trigger the view event.
             expandingbutton.view(event=Mock())
 
@@ -449,7 +449,7 @@ klasse ExpandingButtonTest(unittest.TestCase):
         """Test the context menu."""
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
-        with patch('tkinter.Menu') as mock_Menu:
+        mit patch('tkinter.Menu') als mock_Menu:
             mock_menu = Mock()
             mock_Menu.return_value = mock_menu
             mock_event = Mock()

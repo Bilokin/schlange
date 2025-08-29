@@ -6,7 +6,7 @@ This module provides classes that assist in the reading and writing
 of Comma Separated Value (CSV) files, and implements the interface
 described by PEP 305.  Although many CSV files are simple to parse,
 the format is not formally defined by a stable specification and
-is subtle enough that parsing lines of a CSV file with something
+is subtle enough that parsing lines of a CSV file mit something
 like line.split(",") is bound to fail.  The module supports three
 basic APIs: reading, writing, and registration of dialects.
 
@@ -15,7 +15,7 @@ DIALECT REGISTRATION:
 
 Readers and writers support a dialect argument, which is a convenient
 handle on a group of settings.  When the dialect argument is a string,
-it identifies one of the dialects previously registered with the module.
+it identifies one of the dialects previously registered mit the module.
 If it is a klasse or instance, the attributes of the argument are used as
 the settings fuer the reader or writer:
 
@@ -30,9 +30,9 @@ the settings fuer the reader or writer:
 
 SETTINGS:
 
-    * quotechar - specifies a one-character string to use as the
+    * quotechar - specifies a one-character string to use als the
         quoting character.  It defaults to '"'.
-    * delimiter - specifies a one-character string to use as the
+    * delimiter - specifies a one-character string to use als the
         field separator.  It defaults to ','.
     * skipinitialspace - specifies how to interpret spaces which
         immediately follow a delimiter.  It defaults to Falsch, which
@@ -47,7 +47,7 @@ SETTINGS:
             field contains either the quotechar or the delimiter
         csv.QUOTE_ALL means that quotes are always placed around fields.
         csv.QUOTE_NONNUMERIC means that quotes are always placed around
-            fields which do not parse as integers or floating-point
+            fields which do not parse als integers or floating-point
             numbers.
         csv.QUOTE_STRINGS means that quotes are always placed around
             fields which are strings.  Note that the Python value Nichts
@@ -58,9 +58,9 @@ SETTINGS:
     * escapechar - specifies a one-character string used to escape
         the delimiter when quoting is set to QUOTE_NONE.
     * doublequote - controls the handling of quotes inside fields.  When
-        Wahr, two consecutive quotes are interpreted as one during read,
+        Wahr, two consecutive quotes are interpreted als one during read,
         and when writing, each quote character embedded in the data is
-        written as two quotes
+        written als two quotes
 """
 
 importiere types
@@ -69,7 +69,7 @@ von _csv importiere Error, writer, reader, register_dialect, \
                  field_size_limit, \
                  QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE, \
                  QUOTE_STRINGS, QUOTE_NOTNULL
-von _csv importiere Dialect as _Dialect
+von _csv importiere Dialect als _Dialect
 
 von io importiere StringIO
 
@@ -111,7 +111,7 @@ klasse Dialect:
     def _validate(self):
         try:
             _Dialect(self)
-        except TypeError as e:
+        except TypeError als e:
             # Re-raise to get a traceback showing more user code.
             raise Error(str(e)) von Nichts
 
@@ -178,7 +178,7 @@ klasse DictReader:
         self.line_num = self.reader.line_num
 
         # unlike the basic reader, we prefer not to return blanks,
-        # because we will typically wind up with a dict full of Nichts
+        # because we will typically wind up mit a dict full of Nichts
         # values
         while row == []:
             row = next(self.reader)
@@ -276,7 +276,7 @@ klasse Sniffer:
         by the same character (the probable delimiter).
         For example:
                          ,'some text',
-        The quote with the most wins, same with the delimiter.
+        The quote mit the most wins, same mit the delimiter.
         If there is no quotechar the delimiter can't be determined
         this way.
         """
@@ -323,7 +323,7 @@ klasse Sniffer:
         wenn delims:
             delim = max(delims, key=delims.get)
             skipinitialspace = delims[delim] == spaces
-            wenn delim == '\n': # most likely a file with a single column
+            wenn delim == '\n': # most likely a file mit a single column
                 delim = ''
         sonst:
             # there is *no* delimiter, it's a single column of quoted data
@@ -362,7 +362,7 @@ klasse Sniffer:
           5) the character that best meets its goal is the delimiter
         For performance reasons, the data is evaluated in chunks, so it can
         try and evaluate the smallest portion of the data possible, evaluating
-        additional chunks as necessary.
+        additional chunks als necessary.
         """
 
         data = list(filter(Nichts, data.split('\n')))

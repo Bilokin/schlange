@@ -3,7 +3,7 @@ von contextlib importiere (
     asynccontextmanager, AbstractAsyncContextManager,
     AsyncExitStack, nullcontext, aclosing, contextmanager)
 von test importiere support
-von test.support importiere run_no_yield_async_fn as _run_async_fn
+von test.support importiere run_no_yield_async_fn als _run_async_fn
 importiere unittest
 importiere traceback
 
@@ -30,7 +30,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
         manager = DefaultEnter()
         self.assertIs(await manager.__aenter__(), manager)
 
-        async with manager as context:
+        async mit manager als context:
             self.assertIs(manager, context)
 
     @_async_test
@@ -41,7 +41,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
             async def __aexit__(self, *args):
                 await super().__aexit__(*args)
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             manager = DefaultAsyncContextManager()
             manager.var = 42
 
@@ -54,7 +54,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
             yield
 
         async def gen():
-            async with ctx():
+            async mit ctx():
                 yield 11
 
         g = gen()
@@ -67,7 +67,7 @@ klasse TestAbstractAsyncContextManager(unittest.TestCase):
         klasse MissingAexit(AbstractAsyncContextManager):
             pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             MissingAexit()
 
     def test_structural_subclassing(self):
@@ -106,7 +106,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             state.append(1)
             yield 42
             state.append(999)
-        async with woohoo() as x:
+        async mit woohoo() als x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
@@ -122,8 +122,8 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                 yield 42
             finally:
                 state.append(999)
-        with self.assertRaises(ZeroDivisionError):
-            async with woohoo() as x:
+        mit self.assertRaises(ZeroDivisionError):
+            async mit woohoo() als x:
                 self.assertEqual(state, [1])
                 self.assertEqual(x, 42)
                 state.append(x)
@@ -137,23 +137,23 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             yield
 
         try:
-            async with f():
+            async mit f():
                 1/0
-        except ZeroDivisionError as e:
+        except ZeroDivisionError als e:
             frames = traceback.extract_tb(e.__traceback__)
 
         self.assertEqual(len(frames), 1)
         self.assertEqual(frames[0].name, 'test_contextmanager_traceback')
         self.assertEqual(frames[0].line, '1/0')
 
-        # Repeat with RuntimeError (which goes through a different code path)
+        # Repeat mit RuntimeError (which goes through a different code path)
         klasse RuntimeErrorSubclass(RuntimeError):
             pass
 
         try:
-            async with f():
+            async mit f():
                 raise RuntimeErrorSubclass(42)
-        except RuntimeErrorSubclass as e:
+        except RuntimeErrorSubclass als e:
             frames = traceback.extract_tb(e.__traceback__)
 
         self.assertEqual(len(frames), 1)
@@ -172,11 +172,11 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             StopIterationSubclass('spam'),
             StopAsyncIterationSubclass('spam')
         ):
-            with self.subTest(type=type(stop_exc)):
+            mit self.subTest(type=type(stop_exc)):
                 try:
-                    async with f():
+                    async mit f():
                         raise stop_exc
-                except type(stop_exc) as e:
+                except type(stop_exc) als e:
                     self.assertIs(e, stop_exc)
                     frames = traceback.extract_tb(e.__traceback__)
                 sonst:
@@ -206,7 +206,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                 yield
         ctx = whoo()
         await ctx.__aenter__()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             await ctx.__aexit__(TypeError, TypeError('foo'), Nichts)
         wenn support.check_impl_detail(cpython=Wahr):
             # The "gen" attribute is an implementation detail.
@@ -219,7 +219,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             wenn Falsch:
                 yield
         ctx = whoo()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             await ctx.__aenter__()
 
     @_async_test
@@ -230,7 +230,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             yield
         ctx = whoo()
         await ctx.__aenter__()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             await ctx.__aexit__(Nichts, Nichts, Nichts)
         wenn support.check_impl_detail(cpython=Wahr):
             # The "gen" attribute is an implementation detail.
@@ -247,7 +247,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
 
         ctx = whoo()
         await ctx.__aenter__()
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             await ctx.__aexit__(RuntimeError, Nichts, Nichts)
 
     @_async_test
@@ -258,10 +258,10 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             state.append(1)
             try:
                 yield 42
-            except ZeroDivisionError as e:
+            except ZeroDivisionError als e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
-        async with woohoo() as x:
+        async mit woohoo() als x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
@@ -286,11 +286,11 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             StopIterationSubclass('spam'),
             StopAsyncIterationSubclass('spam')
         ):
-            with self.subTest(type=type(stop_exc)):
+            mit self.subTest(type=type(stop_exc)):
                 try:
-                    async with woohoo():
+                    async mit woohoo():
                         raise stop_exc
-                except Exception as ex:
+                except Exception als ex:
                     self.assertIs(ex, stop_exc)
                 sonst:
                     self.fail(f'{stop_exc} was suppressed')
@@ -301,18 +301,18 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         async def woohoo():
             try:
                 yield
-            except Exception as exc:
+            except Exception als exc:
                 raise RuntimeError(f'caught {exc}') von exc
 
-        with self.assertRaises(RuntimeError):
-            async with woohoo():
+        mit self.assertRaises(RuntimeError):
+            async mit woohoo():
                 1 / 0
 
         # If the context manager wrapped StopAsyncIteration in a RuntimeError,
         # we also unwrap it, because we can't tell whether the wrapping was
         # done by the generator machinery or by the generator itself.
-        with self.assertRaises(StopAsyncIteration):
-            async with woohoo():
+        mit self.assertRaises(StopAsyncIteration):
+            async mit woohoo():
                 raise StopAsyncIteration
 
     def _create_contextmanager_attribs(self):
@@ -344,7 +344,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
     async def test_instance_docstring_given_cm_docstring(self):
         baz = self._create_contextmanager_attribs()(Nichts)
         self.assertEqual(baz.__doc__, "Whee!")
-        async with baz:
+        async mit baz:
             pass  # suppress warning
 
     @_async_test
@@ -353,7 +353,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
         @asynccontextmanager
         async def woohoo(self, func, args, kwds):
             yield (self, func, args, kwds)
-        async with woohoo(self=11, func=22, args=33, kwds=44) as target:
+        async mit woohoo(self=11, func=22, args=33, kwds=44) als target:
             self.assertEqual(target, (11, 22, 33, 44))
 
     @_async_test
@@ -421,7 +421,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
             raise NameError('foo')
 
         self.assertFalsch(entered)
-        with self.assertRaisesRegex(NameError, 'foo'):
+        mit self.assertRaisesRegex(NameError, 'foo'):
             await test()
         self.assertFalsch(entered)
 
@@ -441,7 +441,7 @@ klasse AsyncContextManagerTestCase(unittest.TestCase):
                 self.b = b
                 self.c = c
 
-        # these tests are fuer argument passing when used as a decorator
+        # these tests are fuer argument passing when used als a decorator
         test = Test()
         await test.method(1, 2)
         self.assertEqual(test.a, 1)
@@ -476,7 +476,7 @@ klasse AclosingTestCase(unittest.TestCase):
                 state.append(1)
         x = C()
         self.assertEqual(state, [])
-        async with aclosing(x) as y:
+        async mit aclosing(x) als y:
             self.assertEqual(x, y)
         self.assertEqual(state, [1])
 
@@ -488,8 +488,8 @@ klasse AclosingTestCase(unittest.TestCase):
                 state.append(1)
         x = C()
         self.assertEqual(state, [])
-        with self.assertRaises(ZeroDivisionError):
-            async with aclosing(x) as y:
+        mit self.assertRaises(ZeroDivisionError):
+            async mit aclosing(x) als y:
                 self.assertEqual(x, y)
                 1 / 0
         self.assertEqual(state, [1])
@@ -506,14 +506,14 @@ klasse AclosingTestCase(unittest.TestCase):
                 state.append(1)
 
         async def agenfunc():
-            with sync_resource():
+            mit sync_resource():
                 yield -1
                 yield -2
 
         x = agenfunc()
         self.assertEqual(state, [])
-        with self.assertRaises(ZeroDivisionError):
-            async with aclosing(x) as y:
+        mit self.assertRaises(ZeroDivisionError):
+            async mit aclosing(x) als y:
                 self.assertEqual(x, y)
                 self.assertEqual(-1, await x.__anext__())
                 1 / 0
@@ -555,7 +555,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             """Test metadata propagation"""
             result.append((args, kwds))
 
-        async with AsyncExitStack() as stack:
+        async mit AsyncExitStack() als stack:
             fuer args, kwds in reversed(expected):
                 wenn args and kwds:
                     f = stack.push_async_callback(_exit, *args, **kwds)
@@ -574,12 +574,12 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         self.assertEqual(result, expected)
 
         result = []
-        async with AsyncExitStack() as stack:
-            with self.assertRaises(TypeError):
+        async mit AsyncExitStack() als stack:
+            mit self.assertRaises(TypeError):
                 stack.push_async_callback(arg=1)
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 self.exit_stack.push_async_callback(arg=2)
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 stack.push_async_callback(callback=_exit, arg=3)
         self.assertEqual(result, [])
 
@@ -602,7 +602,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             async def __aexit__(self, *exc_details):
                 await self.check_exc(*exc_details)
 
-        async with self.exit_stack() as stack:
+        async mit self.exit_stack() als stack:
             stack.push_async_exit(_expect_ok)
             self.assertIs(stack._exit_callbacks[-1][1], _expect_ok)
             cm = ExitCM(_expect_ok)
@@ -630,7 +630,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         result = []
         cm = TestCM()
 
-        async with AsyncExitStack() as stack:
+        async mit AsyncExitStack() als stack:
             @stack.push_async_callback  # Registered first => cleaned up last
             async def _exit():
                 result.append(4)
@@ -652,12 +652,12 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             async def __aenter__(self):
                 pass
 
-        async with self.exit_stack() as stack:
-            with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
+        async mit self.exit_stack() als stack:
+            mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                 await stack.enter_async_context(LacksEnterAndExit())
-            with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
+            mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                 await stack.enter_async_context(LacksEnter())
-            with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
+            mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                 await stack.enter_async_context(LacksExit())
             self.assertFalsch(stack._exit_callbacks)
 
@@ -674,14 +674,14 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             return Wahr
 
         try:
-            async with self.exit_stack() as stack:
+            async mit self.exit_stack() als stack:
                 stack.push_async_callback(raise_exc, IndexError)
                 stack.push_async_callback(raise_exc, KeyError)
                 stack.push_async_callback(raise_exc, AttributeError)
                 stack.push_async_exit(suppress_exc)
                 stack.push_async_callback(raise_exc, ValueError)
                 1 / 0
-        except IndexError as exc:
+        except IndexError als exc:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
@@ -714,16 +714,16 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         @asynccontextmanager
         async def my_cm_with_exit_stack():
-            async with self.exit_stack() as stack:
+            async mit self.exit_stack() als stack:
                 await stack.enter_async_context(my_cm())
                 yield stack
 
         fuer cm in (my_cm, my_cm_with_exit_stack):
-            with self.subTest():
+            mit self.subTest():
                 try:
-                    async with cm():
+                    async mit cm():
                         raise IndexError()
-                except MyException as exc:
+                except MyException als exc:
                     self.assertIsNichts(exc.__context__)
                 sonst:
                     self.fail("Expected IndexError, but no exception was raised")
@@ -735,7 +735,7 @@ klasse TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         cm.__aenter__ = object()
         cm.__aexit__ = object()
         stack = self.exit_stack()
-        with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
+        mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
             await stack.enter_async_context(cm)
         stack.push_async_exit(cm)
         self.assertIs(stack._exit_callbacks[-1][1], cm)
@@ -747,7 +747,7 @@ klasse TestAsyncNullcontext(unittest.TestCase):
         klasse C:
             pass
         c = C()
-        async with nullcontext(c) as c_in:
+        async mit nullcontext(c) als c_in:
             self.assertIs(c_in, c)
 
 

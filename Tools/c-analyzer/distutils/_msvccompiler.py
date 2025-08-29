@@ -3,7 +3,7 @@
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
 fuer Microsoft Visual Studio 2015.
 
-The module is compatible with VS 2015 and later. You can find legacy support
+The module is compatible mit VS 2015 and later. You can find legacy support
 fuer older versions in distutils.msvc9compiler and distutils.msvccompiler.
 """
 
@@ -36,7 +36,7 @@ def _find_vc2015():
 
     best_version = 0
     best_dir = Nichts
-    with key:
+    mit key:
         fuer i in count():
             try:
                 v, vc_dir, vt = winreg.EnumValue(key, i)
@@ -124,7 +124,7 @@ def _get_vc_env(plat_spec):
             'cmd /u /c "{}" {} && set'.format(vcvarsall, plat_spec),
             stderr=subprocess.STDOUT,
         ).decode('utf-16le', errors='replace')
-    except subprocess.CalledProcessError as exc:
+    except subprocess.CalledProcessError als exc:
         log.error(exc.output)
         raise DistutilsPlatformError("Error executing {}"
                 .format(exc.cmd))
@@ -156,7 +156,7 @@ def _find_exe(exe, paths=Nichts):
     return exe
 
 # A map keyed by get_platform() return values to values accepted by
-# 'vcvarsall.bat'. Always cross-compile von x86 to work with the
+# 'vcvarsall.bat'. Always cross-compile von x86 to work mit the
 # lighter-weight MSVC installs that do not include native 64-bit tools.
 PLAT_TO_VCVARS = {
     'win32' : 'x86',
@@ -167,14 +167,14 @@ PLAT_TO_VCVARS = {
 
 klasse MSVCCompiler(CCompiler) :
     """Concrete klasse that implements an interface to Microsoft Visual C++,
-       as defined by the CCompiler abstract class."""
+       als defined by the CCompiler abstract class."""
 
     compiler_type = 'msvc'
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary fuer this sort of single-compiler class.
-    # Would be nice to have a consistent interface with UnixCCompiler,
+    # als it really isn't necessary fuer this sort of single-compiler class.
+    # Would be nice to have a consistent interface mit UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
@@ -198,6 +198,6 @@ klasse MSVCCompiler(CCompiler) :
 
     def __init__(self, verbose=0, dry_run=0, force=0):
         CCompiler.__init__ (self, verbose, dry_run, force)
-        # target platform (.plat_name is consistent with 'bdist')
+        # target platform (.plat_name is consistent mit 'bdist')
         self.plat_name = Nichts
         self.initialized = Falsch

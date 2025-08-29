@@ -66,7 +66,7 @@ def check_singlephase(override):
 
 
 def run_singlephase_check(override, outfd):
-    with os.fdopen(outfd, 'w') as outfile:
+    mit os.fdopen(outfd, 'w') als outfile:
         sys.stdout = outfile
         sys.stderr = outfile
         try:

@@ -64,7 +64,7 @@ klasse TestForwardRefFormat(unittest.TestCase):
         fwdref = anno["arg"]
         self.assertIsInstance(fwdref, ForwardRef)
         self.assertEqual(fwdref.__forward_arg__, "x")
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             fwdref.evaluate()
 
         x = 1
@@ -82,7 +82,7 @@ klasse TestForwardRefFormat(unittest.TestCase):
         fwdref = anno["y"]
         self.assertIsInstance(fwdref, ForwardRef)
         self.assertEqual(fwdref.__forward_arg__, "doesntexist")
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             fwdref.evaluate()
         self.assertEqual(fwdref.evaluate(globals={"doesntexist": 1}), 1)
 
@@ -123,7 +123,7 @@ klasse TestForwardRefFormat(unittest.TestCase):
         self.assertEqual(gamma_anno, support.EqualToForwardRef("some < obj", owner=f))
 
     def test_partially_nonexistent_union(self):
-        # Test unions with '|' syntax equal unions with typing.Union[] with some forwardrefs
+        # Test unions mit '|' syntax equal unions mit typing.Union[] mit some forwardrefs
         klasse UnionForwardrefs:
             pipe: str | undefined
             union: Union[str, undefined]
@@ -430,13 +430,13 @@ klasse TestStringFormat(unittest.TestCase):
         def f(fstring: f"{a}"):
             pass
 
-        with self.assertRaisesRegex(TypeError, format_msg):
+        mit self.assertRaisesRegex(TypeError, format_msg):
             get_annotations(f, format=Format.STRING)
 
         def f(fstring_format: f"{a:02d}"):
             pass
 
-        with self.assertRaisesRegex(TypeError, format_msg):
+        mit self.assertRaisesRegex(TypeError, format_msg):
             get_annotations(f, format=Format.STRING)
 
     def test_shenanigans(self):
@@ -521,16 +521,16 @@ klasse TestGetAnnotations(unittest.TestCase):
         )
         self.assertEqual(get_annotations(f1, format=4), {"a": "int"})
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             get_annotations(f1, format=42)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             ValueError,
             r"The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only",
         ):
             get_annotations(f1, format=Format.VALUE_WITH_FAKE_GLOBALS)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             ValueError,
             r"The VALUE_WITH_FAKE_GLOBALS format is fuer internal use only",
         ):
@@ -547,7 +547,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         def foo():
             pass
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             get_annotations(foo, format=Format.FORWARDREF, eval_str=Wahr)
             get_annotations(foo, format=Format.STRING, eval_str=Wahr)
 
@@ -556,7 +556,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             pass
 
         fuer format in (Format.VALUE, Format.FORWARDREF):
-            with self.subTest(format=format):
+            mit self.subTest(format=format):
                 self.assertEqual(
                     get_annotations(foo, format=format),
                     {"a": int, "b": str},
@@ -570,7 +570,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         fuer format in Format:
             wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
-            with self.subTest(format=format):
+            mit self.subTest(format=format):
                 self.assertEqual(
                     get_annotations(foo, format=format),
                     {"a": "foo", "b": "str"},
@@ -596,7 +596,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             {"format": Format.VALUE, "eval_str": Falsch},
             {"format": Format.FORWARDREF, "eval_str": Falsch},
         ]:
-            with self.subTest(**kwargs):
+            mit self.subTest(**kwargs):
                 self.assertEqual(get_annotations(isa, **kwargs), {"a": int, "b": str})
                 self.assertEqual(
                     get_annotations(isa.MyClass, **kwargs),
@@ -627,7 +627,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             {"eval_str": Wahr},
             {"format": Format.VALUE, "eval_str": Wahr},
         ]:
-            with self.subTest(**kwargs):
+            mit self.subTest(**kwargs):
                 self.assertEqual(get_annotations(isa, **kwargs), {"a": int, "b": str})
                 self.assertEqual(
                     get_annotations(isa.MyClass, **kwargs),
@@ -724,7 +724,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             {"format": Format.FORWARDREF, "eval_str": Falsch},
             {"format": Format.STRING, "eval_str": Falsch},
         ]:
-            with self.subTest(**kwargs):
+            mit self.subTest(**kwargs):
                 self.assertEqual(
                     get_annotations(isa, **kwargs),
                     {"a": "int", "b": "str"},
@@ -755,7 +755,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             {"eval_str": Wahr},
             {"format": Format.VALUE, "eval_str": Wahr},
         ]:
-            with self.subTest(**kwargs):
+            mit self.subTest(**kwargs):
                 self.assertEqual(get_annotations(isa, **kwargs), {"a": int, "b": str})
                 self.assertEqual(
                     get_annotations(isa.MyClass, **kwargs),
@@ -847,7 +847,7 @@ klasse TestGetAnnotations(unittest.TestCase):
             (Falsch, Wahr),
             (Falsch, Wahr),
         ):
-            with self.subTest(
+            mit self.subTest(
                 meta_future=meta_future,
                 base_future=base_future,
                 child_future=child_future,
@@ -913,7 +913,7 @@ klasse TestGetAnnotations(unittest.TestCase):
         fuer format in Format:
             wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
-            with (
+            mit (
                 self.subTest(format=format),
                 self.assertRaisesRegex(
                     ValueError, r".*__annotations__ is neither a dict nor Nichts"
@@ -941,10 +941,10 @@ klasse TestGetAnnotations(unittest.TestCase):
 
         hra = HasRaisingAnnotations()
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             get_annotations(hra, format=Format.VALUE)
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             get_annotations(hra, format=Format.FORWARDREF)
 
         undefined = float
@@ -994,13 +994,13 @@ klasse TestGetAnnotations(unittest.TestCase):
             wenn format == Format.VALUE_WITH_FAKE_GLOBALS:
                 continue
             fuer obj in (Nichts, 1, object(), CustomClass()):
-                with self.subTest(format=format, obj=obj):
-                    with self.assertRaises(TypeError):
+                mit self.subTest(format=format, obj=obj):
+                    mit self.assertRaises(TypeError):
                         get_annotations(obj, format=format)
 
-            # Callables and types with no annotations return an empty dict
+            # Callables and types mit no annotations return an empty dict
             fuer obj in (int, len, MyCallable()):
-                with self.subTest(format=format, obj=obj):
+                mit self.subTest(format=format, obj=obj):
                     self.assertEqual(get_annotations(obj, format=format), {})
 
     def test_pep695_generic_class_with_future_annotations(self):
@@ -1158,7 +1158,7 @@ klasse TestGetAnnotations(unittest.TestCase):
     def test_partial_evaluation_error(self):
         def f(x: range[1]):
             pass
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             TypeError, "type 'range' is not subscriptable"
         ):
             f.__annotations__
@@ -1194,7 +1194,7 @@ klasse TestCallEvaluateFunction(unittest.TestCase):
                 raise exc
             return undefined
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             annotationlib.call_evaluate_function(evaluate, Format.VALUE)
         self.assertEqual(
             annotationlib.call_evaluate_function(evaluate, Format.FORWARDREF),
@@ -1274,12 +1274,12 @@ klasse MetaclassTests(unittest.TestCase):
         class_count = len(classes)
         fuer order in itertools.permutations(range(class_count), class_count):
             names = ", ".join(classes[i].__name__ fuer i in order)
-            with self.subTest(names=names):
+            mit self.subTest(names=names):
                 classes = make_classes()  # Regenerate classes
                 fuer i in order:
                     get_annotations(classes[i])
                 fuer c in classes:
-                    with self.subTest(c=c):
+                    mit self.subTest(c=c):
                         self.assertEqual(get_annotations(c), c.expected_annotations)
                         annotate_func = getattr(c, "__annotate__", Nichts)
                         wenn c.expected_annotations:
@@ -1296,7 +1296,7 @@ klasse TestGetAnnotateFromClassNamespace(unittest.TestCase):
             def __new__(mcls, name, bases, ns):
                 annotate = annotationlib.get_annotate_from_class_namespace(ns)
                 expected = ns["expected_annotate"]
-                with self.subTest(name=name):
+                mit self.subTest(name=name):
                     wenn expected:
                         self.assertIsNotNichts(annotate)
                     sonst:
@@ -1374,16 +1374,16 @@ klasse TypeParamsSample[TypeParamsAlias1, TypeParamsAlias2]:
 klasse TestForwardRefClass(unittest.TestCase):
     def test_forwardref_instance_type_error(self):
         fr = ForwardRef("int")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             isinstance(42, fr)
 
     def test_forwardref_subclass_type_error(self):
         fr = ForwardRef("int")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             issubclass(int, fr)
 
     def test_forwardref_only_str_arg(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             ForwardRef(1)  # only `str` type is allowed
 
     def test_forward_equality(self):
@@ -1500,7 +1500,7 @@ klasse TestForwardRefClass(unittest.TestCase):
 
     def test_syntax_error(self):
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             typing.Generic["/T"]
 
     def test_delayed_syntax_error(self):
@@ -1508,13 +1508,13 @@ klasse TestForwardRefClass(unittest.TestCase):
         def foo(a: "Node[T"):
             pass
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             get_type_hints(foo)
 
     def test_syntax_error_empty_string(self):
         fuer form in [typing.List, typing.Set, typing.Type, typing.Deque]:
-            with self.subTest(form=form):
-                with self.assertRaises(SyntaxError):
+            mit self.subTest(form=form):
+                mit self.assertRaises(SyntaxError):
                     form[""]
 
     def test_or(self):
@@ -1532,7 +1532,7 @@ klasse TestForwardRefClass(unittest.TestCase):
 
     def test_special_attrs(self):
         # Forward refs provide a different introspection API. __name__ and
-        # __qualname__ make little sense fuer forward refs as they can store
+        # __qualname__ make little sense fuer forward refs als they can store
         # complex typing expressions.
         fr = ForwardRef("set[Any]")
         self.assertNotHasAttr(fr, "__name__")
@@ -1541,7 +1541,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         # Forward refs are currently unpicklable once they contain a code object.
         fr.__forward_code__  # fill the cache
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 pickle.dumps(fr, proto)
 
     def test_evaluate_string_format(self):
@@ -1580,22 +1580,22 @@ klasse TestForwardRefClass(unittest.TestCase):
         klasse Gen[T]:
             alias = int
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ForwardRef("T").evaluate()
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ForwardRef("T").evaluate(type_params=())
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ForwardRef("T").evaluate(owner=int)
 
         (T,) = Gen.__type_params__
         self.assertIs(ForwardRef("T").evaluate(type_params=Gen.__type_params__), T)
         self.assertIs(ForwardRef("T").evaluate(owner=Gen), T)
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ForwardRef("alias").evaluate(type_params=Gen.__type_params__)
         self.assertIs(ForwardRef("alias").evaluate(owner=Gen), int)
         # If you pass custom locals, we don't look at the owner's locals
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ForwardRef("alias").evaluate(owner=Gen, locals={})
         # But wenn the name exists in the locals, it works
         self.assertIs(
@@ -1604,7 +1604,7 @@ klasse TestForwardRefClass(unittest.TestCase):
 
     def test_evaluate_with_type_params_and_scope_conflict(self):
         fuer is_class in (Falsch, Wahr):
-            with self.subTest(is_class=is_class):
+            mit self.subTest(is_class=is_class):
                 fwdref1 = ForwardRef("TypeParamsAlias1", owner=TypeParamsSample, is_class=is_class)
                 fwdref2 = ForwardRef("TypeParamsAlias2", owner=TypeParamsSample, is_class=is_class)
 
@@ -1627,7 +1627,7 @@ klasse TestForwardRefClass(unittest.TestCase):
             collections.Counter[int],
         )
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             # If globals are passed explicitly, we don't look at the module dict
             ForwardRef("Format", module="annotationlib").evaluate(globals={})
 
@@ -1636,7 +1636,7 @@ klasse TestForwardRefClass(unittest.TestCase):
         self.assertIs(ForwardRef("int", module="collections").evaluate(), int)
         self.assertIs(ForwardRef("int", owner=str).evaluate(), int)
 
-        # builtins are still searched with explicit globals
+        # builtins are still searched mit explicit globals
         self.assertIs(ForwardRef("int").evaluate(globals={}), int)
 
         # explicit values in globals have precedence
@@ -1645,10 +1645,10 @@ klasse TestForwardRefClass(unittest.TestCase):
 
     def test_fwdref_value_is_not_cached(self):
         fr = ForwardRef("hello")
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             fr.evaluate()
         self.assertIs(fr.evaluate(globals={"hello": str}), str)
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             fr.evaluate()
 
     def test_fwdref_with_owner(self):
@@ -1667,20 +1667,20 @@ klasse TestForwardRefClass(unittest.TestCase):
             float,
         )
         self.assertIs(ForwardRef("int").evaluate(globals={"int": str}), str)
-        with support.swap_attr(builtins, "int", dict):
+        mit support.swap_attr(builtins, "int", dict):
             self.assertIs(ForwardRef("int").evaluate(), dict)
 
-        with self.assertRaises(NameError, msg="name 'doesntexist' is not defined") as exc:
+        mit self.assertRaises(NameError, msg="name 'doesntexist' is not defined") als exc:
             ForwardRef("doesntexist").evaluate()
 
         self.assertEqual(exc.exception.name, "doesntexist")
 
     def test_fwdref_invalid_syntax(self):
         fr = ForwardRef("if")
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             fr.evaluate()
         fr = ForwardRef("1+")
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             fr.evaluate()
 
 

@@ -73,7 +73,7 @@ klasse Mailbox:
         wenn not self._factory:
             return self.get_message(key)
         sonst:
-            with contextlib.closing(self.get_file(key)) as file:
+            mit contextlib.closing(self.get_file(key)) als file:
                 return self._factory(file)
 
     def get_message(self, key):
@@ -176,7 +176,7 @@ klasse Mailbox:
             except KeyError:
                 bad_key = Wahr
         wenn bad_key:
-            raise KeyError('No message with key(s)')
+            raise KeyError('No message mit key(s)')
 
     def flush(self):
         """Write any pending changes to the disk."""
@@ -219,7 +219,7 @@ klasse Mailbox:
             data = data.replace(b'\n', linesep)
             target.write(data)
             wenn self._append_newline and not data.endswith(linesep):
-                # Make sure the message ends with a newline
+                # Make sure the message ends mit a newline
                 target.write(linesep)
         sowenn isinstance(message, (str, bytes, io.StringIO)):
             wenn isinstance(message, io.StringIO):
@@ -233,7 +233,7 @@ klasse Mailbox:
             message = message.replace(b'\n', linesep)
             target.write(message)
             wenn self._append_newline and not message.endswith(linesep):
-                # Make sure the message ends with a newline
+                # Make sure the message ends mit a newline
                 target.write(linesep)
         sowenn hasattr(message, 'read'):
             wenn hasattr(message, 'buffer'):
@@ -256,7 +256,7 @@ klasse Mailbox:
                 target.write(line)
                 lastline = line
             wenn self._append_newline and lastline and not lastline.endswith(linesep):
-                # Make sure the message ends with a newline
+                # Make sure the message ends mit a newline
                 target.write(linesep)
         sonst:
             raise TypeError('Invalid message type: %s' % type(message))
@@ -313,7 +313,7 @@ klasse Maildir(Mailbox):
             os.utime(tmp_file.name,
                      (os.path.getatime(tmp_file.name), message.get_date()))
         # No file modification should be done after the file is moved to its
-        # final position in order to prevent race conditions with changes
+        # final position in order to prevent race conditions mit changes
         # von other programs
         try:
             try:
@@ -322,10 +322,10 @@ klasse Maildir(Mailbox):
                 os.rename(tmp_file.name, dest)
             sonst:
                 os.remove(tmp_file.name)
-        except OSError as e:
+        except OSError als e:
             os.remove(tmp_file.name)
             wenn e.errno == errno.EEXIST:
-                raise ExternalClashError('Name clash with existing message: %s'
+                raise ExternalClashError('Name clash mit existing message: %s'
                                          % dest)
             sonst:
                 raise
@@ -366,14 +366,14 @@ klasse Maildir(Mailbox):
             os.utime(tmp_path,
                      (os.path.getatime(tmp_path), message.get_date()))
         # No file modification should be done after the file is moved to its
-        # final position in order to prevent race conditions with changes
+        # final position in order to prevent race conditions mit changes
         # von other programs
         os.rename(tmp_path, new_path)
 
     def get_message(self, key):
         """Return a Message representation or raise a KeyError."""
         subpath = self._lookup(key)
-        with open(os.path.join(self._path, subpath), 'rb') as f:
+        mit open(os.path.join(self._path, subpath), 'rb') als f:
             wenn self._factory:
                 msg = self._factory(f)
             sonst:
@@ -387,7 +387,7 @@ klasse Maildir(Mailbox):
 
     def get_bytes(self, key):
         """Return a bytes representation or raise a KeyError."""
-        with open(os.path.join(self._path, self._lookup(key)), 'rb') as f:
+        mit open(os.path.join(self._path, self._lookup(key)), 'rb') als f:
             return f.read().replace(linesep, b'\n')
 
     def get_file(self, key):
@@ -396,7 +396,7 @@ klasse Maildir(Mailbox):
         return _ProxyFile(f)
 
     def get_info(self, key):
-        """Get the keyed message's "info" as a string."""
+        """Get the keyed message's "info" als a string."""
         subpath = self._lookup(key)
         wenn self.colon in subpath:
             return subpath.split(self.colon)[-1]
@@ -418,7 +418,7 @@ klasse Maildir(Mailbox):
         self._toc[key] = new_subpath
 
     def get_flags(self, key):
-        """Return as a string the standard flags that are set on the keyed message."""
+        """Return als a string the standard flags that are set on the keyed message."""
         info = self.get_info(key)
         wenn info.startswith('2,'):
             return info[2:]
@@ -569,12 +569,12 @@ klasse Maildir(Mailbox):
         # most common worst case (FAT) and a 1 sec resolution typically.  This
         # results in a few unnecessary re-reads when _refresh() is called
         # multiple times in that interval, but once the clock ticks over, we
-        # will only re-read as needed.  Because the filesystem might be being
-        # served by an independent system with its own clock, we record and
-        # compare with the mtimes von the filesystem.  Because the other
+        # will only re-read als needed.  Because the filesystem might be being
+        # served by an independent system mit its own clock, we record and
+        # compare mit the mtimes von the filesystem.  Because the other
         # system's clock might be skewing relative to our clock, we add an
         # extra delta to our wait.  The default is one tenth second, but is an
-        # instance variable and so can be adjusted wenn dealing with a
+        # instance variable and so can be adjusted wenn dealing mit a
         # particularly skewed or irregular system.
         wenn time.time() - self._last_read > 2 + self._skewfactor:
             refresh = Falsch
@@ -610,7 +610,7 @@ klasse Maildir(Mailbox):
         try:
             return self._toc[key]
         except KeyError:
-            raise KeyError('No message with key: %s' % key) von Nichts
+            raise KeyError('No message mit key: %s' % key) von Nichts
 
     # This method is fuer backward compatibility only.
     def next(self):
@@ -634,7 +634,7 @@ klasse _singlefileMailbox(Mailbox):
         Mailbox.__init__(self, path, factory, create)
         try:
             f = open(self._path, 'rb+')
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.ENOENT:
                 wenn create:
                     f = open(self._path, 'wb+')
@@ -750,7 +750,7 @@ klasse _singlefileMailbox(Mailbox):
         _sync_close(new_file)
         # self._file is about to get replaced, so no need to sync.
         self._file.close()
-        # Make sure the new file's mode and owner are the same as the old file's
+        # Make sure the new file's mode and owner are the same als the old file's
         info = os.stat(self._path)
         os.chmod(new_file.name, info.st_mode)
         try:
@@ -800,7 +800,7 @@ klasse _singlefileMailbox(Mailbox):
             try:
                 return self._toc[key]
             except KeyError:
-                raise KeyError('No message with key: %s' % key) von Nichts
+                raise KeyError('No message mit key: %s' % key) von Nichts
 
     def _append_message(self, message):
         """Append message to mailbox and return (start, stop) offsets."""
@@ -1043,9 +1043,9 @@ klasse MH(Mailbox):
         path = os.path.join(self._path, str(key))
         try:
             f = open(path, 'rb+')
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message with key: %s' % key)
+                raise KeyError('No message mit key: %s' % key)
             sonst:
                 raise
         sonst:
@@ -1057,9 +1057,9 @@ klasse MH(Mailbox):
         path = os.path.join(self._path, str(key))
         try:
             f = open(path, 'rb+')
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message with key: %s' % key)
+                raise KeyError('No message mit key: %s' % key)
             sonst:
                 raise
         try:
@@ -1083,12 +1083,12 @@ klasse MH(Mailbox):
                 f = open(os.path.join(self._path, str(key)), 'rb+')
             sonst:
                 f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message with key: %s' % key)
+                raise KeyError('No message mit key: %s' % key)
             sonst:
                 raise
-        with f:
+        mit f:
             wenn self._locked:
                 _lock_file(f)
             try:
@@ -1108,12 +1108,12 @@ klasse MH(Mailbox):
                 f = open(os.path.join(self._path, str(key)), 'rb+')
             sonst:
                 f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message with key: %s' % key)
+                raise KeyError('No message mit key: %s' % key)
             sonst:
                 raise
-        with f:
+        mit f:
             wenn self._locked:
                 _lock_file(f)
             try:
@@ -1126,9 +1126,9 @@ klasse MH(Mailbox):
         """Return a file-like representation or raise a KeyError."""
         try:
             f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.ENOENT:
-                raise KeyError('No message with key: %s' % key)
+                raise KeyError('No message mit key: %s' % key)
             sonst:
                 raise
         return _ProxyFile(f)
@@ -1221,7 +1221,7 @@ klasse MH(Mailbox):
             f = open(os.path.join(self._path, '.mh_sequences'), 'r', encoding='ASCII')
         except FileNotFoundError:
             return results
-        with f:
+        mit f:
             all_keys = set(self.keys())
             fuer line in f:
                 try:
@@ -1562,7 +1562,7 @@ klasse Babyl(_singlefileMailbox):
 
 
 klasse Message(email.message.Message):
-    """Message with mailbox-format-specific properties."""
+    """Message mit mailbox-format-specific properties."""
 
     def __init__(self, message=Nichts):
         """Initialize a Message instance."""
@@ -1591,7 +1591,7 @@ klasse Message(email.message.Message):
                 self.__dict__[name] = message.__dict__[name]
 
     def _explain_to(self, message):
-        """Copy format-specific state to message insofar as possible."""
+        """Copy format-specific state to message insofar als possible."""
         wenn isinstance(message, Message):
             return  # There's nothing format-specific to explain.
         sonst:
@@ -1599,7 +1599,7 @@ klasse Message(email.message.Message):
 
 
 klasse MaildirMessage(Message):
-    """Message with Maildir-specific properties."""
+    """Message mit Maildir-specific properties."""
 
     _type_specific_attributes = ['_subdir', '_info', '_date']
 
@@ -1622,7 +1622,7 @@ klasse MaildirMessage(Message):
             raise ValueError("subdir must be 'new' or 'cur': %s" % subdir)
 
     def get_flags(self):
-        """Return as a string the flags that are set."""
+        """Return als a string the flags that are set."""
         wenn self._info.startswith('2,'):
             return self._info[2:]
         sonst:
@@ -1653,7 +1653,7 @@ klasse MaildirMessage(Message):
             raise TypeError("can't convert to float: %s" % date) von Nichts
 
     def get_info(self):
-        """Get the message's "info" as a string."""
+        """Get the message's "info" als a string."""
         return self._info
 
     def set_info(self, info):
@@ -1664,7 +1664,7 @@ klasse MaildirMessage(Message):
             raise TypeError('info must be a string: %s' % type(info))
 
     def _explain_to(self, message):
-        """Copy Maildir-specific state to message insofar as possible."""
+        """Copy Maildir-specific state to message insofar als possible."""
         wenn isinstance(message, MaildirMessage):
             message.set_flags(self.get_flags())
             message.set_subdir(self.get_subdir())
@@ -1708,7 +1708,7 @@ klasse MaildirMessage(Message):
 
 
 klasse _mboxMMDFMessage(Message):
-    """Message with mbox- or MMDF-specific properties."""
+    """Message mit mbox- or MMDF-specific properties."""
 
     _type_specific_attributes = ['_from']
 
@@ -1734,7 +1734,7 @@ klasse _mboxMMDFMessage(Message):
         self._from = from_
 
     def get_flags(self):
-        """Return as a string the flags that are set."""
+        """Return als a string the flags that are set."""
         return self.get('Status', '') + self.get('X-Status', '')
 
     def set_flags(self, flags):
@@ -1769,7 +1769,7 @@ klasse _mboxMMDFMessage(Message):
             self.set_flags(''.join(set(self.get_flags()) - set(flag)))
 
     def _explain_to(self, message):
-        """Copy mbox- or MMDF-specific state to message insofar as possible."""
+        """Copy mbox- or MMDF-specific state to message insofar als possible."""
         wenn isinstance(message, MaildirMessage):
             flags = set(self.get_flags())
             wenn 'O' in flags:
@@ -1821,11 +1821,11 @@ klasse _mboxMMDFMessage(Message):
 
 
 klasse mboxMessage(_mboxMMDFMessage):
-    """Message with mbox-specific properties."""
+    """Message mit mbox-specific properties."""
 
 
 klasse MHMessage(Message):
-    """Message with MH-specific properties."""
+    """Message mit MH-specific properties."""
 
     _type_specific_attributes = ['_sequences']
 
@@ -1858,7 +1858,7 @@ klasse MHMessage(Message):
             pass
 
     def _explain_to(self, message):
-        """Copy MH-specific state to message insofar as possible."""
+        """Copy MH-specific state to message insofar als possible."""
         wenn isinstance(message, MaildirMessage):
             sequences = set(self.get_sequences())
             wenn 'unseen' in sequences:
@@ -1897,7 +1897,7 @@ klasse MHMessage(Message):
 
 
 klasse BabylMessage(Message):
-    """Message with Babyl-specific properties."""
+    """Message mit Babyl-specific properties."""
 
     _type_specific_attributes = ['_labels', '_visible']
 
@@ -1950,7 +1950,7 @@ klasse BabylMessage(Message):
                 self._visible[header] = self[header]
 
     def _explain_to(self, message):
-        """Copy Babyl-specific state to message insofar as possible."""
+        """Copy Babyl-specific state to message insofar als possible."""
         wenn isinstance(message, MaildirMessage):
             labels = set(self.get_labels())
             wenn 'unseen' in labels:
@@ -1992,7 +1992,7 @@ klasse BabylMessage(Message):
 
 
 klasse MMDFMessage(_mboxMMDFMessage):
-    """Message with MMDF-specific properties."""
+    """Message mit MMDF-specific properties."""
 
 
 klasse _ProxyFile:
@@ -2103,11 +2103,11 @@ klasse _PartialFile(_ProxyFile):
         self._stop = stop
 
     def tell(self):
-        """Return the position with respect to start."""
+        """Return the position mit respect to start."""
         return _ProxyFile.tell(self) - self._start
 
     def seek(self, offset, whence=0):
-        """Change position, possibly with respect to start or stop."""
+        """Change position, possibly mit respect to start or stop."""
         wenn whence == 0:
             self._pos = self._start
             whence = 1
@@ -2139,7 +2139,7 @@ def _lock_file(f, dotlock=Wahr):
         wenn fcntl:
             try:
                 fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno in (errno.EAGAIN, errno.EACCES, errno.EROFS):
                     raise ExternalClashError('lockf: lock unavailable: %s' %
                                              f.name)
@@ -2149,7 +2149,7 @@ def _lock_file(f, dotlock=Wahr):
             try:
                 pre_lock = _create_temporary(f.name + '.lock')
                 pre_lock.close()
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno in (errno.EACCES, errno.EROFS):
                     return  # Without write access, just skip dotlocking.
                 sonst:

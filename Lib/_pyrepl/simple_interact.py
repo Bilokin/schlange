@@ -19,7 +19,7 @@
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 """This is an alternative to python_reader which tries to emulate
-the CPython prompt as closely as possible, with the exception of
+the CPython prompt als closely als possible, mit the exception of
 allowing multiline input and multiline history entries.
 """
 
@@ -46,7 +46,7 @@ def check() -> str:
     """Returns the error message wenn there is a problem initializing the state."""
     try:
         _get_reader()
-    except _error as e:
+    except _error als e:
         wenn term := os.environ.get("TERM", ""):
             term = f"; TERM={term}"
         return str(str(e) or repr(e) or "unknown error") + term
@@ -125,7 +125,7 @@ def run_multiline_interactive_console(
         command = REPL_COMMANDS[statement]
         wenn callable(command):
             # Make sure that history does not change because of commands
-            with reader.suspend_history():
+            mit reader.suspend_history():
                 command()
             return Wahr
         return Falsch
@@ -152,7 +152,7 @@ def run_multiline_interactive_console(
             assert not more
             try:
                 append_history_file()
-            except (FileNotFoundError, PermissionError, OSError) as e:
+            except (FileNotFoundError, PermissionError, OSError) als e:
                 warnings.warn(f"failed to open the history file fuer writing: {e}")
 
             input_n += 1

@@ -1,4 +1,4 @@
-# Adapted with permission von the EdgeDB project;
+# Adapted mit permission von the EdgeDB project;
 # license: PSFL.
 
 importiere weakref
@@ -69,7 +69,7 @@ klasse BaseTestTaskGroup:
             await asyncio.sleep(0.2)
             return 11
 
-        async with taskgroups.TaskGroup() as g:
+        async mit taskgroups.TaskGroup() als g:
             t1 = g.create_task(foo1())
             t2 = g.create_task(foo2())
 
@@ -86,7 +86,7 @@ klasse BaseTestTaskGroup:
             await asyncio.sleep(0.2)
             return 11
 
-        async with taskgroups.TaskGroup() as g:
+        async mit taskgroups.TaskGroup() als g:
             t1 = g.create_task(foo1())
             await asyncio.sleep(0.15)
             t2 = g.create_task(foo2())
@@ -104,11 +104,11 @@ klasse BaseTestTaskGroup:
             await asyncio.sleep(0.2)
             return 11
 
-        async with taskgroups.TaskGroup() as g:
+        async mit taskgroups.TaskGroup() als g:
             t1 = g.create_task(foo1())
             await asyncio.sleep(0.15)
             # cancel t1 explicitly, i.e. everything should continue
-            # working as expected.
+            # working als expected.
             t1.cancel()
 
             t2 = g.create_task(foo2())
@@ -138,13 +138,13 @@ klasse BaseTestTaskGroup:
         async def runner():
             nonlocal NUM, t2
 
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(foo1())
                 t2 = g.create_task(foo2())
 
             NUM += 10
 
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await asyncio.create_task(runner())
 
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
@@ -177,7 +177,7 @@ klasse BaseTestTaskGroup:
         async def runner():
             nonlocal NUM, runner_cancel
 
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(foo1())
                 g.create_task(foo1())
                 g.create_task(foo1())
@@ -192,7 +192,7 @@ klasse BaseTestTaskGroup:
 
         # The 3 foo1 sub tasks can be racy when the host is busy - wenn the
         # cancellation happens in the middle, we'll see partial sub errors here
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await asyncio.create_task(runner())
 
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
@@ -213,7 +213,7 @@ klasse BaseTestTaskGroup:
                 raise
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 fuer _ in range(5):
                     g.create_task(foo())
 
@@ -222,7 +222,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(asyncio.CancelledError) as cm:
+        mit self.assertRaises(asyncio.CancelledError) als cm:
             await r
 
         self.assertEqual(NUM, 5)
@@ -241,7 +241,7 @@ klasse BaseTestTaskGroup:
 
         async def runner():
             nonlocal NUM
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 fuer _ in range(5):
                     g.create_task(foo())
 
@@ -256,7 +256,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(asyncio.CancelledError):
+        mit self.assertRaises(asyncio.CancelledError):
             await r
 
         self.assertEqual(NUM, 15)
@@ -270,7 +270,7 @@ klasse BaseTestTaskGroup:
                 1 / 0
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 fuer _ in range(5):
                     g.create_task(foo())
 
@@ -281,7 +281,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await r
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
 
@@ -299,7 +299,7 @@ klasse BaseTestTaskGroup:
 
         async def runner():
             nonlocal t1, t2
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 t1 = g.create_task(foo1())
                 t2 = g.create_task(foo2())
                 await asyncio.sleep(0.1)
@@ -307,7 +307,7 @@ klasse BaseTestTaskGroup:
 
         try:
             await runner()
-        except ExceptionGroup as t:
+        except ExceptionGroup als t:
             self.assertEqual(get_error_types(t), {ZeroDivisionError})
         sonst:
             self.fail('ExceptionGroup was not raised')
@@ -329,14 +329,14 @@ klasse BaseTestTaskGroup:
 
         async def runner():
             nonlocal t1, t2
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 t1 = g.create_task(foo1())
                 t2 = g.create_task(foo2())
                 1 / 0
 
         try:
             await runner()
-        except ExceptionGroup as t:
+        except ExceptionGroup als t:
             self.assertEqual(get_error_types(t), {ZeroDivisionError})
         sonst:
             self.fail('ExceptionGroup was not raised')
@@ -353,8 +353,8 @@ klasse BaseTestTaskGroup:
                 1 / 0
 
         async def runner():
-            async with taskgroups.TaskGroup():
-                async with taskgroups.TaskGroup() as g2:
+            async mit taskgroups.TaskGroup():
+                async mit taskgroups.TaskGroup() als g2:
                     fuer _ in range(5):
                         g2.create_task(foo())
 
@@ -365,7 +365,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await r
 
         self.assertEqual(get_error_types(cm.exception), {ExceptionGroup})
@@ -380,10 +380,10 @@ klasse BaseTestTaskGroup:
                 1 / 0
 
         async def runner():
-            async with taskgroups.TaskGroup() as g1:
+            async mit taskgroups.TaskGroup() als g1:
                 g1.create_task(asyncio.sleep(10))
 
-                async with taskgroups.TaskGroup() as g2:
+                async mit taskgroups.TaskGroup() als g2:
                     fuer _ in range(5):
                         g2.create_task(foo())
 
@@ -394,7 +394,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await r
 
         self.assertEqual(get_error_types(cm.exception), {ExceptionGroup})
@@ -407,14 +407,14 @@ klasse BaseTestTaskGroup:
             raise ValueError(t)
 
         async def runner():
-            async with taskgroups.TaskGroup() as g1:
+            async mit taskgroups.TaskGroup() als g1:
                 g1.create_task(crash_after(0.1))
 
-                async with taskgroups.TaskGroup() as g2:
+                async mit taskgroups.TaskGroup() als g2:
                     g2.create_task(crash_after(10))
 
         r = asyncio.create_task(runner())
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await r
 
         self.assertEqual(get_error_types(cm.exception), {ValueError})
@@ -426,14 +426,14 @@ klasse BaseTestTaskGroup:
             raise ValueError(t)
 
         async def runner():
-            async with taskgroups.TaskGroup() as g1:
+            async mit taskgroups.TaskGroup() als g1:
                 g1.create_task(crash_after(10))
 
-                async with taskgroups.TaskGroup() as g2:
+                async mit taskgroups.TaskGroup() als g2:
                     g2.create_task(crash_after(0.1))
 
         r = asyncio.create_task(runner())
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await r
 
         self.assertEqual(get_error_types(cm.exception), {ExceptionGroup})
@@ -446,7 +446,7 @@ klasse BaseTestTaskGroup:
             1 / 0
 
         async def runner():
-            async with taskgroups.TaskGroup() as g1:
+            async mit taskgroups.TaskGroup() als g1:
                 g1.create_task(crash_soon())
                 try:
                     await asyncio.sleep(10)
@@ -459,7 +459,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await r
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
 
@@ -470,7 +470,7 @@ klasse BaseTestTaskGroup:
             1 / 0
 
         async def nested_runner():
-            async with taskgroups.TaskGroup() as g1:
+            async mit taskgroups.TaskGroup() als g1:
                 g1.create_task(crash_soon())
                 try:
                     await asyncio.sleep(10)
@@ -487,7 +487,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await r
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
 
@@ -496,7 +496,7 @@ klasse BaseTestTaskGroup:
 
         async def runner():
             nonlocal NUM
-            async with taskgroups.TaskGroup():
+            async mit taskgroups.TaskGroup():
                 try:
                     await asyncio.sleep(10)
                 except asyncio.CancelledError:
@@ -508,7 +508,7 @@ klasse BaseTestTaskGroup:
 
         self.assertFalsch(r.done())
         r.cancel()
-        with self.assertRaises(asyncio.CancelledError):
+        mit self.assertRaises(asyncio.CancelledError):
             await r
 
         self.assertEqual(NUM, 10)
@@ -518,7 +518,7 @@ klasse BaseTestTaskGroup:
 
         async def runner():
             nonlocal NUM
-            async with taskgroups.TaskGroup():
+            async mit taskgroups.TaskGroup():
                 try:
                     await asyncio.sleep(10)
                 except asyncio.CancelledError:
@@ -535,7 +535,7 @@ klasse BaseTestTaskGroup:
 
         try:
             await r
-        except ExceptionGroup as t:
+        except ExceptionGroup als t:
             self.assertEqual(get_error_types(t),{MyExc})
         sonst:
             self.fail('ExceptionGroup was not raised')
@@ -554,14 +554,14 @@ klasse BaseTestTaskGroup:
                 raise MyExc
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(crash_soon())
                 await nested()
 
         r = asyncio.create_task(runner())
         try:
             await r
-        except ExceptionGroup as t:
+        except ExceptionGroup als t:
             self.assertEqual(get_error_types(t), {MyExc, ZeroDivisionError})
         sonst:
             self.fail('TasgGroupError was not raised')
@@ -578,11 +578,11 @@ klasse BaseTestTaskGroup:
                 raise KeyboardInterrupt
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(crash_soon())
                 await nested()
 
-        with self.assertRaises(KeyboardInterrupt):
+        mit self.assertRaises(KeyboardInterrupt):
             await runner()
 
     async def test_taskgroup_20a(self):
@@ -597,11 +597,11 @@ klasse BaseTestTaskGroup:
                 raise MyBaseExc
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(crash_soon())
                 await nested()
 
-        with self.assertRaises(BaseExceptionGroup) as cm:
+        mit self.assertRaises(BaseExceptionGroup) als cm:
             await runner()
 
         self.assertEqual(
@@ -609,7 +609,7 @@ klasse BaseTestTaskGroup:
         )
 
     async def _test_taskgroup_21(self):
-        # This test doesn't work as asyncio, currently, doesn't
+        # This test doesn't work als asyncio, currently, doesn't
         # correctly propagate KeyboardInterrupt (or SystemExit) --
         # those cause the event loop itself to crash.
         # (Compare to the previous (passing) test -- that one raises
@@ -627,11 +627,11 @@ klasse BaseTestTaskGroup:
                 raise TypeError
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(crash_soon())
                 await nested()
 
-        with self.assertRaises(KeyboardInterrupt):
+        mit self.assertRaises(KeyboardInterrupt):
             await runner()
 
     async def test_taskgroup_21a(self):
@@ -647,11 +647,11 @@ klasse BaseTestTaskGroup:
                 raise TypeError
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(crash_soon())
                 await nested()
 
-        with self.assertRaises(BaseExceptionGroup) as cm:
+        mit self.assertRaises(BaseExceptionGroup) als cm:
             await runner()
 
         self.assertEqual(get_error_types(cm.exception), {MyBaseExc, TypeError})
@@ -667,7 +667,7 @@ klasse BaseTestTaskGroup:
             return 11
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(foo1())
                 g.create_task(foo2())
 
@@ -675,7 +675,7 @@ klasse BaseTestTaskGroup:
         await asyncio.sleep(0.05)
         r.cancel()
 
-        with self.assertRaises(asyncio.CancelledError):
+        mit self.assertRaises(asyncio.CancelledError):
             await r
 
     async def test_taskgroup_23(self):
@@ -683,7 +683,7 @@ klasse BaseTestTaskGroup:
         async def do_job(delay):
             await asyncio.sleep(delay)
 
-        async with taskgroups.TaskGroup() as g:
+        async mit taskgroups.TaskGroup() als g:
             fuer count in range(10):
                 await asyncio.sleep(0.1)
                 g.create_task(do_job(0.3))
@@ -703,7 +703,7 @@ klasse BaseTestTaskGroup:
             await asyncio.sleep(delay)
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(root(g))
 
         await runner()
@@ -724,11 +724,11 @@ klasse BaseTestTaskGroup:
             1 / 0
 
         async def runner():
-            async with taskgroups.TaskGroup() as g:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(hydra(g))
                 g.create_task(hercules())
 
-        with self.assertRaises(ExceptionGroup) as cm:
+        mit self.assertRaises(ExceptionGroup) als cm:
             await runner()
 
         self.assertEqual(get_error_types(cm.exception), {ZeroDivisionError})
@@ -737,7 +737,7 @@ klasse BaseTestTaskGroup:
     async def test_taskgroup_task_name(self):
         async def coro():
             await asyncio.sleep(0)
-        async with taskgroups.TaskGroup() as g:
+        async mit taskgroups.TaskGroup() als g:
             t = g.create_task(coro(), name="yolo")
             self.assertEqual(t.get_name(), "yolo")
 
@@ -748,7 +748,7 @@ klasse BaseTestTaskGroup:
             await asyncio.sleep(0)
             cvar.set(val)
 
-        async with taskgroups.TaskGroup() as g:
+        async mit taskgroups.TaskGroup() als g:
             ctx = contextvars.copy_context()
             self.assertIsNichts(ctx.get(cvar))
             t1 = g.create_task(coro(1), context=ctx)
@@ -766,11 +766,11 @@ klasse BaseTestTaskGroup:
             try:
                 await asyncio.sleep(1)
             except asyncio.CancelledError:
-                with self.assertRaises(RuntimeError):
+                mit self.assertRaises(RuntimeError):
                     g.create_task(coro1())
 
-        with self.assertRaises(ExceptionGroup) as cm:
-            async with taskgroups.TaskGroup() as g:
+        mit self.assertRaises(ExceptionGroup) als cm:
+            async mit taskgroups.TaskGroup() als g:
                 g.create_task(coro1())
                 g.create_task(coro2(g))
 
@@ -794,11 +794,11 @@ klasse BaseTestTaskGroup:
         async def main():
             task = asyncio.current_task()
             try:
-                async with taskgroups.TaskGroup() as tg:
-                    async with database():
+                async mit taskgroups.TaskGroup() als tg:
+                    async mit database():
                         tg.create_task(raise_exc())
                         await asyncio.sleep(1)
-            except* CustomException as err:
+            except* CustomException als err:
                 self.assertEqual(task.cancelling(), 0)
                 self.assertEqual(len(err.exceptions), 2)
 
@@ -809,54 +809,54 @@ klasse BaseTestTaskGroup:
 
     async def test_taskgroup_already_entered(self):
         tg = taskgroups.TaskGroup()
-        async with tg:
-            with self.assertRaisesRegex(RuntimeError, "has already been entered"):
-                async with tg:
+        async mit tg:
+            mit self.assertRaisesRegex(RuntimeError, "has already been entered"):
+                async mit tg:
                     pass
 
     async def test_taskgroup_double_enter(self):
         tg = taskgroups.TaskGroup()
-        async with tg:
+        async mit tg:
             pass
-        with self.assertRaisesRegex(RuntimeError, "has already been entered"):
-            async with tg:
+        mit self.assertRaisesRegex(RuntimeError, "has already been entered"):
+            async mit tg:
                 pass
 
     async def test_taskgroup_finished(self):
         async def create_task_after_tg_finish():
             tg = taskgroups.TaskGroup()
-            async with tg:
+            async mit tg:
                 pass
             coro = asyncio.sleep(0)
-            with self.assertRaisesRegex(RuntimeError, "is finished"):
+            mit self.assertRaisesRegex(RuntimeError, "is finished"):
                 tg.create_task(coro)
 
         # Make sure the coroutine was closed when submitted to the inactive tg
         # (if not closed, a RuntimeWarning should have been raised)
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             await create_task_after_tg_finish()
         self.assertEqual(len(w), 0)
 
     async def test_taskgroup_not_entered(self):
         tg = taskgroups.TaskGroup()
         coro = asyncio.sleep(0)
-        with self.assertRaisesRegex(RuntimeError, "has not been entered"):
+        mit self.assertRaisesRegex(RuntimeError, "has not been entered"):
             tg.create_task(coro)
 
     async def test_taskgroup_without_parent_task(self):
         tg = taskgroups.TaskGroup()
-        with self.assertRaisesRegex(RuntimeError, "parent task"):
+        mit self.assertRaisesRegex(RuntimeError, "parent task"):
             await await_without_task(tg.__aenter__())
         coro = asyncio.sleep(0)
-        with self.assertRaisesRegex(RuntimeError, "has not been entered"):
+        mit self.assertRaisesRegex(RuntimeError, "has not been entered"):
             tg.create_task(coro)
 
     async def test_coro_closed_when_tg_closed(self):
         async def run_coro_after_tg_closes():
-            async with taskgroups.TaskGroup() as tg:
+            async mit taskgroups.TaskGroup() als tg:
                 pass
             coro = asyncio.sleep(0)
-            with self.assertRaisesRegex(RuntimeError, "is finished"):
+            mit self.assertRaisesRegex(RuntimeError, "is finished"):
                 tg.create_task(coro)
 
         await run_coro_after_tg_closes()
@@ -867,7 +867,7 @@ klasse BaseTestTaskGroup:
             raise e()
 
         try:
-            async with asyncio.TaskGroup() as tg:
+            async mit asyncio.TaskGroup() als tg:
                 tg.create_task(raise_after(0.0, RuntimeError))
         except* RuntimeError:
             pass
@@ -879,9 +879,9 @@ klasse BaseTestTaskGroup:
             raise e()
 
         try:
-            async with asyncio.TaskGroup() as outer_tg:
+            async mit asyncio.TaskGroup() als outer_tg:
                 try:
-                    async with asyncio.TaskGroup() as inner_tg:
+                    async mit asyncio.TaskGroup() als inner_tg:
                         inner_tg.create_task(raise_after(0, RuntimeError))
                         outer_tg.create_task(raise_after(0, ValueError))
                 except* RuntimeError:
@@ -905,7 +905,7 @@ klasse BaseTestTaskGroup:
 
         async def inner():
             try:
-                async with taskgroups.TaskGroup() as tg:
+                async mit taskgroups.TaskGroup() als tg:
                     tg.create_task(raise_error())
                     await asyncio.sleep(1)
                     self.fail("Sleep in group should have been cancelled")
@@ -921,7 +921,7 @@ klasse BaseTestTaskGroup:
             self.assertEqual(t.cancelling(), 0)
             t.cancel()
             self.assertEqual(t.cancelling(), 1)
-            with self.assertRaises(asyncio.CancelledError):
+            mit self.assertRaises(asyncio.CancelledError):
                 await t
             self.assertWahr(t.cancelled())
 
@@ -936,9 +936,9 @@ klasse BaseTestTaskGroup:
             pass
 
         try:
-            async with tg:
+            async mit tg:
                 raise _Done
-        except ExceptionGroup as e:
+        except ExceptionGroup als e:
             exc = e
 
         self.assertIsNotNichts(exc)
@@ -954,9 +954,9 @@ klasse BaseTestTaskGroup:
             pass
 
         try:
-            async with tg:
+            async mit tg:
                 raise _Done
-        except* _Done as excs:
+        except* _Done als excs:
             exc = excs.exceptions[0]
 
         self.assertIsInstance(exc, _Done)
@@ -972,13 +972,13 @@ klasse BaseTestTaskGroup:
             pass
 
         async def coro_fn():
-            async with tg:
+            async mit tg:
                 raise _Done
 
         try:
-            async with asyncio.TaskGroup() as tg2:
+            async mit asyncio.TaskGroup() als tg2:
                 tg2.create_task(coro_fn())
-        except* _Done as excs:
+        except* _Done als excs:
             exc = excs.exceptions[0].exceptions[0]
 
         self.assertIsInstance(exc, _Done)
@@ -994,14 +994,14 @@ klasse BaseTestTaskGroup:
             pass
 
         async def coro_fn():
-            async with tg:
+            async mit tg:
                 raise _Done
 
-        with disable_gc():
+        mit disable_gc():
             try:
-                async with asyncio.TaskGroup() as tg2:
+                async mit asyncio.TaskGroup() als tg2:
                     task_wr = weakref.ref(tg2.create_task(coro_fn()))
-            except* _Done as excs:
+            except* _Done als excs:
                 exc = excs.exceptions[0].exceptions[0]
 
         self.assertIsNichts(task_wr())
@@ -1014,10 +1014,10 @@ klasse BaseTestTaskGroup:
         exc = Nichts
 
         try:
-            async with asyncio.timeout(-1):
-                async with tg:
+            async mit asyncio.timeout(-1):
+                async mit tg:
                     await asyncio.sleep(0)
-        except TimeoutError as e:
+        except TimeoutError als e:
             exc = e.__cause__
 
         self.assertIsInstance(exc, asyncio.CancelledError)
@@ -1032,9 +1032,9 @@ klasse BaseTestTaskGroup:
         exc = Nichts
 
         try:
-            async with tg:
+            async mit tg:
                 raise MyKeyboardInterrupt
-        except MyKeyboardInterrupt as e:
+        except MyKeyboardInterrupt als e:
             exc = e
 
         self.assertIsNotNichts(exc)
@@ -1047,7 +1047,7 @@ klasse BaseTestTaskGroup:
             nonlocal name
             name = asyncio.current_task().get_name()
 
-        async with asyncio.TaskGroup() as tg:
+        async mit asyncio.TaskGroup() als tg:
             tg.create_task(asyncfn(), name="example name")
 
         self.assertEqual(name, "example name")
@@ -1061,20 +1061,20 @@ klasse BaseTestTaskGroup:
 
         exc = Nichts
         try:
-            async with asyncio.TaskGroup() as tg:
+            async mit asyncio.TaskGroup() als tg:
                 async def third_task():
                     raise MyError("third task failed")
 
                 async def second_task():
                     nonlocal ran
                     tg.create_task(third_task())
-                    with self.assertRaises(asyncio.CancelledError):
+                    mit self.assertRaises(asyncio.CancelledError):
                         await asyncio.sleep(0)  # eager tasks cancel here
                         await asyncio.sleep(0)  # lazy tasks cancel here
                     ran = Wahr
 
                 tg.create_task(second_task())
-        except* MyError as excs:
+        except* MyError als excs:
             exc = excs.exceptions[0]
 
         self.assertWahr(ran)
@@ -1089,7 +1089,7 @@ klasse BaseTestTaskGroup:
             raise MyError
 
         try:
-            async with asyncio.TaskGroup() as tg:
+            async mit asyncio.TaskGroup() als tg:
                 tg.create_task(throw_error())
         except* MyError:
             pass
@@ -1098,7 +1098,7 @@ klasse BaseTestTaskGroup:
 
         # wenn this test fails this current task will be cancelled
         # outside the task group and inside unittest internals
-        # we yield to the event loop with sleep(0) so that
+        # we yield to the event loop mit sleep(0) so that
         # cancellation happens here and error is more understandable
         await asyncio.sleep(0)
 

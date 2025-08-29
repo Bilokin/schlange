@@ -35,7 +35,7 @@ klasse GetLineIndentTest(unittest.TestCase):
     def test_empty_lines(self):
         fuer tabwidth in [1, 2, 4, 6, 8]:
             fuer line in ['', '\n']:
-                with self.subTest(line=line, tabwidth=tabwidth):
+                mit self.subTest(line=line, tabwidth=tabwidth):
                     self.assertEqual(
                         editor.get_line_indent(line, tabwidth=tabwidth),
                         (0, 0),
@@ -60,7 +60,7 @@ klasse GetLineIndentTest(unittest.TestCase):
                  ('\nnewline test', (0, 0)))
 
         fuer line, expected in tests:
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=4),
                     expected,
@@ -85,7 +85,7 @@ klasse GetLineIndentTest(unittest.TestCase):
                  ('\nnewline test', (0, 0)))
 
         fuer line, expected in tests:
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 self.assertEqual(
                     editor.get_line_indent(line, tabwidth=8),
                     expected,
@@ -128,7 +128,7 @@ klasse IndentAndNewlineTest(unittest.TestCase):
 
         TestInfo = namedtuple('Tests', ['label', 'text', 'expected', 'mark'])
 
-        tests = (TestInfo('Empty line inserts with no indent.',
+        tests = (TestInfo('Empty line inserts mit no indent.',
                           '  \n  def __init__(self):',
                           '\n  \n  def __init__(self):\n',
                           '1.end'),
@@ -140,19 +140,19 @@ klasse IndentAndNewlineTest(unittest.TestCase):
                           '  def f1(self, a, b):',
                           '  def f1(self,\n         a, b):\n',
                           '1.15'),
-                 TestInfo('Inside string with one line - no indent.',
+                 TestInfo('Inside string mit one line - no indent.',
                           '  """Docstring."""',
                           '  """Docstring.\n"""\n',
                           '1.15'),
-                 TestInfo('Inside string with more than one line.',
+                 TestInfo('Inside string mit more than one line.',
                           '  """Docstring.\n  Docstring Line 2"""',
                           '  """Docstring.\n  Docstring Line 2\n  """\n',
                           '2.18'),
-                 TestInfo('Backslash with one line.',
+                 TestInfo('Backslash mit one line.',
                           'a =\\',
                           'a =\\\n  \n',
                           '1.end'),
-                 TestInfo('Backslash with more than one line.',
+                 TestInfo('Backslash mit more than one line.',
                           'a =\\\n          multiline\\',
                           'a =\\\n          multiline\\\n          \n',
                           '2.end'),
@@ -167,7 +167,7 @@ klasse IndentAndNewlineTest(unittest.TestCase):
                  )
 
         fuer test in tests:
-            with self.subTest(label=test.label):
+            mit self.subTest(label=test.label):
                 insert(text, test.text)
                 text.mark_set('insert', test.mark)
                 nl(event=Nichts)
@@ -205,7 +205,7 @@ klasse IndentSearcherTest(unittest.TestCase):
                      ("if 1:\n  2\n  3\n", ('if 1:\n', '  2\n')),
                      )
         fuer code, expected_pair in test_info:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 insert(text, code)
                 actual_pair = editor.IndentSearcher(text).run()
                 self.assertEqual(actual_pair, expected_pair)

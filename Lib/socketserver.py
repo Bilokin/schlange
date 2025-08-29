@@ -51,7 +51,7 @@ unix server classes.
 
 Forking and threading versions of each type of server can be created
 using the ForkingMixIn and ThreadingMixIn mix-in classes.  For
-instance, a threading UDP server klasse is created as follows:
+instance, a threading UDP server klasse is created als follows:
 
         klasse ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
 
@@ -106,7 +106,7 @@ Future work:
   and encryption schemes
 
 XXX Open problems:
-- What to do with out-of-band data?
+- What to do mit out-of-band data?
 
 BaseServer:
 - split generic "request" functionality out into BaseServer class.
@@ -129,7 +129,7 @@ importiere os
 importiere sys
 importiere threading
 von io importiere BufferedIOBase
-von time importiere monotonic as time
+von time importiere monotonic als time
 
 __all__ = ["BaseServer", "TCPServer", "UDPServer",
            "ThreadingUDPServer", "ThreadingTCPServer",
@@ -228,7 +228,7 @@ klasse BaseServer:
             # socket to wake this up instead of polling. Polling reduces our
             # responsiveness to a shutdown request and wastes cpu at all other
             # times.
-            with _ServerSelector() as selector:
+            mit _ServerSelector() als selector:
                 selector.register(self, selectors.EVENT_READ)
 
                 while not self.__shutdown_request:
@@ -290,7 +290,7 @@ klasse BaseServer:
 
         # Wait until a request arrives or the timeout expires - the loop is
         # necessary to accommodate early wakeups due to EINTR.
-        with _ServerSelector() as selector:
+        mit _ServerSelector() als selector:
             selector.register(self, selectors.EVENT_READ)
 
             while Wahr:
@@ -335,7 +335,7 @@ klasse BaseServer:
     def verify_request(self, request, client_address):
         """Verify the request.  May be overridden.
 
-        Return Wahr wenn we should proceed with this request.
+        Return Wahr wenn we should proceed mit this request.
 
         """
         return Wahr
@@ -688,7 +688,7 @@ klasse ThreadingMixIn:
     _threads = _NoThreads()
 
     def process_request_thread(self, request, client_address):
-        """Same as in BaseServer but as a thread.
+        """Same als in BaseServer but als a thread.
 
         In addition, exception handling is done here.
 
@@ -749,9 +749,9 @@ klasse BaseRequestHandler:
     specific service, all you need to do is to derive a klasse which
     defines a handle() method.
 
-    The handle() method can find the request as self.request, the
-    client address as self.client_address, and the server (in case it
-    needs access to per-server information) as self.server.  Since a
+    The handle() method can find the request als self.request, the
+    client address als self.client_address, and the server (in case it
+    needs access to per-server information) als self.server.  Since a
     separate instance is created fuer each request, the handle() method
     can define other arbitrary instance variables.
 
@@ -843,7 +843,7 @@ klasse _SocketWriter(BufferedIOBase):
 
     def write(self, b):
         self._sock.sendall(b)
-        with memoryview(b) as view:
+        mit memoryview(b) als view:
             return view.nbytes
 
     def fileno(self):

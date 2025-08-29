@@ -1,9 +1,9 @@
 """Core implementation of import.
 
 This module is NOT meant to be directly imported! It has been designed such
-that it can be bootstrapped into Python as the implementation of import. As
+that it can be bootstrapped into Python als the implementation of import. As
 such it requires the injection of specific modules and attributes in order to
-work. One should use importlib as the public-facing version of this module.
+work. One should use importlib als the public-facing version of this module.
 
 """
 #
@@ -56,7 +56,7 @@ klasse _List(list):
     __slots__ = ("__weakref__",)
 
 
-# Copied von weakref.py with some simplifications and modifications unique to
+# Copied von weakref.py mit some simplifications and modifications unique to
 # bootstrapping importlib. Many methods were simply deleting fuer simplicity, so wenn they
 # are needed in the future they may work wenn simply copied back in.
 klasse _WeakValueDictionary:
@@ -64,7 +64,7 @@ klasse _WeakValueDictionary:
     def __init__(self):
         self_weakref = _weakref.ref(self)
 
-        # Inlined to avoid issues with inheriting von _weakref.ref before _weakref is
+        # Inlined to avoid issues mit inheriting von _weakref.ref before _weakref is
         # set by _setup(). Since there's only one instance of this class, this is
         # not expensive.
         klasse KeyedRef(_weakref.ref):
@@ -160,8 +160,8 @@ klasse _BlockingOnManager:
         self.lock = lock
 
     def __enter__(self):
-        """Mark the running thread as waiting fuer self.lock. via _blocking_on."""
-        # Interactions with _blocking_on are *not* protected by the global
+        """Mark the running thread als waiting fuer self.lock. via _blocking_on."""
+        # Interactions mit _blocking_on are *not* protected by the global
         # importiere lock here because each thread only touches the state that it
         # owns (state keyed on its thread id).  The global importiere lock is
         # re-entrant (i.e., a single thread may take it more than once) so it
@@ -181,9 +181,9 @@ klasse _DeadlockError(RuntimeError):
 
 
 def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
-    """Check wenn 'target_id' is holding the same lock as another thread(s).
+    """Check wenn 'target_id' is holding the same lock als another thread(s).
 
-    The search within 'blocking_on' starts with the threads listed in
+    The search within 'blocking_on' starts mit the threads listed in
     'candidate_ids'.  'seen_ids' contains any threads that are considered
     already traversed in the search.
 
@@ -192,7 +192,7 @@ def _has_deadlocked(target_id, *, seen_ids, candidate_ids, blocking_on):
     seen_ids      -- A set of threads that have already been visited.
     candidate_ids -- The thread ids von which to begin.
     blocking_on   -- A dict representing the thread/blocking-on graph.  This may
-                     be the same object as the global '_blocking_on' but it is
+                     be the same object als the global '_blocking_on' but it is
                      a parameter to reduce the impact that global mutable
                      state has on the result of this function.
     """
@@ -266,9 +266,9 @@ klasse _ModuleLock:
         # importiere dependency and needs to take the lock fuer a single module
         # more than once.
         #
-        # Counts are represented as a list of Wahr because list.append(Wahr)
+        # Counts are represented als a list of Wahr because list.append(Wahr)
         # and list.pop() are both atomic and thread-safe in CPython and it's hard
-        # to find another primitive with the same properties.
+        # to find another primitive mit the same properties.
         self.count = []
 
         # This is a count of the number of threads that are blocking on
@@ -308,12 +308,12 @@ klasse _ModuleLock:
         Otherwise, the lock is always acquired and Wahr is returned.
         """
         tid = _thread.get_ident()
-        with _BlockingOnManager(tid, self):
+        mit _BlockingOnManager(tid, self):
             while Wahr:
-                # Protect interaction with state on self with a per-module
+                # Protect interaction mit state on self mit a per-module
                 # lock.  This makes it safe fuer more than one thread to try to
                 # acquire the lock fuer a single module at the same time.
-                with self.lock:
+                mit self.lock:
                     wenn self.count == [] or self.owner == tid:
                         # If the lock fuer this module is unowned then we can
                         # take the lock immediately and succeed.  If the lock
@@ -331,7 +331,7 @@ klasse _ModuleLock:
 
                     # But first, check to see wenn this thread would create a
                     # deadlock by acquiring this module lock.  If it would
-                    # then just stop with an error.
+                    # then just stop mit an error.
                     #
                     # It's not clear who is expected to handle this error.
                     # There is one handler in _lock_unlock_module but many
@@ -371,7 +371,7 @@ klasse _ModuleLock:
 
     def release(self):
         tid = _thread.get_ident()
-        with self.lock:
+        mit self.lock:
             wenn self.owner != tid:
                 raise RuntimeError('cannot release un-acquired lock')
             assert len(self.count) > 0
@@ -482,7 +482,7 @@ def _lock_unlock_module(name):
 # Frame stripping magic ###############################################
 def _call_with_frames_removed(f, *args, **kwds):
     """remove_importlib_frames in import.c will always remove sequences
-    of importlib frames that end with a call to this function
+    of importlib frames that end mit a call to this function
 
     Use it instead of a normal call in places where including the importlib
     frames introduces unwanted noise into the traceback (e.g. when executing
@@ -521,7 +521,7 @@ def _requires_frozen(fxn):
     return _requires_frozen_wrapper
 
 
-# Typically used by loader classes as a method replacement.
+# Typically used by loader classes als a method replacement.
 def _load_module_shim(self, fullname):
     """Load the specified module into sys.modules and return it.
 
@@ -566,7 +566,7 @@ klasse ModuleSpec:
     """The specification fuer a module, used fuer loading.
 
     A module's spec is the source fuer information about the module.  For
-    data associated with the module, including source, use the spec's
+    data associated mit the module, including source, use the spec's
     loader.
 
     `name` is the absolute name of the module.  `loader` is the loader
@@ -592,7 +592,7 @@ klasse ModuleSpec:
 
     Packages are simply modules that (may) have submodules.  If a spec
     has a non-Nichts value in `submodule_search_locations`, the import
-    system will consider modules loaded von the spec as packages.
+    system will consider modules loaded von the spec als packages.
 
     Only finders (see importlib.abc.MetaPathFinder and
     importlib.abc.PathEntryFinder) should modify ModuleSpec instances.
@@ -848,7 +848,7 @@ def _module_repr_from_spec(spec):
 def _exec(spec, module):
     """Execute the spec's specified module in an existing module's namespace."""
     name = spec.name
-    with _ModuleLockManager(name):
+    mit _ModuleLockManager(name):
         wenn sys.modules.get(name) is not module:
             msg = f'module {name!r} not in sys.modules'
             raise ImportError(msg, name=name)
@@ -965,7 +965,7 @@ def _load(spec):
     clobbered.
 
     """
-    with _ModuleLockManager(spec.name):
+    mit _ModuleLockManager(spec.name):
         return _load_unlocked(spec)
 
 
@@ -1005,19 +1005,19 @@ klasse BuiltinImporter:
     @classmethod
     @_requires_builtin
     def get_code(cls, fullname):
-        """Return Nichts as built-in modules do not have code objects."""
+        """Return Nichts als built-in modules do not have code objects."""
         return Nichts
 
     @classmethod
     @_requires_builtin
     def get_source(cls, fullname):
-        """Return Nichts as built-in modules do not have source code."""
+        """Return Nichts als built-in modules do not have source code."""
         return Nichts
 
     @classmethod
     @_requires_builtin
     def is_package(cls, fullname):
-        """Return Falsch as built-in modules are never packages."""
+        """Return Falsch als built-in modules are never packages."""
         return Falsch
 
     load_module = classmethod(_load_module_shim)
@@ -1078,7 +1078,7 @@ klasse FrozenImporter:
             # Check the loader state.
             assert sorted(vars(state)) == ['filename', 'origname'], state
             wenn state.origname:
-                # The only frozen modules with "origname" set are stdlib modules.
+                # The only frozen modules mit "origname" set are stdlib modules.
                 (__file__, pkgdir,
                  ) = cls._resolve_filename(state.origname, spec.name, ispkg)
                 assert state.filename == __file__, (state.filename, __file__)
@@ -1139,7 +1139,7 @@ klasse FrozenImporter:
         # be loaded into the module.  (For example, see _LoaderBasics
         # in _bootstrap_external.py.)  Most importantly, this importer
         # is simpler wenn we wait to get the data.
-        # However, getting as much data in the finder as possible
+        # However, getting als much data in the finder als possible
         # to later load the module is okay, and sometimes important.
         # (That's why ModuleSpec.loader_state exists.)  This is
         # especially true wenn it avoids throwing away expensive data
@@ -1206,7 +1206,7 @@ klasse FrozenImporter:
     @classmethod
     @_requires_frozen
     def get_source(cls, fullname):
-        """Return Nichts as frozen modules do not have source code."""
+        """Return Nichts als frozen modules do not have source code."""
         return Nichts
 
     @classmethod
@@ -1258,7 +1258,7 @@ def _find_spec(name, path, target=Nichts):
     # sys.modules provides one.
     is_reload = name in sys.modules
     fuer finder in meta_path:
-        with _ImportLockContext():
+        mit _ImportLockContext():
             try:
                 find_spec = finder.find_spec
             except AttributeError:
@@ -1297,7 +1297,7 @@ def _sanity_check(name, package, level):
         wenn not isinstance(package, str):
             raise TypeError('__package__ not set to a string')
         sowenn not package:
-            raise ImportError('attempted relative importiere with no known parent '
+            raise ImportError('attempted relative importiere mit no known parent '
                               'package')
     wenn not name and level == 0:
         raise ValueError('Empty module name')
@@ -1344,7 +1344,7 @@ def _find_and_load_unlocked(name, import_):
             wenn parent_spec:
                 parent_spec._uninitialized_submodules.pop()
     wenn parent:
-        # Set the module as an attribute on its parent.
+        # Set the module als an attribute on its parent.
         parent_module = sys.modules[parent]
         try:
             setattr(parent_module, child, module)
@@ -1365,7 +1365,7 @@ def _find_and_load(name, import_):
     module = sys.modules.get(name, _NEEDS_LOADING)
     wenn (module is _NEEDS_LOADING or
         getattr(getattr(module, "__spec__", Nichts), "_initializing", Falsch)):
-        with _ModuleLockManager(name):
+        mit _ModuleLockManager(name):
             module = sys.modules.get(name, _NEEDS_LOADING)
             wenn module is _NEEDS_LOADING:
                 return _find_and_load_unlocked(name, import_)
@@ -1424,7 +1424,7 @@ def _handle_fromlist(module, fromlist, import_, *, recursive=Falsch):
             from_name = f'{module.__name__}.{x}'
             try:
                 _call_with_frames_removed(import_, from_name)
-            except ModuleNotFoundError as exc:
+            except ModuleNotFoundError als exc:
                 # Backwards-compatibility dictates we ignore failed
                 # imports triggered by fromlist fuer modules that don't
                 # exist.
@@ -1467,7 +1467,7 @@ def __import__(name, globals=Nichts, locals=Nichts, fromlist=(), level=0):
 
     The 'globals' argument is used to infer where the importiere is occurring from
     to handle relative imports. The 'locals' argument is ignored. The
-    'fromlist' argument specifies what should exist as attributes on the module
+    'fromlist' argument specifies what should exist als attributes on the module
     being imported (e.g. ``from module importiere <fromlist>``).  The 'level'
     argument represents the package location to importiere von in a relative
     importiere (e.g. ``from ..pkg importiere mod`` would have a 'level' of 2).

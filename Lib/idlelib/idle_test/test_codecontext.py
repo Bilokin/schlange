@@ -126,7 +126,7 @@ klasse CodeContextTest(unittest.TestCase):
     def test_del_with_timer(self):
         timer = self.cc.t1 = self.text.after(10000, lambda: Nichts)
         self.cc.__del__()
-        with self.assertRaises(TclError) as cm:
+        mit self.assertRaises(TclError) als cm:
             self.root.tk.call('after', 'info', timer)
         self.assertIn("doesn't exist", str(cm.exception))
 
@@ -175,7 +175,7 @@ klasse CodeContextTest(unittest.TestCase):
         gc = self.cc.get_context
 
         # stopline must be greater than 0.
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             gc(1, stopline=0)
 
         eq(gc(3), ([(2, 0, 'class C1:', 'class')], 0))
@@ -366,7 +366,7 @@ klasse CodeContextTest(unittest.TestCase):
             cc.toggle_code_context_event()
 
         self.font_override = test_font
-        # Nothing breaks or changes with inactive code context.
+        # Nothing breaks or changes mit inactive code context.
         cc.update_font()
 
         # Activate code context, previous font change is immediately effective.
@@ -394,18 +394,18 @@ klasse CodeContextTest(unittest.TestCase):
             cc.toggle_code_context_event()
 
         self.highlight_cfg = test_colors
-        # Nothing breaks with inactive code context.
+        # Nothing breaks mit inactive code context.
         cc.update_highlight_colors()
 
         # Activate code context, previous colors change is immediately effective.
         cc.toggle_code_context_event()
         assert_colors_are_equal(test_colors)
 
-        # Call colors update with no change to the configured colors.
+        # Call colors update mit no change to the configured colors.
         cc.update_highlight_colors()
         assert_colors_are_equal(test_colors)
 
-        # Call the colors update with code context active, change is picked up.
+        # Call the colors update mit code context active, change is picked up.
         self.highlight_cfg = orig_colors
         cc.update_highlight_colors()
         assert_colors_are_equal(orig_colors)

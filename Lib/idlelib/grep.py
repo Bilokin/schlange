@@ -22,13 +22,13 @@ def grep(text, io=Nichts, flist=Nichts):
 
     Module-level function to access the singleton GrepDialog
     instance and open the dialog.  If text is selected, it is
-    used as the search phrase; otherwise, the previous entry
+    used als the search phrase; otherwise, the previous entry
     is used.
 
     Args:
         text: Text widget that contains the selected text for
               default search phrase.
-        io: iomenu.IOBinding instance with default path to search.
+        io: iomenu.IOBinding instance mit default path to search.
         flist: filelist.FileList instance fuer OutputWindow parent.
     """
     root = text._root()
@@ -71,7 +71,7 @@ klasse GrepDialog(SearchDialogBase):
     def __init__(self, root, engine, flist):
         """Create search dialog fuer searching fuer a phrase in the file system.
 
-        Uses SearchDialogBase as the basis fuer the GUI and a
+        Uses SearchDialogBase als the basis fuer the GUI and a
         searchengine instance to prepare the search.
 
         Attributes:
@@ -130,7 +130,7 @@ klasse GrepDialog(SearchDialogBase):
         """Grep fuer search pattern in file path. The default command is bound
         to <Return>.
 
-        If entry values are populated, set OutputWindow as stdout
+        If entry values are populated, set OutputWindow als stdout
         and perform search.  The search dialog is closed automatically
         when the search begins.
         """
@@ -172,14 +172,14 @@ klasse GrepDialog(SearchDialogBase):
         try:
             fuer fn in filelist:
                 try:
-                    with open(fn, errors='replace') as f:
+                    mit open(fn, errors='replace') als f:
                         fuer lineno, line in enumerate(f, 1):
                             wenn line[-1:] == '\n':
                                 line = line[:-1]
                             wenn prog.search(line):
                                 sys.stdout.write(f"{fn}: {lineno}: {line}\n")
                                 hits += 1
-                except OSError as msg:
+                except OSError als msg:
                     drucke(msg)
             drucke(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
                   wenn hits sonst "No hits.")

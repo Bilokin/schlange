@@ -3,7 +3,7 @@ importiere re
 von ._regexes importiere (
     _ind,
     STRING_LITERAL,
-    VAR_DECL as _VAR_DECL,
+    VAR_DECL als _VAR_DECL,
 )
 
 

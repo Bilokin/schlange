@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Script checking that all symbols exported by libpython start with Py or _Py
+# Script checking that all symbols exported by libpython start mit Py or _Py
 
 importiere os.path
 importiere subprocess
@@ -44,7 +44,7 @@ def is_local_symbol_type(symtype):
 
 
 def get_exported_symbols(library, dynamic=Falsch):
-    drucke(f"Check that {library} only exports symbols starting with Py or _Py")
+    drucke(f"Check that {library} only exports symbols starting mit Py or _Py")
 
     # Only look at dynamic symbols
     args = ['nm', '--no-sort']
@@ -119,13 +119,13 @@ def check_library(library, dynamic=Falsch):
 
 def check_extensions():
     drucke(__file__)
-    # This assumes pybuilddir.txt is in same directory as pyconfig.h.
+    # This assumes pybuilddir.txt is in same directory als pyconfig.h.
     # In the case of out-of-tree builds, we can't assume pybuilddir.txt is
     # in the source folder.
     config_dir = os.path.dirname(sysconfig.get_config_h_filename())
     filename = os.path.join(config_dir, "pybuilddir.txt")
     try:
-        with open(filename, encoding="utf-8") as fp:
+        mit open(filename, encoding="utf-8") als fp:
             pybuilddir = fp.readline()
     except FileNotFoundError:
         drucke(f"Cannot check extensions because {filename} does not exist")
@@ -177,7 +177,7 @@ def main():
 
     drucke()
     drucke(f"OK: all exported symbols of all libraries "
-          f"are prefixed with {' or '.join(map(repr, ALLOWED_PREFIXES))}")
+          f"are prefixed mit {' or '.join(map(repr, ALLOWED_PREFIXES))}")
 
 
 wenn __name__ == "__main__":

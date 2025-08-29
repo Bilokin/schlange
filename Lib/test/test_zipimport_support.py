@@ -1,5 +1,5 @@
 # This test module covers support in various parts of the standard library
-# fuer working with modules located inside zipfiles
+# fuer working mit modules located inside zipfiles
 # The tests are centralised in this fashion to make it easy to drop them
 # wenn a platform doesn't support zipimport
 importiere test.support
@@ -24,7 +24,7 @@ verbose = test.support.verbose
 #  inspect (Issue 4223)
 #  doctest (Issue 4197)
 
-# Other test modules with zipimport related tests
+# Other test modules mit zipimport related tests
 #  test_zipimport (of course!)
 #  test_cmd_line_script (covers the zipimport support in runpy)
 
@@ -49,7 +49,7 @@ def _run_object_doctest(obj, module):
     wenn f:
         raise test.support.TestFailed("%d of %d doctests failed" % (f, t))
     wenn verbose:
-        drucke ('doctest (%s) ... %d tests with zero failures' % (module.__name__, t))
+        drucke ('doctest (%s) ... %d tests mit zero failures' % (module.__name__, t))
     return f, t
 
 
@@ -79,7 +79,7 @@ klasse ZipSupportTests(unittest.TestCase):
 
     def test_inspect_getsource_issue4223(self):
         test_src = "def foo(): pass\n"
-        with os_helper.temp_dir() as d:
+        mit os_helper.temp_dir() als d:
             init_name = make_script(d, '__init__', test_src)
             name_in_zip = os.path.join('zip_pkg',
                                        os.path.basename(init_name))
@@ -96,13 +96,13 @@ klasse ZipSupportTests(unittest.TestCase):
     def test_doctest_issue4197(self):
         # To avoid having to keep two copies of the doctest module's
         # unit tests in sync, this test works by taking the source of
-        # test_doctest itself, rewriting it a bit to cope with a new
+        # test_doctest itself, rewriting it a bit to cope mit a new
         # location, and then throwing it in a zip file to make sure
         # everything still works correctly
         test_src = inspect.getsource(test_doctest)
         test_src = test_src.replace(
                          "from test.test_doctest importiere test_doctest",
-                         "import test_zipped_doctest as test_doctest")
+                         "import test_zipped_doctest als test_doctest")
         test_src = test_src.replace("test.test_doctest.test_doctest",
                                     "test_zipped_doctest")
         test_src = test_src.replace("test.test_doctest.sample_doctest",
@@ -119,16 +119,16 @@ klasse ZipSupportTests(unittest.TestCase):
             mod_name = mod_name.replace("sample_", "sample_zipped_")
             sample_sources[mod_name] = src
 
-        with os_helper.temp_dir() as d:
+        mit os_helper.temp_dir() als d:
             script_name = make_script(d, 'test_zipped_doctest',
                                             test_src)
             zip_name, run_name = make_zip_script(d, 'test_zip',
                                                 script_name)
-            with zipfile.ZipFile(zip_name, 'a') as z:
+            mit zipfile.ZipFile(zip_name, 'a') als z:
                 fuer mod_name, src in sample_sources.items():
                     z.writestr(mod_name + ".py", src)
             wenn verbose:
-                with zipfile.ZipFile(zip_name, 'r') as zip_file:
+                mit zipfile.ZipFile(zip_name, 'r') als zip_file:
                     drucke ('Contents of %r:' % zip_name)
                     zip_file.printdir()
             os.remove(script_name)
@@ -194,7 +194,7 @@ klasse ZipSupportTests(unittest.TestCase):
                     doctest.testmod()
                     """)
         pattern = 'File "%s", line 2, in %s'
-        with os_helper.temp_dir() as d:
+        mit os_helper.temp_dir() als d:
             script_name = make_script(d, 'script', test_src)
             rc, out, err = assert_python_ok(script_name)
             expected = pattern % (script_name, "__main__.Test")
@@ -221,7 +221,7 @@ klasse ZipSupportTests(unittest.TestCase):
                     importiere pdb
                     pdb.Pdb(nosigint=Wahr).runcall(f)
                     """)
-        with os_helper.temp_dir() as d:
+        mit os_helper.temp_dir() als d:
             script_name = make_script(d, 'script', test_src)
             p = spawn_python(script_name)
             p.stdin.write(b'l\n')

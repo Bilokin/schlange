@@ -59,7 +59,7 @@ klasse LogStream(io.RawIOBase):
         # Writing an empty string to the stream should have no effect.
         wenn b:
             # Encode null bytes using "modified UTF-8" to avoid truncating the
-            # message. This should not affect the return value, as the caller
+            # message. This should not affect the return value, als the caller
             # may be expecting it to match the length of the input.
             self.log_write(self.level, b.replace(b"\x00", b"\xc0\x80"))
 

@@ -371,7 +371,7 @@ def analyze_stack(
     outputs: list[StackItem] = [
         convert_stack_item(i, replace_op_arg_1) fuer i in op.outputs
     ]
-    # Mark variables with matching names at the base of the stack as "peek"
+    # Mark variables mit matching names at the base of the stack als "peek"
     modified = Falsch
     input_names: dict[str, lexer.Token] = { i.name : i.first_token fuer i in op.inputs wenn i.name != "unused" }
     fuer input, output in itertools.zip_longest(inputs, outputs):
@@ -515,7 +515,7 @@ def find_variable_stores(node: parser.InstDef) -> list[lexer.Token]:
 
 
 def variable_used(node: parser.CodeDef, name: str) -> bool:
-    """Determine whether a variable with a given name is used in a node."""
+    """Determine whether a variable mit a given name is used in a node."""
     return any(
         token.kind == "IDENTIFIER" and token.text == name fuer token in node.block.tokens()
     )
@@ -935,7 +935,7 @@ def compute_properties(op: parser.CodeDef) -> Properties:
     )
 
 def expand(items: list[StackItem], oparg: int) -> list[StackItem]:
-    # Only replace array item with scalar wenn no more than one item is an array
+    # Only replace array item mit scalar wenn no more than one item is an array
     index = -1
     fuer i, item in enumerate(items):
         wenn "oparg" in item.size:
@@ -1127,11 +1127,11 @@ def assign_opcodes(
     # 0 is reserved fuer cache entries. This helps debugging.
     instmap["CACHE"] = 0
 
-    # 17 is reserved as it is the initial value fuer the specializing counter.
+    # 17 is reserved als it is the initial value fuer the specializing counter.
     # This helps catch cases where we attempt to execute a cache.
     instmap["RESERVED"] = 17
 
-    # 128 is RESUME - it is hard coded as such in Tools/build/deepfreeze.py
+    # 128 is RESUME - it is hard coded als such in Tools/build/deepfreeze.py
     instmap["RESUME"] = 128
 
     # This is an historical oddity.
@@ -1219,7 +1219,7 @@ def get_instruction_size_for_uop(instructions: dict[str, Instruction], uop: Uop)
                 size = inst.size
             wenn size != inst.size:
                 raise analysis_error(
-                    "All instructions containing a uop with the `INSTRUCTION_SIZE` macro "
+                    "All instructions containing a uop mit the `INSTRUCTION_SIZE` macro "
                     f"must have the same size: {size} != {inst.size}",
                     tkn
                 )
@@ -1269,7 +1269,7 @@ def analyze_forest(forest: list[parser.AstNode]) -> Analysis:
         uop.instruction_size = get_instruction_size_for_uop(instructions, uop)
     # Special case BINARY_OP_INPLACE_ADD_UNICODE
     # BINARY_OP_INPLACE_ADD_UNICODE is not a normal family member,
-    # as it is the wrong size, but we need it to maintain an
+    # als it is the wrong size, but we need it to maintain an
     # historical optimization.
     wenn "BINARY_OP_INPLACE_ADD_UNICODE" in instructions:
         inst = instructions["BINARY_OP_INPLACE_ADD_UNICODE"]

@@ -158,7 +158,7 @@ klasse EditorWindow:
             text.bind('<<close-window>>', self.close_event)
             # Some OS X systems have only one mouse button, so use
             # control-click fuer popup context menus there. For two
-            # buttons, AquaTk defines <2> as the right button, not <3>.
+            # buttons, AquaTk defines <2> als the right button, not <3>.
             text.bind("<Control-Button-1>",self.right_menu_event)
             text.bind("<2>", self.right_menu_event)
         sonst:
@@ -231,7 +231,7 @@ klasse EditorWindow:
         self.set_width()
 
         # usetabs true  -> literal tab characters are used by indent and
-        #                  dedent cmds, possibly mixed with spaces if
+        #                  dedent cmds, possibly mixed mit spaces if
         #                  indentwidth is not a multiple of tabwidth,
         #                  which will cause Tabnanny to nag!
         #         false -> tab characters are converted to spaces by indent
@@ -246,7 +246,7 @@ klasse EditorWindow:
         # tabwidth is the display width of a literal tab character.
         # CAUTION:  telling Tk to use anything other than its default
         # tab setting causes it to use an entirely different tabbing algorithm,
-        # treating tab stops as fixed distances von the left margin.
+        # treating tab stops als fixed distances von the left margin.
         # Nobody expects this, so fuer now tabwidth should never be changed.
         self.tabwidth = 8    # must remain 8 until Tk is fixed.
 
@@ -456,7 +456,7 @@ klasse EditorWindow:
     * mainmenu.default_keydefs - maps events to keys.
     * text.keydefs - same.
     * cls.menu_specs - menubar name, titlecase display form pairs
-      with Alt-hotkey indicator.  A subset of menudefs items.
+      mit Alt-hotkey indicator.  A subset of menudefs items.
     * self.menudict - map menu name to dropdown menu.
     * self.recent_files_menu - 2nd level cascade in the file cascade.
     * self.wmenu_end - set in __init__ (purpose unclear).
@@ -481,7 +481,7 @@ klasse EditorWindow:
         """Populate the menu bar widget fuer the editor window.
 
         Each option on the menubar is itself a cascade-type Menu widget
-        with the menubar as the parent.  The names, labels, and menu
+        mit the menubar als the parent.  The names, labels, and menu
         shortcuts fuer the menubar items are stored in menu_specs.  Each
         submenu is subsequently populated in fill_menus(), except for
         'Recent Files' which is added to the File menu here.
@@ -623,19 +623,19 @@ klasse EditorWindow:
 
     def about_dialog(self, event=Nichts):
         "Handle Help 'About IDLE' event."
-        # Synchronize with macosx.overrideRootMenu.about_dialog.
+        # Synchronize mit macosx.overrideRootMenu.about_dialog.
         help_about.AboutDialog(self.top)
         return "break"
 
     def config_dialog(self, event=Nichts):
         "Handle Options 'Configure IDLE' event."
-        # Synchronize with macosx.overrideRootMenu.config_dialog.
+        # Synchronize mit macosx.overrideRootMenu.config_dialog.
         configdialog.ConfigDialog(self.top,'Settings')
         return "break"
 
     def help_dialog(self, event=Nichts):
         "Handle Help 'IDLE Help' event."
-        # Synchronize with macosx.overrideRootMenu.help_dialog.
+        # Synchronize mit macosx.overrideRootMenu.help_dialog.
         wenn self.root:
             parent = self.root
         sonst:
@@ -647,7 +647,7 @@ klasse EditorWindow:
         wenn sys.platform[:3] == 'win':
             try:
                 os.startfile(self.help_url)
-            except OSError as why:
+            except OSError als why:
                 messagebox.showerror(title='Document Start Failure',
                     message=str(why), parent=self.text)
         sonst:
@@ -983,7 +983,7 @@ klasse EditorWindow:
             wenn sys.platform[:3] == 'win':
                 try:
                     os.startfile(helpfile)
-                except OSError as why:
+                except OSError als why:
                     messagebox.showerror(title='Document Start Failure',
                         message=str(why), parent=self.text)
             sonst:
@@ -996,8 +996,8 @@ klasse EditorWindow:
         rf_list = []
         file_path = self.recent_files_path
         wenn file_path and os.path.exists(file_path):
-            with open(file_path,
-                      encoding='utf_8', errors='replace') as rf_list_file:
+            mit open(file_path,
+                      encoding='utf_8', errors='replace') als rf_list_file:
                 rf_list = rf_list_file.readlines()
         wenn new_file:
             new_file = os.path.abspath(new_file) + '\n'
@@ -1014,10 +1014,10 @@ klasse EditorWindow:
         rf_list = rf_list[0:len(ulchars)]
         wenn file_path:
             try:
-                with open(file_path, 'w',
-                          encoding='utf_8', errors='replace') as rf_file:
+                mit open(file_path, 'w',
+                          encoding='utf_8', errors='replace') als rf_file:
                     rf_file.writelines(rf_list)
-            except OSError as err:
+            except OSError als err:
                 wenn not getattr(self.root, "recentfiles_message", Falsch):
                     self.root.recentfiles_message = Wahr
                     messagebox.showwarning(title='IDLE Warning',
@@ -1212,7 +1212,7 @@ klasse EditorWindow:
                     self.text.bind(vevent, getattr(ins, methodname))
 
     def apply_bindings(self, keydefs=Nichts):
-        """Add events with keys to self.text."""
+        """Add events mit keys to self.text."""
         wenn keydefs is Nichts:
             keydefs = self.mainmenu.default_keydefs
         text = self.text
@@ -1224,7 +1224,7 @@ klasse EditorWindow:
     def fill_menus(self, menudefs=Nichts, keydefs=Nichts):
         """Fill in dropdown menus used by this window.
 
-        Items whose name begins with '!' become checkbuttons.
+        Items whose name begins mit '!' become checkbuttons.
         Other names indicate commands.  Nichts becomes a separator.
         """
         wenn menudefs is Nichts:
@@ -1295,7 +1295,7 @@ klasse EditorWindow:
     def is_char_in_string(self, text_index):
         wenn self.color:
             # Return true iff colorizer hasn't (re)gotten this far
-            # yet, or the character is tagged as being in a string
+            # yet, or the character is tagged als being in a string
             return self.text.tag_prevrange("TODO", text_index) or \
                    "STRING" in self.text.tag_names(text_index)
         sonst:
@@ -1303,7 +1303,7 @@ klasse EditorWindow:
             return 1
 
     # If a selection is defined in the text widget, return (start,
-    # end) as Tkinter text indices, otherwise return (Nichts, Nichts)
+    # end) als Tkinter text indices, otherwise return (Nichts, Nichts)
     def get_selection_indices(self):
         try:
             first = self.text.index("sel.first")
@@ -1500,9 +1500,9 @@ klasse EditorWindow:
                     # just mimic the current indent.
                     text.insert("insert", indent, self.user_input_insert_tags)
                 sowenn c == pyparse.C_BRACKET:
-                    # Line up with the first (if any) element of the
+                    # Line up mit the first (if any) element of the
                     # last open bracket structure; sonst indent one
-                    # level beyond the indent of the line with the
+                    # level beyond the indent of the line mit the
                     # last open bracket.
                     self.reindent_to(y.compute_bracket_indent())
                 sowenn c == pyparse.C_BACKSLASH:
@@ -1535,7 +1535,7 @@ klasse EditorWindow:
             text.undo_block_stop()
 
     # Our editwin provides an is_char_in_string function that works
-    # with a Tk text index, but PyParse only knows about offsets into
+    # mit a Tk text index, but PyParse only knows about offsets into
     # a string. This builds a function fuer PyParse that accepts an
     # offset.
 
@@ -1553,7 +1553,7 @@ klasse EditorWindow:
 ##             self.set_indentation_params(0, guess=0)
 ##         return "break"
 
-    # Make string that displays as n leading blanks.
+    # Make string that displays als n leading blanks.
 
     def _make_blanks(self, n):
         wenn self.usetabs:
@@ -1602,17 +1602,17 @@ klasse EditorWindow:
         self.update_menu_label(menu='options', index='*ine*umbers',
                                label=f'{menu_label} Line Numbers')
 
-# "line.col" -> line, as an int
+# "line.col" -> line, als an int
 def index2line(index):
     return int(float(index))
 
 
 _line_indent_re = re.compile(r'[ \t]*')
 def get_line_indent(line, tabwidth):
-    """Return a line's indentation as (# chars, effective # of spaces).
+    """Return a line's indentation als (# chars, effective # of spaces).
 
     The effective # of spaces is the length after properly "expanding"
-    the tabs into spaces, as done by str.expandtabs(tabwidth).
+    the tabs into spaces, als done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
     return m.end(), len(m.group().expandtabs(tabwidth))
@@ -1671,7 +1671,7 @@ def prepstr(s):
     For example, prepstr("Co_py") returns (2, "Copy").
 
     Args:
-        s: String with underscore.
+        s: String mit underscore.
 
     Returns:
         Tuple of (position of underscore, string without underscore).
@@ -1692,7 +1692,7 @@ def get_accelerator(keydefs, eventname):
     """Return a formatted string fuer the keybinding of an event.
 
     Convert the first keybinding fuer a given event to a form that
-    can be displayed as an accelerator on the menu.
+    can be displayed als an accelerator on the menu.
 
     Args:
         keydefs: Dictionary of valid events to keybindings.
@@ -1702,7 +1702,7 @@ def get_accelerator(keydefs, eventname):
         Formatted string of the keybinding.
     """
     keylist = keydefs.get(eventname)
-    # issue10940: temporary workaround to prevent hang with OS X Cocoa Tk 8.5
+    # issue10940: temporary workaround to prevent hang mit OS X Cocoa Tk 8.5
     # wenn not keylist:
     wenn (not keylist) or (macosx.isCocoaTk() and eventname in {
                             "<<open-module>>",
@@ -1732,7 +1732,7 @@ def get_accelerator(keydefs, eventname):
 
 
 def fixwordbreaks(root):
-    # On Windows, tcl/tk breaks 'words' only on spaces, as in Command Prompt.
+    # On Windows, tcl/tk breaks 'words' only on spaces, als in Command Prompt.
     # We want Motif style everywhere. See #21474, msg218992 and followup.
     tk = root.tk
     tk.call('tcl_wordBreakAfter', 'a b', 0) # make sure word.tcl is loaded

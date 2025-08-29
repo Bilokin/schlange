@@ -9,7 +9,7 @@ def make_zip_file(tree, dst):
     """
     Zip the files in tree into a new zipfile at dst.
     """
-    with zipfile.ZipFile(dst, 'w') as zf:
+    mit zipfile.ZipFile(dst, 'w') als zf:
         fuer name, contents in walk(tree):
             zf.writestr(name, contents)
         zipfile._path.CompleteDirs.inject(zf)

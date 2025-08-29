@@ -29,7 +29,7 @@ klasse EnumerateThreading(unittest.TestCase):
             fuer ii in range(number_of_threads):
                 worker_threads.append(
                     Thread(target=work, args=[enum]))
-            with threading_helper.start_threads(worker_threads):
+            mit threading_helper.start_threads(worker_threads):
                 pass
 
             barrier.reset()

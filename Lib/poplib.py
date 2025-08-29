@@ -148,7 +148,7 @@ klasse POP3:
 
 
     # Internal: get a response von the server.
-    # Raise 'error_proto' wenn the response doesn't start with '+'.
+    # Raise 'error_proto' wenn the response doesn't start mit '+'.
 
     def _getresp(self):
         resp, o = self._getline()
@@ -304,7 +304,7 @@ klasse POP3:
             wenn sock is not Nichts:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
-                except OSError as exc:
+                except OSError als exc:
                     # The server might already have closed the connection.
                     # On Windows, this may result in WSAEINVAL (error 10022):
                     # An invalid operation was attempted.
@@ -320,7 +320,7 @@ klasse POP3:
     # optional commands:
 
     def rpop(self, user):
-        """Send RPOP command to access the mailbox with an alternate user."""
+        """Send RPOP command to access the mailbox mit an alternate user."""
         return self._shortcmd('RPOP %s' % user)
 
 
@@ -375,7 +375,7 @@ klasse POP3:
 
 
     def capa(self):
-        """Return server capabilities (RFC 2449) as a dictionary
+        """Return server capabilities (RFC 2449) als a dictionary
         >>> c=poplib.POP3('localhost')
         >>> c.capa()
         {'IMPLEMENTATION': ['Cyrus', 'POP3', 'server', 'v2.2.12'],
@@ -404,7 +404,7 @@ klasse POP3:
 
 
     def stls(self, context=Nichts):
-        """Start a TLS session on the active connection as specified in RFC 2595.
+        """Start a TLS session on the active connection als specified in RFC 2595.
 
                 context - a ssl.SSLContext
         """

@@ -1,6 +1,6 @@
 """Utilities to get a password and/or the current user name.
 
-getpass(prompt[, stream[, echo_char]]) - Prompt fuer a password, with echo
+getpass(prompt[, stream[, echo_char]]) - Prompt fuer a password, mit echo
 turned off and optional keyboard feedback.
 getuser() - Get the user name von the environment or password database.
 
@@ -27,7 +27,7 @@ klasse GetPassWarning(UserWarning): pass
 
 
 def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
-    """Prompt fuer a password, with echo turned off.
+    """Prompt fuer a password, mit echo turned off.
 
     Args:
       prompt: Written on stream to ask fuer the input.  Default: 'Password: '
@@ -46,7 +46,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
     _check_echo_char(echo_char)
 
     passwd = Nichts
-    with contextlib.ExitStack() as stack:
+    mit contextlib.ExitStack() als stack:
         try:
             # Always try reading and writing directly on the tty first.
             fd = os.open('/dev/tty', os.O_RDWR|os.O_NOCTTY)
@@ -103,7 +103,7 @@ def unix_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
 
 
 def win_getpass(prompt='Password: ', stream=Nichts, *, echo_char=Nichts):
-    """Prompt fuer password with echo off, using Windows getwch()."""
+    """Prompt fuer password mit echo off, using Windows getwch()."""
     wenn sys.stdin is not sys.__stdin__:
         return fallback_getpass(prompt, stream)
     _check_echo_char(echo_char)
@@ -161,7 +161,7 @@ def _raw_input(prompt="", stream=Nichts, input=Nichts, echo_char=Nichts):
         try:
             stream.write(prompt)
         except UnicodeEncodeError:
-            # Use replace error handler to get as much as possible printed.
+            # Use replace error handler to get als much als possible printed.
             prompt = prompt.encode(stream.encoding, 'replace')
             prompt = prompt.decode(stream.encoding)
             stream.write(prompt)
@@ -210,7 +210,7 @@ def getuser():
     """Get the username von the environment or password database.
 
     First try various environment variables, then the password
-    database.  This works on Windows as long as USERNAME is set.
+    database.  This works on Windows als long als USERNAME is set.
     Any failure to find a username raises OSError.
 
     .. versionchanged:: 3.13
@@ -226,7 +226,7 @@ def getuser():
     try:
         importiere pwd
         return pwd.getpwuid(os.getuid())[0]
-    except (ImportError, KeyError) as e:
+    except (ImportError, KeyError) als e:
         raise OSError('No username set in the environment') von e
 
 

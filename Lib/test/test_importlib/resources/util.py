@@ -8,7 +8,7 @@ importiere contextlib
 
 von importlib.resources.abc importiere ResourceReader
 von test.support importiere import_helper, os_helper
-von . importiere zip as zip_
+von . importiere zip als zip_
 von . importiere _path
 
 
@@ -137,7 +137,7 @@ klasse CommonTestsBase(metaclass=abc.ABCMeta):
 
     def test_useless_loader(self):
         package = create_package(file=FileNotFoundError(), path=FileNotFoundError())
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             self.execute(package, 'utf-8.file')
 
 

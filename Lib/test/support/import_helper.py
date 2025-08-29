@@ -21,7 +21,7 @@ def _ignore_deprecated_imports(ignore=Wahr):
     If ignore is Falsch, this context manager has no effect.
     """
     wenn ignore:
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.filterwarnings("ignore", ".+ (module|package)",
                                     DeprecationWarning)
             yield
@@ -75,10 +75,10 @@ def import_module(name, deprecated=Falsch, *, required_on=()):
     others, set required_on to an iterable of platform prefixes which will be
     compared against sys.platform.
     """
-    with _ignore_deprecated_imports(deprecated):
+    mit _ignore_deprecated_imports(deprecated):
         try:
             return importlib.import_module(name)
-        except ImportError as msg:
+        except ImportError als msg:
             wenn sys.platform.startswith(tuple(required_on)):
                 raise
             raise unittest.SkipTest(str(msg))
@@ -142,7 +142,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     von the sys.modules cache before doing the import. If one of these
     modules can't be imported, Nichts is returned.
 
-    *blocked* is an iterable of module names that are replaced with Nichts
+    *blocked* is an iterable of module names that are replaced mit Nichts
     in the module cache during the importiere to ensure that attempts to import
     them raise ImportError.
 
@@ -160,10 +160,10 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
     disabled (except fuer essential modules like importlib._bootstrap).
     """
     # NOTE: test_heapq, test_json and test_warnings include extra sanity checks
-    # to make sure that this utility function is working as expected
-    with _ignore_deprecated_imports(deprecated):
-        # Keep track of modules saved fuer later restoration as well
-        # as those which just need a blocking entry removed
+    # to make sure that this utility function is working als expected
+    mit _ignore_deprecated_imports(deprecated):
+        # Keep track of modules saved fuer later restoration als well
+        # als those which just need a blocking entry removed
         fresh = list(fresh)
         blocked = list(blocked)
         names = {name, *fresh, *blocked}
@@ -172,7 +172,7 @@ def import_fresh_module(name, fresh=(), blocked=(), *,
             sys.modules[modname] = Nichts
 
         try:
-            with frozen_modules(usefrozen):
+            mit frozen_modules(usefrozen):
                 # Return Nichts when one of the "fresh" modules can not be imported.
                 try:
                     fuer modname in fresh:
@@ -193,7 +193,7 @@ klasse CleanImport(object):
 
     Use like this:
 
-        with CleanImport("foo"):
+        mit CleanImport("foo"):
             importlib.import_module("foo") # new reference
 
     If "usefrozen" is Falsch (the default) then the frozen importer is
@@ -227,7 +227,7 @@ klasse DirsOnSysPath(object):
     """Context manager to temporarily add directories to sys.path.
 
     This makes a copy of sys.path, appends any directories given
-    as positional arguments, then reverts sys.path to the copied
+    als positional arguments, then reverts sys.path to the copied
     settings when the context ends.
 
     Note that *all* sys.path modifications in the body of the
@@ -261,8 +261,8 @@ def modules_cleanup(oldmodules):
     sys.modules.clear()
     sys.modules.update(encodings)
     # XXX: This kind of problem can affect more than just encodings.
-    # In particular extension modules (such as _ssl) don't cope
-    # with reloading properly. Really, test modules should be cleaning
+    # In particular extension modules (such als _ssl) don't cope
+    # mit reloading properly. Really, test modules should be cleaning
     # out the test specific modules they know they added (ala test_runpy)
     # rather than relying on this function (as test_importhooks and test_pkg
     # do currently). Implicitly imported *real* modules should be left alone
@@ -299,7 +299,7 @@ def ready_to_import(name=Nichts, source=""):
     # 3. Temporarily clears the module von sys.modules (if any)
     # 4. Reverts or removes the module when cleaning up
     name = name or "spam"
-    with temp_dir() as tempdir:
+    mit temp_dir() als tempdir:
         path = script_helper.make_script(tempdir, name, source)
         old_module = sys.modules.pop(name, Nichts)
         try:
@@ -315,7 +315,7 @@ def ready_to_import(name=Nichts, source=""):
 
 def ensure_lazy_imports(imported_module, modules_to_block):
     """Test that when imported_module is imported, none of the modules in
-    modules_to_block are imported as a side effect."""
+    modules_to_block are imported als a side effect."""
     modules_to_block = frozenset(modules_to_block)
     script = textwrap.dedent(
         f"""
@@ -432,7 +432,7 @@ def ensure_module_imported(name, *, clearnone=Wahr):
     importing it (optionally clear it first wenn Nichts).  If that fails
     then create a new empty module.
 
-    It can be helpful to combine this with ready_to_import() and/or
+    It can be helpful to combine this mit ready_to_import() and/or
     isolated_modules().
     """
     wenn sys.modules.get(name) is not Nichts:

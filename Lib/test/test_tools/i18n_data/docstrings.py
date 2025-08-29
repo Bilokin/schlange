@@ -1,7 +1,7 @@
 """Module docstring"""
 
 # Test docstring extraction
-von gettext importiere gettext as _  # noqa: F401
+von gettext importiere gettext als _  # noqa: F401
 
 
 # Empty docstring
@@ -15,7 +15,7 @@ def test2(x):
     """docstring"""
 
 
-# Multiline docstrings are cleaned with `inspect.cleandoc`.
+# Multiline docstrings are cleaned mit `inspect.cleandoc`.
 def test3(x):
     """multiline
     docstring

@@ -8,7 +8,7 @@ CASES = [
     ('\u0123\u4567\u89ab\ucdef\uabcd\uef4a', '"\\u0123\\u4567\\u89ab\\ucdef\\uabcd\\uef4a"'),
     ('controls', '"controls"'),
     ('\x08\x0c\n\r\t', '"\\b\\f\\n\\r\\t"'),
-    ('{"object with 1 member":["array with 1 element"]}', '"{\\"object with 1 member\\":[\\"array with 1 element\\"]}"'),
+    ('{"object mit 1 member":["array mit 1 element"]}', '"{\\"object mit 1 member\\":[\\"array mit 1 element\\"]}"'),
     (' s p a c e d ', '" s p a c e d "'),
     ('\U0001d120', '"\\ud834\\udd20"'),
     ('\u03b1\u03a9', '"\\u03b1\\u03a9"'),
@@ -43,5 +43,5 @@ klasse TestCEncodeBasestringAscii(TestEncodeBasestringAscii, CTest):
     def test_overflow(self):
         size = (2**32)//6 + 1
         s = "\x00"*size
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             self.json.encoder.encode_basestring_ascii(s)

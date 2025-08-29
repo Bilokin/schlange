@@ -548,7 +548,7 @@ klasse OperatorTestCase:
         operator = self.module
 
         msg = "'int' object can't be concatenated"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             operator.iconcat(1, 0.5)
 
     def test_index(self):
@@ -561,13 +561,13 @@ klasse OperatorTestCase:
         self.assertEqual(operator.index(0), 0)
         self.assertEqual(operator.index(1), 1)
         self.assertEqual(operator.index(2), 2)
-        with self.assertRaises((AttributeError, TypeError)):
+        mit self.assertRaises((AttributeError, TypeError)):
             operator.index(1.5)
-        with self.assertRaises((AttributeError, TypeError)):
+        mit self.assertRaises((AttributeError, TypeError)):
             operator.index(Fraction(3, 7))
-        with self.assertRaises((AttributeError, TypeError)):
+        mit self.assertRaises((AttributeError, TypeError)):
             operator.index(Decimal(1))
-        with self.assertRaises((AttributeError, TypeError)):
+        mit self.assertRaises((AttributeError, TypeError)):
             operator.index(Nichts)
 
     def test_not_(self):
@@ -600,17 +600,17 @@ klasse OperatorTestCase:
         self.assertEqual(operator.length_hint(X(2)), 2)
         self.assertEqual(operator.length_hint(X(NotImplemented), 4), 4)
         self.assertEqual(operator.length_hint(X(TypeError), 12), 12)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             operator.length_hint(X("abc"))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             operator.length_hint(X(-2))
-        with self.assertRaises(LookupError):
+        mit self.assertRaises(LookupError):
             operator.length_hint(X(LookupError))
 
         klasse Y: pass
 
-        msg = "'str' object cannot be interpreted as an integer"
-        with self.assertRaisesRegex(TypeError, msg):
+        msg = "'str' object cannot be interpreted als an integer"
+        mit self.assertRaisesRegex(TypeError, msg):
             operator.length_hint(X(2), "abc")
         self.assertEqual(operator.length_hint(Y(), 10), 10)
 
@@ -672,9 +672,9 @@ klasse COperatorTestCase(OperatorTestCase, unittest.TestCase):
 @support.thread_unsafe("swaps global operator module")
 klasse OperatorPickleTestCase:
     def copy(self, obj, proto):
-        with support.swap_item(sys.modules, 'operator', self.module):
+        mit support.swap_item(sys.modules, 'operator', self.module):
             pickled = pickle.dumps(obj, proto)
-        with support.swap_item(sys.modules, 'operator', self.module2):
+        mit support.swap_item(sys.modules, 'operator', self.module2):
             return pickle.loads(pickled)
 
     def test_attrgetter(self):
@@ -689,7 +689,7 @@ klasse OperatorPickleTestCase:
         a.t.u = A()
         a.t.u.v = 'V'
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 f = attrgetter('x')
                 f2 = self.copy(f, proto)
                 self.assertEqual(repr(f2), repr(f))
@@ -709,7 +709,7 @@ klasse OperatorPickleTestCase:
         itemgetter = self.module.itemgetter
         a = 'ABCDE'
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 f = itemgetter(2)
                 f2 = self.copy(f, proto)
                 self.assertEqual(repr(f2), repr(f))
@@ -731,7 +731,7 @@ klasse OperatorPickleTestCase:
                 return kwds['name'], kwds['self']
         a = A()
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 f = methodcaller('bar')
                 f2 = self.copy(f, proto)
                 self.assertEqual(repr(f2), repr(f))
@@ -748,7 +748,7 @@ klasse OperatorPickleTestCase:
                 self.assertEqual(f2(a), f(a))
                 f = methodcaller('baz', self='eggs', name='spam')
                 f2 = self.copy(f, proto)
-                # Can't test repr consistently with multiple keyword args
+                # Can't test repr consistently mit multiple keyword args
                 self.assertEqual(f2(a), f(a))
 
 klasse PyPyOperatorPickleTestCase(OperatorPickleTestCase, unittest.TestCase):

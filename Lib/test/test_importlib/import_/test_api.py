@@ -40,19 +40,19 @@ klasse APITest:
     exception when passing in an int fuer the module name)."""
 
     def test_raises_ModuleNotFoundError(self):
-        with self.assertRaises(ModuleNotFoundError):
+        mit self.assertRaises(ModuleNotFoundError):
             util.import_importlib('some module that does not exist')
 
     def test_name_requires_rparition(self):
         # Raise TypeError wenn a non-string is passed in fuer the module name.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.__import__(42)
 
     def test_negative_level(self):
         # Raise ValueError when a negative level is specified.
-        # PEP 328 did away with sys.module Nichts entries and the ambiguity of
+        # PEP 328 did away mit sys.module Nichts entries and the ambiguity of
         # absolute/relative imports.
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.__import__('os', globals(), level=-1)
 
     def test_nonexistent_fromlist_entry(self):
@@ -60,8 +60,8 @@ klasse APITest:
         # issue15715
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = ['XXX']
-        with util.import_state(meta_path=[self.bad_finder_loader]):
-            with util.uncache(PKG_NAME):
+        mit util.import_state(meta_path=[self.bad_finder_loader]):
+            mit util.uncache(PKG_NAME):
                 sys.modules[PKG_NAME] = mod
                 self.__import__(PKG_NAME, fromlist=['not here'])
 
@@ -71,10 +71,10 @@ klasse APITest:
         # issue15316
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = ['XXX']
-        with util.import_state(meta_path=[self.bad_finder_loader]):
-            with util.uncache(PKG_NAME):
+        mit util.import_state(meta_path=[self.bad_finder_loader]):
+            mit util.uncache(PKG_NAME):
                 sys.modules[PKG_NAME] = mod
-                with self.assertRaises(ImportError):
+                mit self.assertRaises(ImportError):
                     self.__import__(PKG_NAME,
                                     fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
 
@@ -83,11 +83,11 @@ klasse APITest:
         # issue31642
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = []
-        with util.import_state(meta_path=[self.bad_finder_loader]):
-            with util.uncache(PKG_NAME, SUBMOD_NAME):
+        mit util.import_state(meta_path=[self.bad_finder_loader]):
+            mit util.uncache(PKG_NAME, SUBMOD_NAME):
                 sys.modules[PKG_NAME] = mod
                 sys.modules[SUBMOD_NAME] = Nichts
-                with self.assertRaises(ModuleNotFoundError) as cm:
+                mit self.assertRaises(ModuleNotFoundError) als cm:
                     self.__import__(PKG_NAME,
                                     fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
                 self.assertEqual(cm.exception.name, SUBMOD_NAME)
@@ -97,32 +97,32 @@ klasse OldAPITests(APITest):
     bad_finder_loader = BadLoaderFinder
 
     def test_raises_ModuleNotFoundError(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_raises_ModuleNotFoundError()
 
     def test_name_requires_rparition(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_name_requires_rparition()
 
     def test_negative_level(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_negative_level()
 
     def test_nonexistent_fromlist_entry(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_nonexistent_fromlist_entry()
 
     def test_fromlist_load_error_propagates(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_fromlist_load_error_propagates
 
     def test_blocked_fromlist(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_blocked_fromlist()
 

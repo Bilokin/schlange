@@ -39,11 +39,11 @@ klasse FutureTest(unittest.TestCase):
                           parametrize_docstring=Wahr):
         code = dedent(code.lstrip('\n'))
         fuer add_docstring in ([Falsch, Wahr] wenn parametrize_docstring sonst [Falsch]):
-            with self.subTest(code=code, add_docstring=add_docstring):
+            mit self.subTest(code=code, add_docstring=add_docstring):
                 wenn add_docstring:
                     code = '"""Docstring"""\n' + code
                     lineno += 1
-                with self.assertRaises(SyntaxError) as cm:
+                mit self.assertRaises(SyntaxError) als cm:
                     exec(code)
                 self.check_syntax_error(cm.exception, "<string>",
                                         lineno=lineno,
@@ -52,31 +52,31 @@ klasse FutureTest(unittest.TestCase):
 
     def test_import_nested_scope_twice(self):
         # Import the name nested_scopes twice to trigger SF bug #407394
-        with import_helper.CleanImport(
+        mit import_helper.CleanImport(
             'test.test_future_stmt.import_nested_scope_twice',
         ):
             von test.test_future_stmt importiere import_nested_scope_twice
         self.assertEqual(import_nested_scope_twice.result, 6)
 
     def test_nested_scope(self):
-        with import_helper.CleanImport('test.test_future_stmt.nested_scope'):
+        mit import_helper.CleanImport('test.test_future_stmt.nested_scope'):
             von test.test_future_stmt importiere nested_scope
         self.assertEqual(nested_scope.result, 6)
 
     def test_future_single_import(self):
-        with import_helper.CleanImport(
+        mit import_helper.CleanImport(
             'test.test_future_stmt.test_future_single_import',
         ):
             von test.test_future_stmt importiere test_future_single_import  # noqa: F401
 
     def test_future_multiple_imports(self):
-        with import_helper.CleanImport(
+        mit import_helper.CleanImport(
             'test.test_future_stmt.test_future_multiple_imports',
         ):
             von test.test_future_stmt importiere test_future_multiple_imports  # noqa: F401
 
     def test_future_multiple_features(self):
-        with import_helper.CleanImport(
+        mit import_helper.CleanImport(
             "test.test_future_stmt.test_future_multiple_features",
         ):
             von test.test_future_stmt importiere test_future_multiple_features  # noqa: F401
@@ -152,7 +152,7 @@ klasse FutureTest(unittest.TestCase):
         self.assertSyntaxError(code, message='not a chance', offset=39)
 
     def test_module_with_future_import_not_on_top(self):
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             von test.test_future_stmt importiere badsyntax_future  # noqa: F401
         self.check_syntax_error(cm.exception, "badsyntax_future", lineno=3)
 
@@ -184,7 +184,7 @@ klasse FutureTest(unittest.TestCase):
         self.assertNotIn(b'SyntaxError: invalid syntax', out)
 
     def test_future_dotted_import(self):
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             exec("from .__future__ importiere spam")
 
         code = dedent(
@@ -193,7 +193,7 @@ klasse FutureTest(unittest.TestCase):
             von ...__future__ importiere ham
             """
         )
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             exec(code)
 
         code = """
@@ -406,7 +406,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq('str or Nichts wenn sys.version_info[0] > (3,) sonst str or bytes or Nichts')
         eq("f'f-string without formatted values is just a string'")
         eq("f'{{NOT a formatted value}}'")
-        eq("f'some f-string with {a} {few():.2f} {formatted.values!r}'")
+        eq("f'some f-string mit {a} {few():.2f} {formatted.values!r}'")
         eq('''f"{f'{nested} inner'} outer"''')
         eq("f'space between opening braces: { {a fuer a in (1, 2, 3)}}'")
         eq("f'{(lambda x: x)}'")
@@ -429,7 +429,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         eq("t'{a:b=}'")
 
     def test_fstring_debug_annotations(self):
-        # f-strings with '=' don't round trip very well, so set the expected
+        # f-strings mit '=' don't round trip very well, so set the expected
         # result explicitly.
         self.assertAnnotationEqual("f'{x=!r}'", expected="f'x={x!r}'")
         self.assertAnnotationEqual("f'{x=:}'", expected="f'x={x:}'")
@@ -451,7 +451,7 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         self.assertAnnotationEqual("(1e1000, (1e1000j,))", expected=f"({inf}, ({infj},))")
 
     def test_annotation_with_complex_target(self):
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             exec(
                 "from __future__ importiere annotations\n"
                 "object.__debug__: int"
@@ -474,40 +474,40 @@ klasse AnnotationsFutureTestCase(unittest.TestCase):
         self.assertEqual(foo().__code__.co_freevars, ())
 
     def test_annotations_forbidden(self):
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("test: (yield)")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("test.test: (yield a + b)")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("test[something]: (yield von x)")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("def func(test: (yield von outside_of_generator)): pass")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("def test() -> (await y): pass")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("async def test() -> something((a := b)): pass")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("test: await some.complicated[0].call(with_args=Wahr or 1 is not 1)")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future("test: f'{(x := 10):=10}'")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self._exec_future(dedent("""\
             def foo():
                 def bar(arg: (yield)): pass
             """))
 
     def test_get_type_hints_on_func_with_variadic_arg(self):
-        # `typing.get_type_hints` might break on a function with a variadic
+        # `typing.get_type_hints` might break on a function mit a variadic
         # annotation (e.g. `f(*args: *Ts)`) wenn `from __future__ import
-        # annotations`, because it could try to evaluate `*Ts` as an expression,
+        # annotations`, because it could try to evaluate `*Ts` als an expression,
         # which on its own isn't value syntax.
         namespace = self._exec_future(dedent("""\
         klasse StarredC: pass

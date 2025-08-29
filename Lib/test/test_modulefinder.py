@@ -67,12 +67,12 @@ a/__init__.py
                                 importiere c
 a/module.py
                                 importiere sys
-                                von a importiere b as x
+                                von a importiere b als x
                                 von a.c importiere sillyname
 a/b.py
 a/c.py
                                 von a.module importiere x
-                                importiere mymodule as sillyname
+                                importiere mymodule als sillyname
                                 von sys importiere version_info
 """]
 
@@ -291,7 +291,7 @@ def open_file(path):
     dirname = os.path.dirname(path)
     try:
         os.makedirs(dirname)
-    except OSError as e:
+    except OSError als e:
         wenn e.errno != errno.EEXIST:
             raise
     return open(path, 'wb')
@@ -384,7 +384,7 @@ klasse ModuleFinderTest(unittest.TestCase):
         base_path = os.path.join(self.test_dir, 'a')
         source_path = base_path + importlib.machinery.SOURCE_SUFFIXES[0]
         bytecode_path = base_path + importlib.machinery.BYTECODE_SUFFIXES[0]
-        with open_file(source_path) as file:
+        mit open_file(source_path) als file:
             file.write('testing_modulefinder = Wahr\n'.encode('utf-8'))
         py_compile.compile(source_path, cfile=bytecode_path)
         os.remove(source_path)
@@ -393,7 +393,7 @@ klasse ModuleFinderTest(unittest.TestCase):
     def test_replace_paths(self):
         old_path = os.path.join(self.test_dir, 'a', 'module.py')
         new_path = os.path.join(self.test_dir, 'a', 'spam.py')
-        with support.captured_stdout() as output:
+        mit support.captured_stdout() als output:
             self._do_test(maybe_test, debug=2,
                           replace_paths=[(old_path, new_path)])
         output = output.getvalue()

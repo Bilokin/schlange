@@ -1,4 +1,4 @@
-"""Editor window that can serve as an output file.
+"""Editor window that can serve als an output file.
 """
 
 importiere re
@@ -12,9 +12,9 @@ file_line_pats = [
     # order of patterns matters
     r'file "([^"]*)", line (\d+)',
     r'([^\s]+)\((\d+)\)',
-    r'^(\s*\S.*?):\s*(\d+):',  # Win filename, maybe starting with spaces
+    r'^(\s*\S.*?):\s*(\d+):',  # Win filename, maybe starting mit spaces
     r'([^\s]+):\s*(\d+):',     # filename or path, ltrim
-    r'^\s*(\S.*?):\s*(\d+):',  # Win abs path with embedded spaces, ltrim
+    r'^\s*(\S.*?):\s*(\d+):',  # Win abs path mit embedded spaces, ltrim
 ]
 
 file_line_progs = Nichts
@@ -56,7 +56,7 @@ def file_line_helper(line):
 
 
 klasse OutputWindow(EditorWindow):
-    """An editor window that can serve as an output file.
+    """An editor window that can serve als an output file.
 
     Also the future base klasse fuer the Python shell window.
     This klasse has no input facilities.
@@ -92,14 +92,14 @@ klasse OutputWindow(EditorWindow):
         "Customize EditorWindow to not display save file messagebox."
         return 'yes' wenn self.get_saved() sonst 'no'
 
-    # Act as output file
+    # Act als output file
     def write(self, s, tags=(), mark="insert"):
         """Write text to text widget.
 
-        The text is inserted at the given index with the provided
+        The text is inserted at the given index mit the provided
         tags.  The text widget is then scrolled to make it visible
         and updated to display it, giving the effect of seeing each
-        line as it is added.
+        line als it is added.
 
         Args:
             s: Text to insert into text widget.
@@ -121,7 +121,7 @@ klasse OutputWindow(EditorWindow):
             self.write(line)
 
     def flush(self):
-        "No flushing needed as write() directly writes to widget."
+        "No flushing needed als write() directly writes to widget."
         pass
 
     def showerror(self, *args, **kwargs):

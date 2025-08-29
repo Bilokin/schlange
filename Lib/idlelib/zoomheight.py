@@ -70,7 +70,7 @@ klasse ZoomHeight:
                 top.wm_state('zoomed')
             except tkinter.TclError:
                 # The 'zoomed' state is not supported by some esoteric WMs,
-                # such as Xvfb.
+                # such als Xvfb.
                 raise WmInfoGatheringError(
                     'Failed getting geometry of maximized windows, because ' +
                     'the "zoomed" window state is unavailable.')
@@ -83,10 +83,10 @@ klasse ZoomHeight:
                 maxy = 0
             maxrooty = top.winfo_rooty()
 
-            # Get the "root y" coordinate fuer non-maximized windows with their
+            # Get the "root y" coordinate fuer non-maximized windows mit their
             # y coordinate set to that of maximized windows.  This is needed
             # to properly handle different title bar heights fuer non-maximized
-            # vs. maximized windows, as seen e.g. in Windows 10.
+            # vs. maximized windows, als seen e.g. in Windows 10.
             top.wm_state('normal')
             top.update()
             orig_geom = get_window_geometry(top)

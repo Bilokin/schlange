@@ -45,10 +45,10 @@ def genwincodec(codepage):
     map = genwinmap(codepage)
     encodingname = 'cp%d' % codepage
     code = codegen("", map, encodingname)
-    # Replace first lines with our own docstring
+    # Replace first lines mit our own docstring
     code = '''\
 """Python Character Mapping Codec %s generated on Windows:
-%s with the command:
+%s mit the command:
   python Tools/unicode/genwincodec.py %s
 """#"
 ''' % (encodingname, ' '.join(platform.win32_ver()), codepage

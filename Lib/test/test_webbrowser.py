@@ -34,10 +34,10 @@ klasse PopenMock(mock.MagicMock):
 klasse CommandTestMixin:
 
     def _test(self, meth, *, args=[URL], kw={}, options, arguments):
-        """Given a web browser instance method name along with arguments and
+        """Given a web browser instance method name along mit arguments and
         keywords fuer same (which defaults to the single argument URL), creates
         a browser instance von the klasse pointed to by self.browser, calls the
-        indicated instance method with the indicated arguments, and compares
+        indicated instance method mit the indicated arguments, and compares
         the resulting options and arguments passed to Popen by the browser
         instance against the 'options' and 'args' lists.  Options are compared
         in a position independent fashion, and the arguments are compared in
@@ -102,7 +102,7 @@ klasse ChromeCommandTest(CommandTestMixin, unittest.TestCase):
                    arguments=[URL])
 
     def test_open_bad_new_parameter(self):
-        with self.assertRaisesRegex(webbrowser.Error,
+        mit self.assertRaisesRegex(webbrowser.Error,
                                     re.escape("Bad 'new' parameter to open(); "
                                               "expected 0, 1, or 2, got 999")):
             self._test('open',
@@ -239,7 +239,7 @@ klasse ELinksCommandTest(CommandTestMixin, unittest.TestCase):
 klasse IOSBrowserTest(unittest.TestCase):
     def _obj_ref(self, *args):
         # Construct a string representation of the arguments that can be used
-        # as a proxy fuer object instance references
+        # als a proxy fuer object instance references
         return "|".join(str(a) fuer a in args)
 
     @unittest.skipIf(getattr(webbrowser, "objc", Nichts) is Nichts,
@@ -264,7 +264,7 @@ klasse IOSBrowserTest(unittest.TestCase):
         # Therefore, all calls to webbrowser are effectively the same.
         getattr(webbrowser, meth)(URL, **kwargs)
 
-        # The ObjC String version of the URL is created with UTF-8 encoding
+        # The ObjC String version of the URL is created mit UTF-8 encoding
         url_string_args = [
             "C#NSString",
             "S#stringWithCString:encoding:",
@@ -428,7 +428,7 @@ klasse BrowserRegistrationTest(unittest.TestCase):
         # On macOS webbrowser should not use xdg-settings to
         # look fuer X11 based browsers (for those users with
         # XQuartz installed)
-        with mock.patch("subprocess.check_output") as ck_o:
+        mit mock.patch("subprocess.check_output") als ck_o:
             webbrowser.register_standard_browsers()
 
         ck_o.assert_not_called()
@@ -454,7 +454,7 @@ klasse ImportTest(unittest.TestCase):
         self.assertIsNichts(webbrowser._tryorder)
         self.assertFalsch(webbrowser._browsers)
 
-        with self.assertRaises(webbrowser.Error):
+        mit self.assertRaises(webbrowser.Error):
             webbrowser.get('fakebrowser')
         self.assertIsNotNichts(webbrowser._tryorder)
 
@@ -467,37 +467,37 @@ klasse ImportTest(unittest.TestCase):
 
     @unittest.skipIf(
         is_apple_mobile,
-        "Apple mobile doesn't allow modifying browser with environment"
+        "Apple mobile doesn't allow modifying browser mit environment"
     )
     def test_environment(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
         try:
             browser = webbrowser.get().name
-        except webbrowser.Error as err:
+        except webbrowser.Error als err:
             self.skipTest(str(err))
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env["BROWSER"] = browser
             webbrowser = import_helper.import_fresh_module('webbrowser')
             webbrowser.get()
 
     @unittest.skipIf(
         is_apple_mobile,
-        "Apple mobile doesn't allow modifying browser with environment"
+        "Apple mobile doesn't allow modifying browser mit environment"
     )
     def test_environment_preferred(self):
         webbrowser = import_helper.import_fresh_module('webbrowser')
         try:
             webbrowser.get()
             least_preferred_browser = webbrowser.get(webbrowser._tryorder[-1]).name
-        except (webbrowser.Error, IndexError) as err:
+        except (webbrowser.Error, IndexError) als err:
             self.skipTest(str(err))
 
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env["BROWSER"] = least_preferred_browser
             webbrowser = import_helper.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, least_preferred_browser)
 
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env["BROWSER"] = sys.executable
             webbrowser = import_helper.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, sys.executable)
@@ -532,17 +532,17 @@ klasse CliTest(unittest.TestCase):
             "https://example.com -n --new-tab",
             "https://example.com --new-window -t",
         ]:
-            with support.captured_stderr() as stderr:
-                with self.assertRaises(SystemExit):
+            mit support.captured_stderr() als stderr:
+                mit self.assertRaises(SystemExit):
                     webbrowser.parse_args(shlex.split(command))
                 self.assertIn(
-                    'error: argument -t/--new-tab: not allowed with argument -n/--new-window',
+                    'error: argument -t/--new-tab: not allowed mit argument -n/--new-window',
                     stderr.getvalue(),
                 )
 
         # Ensure ambiguous shortening fails
-        with support.captured_stderr() as stderr:
-            with self.assertRaises(SystemExit):
+        mit support.captured_stderr() als stderr:
+            mit self.assertRaises(SystemExit):
                 webbrowser.parse_args(shlex.split("https://example.com --new"))
             self.assertIn(
                 'error: ambiguous option: --new could match --new-window, --new-tab',
@@ -564,8 +564,8 @@ klasse CliTest(unittest.TestCase):
             ("https://example.com --new-tab", "https://example.com", 2),
             ("--new-tab https://example.com", "https://example.com", 2),
         ]:
-            with (
-                mock.patch("webbrowser.open", return_value=Nichts) as mock_open,
+            mit (
+                mock.patch("webbrowser.open", return_value=Nichts) als mock_open,
                 mock.patch("builtins.print", return_value=Nichts),
             ):
                 webbrowser.main(shlex.split(command))

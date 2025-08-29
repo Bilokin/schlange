@@ -2,7 +2,7 @@ importiere unittest
 von weakref importiere WeakSet
 importiere copy
 importiere string
-von collections importiere UserString as ustr
+von collections importiere UserString als ustr
 von collections.abc importiere Set, MutableSet
 importiere gc
 importiere contextlib
@@ -387,19 +387,19 @@ klasse TestWeakSet(unittest.TestCase):
             finally:
                 it = Nichts           # should commit all removals
 
-        with testcontext() as u:
+        mit testcontext() als u:
             self.assertNotIn(u, s)
-        with testcontext() as u:
+        mit testcontext() als u:
             self.assertRaises(KeyError, s.remove, u)
         self.assertNotIn(u, s)
-        with testcontext() as u:
+        mit testcontext() als u:
             s.add(u)
         self.assertIn(u, s)
         t = s.copy()
-        with testcontext() as u:
+        mit testcontext() als u:
             s.update(t)
         self.assertEqual(len(s), len(t))
-        with testcontext() as u:
+        mit testcontext() als u:
             s.clear()
         self.assertEqual(len(s), 0)
 

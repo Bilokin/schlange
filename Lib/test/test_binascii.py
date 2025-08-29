@@ -57,7 +57,7 @@ klasse BinASCIITest(unittest.TestCase):
             try:
                 a = b2a(self.type2test(raw))
                 res = a2b(self.type2test(a))
-            except Exception as err:
+            except Exception als err:
                 self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
             self.assertEqual(res, raw, "{}/{} conversion: "
                              "{!r} != {!r}".format(fb, fa, res, raw))
@@ -66,7 +66,7 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertIsInstance(binascii.crc32(raw), int)
 
     def test_base64valid(self):
-        # Test base64 with valid data
+        # Test base64 mit valid data
         MAX_BASE64 = 57
         lines = []
         fuer i in range(0, len(self.rawdata), MAX_BASE64):
@@ -81,7 +81,7 @@ klasse BinASCIITest(unittest.TestCase):
         self.assertEqual(res, self.rawdata)
 
     def test_base64invalid(self):
-        # Test base64 with random invalid characters sprinkled throughout
+        # Test base64 mit random invalid characters sprinkled throughout
         # (This requires a new version of binascii.)
         MAX_BASE64 = 57
         lines = []
@@ -113,14 +113,14 @@ klasse BinASCIITest(unittest.TestCase):
             res += b
         self.assertEqual(res, self.rawdata)
 
-        # Test base64 with just invalid characters, which should return
+        # Test base64 mit just invalid characters, which should return
         # empty strings. TBD: shouldn't it raise an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 
     def test_base64_strict_mode(self):
-        # Test base64 with strict mode on
+        # Test base64 mit strict mode on
         def _assertRegexTemplate(assert_regex: str, data: bytes, non_strict_mode_expected_result: bytes):
-            with self.assertRaisesRegex(binascii.Error, assert_regex):
+            mit self.assertRaisesRegex(binascii.Error, assert_regex):
                 binascii.a2b_base64(self.type2test(data), strict_mode=Wahr)
             self.assertEqual(binascii.a2b_base64(self.type2test(data), strict_mode=Falsch),
                              non_strict_mode_expected_result)
@@ -177,9 +177,9 @@ klasse BinASCIITest(unittest.TestCase):
 
 
     def test_base64errors(self):
-        # Test base64 with invalid padding
+        # Test base64 mit invalid padding
         def assertIncorrectPadding(data):
-            with self.assertRaisesRegex(binascii.Error, r'(?i)Incorrect padding'):
+            mit self.assertRaisesRegex(binascii.Error, r'(?i)Incorrect padding'):
                 binascii.a2b_base64(self.type2test(data))
 
         assertIncorrectPadding(b'ab')
@@ -191,12 +191,12 @@ klasse BinASCIITest(unittest.TestCase):
         assertIncorrectPadding(b'a=b=')
         assertIncorrectPadding(b'a\nb=')
 
-        # Test base64 with invalid number of valid characters (1 mod 4)
+        # Test base64 mit invalid number of valid characters (1 mod 4)
         def assertInvalidLength(data):
             n_data_chars = len(re.sub(br'[^A-Za-z0-9/+]', br'', data))
             expected_errmsg_re = \
                 r'(?i)Invalid.+number of data characters.+' + str(n_data_chars)
-            with self.assertRaisesRegex(binascii.Error, expected_errmsg_re):
+            mit self.assertRaisesRegex(binascii.Error, expected_errmsg_re):
                 binascii.a2b_base64(self.type2test(data))
 
         assertInvalidLength(b'a')
@@ -241,7 +241,7 @@ klasse BinASCIITest(unittest.TestCase):
                          b'$`$-A=```\n')
         self.assertEqual(binascii.a2b_uu(b'$`$-A=```\n'),
                          binascii.a2b_uu(b'$ $-A=   \n'))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             binascii.b2a_uu(b"", Wahr)
 
     @hypothesis.given(
@@ -436,7 +436,7 @@ klasse BinASCIITest(unittest.TestCase):
             f = getattr(binascii, func)
             try:
                 f(empty)
-            except Exception as err:
+            except Exception als err:
                 self.fail("{}({!r}) raises {!r}".format(func, empty, err))
 
     def test_unicode_b2a(self):
@@ -444,7 +444,7 @@ klasse BinASCIITest(unittest.TestCase):
         fuer func in set(all_functions) - set(a2b_functions):
             try:
                 self.assertRaises(TypeError, getattr(binascii, func), "test")
-            except Exception as err:
+            except Exception als err:
                 self.fail('{}("test") raises {!r}'.format(func, err))
         # crc_hqx needs 2 arguments
         self.assertRaises(TypeError, binascii.crc_hqx, "test", 0)
@@ -461,7 +461,7 @@ klasse BinASCIITest(unittest.TestCase):
                 binary_res = a2b(a)
                 a = a.decode('ascii')
                 res = a2b(a)
-            except Exception as err:
+            except Exception als err:
                 self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
             self.assertEqual(res, raw, "{}/{} conversion: "
                              "{!r} != {!r}".format(fb, fa, res, raw))
@@ -492,7 +492,7 @@ klasse BinASCIITest(unittest.TestCase):
     def test_c_contiguity(self):
         m = memoryview(bytearray(b'noncontig'))
         noncontig_writable = m[::-2]
-        with self.assertRaises(BufferError):
+        mit self.assertRaises(BufferError):
             binascii.b2a_hex(noncontig_writable)
 
 

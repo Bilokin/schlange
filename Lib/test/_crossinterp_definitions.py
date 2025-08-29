@@ -1,4 +1,4 @@
-# This may be loaded as a module, in the current __main__ module,
+# This may be loaded als a module, in the current __main__ module,
 # or in another __main__ module.
 
 

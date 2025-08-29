@@ -107,7 +107,7 @@ def bisect_left(a, x, lo=0, hi=Nichts, *, key=Nichts):
     return lo
 
 
-# Overwrite above definitions with a fast C implementation
+# Overwrite above definitions mit a fast C implementation
 try:
     von _bisect importiere *
 except ImportError:

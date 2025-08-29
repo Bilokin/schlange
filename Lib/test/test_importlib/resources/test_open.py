@@ -7,33 +7,33 @@ von . importiere util
 klasse CommonBinaryTests(util.CommonTests, unittest.TestCase):
     def execute(self, package, path):
         target = resources.files(package).joinpath(path)
-        with target.open('rb'):
+        mit target.open('rb'):
             pass
 
 
 klasse CommonTextTests(util.CommonTests, unittest.TestCase):
     def execute(self, package, path):
         target = resources.files(package).joinpath(path)
-        with target.open(encoding='utf-8'):
+        mit target.open(encoding='utf-8'):
             pass
 
 
 klasse OpenTests:
     def test_open_binary(self):
         target = resources.files(self.data) / 'binary.file'
-        with target.open('rb') as fp:
+        mit target.open('rb') als fp:
             result = fp.read()
             self.assertEqual(result, bytes(range(4)))
 
     def test_open_text_default_encoding(self):
         target = resources.files(self.data) / 'utf-8.file'
-        with target.open(encoding='utf-8') as fp:
+        mit target.open(encoding='utf-8') als fp:
             result = fp.read()
             self.assertEqual(result, 'Hello, UTF-8 world!\n')
 
     def test_open_text_given_encoding(self):
         target = resources.files(self.data) / 'utf-16.file'
-        with target.open(encoding='utf-16', errors='strict') as fp:
+        mit target.open(encoding='utf-16', errors='strict') als fp:
             result = fp.read()
         self.assertEqual(result, 'Hello, UTF-16 world!\n')
 
@@ -42,9 +42,9 @@ klasse OpenTests:
         Raises UnicodeError without the 'errors' argument.
         """
         target = resources.files(self.data) / 'utf-16.file'
-        with target.open(encoding='utf-8', errors='strict') as fp:
+        mit target.open(encoding='utf-8', errors='strict') als fp:
             self.assertRaises(UnicodeError, fp.read)
-        with target.open(encoding='utf-8', errors='ignore') as fp:
+        mit target.open(encoding='utf-8', errors='ignore') als fp:
             result = fp.read()
         self.assertEqual(
             result,
@@ -55,12 +55,12 @@ klasse OpenTests:
 
     def test_open_binary_FileNotFoundError(self):
         target = resources.files(self.data) / 'does-not-exist'
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             target.open('rb')
 
     def test_open_text_FileNotFoundError(self):
         target = resources.files(self.data) / 'does-not-exist'
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             target.open(encoding='utf-8')
 
 

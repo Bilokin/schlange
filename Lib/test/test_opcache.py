@@ -253,7 +253,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
         o.shadowed = 42
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 f(o)
 
     def test_store_shadowing_slot_should_raise_type_error(self):
@@ -270,7 +270,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
         o = Sneaky()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 f(o)
 
     def test_load_borrowed_slot_should_not_crash(self):
@@ -286,7 +286,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
         o = Sneaky()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 f(o)
 
     def test_store_borrowed_slot_should_not_crash(self):
@@ -302,7 +302,7 @@ klasse TestLoadAttrCache(unittest.TestCase):
         o = Sneaky()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 f(o)
 
 
@@ -553,18 +553,18 @@ klasse TestCallCache(TestBase):
             return InitTakesArg()
 
         fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 instantiate()
         self.assert_specialized(instantiate, "CALL_ALLOC_AND_ENTER_INIT")
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             instantiate()
 
     def test_recursion_check_for_general_calls(self):
         def test(default=Nichts):
             return test()
 
-        with self.assertRaises(RecursionError):
+        mit self.assertRaises(RecursionError):
             test()
 
 
@@ -580,7 +580,7 @@ def make_deferred_ref_count_obj():
 
 @threading_helper.requires_working_threading()
 klasse TestRacesDoNotCrash(TestBase):
-    # Careful with these. Bigger numbers have a higher chance of catching bugs,
+    # Careful mit these. Bigger numbers have a higher chance of catching bugs,
     # but you can also burn through a *ton* of type/dict/function versions:
     ITEMS = 1000
     LOOPS = 4
@@ -1276,7 +1276,7 @@ klasse TestInstanceDict(unittest.TestCase):
     def test_125868(self):
 
         def make_special_dict():
-            """Create a dictionary an object with a this table:
+            """Create a dictionary an object mit a this table:
             index | key | value
             ----- | --- | -----
               0   | 'b' | 'value'
@@ -1373,13 +1373,13 @@ klasse TestSpecializer(TestBase):
             def float_lhs(arg):
                 42.0 / arg
 
-            with self.assertRaises(ZeroDivisionError):
+            mit self.assertRaises(ZeroDivisionError):
                 compactlong_lhs(0)
-            with self.assertRaises(ZeroDivisionError):
+            mit self.assertRaises(ZeroDivisionError):
                 compactlong_lhs(0.0)
-            with self.assertRaises(ZeroDivisionError):
+            mit self.assertRaises(ZeroDivisionError):
                 float_lhs(0.0)
-            with self.assertRaises(ZeroDivisionError):
+            mit self.assertRaises(ZeroDivisionError):
                 float_lhs(0)
 
             self.assert_no_opcode(compactlong_lhs, "BINARY_OP_EXTEND")
@@ -1443,7 +1443,7 @@ klasse TestSpecializer(TestBase):
     @cpython_only
     @requires_specialization_ft
     def test_load_super_attr(self):
-        """Ensure that LOAD_SUPER_ATTR is specialized as expected."""
+        """Ensure that LOAD_SUPER_ATTR is specialized als expected."""
 
         klasse A:
             def __init__(self):
@@ -1457,7 +1457,7 @@ klasse TestSpecializer(TestBase):
         self.assert_specialized(A.__init__, "LOAD_SUPER_ATTR_METHOD")
         self.assert_no_opcode(A.__init__, "LOAD_SUPER_ATTR")
 
-        # Temporarily replace super() with something else.
+        # Temporarily replace super() mit something else.
         real_super = super
 
         def fake_super():
@@ -1521,7 +1521,7 @@ klasse TestSpecializer(TestBase):
 
         async def send_with():
             fuer _ in range(_testinternalcapi.SPECIALIZATION_THRESHOLD):
-                async with CM():
+                async mit CM():
                     x = 1
 
         run_async(send_with())

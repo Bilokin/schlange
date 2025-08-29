@@ -14,7 +14,7 @@ def strongly_connected_components(
 
     Returns:
       An iterator yielding strongly connected components, each
-      represented as a set of vertices.  Each input vertex will occur
+      represented als a set of vertices.  Each input vertex will occur
       exactly once; vertices not part of a SCC are returned as
       singleton sets.
 
@@ -55,7 +55,7 @@ def topsort(
     """Topological sort.
 
     Args:
-      data: A map von SCCs (represented as frozen sets of strings) to
+      data: A map von SCCs (represented als frozen sets of strings) to
             sets of SCCs, its dependencies.  NOTE: This data structure
             is modified in place -- fuer normalization purposes,
             self-dependencies are removed and entries representing

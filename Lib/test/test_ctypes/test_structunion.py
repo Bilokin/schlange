@@ -79,7 +79,7 @@ klasse StructUnionTestBase:
 
     def test_type_flags(self):
         fuer cls in self.cls, self.metacls:
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 self.assertWahr(cls.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalsch(cls.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
@@ -89,15 +89,15 @@ klasse StructUnionTestBase:
         NewClass = self.metacls.__new__(self.metacls, 'NewClass',
                                         (self.cls,), {})
         fuer cls in self.cls, NewClass:
-            with self.subTest(cls=cls):
-                with self.assertRaisesRegex(TypeError, "abstract class"):
+            mit self.subTest(cls=cls):
+                mit self.assertRaisesRegex(TypeError, "abstract class"):
                     obj = cls()
 
         # Cannot call the metaclass __init__ more than once
         klasse T(self.cls):
             _fields_ = [("x", c_char),
                         ("y", c_char)]
-        with self.assertRaisesRegex(SystemError, "already initialized"):
+        mit self.assertRaisesRegex(SystemError, "already initialized"):
             self.metacls.__init__(T, 'ptr', (), {})
 
     def test_alignment(self):
@@ -140,7 +140,7 @@ klasse StructUnionTestBase:
                           union_size=calcsize("3s"))
 
     def test_empty(self):
-        # I had problems with these
+        # I had problems mit these
         #
         # Although these are pathological cases: Empty Structures!
         klasse X(self.cls):
@@ -200,7 +200,7 @@ klasse StructUnionTestBase:
         # name
 
         fuer name in field_names:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertEqual(getattr(X, name).name, name)
 
         # type
@@ -215,7 +215,7 @@ klasse StructUnionTestBase:
         )
         assert set(expected_types) == set(field_names)
         fuer name, tp in expected_types.items():
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertEqual(getattr(X, name).type, tp)
                 self.assertEqual(getattr(X, name).byte_size, sizeof(tp))
 
@@ -231,7 +231,7 @@ klasse StructUnionTestBase:
         )
         assert set(expected_offsets) == set(field_names)
         fuer name, (union_offset, struct_offset) in expected_offsets.items():
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertEqual(getattr(X, name).offset,
                                  getattr(X, name).byte_offset)
                 wenn self.cls == Structure:
@@ -250,7 +250,7 @@ klasse StructUnionTestBase:
             y=(1, 0 wenn little_endian sonst 15),
         )
         fuer name in field_names:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 wenn info := expected_bitfield_info.get(name):
                     self.assertEqual(getattr(X, name).is_bitfield, Wahr)
                     expected_bit_size, expected_bit_offset = info
@@ -271,7 +271,7 @@ klasse StructUnionTestBase:
         # is_anonymous
 
         fuer name in field_names:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertEqual(getattr(X, name).is_anonymous, (name == '_'))
 
 
@@ -283,8 +283,8 @@ klasse StructUnionTestBase:
     def test_invalid_name(self):
         # field name must be string
         fuer name in b"x", 3, Nichts:
-            with self.subTest(name=name):
-                with self.assertRaises(TypeError):
+            mit self.subTest(name=name):
+                mit self.assertRaises(TypeError):
                     klasse S(self.cls):
                         _fields_ = [(name, c_int)]
 
@@ -314,7 +314,7 @@ klasse StructUnionTestBase:
         self.assertRaises(RuntimeError, SomeInts, (1, 2, 3, 4, 5))
 
     def test_huge_field_name(self):
-        # issue12881: segfault with large structure field names
+        # issue12881: segfault mit large structure field names
         def create_class(length):
             klasse S(self.cls):
                 _fields_ = [('x' * length, c_int)]
@@ -329,7 +329,7 @@ klasse StructUnionTestBase:
     def test_abstract_class(self):
         klasse X(self.cls):
             _abstract_ = "something"
-        with self.assertRaisesRegex(TypeError, r"^abstract class$"):
+        mit self.assertRaisesRegex(TypeError, r"^abstract class$"):
             X()
 
     def test_methods(self):
@@ -344,7 +344,7 @@ klasse StructUnionTestBase:
             warn_context = contextlib.nullcontext()
         sonst:
             warn_context = self.assertWarns(DeprecationWarning)
-        with warn_context:
+        mit warn_context:
             klasse X(self.cls):
                 _pack_ = 1
                 # _layout_ missing
@@ -394,7 +394,7 @@ klasse UnionTestCase(unittest.TestCase, StructUnionTestBase):
 
 klasse PointerMemberTestBase:
     def test(self):
-        # a Structure/Union with a POINTER field
+        # a Structure/Union mit a POINTER field
         klasse S(self.cls):
             _fields_ = [("array", POINTER(c_int))]
 
@@ -448,7 +448,7 @@ klasse TestRecursiveBase:
 
         try:
             Recursive._fields_ = [("next", Recursive)]
-        except AttributeError as details:
+        except AttributeError als details:
             self.assertIn("Structure or union cannot contain itself",
                           str(details))
         sonst:
@@ -465,7 +465,7 @@ klasse TestRecursiveBase:
 
         try:
             Second._fields_ = [("first", First)]
-        except AttributeError as details:
+        except AttributeError als details:
             self.assertIn("_fields_ is final", str(details))
         sonst:
             self.fail("AttributeError not raised")

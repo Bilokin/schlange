@@ -84,13 +84,13 @@ klasse SearchEngine:
             flags = flags | re.IGNORECASE
         try:
             prog = re.compile(pat, flags)
-        except re.PatternError as e:
+        except re.PatternError als e:
             self.report_error(pat, e.msg, e.pos)
             return Nichts
         return prog
 
     def report_error(self, pat, msg, col=Nichts):
-        # Derived klasse could override this with something fancier
+        # Derived klasse could override this mit something fancier
         msg = "Error: " + str(msg)
         wenn pat:
             msg = msg + "\nPattern: " + str(pat)
@@ -102,15 +102,15 @@ klasse SearchEngine:
     def search_text(self, text, prog=Nichts, ok=0):
         '''Return (lineno, matchobj) or Nichts fuer forward/backward search.
 
-        This function calls the right function with the right arguments.
+        This function calls the right function mit the right arguments.
         It directly return the result of that call.
 
         Text is a text widget. Prog is a precompiled pattern.
-        The ok parameter is a bit complicated as it has two effects.
+        The ok parameter is a bit complicated als it has two effects.
 
         If there is a selection, the search begin at either end,
-        depending on the direction setting and ok, with ok meaning that
-        the search starts with the selection. Otherwise, search begins
+        depending on the direction setting and ok, mit ok meaning that
+        the search starts mit the selection. Otherwise, search begins
         at the insert mark.
 
         To aid progress, the search functions do not return an empty
@@ -190,7 +190,7 @@ def search_reverse(prog, chars, col):
     '''Search backwards and return an re match object or Nichts.
 
     This is done by searching forwards until there is no match.
-    Prog: compiled re object with a search method returning a match.
+    Prog: compiled re object mit a search method returning a match.
     Chars: line of text, without \\n.
     Col: stop index fuer the search; the limit fuer match.end().
     '''

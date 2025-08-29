@@ -146,7 +146,7 @@ def timeout(delay: float | Nichts) -> Timeout:
     Useful in cases when you want to apply timeout logic around block
     of code or in cases when asyncio.wait_for is not suitable. For example:
 
-    >>> async with asyncio.timeout(10):  # 10 seconds timeout
+    >>> async mit asyncio.timeout(10):  # 10 seconds timeout
     ...     await long_running_task()
 
 
@@ -164,12 +164,12 @@ def timeout_at(when: float | Nichts) -> Timeout:
     """Schedule the timeout at absolute time.
 
     Like timeout() but argument gives absolute time in the same clock system
-    as loop.time().
+    als loop.time().
 
     Please note: it is not POSIX time but a time with
     undefined starting base, e.g. the time of the system power on.
 
-    >>> async with asyncio.timeout_at(loop.time() + 10):
+    >>> async mit asyncio.timeout_at(loop.time() + 10):
     ...     await long_running_task()
 
 

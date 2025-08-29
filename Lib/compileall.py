@@ -1,12 +1,12 @@
 """Module/script to byte-compile all .py files to .pyc files.
 
-When called as a script with arguments, this compiles the directories
-given as arguments recursively; the -l option prevents it from
+When called als a script mit arguments, this compiles the directories
+given als arguments recursively; the -l option prevents it from
 recursing into directories.
 
 Without arguments, it compiles all modules on sys.path, without
 recursing into subdirectories.  (Even though it should do so for
-packages -- fuer now, you'll have to deal with packages separately.)
+packages -- fuer now, you'll have to deal mit packages separately.)
 
 See module py_compile fuer details of the actual byte-compilation.
 """
@@ -56,14 +56,14 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
     dir:       the directory to byte-compile
     maxlevels: maximum recursion level (default `sys.getrecursionlimit()`)
     ddir:      the directory that will be prepended to the path to the
-               file as it is compiled into each byte-code file.
+               file als it is compiled into each byte-code file.
     force:     wenn Wahr, force compilation, even wenn timestamps are up-to-date
-    quiet:     full output with Falsch or 0, errors only with 1,
-               no output with 2
+    quiet:     full output mit Falsch or 0, errors only mit 1,
+               no output mit 2
     legacy:    wenn Wahr, produce legacy pyc paths instead of PEP 3147 paths
     optimize:  int or list of optimization levels or -1 fuer level of
                the interpreter. Multiple levels leads to multiple compiled
-               files each with one optimization level.
+               files each mit one optimization level.
     workers:   maximum number of parallel workers
     invalidation_mode: how the up-to-dateness of the pyc will be checked
     stripdir:  part of path to left-strip von source file path
@@ -76,7 +76,7 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
     ProcessPoolExecutor = Nichts
     wenn ddir is not Nichts and (stripdir is not Nichts or prependdir is not Nichts):
         raise ValueError(("Destination dir (ddir) cannot be used "
-                          "in combination with stripdir or prependdir"))
+                          "in combination mit stripdir or prependdir"))
     wenn ddir is not Nichts:
         stripdir = dir
         prependdir = ddir
@@ -104,8 +104,8 @@ def compile_dir(dir, maxlevels=Nichts, ddir=Nichts, force=Falsch,
             mp_context = Nichts
         # If workers == 0, let ProcessPoolExecutor choose
         workers = workers or Nichts
-        with ProcessPoolExecutor(max_workers=workers,
-                                 mp_context=mp_context) as executor:
+        mit ProcessPoolExecutor(max_workers=workers,
+                                 mp_context=mp_context) als executor:
             results = executor.map(partial(compile_file,
                                            ddir=ddir, force=force,
                                            rx=rx, quiet=quiet,
@@ -141,12 +141,12 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
     ddir:      wenn given, the directory name compiled in to the
                byte-code file.
     force:     wenn Wahr, force compilation, even wenn timestamps are up-to-date
-    quiet:     full output with Falsch or 0, errors only with 1,
-               no output with 2
+    quiet:     full output mit Falsch or 0, errors only mit 1,
+               no output mit 2
     legacy:    wenn Wahr, produce legacy pyc paths instead of PEP 3147 paths
     optimize:  int or list of optimization levels or -1 fuer level of
                the interpreter. Multiple levels leads to multiple compiled
-               files each with one optimization level.
+               files each mit one optimization level.
     invalidation_mode: how the up-to-dateness of the pyc will be checked
     stripdir:  part of path to left-strip von source file path
     prependdir: path to prepend to beginning of original file path, applied
@@ -158,7 +158,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
 
     wenn ddir is not Nichts and (stripdir is not Nichts or prependdir is not Nichts):
         raise ValueError(("Destination dir (ddir) cannot be used "
-                          "in combination with stripdir or prependdir"))
+                          "in combination mit stripdir or prependdir"))
 
     success = Wahr
     fullname = os.fspath(fullname)
@@ -231,7 +231,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                     expect = struct.pack('<4sLL', importlib.util.MAGIC_NUMBER,
                                          0, mtime & 0xFFFF_FFFF)
                     fuer cfile in opt_cfiles.values():
-                        with open(cfile, 'rb') as chandle:
+                        mit open(cfile, 'rb') als chandle:
                             actual = chandle.read(12)
                         wenn expect != actual:
                             break
@@ -252,7 +252,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                         wenn filecmp.cmp(cfile, previous_cfile, shallow=Falsch):
                             os.unlink(cfile)
                             os.link(previous_cfile, cfile)
-            except py_compile.PyCompileError as err:
+            except py_compile.PyCompileError als err:
                 success = Falsch
                 wenn quiet >= 2:
                     return success
@@ -264,7 +264,7 @@ def compile_file(fullname, ddir=Nichts, force=Falsch, rx=Nichts, quiet=0,
                 encoding = sys.stdout.encoding or sys.getdefaultencoding()
                 msg = err.msg.encode(encoding, errors='backslashreplace').decode(encoding)
                 drucke(msg)
-            except (SyntaxError, UnicodeError, OSError) as e:
+            except (SyntaxError, UnicodeError, OSError) als e:
                 success = Falsch
                 wenn quiet >= 2:
                     return success
@@ -287,11 +287,11 @@ def compile_path(skip_curdir=1, maxlevels=0, force=Falsch, quiet=0,
 
     skip_curdir: wenn true, skip current directory (default Wahr)
     maxlevels:   max recursion level (default 0)
-    force: as fuer compile_dir() (default Falsch)
-    quiet: as fuer compile_dir() (default 0)
-    legacy: as fuer compile_dir() (default Falsch)
-    optimize: as fuer compile_dir() (default -1)
-    invalidation_mode: as fuer compiler_dir()
+    force: als fuer compile_dir() (default Falsch)
+    quiet: als fuer compile_dir() (default 0)
+    legacy: als fuer compile_dir() (default Falsch)
+    optimize: als fuer compile_dir() (default -1)
+    invalidation_mode: als fuer compiler_dir()
     """
     success = Wahr
     fuer dir in sys.path:
@@ -331,7 +331,7 @@ def main():
                         help='force rebuild even wenn timestamps are up to date')
     parser.add_argument('-q', action='count', dest='quiet', default=0,
                         help='output only error messages; -qq will suppress '
-                             'the error messages as well.')
+                             'the error messages als well.')
     parser.add_argument('-b', action='store_true', dest='legacy',
                         help='use legacy (pre-PEP3147) compiled file locations')
     parser.add_argument('-d', metavar='DESTDIR',  dest='ddir', default=Nichts,
@@ -347,7 +347,7 @@ def main():
                               'specified together.'))
     parser.add_argument('-p', metavar='PREPENDDIR',  dest='prependdir',
                         default=Nichts,
-                        help=('path to add as prefix to path '
+                        help=('path to add als prefix to path '
                               'to source file - fuer example / to make '
                               'it absolute when some part is removed '
                               'by `-s` option. '
@@ -410,13 +410,13 @@ def main():
     wenn args.ddir is not Nichts and (
         args.stripdir is not Nichts or args.prependdir is not Nichts
     ):
-        parser.error("-d cannot be used in combination with -s or -p")
+        parser.error("-d cannot be used in combination mit -s or -p")
 
     # wenn flist is provided then load it
     wenn args.flist:
         try:
-            with (sys.stdin wenn args.flist=='-' sonst
-                    open(args.flist, encoding="utf-8")) as f:
+            mit (sys.stdin wenn args.flist=='-' sonst
+                    open(args.flist, encoding="utf-8")) als f:
                 fuer line in f:
                     compile_dests.append(line.strip())
         except OSError:

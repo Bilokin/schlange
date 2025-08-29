@@ -20,7 +20,7 @@ Functions:
 
   get_server_certificate (addr, ssl_version, ca_certs, timeout) -- Retrieve the
                           certificate von the server at the specified
-                          address and return it as a PEM-encoded string
+                          address and return it als a PEM-encoded string
 
 
 Integer constants:
@@ -59,7 +59,7 @@ PROTOCOL_TLSv1
 PROTOCOL_TLSv1_1
 PROTOCOL_TLSv1_2
 
-The following constants identify various SSL alert message descriptions as per
+The following constants identify various SSL alert message descriptions als per
 http://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-6
 
 ALERT_DESCRIPTION_CLOSE_NOTIFY
@@ -94,7 +94,7 @@ ALERT_DESCRIPTION_UNKNOWN_PSK_IDENTITY
 importiere sys
 importiere os
 von collections importiere namedtuple
-von enum importiere Enum as _Enum, IntEnum as _IntEnum, IntFlag as _IntFlag
+von enum importiere Enum als _Enum, IntEnum als _IntEnum, IntFlag als _IntFlag
 von enum importiere _simple_enum
 
 importiere _ssl             # wenn we can't importiere it, let the error propagate
@@ -105,7 +105,7 @@ von _ssl importiere (
     SSLError, SSLZeroReturnError, SSLWantReadError, SSLWantWriteError,
     SSLSyscallError, SSLEOFError, SSLCertVerificationError
     )
-von _ssl importiere txt2obj as _txt2obj, nid2obj as _nid2obj
+von _ssl importiere txt2obj als _txt2obj, nid2obj als _nid2obj
 von _ssl importiere RAND_status, RAND_add, RAND_bytes
 try:
     von _ssl importiere RAND_egd
@@ -259,7 +259,7 @@ wenn sys.platform == "win32":
 
 von socket importiere socket, SOCK_STREAM, create_connection
 von socket importiere SOL_SOCKET, SO_TYPE, _GLOBAL_DEFAULT_TIMEOUT
-importiere socket as _socket
+importiere socket als _socket
 importiere base64        # fuer DER-to-PEM translation
 importiere errno
 importiere warnings
@@ -281,7 +281,7 @@ def _dnsname_match(dn, hostname):
     """Matching according to RFC 6125, section 6.4.3
 
     - Hostnames are compared lower-case.
-    - For IDNA, both dn and hostname must be encoded as IDN A-label (ACE).
+    - For IDNA, both dn and hostname must be encoded als IDN A-label (ACE).
     - Partial wildcards like 'www*.example.org', multiple wildcards, sole
       wildcard or wildcards in labels other then the left-most label are not
       supported and a CertificateError is raised.
@@ -329,7 +329,7 @@ def _dnsname_match(dn, hostname):
 def _inet_paton(ipname):
     """Try to convert an IP address to packed binary form
 
-    Supports IPv4 addresses on all platforms and IPv6 on platforms with IPv6
+    Supports IPv4 addresses on all platforms and IPv6 on platforms mit IPv6
     support.
     """
     # inet_aton() also accepts strings like '1', '127.1', some also trailing
@@ -368,7 +368,7 @@ def _ipaddress_match(cert_ipaddress, host_ip):
     (section 1.7.2 - "Out of Scope").
     """
     # OpenSSL may add a trailing newline to a subjectAltName's IP address,
-    # commonly with IPv6 addresses. Strip off trailing \n.
+    # commonly mit IPv6 addresses. Strip off trailing \n.
     ip = _inet_paton(cert_ipaddress.rstrip())
     return ip == host_ip
 
@@ -413,7 +413,7 @@ klasse _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
 
 
 klasse Purpose(_ASN1Object, _Enum):
-    """SSLContext purpose flags with X509v3 Extended Key Usage objects
+    """SSLContext purpose flags mit X509v3 Extended Key Usage objects
     """
     SERVER_AUTH = '1.3.6.1.5.5.7.3.1'
     CLIENT_AUTH = '1.3.6.1.5.5.7.3.2'
@@ -421,7 +421,7 @@ klasse Purpose(_ASN1Object, _Enum):
 
 klasse SSLContext(_SSLContext):
     """An SSLContext holds various SSL-related configuration options and
-    data, such as certificates and possibly a private key."""
+    data, such als certificates and possibly a private key."""
     _windows_cert_stores = ("CA", "ROOT")
 
     sslsocket_class = Nichts  # SSLSocket is assigned later.
@@ -520,7 +520,7 @@ klasse SSLContext(_SSLContext):
                     wenn trust is Wahr or purpose.oid in trust:
                         try:
                             self.load_verify_locations(cadata=cert)
-                        except SSLError as exc:
+                        except SSLError als exc:
                             warnings.warn(f"Bad certificate in Windows certificate store: {exc!s}")
         except PermissionError:
             warnings.warn("unable to enumerate Windows certificate store")
@@ -608,7 +608,7 @@ klasse SSLContext(_SSLContext):
             message, a :class:`_TLSMessageType` enum member fuer other
             messages, or int fuer unsupported message types.
         data
-            Raw, decrypted message content as bytes
+            Raw, decrypted message content als bytes
         """
         inner = super()._msg_callback
         wenn inner is not Nichts:
@@ -681,7 +681,7 @@ klasse SSLContext(_SSLContext):
 
 def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=Nichts,
                            capath=Nichts, cadata=Nichts):
-    """Create a SSLContext object with default settings.
+    """Create a SSLContext object mit default settings.
 
     NOTE: The protocol and settings may change anytime without prior
           deprecation. The values represent a fair balance between maximum
@@ -704,7 +704,7 @@ def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=Nichts,
         raise ValueError(purpose)
 
     # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
-    # like RFC 3280 and 5280, which specify that chain building stops with the
+    # like RFC 3280 and 5280, which specify that chain building stops mit the
     # first trust anchor, even wenn that anchor is not self-signed.
     #
     # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
@@ -801,7 +801,7 @@ klasse SSLObject:
 
     When compared to ``SSLSocket``, this object lacks the following features:
 
-     * Any form of network IO, including methods such as ``recv`` and ``send``.
+     * Any form of network IO, including methods such als ``recv`` and ``send``.
      * The ``do_handshake_on_connect`` and ``suppress_ragged_eofs`` machinery.
     """
     def __init__(self, *args, **kwargs):
@@ -887,7 +887,7 @@ klasse SSLObject:
 
     def get_verified_chain(self):
         """Returns verified certificate chain provided by the other
-        end of the SSL channel as a list of DER-encoded bytes.
+        end of the SSL channel als a list of DER-encoded bytes.
 
         If certificate verification was disabled method acts the same as
         ``SSLSocket.get_unverified_chain``.
@@ -901,7 +901,7 @@ klasse SSLObject:
 
     def get_unverified_chain(self):
         """Returns raw certificate chain provided by the other
-        end of the SSL channel as a list of DER-encoded bytes.
+        end of the SSL channel als a list of DER-encoded bytes.
         """
         chain = self._sslobj.get_unverified_chain()
 
@@ -911,7 +911,7 @@ klasse SSLObject:
         return [cert.public_bytes(_ssl.ENCODING_DER) fuer cert in chain]
 
     def selected_npn_protocol(self):
-        """Return the currently selected NPN protocol as a string, or ``Nichts``
+        """Return the currently selected NPN protocol als a string, or ``Nichts``
         wenn a next protocol was not negotiated or wenn NPN is not supported by one
         of the peers."""
         warnings.warn(
@@ -921,13 +921,13 @@ klasse SSLObject:
         )
 
     def selected_alpn_protocol(self):
-        """Return the currently selected ALPN protocol as a string, or ``Nichts``
+        """Return the currently selected ALPN protocol als a string, or ``Nichts``
         wenn a next protocol was not negotiated or wenn ALPN is not supported by one
         of the peers."""
         return self._sslobj.selected_alpn_protocol()
 
     def cipher(self):
-        """Return the currently selected cipher as a 3-tuple ``(name,
+        """Return the currently selected cipher als a 3-tuple ``(name,
         ssl_version, secret_bits)``."""
         return self._sslobj.cipher()
 
@@ -1033,7 +1033,7 @@ klasse SSLSocket(socket):
             # See wenn we are connected
             try:
                 self.getpeername()
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno != errno.ENOTCONN:
                     raise
                 connected = Falsch
@@ -1045,7 +1045,7 @@ klasse SSLSocket(socket):
                     # the non-blocking dance regardless. Our raise when any data
                     # is found means consuming the data is harmless.
                     notconn_pre_handshake_data = self.recv(1)
-                except OSError as e:
+                except OSError als e:
                     # EINVAL occurs fuer recv(1) on non-connected on unix sockets.
                     wenn e.errno not in (errno.ENOTCONN, errno.EINVAL):
                         raise
@@ -1055,7 +1055,7 @@ klasse SSLSocket(socket):
                     # This prevents pending data sent to the socket before it was
                     # closed von escaping to the caller who could otherwise
                     # presume it came through a successful TLS connection.
-                    reason = "Closed before TLS handshake with data in recv buffer."
+                    reason = "Closed before TLS handshake mit data in recv buffer."
                     notconn_pre_handshake_data_error = SSLError(e.errno, reason)
                     # Add the SSLError attributes that _ssl.c always adds.
                     notconn_pre_handshake_data_error.reason = reason
@@ -1146,7 +1146,7 @@ klasse SSLSocket(socket):
                 return self._sslobj.read(len, buffer)
             sonst:
                 return self._sslobj.read(len)
-        except SSLError as x:
+        except SSLError als x:
             wenn x.args[0] == SSL_ERROR_EOF and self.suppress_ragged_eofs:
                 wenn buffer is not Nichts:
                     return 0
@@ -1273,7 +1273,7 @@ klasse SSLSocket(socket):
                     "non-zero flags not allowed in calls to sendall() on %s" %
                     self.__class__)
             count = 0
-            with memoryview(data) as view, view.cast("B") as byte_view:
+            mit memoryview(data) als view, view.cast("B") als byte_view:
                 amount = len(byte_view)
                 while count < amount:
                     v = self.send(byte_view[count:])
@@ -1317,7 +1317,7 @@ klasse SSLSocket(socket):
         self._checkClosed()
         wenn nbytes is Nichts:
             wenn buffer is not Nichts:
-                with memoryview(buffer) as view:
+                mit memoryview(buffer) als view:
                     nbytes = view.nbytes
                 wenn not nbytes:
                     nbytes = 1024
@@ -1438,7 +1438,7 @@ klasse SSLSocket(socket):
 
     def accept(self):
         """Accepts a new connection von a remote client, and returns
-        a tuple containing that new connection wrapped with a server-side
+        a tuple containing that new connection wrapped mit a server-side
         SSL channel, and the address of the remote client."""
 
         newsock, addr = super().accept()
@@ -1482,7 +1482,7 @@ def cert_time_to_seconds(cert_time):
     "notBefore" or "notAfter" dates must use UTC (RFC 5280).
 
     Month is one of: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-    UTC should be specified as GMT (see ASN1_TIME_drucke())
+    UTC should be specified als GMT (see ASN1_TIME_drucke())
     """
     von time importiere strptime
     von calendar importiere timegm
@@ -1509,7 +1509,7 @@ PEM_FOOTER = "-----END CERTIFICATE-----"
 
 def DER_cert_to_PEM_cert(der_cert_bytes):
     """Takes a certificate in binary DER format and returns the
-    PEM version of it as a string."""
+    PEM version of it als a string."""
 
     f = str(base64.standard_b64encode(der_cert_bytes), 'ASCII', 'strict')
     ss = [PEM_HEADER]
@@ -1519,13 +1519,13 @@ def DER_cert_to_PEM_cert(der_cert_bytes):
 
 def PEM_cert_to_DER_cert(pem_cert_string):
     """Takes a certificate in ASCII PEM format and returns the
-    DER-encoded version of it as a byte sequence"""
+    DER-encoded version of it als a byte sequence"""
 
     wenn not pem_cert_string.startswith(PEM_HEADER):
-        raise ValueError("Invalid PEM encoding; must start with %s"
+        raise ValueError("Invalid PEM encoding; must start mit %s"
                          % PEM_HEADER)
     wenn not pem_cert_string.strip().endswith(PEM_FOOTER):
-        raise ValueError("Invalid PEM encoding; must end with %s"
+        raise ValueError("Invalid PEM encoding; must end mit %s"
                          % PEM_FOOTER)
     d = pem_cert_string.strip()[len(PEM_HEADER):-len(PEM_FOOTER)]
     return base64.decodebytes(d.encode('ASCII', 'strict'))
@@ -1533,7 +1533,7 @@ def PEM_cert_to_DER_cert(pem_cert_string):
 def get_server_certificate(addr, ssl_version=PROTOCOL_TLS_CLIENT,
                            ca_certs=Nichts, timeout=_GLOBAL_DEFAULT_TIMEOUT):
     """Retrieve the certificate von the server at the specified address,
-    and return it as a PEM-encoded string.
+    and return it als a PEM-encoded string.
     If 'ca_certs' is specified, validate the server cert against it.
     If 'ssl_version' is specified, use it in the connection attempt.
     If 'timeout' is specified, use it in the connection attempt.
@@ -1547,8 +1547,8 @@ def get_server_certificate(addr, ssl_version=PROTOCOL_TLS_CLIENT,
     context = _create_stdlib_context(ssl_version,
                                      cert_reqs=cert_reqs,
                                      cafile=ca_certs)
-    with create_connection(addr, timeout=timeout) as sock:
-        with context.wrap_socket(sock, server_hostname=host) as sslsock:
+    mit create_connection(addr, timeout=timeout) als sock:
+        mit context.wrap_socket(sock, server_hostname=host) als sslsock:
             dercert = sslsock.getpeercert(Wahr)
     return DER_cert_to_PEM_cert(dercert)
 

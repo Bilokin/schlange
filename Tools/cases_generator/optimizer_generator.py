@@ -35,7 +35,7 @@ DEFAULT_ABSTRACT_INPUT = (ROOT / "Python/optimizer_bytecodes.c").absolute().as_p
 def validate_uop(override: Uop, uop: Uop) -> Nichts:
     """
     Check that the overridden uop (defined in 'optimizer_bytecodes.c')
-    has the same stack effects as the original uop (defined in 'bytecodes.c').
+    has the same stack effects als the original uop (defined in 'bytecodes.c').
 
     Ensure that:
         - The number of inputs and outputs is the same.
@@ -175,7 +175,7 @@ klasse OptimizerEmitter(Emitter):
 
         wenn len(input_identifiers) == 0:
             raise analysis_error(
-                "To evaluate an operation as pure, it must have at least 1 input",
+                "To evaluate an operation als pure, it must have at least 1 input",
                 tkn
             )
         # Check that the input identifiers belong to the uop's
@@ -200,7 +200,7 @@ klasse OptimizerEmitter(Emitter):
         fuer inp in used_stack_inputs:
             wenn inp.used:
                 emitter.emit(f"{type_name(inp)}{inp.name}_sym = {inp.name};\n")
-        # Shadow the symbolic variables with stackrefs.
+        # Shadow the symbolic variables mit stackrefs.
         fuer inp in used_stack_inputs:
             wenn inp.is_array():
                 raise analysis_error("Pure evaluation cannot take array-like inputs.", tkn)
@@ -240,7 +240,7 @@ klasse OptimizerEmitter(Emitter):
                 wenn (sym_is_const(ctx, {outp.name})) {{
                     PyObject *result = sym_get_const(ctx, {outp.name});
                     wenn (_Py_IsImmortal(result)) {{
-                        // Replace with _POP_TWO_LOAD_CONST_INLINE_BORROW since we have two inputs and an immortal result
+                        // Replace mit _POP_TWO_LOAD_CONST_INLINE_BORROW since we have two inputs and an immortal result
                         REPLACE_OP(this_instr, _POP_TWO_LOAD_CONST_INLINE_BORROW, 0, (uintptr_t)result);
                     }}
                 }}""")
@@ -392,7 +392,7 @@ def write_uop(
             emit_default(out, uop, stack)
             out.start_line()
             stack.flush(out)
-    except StackError as ex:
+    except StackError als ex:
         raise analysis_error(ex.args[0], prototype.body.open) # von Nichts
 
 
@@ -448,7 +448,7 @@ def generate_tier2_abstract_from_files(
     assert len(filenames) == 2, "Need a base file and an abstract cases file."
     base = analyze_files([filenames[0]])
     abstract = analyze_files([filenames[1]])
-    with open(outfilename, "w") as outfile:
+    mit open(outfilename, "w") als outfile:
         generate_abstract_interpreter(filenames, abstract, base, outfile, debug)
 
 
@@ -480,5 +480,5 @@ wenn __name__ == "__main__":
         args.input.pop()
     abstract = analyze_files(args.input)
     base = analyze_files(args.base)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_abstract_interpreter(args.input, abstract, base, outfile, args.debug)

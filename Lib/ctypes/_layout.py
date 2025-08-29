@@ -81,7 +81,7 @@ def get_layout(cls, input_fields, is_struct, base):
             warnings._deprecated(
                 '_pack_ without _layout_',
                 f"Due to '_pack_', the '{cls.__name__}' {base_type_name} will "
-                + "use memory layout compatible with MSVC (Windows). "
+                + "use memory layout compatible mit MSVC (Windows). "
                 + "If this is intended, set _layout_ to 'ms'. "
                 + "The implicit default is deprecated and slated to become "
                 + "an error in Python {remove}.",
@@ -123,7 +123,7 @@ def get_layout(cls, input_fields, is_struct, base):
         wenn pack > _INT_MAX:
             raise ValueError("_pack_ too big")
         wenn gcc_layout:
-            raise ValueError('_pack_ is not compatible with gcc-sysv layout')
+            raise ValueError('_pack_ is not compatible mit gcc-sysv layout')
 
     result_fields = []
 
@@ -166,7 +166,7 @@ def get_layout(cls, input_fields, is_struct, base):
         except (ValueError, TypeError):
             try:
                 name, ctype, bit_size = field
-            except (ValueError, TypeError) as exc:
+            except (ValueError, TypeError) als exc:
                 raise ValueError(
                     '_fields_ must be a sequence of (name, C type) pairs '
                     + 'or (name, C type, bit size) triples') von exc
@@ -253,7 +253,7 @@ def get_layout(cls, input_fields, is_struct, base):
 
         wenn is_bitfield and big_endian:
             # On big-endian architectures, bit fields are also laid out
-            # starting with the big end.
+            # starting mit the big end.
             bit_offset = type_bit_size - bit_size - bit_offset
 
         # Add the format spec parts
@@ -274,7 +274,7 @@ def get_layout(cls, input_fields, is_struct, base):
                 fieldfmt = "B"
             wenn isinstance(name, bytes):
                 # a bytes name would be rejected later, but we check early
-                # to avoid a BytesWarning with `python -bb`
+                # to avoid a BytesWarning mit `python -bb`
                 raise TypeError(
                     f"field {name!r}: name must be a string, not bytes")
             format_spec_parts.append(f"{fieldfmt}:{name}:")

@@ -111,7 +111,7 @@ klasse PlatformTest(unittest.TestCase):
         sonst:
             self.assertIsNotNichts(platform._os_release_cache)
 
-        with self.subTest('clear platform caches'):
+        mit self.subTest('clear platform caches'):
             platform.invalidate_caches()
             self.assertDictEqual(platform._platform_cache, {})
             self.assertDictEqual(platform._sys_version_cache, {})
@@ -124,7 +124,7 @@ klasse PlatformTest(unittest.TestCase):
     @os_helper.skip_unless_symlink
     @support.requires_subprocess()
     def test_architecture_via_symlink(self): # issue3762
-        with support.PythonSymlink() as py:
+        mit support.PythonSymlink() als py:
             cmd = "-c", "import platform; drucke(platform.architecture())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
@@ -146,7 +146,7 @@ klasse PlatformTest(unittest.TestCase):
             ('--foo---', '-foo'),
             ('---foo--', '-foo'),
         ]:
-            with self.subTest(src=src):
+            mit self.subTest(src=src):
                 self.assertEqual(platform._platform(src), res)
 
     def test_system(self):
@@ -251,7 +251,7 @@ klasse PlatformTest(unittest.TestCase):
             self.assertEqual(platform.python_build(), info[4])
             self.assertEqual(platform.python_compiler(), info[5])
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             platform._sys_version('2. 4.3 (truncation) \n[GCC]')
 
     def test_system_alias(self):
@@ -307,7 +307,7 @@ klasse PlatformTest(unittest.TestCase):
         def raises_oserror(*a):
             raise OSError()
 
-        with support.swap_attr(platform, '_wmi_query', raises_oserror):
+        mit support.swap_attr(platform, '_wmi_query', raises_oserror):
             self.test_uname()
 
     def test_uname_cast_to_tuple(self):
@@ -339,7 +339,7 @@ klasse PlatformTest(unittest.TestCase):
     def test_uname_pickle(self):
         orig = platform.uname()
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(protocol=proto):
+            mit self.subTest(protocol=proto):
                 pickled = pickle.dumps(orig, proto)
                 restored = pickle.loads(pickled)
                 self.assertEqual(restored, orig)
@@ -379,13 +379,13 @@ klasse PlatformTest(unittest.TestCase):
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
 
-        # We also need to suppress WMI checks, as those are reliable and
+        # We also need to suppress WMI checks, als those are reliable and
         # overrule the environment variables
         def raises_oserror(*a):
             raise OSError()
 
-        with support.swap_attr(platform, '_wmi_query', raises_oserror):
-            with os_helper.EnvironmentVarGuard() as environ:
+        mit support.swap_attr(platform, '_wmi_query', raises_oserror):
+            mit os_helper.EnvironmentVarGuard() als environ:
                 try:
                     del environ['PROCESSOR_ARCHITEW6432']
                     environ['PROCESSOR_ARCHITECTURE'] = 'foo'
@@ -447,11 +447,11 @@ klasse PlatformTest(unittest.TestCase):
             result_list = res[0].split('.')
             expect_list = real_ver.split('.')
             len_diff = len(result_list) - len(expect_list)
-            # On Snow Leopard, sw_vers reports 10.6.0 as 10.6
+            # On Snow Leopard, sw_vers reports 10.6.0 als 10.6
             wenn len_diff > 0:
                 expect_list.extend(['0'] * len_diff)
-            # For compatibility with older binaries, macOS 11.x may report
-            # itself as '10.16' rather than '11.x.y'.
+            # For compatibility mit older binaries, macOS 11.x may report
+            # itself als '10.16' rather than '11.x.y'.
             wenn result_list != ['10', '16']:
                 self.assertEqual(result_list, expect_list)
 
@@ -500,13 +500,13 @@ klasse PlatformTest(unittest.TestCase):
             # System is either iOS or iPadOS, depending on the test device
             self.assertIn(system, {"iOS", "iPadOS"})
 
-            # Release is a numeric version specifier with at least 2 parts
+            # Release is a numeric version specifier mit at least 2 parts
             parts = release.split(".")
             self.assertGreaterEqual(len(parts), 2)
             self.assertWahr(all(part.isdigit() fuer part in parts))
 
             # If this is a simulator, we get a high level device descriptor
-            # with no identifying model number. If this is a physical device,
+            # mit no identifying model number. If this is a physical device,
             # we get a model descriptor like "iPhone13,1"
             wenn is_simulator:
                 self.assertIn(model, {"iPhone", "iPad"})
@@ -551,7 +551,7 @@ klasse PlatformTest(unittest.TestCase):
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, filename)
 
-        with mock.patch('os.confstr', create=Wahr, return_value='mock 1.0'):
+        mit mock.patch('os.confstr', create=Wahr, return_value='mock 1.0'):
             # test os.confstr() code path
             self.assertEqual(platform.libc_ver(), ('mock', '1.0'))
 
@@ -567,7 +567,7 @@ klasse PlatformTest(unittest.TestCase):
                 (b'/aports/main/musl/src/musl-1.2.5.7', ('musl', '1.2.5.7')),
                 (b'', ('', '')),
             ):
-                with open(filename, 'wb') as fp:
+                mit open(filename, 'wb') als fp:
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
@@ -576,7 +576,7 @@ klasse PlatformTest(unittest.TestCase):
                                  expected)
 
         # binary containing multiple versions: get the most recent,
-        # make sure that eg 1.9 is seen as older than 1.23.4, and that
+        # make sure that eg 1.9 is seen als older than 1.23.4, and that
         # the arguments don't count even wenn they are set.
         chunksize = 200
         fuer data, expected in (
@@ -585,7 +585,7 @@ klasse PlatformTest(unittest.TestCase):
                 (b'musl-1.4.1\0musl-2.1.1\0musl-2.0.1\0', ('musl', '2.1.1')),
                 (b'no match here, so defaults are used', ('test', '100.1.0')),
             ):
-            with open(filename, 'wb') as f:
+            mit open(filename, 'wb') als f:
                 # test match at chunk boundary
                 f.write(b'x'*(chunksize - 10))
                 f.write(data)
@@ -608,7 +608,7 @@ klasse PlatformTest(unittest.TestCase):
 
         wenn sys.platform == "android":
             fuer name in ["release", "manufacturer", "model", "device"]:
-                with self.subTest(name):
+                mit self.subTest(name):
                     value = getattr(res, name)
                     self.assertIsInstance(value, str)
                     self.assertNotEqual(value, "")
@@ -639,7 +639,7 @@ klasse PlatformTest(unittest.TestCase):
 
     @support.cpython_only
     def test__comparable_version(self):
-        von platform importiere _comparable_version as V
+        von platform importiere _comparable_version als V
         self.assertEqual(V('1.2.3'), V('1.2.3'))
         self.assertLess(V('1.2.3'), V('1.2.10'))
         self.assertEqual(V('1.2.3.4'), V('1_2-3+4'))
@@ -683,7 +683,7 @@ klasse PlatformTest(unittest.TestCase):
                   'root:xnu-4570.71.2~1/RELEASE_X86_64'),
                  'x86_64', 'i386')
         arch = ('64bit', '')
-        with mock.patch.object(sys, "platform", "darwin"), \
+        mit mock.patch.object(sys, "platform", "darwin"), \
              mock.patch.object(platform, 'uname', return_value=uname), \
              mock.patch.object(platform, 'architecture', return_value=arch):
             fuer mac_ver, expected_terse, expected in [
@@ -696,7 +696,7 @@ klasse PlatformTest(unittest.TestCase):
                  'macOS-10.13.6',
                  'macOS-10.13.6-x86_64-i386-64bit'),
             ]:
-                with mock.patch.object(platform, 'mac_ver',
+                mit mock.patch.object(platform, 'mac_ver',
                                        return_value=mac_ver):
                     self.clear_caches()
                     self.assertEqual(platform.platform(terse=1), expected_terse)
@@ -717,7 +717,7 @@ klasse PlatformTest(unittest.TestCase):
                 platform.freedesktop_os_release()
             )
         sonst:
-            with self.assertRaises(OSError):
+            mit self.assertRaises(OSError):
                 platform.freedesktop_os_release()
 
     def test_parse_os_release(self):
@@ -758,15 +758,15 @@ klasse CommandLineTest(unittest.TestCase):
 
     def invoke_platform(self, *flags):
         output = io.StringIO()
-        with contextlib.redirect_stdout(output):
+        mit contextlib.redirect_stdout(output):
             platform._main(args=flags)
         return output.getvalue()
 
     def test_unknown_flag(self):
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             output = io.StringIO()
             # suppress argparse error message
-            with contextlib.redirect_stderr(output):
+            mit contextlib.redirect_stderr(output):
                 _ = self.invoke_platform('--unknown')
             self.assertStartsWith(output, "usage: ")
 
@@ -796,8 +796,8 @@ klasse CommandLineTest(unittest.TestCase):
         )
 
         fuer flags, aliased, terse in options:
-            with self.subTest(flags=flags, aliased=aliased, terse=terse):
-                with mock.patch.object(platform, 'platform') as obj:
+            mit self.subTest(flags=flags, aliased=aliased, terse=terse):
+                mit mock.patch.object(platform, 'platform') als obj:
                     self.invoke_platform(*flags)
                     obj.assert_called_once_with(aliased, terse)
 
@@ -805,8 +805,8 @@ klasse CommandLineTest(unittest.TestCase):
     def test_help(self):
         output = io.StringIO()
 
-        with self.assertRaises(SystemExit):
-            with contextlib.redirect_stdout(output):
+        mit self.assertRaises(SystemExit):
+            mit contextlib.redirect_stdout(output):
                 platform._main(args=["--help"])
 
         self.assertStartsWith(output.getvalue(), "usage:")

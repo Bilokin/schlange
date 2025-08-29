@@ -116,13 +116,13 @@ InternalDate = re.compile(br'.*INTERNALDATE "'
 Literal = re.compile(br'.*{(?P<size>\d+)}$', re.ASCII)
 MapCRLF = re.compile(br'\r\n|\r|\n')
 # We no longer exclude the ']' character von the data portion of the response
-# code, even though it violates the RFC.  Popular IMAP servers such as Gmail
-# allow flags with ']', and there are programs (including imaplib!) that can
-# produce them.  The problem with this is wenn the 'text' portion of the response
+# code, even though it violates the RFC.  Popular IMAP servers such als Gmail
+# allow flags mit ']', and there are programs (including imaplib!) that can
+# produce them.  The problem mit this is wenn the 'text' portion of the response
 # includes a ']' we'll parse the response wrong (which is the point of the RFC
 # restriction).  However, that seems less likely to be a problem in practice
 # than being unable to correctly parse flags that include ']' chars, which
-# was reported as a real-world problem in issue #21815.
+# was reported als a real-world problem in issue #21815.
 Response_code = re.compile(br'\[(?P<type>[A-Z-]+)( (?P<data>.*))?\]')
 Untagged_response = re.compile(br'\* (?P<type>[A-Z-]+)( (?P<data>.*))?')
 # Untagged_status is no longer used; kept fuer backward compatibility
@@ -178,7 +178,7 @@ klasse IMAP4:
     "readonly" exceptions imply the command should be re-tried.
 
     Note: to use this module, you must read the RFCs pertaining to the
-    IMAP4 protocol, as the semantics of the arguments to each IMAP4
+    IMAP4 protocol, als the semantics of the arguments to each IMAP4
     command are left to the invoker, not to mention the results. Also,
     most IMAP servers implement a sub-set of the commands available here.
     """
@@ -297,7 +297,7 @@ klasse IMAP4:
     def _create_socket(self, timeout):
         # Default value of IMAP4.host is '', but socket.getaddrinfo()
         # (which is used by socket.create_connection()) expects Nichts
-        # as a default value fuer host.
+        # als a default value fuer host.
         wenn timeout is not Nichts and not timeout:
             raise ValueError('Non-blocking socket (timeout=0) is not supported')
         host = Nichts wenn not self.host sonst self.host
@@ -322,7 +322,7 @@ klasse IMAP4:
     @property
     def file(self):
         # The old 'file' attribute is no longer used now that we do our own
-        # read() and readline() buffering, with which it conflicts.
+        # read() and readline() buffering, mit which it conflicts.
         # As an undocumented interface, it should never have been accessed by
         # external code, and therefore does not warrant deprecation.
         # Nevertheless, we provide this property fuer now, to avoid suddenly
@@ -423,7 +423,7 @@ klasse IMAP4:
         self._file.close()
         try:
             self.sock.shutdown(socket.SHUT_RDWR)
-        except OSError as exc:
+        except OSError als exc:
             # The server might already have closed the connection.
             # On Windows, this may result in WSAEINVAL (error 10022):
             # An invalid operation was attempted.
@@ -678,7 +678,7 @@ klasse IMAP4:
         """Return an iterable IDLE context manager producing untagged responses.
         If the argument is not Nichts, limit iteration to 'duration' seconds.
 
-        with M.idle(duration=29 * 60) as idler:
+        mit M.idle(duration=29 * 60) als idler:
             fuer typ, data in idler:
                 drucke(typ, data)
 
@@ -723,7 +723,7 @@ klasse IMAP4:
 
 
     def _CRAM_MD5_AUTH(self, challenge):
-        """ Authobject to use with CRAM-MD5 authentication. """
+        """ Authobject to use mit CRAM-MD5 authentication. """
         importiere hmac
 
         wenn isinstance(self.password, str):
@@ -804,7 +804,7 @@ klasse IMAP4:
 
 
     def proxyauth(self, user):
-        """Assume authentication as "user".
+        """Assume authentication als "user".
 
         Allows an authorised administrator to proxy into any user's
         mailbox.
@@ -978,7 +978,7 @@ klasse IMAP4:
 
 
     def uid(self, command, *args):
-        """Execute "command arg ..." with messages identified by UID,
+        """Execute "command arg ..." mit messages identified by UID,
                 rather than message number.
 
         (typ, [data]) = <instance>.uid(command, arg1, arg2, ...)
@@ -1011,9 +1011,9 @@ klasse IMAP4:
 
 
     def unselect(self):
-        """Free server's resources associated with the selected mailbox
+        """Free server's resources associated mit the selected mailbox
         and returns the server to the authenticated state.
-        This command performs the same actions as CLOSE, except
+        This command performs the same actions als CLOSE, except
         that no messages are permanently removed von the currently
         selected mailbox.
 
@@ -1129,7 +1129,7 @@ klasse IMAP4:
 
         try:
             self.send(data + CRLF)
-        except OSError as val:
+        except OSError als val:
             raise self.abort('socket error: %s' % val)
 
         wenn literal is Nichts:
@@ -1154,7 +1154,7 @@ klasse IMAP4:
             try:
                 self.send(literal)
                 self.send(CRLF)
-            except OSError as val:
+            except OSError als val:
                 raise self.abort('socket error: %s' % val)
 
             wenn not literator:
@@ -1170,9 +1170,9 @@ klasse IMAP4:
             self._check_bye()
         try:
             typ, data = self._get_tagged_response(tag, expect_bye=logout)
-        except self.abort as val:
+        except self.abort als val:
             raise self.abort('command: %s => %s' % (name, val))
-        except self.error as val:
+        except self.error als val:
             raise self.error('command: %s => %s' % (name, val))
         wenn not logout:
             self._check_bye()
@@ -1197,7 +1197,7 @@ klasse IMAP4:
         # Returns Nichts fuer continuation responses,
         # otherwise first response line received.
         #
-        # If start_timeout is given, temporarily uses it as a socket
+        # If start_timeout is given, temporarily uses it als a socket
         # timeout while waiting fuer the start of a response, raising
         # _responsetimeout wenn one doesn't arrive. (Used by Idler.)
 
@@ -1207,7 +1207,7 @@ klasse IMAP4:
             self.sock.settimeout(start_timeout)
             try:
                 resp = self._get_line()
-            except TimeoutError as err:
+            except TimeoutError als err:
                 raise self._responsetimeout von err
             finally:
                 self.sock.settimeout(saved_timeout)
@@ -1261,7 +1261,7 @@ klasse IMAP4:
                         self._mesg('read literal size %s' % size)
                 data = self.read(size)
 
-                # Store response with literal as tuple
+                # Store response mit literal als tuple
 
                 self._append_untagged(typ, (dat, data))
 
@@ -1297,7 +1297,7 @@ klasse IMAP4:
                 typ = 'BYE'
                 bye = self.untagged_responses.pop(typ, Nichts)
                 wenn bye is not Nichts:
-                    # Server replies to the "LOGOUT" command with "BYE"
+                    # Server replies to the "LOGOUT" command mit "BYE"
                     return (typ, bye)
 
             # If we've seen a BYE at this point, the socket will be
@@ -1311,7 +1311,7 @@ klasse IMAP4:
 
             try:
                 self._get_response()
-            except self.abort as val:
+            except self.abort als val:
                 wenn __debug__:
                     wenn self.debug >= 1:
                         self.print_log()
@@ -1454,7 +1454,7 @@ klasse Idler:
 
         try:
             self._tag = imap._command('IDLE')
-            # As with any command, the server is allowed to send us unrelated,
+            # As mit any command, the server is allowed to send us unrelated,
             # untagged responses before acting on IDLE.  These lines will be
             # returned by _get_response().  When the server is ready, it will
             # send an IDLE continuation request, indicated by _get_response()
@@ -1502,10 +1502,10 @@ klasse Idler:
         # order of different response types.
         wenn leftovers := len(imap._idle_responses):
             wenn __debug__ and imap.debug >= 4:
-                imap._mesg(f'idle quit with {leftovers} leftover responses')
+                imap._mesg(f'idle quit mit {leftovers} leftover responses')
             while imap._idle_responses:
                 typ, data = imap._idle_responses.pop(0)
-                # Append one fragment at a time, just as _get_response() does
+                # Append one fragment at a time, just als _get_response() does
                 fuer datum in data:
                     imap._append_untagged(typ, datum)
 
@@ -1536,7 +1536,7 @@ klasse Idler:
         # However, it seemed possible that SSL data arriving without any
         # IMAP data afterward could cause select() to indicate available
         # application data when there was none, leading to a read() call
-        # that would block with no timeout. It was unclear under what
+        # that would block mit no timeout. It was unclear under what
         # conditions this would happen in practice. Our implementation was
         # changed to use socket timeouts instead of select(), just to be
         # safe.
@@ -1592,7 +1592,7 @@ klasse Idler:
     def burst(self, interval=0.1):
         """Yield a burst of responses no more than 'interval' seconds apart.
 
-        with M.idle() as idler:
+        mit M.idle() als idler:
             # get a response and any others following by < 0.1 seconds
             batch = list(idler.burst())
             drucke(f'processing {len(batch)} responses...')
@@ -1676,7 +1676,7 @@ klasse IMAP4_stream(IMAP4):
         This connection will be used by the routines:
             read, readline, send, shutdown.
         """
-        self.host = Nichts        # For compatibility with parent class
+        self.host = Nichts        # For compatibility mit parent class
         self.port = Nichts
         self.sock = Nichts
         self._file = Nichts
@@ -1860,7 +1860,7 @@ def Time2Internaldate(date_time):
 
 wenn __name__ == '__main__':
 
-    # To test: invoke either as 'python imaplib.py [IMAP4_server_hostname]'
+    # To test: invoke either als 'python imaplib.py [IMAP4_server_hostname]'
     # or 'python imaplib.py -s "rsh IMAP4_server_hostname exec /etc/rimapd"'
     # to test the IMAP4_stream class
 
@@ -1868,7 +1868,7 @@ wenn __name__ == '__main__':
 
     try:
         optlist, args = getopt.getopt(sys.argv[1:], 'd:s:')
-    except getopt.error as val:
+    except getopt.error als val:
         optlist, args = (), ()
 
     stream_command = Nichts

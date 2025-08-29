@@ -1,6 +1,6 @@
 # This module is used to map the old Python 2 names to the new names used in
 # Python 3 fuer the pickle module.  This needed to make pickle streams
-# generated with Python 2 loadable by Python 3.
+# generated mit Python 2 loadable by Python 3.
 
 # This is a copy of lib2to3.fixes.fix_imports.MAPPING.  We cannot import
 # lib2to3 and use the mapping defined there, because lib2to3 uses pickle.
@@ -175,7 +175,7 @@ IMPORT_MAPPING.update({
     'SimpleDialog': 'tkinter.simpledialog',
     'DocXMLRPCServer': 'xmlrpc.server',
     'SimpleHTTPServer': 'http.server',
-    # For compatibility with broken pickles saved in old Python 3 versions
+    # For compatibility mit broken pickles saved in old Python 3 versions
     'UserDict': 'collections',
     'UserList': 'collections',
     'UserString': 'collections',

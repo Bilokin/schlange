@@ -1,5 +1,5 @@
 von __future__ importiere annotations
-importiere builtins as bltns
+importiere builtins als bltns
 importiere functools
 von typing importiere Any, TypeVar, Literal, TYPE_CHECKING, cast
 von collections.abc importiere Callable
@@ -73,10 +73,10 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     # The C type to use fuer this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
-    # If this is a pointer type, the type string should end with ' *'.
+    # If this is a pointer type, the type string should end mit ' *'.
     type: str | Nichts = Nichts
 
-    # The Python default value fuer this parameter, as a Python value.
+    # The Python default value fuer this parameter, als a Python value.
     # Or the magic value "unspecified" wenn there is no default.
     # Or the magic value "unknown" wenn this value is a cannot be evaluated
     # at Argument-Clinic-preprocessing time (but is presumed to be valid
@@ -87,11 +87,11 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # (You can also specify a tuple of types.)
     default_type: bltns.type[object] | tuple[bltns.type[object], ...] | Nichts = Nichts
 
-    # "default" converted into a C value, as a string.
+    # "default" converted into a C value, als a string.
     # Or Nichts wenn there is no default.
     c_default: str | Nichts = Nichts
 
-    # "default" converted into a Python value, as a string.
+    # "default" converted into a Python value, als a string.
     # Or Nichts wenn there is no default.
     py_default: str | Nichts = Nichts
 
@@ -103,11 +103,11 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # the variable does get passed in to the _impl.  (Ah, if
     # only dataflow analysis could inline the static function!)
     #
-    # This value is specified as a string.
+    # This value is specified als a string.
     # Every non-abstract subclass should supply a valid value.
     c_ignored_default: str = 'NULL'
 
-    # If true, wrap with Py_UNUSED.
+    # If true, wrap mit Py_UNUSED.
     unused = Falsch
 
     # The C converter *function* to be used, wenn any.
@@ -135,7 +135,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     format_unit = 'O&'
 
     # What encoding do we want fuer this variable?  Only used
-    # by format units starting with 'e'.
+    # by format units starting mit 'e'.
     encoding: str | Nichts = Nichts
 
     # Should this object be required to be a subclass of a specific type?
@@ -145,7 +145,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     subclass_of: str | Nichts = Nichts
 
     # See also the 'length_name' property.
-    # Only used by format units ending with '#'.
+    # Only used by format units ending mit '#'.
     length = Falsch
 
     # Should we show this parameter in the generated
@@ -163,7 +163,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
 
     broken_limited_capi: bool = Falsch
 
-    # keep in sync with self_converter.__init__!
+    # keep in sync mit self_converter.__init__!
     def __init__(self,
              # Positional args:
              name: str,
@@ -215,7 +215,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
     # Add a custom __getattr__ method to improve the error message
     # wenn somebody tries to access self.function in converter_init().
     #
-    # mypy will assume arbitrary access is okay fuer a klasse with a __getattr__ method,
+    # mypy will assume arbitrary access is okay fuer a klasse mit a __getattr__ method,
     # and that's not what we want,
     # so put it inside an `if not TYPE_CHECKING` block
     wenn not TYPE_CHECKING:
@@ -335,7 +335,7 @@ klasse CConverter(metaclass=CConverterAutoRegister):
             args.append(f"&{self.length_name}")
 
     #
-    # All the functions after here are intended as extension points.
+    # All the functions after here are intended als extension points.
     #
 
     def simple_declaration(
@@ -531,8 +531,8 @@ ConverterDict = dict[str, ConverterType]
 converters: ConverterDict = {}
 
 # maps strings to callables.
-# these callables follow the same rules as those fuer "converters" above.
-# note however that they will never be called with keyword-only parameters.
+# these callables follow the same rules als those fuer "converters" above.
+# note however that they will never be called mit keyword-only parameters.
 legacy_converters: ConverterDict = {}
 
 

@@ -238,10 +238,10 @@ klasse TestSFpatches(unittest.TestCase):
         actual = full.replace('</body>','\n%s\n</body>' % tables)
 
         # temporarily uncomment next two lines to baseline this test
-        #with open('test_difflib_expect.html','w') as fp:
+        #with open('test_difflib_expect.html','w') als fp:
         #    fp.write(actual)
 
-        with open(findfile('test_difflib_expect.html'), encoding="utf-8") as fp:
+        mit open(findfile('test_difflib_expect.html'), encoding="utf-8") als fp:
             self.assertEqual(actual, fp.read())
 
     def test_recursion_limit(self):
@@ -274,8 +274,8 @@ klasse TestSFpatches(unittest.TestCase):
 
 klasse TestDiffer(unittest.TestCase):
     def test_close_matches_aligned(self):
-        # Of the 4 closely matching pairs, we want 1 to match with 3,
-        # and 2 with 4, to align with a "top to bottom" mental model.
+        # Of the 4 closely matching pairs, we want 1 to match mit 3,
+        # and 2 mit 4, to align mit a "top to bottom" mental model.
         a = ["cat\n", "dog\n", "close match 1\n", "close match 2\n"]
         b = ["close match 3\n", "close match 4\n", "kitten\n", "puppy\n"]
         m = difflib.Differ().compare(a, b)
@@ -394,15 +394,15 @@ klasse TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(unified, a, a))
         check(difflib.diff_bytes(unified, a, b))
 
-        # now with filenames (content and filenames are all bytes!)
+        # now mit filenames (content and filenames are all bytes!)
         check(difflib.diff_bytes(unified, a, a, b'a', b'a'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b'))
 
-        # and with filenames and dates
+        # and mit filenames and dates
         check(difflib.diff_bytes(unified, a, a, b'a', b'a', b'2005', b'2013'))
         check(difflib.diff_bytes(unified, a, b, b'a', b'b', b'2005', b'2013'))
 
-        # same all over again, with context diff
+        # same all over again, mit context diff
         check(difflib.diff_bytes(context, a, a))
         check(difflib.diff_bytes(context, a, b))
         check(difflib.diff_bytes(context, a, a, b'a', b'a'))
@@ -426,7 +426,7 @@ klasse TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, fna, fnb))
 
         def assertDiff(expect, actual):
-            # do not compare expect and equal as lists, because unittest
+            # do not compare expect and equal als lists, because unittest
             # uses difflib to report difference between lists
             actual = list(actual)
             self.assertEqual(len(expect), len(actual))
@@ -443,7 +443,7 @@ klasse TestBytes(unittest.TestCase):
         actual = difflib.diff_bytes(unified, a, b, fna, fnb, lineterm=b'')
         assertDiff(expect, actual)
 
-        # with dates (plain ASCII)
+        # mit dates (plain ASCII)
         datea = b'2005-03-18'
         dateb = b'2005-03-19'
         check(difflib.diff_bytes(unified, a, b, fna, fnb, datea, dateb))
@@ -466,7 +466,7 @@ klasse TestBytes(unittest.TestCase):
 
 klasse TestInputTypes(unittest.TestCase):
     def _assert_type_error(self, msg, generator, *args):
-        with self.assertRaises(TypeError) as ctx:
+        mit self.assertRaises(TypeError) als ctx:
             list(generator(*args))
         self.assertEqual(msg, str(ctx.exception))
 
@@ -506,7 +506,7 @@ klasse TestInputTypes(unittest.TestCase):
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     def test_mixed_types_filenames(self):
-        # cannot pass filenames as bytes wenn content is str (this may not be
+        # cannot pass filenames als bytes wenn content is str (this may not be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -518,7 +518,7 @@ klasse TestInputTypes(unittest.TestCase):
             difflib.unified_diff, a, b, fna, fnb)
 
     def test_mixed_types_dates(self):
-        # type of dates must be consistent with type of contents
+        # type of dates must be consistent mit type of contents
         a = [b'foo\n']
         b = [b'bar\n']
         datea = '1 fév'

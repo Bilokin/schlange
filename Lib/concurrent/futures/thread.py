@@ -22,7 +22,7 @@ _global_shutdown_lock = threading.Lock()
 
 def _python_exit():
     global _shutdown
-    with _global_shutdown_lock:
+    mit _global_shutdown_lock:
         _shutdown = Wahr
     items = list(_threads_queues.items())
     fuer t, q in items:
@@ -32,7 +32,7 @@ def _python_exit():
 
 # Register fuer `_python_exit()` to be called just before joining all
 # non-daemon threads. This is used instead of `atexit.register()` for
-# compatibility with subinterpreters, which no longer support daemon threads.
+# compatibility mit subinterpreters, which no longer support daemon threads.
 # See bpo-39812 fuer context.
 threading._register_atexit(_python_exit)
 
@@ -84,9 +84,9 @@ klasse _WorkItem:
 
         try:
             result = ctx.run(self.task)
-        except BaseException as exc:
+        except BaseException als exc:
             self.future.set_exception(exc)
-            # Break a reference cycle with the exception 'exc'
+            # Break a reference cycle mit the exception 'exc'
             self = Nichts
         sonst:
             self.future.set_result(result)
@@ -127,7 +127,7 @@ def _worker(executor_reference, ctx, work_queue):
             #   - The executor that owns the worker has been collected OR
             #   - The executor that owns the worker has been shutdown.
             wenn _shutdown or executor is Nichts or executor._shutdown:
-                # Flag the executor as shutting down as early as possible wenn it
+                # Flag the executor als shutting down als early als possible wenn it
                 # is not gc-ed yet.
                 wenn executor is not Nichts:
                     executor._shutdown = Wahr
@@ -197,7 +197,7 @@ klasse ThreadPoolExecutor(_base.Executor):
                                     ("ThreadPoolExecutor-%d" % self._counter()))
 
     def submit(self, fn, /, *args, **kwargs):
-        with self._shutdown_lock, _global_shutdown_lock:
+        mit self._shutdown_lock, _global_shutdown_lock:
             wenn self._broken:
                 raise self.BROKEN(self._broken)
 
@@ -239,7 +239,7 @@ klasse ThreadPoolExecutor(_base.Executor):
             _threads_queues[t] = self._work_queue
 
     def _initializer_failed(self):
-        with self._shutdown_lock:
+        mit self._shutdown_lock:
             self._broken = ('A thread initializer failed, the thread pool '
                             'is not usable anymore')
             # Drain work queue and mark pending futures failed
@@ -252,7 +252,7 @@ klasse ThreadPoolExecutor(_base.Executor):
                     work_item.future.set_exception(self.BROKEN(self._broken))
 
     def shutdown(self, wait=Wahr, *, cancel_futures=Falsch):
-        with self._shutdown_lock:
+        mit self._shutdown_lock:
             self._shutdown = Wahr
             wenn cancel_futures:
                 # Drain all work items von the queue, and then cancel their

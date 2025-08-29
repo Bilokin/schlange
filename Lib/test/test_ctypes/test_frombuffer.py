@@ -42,30 +42,30 @@ klasse Test(unittest.TestCase):
         del a; gc.collect(); gc.collect(); gc.collect()
         self.assertEqual(x[:], expected)
 
-        with self.assertRaisesRegex(TypeError, "not writable"):
+        mit self.assertRaisesRegex(TypeError, "not writable"):
             (c_char * 16).from_buffer(b"a" * 16)
-        with self.assertRaisesRegex(TypeError, "not writable"):
+        mit self.assertRaisesRegex(TypeError, "not writable"):
             (c_char * 16).from_buffer(memoryview(b"a" * 16))
-        with self.assertRaisesRegex(TypeError, "not C contiguous"):
+        mit self.assertRaisesRegex(TypeError, "not C contiguous"):
             (c_char * 16).from_buffer(memoryview(bytearray(b"a" * 16))[::-1])
         msg = "bytes-like object is required"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             (c_char * 16).from_buffer("a" * 16)
 
     def test_fortran_contiguous(self):
         try:
             importiere _testbuffer
-        except ImportError as err:
+        except ImportError als err:
             self.skipTest(str(err))
         flags = _testbuffer.ND_WRITABLE | _testbuffer.ND_FORTRAN
         array = _testbuffer.ndarray(
             [97] * 16, format="B", shape=[4, 4], flags=flags)
-        with self.assertRaisesRegex(TypeError, "not C contiguous"):
+        mit self.assertRaisesRegex(TypeError, "not C contiguous"):
             (c_char * 16).from_buffer(array)
         array = memoryview(array)
         self.assertWahr(array.f_contiguous)
         self.assertFalsch(array.c_contiguous)
-        with self.assertRaisesRegex(TypeError, "not C contiguous"):
+        mit self.assertRaisesRegex(TypeError, "not C contiguous"):
             (c_char * 16).from_buffer(array)
 
     def test_from_buffer_with_offset(self):
@@ -73,11 +73,11 @@ klasse Test(unittest.TestCase):
         x = (c_int * 15).from_buffer(a, sizeof(c_int))
 
         self.assertEqual(x[:], a.tolist()[1:])
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             c_int.from_buffer(a, -1)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             (c_int * 16).from_buffer(a, sizeof(c_int))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             (c_int * 1).from_buffer(a, 16 * sizeof(c_int))
 
     def test_from_buffer_memoryview(self):
@@ -109,7 +109,7 @@ klasse Test(unittest.TestCase):
 
         x = (c_char * 16).from_buffer_copy(b"a" * 16)
         self.assertEqual(x[:], b"a" * 16)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             (c_char * 16).from_buffer_copy("a" * 16)
 
     def test_from_buffer_copy_with_offset(self):
@@ -117,11 +117,11 @@ klasse Test(unittest.TestCase):
         x = (c_int * 15).from_buffer_copy(a, sizeof(c_int))
 
         self.assertEqual(x[:], a.tolist()[1:])
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             c_int.from_buffer_copy(a, -1)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             (c_int * 16).from_buffer_copy(a, sizeof(c_int))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             (c_int * 1).from_buffer_copy(a, 16 * sizeof(c_int))
 
     def test_abstract(self):

@@ -18,11 +18,11 @@ klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
         self.data02 = pathlib.Path(self.load_fixture('data02').__file__).parent
 
     def test_init_no_paths(self):
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             MultiplexedPath()
 
     def test_init_file(self):
-        with self.assertRaises(NotADirectoryError):
+        mit self.assertRaises(NotADirectoryError):
             MultiplexedPath(self.folder / 'binary.file')
 
     def test_iterdir(self):
@@ -57,11 +57,11 @@ klasse MultiplexedPathTest(util.DiskSetup, unittest.TestCase):
 
     def test_open_file(self):
         path = MultiplexedPath(self.folder)
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             path.read_bytes()
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             path.read_text()
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             path.open()
 
     def test_join_path(self):
@@ -111,7 +111,7 @@ klasse NamespaceReaderTest(util.DiskSetup, unittest.TestCase):
     MODULE = 'namespacedata01'
 
     def test_init_error(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             NamespaceReader(['path1', 'path2'])
 
     def test_resource_path(self):

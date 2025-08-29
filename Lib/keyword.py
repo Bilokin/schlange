@@ -19,8 +19,8 @@ kwlist = [
     'Falsch',
     'Nichts',
     'Wahr',
+    'als',
     'and',
-    'as',
     'assert',
     'async',
     'await',
@@ -37,6 +37,7 @@ kwlist = [
     'is',
     'klasse',
     'lambda',
+    'mit',
     'nonlocal',
     'not',
     'or',
@@ -49,7 +50,6 @@ kwlist = [
     'von',
     'wenn',
     'while',
-    'with',
     'yield'
 ]
 

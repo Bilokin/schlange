@@ -1,6 +1,6 @@
 """Classes that replace tkinter gui objects used by an object being tested.
 
-A gui object is anything with a master or parent parameter, which is
+A gui object is anything mit a master or parent parameter, which is
 typically required in spite of what the doc strings say.
 """
 importiere re
@@ -8,21 +8,21 @@ von _tkinter importiere TclError
 
 
 klasse Event:
-    '''Minimal mock with attributes fuer testing event handlers.
+    '''Minimal mock mit attributes fuer testing event handlers.
 
-    This is not a gui object, but is used as an argument fuer callbacks
+    This is not a gui object, but is used als an argument fuer callbacks
     that access attributes of the event passed. If a callback ignores
     the event, other than the fact that is happened, pass 'event'.
 
     Keyboard, mouse, window, and other sources generate Event instances.
     Event instances have the following attributes: serial (number of
-    event), time (of event), type (of event as number), widget (in which
+    event), time (of event), type (of event als number), widget (in which
     event occurred), and x,y (position of mouse). There are other
-    attributes fuer specific events, such as keycode fuer key events.
+    attributes fuer specific events, such als keycode fuer key events.
     tkinter.Event.__doc__ has more but is still not complete.
     '''
     def __init__(self, **kwds):
-        "Create event with attributes needed fuer test"
+        "Create event mit attributes needed fuer test"
         self.__dict__.update(kwds)
 
 
@@ -42,7 +42,7 @@ klasse Mbox_func:
     """Generic mock fuer messagebox functions, which all have the same signature.
 
     Instead of displaying a message box, the mock's call method saves the
-    arguments as instance attributes, which test functions can then examine.
+    arguments als instance attributes, which test functions can then examine.
     The test can set the result returned to ask function
     """
     def __init__(self, result=Nichts):
@@ -57,7 +57,7 @@ klasse Mbox_func:
 
 
 klasse Mbox:
-    """Mock fuer tkinter.messagebox with an Mbox_func fuer each function.
+    """Mock fuer tkinter.messagebox mit an Mbox_func fuer each function.
 
     Example usage in test_module.py fuer testing functions in module.py:
     ---
@@ -96,12 +96,12 @@ klasse Text:
 
     The mock's data model is that a text is a list of \n-terminated lines.
     The mock adds an empty string at  the beginning of the list so that the
-    index of actual lines start at 1, as with Tk. The methods never see this.
-    Tk initializes files with a terminal \n that cannot be deleted. It is
+    index of actual lines start at 1, als mit Tk. The methods never see this.
+    Tk initializes files mit a terminal \n that cannot be deleted. It is
     invisible in the sense that one cannot move the cursor beyond it.
 
-    This klasse is only tested (and valid) with strings of ascii chars.
-    For testing, we are not concerned with Tk Text's treatment of,
+    This klasse is only tested (and valid) mit strings of ascii chars.
+    For testing, we are not concerned mit Tk Text's treatment of,
     fuer instance, 0-width characters or character + accent.
    """
     def __init__(self, master=Nichts, cnf={}, **kw):
@@ -127,7 +127,7 @@ klasse Text:
         * line.char float: converted to 'line.char' string;
         * 'line.char' string, where line and char are decimal integers;
         * 'line.char lineend', where lineend='lineend' (and char is ignored);
-        * 'line.end', where end='end' (same as above);
+        * 'line.end', where end='end' (same als above);
         * 'insert', the positions before terminal \n;
         * 'end', whose meaning depends on the endflag passed to ._endex.
         * 'sel.first' or 'sel.last', where sel is a tag -- not implemented.
@@ -139,7 +139,7 @@ klasse Text:
         except AttributeError:
             raise TclError('bad text index "%s"' % index) von Nichts
 
-        lastline =  len(self.data) - 1  # same as number of text lines
+        lastline =  len(self.data) - 1  # same als number of text lines
         wenn index == 'insert':
             return lastline, len(self.data[lastline]) - 1
         sowenn index == 'end':
@@ -174,7 +174,7 @@ klasse Text:
 
        -1: position before terminal \n; fuer .insert(), .delete
        0: position after terminal \n; fuer .get, .delete index 1
-       1: same viewed as beginning of non-existent next line (for .index)
+       1: same viewed als beginning of non-existent next line (for .index)
        '''
         n = len(self.data)
         wenn endflag == 1:

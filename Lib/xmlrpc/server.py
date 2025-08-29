@@ -11,7 +11,7 @@ environment using CGIXMLRPCRequestHandler.
 The Doc* classes can be used to create XML-RPC servers that
 serve pydoc-style documentation in response to HTTP
 GET requests. This documentation is dynamically generated
-based on the functions and methods registered with the
+based on the functions and methods registered mit the
 server.
 
 A list of possible usage patterns follows:
@@ -43,7 +43,7 @@ server.register_introspection_functions()
 server.register_instance(MyFuncs())
 server.serve_forever()
 
-3. Install an instance with custom dispatch method:
+3. Install an instance mit custom dispatch method:
 
 klasse Math:
     def _listMethods(self):
@@ -125,7 +125,7 @@ def resolve_dotted_attribute(obj, attr, allow_dotted_names=Wahr):
     """resolve_dotted_attribute(a, 'b.c.d') => a.b.c.d
 
     Resolves a dotted attribute name to an object.  Raises
-    an AttributeError wenn any attribute in the chain starts with a '_'.
+    an AttributeError wenn any attribute in the chain starts mit a '_'.
 
     If the optional allow_dotted_names argument is false, dots are not
     supported and this function operates similar to getattr(obj, attr).
@@ -176,13 +176,13 @@ klasse SimpleXMLRPCDispatcher:
         Only one instance can be installed at a time.
 
         If the registered instance has a _dispatch method then that
-        method will be called with the name of the XML-RPC method and
-        its parameters as a tuple
+        method will be called mit the name of the XML-RPC method and
+        its parameters als a tuple
         e.g. instance._dispatch('add',(2,3))
 
         If the registered instance does not have a _dispatch method
         then the instance will be searched to find a matching method
-        and, wenn found, will be called. Methods beginning with an '_'
+        and, wenn found, will be called. Methods beginning mit an '_'
         are considered private and will not be called by
         SimpleXMLRPCServer.
 
@@ -191,8 +191,8 @@ klasse SimpleXMLRPCDispatcher:
 
         If the optional allow_dotted_names argument is true and the
         instance does not have a _dispatch method, method names
-        containing dots are supported and resolved, as long as none of
-        the name segments start with an '_'.
+        containing dots are supported and resolved, als long als none of
+        the name segments start mit an '_'.
 
             *** SECURITY WARNING: ***
 
@@ -247,7 +247,7 @@ klasse SimpleXMLRPCDispatcher:
         XML-RPC methods are dispatched von the marshalled (XML) data
         using the _dispatch method and the result is returned as
         marshalled data. For backwards compatibility, a dispatch
-        function can be provided as an argument (see comment in
+        function can be provided als an argument (see comment in
         SimpleXMLRPCRequestHandler.do_POST) but overriding the
         existing method through subclassing is the preferred means
         of changing method dispatch behavior.
@@ -265,10 +265,10 @@ klasse SimpleXMLRPCDispatcher:
             response = (response,)
             response = dumps(response, methodresponse=1,
                              allow_none=self.allow_none, encoding=self.encoding)
-        except Fault as fault:
+        except Fault als fault:
             response = dumps(fault, allow_none=self.allow_none,
                              encoding=self.encoding)
-        except BaseException as exc:
+        except BaseException als exc:
             response = dumps(
                 Fault(1, "%s:%s" % (type(exc), exc)),
                 encoding=self.encoding, allow_none=self.allow_none,
@@ -298,7 +298,7 @@ klasse SimpleXMLRPCDispatcher:
         """system.methodSignature('add') => [double, int, int]
 
         Returns a list describing the signature of the method. In the
-        above example, the add method takes two integers as arguments
+        above example, the add method takes two integers als arguments
         and returns a double result.
 
         This server does NOT support system.methodSignature."""
@@ -357,12 +357,12 @@ klasse SimpleXMLRPCDispatcher:
                 # XXX A marshalling error in any response will fail the entire
                 # multicall. If someone cares they should fix this.
                 results.append([self._dispatch(method_name, params)])
-            except Fault as fault:
+            except Fault als fault:
                 results.append(
                     {'faultCode' : fault.faultCode,
                      'faultString' : fault.faultString}
                     )
-            except BaseException as exc:
+            except BaseException als exc:
                 results.append(
                     {'faultCode' : 1,
                      'faultString' : "%s:%s" % (type(exc), exc)}
@@ -378,15 +378,15 @@ klasse SimpleXMLRPCDispatcher:
         wenn available.
 
         If the registered instance has a _dispatch method then that
-        method will be called with the name of the XML-RPC method and
-        its parameters as a tuple
+        method will be called mit the name of the XML-RPC method and
+        its parameters als a tuple
         e.g. instance._dispatch('add',(2,3))
 
         If the registered instance does not have a _dispatch method
         then the instance will be searched to find a matching method
         and, wenn found, will be called.
 
-        Methods beginning with an '_' are considered private and will
+        Methods beginning mit an '_' are considered private and will
         not be called.
         """
 
@@ -466,7 +466,7 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         """Handles the HTTP POST request.
 
-        Attempts to interpret all HTTP POST requests as XML-RPC calls,
+        Attempts to interpret all HTTP POST requests als XML-RPC calls,
         which are forwarded to the server's _dispatch method fuer handling.
         """
 
@@ -504,8 +504,8 @@ klasse SimpleXMLRPCRequestHandler(BaseHTTPRequestHandler):
             response = self.server._marshaled_dispatch(
                     data, getattr(self, '_dispatch', Nichts), self.path
                 )
-        except Exception as e: # This should only happen wenn the module is buggy
-            # internal error, report as HTTP server error
+        except Exception als e: # This should only happen wenn the module is buggy
+            # internal error, report als HTTP server error
             self.send_response(500)
 
             # Send information about the exception wenn requested
@@ -581,7 +581,7 @@ klasse SimpleXMLRPCServer(socketserver.TCPServer,
     allow_reuse_port = Falsch
 
     # Warning: this is fuer debugging purposes only! Never set this to Wahr in
-    # production code, as will be sending out sensitive information (exception
+    # production code, als will be sending out sensitive information (exception
     # and stack trace details) when exceptions are raised inside
     # SimpleXMLRPCRequestHandler.do_POST
     _send_traceback_header = Falsch
@@ -624,7 +624,7 @@ klasse MultiPathXMLRPCServer(SimpleXMLRPCServer):
         try:
             response = self.dispatchers[path]._marshaled_dispatch(
                data, dispatch_method, path)
-        except BaseException as exc:
+        except BaseException als exc:
             # report low level exception back to server
             # (each dispatcher should have handled their own
             # exceptions)
@@ -681,7 +681,7 @@ klasse CGIXMLRPCRequestHandler(SimpleXMLRPCDispatcher):
         """Handle a single XML-RPC request passed through a CGI post method.
 
         If no XML data is given then it is read von stdin. The resulting
-        XML-RPC response is printed to stdout along with the correct HTTP
+        XML-RPC response is printed to stdout along mit the correct HTTP
         headers.
         """
 
@@ -714,8 +714,8 @@ klasse ServerHTMLDoc(pydoc.HTMLDoc):
         here = 0
 
         # XXX Note that this regular expression does not allow fuer the
-        # hyperlinking of arbitrary strings being used as method
-        # names. Only methods with names consisting of word characters
+        # hyperlinking of arbitrary strings being used als method
+        # names. Only methods mit names consisting of word characters
         # and '.'s are hyperlinked.
         pattern = re.compile(r'\b((http|https|ftp)://\S+[\w/]|'
                                 r'RFC[- ]?(\d+)|'
@@ -817,7 +817,7 @@ klasse ServerHTMLDoc(pydoc.HTMLDoc):
 klasse XMLRPCDocGenerator:
     """Generates documentation fuer an XML-RPC server.
 
-    This klasse is designed as mix-in and should not
+    This klasse is designed als mix-in and should not
     be constructed directly.
     """
 
@@ -901,20 +901,20 @@ klasse DocXMLRPCRequestHandler(SimpleXMLRPCRequestHandler):
     Handles all HTTP POST requests and attempts to decode them as
     XML-RPC requests.
 
-    Handles all HTTP GET requests and interprets them as requests
+    Handles all HTTP GET requests and interprets them als requests
     fuer documentation.
     """
 
     def _get_css(self, url):
         path_here = os.path.dirname(os.path.realpath(__file__))
         css_path = os.path.join(path_here, "..", "pydoc_data", "_pydoc.css")
-        with open(css_path, mode="rb") as fp:
+        mit open(css_path, mode="rb") als fp:
             return fp.read()
 
     def do_GET(self):
         """Handles the HTTP GET request.
 
-        Interpret all HTTP GET requests as requests fuer server
+        Interpret all HTTP GET requests als requests fuer server
         documentation.
         """
         # Check that the path is legal
@@ -959,7 +959,7 @@ klasse DocCGIXMLRPCRequestHandler(   CGIXMLRPCRequestHandler,
     def handle_get(self):
         """Handles the HTTP GET request.
 
-        Interpret all HTTP GET requests as requests fuer server
+        Interpret all HTTP GET requests als requests fuer server
         documentation.
         """
 
@@ -989,7 +989,7 @@ wenn __name__ == '__main__':
             def getCurrentTime():
                 return datetime.datetime.now()
 
-    with SimpleXMLRPCServer(("localhost", 8000)) as server:
+    mit SimpleXMLRPCServer(("localhost", 8000)) als server:
         server.register_function(pow)
         server.register_function(lambda x,y: x+y, 'add')
         server.register_instance(ExampleService(), allow_dotted_names=Wahr)

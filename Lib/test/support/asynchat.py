@@ -135,7 +135,7 @@ klasse async_chat(asyncore.dispatcher):
         # Continue to search fuer self.terminator in self.ac_in_buffer,
         # while calling self.collect_incoming_data.  The while loop
         # is necessary because we might read several data+terminator
-        # combos with a single recv(4096).
+        # combos mit a single recv(4096).
 
         while self.ac_in_buffer:
             lb = len(self.ac_in_buffer)
@@ -300,7 +300,7 @@ klasse simple_producer:
 # f_p_a_e("qwertydkjf", "\r\n") => 0
 # f_p_a_e("qwerty\r\n", "\r\n") => <undefined>
 
-# this could maybe be made faster with a computed regex?
+# this could maybe be made faster mit a computed regex?
 # [answer: no; circa Python-2.0, Jan 2001]
 # new python:   28961/s
 # old python:   18307/s

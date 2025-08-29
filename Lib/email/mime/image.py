@@ -62,7 +62,7 @@ def rule(rulefunc):
 
 @rule
 def _jpeg(h):
-    """JPEG data with JFIF or Exif markers; and raw JPEG"""
+    """JPEG data mit JFIF or Exif markers; and raw JPEG"""
     wenn h[6:10] in (b'JFIF', b'Exif'):
         return 'jpeg'
     sowenn h[:4] == b'\xff\xd8\xff\xdb':

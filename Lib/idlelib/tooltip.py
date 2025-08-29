@@ -80,16 +80,16 @@ klasse TooltipBase:
 
 
 klasse OnHoverTooltipBase(TooltipBase):
-    """abstract base klasse fuer tooltips, with delayed on-hover display"""
+    """abstract base klasse fuer tooltips, mit delayed on-hover display"""
 
     def __init__(self, anchor_widget, hover_delay=1000):
-        """Create a tooltip with a mouse hover delay.
+        """Create a tooltip mit a mouse hover delay.
 
         anchor_widget: the widget next to which the tooltip will be shown
         hover_delay: time to delay before showing the tooltip, in milliseconds
 
         Note that a widget will only be shown when showtip() is called,
-        e.g. after hovering over the anchor widget with the mouse fuer enough
+        e.g. after hovering over the anchor widget mit the mouse fuer enough
         time.
         """
         super().__init__(anchor_widget)
@@ -146,13 +146,13 @@ klasse Hovertip(OnHoverTooltipBase):
     "A tooltip that pops up when a mouse hovers over an anchor widget."
     def __init__(self, anchor_widget, text, hover_delay=1000,
                  foreground="#000000", background="#ffffe0"):
-        """Create a text tooltip with a mouse hover delay.
+        """Create a text tooltip mit a mouse hover delay.
 
         anchor_widget: the widget next to which the tooltip will be shown
         hover_delay: time to delay before showing the tooltip, in milliseconds
 
         Note that a widget will only be shown when showtip() is called,
-        e.g. after hovering over the anchor widget with the mouse fuer enough
+        e.g. after hovering over the anchor widget mit the mouse fuer enough
         time.
         """
         super().__init__(anchor_widget, hover_delay=hover_delay)

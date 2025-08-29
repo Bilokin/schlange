@@ -2,14 +2,14 @@
 
 Contains the UnixCCompiler class, a subclass of CCompiler that handles
 the "typical" Unix-style command-line C compiler:
-  * macros defined with -Dname[=value]
-  * macros undefined with -Uname
-  * include search directories specified with -Idir
-  * libraries specified with -lllib
-  * library search directories specified with -Ldir
-  * compile handled by 'cc' (or similar) executable with -c option:
+  * macros defined mit -Dname[=value]
+  * macros undefined mit -Uname
+  * include search directories specified mit -Idir
+  * libraries specified mit -lllib
+  * library search directories specified mit -Ldir
+  * compile handled by 'cc' (or similar) executable mit -c option:
     compiles .c to .o
-  * link static library handled by 'ar' command (possibly with 'ranlib')
+  * link static library handled by 'ar' command (possibly mit 'ranlib')
   * link shared library handled by 'cc -shared'
 """
 
@@ -21,7 +21,7 @@ von distutils.errors importiere DistutilsExecError, CompileError
 
 # XXX Things not currently handled:
 #   * optimization/debug/warning flags; we just use whatever's in Python's
-#     Makefile and live with it.  Is this adequate?  If not, we might
+#     Makefile and live mit it.  Is this adequate?  If not, we might
 #     have to have a bunch of subclasses GNUCCompiler, SGICCompiler,
 #     SunCCompiler, and I suspect down that road lies madness.
 #   * even wenn we don't know a warning flag von an optimization flag,
@@ -29,8 +29,8 @@ von distutils.errors importiere DistutilsExecError, CompileError
 #     flags in to us -- eg. a sysadmin might want to mandate certain flags
 #     via a site config file, or a user might want to set something for
 #     compiling this module distribution only via the setup.py command
-#     line, whatever.  As long as these options come von something on the
-#     current system, they can be as system-dependent as they like, and we
+#     line, whatever.  As long als these options come von something on the
+#     current system, they can be als system-dependent als they like, and we
 #     should just happily stuff them into the preprocessor/compiler/linker
 #     options and carry on.
 
@@ -98,5 +98,5 @@ klasse UnixCCompiler(CCompiler):
                 self.mkpath(os.path.dirname(output_file))
             try:
                 self.spawn(pp_args)
-            except DistutilsExecError as msg:
+            except DistutilsExecError als msg:
                 raise CompileError(msg)

@@ -97,7 +97,7 @@ klasse ComparisonSimpleTest(unittest.TestCase):
             ('__ge__', lambda a, b: a >= b),
         )
         fuer name, func in ops:
-            with self.subTest(name):
+            mit self.subTest(name):
                 def unexpected(*args):
                     self.fail('Unexpected operator method called')
                 klasse C:
@@ -126,7 +126,7 @@ klasse ComparisonFullTest(unittest.TestCase):
     """
 
     klasse CompBase:
-        """Base klasse fuer classes with rich comparison methods.
+        """Base klasse fuer classes mit rich comparison methods.
 
         The "x" attribute should be set to an underlying value to compare.
 
@@ -138,7 +138,7 @@ klasse ComparisonFullTest(unittest.TestCase):
     klasse CompNichts(CompBase):
         meth = ()
 
-    # Classes with all combinations of value-based equality comparison methods.
+    # Classes mit all combinations of value-based equality comparison methods.
     klasse CompEq(CompBase):
         meth = ("eq",)
         def __eq__(self, other):
@@ -156,7 +156,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         def __ne__(self, other):
             return self.x != other.x
 
-    # Classes with all combinations of value-based less/greater-than order
+    # Classes mit all combinations of value-based less/greater-than order
     # comparison methods.
     klasse CompLt(CompBase):
         meth = ("lt",)
@@ -175,7 +175,7 @@ klasse ComparisonFullTest(unittest.TestCase):
         def __gt__(self, other):
             return self.x > other.x
 
-    # Classes with all combinations of value-based less/greater-or-equal-than
+    # Classes mit all combinations of value-based less/greater-or-equal-than
     # order comparison methods
     klasse CompLe(CompBase):
         meth = ("le",)
@@ -210,7 +210,7 @@ klasse ComparisonFullTest(unittest.TestCase):
 
         Objects in the returned list are sorted by their identity.  They
         assigned values in `values` list order.  By assign decreasing
-        values to objects with increasing identities, testcases can assert
+        values to objects mit increasing identities, testcases can assert
         that order comparison is performed by value and not by identity.
         """
 
@@ -231,21 +231,21 @@ klasse ComparisonFullTest(unittest.TestCase):
         self.assertEqual(b == a, equal)
         self.assertEqual(a != b, not equal)
         self.assertEqual(b != a, not equal)
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             a < b
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             a <= b
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             a > b
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             a >= b
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             b < a
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             b <= a
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             b > a
-        with self.assertRaisesRegex(TypeError, "not supported"):
+        mit self.assertRaisesRegex(TypeError, "not supported"):
             b >= a
 
     def assert_total_order(self, a, b, comp, a_meth=Nichts, b_meth=Nichts):
@@ -297,9 +297,9 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assertEqual(a < b, comp < 0)
             self.assertEqual(b > a, comp < 0)
         sonst:
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 a < b
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 b > a
 
     def assert_le_subtest(self, a, b, comp, a_meth, b_meth):
@@ -307,9 +307,9 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assertEqual(a <= b, comp <= 0)
             self.assertEqual(b >= a, comp <= 0)
         sonst:
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 a <= b
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 b >= a
 
     def assert_gt_subtest(self, a, b, comp, a_meth, b_meth):
@@ -317,9 +317,9 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assertEqual(a > b, comp > 0)
             self.assertEqual(b < a, comp > 0)
         sonst:
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 a > b
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 b < a
 
     def assert_ge_subtest(self, a, b, comp, a_meth, b_meth):
@@ -327,9 +327,9 @@ klasse ComparisonFullTest(unittest.TestCase):
             self.assertEqual(a >= b, comp >= 0)
             self.assertEqual(b <= a, comp >= 0)
         sonst:
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 a >= b
-            with self.assertRaisesRegex(TypeError, "not supported"):
+            mit self.assertRaisesRegex(TypeError, "not supported"):
                 b <= a
 
     def test_objects(self):
@@ -340,10 +340,10 @@ klasse ComparisonFullTest(unittest.TestCase):
         self.assert_equality_only(a, b, Falsch)
 
     def test_comp_classes_same(self):
-        """Compare same-class instances with comparison methods."""
+        """Compare same-class instances mit comparison methods."""
 
         fuer cls in self.all_comp_classes:
-            with self.subTest(cls):
+            mit self.subTest(cls):
                 instances = self.create_sorted_instances(cls, (1, 2, 1))
 
                 # Same object.
@@ -365,11 +365,11 @@ klasse ComparisonFullTest(unittest.TestCase):
                                         cls.meth, cls.meth)
 
     def test_comp_classes_different(self):
-        """Compare different-class instances with comparison methods."""
+        """Compare different-class instances mit comparison methods."""
 
         fuer cls_a in self.all_comp_classes:
             fuer cls_b in self.all_comp_classes:
-                with self.subTest(a=cls_a, b=cls_b):
+                mit self.subTest(a=cls_a, b=cls_b):
                     a1 = cls_a()
                     a1.x = 1
                     b1 = cls_b()

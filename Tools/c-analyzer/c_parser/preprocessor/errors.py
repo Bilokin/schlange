@@ -94,7 +94,7 @@ klasse MissingDependenciesError(PreprocessorFailure):
 
 
 klasse OSMismatchError(MissingDependenciesError):
-    """The target is not compatible with the host OS."""
+    """The target is not compatible mit the host OS."""
 
     @classmethod
     def _msg(cls, expected, **ignored):

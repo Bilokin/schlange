@@ -48,7 +48,7 @@ klasse AsCompletedTests:
         # Windows clock resolution is around 15.6 ms
         short_timeout = 0.100
         fuer timeout in (0, short_timeout):
-            with self.subTest(timeout):
+            mit self.subTest(timeout):
 
                 completed_futures = set()
                 future = self.executor.submit(time.sleep, short_timeout * 10)
@@ -83,7 +83,7 @@ klasse AsCompletedTests:
         futures_list.append(create_future(state=CANCELLED_AND_NOTIFIED))
         futures_list.append(create_future(state=FINISHED, result=42))
 
-        with self.assertRaises(futures.TimeoutError):
+        mit self.assertRaises(futures.TimeoutError):
             fuer future in futures.as_completed(futures_list, timeout=0):
                 futures_list.remove(future)
                 wr = weakref.ref(future)
@@ -105,7 +105,7 @@ klasse AsCompletedTests:
         futures_list = [CANCELLED_AND_NOTIFIED_FUTURE, PENDING_FUTURE,
                         RUNNING_FUTURE, SUCCESSFUL_FUTURE]
 
-        with self.assertRaises(futures.TimeoutError) as cm:
+        mit self.assertRaises(futures.TimeoutError) als cm:
             list(futures.as_completed(futures_list, timeout=0))
 
         self.assertEqual(str(cm.exception), '2 (of 4) futures unfinished')

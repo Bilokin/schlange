@@ -133,7 +133,7 @@ klasse TestCase(unittest.TestCase):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
-            # Cannot assert type equality because dict iterators unpickle as list
+            # Cannot assert type equality because dict iterators unpickle als list
             # iterators.
             # self.assertEqual(type(itorg), type(it))
             self.assertWahr(isinstance(it, collections.abc.Iterator))
@@ -152,7 +152,7 @@ klasse TestCase(unittest.TestCase):
     def test_iter_basic(self):
         self.check_iterator(iter(range(10)), list(range(10)))
 
-    # Test that iter(iter(x)) is the same as iter(x)
+    # Test that iter(iter(x)) is the same als iter(x)
     def test_iter_idempotency(self):
         seq = list(range(10))
         it = iter(seq)
@@ -186,11 +186,11 @@ klasse TestCase(unittest.TestCase):
         res = [(i, j, k) fuer i in seq fuer j in seq fuer k in seq]
         self.assertEqual(res, TRIPLETS)
 
-    # Test a klasse with __iter__ in a fuer loop
+    # Test a klasse mit __iter__ in a fuer loop
     def test_iter_class_for(self):
         self.check_for_loop(IteratingSequenceClass(10), list(range(10)))
 
-    # Test a klasse with __iter__ with explicit iter()
+    # Test a klasse mit __iter__ mit explicit iter()
     def test_iter_class_iter(self):
         self.check_iterator(iter(IteratingSequenceClass(10)), list(range(10)))
 
@@ -277,7 +277,7 @@ klasse TestCase(unittest.TestCase):
 
             # del is required here
             # to not prematurely call __eq__ from
-            # the hash collision with the old key
+            # the hash collision mit the old key
             del builtins_dict[builtin_name]
             builtins_dict[CustomStr(builtin_name, it)] = orig[builtin_name]
 
@@ -295,7 +295,7 @@ klasse TestCase(unittest.TestCase):
         try:
             run_iter = functools.partial(run, "iter")
             # The returned value of `__reduce__` should not only be valid
-            # but also *empty*, as `it` was exhausted during `__eq__`
+            # but also *empty*, als `it` was exhausted during `__eq__`
             # i.e "xyz" returns (iter, ("",))
             self.assertEqual(run_iter("xyz"), (orig["iter"], ("",)))
             self.assertEqual(run_iter([1, 2, 3]), (orig["iter"], ([],)))
@@ -314,25 +314,25 @@ klasse TestCase(unittest.TestCase):
             fuer key, func in orig.items():
                 # need to suppress KeyErrors in case
                 # a failed test deletes the key without setting anything
-                with contextlib.suppress(KeyError):
+                mit contextlib.suppress(KeyError):
                     # del is required here
                     # to not invoke our custom __eq__ from
-                    # the hash collision with the old key
+                    # the hash collision mit the old key
                     del builtins_dict[key]
                 builtins_dict[key] = func
 
-    # Test a new_style klasse with __iter__ but no next() method
+    # Test a new_style klasse mit __iter__ but no next() method
     def test_new_style_iter_class(self):
         klasse IterClass(object):
             def __iter__(self):
                 return self
         self.assertRaises(TypeError, iter, IterClass())
 
-    # Test two-argument iter() with callable instance
+    # Test two-argument iter() mit callable instance
     def test_iter_callable(self):
         self.check_iterator(iter(CallableIterClass(), 10), list(range(10)), pickle=Wahr)
 
-    # Test two-argument iter() with function
+    # Test two-argument iter() mit function
     def test_iter_function(self):
         def spam(state=[0]):
             i = state[0]
@@ -340,7 +340,7 @@ klasse TestCase(unittest.TestCase):
             return i
         self.check_iterator(iter(spam, 10), list(range(10)), pickle=Falsch)
 
-    # Test two-argument iter() with function that raises StopIteration
+    # Test two-argument iter() mit function that raises StopIteration
     def test_iter_function_stop(self):
         def spam(state=[0]):
             i = state[0]
@@ -351,7 +351,7 @@ klasse TestCase(unittest.TestCase):
         self.check_iterator(iter(spam, 20), list(range(10)), pickle=Falsch)
 
     def test_iter_function_concealing_reentrant_exhaustion(self):
-        # gh-101892: Test two-argument iter() with a function that
+        # gh-101892: Test two-argument iter() mit a function that
         # exhausts its associated iterator but forgets to either return
         # a sentinel value or raise StopIteration.
         HAS_MORE = 1
@@ -362,7 +362,7 @@ klasse TestCase(unittest.TestCase):
             list(iterator)
 
         def spam():
-            # Touching the iterator with exhaust() below will call
+            # Touching the iterator mit exhaust() below will call
             # spam() once again so protect against recursion.
             wenn spam.is_recursive_call:
                 return NO_MORE
@@ -372,7 +372,7 @@ klasse TestCase(unittest.TestCase):
 
         spam.is_recursive_call = Falsch
         spam.iterator = iter(spam, NO_MORE)
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(spam.iterator)
 
     # Test exception propagation through function iterator
@@ -755,7 +755,7 @@ klasse TestCase(unittest.TestCase):
             except OSError:
                 pass
 
-    # Test iterators with 'x in y' and 'x not in y'.
+    # Test iterators mit 'x in y' and 'x not in y'.
     def test_in_and_not_in(self):
         fuer sc5 in IteratingSequenceClass(5), SequenceClass(5):
             fuer i in range(5):
@@ -804,7 +804,7 @@ klasse TestCase(unittest.TestCase):
             except OSError:
                 pass
 
-    # Test iterators with operator.countOf (PySequence_Count).
+    # Test iterators mit operator.countOf (PySequence_Count).
     def test_countOf(self):
         von operator importiere countOf
         self.assertEqual(countOf([1,2,2,3,2,5], 2), 3)
@@ -839,7 +839,7 @@ klasse TestCase(unittest.TestCase):
             except OSError:
                 pass
 
-    # Test iterators with operator.indexOf (PySequence_Index).
+    # Test iterators mit operator.indexOf (PySequence_Index).
     def test_indexOf(self):
         von operator importiere indexOf
         self.assertEqual(indexOf([1,2,2,3,2,5], 1), 0)
@@ -881,7 +881,7 @@ klasse TestCase(unittest.TestCase):
             self.assertEqual(indexOf(iclass, i), i)
         self.assertRaises(ValueError, indexOf, iclass, -1)
 
-    # Test iterators with file.writelines().
+    # Test iterators mit file.writelines().
     def test_writelines(self):
         f = open(TESTFN, "w", encoding="utf-8")
 
@@ -1103,7 +1103,7 @@ klasse TestCase(unittest.TestCase):
             pass
 
     def test_extending_list_with_iterator_does_not_segfault(self):
-        # The code to extend a list with an iterator has a fair
+        # The code to extend a list mit an iterator has a fair
         # amount of nontrivial logic in terms of guessing how
         # much memory to allocate in advance, "stealing" refs,
         # and then shrinking at the end.  This is a basic smoke
@@ -1125,10 +1125,10 @@ klasse TestCase(unittest.TestCase):
         it.__setstate__(sys.maxsize - 2)
         self.assertEqual(next(it), sys.maxsize - 2)
         self.assertEqual(next(it), sys.maxsize - 1)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             next(it)
         # Check that Overflow error is always raised
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             next(it)
 
     def test_iter_neg_setstate(self):
@@ -1153,28 +1153,28 @@ klasse TestCase(unittest.TestCase):
             try:
                 fuer x in BrokenIter(init_raises=Wahr):
                     pass
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def next_raises():
             try:
                 fuer x in BrokenIter(next_raises=Wahr):
                     pass
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def iter_raises():
             try:
                 fuer x in BrokenIter(iter_raises=Wahr):
                     pass
-            except Exception as e:
+            except Exception als e:
                 return e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
                                (next_raises, "BrokenIter(next_raises=Wahr)"),
                                (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
-            with self.subTest(func):
+            mit self.subTest(func):
                 exc = func()
                 f = traceback.extract_tb(exc.__traceback__)[0]
                 indent = 16

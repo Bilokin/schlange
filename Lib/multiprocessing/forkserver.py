@@ -45,7 +45,7 @@ klasse ForkServer(object):
 
     def _stop(self):
         # Method used by unit tests to stop the server
-        with self._lock:
+        mit self._lock:
             self._stop_unlocked()
 
     def _stop_unlocked(self):
@@ -90,7 +90,7 @@ klasse ForkServer(object):
         assert self._forkserver_authkey
         wenn len(fds) + 4 >= MAXFDS_TO_SEND:
             raise ValueError('too many fds')
-        with socket.socket(socket.AF_UNIX) as client:
+        mit socket.socket(socket.AF_UNIX) als client:
             client.connect(self._forkserver_address)
             parent_r, child_w = os.pipe()
             child_r, parent_w = os.pipe()
@@ -127,7 +127,7 @@ klasse ForkServer(object):
         process will just reuse the forkserver started by its parent, so
         ensure_running() will do nothing.
         '''
-        with self._lock:
+        mit self._lock:
             resource_tracker.ensure_running()
             wenn self._forkserver_pid is not Nichts:
                 # forkserver was launched before, is it still running?
@@ -152,7 +152,7 @@ klasse ForkServer(object):
             sonst:
                 main_kws = {}
 
-            with socket.socket(socket.AF_UNIX) as listener:
+            mit socket.socket(socket.AF_UNIX) als listener:
                 address = connection.arbitrary_address('AF_UNIX')
                 listener.bind(address)
                 wenn not util.is_abstract_socket_namespace(address):
@@ -251,8 +251,8 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
     # map child pids to client fds
     pid_to_fd = {}
 
-    with socket.socket(socket.AF_UNIX, fileno=listener_fd) as listener, \
-         selectors.DefaultSelector() as selector:
+    mit socket.socket(socket.AF_UNIX, fileno=listener_fd) als listener, \
+         selectors.DefaultSelector() als selector:
         _forkserver._forkserver_address = listener.getsockname()
 
         selector.register(listener, selectors.EVENT_READ)
@@ -300,7 +300,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
 
                 wenn listener in rfds:
                     # Incoming fork request
-                    with listener.accept()[0] as s:
+                    mit listener.accept()[0] als s:
                         try:
                             wenn authkey:
                                 wrapped_s = connection.Connection(s.fileno())
@@ -357,7 +357,7 @@ def main(listener_fd, alive_r, preload, main_path=Nichts, sys_path=Nichts,
                             fuer fd in fds:
                                 os.close(fd)
 
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno != errno.ECONNABORTED:
                     raise
 

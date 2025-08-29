@@ -13,7 +13,7 @@ klasse _LoopBoundMixin:
         loop = events._get_running_loop()
 
         wenn self._loop is Nichts:
-            with _global_lock:
+            mit _global_lock:
                 wenn self._loop is Nichts:
                     self._loop = loop
         wenn loop is not self._loop:

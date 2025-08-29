@@ -8,7 +8,7 @@ importiere operator
 importiere os
 importiere stat
 importiere unittest
-importiere dbm.dumb as dumbdbm
+importiere dbm.dumb als dumbdbm
 von test importiere support
 von test.support importiere os_helper
 von functools importiere partial
@@ -35,7 +35,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
              }
 
     def test_dumbdbm_creation(self):
-        with contextlib.closing(dumbdbm.open(_fname, 'c')) as f:
+        mit contextlib.closing(dumbdbm.open(_fname, 'c')) als f:
             self.assertEqual(list(f.keys()), [])
             fuer key in self._dict:
                 f[key] = self._dict[key]
@@ -72,59 +72,59 @@ klasse DumbDBMTestCase(unittest.TestCase):
 
     def test_dumbdbm_modification(self):
         self.init_db()
-        with contextlib.closing(dumbdbm.open(_fname, 'w')) as f:
+        mit contextlib.closing(dumbdbm.open(_fname, 'w')) als f:
             self._dict[b'g'] = f[b'g'] = b"indented"
             self.read_helper(f)
-            # setdefault() works as in the dict interface
+            # setdefault() works als in the dict interface
             self.assertEqual(f.setdefault(b'xxx', b'foo'), b'foo')
             self.assertEqual(f[b'xxx'], b'foo')
 
     def test_dumbdbm_read(self):
         self.init_db()
-        with contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
+        mit contextlib.closing(dumbdbm.open(_fname, 'r')) als f:
             self.read_helper(f)
-            with self.assertRaisesRegex(dumbdbm.error,
+            mit self.assertRaisesRegex(dumbdbm.error,
                                     'The database is opened fuer reading only'):
                 f[b'g'] = b'x'
-            with self.assertRaisesRegex(dumbdbm.error,
+            mit self.assertRaisesRegex(dumbdbm.error,
                                     'The database is opened fuer reading only'):
                 del f[b'a']
-            # get() works as in the dict interface
+            # get() works als in the dict interface
             self.assertEqual(f.get(b'a'), self._dict[b'a'])
             self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
             self.assertIsNichts(f.get(b'xxx'))
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 f[b'xxx']
 
     def test_dumbdbm_keys(self):
         self.init_db()
-        with contextlib.closing(dumbdbm.open(_fname)) as f:
+        mit contextlib.closing(dumbdbm.open(_fname)) als f:
             keys = self.keys_helper(f)
 
     def test_write_contains(self):
-        with contextlib.closing(dumbdbm.open(_fname)) as f:
+        mit contextlib.closing(dumbdbm.open(_fname)) als f:
             f[b'1'] = b'hello'
             self.assertIn(b'1', f)
 
     def test_write_write_read(self):
         # test fuer bug #482460
-        with contextlib.closing(dumbdbm.open(_fname)) as f:
+        mit contextlib.closing(dumbdbm.open(_fname)) als f:
             f[b'1'] = b'hello'
             f[b'1'] = b'hello2'
-        with contextlib.closing(dumbdbm.open(_fname)) as f:
+        mit contextlib.closing(dumbdbm.open(_fname)) als f:
             self.assertEqual(f[b'1'], b'hello2')
 
     def test_str_read(self):
         self.init_db()
-        with contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
+        mit contextlib.closing(dumbdbm.open(_fname, 'r')) als f:
             self.assertEqual(f['\u00fc'], self._dict['\u00fc'.encode('utf-8')])
 
     def test_str_write_contains(self):
         self.init_db()
-        with contextlib.closing(dumbdbm.open(_fname)) as f:
+        mit contextlib.closing(dumbdbm.open(_fname)) als f:
             f['\u00fc'] = b'!'
             f['1'] = 'a'
-        with contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
+        mit contextlib.closing(dumbdbm.open(_fname, 'r')) als f:
             self.assertIn('\u00fc', f)
             self.assertEqual(f['\u00fc'.encode('utf-8')],
                              self._dict['\u00fc'.encode('utf-8')])
@@ -133,18 +133,18 @@ klasse DumbDBMTestCase(unittest.TestCase):
     def test_line_endings(self):
         # test fuer bug #1172763: dumbdbm would die wenn the line endings
         # weren't what was expected.
-        with contextlib.closing(dumbdbm.open(_fname)) as f:
+        mit contextlib.closing(dumbdbm.open(_fname)) als f:
             f[b'1'] = b'hello'
             f[b'2'] = b'hello2'
 
         # Mangle the file by changing the line separator to Windows or Unix
-        with io.open(_fname + '.dir', 'rb') as file:
+        mit io.open(_fname + '.dir', 'rb') als file:
             data = file.read()
         wenn os.linesep == '\n':
             data = data.replace(b'\n', b'\r\n')
         sonst:
             data = data.replace(b'\r\n', b'\n')
-        with io.open(_fname + '.dir', 'wb') as file:
+        mit io.open(_fname + '.dir', 'wb') als file:
             file.write(data)
 
         f = dumbdbm.open(_fname)
@@ -158,7 +158,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(self._dict[key], f[key])
 
     def init_db(self):
-        with contextlib.closing(dumbdbm.open(_fname, 'n')) as f:
+        mit contextlib.closing(dumbdbm.open(_fname, 'n')) als f:
             fuer k in self._dict:
                 f[k] = self._dict[k]
 
@@ -174,7 +174,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
         importiere random
         d = {}  # mirror the database
         fuer dummy in range(5):
-            with contextlib.closing(dumbdbm.open(_fname)) as f:
+            mit contextlib.closing(dumbdbm.open(_fname)) als f:
                 fuer dummy in range(100):
                     k = random.choice('abcdefghijklm')
                     wenn random.random() < 0.2:
@@ -187,19 +187,19 @@ klasse DumbDBMTestCase(unittest.TestCase):
                         f[k] = v
                         self.assertEqual(f[k], v)
 
-            with contextlib.closing(dumbdbm.open(_fname)) as f:
+            mit contextlib.closing(dumbdbm.open(_fname)) als f:
                 expected = sorted((k.encode("latin-1"), v) fuer k, v in d.items())
                 got = sorted(f.items())
                 self.assertEqual(expected, got)
 
     def test_context_manager(self):
-        with dumbdbm.open(_fname, 'c') as db:
+        mit dumbdbm.open(_fname, 'c') als db:
             db["dumbdbm context manager"] = "context manager"
 
-        with dumbdbm.open(_fname, 'r') as db:
+        mit dumbdbm.open(_fname, 'r') als db:
             self.assertEqual(list(db.keys()), [b"dumbdbm context manager"])
 
-        with self.assertRaises(dumbdbm.error):
+        mit self.assertRaises(dumbdbm.error):
             db.keys()
 
     def test_check_closed(self):
@@ -210,7 +210,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
                      partial(operator.setitem, f, 'b'),
                      partial(operator.getitem, f),
                      partial(operator.contains, f)):
-            with self.assertRaises(dumbdbm.error) as cm:
+            mit self.assertRaises(dumbdbm.error) als cm:
                 meth('test')
             self.assertEqual(str(cm.exception),
                              "DBM object has already been closed")
@@ -219,32 +219,32 @@ klasse DumbDBMTestCase(unittest.TestCase):
                      operator.methodcaller('iterkeys'),
                      operator.methodcaller('items'),
                      len):
-            with self.assertRaises(dumbdbm.error) as cm:
+            mit self.assertRaises(dumbdbm.error) als cm:
                 meth(f)
             self.assertEqual(str(cm.exception),
                              "DBM object has already been closed")
 
     def test_create_new(self):
-        with dumbdbm.open(_fname, 'n') as f:
+        mit dumbdbm.open(_fname, 'n') als f:
             fuer k in self._dict:
                 f[k] = self._dict[k]
 
-        with dumbdbm.open(_fname, 'n') as f:
+        mit dumbdbm.open(_fname, 'n') als f:
             self.assertEqual(f.keys(), [])
 
     def test_eval(self):
-        with open(_fname + '.dir', 'w', encoding="utf-8") as stream:
+        mit open(_fname + '.dir', 'w', encoding="utf-8") als stream:
             stream.write("str(drucke('Hacked!')), 0\n")
-        with support.captured_stdout() as stdout:
-            with self.assertRaises(ValueError):
-                with dumbdbm.open(_fname) as f:
+        mit support.captured_stdout() als stdout:
+            mit self.assertRaises(ValueError):
+                mit dumbdbm.open(_fname) als f:
                     pass
             self.assertEqual(stdout.getvalue(), '')
 
     def test_missing_data(self):
         fuer value in ('r', 'w'):
             _delete_files()
-            with self.assertRaises(FileNotFoundError):
+            mit self.assertRaises(FileNotFoundError):
                 dumbdbm.open(_fname, value)
             self.assertFalsch(os.path.exists(_fname + '.dat'))
             self.assertFalsch(os.path.exists(_fname + '.dir'))
@@ -252,7 +252,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
 
         fuer value in ('c', 'n'):
             _delete_files()
-            with dumbdbm.open(_fname, value) as f:
+            mit dumbdbm.open(_fname, value) als f:
                 self.assertWahr(os.path.exists(_fname + '.dat'))
                 self.assertWahr(os.path.exists(_fname + '.dir'))
                 self.assertFalsch(os.path.exists(_fname + '.bak'))
@@ -260,7 +260,7 @@ klasse DumbDBMTestCase(unittest.TestCase):
 
         fuer value in ('c', 'n'):
             _delete_files()
-            with dumbdbm.open(_fname, value) as f:
+            mit dumbdbm.open(_fname, value) als f:
                 f['key'] = 'value'
                 self.assertWahr(os.path.exists(_fname + '.dat'))
                 self.assertWahr(os.path.exists(_fname + '.dir'))
@@ -268,24 +268,24 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertWahr(os.path.exists(_fname + '.bak'))
 
     def test_missing_index(self):
-        with dumbdbm.open(_fname, 'n') as f:
+        mit dumbdbm.open(_fname, 'n') als f:
             pass
         os.unlink(_fname + '.dir')
         fuer value in ('r', 'w'):
-            with self.assertRaises(FileNotFoundError):
+            mit self.assertRaises(FileNotFoundError):
                 dumbdbm.open(_fname, value)
             self.assertFalsch(os.path.exists(_fname + '.dir'))
             self.assertFalsch(os.path.exists(_fname + '.bak'))
 
         fuer value in ('c', 'n'):
-            with dumbdbm.open(_fname, value) as f:
+            mit dumbdbm.open(_fname, value) als f:
                 self.assertWahr(os.path.exists(_fname + '.dir'))
                 self.assertFalsch(os.path.exists(_fname + '.bak'))
             self.assertFalsch(os.path.exists(_fname + '.bak'))
             os.unlink(_fname + '.dir')
 
         fuer value in ('c', 'n'):
-            with dumbdbm.open(_fname, value) as f:
+            mit dumbdbm.open(_fname, value) als f:
                 f['key'] = 'value'
                 self.assertWahr(os.path.exists(_fname + '.dir'))
                 self.assertFalsch(os.path.exists(_fname + '.bak'))
@@ -294,11 +294,11 @@ klasse DumbDBMTestCase(unittest.TestCase):
             os.unlink(_fname + '.bak')
 
     def test_sync_empty_unmodified(self):
-        with dumbdbm.open(_fname, 'n') as f:
+        mit dumbdbm.open(_fname, 'n') als f:
             pass
         os.unlink(_fname + '.dir')
         fuer value in ('c', 'n'):
-            with dumbdbm.open(_fname, value) as f:
+            mit dumbdbm.open(_fname, value) als f:
                 self.assertWahr(os.path.exists(_fname + '.dir'))
                 self.assertFalsch(os.path.exists(_fname + '.bak'))
                 f.sync()
@@ -312,11 +312,11 @@ klasse DumbDBMTestCase(unittest.TestCase):
             self.assertFalsch(os.path.exists(_fname + '.bak'))
 
     def test_sync_nonempty_unmodified(self):
-        with dumbdbm.open(_fname, 'n') as f:
+        mit dumbdbm.open(_fname, 'n') als f:
             pass
         os.unlink(_fname + '.dir')
         fuer value in ('c', 'n'):
-            with dumbdbm.open(_fname, value) as f:
+            mit dumbdbm.open(_fname, value) als f:
                 f['key'] = 'value'
                 self.assertWahr(os.path.exists(_fname + '.dir'))
                 self.assertFalsch(os.path.exists(_fname + '.bak'))
@@ -333,23 +333,23 @@ klasse DumbDBMTestCase(unittest.TestCase):
 
     def test_invalid_flag(self):
         fuer flag in ('x', 'rf', Nichts):
-            with self.assertRaisesRegex(ValueError,
+            mit self.assertRaisesRegex(ValueError,
                                         "Flag must be one of "
                                         "'r', 'w', 'c', or 'n'"):
                 dumbdbm.open(_fname, flag)
 
     @os_helper.skip_unless_working_chmod
     def test_readonly_files(self):
-        with os_helper.temp_dir() as dir:
+        mit os_helper.temp_dir() als dir:
             fname = os.path.join(dir, 'db')
-            with dumbdbm.open(fname, 'n') as f:
+            mit dumbdbm.open(fname, 'n') als f:
                 self.assertEqual(list(f.keys()), [])
                 fuer key in self._dict:
                     f[key] = self._dict[key]
             os.chmod(fname + ".dir", stat.S_IRUSR)
             os.chmod(fname + ".dat", stat.S_IRUSR)
             os.chmod(dir, stat.S_IRUSR|stat.S_IXUSR)
-            with dumbdbm.open(fname, 'r') as f:
+            mit dumbdbm.open(fname, 'r') als f:
                 self.assertEqual(sorted(f.keys()), sorted(self._dict))
                 f.close()  # don't write
 
@@ -359,11 +359,11 @@ klasse DumbDBMTestCase(unittest.TestCase):
         filename = os_helper.TESTFN_NONASCII
         fuer suffix in ['.dir', '.dat', '.bak']:
             self.addCleanup(os_helper.unlink, filename + suffix)
-        with dumbdbm.open(filename, 'c') as db:
+        mit dumbdbm.open(filename, 'c') als db:
             db[b'key'] = b'value'
         self.assertWahr(os.path.exists(filename + '.dat'))
         self.assertWahr(os.path.exists(filename + '.dir'))
-        with dumbdbm.open(filename, 'r') as db:
+        mit dumbdbm.open(filename, 'r') als db:
             self.assertEqual(list(db.keys()), [b'key'])
             self.assertWahr(b'key' in db)
             self.assertEqual(db[b'key'], b'value')

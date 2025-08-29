@@ -14,7 +14,7 @@ def setUpModule():
 
 klasse CFunctionFullTests(CFunctionTests):
     def check(self, func_name, cmd):
-        # Verify with "py-bt-full":
+        # Verify mit "py-bt-full":
         gdb_output = self.get_stack_trace(
             cmd,
             breakpoint=func_name,

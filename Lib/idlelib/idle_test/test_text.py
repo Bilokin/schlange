@@ -1,6 +1,6 @@
 ''' Test mock_tk.Text klasse against tkinter.Text class
 
-Run same tests with both by creating a mixin class.
+Run same tests mit both by creating a mixin class.
 '''
 importiere unittest
 von test.support importiere requires

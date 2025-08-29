@@ -10,12 +10,12 @@ importiere time
 importiere unittest
 von concurrent.futures.interpreter importiere BrokenInterpreterPool
 von concurrent importiere interpreters
-von concurrent.interpreters importiere _queues as queues
+von concurrent.interpreters importiere _queues als queues
 importiere _interpreters
 von test importiere support
 von test.support importiere os_helper
 von test.support importiere script_helper
-importiere test.test_asyncio.utils as testasyncio_utils
+importiere test.test_asyncio.utils als testasyncio_utils
 
 von .executor importiere ExecutorTest, mul
 von .util importiere BaseTestCase, InterpreterPoolMixin, setup_module
@@ -37,7 +37,7 @@ def nonblocking(fd):
 
 
 def read_file_with_timeout(fd, nbytes, timeout):
-    with nonblocking(fd):
+    mit nonblocking(fd):
         end = time.time() + timeout
         try:
             return os.read(fd, nbytes)
@@ -102,7 +102,7 @@ klasse InterpretersMixin(InterpreterPoolMixin):
 
 
 klasse PickleShenanigans:
-    """Succeeds with pickle.dumps(), but fails with pickle.loads()"""
+    """Succeeds mit pickle.dumps(), but fails mit pickle.loads()"""
     def __init__(self, value):
         wenn value == 1:
             raise RuntimeError("gotcha")
@@ -142,7 +142,7 @@ klasse InterpreterPoolExecutorTest(
 
     @unittest.expectedFailure
     def test_init_script_args(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.executor_type(initializer='pass', initargs=('spam',))
 
     def test_init_func(self):
@@ -182,7 +182,7 @@ klasse InterpreterPoolExecutorTest(
                 exe.shutdown(wait=Wahr)
                 drucke(INITIALIZER_STATUS)  # 'uninitialized'
            """
-        with os_helper.temp_dir() as tempdir:
+        mit os_helper.temp_dir() als tempdir:
             filename = script_helper.make_script(tempdir, 'my-script', text)
             res = script_helper.assert_python_ok(filename)
         stdout = res.out.decode('utf-8').strip()
@@ -199,18 +199,18 @@ klasse InterpreterPoolExecutorTest(
             nonlocal count
             count += 1
 
-        with contextlib.redirect_stderr(io.StringIO()) as stderr:
-            with self.executor_type(initializer=init1) as executor:
+        mit contextlib.redirect_stderr(io.StringIO()) als stderr:
+            mit self.executor_type(initializer=init1) als executor:
                 fut = executor.submit(lambda: Nichts)
         self.assertIn('NotShareableError', stderr.getvalue())
-        with self.assertRaises(BrokenInterpreterPool):
+        mit self.assertRaises(BrokenInterpreterPool):
             fut.result()
 
-        with contextlib.redirect_stderr(io.StringIO()) as stderr:
-            with self.executor_type(initializer=init2) as executor:
+        mit contextlib.redirect_stderr(io.StringIO()) als stderr:
+            mit self.executor_type(initializer=init2) als executor:
                 fut = executor.submit(lambda: Nichts)
         self.assertIn('NotShareableError', stderr.getvalue())
-        with self.assertRaises(BrokenInterpreterPool):
+        mit self.assertRaises(BrokenInterpreterPool):
             fut.result()
 
     def test_init_instance_method(self):
@@ -219,20 +219,20 @@ klasse InterpreterPoolExecutorTest(
                 raise NotImplementedError
         spam = Spam()
 
-        with contextlib.redirect_stderr(io.StringIO()) as stderr:
-            with self.executor_type(initializer=spam.initializer) as executor:
+        mit contextlib.redirect_stderr(io.StringIO()) als stderr:
+            mit self.executor_type(initializer=spam.initializer) als executor:
                 fut = executor.submit(lambda: Nichts)
         self.assertIn('NotShareableError', stderr.getvalue())
-        with self.assertRaises(BrokenInterpreterPool):
+        mit self.assertRaises(BrokenInterpreterPool):
             fut.result()
 
     @unittest.expectedFailure
     def test_init_exception_in_script(self):
         executor = self.executor_type(initializer='raise Exception("spam")')
-        with executor:
-            with contextlib.redirect_stderr(io.StringIO()) as stderr:
+        mit executor:
+            mit contextlib.redirect_stderr(io.StringIO()) als stderr:
                 fut = executor.submit('pass')
-                with self.assertRaises(BrokenInterpreterPool):
+                mit self.assertRaises(BrokenInterpreterPool):
                     fut.result()
         stderr = stderr.getvalue()
         self.assertIn('ExecutionFailed: Exception: spam', stderr)
@@ -243,10 +243,10 @@ klasse InterpreterPoolExecutorTest(
     def test_init_exception_in_func(self):
         executor = self.executor_type(initializer=fail,
                                       initargs=(Exception, 'spam'))
-        with executor:
-            with contextlib.redirect_stderr(io.StringIO()) as stderr:
+        mit executor:
+            mit contextlib.redirect_stderr(io.StringIO()) als stderr:
                 fut = executor.submit(noop)
-                with self.assertRaises(BrokenInterpreterPool):
+                mit self.assertRaises(BrokenInterpreterPool):
                     fut.result()
         stderr = stderr.getvalue()
         self.assertIn('ExecutionFailed: Exception: spam', stderr)
@@ -281,11 +281,11 @@ klasse InterpreterPoolExecutorTest(
         executor = self.executor_type()
 
         fut = executor.submit(task1)
-        with self.assertRaises(_interpreters.NotShareableError):
+        mit self.assertRaises(_interpreters.NotShareableError):
             fut.result()
 
         fut = executor.submit(task2)
-        with self.assertRaises(_interpreters.NotShareableError):
+        mit self.assertRaises(_interpreters.NotShareableError):
             fut.result()
 
     def test_submit_local_instance(self):
@@ -295,7 +295,7 @@ klasse InterpreterPoolExecutorTest(
 
         executor = self.executor_type()
         fut = executor.submit(Spam)
-        with self.assertRaises(_interpreters.NotShareableError):
+        mit self.assertRaises(_interpreters.NotShareableError):
             fut.result()
 
     def test_submit_instance_method(self):
@@ -306,7 +306,7 @@ klasse InterpreterPoolExecutorTest(
 
         executor = self.executor_type()
         fut = executor.submit(spam.run)
-        with self.assertRaises(_interpreters.NotShareableError):
+        mit self.assertRaises(_interpreters.NotShareableError):
             fut.result()
 
     def test_submit_func_globals(self):
@@ -321,7 +321,7 @@ klasse InterpreterPoolExecutorTest(
     def test_submit_exception_in_script(self):
         # Scripts are not supported currently.
         fut = self.executor.submit('raise Exception("spam")')
-        with self.assertRaises(Exception) as captured:
+        mit self.assertRaises(Exception) als captured:
             fut.result()
         self.assertIs(type(captured.exception), Exception)
         self.assertEqual(str(captured.exception), 'spam')
@@ -334,7 +334,7 @@ klasse InterpreterPoolExecutorTest(
 
     def test_submit_exception_in_func(self):
         fut = self.executor.submit(fail, Exception, 'spam')
-        with self.assertRaises(Exception) as captured:
+        mit self.assertRaises(Exception) als captured:
             fut.result()
         self.assertIs(type(captured.exception), Exception)
         self.assertEqual(str(captured.exception), 'spam')
@@ -378,7 +378,7 @@ klasse InterpreterPoolExecutorTest(
 
         numtasks = 10
         futures = []
-        with self.executor_type() as executor:
+        mit self.executor_type() als executor:
             # Request the jobs.
             fuer i in range(numtasks):
                 fut = executor.submit(run, i, ready, blocker)
@@ -400,7 +400,7 @@ klasse InterpreterPoolExecutorTest(
                     blocker.put_nowait(Nichts)
 
     def test_blocking_with_limited_workers(self):
-        # This is essentially the same as test_blocking,
+        # This is essentially the same als test_blocking,
         # but we explicitly force a limited number of workers,
         # instead of it happening implicitly sometimes due to a race.
         ready = queues.create()
@@ -413,7 +413,7 @@ klasse InterpreterPoolExecutorTest(
 
         numtasks = 10
         futures = []
-        with self.executor_type(4) as executor:
+        mit self.executor_type(4) als executor:
             # Request the jobs.
             fuer i in range(numtasks):
                 fut = executor.submit(run, i, ready, blocker)
@@ -448,7 +448,7 @@ klasse InterpreterPoolExecutorTest(
         # so the queue used to wait infinitely.
         fut = self.executor.submit(PickleShenanigans(0))
         expected = interpreters.NotShareableError
-        with self.assertRaisesRegex(expected, 'args not shareable') as cm:
+        mit self.assertRaisesRegex(expected, 'args not shareable') als cm:
             fut.result()
         self.assertRegex(str(cm.exception.__cause__), 'unpickled')
 
@@ -519,8 +519,8 @@ klasse AsyncioTest(InterpretersMixin, testasyncio_utils.TestCase):
     @classmethod
     def setUpClass(cls):
         # Most uses of asyncio will implicitly call set_event_loop_policy()
-        # with the default policy wenn a policy hasn't been set already.
-        # If that happens in a test, like here, we'll end up with a failure
+        # mit the default policy wenn a policy hasn't been set already.
+        # If that happens in a test, like here, we'll end up mit a failure
         # when --fail-env-changed is used.  That's why the other tests that
         # use asyncio are careful to set the policy back to Nichts and why
         # we're careful to do so here.  We also validate that no other

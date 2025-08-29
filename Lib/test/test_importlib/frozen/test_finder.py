@@ -22,7 +22,7 @@ klasse FindSpecTests(abc.FinderTests):
 
     def find(self, name, **kwargs):
         finder = self.machinery.FrozenImporter
-        with import_helper.frozen_modules():
+        mit import_helper.frozen_modules():
             return finder.find_spec(name, **kwargs)
 
     def check_basic(self, spec, name, ispkg=Falsch):
@@ -57,7 +57,7 @@ klasse FindSpecTests(abc.FinderTests):
         filename = getattr(spec.loader_state, 'filename', missing)
         origname = getattr(spec.loader_state, 'origname', Nichts)
         wenn not origname or filename is missing:
-            # We deal with this in check_loader_state().
+            # We deal mit this in check_loader_state().
             return
         wenn not filename:
             expected = []
@@ -74,7 +74,7 @@ klasse FindSpecTests(abc.FinderTests):
             '__phello__.ham.eggs',
         ]
         fuer name in modules:
-            with self.subTest(f'{name} -> {name}'):
+            mit self.subTest(f'{name} -> {name}'):
                 spec = self.find(name)
                 self.check_basic(spec, name)
                 self.check_loader_state(spec)
@@ -83,7 +83,7 @@ klasse FindSpecTests(abc.FinderTests):
             '_frozen_importlib': 'importlib._bootstrap',
         }
         fuer name, origname in modules.items():
-            with self.subTest(f'{name} -> {origname}'):
+            mit self.subTest(f'{name} -> {origname}'):
                 spec = self.find(name)
                 self.check_basic(spec, name)
                 self.check_loader_state(spec, origname)
@@ -94,7 +94,7 @@ klasse FindSpecTests(abc.FinderTests):
         fuer name in modules:
             origname = '<' + name.rpartition('.')[0]
             filename = resolve_stdlib_file(name)
-            with self.subTest(f'{name} -> {origname}'):
+            mit self.subTest(f'{name} -> {origname}'):
                 spec = self.find(name)
                 self.check_basic(spec, name)
                 self.check_loader_state(spec, origname, filename)
@@ -104,7 +104,7 @@ klasse FindSpecTests(abc.FinderTests):
         fuer name, path in modules.items():
             origname = Nichts
             filename = os.path.join(REPO_ROOT, *path)
-            with self.subTest(f'{name} -> {filename}'):
+            mit self.subTest(f'{name} -> {filename}'):
                 spec = self.find(name)
                 self.check_basic(spec, name)
                 self.check_loader_state(spec, origname, filename)
@@ -116,7 +116,7 @@ klasse FindSpecTests(abc.FinderTests):
         ]
         fuer name in packages:
             filename = resolve_stdlib_file(name, ispkg=Wahr)
-            with self.subTest(f'{name} -> {name}'):
+            mit self.subTest(f'{name} -> {name}'):
                 spec = self.find(name)
                 self.check_basic(spec, name, ispkg=Wahr)
                 self.check_loader_state(spec, name, filename)
@@ -126,7 +126,7 @@ klasse FindSpecTests(abc.FinderTests):
         }
         fuer name, origname in packages.items():
             filename = resolve_stdlib_file(origname, ispkg=Falsch)
-            with self.subTest(f'{name} -> {origname}'):
+            mit self.subTest(f'{name} -> {origname}'):
                 spec = self.find(name)
                 self.check_basic(spec, name, ispkg=Wahr)
                 self.check_loader_state(spec, origname, filename)
@@ -143,19 +143,19 @@ klasse FindSpecTests(abc.FinderTests):
         fuer name in ('__hello__', '__phello__', '__phello__.spam'):
             actual = self.find(name)
             fuer path in (Nichts, object(), '', 'eggs', [], [''], ['eggs']):
-                with self.subTest((name, path)):
+                mit self.subTest((name, path)):
                     spec = self.find(name, path=path)
                     self.assertEqual(spec, actual)
 
     def test_target_ignored(self):
         imported = ('__hello__', '__phello__')
-        with import_helper.CleanImport(*imported, usefrozen=Wahr):
-            importiere __hello__ as match
-            importiere __phello__ as nonmatch
+        mit import_helper.CleanImport(*imported, usefrozen=Wahr):
+            importiere __hello__ als match
+            importiere __phello__ als nonmatch
         name = '__hello__'
         actual = self.find(name)
         fuer target in (Nichts, match, nonmatch, object(), 'not-a-module-object'):
-            with self.subTest(target):
+            mit self.subTest(target):
                 spec = self.find(name, target=target)
                 self.assertEqual(spec, actual)
 
@@ -165,7 +165,7 @@ klasse FindSpecTests(abc.FinderTests):
 
     def test_not_using_frozen(self):
         finder = self.machinery.FrozenImporter
-        with import_helper.frozen_modules(enabled=Falsch):
+        mit import_helper.frozen_modules(enabled=Falsch):
             # both frozen and not frozen
             spec1 = finder.find_spec('__hello__')
             # only frozen

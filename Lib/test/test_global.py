@@ -1,6 +1,6 @@
 """This module includes tests fuer syntax errors that occur when a name
-declared as `global` is used in ways that violate the language
-specification, such as after assignment, usage, or annotation. The tests
+declared als `global` is used in ways that violate the language
+specification, such als after assignment, usage, or annotation. The tests
 verify that syntax errors are correctly raised fuer improper `global`
 statements following variable use or assignment within functions.
 Additionally, it tests various name-binding scenarios fuer global
@@ -25,7 +25,7 @@ klasse GlobalTests(unittest.TestCase):
         warnings.filterwarnings("error", module="<test string>")
 
     ######################################################
-    ### Syntax error cases as covered in Python/symtable.c
+    ### Syntax error cases als covered in Python/symtable.c
     ######################################################
 
     def test_name_param(self):
@@ -61,7 +61,7 @@ def fn():
 
     #############################################################
     ### Tests fuer global variables across all name binding cases,
-    ### as described in executionmodel.rst
+    ### als described in executionmodel.rst
     #############################################################
 
     def test_assignment_statement(self):
@@ -126,7 +126,7 @@ def fn():
 
         try:
             1 / 0
-        except ZeroDivisionError as name_caught_exc:
+        except ZeroDivisionError als name_caught_exc:
             value = name_caught_exc
             # `name_caught_exc` is cleared automatically after the except block
             self.assertIs(globals()["name_caught_exc"], value)
@@ -136,9 +136,9 @@ def fn():
         try:
             try:
                 1 / 0
-            except ZeroDivisionError as exc:
+            except ZeroDivisionError als exc:
                 raise ExceptionGroup("eg", [exc])
-        except* ZeroDivisionError as name_caught_exc_group:
+        except* ZeroDivisionError als name_caught_exc_group:
             value = name_caught_exc_group
             # `name_caught_exc` is cleared automatically after the except block
             self.assertIs(globals()["name_caught_exc_group"], value)
@@ -146,7 +146,7 @@ def fn():
     def test_enter_result(self):
         global name_enter_result
         value = object()
-        with contextlib.nullcontext(value) as name_enter_result:
+        mit contextlib.nullcontext(value) als name_enter_result:
             pass
         self.assertIs(globals()["name_enter_result"], value)
         del name_enter_result
@@ -154,7 +154,7 @@ def fn():
     def test_import_result(self):
         global name_import_result
         value = contextlib
-        importiere contextlib as name_import_result
+        importiere contextlib als name_import_result
 
         self.assertIs(globals()["name_import_result"], value)
         del name_import_result
@@ -172,7 +172,7 @@ def fn():
         global name_match_as
         value = object()
         match value:
-            case _ as name_match_as:
+            case _ als name_match_as:
                 pass
         self.assertIs(globals()["name_match_as"], value)
         del name_match_as

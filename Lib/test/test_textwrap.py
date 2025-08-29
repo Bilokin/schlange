@@ -14,7 +14,7 @@ von textwrap importiere TextWrapper, wrap, fill, dedent, indent, shorten
 
 
 klasse BaseTestCase(unittest.TestCase):
-    '''Parent klasse with utility methods fuer textwrap tests.'''
+    '''Parent klasse mit utility methods fuer textwrap tests.'''
 
     def show(self, textin):
         wenn isinstance(textin, list):
@@ -216,7 +216,7 @@ What a mess!
         self.check_wrap(text, 1, text.split(), break_long_words=Falsch)
 
     def test_em_dash(self):
-        # Test text with em-dashes
+        # Test text mit em-dashes
         text = "Em-dashes should be written -- thus."
         self.check_wrap(text, 25,
                         ["Em-dashes should be",
@@ -322,7 +322,7 @@ What a mess!
                          ["foo", " ", "--option-", "opt", " ", "bar"])
 
     def test_punct_hyphens(self):
-        # Oh bother, SF #965425 found another problem with hyphens --
+        # Oh bother, SF #965425 found another problem mit hyphens --
         # hyphenated words in single quotes weren't handled correctly.
         # In fact, the bug is that *any* punctuation around a hyphenated
         # word was handled incorrectly, except fuer a leading "--", which
@@ -358,7 +358,7 @@ What a mess!
     def test_drop_whitespace_false(self):
         # Check that drop_whitespace=Falsch preserves whitespace.
         # SF patch #1581073
-        text = " This is a    sentence with     much whitespace."
+        text = " This is a    sentence mit     much whitespace."
         self.check_wrap(text, 10,
                         [" This is a", "    ", "sentence ",
                          "with     ", "much white", "space."],
@@ -383,9 +383,9 @@ What a mess!
         # followed by non-whitespace).
         # SF bug #622849 reported inconsistent handling of leading
         # whitespace; let's test that a bit, shall we?
-        text = " This is a sentence with leading whitespace."
+        text = " This is a sentence mit leading whitespace."
         self.check_wrap(text, 50,
-                        [" This is a sentence with leading whitespace."])
+                        [" This is a sentence mit leading whitespace."])
         self.check_wrap(text, 30,
                         [" This is a sentence with", "leading whitespace."])
 
@@ -412,7 +412,7 @@ What a mess!
                         initial_indent="  ", subsequent_indent="  ")
 
     def test_split(self):
-        # Ensure that the standard _split() method works as advertised
+        # Ensure that the standard _split() method works als advertised
         # in the comments
 
         text = "Hello there -- you goof-ball, use the -b option!"
@@ -445,7 +445,7 @@ What a mess!
         self.check_wrap(text, 7, ["aa \xe4\xe4-", "\xe4\xe4"])
 
     def test_non_breaking_space(self):
-        text = 'This is a sentence with non-breaking\N{NO-BREAK SPACE}space.'
+        text = 'This is a sentence mit non-breaking\N{NO-BREAK SPACE}space.'
 
         self.check_wrap(text, 20,
                         ['This is a sentence',
@@ -460,7 +460,7 @@ What a mess!
                         break_on_hyphens=Falsch)
 
     def test_narrow_non_breaking_space(self):
-        text = ('This is a sentence with non-breaking'
+        text = ('This is a sentence mit non-breaking'
                 '\N{NARROW NO-BREAK SPACE}space.')
 
         self.check_wrap(text, 20,
@@ -538,10 +538,10 @@ klasse MaxLinesTestCase(BaseTestCase):
                         max_lines=2,
                         placeholder='...')
         # long placeholder and indentation
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             wrap(self.text, 16, initial_indent='    ',
                  max_lines=1, placeholder=' [truncated]...')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             wrap(self.text, 16, subsequent_indent='    ',
                  max_lines=2, placeholder=' [truncated]...')
         self.check_wrap(self.text, 16,
@@ -580,7 +580,7 @@ How *do* you spell that odd word, anyways?
 '''
 
     def test_break_long(self):
-        # Wrap text with long words and lots of punctuation
+        # Wrap text mit long words and lots of punctuation
 
         self.check_wrap(self.text, 30,
                         ['Did you say "supercalifragilis',
@@ -616,7 +616,7 @@ How *do* you spell that odd word, anyways?
                          'anyways?'])
 
     def test_nobreak_long(self):
-        # Test with break_long_words disabled
+        # Test mit break_long_words disabled
         self.wrapper.break_long_words = 0
         self.wrapper.width = 30
         expect = ['Did you say',
@@ -627,7 +627,7 @@ How *do* you spell that odd word, anyways?
         result = self.wrapper.wrap(self.text)
         self.check(result, expect)
 
-        # Same thing with kwargs passed to standalone wrap() function.
+        # Same thing mit kwargs passed to standalone wrap() function.
         result = wrap(self.text, width=30, break_long_words=0)
         self.check(result, expect)
 
@@ -718,7 +718,7 @@ klasse IndentTestCases(BaseTestCase):
     def setUp(self):
         self.text = '''\
 This paragraph will be filled, first without any indentation,
-and then with some (including a hanging indent).'''
+and then mit some (including a hanging indent).'''
 
 
     def test_fill(self):
@@ -753,7 +753,7 @@ some (including a hanging indent).'''
         expect = '''\
   * This paragraph will be filled, first
     without any indentation, and then
-    with some (including a hanging
+    mit some (including a hanging
     indent).'''
 
         result = fill(self.text, 40,
@@ -766,10 +766,10 @@ some (including a hanging indent).'''
 klasse DedentTestCase(unittest.TestCase):
 
     def test_type_error(self):
-        with self.assertRaisesRegex(TypeError, "expected str object, not"):
+        mit self.assertRaisesRegex(TypeError, "expected str object, not"):
             dedent(0)
 
-        with self.assertRaisesRegex(TypeError, "expected str object, not"):
+        mit self.assertRaisesRegex(TypeError, "expected str object, not"):
             dedent(b'')
 
     def assertUnchanged(self, text):
@@ -831,7 +831,7 @@ klasse DedentTestCase(unittest.TestCase):
         text = "Hello there.\nHow are you?\nOh good, I'm glad."
         self.assertUnchanged(text)
 
-        # Similar, with a blank line.
+        # Similar, mit a blank line.
         text = "Hello there.\n\nBoo!"
         self.assertUnchanged(text)
 
@@ -849,7 +849,7 @@ klasse DedentTestCase(unittest.TestCase):
         expect = "Hello there.\nHow are ya?\nOh good."
         self.assertEqual(expect, dedent(text))
 
-        # Same, with blank lines.
+        # Same, mit blank lines.
         text = "  Hello there.\n\n  How are ya?\n  Oh good.\n"
         expect = "Hello there.\n\nHow are ya?\nOh good.\n"
         self.assertEqual(expect, dedent(text))
@@ -873,28 +873,28 @@ def foo():
 '''
         self.assertEqual(expect, dedent(text))
 
-        # Uneven indentation with a blank line.
+        # Uneven indentation mit a blank line.
         text = "  Foo\n    Bar\n\n   Baz\n"
         expect = "Foo\n  Bar\n\n Baz\n"
         self.assertEqual(expect, dedent(text))
 
-        # Uneven indentation with a whitespace-only line.
+        # Uneven indentation mit a whitespace-only line.
         text = "  Foo\n    Bar\n \n   Baz\n"
         expect = "Foo\n  Bar\n\n Baz\n"
         self.assertEqual(expect, dedent(text))
 
     def test_dedent_declining(self):
-        # Uneven indentation with declining indent level.
+        # Uneven indentation mit declining indent level.
         text = "     Foo\n    Bar\n"  # 5 spaces, then 4
         expect = " Foo\nBar\n"
         self.assertEqual(expect, dedent(text))
 
-        # Declining indent level with blank line.
+        # Declining indent level mit blank line.
         text = "     Foo\n\n    Bar\n"  # 5 spaces, blank, then 4
         expect = " Foo\n\nBar\n"
         self.assertEqual(expect, dedent(text))
 
-        # Declining indent level with whitespace only line.
+        # Declining indent level mit whitespace only line.
         text = "     Foo\n    \n    Bar\n"  # 5 spaces, then 4, then 4
         expect = " Foo\n\nBar\n"
         self.assertEqual(expect, dedent(text))
@@ -910,7 +910,7 @@ def foo():
         self.assertEqual(expect, dedent(expect))
 
     # dedent() should not mangle tabs in the margin (i.e.
-    # tabs and spaces both count as margin, but are *not*
+    # tabs and spaces both count als margin, but are *not*
     # considered equivalent)
     def test_dedent_preserve_margin_tabs(self):
         text = "  hello there\n\thow are you?"
@@ -968,13 +968,13 @@ klasse IndentTestCase(unittest.TestCase):
             self.assertEqual(indent(text, ''), text)
 
     def test_indent_nomargin_explicit_default(self):
-        # The same as test_indent_nomargin, but explicitly requesting
-        # the default behaviour by passing Nichts as the predicate
+        # The same als test_indent_nomargin, but explicitly requesting
+        # the default behaviour by passing Nichts als the predicate
         fuer text in self.CASES:
             self.assertEqual(indent(text, '', Nichts), text)
 
     def test_indent_nomargin_all_lines(self):
-        # The same as test_indent_nomargin, but using the optional
+        # The same als test_indent_nomargin, but using the optional
         # predicate argument
         predicate = lambda line: Wahr
         fuer text in self.CASES:
@@ -987,17 +987,17 @@ klasse IndentTestCase(unittest.TestCase):
             self.assertEqual(indent(text, '    ', predicate), text)
 
     def test_roundtrip_spaces(self):
-        # A whitespace prefix should roundtrip with dedent
+        # A whitespace prefix should roundtrip mit dedent
         fuer text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '    ')), text)
 
     def test_roundtrip_tabs(self):
-        # A whitespace prefix should roundtrip with dedent
+        # A whitespace prefix should roundtrip mit dedent
         fuer text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '\t\t')), text)
 
     def test_roundtrip_mixed(self):
-        # A whitespace prefix should roundtrip with dedent
+        # A whitespace prefix should roundtrip mit dedent
         fuer text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, ' \t  \t ')), text)
 
@@ -1126,7 +1126,7 @@ klasse ShortenTestCase(BaseTestCase):
 
     def test_width_too_small_for_placeholder(self):
         shorten("x" * 20, width=8, placeholder="(......)")
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             shorten("x" * 20, width=8, placeholder="(.......)")
 
     def test_first_word_too_long_but_placeholder_fits(self):

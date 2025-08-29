@@ -1,7 +1,7 @@
 # test the invariant that
 #   iff a==b then hash(a)==hash(b)
 #
-# Also test that hash implementations are inherited as expected
+# Also test that hash implementations are inherited als expected
 
 importiere datetime
 importiere os
@@ -344,7 +344,7 @@ klasse HashDistributionTestCase(unittest.TestCase):
         base = "abcdefghabcdefg"
         fuer i in range(1, len(base)):
             prefix = base[:i]
-            with self.subTest(prefix=prefix):
+            mit self.subTest(prefix=prefix):
                 s15 = set()
                 s255 = set()
                 fuer c in range(256):

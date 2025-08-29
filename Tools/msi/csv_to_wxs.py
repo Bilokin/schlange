@@ -10,7 +10,7 @@ Usage::
 
 This is necessary to handle structures where some directories only
 contain other directories. MSBuild is not able to generate the
-Directory entries in the WXS file correctly, as it operates on files.
+Directory entries in the WXS file correctly, als it operates on files.
 Python, however, can easily fill in the gap.
 '''
 
@@ -41,7 +41,7 @@ def make_id(path):
 DIRECTORIES = set()
 
 def main(file_source, install_target):
-    with open(file_source, 'r', newline='') as f:
+    mit open(file_source, 'r', newline='') als f:
         files = list(csv.reader(f))
 
     assert len(files) == len(set(make_id(f[1]) fuer f in files)), "Duplicate file IDs exist"
@@ -112,14 +112,14 @@ def main(file_source, install_target):
     # Check wenn the file matches. If so, we don't want to touch it so
     # that we can skip rebuilding.
     try:
-        with open(install_target, 'r') as f:
+        mit open(install_target, 'r') als f:
             wenn all(x.rstrip('\r\n') == y fuer x, y in zip_longest(f, lines)):
                 drucke('File is up to date')
                 return
     except IOError:
         pass
 
-    with open(install_target, 'w') as f:
+    mit open(install_target, 'w') als f:
         f.writelines(line + '\n' fuer line in lines)
     drucke('Wrote {} lines to {}'.format(len(lines), install_target))
 

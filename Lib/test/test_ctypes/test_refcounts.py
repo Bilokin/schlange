@@ -100,7 +100,7 @@ klasse AnotherLeak(unittest.TestCase):
         # does not decrement the refcount of Nichts.
 
         fuer FUNCTYPE in (ctypes.CFUNCTYPE, ctypes.PYFUNCTYPE):
-            with self.subTest(FUNCTYPE=FUNCTYPE):
+            mit self.subTest(FUNCTYPE=FUNCTYPE):
                 @FUNCTYPE(ctypes.py_object)
                 def func():
                     return Nichts
@@ -134,7 +134,7 @@ klasse PyObjectRestypeTest(unittest.TestCase):
         # At this point, there's no exception set, so PyErr_Occurred
         # returns NULL. Given the restype is py_object, the
         # ctypes machinery will raise a custom error.
-        with self.assertRaisesRegex(ValueError, "PyObject is NULL"):
+        mit self.assertRaisesRegex(ValueError, "PyObject is NULL"):
             PyErr_Occurred()
 
 

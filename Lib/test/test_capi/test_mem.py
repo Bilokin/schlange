@@ -20,12 +20,12 @@ klasse PyMemDebugTests(unittest.TestCase):
     PTR_REGEX = r'(?:0x)?[0-9a-fA-F]+'
 
     def check(self, code):
-        with support.SuppressCrashReport():
+        mit support.SuppressCrashReport():
             out = assert_python_failure(
                 '-c', code,
                 PYTHONMALLOC=self.PYTHONMALLOC,
                 # FreeBSD: instruct jemalloc to not fill freed() memory
-                # with junk byte 0x5a, see JEMALLOC(3)
+                # mit junk byte 0x5a, see JEMALLOC(3)
                 MALLOC_CONF="junk:false",
             )
         stderr = out.err
@@ -35,7 +35,7 @@ klasse PyMemDebugTests(unittest.TestCase):
         out = self.check('import _testcapi; _testcapi.pymem_buffer_overflow()')
         regex = (r"Debug memory block at address p={ptr}: API 'm'\n"
                  r"    16 bytes originally requested\n"
-                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.\n"
+                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, als expected.\n"
                  r"    The [0-9] pad bytes at tail={ptr} are not all FORBIDDENBYTE \(0x[0-9a-f]{{2}}\):\n"
                  r"        at tail\+0: 0x78 \*\*\* OUCH\n"
                  r"        at tail\+1: 0xfd\n"
@@ -55,8 +55,8 @@ klasse PyMemDebugTests(unittest.TestCase):
         out = self.check('import _testcapi; _testcapi.pymem_api_misuse()')
         regex = (r"Debug memory block at address p={ptr}: API 'm'\n"
                  r"    16 bytes originally requested\n"
-                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.\n"
-                 r"    The [0-9] pad bytes at tail={ptr} are FORBIDDENBYTE, as expected.\n"
+                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, als expected.\n"
+                 r"    The [0-9] pad bytes at tail={ptr} are FORBIDDENBYTE, als expected.\n"
                  r"(    The block was made by call #[0-9]+ to debug malloc/realloc.\n)?"
                  r"    Data at p: cd cd cd .*\n"
                  r"\n"
@@ -117,7 +117,7 @@ klasse PyMemDebugTests(unittest.TestCase):
     def test_pyobject_freed_is_freed(self):
         self.check_pyobject_is_freed('check_pyobject_freed_is_freed')
 
-    # Python built with Py_TRACE_REFS fail with a fatal error in
+    # Python built mit Py_TRACE_REFS fail mit a fatal error in
     # _PyRefchain_Trace() on memory allocation error.
     @unittest.skipIf(support.Py_TRACE_REFS, 'cannot test Py_TRACE_REFS build')
     def test_set_nomemory(self):
@@ -140,7 +140,7 @@ klasse PyMemDebugTests(unittest.TestCase):
                             _testcapi.set_nomemory(start, start + 1)
                     try:
                         C()
-                    except MemoryError as e:
+                    except MemoryError als e:
                         wenn outer_cnt != 3:
                             _testcapi.remove_mem_hooks()
                         drucke('MemoryError', outer_cnt, j)

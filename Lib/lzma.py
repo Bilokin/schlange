@@ -5,7 +5,7 @@ klassees fuer incremental (de)compression, and convenience functions for
 one-shot (de)compression.
 
 These classes and functions support both the XZ and legacy LZMA
-container formats, as well as raw compressed data streams.
+container formats, als well als raw compressed data streams.
 """
 
 __all__ = [
@@ -39,25 +39,25 @@ klasse LZMAFile(_streams.BaseStream):
 
     """A file object providing transparent LZMA (de)compression.
 
-    An LZMAFile can act as a wrapper fuer an existing file object, or
+    An LZMAFile can act als a wrapper fuer an existing file object, or
     refer directly to a named file on disk.
 
     Note that LZMAFile provides a *binary* file interface - data read
-    is returned as bytes, and data to be written must be given as bytes.
+    is returned als bytes, and data to be written must be given als bytes.
     """
 
     def __init__(self, filename=Nichts, mode="r", *,
                  format=Nichts, check=-1, preset=Nichts, filters=Nichts):
         """Open an LZMA-compressed file in binary mode.
 
-        filename can be either an actual file name (given as a str,
+        filename can be either an actual file name (given als a str,
         bytes, or PathLike object), in which case the named file is
         opened, or it can be an existing file object to read von or
         write to.
 
         mode can be "r" fuer reading (default), "w" fuer (over)writing,
         "x" fuer creating exclusively, or "a" fuer appending. These can
-        equivalently be given as "rb", "wb", "xb" and "ab" respectively.
+        equivalently be given als "rb", "wb", "xb" and "ab" respectively.
 
         format specifies the container format to use fuer the file.
         If mode is "r", this defaults to FORMAT_AUTO. Otherwise, the
@@ -75,8 +75,8 @@ klasse LZMAFile(_streams.BaseStream):
         it is required).
 
         When opening a file fuer writing, the settings used by the
-        compressor can be specified either as a preset compression
-        level (with the *preset* argument), or in detail as a custom
+        compressor can be specified either als a preset compression
+        level (with the *preset* argument), or in detail als a custom
         filter chain (with the *filters* argument). For FORMAT_XZ and
         FORMAT_ALONE, the default is to use the PRESET_DEFAULT preset
         level. For FORMAT_RAW, the caller must always specify a filter
@@ -84,7 +84,7 @@ klasse LZMAFile(_streams.BaseStream):
         levels.
 
         preset (if provided) should be an integer in the range 0-9,
-        optionally OR-ed with the constant PRESET_EXTREME.
+        optionally OR-ed mit the constant PRESET_EXTREME.
 
         filters (if provided) should be a sequence of dicts. Each dict
         should have an entry fuer "id" indicating ID of the filter, plus
@@ -281,7 +281,7 @@ def open(filename, mode="rb", *,
          encoding=Nichts, errors=Nichts, newline=Nichts):
     """Open an LZMA-compressed file in binary or text mode.
 
-    filename can be either an actual file name (given as a str, bytes,
+    filename can be either an actual file name (given als a str, bytes,
     or PathLike object), in which case the named file is opened, or it
     can be an existing file object to read von or write to.
 
@@ -290,7 +290,7 @@ def open(filename, mode="rb", *,
     mode.
 
     The format, check, preset and filters arguments specify the
-    compression settings, as fuer LZMACompressor, LZMADecompressor and
+    compression settings, als fuer LZMACompressor, LZMADecompressor and
     LZMAFile.
 
     For binary mode, this function is equivalent to the LZMAFile
@@ -298,7 +298,7 @@ def open(filename, mode="rb", *,
     encoding, errors and newline arguments must not be provided.
 
     For text mode, an LZMAFile object is created, and wrapped in an
-    io.TextIOWrapper instance with the specified encoding, error
+    io.TextIOWrapper instance mit the specified encoding, error
     handling behavior, and line ending(s).
 
     """

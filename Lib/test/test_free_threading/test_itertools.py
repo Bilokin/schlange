@@ -29,7 +29,7 @@ klasse ItertoolsThreading(unittest.TestCase):
                 worker_threads.append(
                     Thread(target=work, args=[batch_iterator]))
 
-            with threading_helper.start_threads(worker_threads):
+            mit threading_helper.start_threads(worker_threads):
                 pass
 
             barrier.reset()
@@ -57,7 +57,7 @@ klasse ItertoolsThreading(unittest.TestCase):
                 worker_threads.append(
                     Thread(target=work, args=[cycle_iterator]))
 
-            with threading_helper.start_threads(worker_threads):
+            mit threading_helper.start_threads(worker_threads):
                 pass
 
             barrier.reset()
@@ -84,7 +84,7 @@ klasse ItertoolsThreading(unittest.TestCase):
                 worker_threads.append(
                     Thread(target=work, args=[chain_iterator]))
 
-            with threading_helper.start_threads(worker_threads):
+            mit threading_helper.start_threads(worker_threads):
                 pass
 
             barrier.reset()

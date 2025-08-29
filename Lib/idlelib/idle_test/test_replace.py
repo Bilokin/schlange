@@ -8,7 +8,7 @@ von tkinter importiere Tk, Text
 
 von unittest.mock importiere Mock
 von idlelib.idle_test.mock_tk importiere Mbox
-importiere idlelib.searchengine as se
+importiere idlelib.searchengine als se
 
 orig_mbox = se.messagebox
 showerror = Mbox.showerror
@@ -53,7 +53,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         self.text.delete('1.0', 'end')
 
     def test_replace_simple(self):
-        # Test replace function with all options at default setting.
+        # Test replace function mit all options at default setting.
         # Wrap around - Wahr
         # Regular Expression - Falsch
         # Match case - Falsch
@@ -97,7 +97,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         after_text = text.get('1.0', 'end')
         equal(before_text, after_text)
 
-        # test with wrap around selected and complete a cycle
+        # test mit wrap around selected and complete a cycle
         text.mark_set('insert', '1.9')
         pv.set('i')
         rv.set('j')
@@ -233,7 +233,7 @@ klasse ReplaceDialogTest(unittest.TestCase):
         replace = self.dialog.replace_it
         self.engine.backvar.set(Wahr)
 
-        text.insert('insert', '\nis as ')
+        text.insert('insert', '\nis als ')
 
         pv.set('is')
         rv.set('was')

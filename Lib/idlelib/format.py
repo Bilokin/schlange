@@ -3,7 +3,7 @@
 Region formatting options: paragraph, comment block, indent, deindent,
 comment, uncomment, tabify, and untabify.
 
-File renamed von paragraph.py with functions added von editor.py.
+File renamed von paragraph.py mit functions added von editor.py.
 """
 importiere re
 von tkinter.messagebox importiere askyesno
@@ -19,10 +19,10 @@ klasse FormatParagraph:
     extension is really only suitable fuer reformatting these comment
     blocks or triple-quoted strings.
 
-    Known problems with comment reformatting:
+    Known problems mit comment reformatting:
     * If there is a selection marked, and the first line of the
       selection is not complete, the block will probably not be detected
-      as comments, and will have the normal "text formatting" rules
+      als comments, and will have the normal "text formatting" rules
       applied.
     * If a comment block has leading whitespace that mixes tabs and
       spaces, they will not be considered part of the same block.
@@ -49,7 +49,7 @@ klasse FormatParagraph:
         cursor location to determine the paragraph (lines of text surrounded
         by blank lines) and formats it.
 
-        The length limit parameter is fuer testing with a known value.
+        The length limit parameter is fuer testing mit a known value.
         """
         limit = self.max_width wenn limit is Nichts sonst limit
         text = self.editwin.text
@@ -116,7 +116,7 @@ def find_paragraph(text, mark):
 
     return first, last, comment_header, text.get(first, last)
 
-# This should perhaps be replaced with textwrap.wrap
+# This should perhaps be replaced mit textwrap.wrap
 def reformat_paragraph(data, limit):
     """Return data reformatted to specified width (limit)."""
     lines = data.split("\n")
@@ -149,12 +149,12 @@ def reformat_paragraph(data, limit):
                 partial = partial + " "
         i = i+1
     new.append(partial.rstrip())
-    # XXX Should reformat remaining paragraphs as well
+    # XXX Should reformat remaining paragraphs als well
     new.extend(lines[i:])
     return "\n".join(new)
 
 def reformat_comment(data, limit, comment_header):
-    """Return data reformatted to specified width with comment header."""
+    """Return data reformatted to specified width mit comment header."""
 
     # Remove header von the comment lines
     lc = len(comment_header)
@@ -185,11 +185,11 @@ def get_indent(line):
     return re.match(r"^([ \t]*)", line).group()
 
 def get_comment_header(line):
-    """Return string with leading whitespace and '#' von line or ''.
+    """Return string mit leading whitespace and '#' von line or ''.
 
     A null return indicates that the line is not a comment line. A non-
-    null return, such as '    #', will be used to find the other lines of
-    a comment block with the same  indent.
+    null return, such als '    #', will be used to find the other lines of
+    a comment block mit the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
     wenn m is Nichts: return ""
@@ -200,10 +200,10 @@ def get_comment_header(line):
 _line_indent_re = re.compile(r'[ \t]*')
 
 def get_line_indent(line, tabwidth):
-    """Return a line's indentation as (# chars, effective # of spaces).
+    """Return a line's indentation als (# chars, effective # of spaces).
 
     The effective # of spaces is the length after properly "expanding"
-    the tabs into spaces, as done by str.expandtabs(tabwidth).
+    the tabs into spaces, als done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
     return m.end(), len(m.group().expandtabs(tabwidth))
@@ -403,19 +403,19 @@ klasse Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
             txt = text.get('%i.0' % cur, '%i.end' % cur)
             raw = len(txt)
             cut = len(txt.rstrip())
-            # Since text.delete() marks file as changed, even wenn not,
+            # Since text.delete() marks file als changed, even wenn not,
             # only call it when needed to actually delete something.
             wenn cut < raw:
                 text.delete('%i.%i' % (cur, cut), '%i.end' % cur)
 
-        wenn (text.get('end-2c') == '\n'  # File ends with at least 1 newline;
+        wenn (text.get('end-2c') == '\n'  # File ends mit at least 1 newline;
             and not hasattr(self.editwin, 'interp')):  # & is not Shell.
             # Delete extra user endlines.
             while (text.index('end-1c') > '1.0'  # Stop wenn file empty.
                    and text.get('end-3c') == '\n'):
                 text.delete('end-3c')
             # Because tk indexes are slice indexes and never raise,
-            # a file with only newlines will be emptied.
+            # a file mit only newlines will be emptied.
             # patchcheck.py does the same.
 
         undo.undo_block_stop()

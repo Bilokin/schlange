@@ -12,7 +12,7 @@ klasse TestRecursion:
         x.append(x)
         try:
             self.dumps(x)
-        except ValueError as exc:
+        except ValueError als exc:
             self.assertEqual(exc.__notes__, ["when serializing list item 0"])
         sonst:
             self.fail("didn't raise ValueError on list recursion")
@@ -21,7 +21,7 @@ klasse TestRecursion:
         x.append(y)
         try:
             self.dumps(x)
-        except ValueError as exc:
+        except ValueError als exc:
             self.assertEqual(exc.__notes__, ["when serializing list item 0"]*2)
         sonst:
             self.fail("didn't raise ValueError on alternating list recursion")
@@ -35,7 +35,7 @@ klasse TestRecursion:
         x["test"] = x
         try:
             self.dumps(x)
-        except ValueError as exc:
+        except ValueError als exc:
             self.assertEqual(exc.__notes__, ["when serializing dict item 'test'"])
         sonst:
             self.fail("didn't raise ValueError on dict recursion")
@@ -60,7 +60,7 @@ klasse TestRecursion:
         enc.recurse = Wahr
         try:
             enc.encode(JSONTestObject)
-        except ValueError as exc:
+        except ValueError als exc:
             self.assertEqual(exc.__notes__,
                              ["when serializing list item 0",
                               "when serializing type object"])
@@ -74,14 +74,14 @@ klasse TestRecursion:
         very_deep = 200000
         # test that loading highly-nested objects doesn't segfault when C
         # accelerations are used. See #12017
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion():
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion():
                 self.loads('{"a":' * very_deep + '1' + '}' * very_deep)
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion():
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion():
                 self.loads('{"a":' * very_deep + '[1]' + '}' * very_deep)
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion():
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion():
                 self.loads('[' * very_deep + '1' + ']' * very_deep)
 
     @support.skip_wasi_stack_overflow()
@@ -92,11 +92,11 @@ klasse TestRecursion:
         l, d = [], {}
         fuer x in range(200_000):
             l, d = [l], {'k':d}
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion(5000):
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion(5000):
                 self.dumps(l)
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion(5000):
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion(5000):
                 self.dumps(d)
 
     @support.skip_emscripten_stack_overflow()
@@ -108,8 +108,8 @@ klasse TestRecursion:
                 """If check_circular is Falsch, this will keep adding another list."""
                 return [o]
 
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion(1000):
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion(1000):
                 EndlessJSONEncoder(check_circular=Falsch).encode(5j)
 
 

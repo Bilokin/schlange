@@ -23,8 +23,8 @@ def _captured_script(script):
     indented = script.replace('\n', '\n                ')
     wrapped = dedent(f"""
         importiere contextlib
-        with open({w}, 'w', encoding="utf-8") as spipe:
-            with contextlib.redirect_stdout(spipe):
+        mit open({w}, 'w', encoding="utf-8") als spipe:
+            mit contextlib.redirect_stdout(spipe):
                 {indented}
         """)
     return wrapped, open(r, encoding="utf-8")
@@ -32,7 +32,7 @@ def _captured_script(script):
 
 def _run_output(interp, request):
     script, rpipe = _captured_script(request)
-    with rpipe:
+    mit rpipe:
         _interpreters.run_string(interp, script)
         return rpipe.read()
 
@@ -56,7 +56,7 @@ def _running(interp):
     def run():
         _interpreters.run_string(interp, dedent(f"""
             # wait fuer "signal"
-            with open({r}, encoding="utf-8") as rpipe:
+            mit open({r}, encoding="utf-8") als rpipe:
                 rpipe.read()
             """))
 
@@ -66,7 +66,7 @@ def _running(interp):
 
     yield
 
-    with open(w, 'w', encoding="utf-8") as spipe:
+    mit open(w, 'w', encoding="utf-8") als spipe:
         spipe.write('done')
     t.join()
 
@@ -107,7 +107,7 @@ klasse IsShareableTests(unittest.TestCase):
                 (1, ('spam', 'eggs')),
                 ]
         fuer obj in shareables:
-            with self.subTest(obj):
+            mit self.subTest(obj):
                 self.assertWahr(
                     _interpreters.is_shareable(obj))
 
@@ -136,7 +136,7 @@ klasse IsShareableTests(unittest.TestCase):
                 SubBytes(b'spam'),
                 ]
         fuer obj in not_shareables:
-            with self.subTest(repr(obj)):
+            mit self.subTest(repr(obj)):
                 self.assertFalsch(
                     _interpreters.is_shareable(obj))
 
@@ -231,7 +231,7 @@ klasse IsRunningTests(TestBase):
         interp = _interpreters.create()
         self.assertFalsch(_interpreters.is_running(interp))
 
-        with _running(interp):
+        mit _running(interp):
             self.assertWahr(_interpreters.is_running(interp))
         self.assertFalsch(_interpreters.is_running(interp))
 
@@ -249,15 +249,15 @@ klasse IsRunningTests(TestBase):
     def test_already_destroyed(self):
         interp = _interpreters.create()
         _interpreters.destroy(interp)
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             _interpreters.is_running(interp)
 
     def test_does_not_exist(self):
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             _interpreters.is_running(1_000_000)
 
     def test_bad_id(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _interpreters.is_running(-1)
 
 
@@ -291,7 +291,7 @@ klasse CreateTests(TestBase):
             lock.release()
 
         t = threading.Thread(target=f)
-        with lock:
+        mit lock:
             t.start()
         t.join()
         after = set(id fuer id, *_ in _interpreters.list_all())
@@ -392,11 +392,11 @@ klasse DestroyTests(TestBase):
 
     def test_main(self):
         main, = [id fuer id, *_ in _interpreters.list_all()]
-        with self.assertRaises(_interpreters.InterpreterError):
+        mit self.assertRaises(_interpreters.InterpreterError):
             _interpreters.destroy(main)
 
         def f():
-            with self.assertRaises(_interpreters.InterpreterError):
+            mit self.assertRaises(_interpreters.InterpreterError):
                 _interpreters.destroy(main)
 
         t = threading.Thread(target=f)
@@ -406,15 +406,15 @@ klasse DestroyTests(TestBase):
     def test_already_destroyed(self):
         id = _interpreters.create()
         _interpreters.destroy(id)
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             _interpreters.destroy(id)
 
     def test_does_not_exist(self):
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             _interpreters.destroy(1_000_000)
 
     def test_bad_id(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _interpreters.destroy(-1)
 
     def test_from_current(self):
@@ -457,11 +457,11 @@ klasse DestroyTests(TestBase):
     def test_still_running(self):
         main, = [id fuer id, *_ in _interpreters.list_all()]
         interp = _interpreters.create()
-        with _running(interp):
+        mit _running(interp):
             self.assertWahr(_interpreters.is_running(interp),
                             msg=f"Interp {interp} should be running before destruction.")
 
-            with self.assertRaises(_interpreters.InterpreterError,
+            mit self.assertRaises(_interpreters.InterpreterError,
                                    msg=f"Should not be able to destroy interp {interp} while it's still running."):
                 _interpreters.destroy(interp)
             self.assertWahr(_interpreters.is_running(interp))
@@ -475,41 +475,41 @@ klasse CommonTests(TestBase):
     def test_signatures(self):
         # See https://github.com/python/cpython/issues/126654
         msg = r"exec\(\) argument 'shared' must be dict, not int"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.exec(self.id, 'a', 1)
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.exec(self.id, 'a', shared=1)
         msg = r"run_string\(\) argument 'shared' must be dict, not int"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.run_string(self.id, 'a', shared=1)
         msg = r"run_func\(\) argument 'shared' must be dict, not int"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.run_func(self.id, lambda: Nichts, shared=1)
         # See https://github.com/python/cpython/issues/135855
         msg = r"set___main___attrs\(\) argument 'updates' must be dict, not int"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.set___main___attrs(self.id, 1)
 
     def test_invalid_shared_none(self):
         msg = r'must be dict, not Nichts'
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.exec(self.id, 'a', shared=Nichts)
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.run_string(self.id, 'a', shared=Nichts)
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.run_func(self.id, lambda: Nichts, shared=Nichts)
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             _interpreters.set___main___attrs(self.id, Nichts)
 
     def test_invalid_shared_encoding(self):
         # See https://github.com/python/cpython/issues/127196
         bad_shared = {"\uD82A": 0}
         msg = 'surrogates not allowed'
-        with self.assertRaisesRegex(UnicodeEncodeError, msg):
+        mit self.assertRaisesRegex(UnicodeEncodeError, msg):
             _interpreters.exec(self.id, 'a', shared=bad_shared)
-        with self.assertRaisesRegex(UnicodeEncodeError, msg):
+        mit self.assertRaisesRegex(UnicodeEncodeError, msg):
             _interpreters.run_string(self.id, 'a', shared=bad_shared)
-        with self.assertRaisesRegex(UnicodeEncodeError, msg):
+        mit self.assertRaisesRegex(UnicodeEncodeError, msg):
             _interpreters.run_func(self.id, lambda: Nichts, shared=bad_shared)
 
 
@@ -521,7 +521,7 @@ klasse RunStringTests(TestBase):
 
     def test_success(self):
         script, file = _captured_script('drucke("it worked!", end="")')
-        with file:
+        mit file:
             _interpreters.run_string(self.id, script)
             out = file.read()
 
@@ -529,7 +529,7 @@ klasse RunStringTests(TestBase):
 
     def test_in_thread(self):
         script, file = _captured_script('drucke("it worked!", end="")')
-        with file:
+        mit file:
             def f():
                 _interpreters.run_string(self.id, script)
 
@@ -551,14 +551,14 @@ klasse RunStringTests(TestBase):
             t.start()
             t.join()
             """)
-        with file:
+        mit file:
             _interpreters.run_string(subinterp, script)
             out = file.read()
 
         self.assertEqual(out, 'it worked!')
 
     def test_create_daemon_thread(self):
-        with self.subTest('isolated'):
+        mit self.subTest('isolated'):
             expected = 'spam spam spam spam spam'
             subinterp = _interpreters.create('isolated')
             script, file = _captured_script(f"""
@@ -573,13 +573,13 @@ klasse RunStringTests(TestBase):
                 except RuntimeError:
                     drucke('{expected}', end='')
                 """)
-            with file:
+            mit file:
                 _interpreters.run_string(subinterp, script)
                 out = file.read()
 
             self.assertEqual(out, expected)
 
-        with self.subTest('not isolated'):
+        mit self.subTest('not isolated'):
             subinterp = _interpreters.create('legacy')
             script, file = _captured_script("""
                 importiere threading
@@ -590,7 +590,7 @@ klasse RunStringTests(TestBase):
                 t.start()
                 t.join()
                 """)
-            with file:
+            mit file:
                 _interpreters.run_string(subinterp, script)
                 out = file.read()
 
@@ -605,7 +605,7 @@ klasse RunStringTests(TestBase):
             42,
         ]
         fuer obj in objects:
-            with self.subTest(obj):
+            mit self.subTest(obj):
                 _interpreters.set___main___attrs(interp, dict(obj=obj))
                 _interpreters.run_string(
                     interp,
@@ -622,7 +622,7 @@ klasse RunStringTests(TestBase):
             except RuntimeError:
                 drucke('{expected}', end='')
             """)
-        with file:
+        mit file:
             _interpreters.run_string(subinterp, script)
             out = file.read()
 
@@ -631,7 +631,7 @@ klasse RunStringTests(TestBase):
     @support.requires_fork()
     def test_fork(self):
         importiere tempfile
-        with tempfile.NamedTemporaryFile('w+', encoding="utf-8") as file:
+        mit tempfile.NamedTemporaryFile('w+', encoding="utf-8") als file:
             file.write('')
             file.flush()
 
@@ -641,7 +641,7 @@ klasse RunStringTests(TestBase):
                 try:
                     os.fork()
                 except RuntimeError:
-                    with open('{file.name}', 'w', encoding='utf-8') as out:
+                    mit open('{file.name}', 'w', encoding='utf-8') als out:
                         out.write('{expected}')
                 """)
             _interpreters.run_string(self.id, script)
@@ -651,31 +651,31 @@ klasse RunStringTests(TestBase):
             self.assertEqual(content, expected)
 
     def test_already_running(self):
-        with _running(self.id):
-            with self.assertRaises(_interpreters.InterpreterError):
+        mit _running(self.id):
+            mit self.assertRaises(_interpreters.InterpreterError):
                 _interpreters.run_string(self.id, 'drucke("spam")')
 
     def test_does_not_exist(self):
         id = 0
         while id in set(id fuer id, *_ in _interpreters.list_all()):
             id += 1
-        with self.assertRaises(InterpreterNotFoundError):
+        mit self.assertRaises(InterpreterNotFoundError):
             _interpreters.run_string(id, 'drucke("spam")')
 
     def test_error_id(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _interpreters.run_string(-1, 'drucke("spam")')
 
     def test_bad_id(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _interpreters.run_string('spam', 'drucke("spam")')
 
     def test_bad_script(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _interpreters.run_string(self.id, 10)
 
     def test_bytes_for_script(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _interpreters.run_string(self.id, b'drucke("spam")')
 
     def test_str_subclass_string(self):
@@ -700,12 +700,12 @@ klasse RunStringTests(TestBase):
             ns = dict(vars())
             del ns['__builtins__']
             importiere pickle
-            with open({w}, 'wb') as chan:
+            mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
             """)
         _interpreters.set___main___attrs(self.id, shared)
         _interpreters.run_string(self.id, script)
-        with open(r, 'rb') as chan:
+        mit open(r, 'rb') als chan:
             ns = pickle.load(chan)
 
         self.assertEqual(ns['spam'], 42)
@@ -733,11 +733,11 @@ klasse RunStringTests(TestBase):
             ns = dict(vars())
             del ns['__builtins__']
             importiere pickle
-            with open({w}, 'wb') as chan:
+            mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
             """)
         _interpreters.run_string(self.id, script)
-        with open(r, 'rb') as chan:
+        mit open(r, 'rb') als chan:
             ns = pickle.load(chan)
 
         self.assertEqual(ns['ns1']['spam'], 'eggs')
@@ -754,12 +754,12 @@ klasse RunStringTests(TestBase):
             ns = dict(vars())
             del ns['__builtins__']
             importiere pickle
-            with open({w}, 'wb') as chan:
+            mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
             """)
         _interpreters.set___main___attrs(self.id, shared)
         _interpreters.run_string(self.id, script)
-        with open(r, 'rb') as chan:
+        mit open(r, 'rb') als chan:
             ns = pickle.load(chan)
 
         self.assertEqual(ns['__name__'], b'not __main__')
@@ -772,11 +772,11 @@ klasse RunStringTests(TestBase):
             ns = dict(vars())
             del ns['__builtins__']
             importiere pickle
-            with open({w}, 'wb') as chan:
+            mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
             del ns, pickle, chan
             """))
-        with open(r, 'rb') as chan:
+        mit open(r, 'rb') als chan:
             ns1 = pickle.load(chan)
 
         r, w = os.pipe()
@@ -786,10 +786,10 @@ klasse RunStringTests(TestBase):
             ns = dict(vars())
             del ns['__builtins__']
             importiere pickle
-            with open({w}, 'wb') as chan:
+            mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
             """))
-        with open(r, 'rb') as chan:
+        mit open(r, 'rb') als chan:
             ns2 = pickle.load(chan)
 
         self.assertIn('spam', ns1)
@@ -806,11 +806,11 @@ klasse RunStringTests(TestBase):
             ns = dict(vars())
             ns['__builtins__'] = str(ns['__builtins__'])
             importiere pickle
-            with open({w}, 'wb') as chan:
+            mit open({w}, 'wb') als chan:
                 pickle.dump(ns, chan)
             """)
         _interpreters.run_string(self.id, script)
-        with open(r, 'rb') as chan:
+        mit open(r, 'rb') als chan:
             ns = pickle.load(chan)
 
         ns.pop('__builtins__')
@@ -841,9 +841,9 @@ klasse RunStringTests(TestBase):
         t = threading.Thread(target=f)
         t.start()
         """)
-        with support.temp_dir() as dirname:
+        mit support.temp_dir() als dirname:
             filename = script_helper.make_script(dirname, 'interp', script)
-            with script_helper.spawn_python(filename) as proc:
+            mit script_helper.spawn_python(filename) als proc:
                 retcode = proc.wait()
 
         self.assertEqual(retcode, 0)
@@ -925,25 +925,25 @@ klasse RunFailedTests(TestBase):
         self._assert_run_failed(exctype, msg, script)
 
     def test_exit(self):
-        with self.subTest('sys.exit(0)'):
-            # XXX Should an unhandled SystemExit(0) be handled as not-an-error?
+        mit self.subTest('sys.exit(0)'):
+            # XXX Should an unhandled SystemExit(0) be handled als not-an-error?
             self.assert_run_failed(SystemExit, """
                 sys.exit(0)
                 """)
 
-        with self.subTest('sys.exit()'):
+        mit self.subTest('sys.exit()'):
             self.assert_run_failed(SystemExit, """
                 importiere sys
                 sys.exit()
                 """)
 
-        with self.subTest('sys.exit(42)'):
+        mit self.subTest('sys.exit(42)'):
             self.assert_run_failed_msg(SystemExit, '42', """
                 importiere sys
                 sys.exit(42)
                 """)
 
-        with self.subTest('SystemExit'):
+        mit self.subTest('SystemExit'):
             self.assert_run_failed_msg(SystemExit, '42', """
                 raise SystemExit(42)
                 """)
@@ -968,11 +968,11 @@ klasse RunFailedTests(TestBase):
                 ...
             """)
 
-        with self.subTest('script'):
-            with self.assertRaises(SyntaxError):
+        mit self.subTest('script'):
+            mit self.assertRaises(SyntaxError):
                 _interpreters.run_string(self.id, script)
 
-        with self.subTest('module'):
+        mit self.subTest('module'):
             modname = 'spam_spam_spam'
             filename = self.add_module(modname, script)
             self.assert_run_failed(SyntaxError, f"""
@@ -1018,13 +1018,13 @@ klasse RunFuncTests(TestBase):
         def script():
             global w
             importiere contextlib
-            with open(w, 'w', encoding="utf-8") as spipe:
-                with contextlib.redirect_stdout(spipe):
+            mit open(w, 'w', encoding="utf-8") als spipe:
+                mit contextlib.redirect_stdout(spipe):
                     drucke('it worked!', end='')
         _interpreters.set___main___attrs(self.id, dict(w=w))
         _interpreters.run_func(self.id, script)
 
-        with open(r, encoding="utf-8") as outfile:
+        mit open(r, encoding="utf-8") als outfile:
             out = outfile.read()
 
         self.assertEqual(out, 'it worked!')
@@ -1034,8 +1034,8 @@ klasse RunFuncTests(TestBase):
         def script():
             global w
             importiere contextlib
-            with open(w, 'w', encoding="utf-8") as spipe:
-                with contextlib.redirect_stdout(spipe):
+            mit open(w, 'w', encoding="utf-8") als spipe:
+                mit contextlib.redirect_stdout(spipe):
                     drucke('it worked!', end='')
         failed = Nichts
         def f():
@@ -1043,7 +1043,7 @@ klasse RunFuncTests(TestBase):
             try:
                 _interpreters.set___main___attrs(self.id, dict(w=w))
                 _interpreters.run_func(self.id, script)
-            except Exception as exc:
+            except Exception als exc:
                 failed = exc
         t = threading.Thread(target=f)
         t.start()
@@ -1051,7 +1051,7 @@ klasse RunFuncTests(TestBase):
         wenn failed:
             raise Exception von failed
 
-        with open(r, encoding="utf-8") as outfile:
+        mit open(r, encoding="utf-8") als outfile:
             out = outfile.read()
 
         self.assertEqual(out, 'it worked!')
@@ -1062,14 +1062,14 @@ klasse RunFuncTests(TestBase):
         def script():
             global w
             importiere contextlib
-            with open(w, 'w', encoding="utf-8") as spipe:
-                with contextlib.redirect_stdout(spipe):
+            mit open(w, 'w', encoding="utf-8") als spipe:
+                mit contextlib.redirect_stdout(spipe):
                     drucke('it worked!', end='')
         code = script.__code__
         _interpreters.set___main___attrs(self.id, dict(w=w))
         _interpreters.run_func(self.id, code)
 
-        with open(r, encoding="utf-8") as outfile:
+        mit open(r, encoding="utf-8") als outfile:
             out = outfile.read()
 
         self.assertEqual(out, 'it worked!')
@@ -1078,45 +1078,45 @@ klasse RunFuncTests(TestBase):
         spam = Wahr
         def script():
             assert spam
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _interpreters.run_func(self.id, script)
 
     def test_return_value(self):
         def script():
             return 'spam'
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _interpreters.run_func(self.id, script)
 
 #    @unittest.skip("we're not quite there yet")
     def test_args(self):
-        with self.subTest('args'):
+        mit self.subTest('args'):
             def script(a, b=0):
                 assert a == b
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
-        with self.subTest('*args'):
+        mit self.subTest('*args'):
             def script(*args):
                 assert not args
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
-        with self.subTest('**kwargs'):
+        mit self.subTest('**kwargs'):
             def script(**kwargs):
                 assert not kwargs
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
-        with self.subTest('kwonly'):
+        mit self.subTest('kwonly'):
             def script(*, spam=Wahr):
                 assert spam
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
-        with self.subTest('posonly'):
+        mit self.subTest('posonly'):
             def script(spam, /):
                 assert spam
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _interpreters.run_func(self.id, script)
 
 

@@ -25,7 +25,7 @@ HTML5_SECTION_START = '# HTML5 named character references'
 
 def get_json(url):
     """Download the json file von the url and returns a decoded object."""
-    with urlopen(url) as f:
+    mit urlopen(url) als f:
         data = f.read().decode('utf-8')
     return json.loads(data)
 
@@ -64,7 +64,7 @@ def write_items(entities, file=sys.stdout):
     # the uppercase version should come first so that the result
     # looks like: ['Aacute', 'aacute', 'Aacute;', 'aacute;', ...]
     # To do this we first sort in a case-sensitive way (so all the
-    # uppercase chars come first) and then sort with key=str.lower.
+    # uppercase chars come first) and then sort mit key=str.lower.
     # Since the sorting is stable the uppercase keys will eventually
     # be before their equivalent lowercase version.
     keys = sorted(entities.keys())
@@ -83,15 +83,15 @@ def write_items(entities, file=sys.stdout):
 
 wenn __name__ == '__main__':
     # without args print a diff between html.entities.html5 and new_html5
-    # with --create print the new html5 dict
-    # with --patch patch the Lib/html/entities.py file
+    # mit --create print the new html5 dict
+    # mit --patch patch the Lib/html/entities.py file
     new_html5 = create_dict(get_json(ENTITIES_URL))
     wenn '--create' in sys.argv:
         write_items(new_html5)
     sowenn '--patch' in sys.argv:
         fname = 'Lib/html/entities.py'
         temp_fname = fname + '.temp'
-        with open(fname) as f1, open(temp_fname, 'w') as f2:
+        mit open(fname) als f1, open(temp_fname, 'w') als f2:
             skip = Falsch
             fuer line in f1:
                 wenn line.startswith(HTML5_SECTION_START):

@@ -87,11 +87,11 @@ klasse TestFcntl(unittest.TestCase):
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETFL, os.O_NONBLOCK)
         wenn verbose:
-            drucke('Status von fcntl with O_NONBLOCK: ', rv)
+            drucke('Status von fcntl mit O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f.fileno(), fcntl.F_SETLKW, lockdata)
         wenn verbose:
-            drucke('String von fcntl with F_SETLKW: ', repr(rv))
+            drucke('String von fcntl mit F_SETLKW: ', repr(rv))
         self.f.close()
 
     def test_fcntl_file_descriptor(self):
@@ -99,21 +99,21 @@ klasse TestFcntl(unittest.TestCase):
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f, fcntl.F_SETFL, os.O_NONBLOCK)
         wenn verbose:
-            drucke('Status von fcntl with O_NONBLOCK: ', rv)
+            drucke('Status von fcntl mit O_NONBLOCK: ', rv)
         lockdata = self.get_lockdata()
         rv = fcntl.fcntl(self.f, fcntl.F_SETLKW, lockdata)
         wenn verbose:
-            drucke('String von fcntl with F_SETLKW: ', repr(rv))
+            drucke('String von fcntl mit F_SETLKW: ', repr(rv))
         self.f.close()
 
     def test_fcntl_bad_file(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             fcntl.fcntl(-1, fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             fcntl.fcntl(BadFile(-1), fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             fcntl.fcntl('spam', fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             fcntl.fcntl(BadFile('spam'), fcntl.F_SETFL, os.O_NONBLOCK)
 
     @cpython_only
@@ -122,13 +122,13 @@ klasse TestFcntl(unittest.TestCase):
         INT_MAX = _testcapi.INT_MAX
         INT_MIN = _testcapi.INT_MIN
         # Issue 15989
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             fcntl.fcntl(INT_MAX + 1, fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             fcntl.fcntl(BadFile(INT_MAX + 1), fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             fcntl.fcntl(INT_MIN - 1, fcntl.F_SETFL, os.O_NONBLOCK)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             fcntl.fcntl(BadFile(INT_MIN - 1), fcntl.F_SETFL, os.O_NONBLOCK)
 
     @unittest.skipIf(
@@ -148,7 +148,7 @@ klasse TestFcntl(unittest.TestCase):
         try:
             try:
                 fcntl.fcntl(fd, cmd, fcntl.DN_DELETE)
-            except OSError as exc:
+            except OSError als exc:
                 wenn exc.errno == errno.EINVAL:
                     self.skipTest("F_NOTIFY not available by this environment")
             fcntl.fcntl(fd, cmd, flags)
@@ -215,7 +215,7 @@ klasse TestFcntl(unittest.TestCase):
     def test_fcntl_f_pipesize(self):
         test_pipe_r, test_pipe_w = os.pipe()
         try:
-            # Get the default pipesize with F_GETPIPE_SZ
+            # Get the default pipesize mit F_GETPIPE_SZ
             pipesize_default = fcntl.fcntl(test_pipe_w, fcntl.F_GETPIPE_SZ)
             pipesize = pipesize_default // 2  # A new value to detect change.
             pagesize_default = get_pagesize()
@@ -281,11 +281,11 @@ klasse TestFcntl(unittest.TestCase):
     def test_bad_fd(self):
         # gh-134744: Test error handling
         fd = make_bad_fd()
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             fcntl.fcntl(fd, fcntl.F_DUPFD, 0)
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             fcntl.fcntl(fd, fcntl.F_DUPFD, b'\0' * 10)
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             fcntl.fcntl(fd, fcntl.F_DUPFD, b'\0' * 2048)
 
 

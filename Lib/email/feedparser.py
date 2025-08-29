@@ -9,7 +9,7 @@ message, line by line.  This has advantages fuer certain applications, such as
 those reading email messages off a socket.
 
 FeedParser.feed() is the primary interface fuer pushing new data into the
-parser.  It returns when there's nothing more it can do with the available
+parser.  It returns when there's nothing more it can do mit the available
 data.  When you have no more data to push into the parser, call .close().
 This completes the parsing and returns the root message object.
 
@@ -113,8 +113,8 @@ klasse BufferedSubFile(object):
         self._partial.truncate()
 
         # If the last element of the list does not end in a newline, then treat
-        # it as a partial line.  We only check fuer '\n' here because a line
-        # ending with '\r' might be a line that was split in the middle of a
+        # it als a partial line.  We only check fuer '\n' here because a line
+        # ending mit '\r' might be a line that was split in the middle of a
         # '\r\n' sequence (see bugs 1555570 and 1721862).
         wenn not parts[-1].endswith('\n'):
             self._partial.write(parts.pop())
@@ -137,7 +137,7 @@ klasse FeedParser:
     """A feed-style parser of email."""
 
     def __init__(self, _factory=Nichts, *, policy=compat32):
-        """_factory is called with no arguments to create a new message obj
+        """_factory is called mit no arguments to create a new message obj
 
         The policy keyword specifies a policy object that controls a number of
         aspects of the parser's operation.  The default policy maintains
@@ -235,7 +235,7 @@ klasse FeedParser:
                     self._input.unreadline(line)
                 break
             headers.append(line)
-        # Done with the headers, so parse them and figure out what we're
+        # Done mit the headers, so parse them and figure out what we're
         # supposed to see in the body of the message.
         self._parse_headers(headers)
         # Headers-only parsing is a backwards compatibility hack, which was
@@ -255,7 +255,7 @@ klasse FeedParser:
             return
         wenn self._cur.get_content_type() == 'message/delivery-status':
             # message/delivery-status contains blocks of headers separated by
-            # a blank line.  We'll represent each header block as a separate
+            # a blank line.  We'll represent each header block als a separate
             # nested message object, but the processing is a bit different
             # than standard message/* types because there is no body fuer the
             # nested messages.  A blank line separates the subparts.
@@ -325,7 +325,7 @@ klasse FeedParser:
                 defect = errors.InvalidMultipartContentTransferEncodingDefect()
                 self.policy.handle_defect(self._cur, defect)
             # Create a line match predicate which matches the inter-part
-            # boundary as well as the end-of-multipart boundary.  Don't push
+            # boundary als well als the end-of-multipart boundary.  Don't push
             # this onto the input stream until we've scanned past the
             # preamble.
             separator = '--' + boundary
@@ -349,7 +349,7 @@ klasse FeedParser:
                     # If we're looking at the end boundary, we're done with
                     # this multipart.  If there was a newline at the end of
                     # the closing boundary, then we need to initialize the
-                    # epilogue with the empty string (see below).
+                    # epilogue mit the empty string (see below).
                     wenn mo.group('end'):
                         close_boundary_seen = Wahr
                         linesep = mo.group('linesep')
@@ -419,7 +419,7 @@ klasse FeedParser:
                     preamble.append(line)
             # We've seen either the EOF or the end boundary.  If we're still
             # capturing the preamble, we never saw the start boundary.  Note
-            # that as a defect and store the captured text as the payload.
+            # that als a defect and store the captured text als the payload.
             wenn capturing_preamble:
                 defect = errors.StartBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
@@ -504,7 +504,7 @@ klasse FeedParser:
                     self._input.unreadline(line)
                     return
                 sonst:
-                    # Weirdly placed unix-from line.  Note this as a defect
+                    # Weirdly placed unix-from line.  Note this als a defect
                     # and ignore it.
                     defect = errors.MisplacedEnvelopeHeaderDefect(line)
                     self._cur.defects.append(defect)
@@ -522,10 +522,10 @@ klasse FeedParser:
                 self._cur.defects.append(defect)
                 continue
 
-            assert i>0, "_parse_headers fed line with no : and no leading WS"
+            assert i>0, "_parse_headers fed line mit no : and no leading WS"
             lastheader = line[:i]
             lastvalue = [line]
-        # Done with all the lines, so handle the last header.
+        # Done mit all the lines, so handle the last header.
         wenn lastheader:
             self._cur.set_raw(*self.policy.header_source_parse(lastvalue))
 

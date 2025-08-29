@@ -14,7 +14,7 @@ try:
     von .simple_interact importiere check
     wenn err := check():
         raise RuntimeError(err)
-except Exception as e:
+except Exception als e:
     CAN_USE_PYREPL = Falsch
     FAIL_REASON = f"warning: can't use pyrepl: {e}"
 sonst:
@@ -41,7 +41,7 @@ def interactive_console(mainmodule=Nichts, quiet=Falsch, pythonstartup=Falsch):
         sys.audit("cpython.run_startup", startup_path)
 
         importiere tokenize
-        with tokenize.open(startup_path) as f:
+        mit tokenize.open(startup_path) als f:
             startup_code = compile(f.read(), startup_path, "exec")
             exec(startup_code, namespace)
 

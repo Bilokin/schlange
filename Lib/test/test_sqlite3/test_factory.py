@@ -16,12 +16,12 @@
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
 #    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked als such, and must not be
+#    misrepresented als being the original software.
 # 3. This notice may not be removed or altered von any source distribution.
 
 importiere unittest
-importiere sqlite3 as sqlite
+importiere sqlite3 als sqlite
 von collections.abc importiere Sequence
 
 von .util importiere memory_database
@@ -48,21 +48,21 @@ klasse ConnectionFactoryTests(unittest.TestCase):
             def __init__(self, *args, **kwargs):
                 sqlite.Connection.__init__(self, *args, **kwargs)
 
-        with memory_database(factory=OkFactory) as con:
+        mit memory_database(factory=OkFactory) als con:
             self.assertIsInstance(con, OkFactory)
         regex = "Base Connection.__init__ not called."
-        with self.assertRaisesRegex(sqlite.ProgrammingError, regex):
-            with memory_database(factory=DefectFactory) as con:
+        mit self.assertRaisesRegex(sqlite.ProgrammingError, regex):
+            mit memory_database(factory=DefectFactory) als con:
                 self.assertIsInstance(con, DefectFactory)
 
     def test_connection_factory_relayed_call(self):
-        # gh-95132: keyword args must not be passed as positional args
+        # gh-95132: keyword args must not be passed als positional args
         klasse Factory(sqlite.Connection):
             def __init__(self, *args, **kwargs):
                 kwargs["isolation_level"] = Nichts
                 super(Factory, self).__init__(*args, **kwargs)
 
-        with memory_database(factory=Factory) as con:
+        mit memory_database(factory=Factory) als con:
             self.assertIsNichts(con.isolation_level)
             self.assertIsInstance(con, Factory)
 
@@ -71,7 +71,7 @@ klasse ConnectionFactoryTests(unittest.TestCase):
             def __init__(self, *args, **kwargs):
                 super(Factory, self).__init__(*args, **kwargs)
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 r'connect\(\) takes at most 1 positional arguments'):
             memory_database(5.0, 0, Nichts, Wahr, Factory)
 
@@ -89,7 +89,7 @@ klasse CursorFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_invalid_factory(self):
         # not a callable at all
         self.assertRaises(TypeError, self.con.cursor, Nichts)
-        # invalid callable with not exact one argument
+        # invalid callable mit not exact one argument
         self.assertRaises(TypeError, self.con.cursor, lambda: Nichts)
         # invalid callable returning non-cursor
         self.assertRaises(TypeError, self.con.cursor, lambda con: Nichts)
@@ -99,7 +99,7 @@ klasse RowFactoryTestsBackwardsCompat(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_is_produced_by_factory(self):
         cur = self.con.cursor(factory=MyCursor)
-        cur.execute("select 4+5 as foo")
+        cur.execute("select 4+5 als foo")
         row = cur.fetchone()
         self.assertIsInstance(row, dict)
         cur.close()
@@ -117,7 +117,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertIsInstance(row, list)
 
     def test_sqlite_row_index(self):
-        row = self.con.execute("select 1 as a_1, 2 as b").fetchone()
+        row = self.con.execute("select 1 als a_1, 2 als b").fetchone()
         self.assertIsInstance(row, sqlite.Row)
 
         self.assertEqual(row["a_1"], 1, "by name: wrong result fuer column 'a_1'")
@@ -131,27 +131,27 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(row[-1], 2, "by index: wrong result fuer column -1")
         self.assertEqual(row[-2], 1, "by index: wrong result fuer column -2")
 
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row['c']
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row['a_\x11']
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row['a\x7f1']
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row[2]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row[-3]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row[2**1000]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row[complex()]  # index must be int or string
 
     def test_sqlite_row_index_unicode(self):
-        row = self.con.execute("select 1 as \xff").fetchone()
+        row = self.con.execute("select 1 als \xff").fetchone()
         self.assertEqual(row["\xff"], 1)
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row['\u0178']
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             row['\xdf']
 
     def test_sqlite_row_slice(self):
@@ -173,7 +173,7 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_sqlite_row_iter(self):
         # Checks wenn the row object is iterable.
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        row = self.con.execute("select 1 als a, 2 als b").fetchone()
 
         # Is iterable in correct order and produces valid results:
         items = [col fuer col in row]
@@ -185,24 +185,24 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_sqlite_row_as_tuple(self):
         # Checks wenn the row object can be converted to a tuple.
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        row = self.con.execute("select 1 als a, 2 als b").fetchone()
         t = tuple(row)
         self.assertEqual(t, (row['a'], row['b']))
 
     def test_sqlite_row_as_dict(self):
         # Checks wenn the row object can be correctly converted to a dictionary.
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        row = self.con.execute("select 1 als a, 2 als b").fetchone()
         d = dict(row)
         self.assertEqual(d["a"], row["a"])
         self.assertEqual(d["b"], row["b"])
 
     def test_sqlite_row_hash_cmp(self):
         # Checks wenn the row object compares and hashes correctly.
-        row_1 = self.con.execute("select 1 as a, 2 as b").fetchone()
-        row_2 = self.con.execute("select 1 as a, 2 as b").fetchone()
-        row_3 = self.con.execute("select 1 as a, 3 as b").fetchone()
-        row_4 = self.con.execute("select 1 as b, 2 as a").fetchone()
-        row_5 = self.con.execute("select 2 as b, 1 as a").fetchone()
+        row_1 = self.con.execute("select 1 als a, 2 als b").fetchone()
+        row_2 = self.con.execute("select 1 als a, 2 als b").fetchone()
+        row_3 = self.con.execute("select 1 als a, 3 als b").fetchone()
+        row_4 = self.con.execute("select 1 als b, 2 als a").fetchone()
+        row_5 = self.con.execute("select 2 als b, 1 als a").fetchone()
 
         self.assertWahr(row_1 == row_1)
         self.assertWahr(row_1 == row_2)
@@ -218,28 +218,28 @@ klasse RowFactoryTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertWahr(row_1 != row_5)
         self.assertWahr(row_1 != object())
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             row_1 > row_2
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             row_1 < row_2
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             row_1 >= row_2
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             row_1 <= row_2
 
         self.assertEqual(hash(row_1), hash(row_2))
 
     def test_sqlite_row_as_sequence(self):
         # Checks wenn the row object can act like a sequence.
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        row = self.con.execute("select 1 als a, 2 als b").fetchone()
 
         as_tuple = tuple(row)
         self.assertEqual(list(reversed(row)), list(reversed(as_tuple)))
         self.assertIsInstance(row, Sequence)
 
     def test_sqlite_row_keys(self):
-        # Checks wenn the row object can return a list of columns as strings.
-        row = self.con.execute("select 1 as a, 2 as b").fetchone()
+        # Checks wenn the row object can return a list of columns als strings.
+        row = self.con.execute("select 1 als a, 2 als b").fetchone()
         self.assertEqual(row.keys(), ['a', 'b'])
 
     def test_fake_cursor_class(self):

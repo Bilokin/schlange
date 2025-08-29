@@ -24,7 +24,7 @@ def given(*_args, **_kwargs):
             @functools.wraps(f)
             def test_function(self):
                 fuer example_args, example_kwargs in examples:
-                    with self.subTest(*example_args, **example_kwargs):
+                    mit self.subTest(*example_args, **example_kwargs):
                         f(self, *example_args, **example_kwargs)
 
         sonst:
@@ -32,7 +32,7 @@ def given(*_args, **_kwargs):
             # is applied after @given, it will re-wrap the test to remove the
             # skip decorator.
             test_function = unittest.skip(
-                "Hypothesis required fuer property test with no " +
+                "Hypothesis required fuer property test mit no " +
                 "specified examples"
             )(f)
 

@@ -18,7 +18,7 @@ klasse IoctlTestsTty(unittest.TestCase):
             tty = open("/dev/tty", "rb")
         except OSError:
             raise unittest.SkipTest("Unable to open /dev/tty")
-        with tty:
+        mit tty:
             # Skip wenn another process is in foreground
             r = fcntl.ioctl(tty, TIOCGPGRP, struct.pack("i", 0))
         rpgrp = struct.unpack("i", r)[0]
@@ -30,7 +30,7 @@ klasse IoctlTestsTty(unittest.TestCase):
         # If this process has been put into the background, TIOCGPGRP returns
         # the session ID instead of the process group id.
         ids = (os.getpgrp(), os.getsid(0))
-        with open("/dev/tty", "rb") as tty:
+        mit open("/dev/tty", "rb") als tty:
             # string
             buf = " "*8
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf)
@@ -53,7 +53,7 @@ klasse IoctlTestsTty(unittest.TestCase):
 
     def test_ioctl_mutable_buf(self):
         ids = (os.getpgrp(), os.getsid(0))
-        with open("/dev/tty", "rb") as tty:
+        mit open("/dev/tty", "rb") als tty:
             buf = bytearray(b" "*8)
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf)
             self.assertEqual(r, 0)
@@ -62,7 +62,7 @@ klasse IoctlTestsTty(unittest.TestCase):
 
     def test_ioctl_no_mutate_buf(self):
         ids = (os.getpgrp(), os.getsid(0))
-        with open("/dev/tty", "rb") as tty:
+        mit open("/dev/tty", "rb") als tty:
             buf = bytearray(b" "*8)
             save_buf = bytes(buf)
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, Falsch)
@@ -87,7 +87,7 @@ klasse IoctlTestsTty(unittest.TestCase):
     def _check_ioctl_mutate_len(self, nbytes=Nichts):
         ids = (os.getpgrp(), os.getsid(0))
         buf = self._create_int_buf(nbytes)
-        with open("/dev/tty", "rb") as tty:
+        mit open("/dev/tty", "rb") als tty:
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf)
         rpgrp = buf[0]
         self.assertEqual(r, 0)
@@ -97,7 +97,7 @@ klasse IoctlTestsTty(unittest.TestCase):
         ids = (os.getpgrp(), os.getsid(0))
         buf = self._create_int_buf(nbytes)
         save_buf = bytes(buf)
-        with open("/dev/tty", "rb") as tty:
+        mit open("/dev/tty", "rb") als tty:
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, Falsch)
         self.assertIsInstance(r, bytes)
         self.assertEqual(len(r), len(save_buf))
@@ -107,7 +107,7 @@ klasse IoctlTestsTty(unittest.TestCase):
         self.assertIn(rpgrp, ids)
 
         buf = bytes(buf)
-        with open("/dev/tty", "rb") as tty:
+        mit open("/dev/tty", "rb") als tty:
             r = fcntl.ioctl(tty, termios.TIOCGPGRP, buf, Wahr)
         self.assertIsInstance(r, bytes)
         self.assertEqual(len(r), len(save_buf))
@@ -179,7 +179,7 @@ klasse IoctlTestsPty(unittest.TestCase):
             os.write(wfd, b'def')
             write_finished.set()
 
-        with threading_helper.start_threads([threading.Thread(target=writer)]):
+        mit threading_helper.start_threads([threading.Thread(target=writer)]):
             self.assertEqual(os.read(rfd, 3), b'abc')
             try:
                 try:
@@ -205,11 +205,11 @@ klasse IoctlTestsPty(unittest.TestCase):
     def test_bad_fd(self):
         # gh-134744: Test error handling
         fd = os_helper.make_bad_fd()
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             fcntl.ioctl(fd, fcntl.FICLONE, fd)
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             fcntl.ioctl(fd, fcntl.FICLONE, b'\0' * 10)
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             fcntl.ioctl(fd, fcntl.FICLONE, b'\0' * 2048)
 
 

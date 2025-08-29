@@ -1,6 +1,6 @@
 """Test debugger, coverage 66%
 
-Try to make tests pass with draft bdbx, which may replace bdb in 3.13+.
+Try to make tests pass mit draft bdbx, which may replace bdb in 3.13+.
 """
 
 von idlelib importiere debugger
@@ -97,7 +97,7 @@ klasse DebuggerTest(unittest.TestCase):
         cls.pyshell = Mock()
         cls.pyshell.root = Mock()
         cls.idb = Mock()
-        with patch.object(debugger.Debugger, 'make_gui'):
+        mit patch.object(debugger.Debugger, 'make_gui'):
             cls.debugger = debugger.Debugger(cls.pyshell, cls.idb)
         cls.debugger.root = Mock()
 
@@ -114,12 +114,12 @@ klasse DebuggerTest(unittest.TestCase):
         self.idb.set_quit.assert_called_once()
 
     def test_next(self):
-        with patch.object(self.debugger, 'frame') as frame:
+        mit patch.object(self.debugger, 'frame') als frame:
             self.debugger.next()
             self.idb.set_next.assert_called_once_with(frame)
 
     def test_ret(self):
-        with patch.object(self.debugger, 'frame') as frame:
+        mit patch.object(self.debugger, 'frame') als frame:
             self.debugger.ret()
             self.idb.set_return.assert_called_once_with(frame)
 
@@ -157,13 +157,13 @@ klasse DebuggerTest(unittest.TestCase):
              mock.call('test2.py', 45)])
 
     def test_sync_source_line(self):
-        # Test that .sync_source_line() will set the flist.gotofileline with fixed frame.
+        # Test that .sync_source_line() will set the flist.gotofileline mit fixed frame.
         test_code = compile(TEST_CODE, 'test_sync.py', 'exec')
         test_frame = MockFrame(test_code, 1)
         self.debugger.frame = test_frame
 
         self.debugger.flist = Mock()
-        with patch('idlelib.debugger.os.path.exists', return_value=Wahr):
+        mit patch('idlelib.debugger.os.path.exists', return_value=Wahr):
             self.debugger.sync_source_line()
         self.debugger.flist.gotofileline.assert_called_once_with('test_sync.py', 1)
 
@@ -182,7 +182,7 @@ klasse DebuggerGuiTest(unittest.TestCase):
         cls.pyshell = Mock()
         cls.pyshell.root = root
         cls.idb = Mock()
-# stack tests fail with debugger here.
+# stack tests fail mit debugger here.
 ##        cls.debugger = debugger.Debugger(cls.pyshell, cls.idb)
 ##        cls.debugger.root = root
 ##        # real root needed fuer real make_gui
@@ -222,7 +222,7 @@ klasse DebuggerGuiTest(unittest.TestCase):
         self.idb.get_stack.return_value = ([], 0)
         self.debugger.show_stack()
 
-        # Check that the newly created stackviewer has the test gui as a field.
+        # Check that the newly created stackviewer has the test gui als a field.
         self.assertEqual(self.debugger.stackviewer.gui, self.debugger)
         self.idb.get_stack.assert_called_once_with(test_frame, Nichts)
 
@@ -270,7 +270,7 @@ klasse StackViewerTest(unittest.TestCase):
         # Patch out the file list to monitor it
         self.sv.flist = Mock()
         # Patch out isfile to pretend file exists.
-        with patch('idlelib.debugger.os.path.isfile', return_value=Wahr) as isfile:
+        mit patch('idlelib.debugger.os.path.isfile', return_value=Wahr) als isfile:
             self.sv.show_source(1)
             isfile.assert_called_once_with('test_stackviewer.py')
             self.sv.flist.open.assert_called_once_with('test_stackviewer.py')

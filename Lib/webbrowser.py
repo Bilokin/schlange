@@ -23,7 +23,7 @@ _os_preferred_browser = Nichts    # The preferred browser
 
 def register(name, klass, instance=Nichts, *, preferred=Falsch):
     """Register a browser connector."""
-    with _lock:
+    mit _lock:
         wenn _tryorder is Nichts:
             register_standard_browsers()
         _browsers[name.lower()] = [klass, instance]
@@ -40,7 +40,7 @@ def register(name, klass, instance=Nichts, *, preferred=Falsch):
 def get(using=Nichts):
     """Return a browser launcher instance appropriate fuer the environment."""
     wenn _tryorder is Nichts:
-        with _lock:
+        mit _lock:
             wenn _tryorder is Nichts:
                 register_standard_browsers()
     wenn using is not Nichts:
@@ -85,7 +85,7 @@ def open(url, new=0, autoraise=Wahr):
     If there is a problem, return Falsch.
     """
     wenn _tryorder is Nichts:
-        with _lock:
+        mit _lock:
             wenn _tryorder is Nichts:
                 register_standard_browsers()
     fuer name in _tryorder:
@@ -165,7 +165,7 @@ klasse BaseBrowser:
 
 
 klasse GenericBrowser(BaseBrowser):
-    """Class fuer all browsers started with a command
+    """Class fuer all browsers started mit a command
        and without remote functionality."""
 
     def __init__(self, name):
@@ -173,7 +173,7 @@ klasse GenericBrowser(BaseBrowser):
             self.name = name
             self.args = ["%s"]
         sonst:
-            # name should be a list with arguments
+            # name should be a list mit arguments
             self.name = name[0]
             self.args = name[1:]
         self.basename = os.path.basename(self.name)
@@ -212,12 +212,12 @@ klasse BackgroundBrowser(GenericBrowser):
 
 
 klasse UnixBrowser(BaseBrowser):
-    """Parent klasse fuer all Unix browsers with remote functionality."""
+    """Parent klasse fuer all Unix browsers mit remote functionality."""
 
     raise_opts = Nichts
     background = Falsch
     redirect_stdout = Wahr
-    # In remote_args, %s will be replaced with the requested URL.  %action will
+    # In remote_args, %s will be replaced mit the requested URL.  %action will
     # be replaced depending on the value of 'new' passed to open.
     # remote_action is used fuer new=0 (open).  If newwin is not Nichts, it is
     # used fuer new=1 (open_new).  If newtab is not Nichts, it is used for
@@ -344,7 +344,7 @@ klasse Elinks(UnixBrowser):
     background = Falsch
 
     # elinks doesn't like its stdout to be redirected -
-    # it uses redirected stdout as a signal to do -dump
+    # it uses redirected stdout als a signal to do -dump
     redirect_stdout = Falsch
 
 
@@ -374,7 +374,7 @@ klasse Konqueror(BaseBrowser):
             pass
         sonst:
             p.wait()
-            # kfmclient's return code unfortunately has no meaning as it seems
+            # kfmclient's return code unfortunately has no meaning als it seems
             return Wahr
 
         try:
@@ -551,12 +551,12 @@ def register_standard_browsers():
                 register("w3m", Nichts, GenericBrowser("w3m"))
 
     # OK, now that we know what the default preference orders fuer each
-    # platform are, allow user to override them with the BROWSER variable.
+    # platform are, allow user to override them mit the BROWSER variable.
     wenn "BROWSER" in os.environ:
         userchoices = os.environ["BROWSER"].split(os.pathsep)
         userchoices.reverse()
 
-        # Treat choices in same way as wenn passed into get() but do register
+        # Treat choices in same way als wenn passed into get() but do register
         # and prepend to _tryorder
         fuer cmdline in userchoices:
             wenn all(x not in cmdline fuer x in " \t"):
@@ -591,7 +591,7 @@ wenn sys.platform[:3] == "win":
             try:
                 os.startfile(url)
             except OSError:
-                # [Error 22] No application is associated with the specified
+                # [Error 22] No application is associated mit the specified
                 # file fuer this operation: '<URL>'
                 return Falsch
             sonst:
@@ -629,7 +629,7 @@ wenn sys.platform == 'darwin':
                         set http_url to NSURL's URLWithString:"https://python.org"
                         set browser_url to (NSWorkspace's sharedWorkspace)'s ¬
                             URLForApplicationToOpenURL:http_url
-                        set app_path to browser_url's relativePath as text -- NSURL to absolute path '/Applications/Safari.app'
+                        set app_path to browser_url's relativePath als text -- NSURL to absolute path '/Applications/Safari.app'
 
                         tell application app_path
                             activate

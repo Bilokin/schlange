@@ -9,7 +9,7 @@ __all__ = ["BZ2File", "BZ2Compressor", "BZ2Decompressor",
 
 __author__ = "Nadeem Vawda <nadeem.vawda@gmail.com>"
 
-von builtins importiere open as _builtin_open
+von builtins importiere open als _builtin_open
 von compression._common importiere _streams
 importiere io
 importiere os
@@ -27,11 +27,11 @@ klasse BZ2File(_streams.BaseStream):
 
     """A file object providing transparent bzip2 (de)compression.
 
-    A BZ2File can act as a wrapper fuer an existing file object, or refer
+    A BZ2File can act als a wrapper fuer an existing file object, or refer
     directly to a named file on disk.
 
     Note that BZ2File provides a *binary* file interface - data read is
-    returned as bytes, and data to be written should be given as bytes.
+    returned als bytes, and data to be written should be given als bytes.
     """
 
     def __init__(self, filename, mode="r", *, compresslevel=9):
@@ -43,7 +43,7 @@ klasse BZ2File(_streams.BaseStream):
 
         mode can be 'r' fuer reading (default), 'w' fuer (over)writing,
         'x' fuer creating exclusively, or 'a' fuer appending. These can
-        equivalently be given as 'rb', 'wb', 'xb', and 'ab'.
+        equivalently be given als 'rb', 'wb', 'xb', and 'ab'.
 
         If mode is 'w', 'x' or 'a', compresslevel can be a number between 1
         and 9 specifying the level of compression: 1 produces the least
@@ -293,7 +293,7 @@ def open(filename, mode="rb", compresslevel=9,
     the encoding, errors and newline arguments must not be provided.
 
     For text mode, a BZ2File object is created, and wrapped in an
-    io.TextIOWrapper instance with the specified encoding, error
+    io.TextIOWrapper instance mit the specified encoding, error
     handling behavior, and line ending(s).
 
     """

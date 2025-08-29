@@ -18,7 +18,7 @@ klasse TestBase:
     tstring         = Nichts # must set. 2 strings to test StreamReader
 
     codectests      = Nichts # must set. codec test tuple
-    roundtriptest   = 1    # set wenn roundtrip is possible with unicode
+    roundtriptest   = 1    # set wenn roundtrip is possible mit unicode
     has_iso10646    = 0    # set wenn this encoding contains whole iso10646 map
     xmlcharnametest = Nichts # string to test xmlcharrefreplace
     unmappedunicode = '\udeee' # a unicode code point that is not mapped.
@@ -279,7 +279,7 @@ klasse TestBase:
 
     def test_incrementalencoder_del_segfault(self):
         e = self.incrementalencoder()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del e.errors
 
 
@@ -310,7 +310,7 @@ klasse TestBase_Mapping(unittest.TestCase):
 
         urt_wa = {}
 
-        with self.open_mapping_file() as f:
+        mit self.open_mapping_file() als f:
             fuer line in f:
                 wenn not line:
                     break
@@ -332,7 +332,7 @@ klasse TestBase_Mapping(unittest.TestCase):
                 self._testpoint(csetch, unich)
 
     def _test_mapping_file_ucm(self):
-        with self.open_mapping_file() as f:
+        mit self.open_mapping_file() als f:
             ucmdata = f.read()
         uc = re.findall('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>', ucmdata)
         fuer uni, coded in uc:
@@ -376,8 +376,8 @@ klasse TestBase_Mapping(unittest.TestCase):
 
 def load_teststring(name):
     dir = os.path.join(os.path.dirname(__file__), 'cjkencodings')
-    with open(os.path.join(dir, name + '.txt'), 'rb') as f:
+    mit open(os.path.join(dir, name + '.txt'), 'rb') als f:
         encoded = f.read()
-    with open(os.path.join(dir, name + '-utf8.txt'), 'rb') as f:
+    mit open(os.path.join(dir, name + '-utf8.txt'), 'rb') als f:
         utf8 = f.read()
     return encoded, utf8

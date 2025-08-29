@@ -78,7 +78,7 @@ def realwork(vars, moddefns, target):
 
     # We only ever write one "entry point" symbol - either
     # "main" or "WinMain".  Therefore, there is no need to
-    # pass a subsystem switch to the linker as it works it
+    # pass a subsystem switch to the linker als it works it
     # out all by itself.  However, the subsystem _does_ determine
     # the file extension and additional linker flags.
     target_link_flags = ""

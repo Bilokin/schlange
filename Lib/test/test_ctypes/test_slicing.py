@@ -48,19 +48,19 @@ klasse SlicesTestCase(unittest.TestCase):
         self.assertEqual(a[:], b)
 
         # TypeError: int expected instead of str instance
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a[:5] = "abcde"
 
         # TypeError: int expected instead of str instance
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a[:5] =  ["a", "b", "c", "d", "e"]
 
         # TypeError: int expected instead of float instance
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a[:5] = [1, 2, 3, 4, 3.14]
 
         # ValueError: Can only assign sequence of same size
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             a[:5] = range(32)
 
     def test_char_ptr(self):
@@ -78,17 +78,17 @@ klasse SlicesTestCase(unittest.TestCase):
         self.assertEqual(res[0:-1:-1], s[0::-1])
 
         # get items
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             res[:]
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             res[0:]
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             res[:5:-1]
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             res[-5:]
 
         # set items
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             res[:5] = "abcde"
 
         dll.my_free(res)
@@ -145,7 +145,7 @@ klasse SlicesTestCase(unittest.TestCase):
         self.assertEqual(res[len(s)-1:-1:-1], s[::-1])
         self.assertEqual(res[len(s)-1:5:-7], s[:5:-7])
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             res[:5] = "abcde"
         dll.my_free(res)
 

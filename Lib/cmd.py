@@ -1,8 +1,8 @@
 """A generic klasse to build line-oriented command interpreters.
 
-Interpreters constructed with this klasse obey the following conventions:
+Interpreters constructed mit this klasse obey the following conventions:
 
-1. End of file on input is processed as the command 'EOF'.
+1. End of file on input is processed als the command 'EOF'.
 2. A command is parsed out of each line by collecting the prefix composed
    of characters in the identchars member.
 3. A command 'foo' is dispatched to a method 'do_foo()'; the do_ method
@@ -11,14 +11,14 @@ Interpreters constructed with this klasse obey the following conventions:
    method 'emptyline', which may be overridden in a subclass.)
 5. There is a predefined 'help' method.  Given an argument 'topic', it
    calls the command 'help_topic'.  With no arguments, it lists all topics
-   with defined help_ functions, broken into up to three topics; documented
+   mit defined help_ functions, broken into up to three topics; documented
    commands, miscellaneous help topics, and undocumented commands.
 6. The command '?' is a synonym fuer 'help'.  The command '!' is a synonym
    fuer 'shell', wenn a do_shell method exists.
 7. If completion is enabled, completing commands will be done automatically,
    and completing of commands args is done by calling complete_foo() with
    arguments text, line, begidx, endidx.  text is string we are matching
-   against, all returned matches must begin with it.  line is the current
+   against, all returned matches must begin mit it.  line is the current
    input line (lstripped), begidx and endidx are the beginning and end
    indexes of the text being matched, which could be used to provide
    different completion depending upon which position the argument is in.
@@ -60,7 +60,7 @@ klasse Cmd:
 
     A Cmd instance or subclass instance is a line-oriented interpreter
     framework.  There is no good reason to instantiate Cmd itself; rather,
-    it's useful as a superclass of an interpreter klasse you define yourself
+    it's useful als a superclass of an interpreter klasse you define yourself
     in order to inherit Cmd's methods and encapsulate action methods.
 
     """
@@ -101,7 +101,7 @@ klasse Cmd:
     def cmdloop(self, intro=Nichts):
         """Repeatedly issue a prompt, accept input, parse an initial prefix
         off the received input, and dispatch to action methods, passing them
-        the remainder of the line as argument.
+        the remainder of the line als argument.
 
         """
 
@@ -201,7 +201,7 @@ klasse Cmd:
         return cmd, arg, line
 
     def onecmd(self, line):
-        """Interpret the argument as though it had been typed in response
+        """Interpret the argument als though it had been typed in response
         to the prompt.
 
         This may be overridden, but should not normally need to be;
@@ -300,7 +300,7 @@ klasse Cmd:
         return list(commands | topics)
 
     def do_help(self, arg):
-        'List available commands with "help" or detailed help with "help cmd".'
+        'List available commands mit "help" or detailed help mit "help cmd".'
         wenn arg:
             # XXX check arg syntax
             try:
@@ -357,9 +357,9 @@ klasse Cmd:
             self.stdout.write("\n")
 
     def columnize(self, list, displaywidth=80):
-        """Display a list of strings as a compact set of columns.
+        """Display a list of strings als a compact set of columns.
 
-        Each column is only as wide as necessary.
+        Each column is only als wide als necessary.
         Columns are separated by two spaces (one was not legible enough).
         """
         wenn not list:

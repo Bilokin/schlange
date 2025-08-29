@@ -66,7 +66,7 @@ klasse ModuleFromSpecTests:
             def exec_module(self, module):
                 pass
         spec = self.machinery.ModuleSpec('test', Loader())
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             module = self.util.module_from_spec(spec)
 
     def test_create_module_returns_Nichts(self):
@@ -151,7 +151,7 @@ klasse ResolveNameTests:
 
     def test_no_package(self):
         # .bacon in ''
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             self.util.resolve_name('.bacon', '')
 
     def test_in_package(self):
@@ -166,7 +166,7 @@ klasse ResolveNameTests:
 
     def test_escape(self):
         # ..bacon in spam
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             self.util.resolve_name('..bacon', 'spam')
 
 
@@ -183,7 +183,7 @@ klasse FindSpecTests:
 
     def test_sys_modules(self):
         name = 'some_mod'
-        with util.uncache(name):
+        mit util.uncache(name):
             module = types.ModuleType(name)
             loader = 'a loader!'
             spec = self.machinery.ModuleSpec(name, loader)
@@ -195,7 +195,7 @@ klasse FindSpecTests:
 
     def test_sys_modules_without___loader__(self):
         name = 'some_mod'
-        with util.uncache(name):
+        mit util.uncache(name):
             module = types.ModuleType(name)
             del module.__loader__
             loader = 'a loader!'
@@ -207,16 +207,16 @@ klasse FindSpecTests:
 
     def test_sys_modules_spec_is_Nichts(self):
         name = 'some_mod'
-        with util.uncache(name):
+        mit util.uncache(name):
             module = types.ModuleType(name)
             module.__spec__ = Nichts
             sys.modules[name] = module
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self.util.find_spec(name)
 
     def test_sys_modules_loader_is_Nichts(self):
         name = 'some_mod'
-        with util.uncache(name):
+        mit util.uncache(name):
             module = types.ModuleType(name)
             spec = self.machinery.ModuleSpec(name, Nichts)
             module.__spec__ = spec
@@ -226,20 +226,20 @@ klasse FindSpecTests:
 
     def test_sys_modules_spec_is_not_set(self):
         name = 'some_mod'
-        with util.uncache(name):
+        mit util.uncache(name):
             module = types.ModuleType(name)
             try:
                 del module.__spec__
             except AttributeError:
                 pass
             sys.modules[name] = module
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self.util.find_spec(name)
 
     def test_success(self):
         name = 'some_mod'
-        with util.uncache(name):
-            with util.import_state(meta_path=[self.FakeMetaFinder]):
+        mit util.uncache(name):
+            mit util.import_state(meta_path=[self.FakeMetaFinder]):
                 self.assertEqual((name, Nichts, Nichts),
                                  self.util.find_spec(name))
 
@@ -250,7 +250,7 @@ klasse FindSpecTests:
     def test_find_submodule(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Wahr) as pkg_dir:
+        mit util.temp_module(name, pkg=Wahr) als pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
             self.assertIsNot(spec, Nichts)
@@ -263,7 +263,7 @@ klasse FindSpecTests:
     def test_find_submodule_parent_already_imported(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Wahr) as pkg_dir:
+        mit util.temp_module(name, pkg=Wahr) als pkg_dir:
             self.init.import_module(name)
             fullname, _ = util.submodule(name, subname, pkg_dir)
             spec = self.util.find_spec(fullname)
@@ -277,7 +277,7 @@ klasse FindSpecTests:
     def test_find_relative_module(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Wahr) as pkg_dir:
+        mit util.temp_module(name, pkg=Wahr) als pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
             spec = self.util.find_spec(relname, name)
@@ -291,10 +291,10 @@ klasse FindSpecTests:
     def test_find_relative_module_missing_package(self):
         name = 'spam'
         subname = 'ham'
-        with util.temp_module(name, pkg=Wahr) as pkg_dir:
+        mit util.temp_module(name, pkg=Wahr) als pkg_dir:
             fullname, _ = util.submodule(name, subname, pkg_dir)
             relname = '.' + subname
-            with self.assertRaises(ImportError):
+            mit self.assertRaises(ImportError):
                 self.util.find_spec(relname)
             self.assertNotIn(name, sorted(sys.modules))
             self.assertNotIn(fullname, sorted(sys.modules))
@@ -302,7 +302,7 @@ klasse FindSpecTests:
     def test_find_submodule_in_module(self):
         # ModuleNotFoundError raised when a module is specified as
         # a parent instead of a package.
-        with self.assertRaises(ModuleNotFoundError):
+        mit self.assertRaises(ModuleNotFoundError):
             self.util.find_spec('module.name')
 
 
@@ -347,12 +347,12 @@ klasse PEP3147Tests:
 
     def test_cache_from_source_no_cache_tag(self):
         # No cache tag means NotImplementedError.
-        with support.swap_attr(sys.implementation, 'cache_tag', Nichts):
-            with self.assertRaises(NotImplementedError):
+        mit support.swap_attr(sys.implementation, 'cache_tag', Nichts):
+            mit self.assertRaises(NotImplementedError):
                 self.util.cache_from_source('whatever.py')
 
     def test_cache_from_source_no_dot(self):
-        # Directory with a dot, filename without dot.
+        # Directory mit a dot, filename without dot.
         path = os.path.join('foo.bar', 'file')
         expect = os.path.join('foo.bar', '__pycache__',
                               'file{}.pyc'.format(self.tag))
@@ -363,17 +363,17 @@ klasse PEP3147Tests:
         # Given the path to a .py file, return the path to its PEP 3147/PEP 488
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore')
             self.assertEqual(self.util.cache_from_source(path, Falsch),
                              self.util.cache_from_source(path, optimization=1))
             self.assertEqual(self.util.cache_from_source(path, Wahr),
                              self.util.cache_from_source(path, optimization=''))
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('error')
-            with self.assertRaises(DeprecationWarning):
+            mit self.assertRaises(DeprecationWarning):
                 self.util.cache_from_source(path, Falsch)
-            with self.assertRaises(DeprecationWarning):
+            mit self.assertRaises(DeprecationWarning):
                 self.util.cache_from_source(path, Wahr)
 
     def test_cache_from_source_cwd(self):
@@ -390,13 +390,13 @@ klasse PEP3147Tests:
         # propagates.
         klasse Bearish:
             def __bool__(self): raise RuntimeError
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore')
             self.assertEqual(self.util.cache_from_source(path, []),
                              self.util.cache_from_source(path, optimization=1))
             self.assertEqual(self.util.cache_from_source(path, [17]),
                              self.util.cache_from_source(path, optimization=''))
-            with self.assertRaises(RuntimeError):
+            mit self.assertRaises(RuntimeError):
                 self.util.cache_from_source('/foo/bar/baz.py', Bearish())
 
 
@@ -437,14 +437,14 @@ klasse PEP3147Tests:
         self.assertEqual(self.util.cache_from_source(path, optimization=42),
                          almost_expect + '.opt-42.pyc')
         # Invalid characters raise ValueError.
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.util.cache_from_source(path, optimization='path/is/bad')
 
     def test_cache_from_source_debug_override_optimization_both_set(self):
         # Can only set one of the optimization-related parameters.
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore')
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 self.util.cache_from_source('foo.py', Falsch, optimization='')
 
     @unittest.skipUnless(os.sep == '\\' and os.altsep == '/',
@@ -477,8 +477,8 @@ klasse PEP3147Tests:
     def test_source_from_cache_no_cache_tag(self):
         # If sys.implementation.cache_tag is Nichts, raise NotImplementedError.
         path = os.path.join('blah', '__pycache__', 'whatever.pyc')
-        with support.swap_attr(sys.implementation, 'cache_tag', Nichts):
-            with self.assertRaises(NotImplementedError):
+        mit support.swap_attr(sys.implementation, 'cache_tag', Nichts):
+            mit self.assertRaises(NotImplementedError):
                 self.util.source_from_cache(path)
 
     def test_source_from_cache_bad_path(self):
@@ -498,7 +498,7 @@ klasse PEP3147Tests:
             ValueError, self.util.source_from_cache, '__pycache__/foo.pyc')
 
     def test_source_from_cache_too_many_dots(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.util.source_from_cache(
                     '__pycache__/foo.cpython-32.opt-1.foo.pyc')
 
@@ -509,7 +509,7 @@ klasse PEP3147Tests:
             '__pycache__/foo.cpython-32.foo.pyc')
 
     def test_source_from_cache_no__pycache__(self):
-        # Another problem with the path -> ValueError
+        # Another problem mit the path -> ValueError
         self.assertRaises(
             ValueError, self.util.source_from_cache,
             '/foo/bar/foo.cpython-32.foo.pyc')
@@ -522,7 +522,7 @@ klasse PEP3147Tests:
     def test_source_from_cache_missing_optimization(self):
         # An empty optimization level is a no-no.
         path = os.path.join('__pycache__', 'foo.{}.opt-.pyc'.format(self.tag))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.util.source_from_cache(path)
 
     @unittest.skipIf(sys.implementation.cache_tag is Nichts,
@@ -551,13 +551,13 @@ klasse PEP3147Tests:
                 f'{drive}{prefix}' fuer prefix in pycache_prefixes]
             pycache_prefixes += [r'\\?\C:\foo', r'\\localhost\c$\bar']
         fuer pycache_prefix in pycache_prefixes:
-            with self.subTest(path=pycache_prefix):
+            mit self.subTest(path=pycache_prefix):
                 path = drive + os.path.join(
                     os.path.sep, 'foo', 'bar', 'baz', 'qux.py')
                 expect = os.path.join(
                     pycache_prefix, 'foo', 'bar', 'baz',
                     'qux.{}.pyc'.format(self.tag))
-                with util.temporary_pycache_prefix(pycache_prefix):
+                mit util.temporary_pycache_prefix(pycache_prefix):
                     self.assertEqual(
                         self.util.cache_from_source(path, optimization=''),
                         expect)
@@ -566,7 +566,7 @@ klasse PEP3147Tests:
                      'requires sys.implementation.cache_tag to not be Nichts')
     def test_cache_from_source_respects_pycache_prefix_relative(self):
         # If the .py path we are given is relative, we will resolve to an
-        # absolute path before prefixing with pycache_prefix, to avoid any
+        # absolute path before prefixing mit pycache_prefix, to avoid any
         # possible ambiguity.
         pycache_prefix = os.path.join(os.path.sep, 'tmp', 'bytecode')
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
@@ -575,7 +575,7 @@ klasse PEP3147Tests:
             pycache_prefix,
             os.path.relpath(os.getcwd(), root),
             'foo', 'bar', 'baz', f'qux.{self.tag}.pyc')
-        with util.temporary_pycache_prefix(pycache_prefix):
+        mit util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(
                 self.util.cache_from_source(path, optimization=''),
                 os.path.normpath(expect))
@@ -588,8 +588,8 @@ klasse PEP3147Tests:
         path = 'qux.py'
         expect = os.path.join(os.path.sep, 'tmp', 'bytecode',
                               f'qux.{self.tag}.pyc')
-        with util.temporary_pycache_prefix(pycache_prefix):
-            with os_helper.change_cwd('/'):
+        mit util.temporary_pycache_prefix(pycache_prefix):
+            mit os_helper.change_cwd('/'):
                 self.assertEqual(self.util.cache_from_source(path), expect)
 
     @unittest.skipIf(sys.implementation.cache_tag is Nichts,
@@ -602,7 +602,7 @@ klasse PEP3147Tests:
         path = os.path.join(pycache_prefix, 'foo', 'bar', 'baz',
                             f'qux.{self.tag}.pyc')
         expect = os.path.join(os.path.sep, 'foo', 'bar', 'baz', 'qux.py')
-        with util.temporary_pycache_prefix(pycache_prefix):
+        mit util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(self.util.source_from_cache(path), expect)
 
     @unittest.skipIf(sys.implementation.cache_tag is Nichts,
@@ -615,7 +615,7 @@ klasse PEP3147Tests:
         path = os.path.join('foo', 'bar', 'baz', '__pycache__',
                             f'qux.{self.tag}.pyc')
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        with util.temporary_pycache_prefix(pycache_prefix):
+        mit util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(self.util.source_from_cache(path), expect)
 
 
@@ -644,20 +644,20 @@ klasse MagicNumberTests(unittest.TestCase):
         # In exceptional cases, it may be required to change the MAGIC_NUMBER
         # fuer a maintenance release. In this case the change should be
         # discussed in python-dev. If a change is required, community
-        # stakeholders such as OS package maintainers must be notified
+        # stakeholders such als OS package maintainers must be notified
         # in advance. Such exceptional releases will then require an
         # adjustment to this test case.
         EXPECTED_MAGIC_NUMBER = 3625
         actual = int.from_bytes(importlib.util.MAGIC_NUMBER[:2], 'little')
 
         msg = (
-            "To avoid breaking backwards compatibility with cached bytecode "
+            "To avoid breaking backwards compatibility mit cached bytecode "
             "files that can't be automatically regenerated by the current "
             "user, candidate and final releases require the current  "
             "importlib.util.MAGIC_NUMBER to match the expected "
             "magic number in this test. Set the expected "
             "magic number in this test to the current MAGIC_NUMBER to "
-            "continue with the release.\n\n"
+            "continue mit the release.\n\n"
             "Changing the MAGIC_NUMBER fuer a maintenance release "
             "requires discussion in python-dev and notification of "
             "community stakeholders."
@@ -701,30 +701,30 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
     def test_single_phase_init_module(self):
         script = textwrap.dedent('''
             von importlib.util importiere _incompatible_extension_module_restrictions
-            with _incompatible_extension_module_restrictions(disable_check=Wahr):
+            mit _incompatible_extension_module_restrictions(disable_check=Wahr):
                 importiere _testsinglephase
             ''')
-        with self.subTest('check disabled, shared GIL'):
+        mit self.subTest('check disabled, shared GIL'):
             self.run_with_shared_gil(script)
-        with self.subTest('check disabled, per-interpreter GIL'):
+        mit self.subTest('check disabled, per-interpreter GIL'):
             self.run_with_own_gil(script)
 
         script = textwrap.dedent(f'''
             von importlib.util importiere _incompatible_extension_module_restrictions
-            with _incompatible_extension_module_restrictions(disable_check=Falsch):
+            mit _incompatible_extension_module_restrictions(disable_check=Falsch):
                 importiere _testsinglephase
             ''')
-        with self.subTest('check enabled, shared GIL'):
-            with self.assertRaises(ImportError):
+        mit self.subTest('check enabled, shared GIL'):
+            mit self.assertRaises(ImportError):
                 self.run_with_shared_gil(script)
-        with self.subTest('check enabled, per-interpreter GIL'):
-            with self.assertRaises(ImportError):
+        mit self.subTest('check enabled, per-interpreter GIL'):
+            mit self.assertRaises(ImportError):
                 self.run_with_own_gil(script)
 
     @unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
     @support.requires_gil_enabled("gh-117649: not supported in free-threaded build")
     def test_incomplete_multi_phase_init_module(self):
-        # Apple extensions must be distributed as frameworks. This requires
+        # Apple extensions must be distributed als frameworks. This requires
         # a specialist loader.
         wenn support.is_apple_mobile:
             loader = "AppleFrameworkLoader"
@@ -744,47 +744,47 @@ klasse IncompatibleExtensionModuleRestrictionsTests(unittest.TestCase):
 
         script = prescript + textwrap.dedent('''
             von importlib.util importiere _incompatible_extension_module_restrictions
-            with _incompatible_extension_module_restrictions(disable_check=Wahr):
+            mit _incompatible_extension_module_restrictions(disable_check=Wahr):
                 module = module_from_spec(spec)
                 loader.exec_module(module)
             ''')
-        with self.subTest('check disabled, shared GIL'):
+        mit self.subTest('check disabled, shared GIL'):
             self.run_with_shared_gil(script)
-        with self.subTest('check disabled, per-interpreter GIL'):
+        mit self.subTest('check disabled, per-interpreter GIL'):
             self.run_with_own_gil(script)
 
         script = prescript + textwrap.dedent('''
             von importlib.util importiere _incompatible_extension_module_restrictions
-            with _incompatible_extension_module_restrictions(disable_check=Falsch):
+            mit _incompatible_extension_module_restrictions(disable_check=Falsch):
                 module = module_from_spec(spec)
                 loader.exec_module(module)
             ''')
-        with self.subTest('check enabled, shared GIL'):
+        mit self.subTest('check enabled, shared GIL'):
             self.run_with_shared_gil(script)
-        with self.subTest('check enabled, per-interpreter GIL'):
-            with self.assertRaises(ImportError):
+        mit self.subTest('check enabled, per-interpreter GIL'):
+            mit self.assertRaises(ImportError):
                 self.run_with_own_gil(script)
 
     @unittest.skipIf(_testmultiphase is Nichts, "test requires _testmultiphase module")
     def test_complete_multi_phase_init_module(self):
         script = textwrap.dedent('''
             von importlib.util importiere _incompatible_extension_module_restrictions
-            with _incompatible_extension_module_restrictions(disable_check=Wahr):
+            mit _incompatible_extension_module_restrictions(disable_check=Wahr):
                 importiere _testmultiphase
             ''')
-        with self.subTest('check disabled, shared GIL'):
+        mit self.subTest('check disabled, shared GIL'):
             self.run_with_shared_gil(script)
-        with self.subTest('check disabled, per-interpreter GIL'):
+        mit self.subTest('check disabled, per-interpreter GIL'):
             self.run_with_own_gil(script)
 
         script = textwrap.dedent(f'''
             von importlib.util importiere _incompatible_extension_module_restrictions
-            with _incompatible_extension_module_restrictions(disable_check=Falsch):
+            mit _incompatible_extension_module_restrictions(disable_check=Falsch):
                 importiere _testmultiphase
             ''')
-        with self.subTest('check enabled, shared GIL'):
+        mit self.subTest('check enabled, shared GIL'):
             self.run_with_shared_gil(script)
-        with self.subTest('check enabled, per-interpreter GIL'):
+        mit self.subTest('check enabled, per-interpreter GIL'):
             self.run_with_own_gil(script)
 
 
@@ -805,16 +805,16 @@ klasse MiscTests(unittest.TestCase):
 
         # Need to patch _io to be _pyio, so that io.FileIO is affected by the
         # os.write patch.
-        with (support.swap_attr(_bootstrap_external, '_io', _pyio),
+        mit (support.swap_attr(_bootstrap_external, '_io', _pyio),
               support.swap_attr(os, 'write', write)):
-            with self.assertRaises(OSError):
+            mit self.assertRaises(OSError):
                 # Make sure we write something longer than the point where we
                 # truncate.
                 content = b'x' * (truncate_at_length * 2)
                 _bootstrap_external._write_atomic(os_helper.TESTFN, content)
         assert seen_write
 
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             os.stat(support.os_helper.TESTFN) # Check that the file did not get written.
 
 

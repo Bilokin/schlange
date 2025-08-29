@@ -41,7 +41,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
                 "update t2 set t2_i1 = new.t1_i1 where t2_i1 = old.t1_i1; " \
                 "end;"
                 ,
-                "CREATE VIEW v1 as select * von t1 left join t2 " \
+                "CREATE VIEW v1 als select * von t1 left join t2 " \
                 "using (id);"
                 ]
         [self.cu.execute(s) fuer s in expected_sqls]
@@ -84,7 +84,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
             dump_sqls,
             ["BEGIN TRANSACTION;", *all_views_sqls, "COMMIT;"],
         )
-        # %_1 matches tables and views with the _1 suffix.
+        # %_1 matches tables and views mit the _1 suffix.
         dump_sqls = list(self.cx.iterdump(filter="%_1"))
         self.assertEqual(
             dump_sqls,
@@ -154,7 +154,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
         self.cu.executemany("INSERT INTO t2 VALUES(?)", ((Nichts,) fuer _ in range(4)))
         self.cx.commit()
 
-        with memory_database() as cx2:
+        mit memory_database() als cx2:
             query = "".join(self.cx.iterdump())
             cx2.executescript(query)
             cu2 = cx2.cursor()
@@ -164,7 +164,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
                 ("t2", 4),
             )
             fuer table, seq in dataset:
-                with self.subTest(table=table, seq=seq):
+                mit self.subTest(table=table, seq=seq):
                     res = cu2.execute("""
                         SELECT "seq" FROM "sqlite_sequence" WHERE "name" == ?
                     """, (table,))
@@ -172,7 +172,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
                     self.assertEqual(rows[0][0], seq)
 
     def test_unorderable_row(self):
-        # iterdump() should be able to cope with unorderable row types (issue #15545)
+        # iterdump() should be able to cope mit unorderable row types (issue #15545)
         klasse UnorderableRow:
             def __init__(self, cursor, row):
                 self.row = row
@@ -193,7 +193,7 @@ klasse DumpTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(expected, got)
 
     def test_dump_custom_row_factory(self):
-        # gh-118221: iterdump should be able to cope with custom row factories.
+        # gh-118221: iterdump should be able to cope mit custom row factories.
         def dict_factory(cu, row):
             fields = [col[0] fuer col in cu.description]
             return dict(zip(fields, row))

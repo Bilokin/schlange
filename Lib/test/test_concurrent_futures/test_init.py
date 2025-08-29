@@ -78,14 +78,14 @@ klasse FailingInitializerMixin(ExecutorMixin):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_initializer(self):
-        with self._assert_logged('ValueError: error in initializer'):
+        mit self._assert_logged('ValueError: error in initializer'):
             try:
                 future = self.executor.submit(get_init_status)
             except BrokenExecutor:
                 # Perhaps the executor is already broken
                 pass
             sonst:
-                with self.assertRaises(BrokenExecutor):
+                mit self.assertRaises(BrokenExecutor):
                     future.result()
 
             # At some point, the executor should break
@@ -95,7 +95,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
                     break
 
             # ... and von this point submit() is guaranteed to fail
-            with self.assertRaises(BrokenExecutor):
+            mit self.assertRaises(BrokenExecutor):
                 self.executor.submit(get_init_status)
 
     @contextlib.contextmanager
@@ -109,7 +109,7 @@ klasse FailingInitializerMixin(ExecutorMixin):
             except queue.Empty:
                 pass
         sonst:
-            with self.assertLogs('concurrent.futures', 'CRITICAL') as cm:
+            mit self.assertLogs('concurrent.futures', 'CRITICAL') als cm:
                 yield
             output = cm.output
         self.assertWahr(any(msg in line fuer line in output),

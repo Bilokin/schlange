@@ -153,14 +153,14 @@ klasse ModuleFinder:
 
     def run_script(self, pathname):
         self.msg(2, "run_script", pathname)
-        with io.open_code(pathname) as fp:
+        mit io.open_code(pathname) als fp:
             stuff = ("", "rb", _PY_SOURCE)
             self.load_module('__main__', fp, pathname, stuff)
 
     def load_file(self, pathname):
         dir, name = os.path.split(pathname)
         name, ext = os.path.splitext(name)
-        with io.open_code(pathname) as fp:
+        mit io.open_code(pathname) als fp:
             stuff = (ext, "rb", _PY_SOURCE)
             self.load_module(name, fp, pathname, stuff)
 
@@ -339,7 +339,7 @@ klasse ModuleFinder:
             try:
                 data = fp.read()
                 importlib._bootstrap_external._classify_pyc(data, fqname, {})
-            except ImportError as exc:
+            except ImportError als exc:
                 self.msgout(2, "raise ImportError: " + str(exc), pathname)
                 raise
             co = marshal.loads(memoryview(data)[16:])
@@ -370,10 +370,10 @@ klasse ModuleFinder:
             return
         try:
             self.import_hook(name, caller, level=level)
-        except ImportError as msg:
+        except ImportError als msg:
             self.msg(2, "ImportError:", str(msg))
             self._add_badmodule(name, caller)
-        except SyntaxError as msg:
+        except SyntaxError als msg:
             self.msg(2, "SyntaxError:", str(msg))
             self._add_badmodule(name, caller)
         sonst:
@@ -385,7 +385,7 @@ klasse ModuleFinder:
                         continue
                     try:
                         self.import_hook(name, caller, [sub], level=level)
-                    except ImportError as msg:
+                    except ImportError als msg:
                         self.msg(2, "ImportError:", str(msg))
                         self._add_badmodule(fullname, caller)
 
@@ -494,8 +494,8 @@ klasse ModuleFinder:
         return _find_module(name, path)
 
     def report(self):
-        """Print a report to stdout, listing the found modules with their
-        paths, as well as modules that are missing, or seem to be missing.
+        """Print a report to stdout, listing the found modules mit their
+        paths, als well als modules that are missing, or seem to be missing.
         """
         drucke()
         drucke("  %-25s %s" % ("Name", "File"))
@@ -536,13 +536,13 @@ klasse ModuleFinder:
         return missing + maybe
 
     def any_missing_maybe(self):
-        """Return two lists, one with modules that are certainly missing
-        and one with modules that *may* be missing. The latter names could
+        """Return two lists, one mit modules that are certainly missing
+        and one mit modules that *may* be missing. The latter names could
         either be submodules *or* just global names in the package.
 
         The reason it can't always be determined is that it's impossible to
         tell which names are imported when "from module importiere *" is done
-        with an extension module, short of actually importing it.
+        mit an extension module, short of actually importing it.
         """
         missing = []
         maybe = []
@@ -610,7 +610,7 @@ def test():
     importiere getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
-    except getopt.error as msg:
+    except getopt.error als msg:
         drucke(msg)
         return
 

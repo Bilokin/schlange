@@ -18,7 +18,7 @@ klasse TestDefault:
                 return collections
             return [...]
 
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             self.dumps(type, default=default)
         self.assertEqual(cm.exception.__notes__,
                          ['when serializing ellipsis object',

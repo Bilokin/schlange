@@ -78,7 +78,7 @@ klasse TestTranforms(BytecodeTestCase):
         max_bytecode = max(t[0] fuer t in lnotab)
         self.assertGreaterEqual(min_bytecode, 0)
         self.assertLess(max_bytecode, len(code.co_code))
-        # This could conceivably test more (and probably should, as there
+        # This could conceivably test more (and probably should, als there
         # aren't very many tests of lnotab), wenn peepholer wasn't scheduled
         # to be replaced anyway.
 
@@ -99,7 +99,7 @@ klasse TestTranforms(BytecodeTestCase):
             ('not a in b', 'CONTAINS_OP', 1,),
             ('not a not in b', 'CONTAINS_OP', 0,),
             ):
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 code = compile(line, '', 'single')
                 self.assertInBytecode(code, cmp_op, invert)
                 self.check_lnotab(code)
@@ -118,7 +118,7 @@ klasse TestTranforms(BytecodeTestCase):
             return x
 
         fuer func, elem in ((f, Nichts), (g, Wahr), (h, Falsch)):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 self.assertNotInBytecode(func, 'LOAD_GLOBAL')
                 self.assertInBytecode(func, 'LOAD_CONST', elem)
                 self.check_lnotab(func)
@@ -149,7 +149,7 @@ klasse TestTranforms(BytecodeTestCase):
             ('a, b = a, b', 'SWAP',),
             ('a, b, c = a, b, c', 'SWAP',),
             ):
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 code = compile(line,'','single')
                 self.assertInBytecode(code, elem)
                 self.assertNotInBytecode(code, 'BUILD_TUPLE')
@@ -164,7 +164,7 @@ klasse TestTranforms(BytecodeTestCase):
             ('(Nichts, 1, Nichts)', (Nichts, 1, Nichts)),
             ('((1, 2), 3, 4)', ((1, 2), 3, 4)),
             ):
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 code = compile(line,'','single')
                 self.assertInBytecode(code, 'LOAD_CONST', elem)
                 self.assertNotInBytecode(code, 'BUILD_TUPLE')
@@ -199,13 +199,13 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_constant_folding_lists_of_constants(self):
         fuer line, elem in (
-            # in/not in constants with BUILD_LIST should be folded to a tuple:
+            # in/not in constants mit BUILD_LIST should be folded to a tuple:
             ('a in [1,2,3]', (1, 2, 3)),
             ('a not in ["a","b","c"]', ('a', 'b', 'c')),
             ('a in [Nichts, 1, Nichts]', (Nichts, 1, Nichts)),
             ('a not in [(1, 2), 3, 4]', ((1, 2), 3, 4)),
             ):
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 code = compile(line, '', 'single')
                 self.assertInBytecode(code, 'LOAD_CONST', elem)
                 self.assertNotInBytecode(code, 'BUILD_LIST')
@@ -213,14 +213,14 @@ klasse TestTranforms(BytecodeTestCase):
 
     def test_constant_folding_sets_of_constants(self):
         fuer line, elem in (
-            # in/not in constants with BUILD_SET should be folded to a frozenset:
+            # in/not in constants mit BUILD_SET should be folded to a frozenset:
             ('a in {1,2,3}', frozenset({1, 2, 3})),
             ('a not in {"a","b","c"}', frozenset({'a', 'c', 'b'})),
             ('a in {Nichts, 1, Nichts}', frozenset({1, Nichts})),
             ('a not in {(1, 2), 3, 4}', frozenset({(1, 2), 3, 4})),
             ('a in {1, 2, 3, 3, 2, 1}', frozenset({1, 2, 3})),
             ):
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 code = compile(line, '', 'single')
                 self.assertNotInBytecode(code, 'BUILD_SET')
                 self.assertInBytecode(code, 'LOAD_CONST', elem)
@@ -267,7 +267,7 @@ klasse TestTranforms(BytecodeTestCase):
             ('++256', Nichts),
         ]
         fuer expr, oparg in tests:
-            with self.subTest(expr=expr, oparg=oparg):
+            mit self.subTest(expr=expr, oparg=oparg):
                 code = compile(expr, '', 'single')
                 wenn oparg is not Nichts:
                     self.assertInBytecode(code, 'LOAD_SMALL_INT', oparg)
@@ -303,7 +303,7 @@ klasse TestTranforms(BytecodeTestCase):
             optimized_opcode,
             optimized_argval,
         ) in tests:
-            with self.subTest(expr=expr, is_optimized=is_optimized):
+            mit self.subTest(expr=expr, is_optimized=is_optimized):
                 code = compile(expr, "", "single")
                 wenn is_optimized:
                     self.assertNotInBytecode(code, original_opcode, argval=original_argval)
@@ -386,7 +386,7 @@ klasse TestTranforms(BytecodeTestCase):
             optimized_opcode,
             optimized_argval
         ) in tests:
-            with self.subTest(expr=expr, is_optimized=is_optimized):
+            mit self.subTest(expr=expr, is_optimized=is_optimized):
                 code = compile(expr, '', 'single')
                 nb_op_val = get_binop_argval(nb_op)
                 wenn is_optimized:
@@ -700,7 +700,7 @@ klasse TestTranforms(BytecodeTestCase):
                 fuer r in range(len(flags) + 1):
                     fuer spec in combinations(flags, r):
                         fmt = '%' + ''.join(spec) + width + prec + suffix
-                        with self.subTest(fmt=fmt, value=value):
+                        mit self.subTest(fmt=fmt, value=value):
                             s1 = fmt % value
                             s2 = eval(f'{fmt!r} % (x,)', {'x': value})
                             self.assertEqual(s2, s1, f'{fmt = }')
@@ -727,33 +727,33 @@ klasse TestTranforms(BytecodeTestCase):
         self.assertEqual(format('x = %s, y = %d', 12, 34), 'x = 12, y = 34')
 
     def test_format_errors(self):
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                     'not enough arguments fuer format string'):
             eval("'%s' % ()")
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                     'not all arguments converted during string formatting'):
             eval("'%s' % (x, y)", {'x': 1, 'y': 2})
-        with self.assertRaisesRegex(ValueError, 'incomplete format'):
+        mit self.assertRaisesRegex(ValueError, 'incomplete format'):
             eval("'%s%' % (x,)", {'x': 1234})
-        with self.assertRaisesRegex(ValueError, 'incomplete format'):
+        mit self.assertRaisesRegex(ValueError, 'incomplete format'):
             eval("'%s%%%' % (x,)", {'x': 1234})
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                     'not enough arguments fuer format string'):
             eval("'%s%z' % (x,)", {'x': 1234})
-        with self.assertRaisesRegex(ValueError, 'unsupported format character'):
+        mit self.assertRaisesRegex(ValueError, 'unsupported format character'):
             eval("'%s%z' % (x, 5)", {'x': 1234})
-        with self.assertRaisesRegex(TypeError, 'a real number is required, not str'):
+        mit self.assertRaisesRegex(TypeError, 'a real number is required, not str'):
             eval("'%d' % (x,)", {'x': '1234'})
-        with self.assertRaisesRegex(TypeError, 'an integer is required, not float'):
+        mit self.assertRaisesRegex(TypeError, 'an integer is required, not float'):
             eval("'%x' % (x,)", {'x': 1234.56})
-        with self.assertRaisesRegex(TypeError, 'an integer is required, not str'):
+        mit self.assertRaisesRegex(TypeError, 'an integer is required, not str'):
             eval("'%x' % (x,)", {'x': '1234'})
-        with self.assertRaisesRegex(TypeError, 'must be real number, not str'):
+        mit self.assertRaisesRegex(TypeError, 'must be real number, not str'):
             eval("'%f' % (x,)", {'x': '1234'})
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                     'not enough arguments fuer format string'):
             eval("'%s, %s' % (x, *y)", {'x': 1, 'y': []})
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                     'not all arguments converted during string formatting'):
             eval("'%s, %s' % (x, *y)", {'x': 1, 'y': [2, 3]})
 
@@ -776,7 +776,7 @@ klasse TestTranforms(BytecodeTestCase):
     def test_static_swaps_match_mapping(self):
         fuer a, b, c in product("_a", "_b", "_c"):
             pattern = f"{{'a': {a}, 'b': {b}, 'c': {c}}}"
-            with self.subTest(pattern):
+            mit self.subTest(pattern):
                 code = compile_pattern_with_fast_locals(pattern)
                 self.assertNotInBytecode(code, "SWAP")
 
@@ -790,7 +790,7 @@ klasse TestTranforms(BytecodeTestCase):
         fuer a, b, c in product("_a", "_b", "_c"):
             fuer form in forms:
                 pattern = form.format(a, b, c)
-                with self.subTest(pattern):
+                mit self.subTest(pattern):
                     code = compile_pattern_with_fast_locals(pattern)
                     self.assertNotInBytecode(code, "SWAP")
 
@@ -800,7 +800,7 @@ klasse TestTranforms(BytecodeTestCase):
         fuer a, b, c in product("_a", "_b", "_c"):
             fuer form in forms:
                 pattern = form.format(a, b, c)
-                with self.subTest(pattern):
+                mit self.subTest(pattern):
                     code = compile_pattern_with_fast_locals(pattern)
                     wenn pattern in swaps:
                         # If this fails... great! Remove this pattern von swaps
@@ -813,13 +813,13 @@ klasse TestTranforms(BytecodeTestCase):
 klasse TestBuglets(unittest.TestCase):
 
     def test_bug_11510(self):
-        # folded constant set optimization was commingled with the tuple
+        # folded constant set optimization was commingled mit the tuple
         # unpacking optimization which would fail wenn the set had duplicate
         # elements so that the set length was unexpected
         def f():
             x, y = {1, 1}
             return x, y
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             f()
 
     def test_bpo_42057(self):
@@ -1030,7 +1030,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 return Nichts
             return trace
         e = r"assigning Nichts to 1 unbound local"
-        with self.assertWarnsRegex(RuntimeWarning, e):
+        mit self.assertWarnsRegex(RuntimeWarning, e):
             sys.settrace(trace)
             result = f()
         self.assertEqual(result, 4)
@@ -1064,7 +1064,7 @@ klasse TestMarkingVariablesAsUnKnown(BytecodeTestCase):
                 return Nichts
             return trace
         e = r"assigning Nichts to 2 unbound locals"
-        with self.assertWarnsRegex(RuntimeWarning, e):
+        mit self.assertWarnsRegex(RuntimeWarning, e):
             sys.settrace(trace)
             result = f()
         self.assertEqual(result, 4)
@@ -1730,7 +1730,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
         ]
         self.cfg_optimization_test(before, after, consts=[], expected_consts=[Wahr, Falsch])
 
-        # test cancel out & eliminate to bool (to bool stays as we are not iterating to a fixed point)
+        # test cancel out & eliminate to bool (to bool stays als we are not iterating to a fixed point)
         before = [
             ('LOAD_NAME', 0, 0),
             ('TO_BOOL', Nichts, 0),
@@ -2307,7 +2307,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
             fuer op2 in ('JUMP', 'JUMP_NO_INTERRUPT'):
                 # different lines
                 lno1, lno2 = (4, 5)
-                with self.subTest(lno = (lno1, lno2), ops = (op1, op2)):
+                mit self.subTest(lno = (lno1, lno2), ops = (op1, op2)):
                     insts = get_insts(lno1, lno2, op1, op2)
                     op = 'JUMP' wenn 'JUMP' in (op1, op2) sonst 'JUMP_NO_INTERRUPT'
                     expected_insts = [
@@ -2320,7 +2320,7 @@ klasse DirectCfgOptimizerTests(CfgOptimizationTestCase):
 
                 # Threading
                 fuer lno1, lno2 in [(-1, -1), (-1, 5), (6, -1), (7, 7)]:
-                    with self.subTest(lno = (lno1, lno2), ops = (op1, op2)):
+                    mit self.subTest(lno = (lno1, lno2), ops = (op1, op2)):
                         insts = get_insts(lno1, lno2, op1, op2)
                         lno = lno1 wenn lno1 != -1 sonst lno2
                         wenn lno == -1:

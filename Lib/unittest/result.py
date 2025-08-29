@@ -126,9 +126,9 @@ klasse TestResult(object):
     def addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
         'err' is Nichts wenn the subtest ended successfully, otherwise it's a
-        tuple of values as returned by sys.exc_info().
+        tuple of values als returned by sys.exc_info().
         """
-        # By default, we don't do anything with successful subtests, but
+        # By default, we don't do anything mit successful subtests, but
         # more sophisticated test results might want to record them.
         wenn err is not Nichts:
             wenn getattr(self, 'failfast', Falsch):

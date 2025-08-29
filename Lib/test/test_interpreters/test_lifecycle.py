@@ -23,7 +23,7 @@ klasse StartupTests(TestBase):
 
     @contextlib.contextmanager
     def subTest(self, *args):
-        with super().subTest(*args) as ctx:
+        mit super().subTest(*args) als ctx:
             self._subtest_count += 1
             try:
                 yield ctx
@@ -77,7 +77,7 @@ klasse StartupTests(TestBase):
         dirname = os.path.dirname(filename)
         wenn dirname:
             os.makedirs(dirname, exist_ok=Wahr)
-        with open(filename, 'w', encoding='utf-8') as outfile:
+        mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(dedent(text))
         return filename
 
@@ -97,7 +97,7 @@ klasse StartupTests(TestBase):
                 capture_output=Wahr,
                 text=Wahr,
             )
-        except Exception as exc:
+        except Exception als exc:
             self.debug(f'# cmd: {shlex.join(argv)}')
             wenn isinstance(exc, FileNotFoundError) and not exc.filename:
                 wenn os.path.exists(argv[0]):
@@ -153,13 +153,13 @@ klasse StartupTests(TestBase):
             ('-c "import script"', ''),
         ]
         fuer argv, expected in cases:
-            with self.subTest(f'python3 {argv}'):
+            mit self.subTest(f'python3 {argv}'):
                 out = self.run_python(argv, cwd=cwd)
                 data = json.loads(out)
                 sp0_main, sp0_sub = data['main'], data['sub']
                 self.assertEqual(sp0_sub, sp0_main)
                 self.assertEqual(sp0_sub, expected)
-        # XXX Also check them all with the -P cmdline flag?
+        # XXX Also check them all mit the -P cmdline flag?
 
 
 klasse FinalizationTests(TestBase):

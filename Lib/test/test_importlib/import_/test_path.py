@@ -23,7 +23,7 @@ klasse FinderTests:
     def test_failure(self):
         # Test Nichts returned upon not finding a suitable loader.
         module = '<test module>'
-        with util.import_state():
+        mit util.import_state():
             self.assertIsNichts(self.find(module))
 
     def test_sys_path(self):
@@ -32,7 +32,7 @@ klasse FinderTests:
         module = '<test module>'
         path = '<test path>'
         importer = util.mock_spec(module)
-        with util.import_state(path_importer_cache={path: importer},
+        mit util.import_state(path_importer_cache={path: importer},
                                path=[path]):
             found = self.find(module)
             self.check_found(found, importer)
@@ -43,16 +43,16 @@ klasse FinderTests:
         module = '<test module>'
         path = '<test path>'
         importer = util.mock_spec(module)
-        with util.import_state(path_importer_cache={path: importer}):
+        mit util.import_state(path_importer_cache={path: importer}):
             found = self.find(module, [path])
             self.check_found(found, importer)
 
     def test_empty_list(self):
-        # An empty list should not count as asking fuer sys.path.
+        # An empty list should not count als asking fuer sys.path.
         module = 'module'
         path = '<test path>'
         importer = util.mock_spec(module)
-        with util.import_state(path_importer_cache={path: importer},
+        mit util.import_state(path_importer_cache={path: importer},
                                path=[path]):
             self.assertIsNichts(self.find('module', []))
 
@@ -63,7 +63,7 @@ klasse FinderTests:
         path = '<test path>'
         importer = util.mock_spec(module)
         hook = util.mock_path_hook(path, importer=importer)
-        with util.import_state(path_hooks=[hook]):
+        mit util.import_state(path_hooks=[hook]):
             found = self.find(module, [path])
             self.check_found(found, importer)
             self.assertIn(path, sys.path_importer_cache)
@@ -73,9 +73,9 @@ klasse FinderTests:
         # Test that wenn sys.path_hooks is empty a warning is raised,
         # sys.path_importer_cache gets Nichts set, and PathFinder returns Nichts.
         path_entry = 'bogus_path'
-        with util.import_state(path_importer_cache={}, path_hooks=[],
+        mit util.import_state(path_importer_cache={}, path_hooks=[],
                                path=[path_entry]):
-            with warnings.catch_warnings(record=Wahr) as w:
+            mit warnings.catch_warnings(record=Wahr) als w:
                 warnings.simplefilter('always', ImportWarning)
                 warnings.simplefilter('ignore', DeprecationWarning)
                 self.assertIsNichts(self.find('os'))
@@ -89,7 +89,7 @@ klasse FinderTests:
         module = '<test module>'
         importer = util.mock_spec(module)
         hook = util.mock_path_hook(os.getcwd(), importer=importer)
-        with util.import_state(path=[path], path_hooks=[hook]):
+        mit util.import_state(path=[path], path_hooks=[hook]):
             found = self.find(module)
             self.check_found(found, importer)
             self.assertIn(os.getcwd(), sys.path_importer_cache)
@@ -107,7 +107,7 @@ klasse FinderTests:
         missing = object()
         email = sys.modules.pop('email', missing)
         try:
-            with util.import_state(meta_path=sys.meta_path[:],
+            mit util.import_state(meta_path=sys.meta_path[:],
                                    path=new_path,
                                    path_importer_cache=new_path_importer_cache,
                                    path_hooks=new_path_hooks):
@@ -123,12 +123,12 @@ klasse FinderTests:
             def find_spec(self, fullname, target=Nichts):
                 return self.spec
         path = 'testing path'
-        with util.import_state(path_importer_cache={path: TestFinder()}):
+        mit util.import_state(path_importer_cache={path: TestFinder()}):
             self.assertIsNichts(
                     self.machinery.PathFinder.find_spec('whatever', [path]))
         success_finder = TestFinder()
         success_finder.spec = self.machinery.ModuleSpec('whatever', __loader__)
-        with util.import_state(path_importer_cache={path: success_finder}):
+        mit util.import_state(path_importer_cache={path: success_finder}):
             got = self.machinery.PathFinder.find_spec('whatever', [path])
         self.assertEqual(got, success_finder.spec)
 
@@ -150,7 +150,7 @@ klasse FinderTests:
             os.rmdir(new_dir)
             raise
 
-        with util.import_state(path=['']):
+        mit util.import_state(path=['']):
             # Do not want FileNotFoundError raised.
             self.assertIsNichts(self.machinery.PathFinder.find_spec('whatever'))
 
@@ -162,8 +162,8 @@ klasse FinderTests:
         def noop_hook(*args):
             raise ImportError
 
-        with (
-            os_helper.temp_dir() as new_dir,
+        mit (
+            os_helper.temp_dir() als new_dir,
             os_helper.save_mode(new_dir),
             os_helper.change_cwd(new_dir),
             util.import_state(path=[''], path_hooks=[noop_hook]),
@@ -181,7 +181,7 @@ klasse FinderTests:
             self.assertIsNichts(self.machinery.PathFinder.find_spec('whatever'))
 
     def test_invalidate_caches_finders(self):
-        # Finders with an invalidate_caches() method have it called.
+        # Finders mit an invalidate_caches() method have it called.
         klasse FakeFinder:
             def __init__(self):
                 self.called = Falsch
@@ -191,14 +191,14 @@ klasse FinderTests:
 
         key = os.path.abspath('finder_to_invalidate')
         cache = {'leave_alone': object(), key: FakeFinder()}
-        with util.import_state(path_importer_cache=cache):
+        mit util.import_state(path_importer_cache=cache):
             self.machinery.PathFinder.invalidate_caches()
         self.assertWahr(cache[key].called)
 
     def test_invalidate_caches_clear_out_Nichts(self):
         # Clear out Nichts in sys.path_importer_cache() when invalidating caches.
         cache = {'clear_out': Nichts}
-        with util.import_state(path_importer_cache=cache):
+        mit util.import_state(path_importer_cache=cache):
             self.machinery.PathFinder.invalidate_caches()
         self.assertEqual(len(cache), 0)
 
@@ -208,7 +208,7 @@ klasse FinderTests:
                 pass
 
         cache = {'relative_path': FakeFinder()}
-        with util.import_state(path_importer_cache=cache):
+        mit util.import_state(path_importer_cache=cache):
             self.machinery.PathFinder.invalidate_caches()
         self.assertEqual(cache, {})
 
@@ -253,9 +253,9 @@ klasse PathEntryFinderTests:
                 return Nichts
 
 
-        with util.import_state(path=[Finder.path_location]+sys.path[:],
+        mit util.import_state(path=[Finder.path_location]+sys.path[:],
                                path_hooks=[Finder]):
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 warnings.simplefilter("ignore", ImportWarning)
                 self.machinery.PathFinder.find_spec('importlib')
 

@@ -1,14 +1,14 @@
 """Calendar printing functions
 
 Note when comparing these calendars to the ones printed by cal(1): By
-default, these calendars have Monday as the first day of the week, and
-Sunday as the last (the European convention). Use setfirstweekday() to
+default, these calendars have Monday als the first day of the week, and
+Sunday als the last (the European convention). Use setfirstweekday() to
 set the first day of the week (0=Monday, 6=Sunday)."""
 
 importiere sys
 importiere datetime
 von enum importiere IntEnum, global_enum
-importiere locale as _locale
+importiere locale als _locale
 von itertools importiere repeat
 
 __all__ = ["IllegalMonthError", "IllegalWeekdayError", "setfirstweekday",
@@ -142,7 +142,7 @@ month_abbr = _localized_month('%b')
 
 # On platforms that support the %OB and %Ob specifiers, they are used
 # to get the standalone form of the month name. This is required for
-# some languages such as Greek, Slavic, and Baltic languages.
+# some languages such als Greek, Slavic, and Baltic languages.
 try:
     standalone_month_name = _localized_month('%OB')
     standalone_month_abbr = _localized_month('%Ob')
@@ -229,7 +229,7 @@ klasse Calendar(object):
 
     def iterweekdays(self):
         """
-        Return an iterator fuer one week of weekday numbers starting with the
+        Return an iterator fuer one week of weekday numbers starting mit the
         configured first one.
         """
         fuer i in range(self.firstweekday, self.firstweekday + 7):
@@ -348,7 +348,7 @@ klasse Calendar(object):
 
 klasse TextCalendar(Calendar):
     """
-    Subclass of Calendar that outputs a calendar as a simple plain text
+    Subclass of Calendar that outputs a calendar als a simple plain text
     similar to the UNIX program cal.
     """
 
@@ -425,7 +425,7 @@ klasse TextCalendar(Calendar):
 
     def formatyear(self, theyear, w=2, l=1, c=6, m=3):
         """
-        Returns a year's calendar as a multi-line string.
+        Returns a year's calendar als a multi-line string.
         """
         w = max(2, w)
         l = max(1, l)
@@ -494,7 +494,7 @@ klasse HTMLCalendar(Calendar):
 
     def formatday(self, day, weekday):
         """
-        Return a day as a table cell.
+        Return a day als a table cell.
         """
         wenn day == 0:
             # day outside month
@@ -504,28 +504,28 @@ klasse HTMLCalendar(Calendar):
 
     def formatweek(self, theweek):
         """
-        Return a complete week as a table row.
+        Return a complete week als a table row.
         """
         s = ''.join(self.formatday(d, wd) fuer (d, wd) in theweek)
         return '<tr>%s</tr>' % s
 
     def formatweekday(self, day):
         """
-        Return a weekday name as a table header.
+        Return a weekday name als a table header.
         """
         return '<th class="%s">%s</th>' % (
             self.cssclasses_weekday_head[day], day_abbr[day])
 
     def formatweekheader(self):
         """
-        Return a header fuer a week as a table row.
+        Return a header fuer a week als a table row.
         """
         s = ''.join(self.formatweekday(i) fuer i in self.iterweekdays())
         return '<tr>%s</tr>' % s
 
     def formatmonthname(self, theyear, themonth, withyear=Wahr):
         """
-        Return a month name as a table row.
+        Return a month name als a table row.
         """
         _validate_month(themonth)
         wenn withyear:
@@ -537,7 +537,7 @@ klasse HTMLCalendar(Calendar):
 
     def formatmonth(self, theyear, themonth, withyear=Wahr):
         """
-        Return a formatted month as a table.
+        Return a formatted month als a table.
         """
         v = []
         a = v.append
@@ -557,7 +557,7 @@ klasse HTMLCalendar(Calendar):
 
     def formatyear(self, theyear, width=3):
         """
-        Return a formatted year as a table of tables.
+        Return a formatted year als a table of tables.
         """
         v = []
         a = v.append
@@ -581,7 +581,7 @@ klasse HTMLCalendar(Calendar):
 
     def formatyearpage(self, theyear, width=3, css='calendar.css', encoding=Nichts):
         """
-        Return a formatted year as a complete HTML page.
+        Return a formatted year als a complete HTML page.
         """
         wenn encoding is Nichts:
             encoding = 'utf-8'
@@ -619,7 +619,7 @@ klasse different_locale:
 def _get_default_locale():
     locale = _locale.setlocale(_locale.LC_TIME, Nichts)
     wenn locale == "C":
-        with different_locale(""):
+        mit different_locale(""):
             # The LC_TIME locale does not seem to be configured:
             # get the user preferred locale.
             locale = _locale.setlocale(_locale.LC_TIME, Nichts)
@@ -639,11 +639,11 @@ klasse LocaleTextCalendar(TextCalendar):
         self.locale = locale
 
     def formatweekday(self, day, width):
-        with different_locale(self.locale):
+        mit different_locale(self.locale):
             return super().formatweekday(day, width)
 
     def formatmonthname(self, theyear, themonth, width, withyear=Wahr):
-        with different_locale(self.locale):
+        mit different_locale(self.locale):
             return super().formatmonthname(theyear, themonth, width, withyear)
 
 
@@ -659,11 +659,11 @@ klasse LocaleHTMLCalendar(HTMLCalendar):
         self.locale = locale
 
     def formatweekday(self, day):
-        with different_locale(self.locale):
+        mit different_locale(self.locale):
             return super().formatweekday(day)
 
     def formatmonthname(self, theyear, themonth, withyear=Wahr):
-        with different_locale(self.locale):
+        mit different_locale(self.locale):
             return super().formatmonthname(theyear, themonth, withyear)
 
 
@@ -720,7 +720,7 @@ klasse _CLIDemoCalendar(TextCalendar):
 
     def formatyear(self, theyear, w=2, l=1, c=6, m=3):
         """
-        Returns a year's calendar as a multi-line string.
+        Returns a year's calendar als a multi-line string.
         """
         w = max(2, w)
         l = max(1, l)

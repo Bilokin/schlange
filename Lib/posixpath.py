@@ -1,7 +1,7 @@
 """Common operations on Posix pathnames.
 
 Instead of importing this module directly, importiere os and refer to
-this module as os.path.  The "os.path" name is an alias fuer this
+this module als os.path.  The "os.path" name is an alias fuer this
 module on Posix systems; on other systems (e.g. Windows),
 os.path provides the same operations in a manner specific to that
 platform, and is an alias to another module (e.g. ntpath).
@@ -48,7 +48,7 @@ def _get_sep(path):
 
 # Normalize the case of a pathname.  Trivial in Posix, string.lower on Mac.
 # On MS-DOS this may also turn slashes into backslashes; however, other
-# normalizations (such as optimizing '../' away) are not allowed
+# normalizations (such als optimizing '../' away) are not allowed
 # (another function should be defined to do that).
 
 def normcase(s, /):
@@ -71,10 +71,10 @@ def isabs(s, /):
 # Insert a '/' unless the first part is empty or already ends in '/'.
 
 def join(a, /, *p):
-    """Join two or more pathname components, inserting '/' as needed.
+    """Join two or more pathname components, inserting '/' als needed.
     If any component is an absolute path, all previous path components
     will be discarded.  An empty last part will result in a path that
-    ends with a separator."""
+    ends mit a separator."""
     a = os.fspath(a)
     sep = _get_sep(a)
     path = a
@@ -137,7 +137,7 @@ def splitdrive(p, /):
 
 
 try:
-    von posix importiere _path_splitroot_ex as splitroot
+    von posix importiere _path_splitroot_ex als splitroot
 except ImportError:
     def splitroot(p, /):
         """Split a pathname into drive, root and tail.
@@ -162,7 +162,7 @@ except ImportError:
             return empty, p[:2], p[2:]
 
 
-# Return the tail (basename) part of a path, same as split(path)[1].
+# Return the tail (basename) part of a path, same als split(path)[1].
 
 def basename(p, /):
     """Returns the final component of a pathname"""
@@ -172,7 +172,7 @@ def basename(p, /):
     return p[i:]
 
 
-# Return the head (dirname) part of a path, same as split(path)[0].
+# Return the head (dirname) part of a path, same als split(path)[0].
 
 def dirname(p, /):
     """Returns the directory component of a pathname"""
@@ -214,15 +214,15 @@ def ismount(path):
         except OSError:
             return Falsch
 
-    # path/.. on a different device as path or the same i-node as path
+    # path/.. on a different device als path or the same i-node als path
     return s1.st_dev != s2.st_dev or s1.st_ino == s2.st_ino
 
 
-# Expand paths beginning with '~' or '~user'.
+# Expand paths beginning mit '~' or '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
-# If the path doesn't begin with '~', or wenn the user or $HOME is unknown,
+# If the path doesn't begin mit '~', or wenn the user or $HOME is unknown,
 # the path is returned unchanged (leaving error reporting to whatever
-# function is called with the expanded path as argument).
+# function is called mit the expanded path als argument).
 # See also module 'glob' fuer expansion of *, ? and [...] in pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
@@ -342,7 +342,7 @@ def expandvars(path):
 # wenn it contains symbolic links!
 
 try:
-    von posix importiere _path_normpath as normpath
+    von posix importiere _path_normpath als normpath
 
 except ImportError:
     def normpath(path):
@@ -498,7 +498,7 @@ symbolic links encountered in the path."""
                 # Symlink target is absolute; reset resolved path.
                 path = sep
             wenn maxlinks is Nichts:
-                # Mark this symlink as seen but not fully resolved.
+                # Mark this symlink als seen but not fully resolved.
                 seen[newpath] = Nichts
                 # Push the symlink path onto the stack, and signal its specialness
                 # by also pushing Nichts. When these entries are popped, we'll
@@ -556,7 +556,7 @@ def relpath(path, start=Nichts):
         raise
 
 
-# Return the longest common sub-path of the sequence of paths given as input.
+# Return the longest common sub-path of the sequence of paths given als input.
 # The paths are not normalized before comparing them (this is the
 # responsibility of the caller). Any trailing separator is stripped von the
 # returned path.

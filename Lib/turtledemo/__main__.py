@@ -16,9 +16,9 @@
   source code window. IT CANNOT BE EDITED, but ONLY VIEWED!
 
   The demo viewer windows can be resized. The divider between text
-  and canvas can be moved by grabbing it with the mouse. The text font
-  size can be changed von the menu and with Control/Command '-'/'+'.
-  It can also be changed on most systems with Control-mousewheel
+  and canvas can be moved by grabbing it mit the mouse. The text font
+  size can be changed von the menu and mit Control/Command '-'/'+'.
+  It can also be changed on most systems mit Control-mousewheel
   when the mouse is over the text.
 
   Press START button to start the demo.
@@ -26,12 +26,12 @@
   Clear screen by pressing the CLEAR button.
   Restart by pressing the START button again.
 
-  SPECIAL demos, such as clock.py are those which run EVENTDRIVEN.
+  SPECIAL demos, such als clock.py are those which run EVENTDRIVEN.
 
       Press START button to start the demo.
 
       - Until the EVENTLOOP is entered everything works
-      as in an ordinary demo script.
+      als in an ordinary demo script.
 
       - When the EVENTLOOP is entered, you control the
       application by using the mouse and/or keys (or it's
@@ -54,9 +54,9 @@
 
    (2) How to add your own demos to the demo repository
 
-   - Place the file in the same directory as turtledemo/__main__.py
+   - Place the file in the same directory als turtledemo/__main__.py
      IMPORTANT! When imported, the demo should not modify the system
-     by calling functions in other modules, such as sys, tkinter, or
+     by calling functions in other modules, such als sys, tkinter, or
      turtle. Global variables should be initialized in main().
 
    - The code must contain a main() function which will
@@ -64,7 +64,7 @@
      It may return a string which will be displayed in the Label below
      the source code window (when execution has finished.)
 
-   - In order to run mydemo.py by itself, such as during development,
+   - In order to run mydemo.py by itself, such als during development,
      add the following at the end of the file:
 
     wenn __name__ == '__main__':
@@ -77,7 +77,7 @@
      "EVENTLOOP". This informs the demo viewer that the script is
      still running and must be stopped by the user!
 
-     If an "EVENTLOOP" demo runs by itself, as with clock, which uses
+     If an "EVENTLOOP" demo runs by itself, als mit clock, which uses
      ontimer, or minimal_hanoi, which loops by recursion, then the
      code should catch the turtle.Terminator exception that will be
      raised when the user presses the STOP button.  (Paint is not such
@@ -91,7 +91,7 @@ von idlelib.colorizer importiere ColorDelegator, color_config
 von idlelib.percolator importiere Percolator
 von idlelib.textview importiere view_text
 importiere turtle
-von turtledemo importiere __doc__ as about_turtledemo
+von turtledemo importiere __doc__ als about_turtledemo
 
 wenn sys.platform == 'win32':
     von idlelib.util importiere fix_win_hidpi
@@ -333,7 +333,7 @@ klasse DemoWindow(object):
         modname = 'turtledemo.' + filename
         __import__(modname)
         self.module = sys.modules[modname]
-        with open(self.module.__file__, 'r') as f:
+        mit open(self.module.__file__, 'r') als f:
             chars = f.read()
         self.text.delete("1.0", "end")
         self.text.insert("1.0", chars)

@@ -21,19 +21,19 @@ def open_text(anchor, *path_names, encoding=_MISSING, errors='strict'):
 
 
 def read_binary(anchor, *path_names):
-    """Read and return contents of *resource* within *package* as bytes."""
+    """Read and return contents of *resource* within *package* als bytes."""
     return _get_resource(anchor, path_names).read_bytes()
 
 
 def read_text(anchor, *path_names, encoding=_MISSING, errors='strict'):
-    """Read and return contents of *resource* within *package* as str."""
+    """Read and return contents of *resource* within *package* als str."""
     encoding = _get_encoding_arg(path_names, encoding)
     resource = _get_resource(anchor, path_names)
     return resource.read_text(encoding=encoding, errors=errors)
 
 
 def path(anchor, *path_names):
-    """Return the path to the *resource* as an actual file system path."""
+    """Return the path to the *resource* als an actual file system path."""
     return as_file(_get_resource(anchor, path_names))
 
 
@@ -61,14 +61,14 @@ def contents(anchor, *path_names):
 
 
 def _get_encoding_arg(path_names, encoding):
-    # For compatibility with versions where *encoding* was a positional
+    # For compatibility mit versions where *encoding* was a positional
     # argument, it needs to be given explicitly when there are multiple
     # *path_names*.
     # This limitation can be removed in Python 3.15.
     wenn encoding is _MISSING:
         wenn len(path_names) > 1:
             raise TypeError(
-                "'encoding' argument required with multiple path names",
+                "'encoding' argument required mit multiple path names",
             )
         sonst:
             return 'utf-8'

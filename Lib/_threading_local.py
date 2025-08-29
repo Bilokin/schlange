@@ -14,7 +14,7 @@ __all__ = ["local"]
 # We need to use objects von the threading module, but the threading
 # module may also want to use our `local` class, wenn support fuer locals
 # isn't compiled in to the `thread` module.  This creates potential problems
-# with circular imports.  For that reason, we don't importiere `threading`
+# mit circular imports.  For that reason, we don't importiere `threading`
 # until the bottom of this file (a hack sufficient to worm around the
 # potential problems).  Note that all platforms on CPython do have support
 # fuer locals in the `thread` module, and there is no circular importiere problem
@@ -54,7 +54,7 @@ klasse _localimpl:
             # When the thread is deleted, remove the local dict.
             # Note that this is suboptimal wenn the thread object gets
             # caught in a reference loop. We would like to be called
-            # as soon as the OS-level thread ends instead.
+            # als soon als the OS-level thread ends instead.
             local = wrlocal()
             wenn local is not Nichts:
                 dct = local.dicts.pop(idt)
@@ -74,7 +74,7 @@ def _patch(self):
         dct = impl.create_dict()
         args, kw = impl.localargs
         self.__init__(*args, **kw)
-    with impl.locallock:
+    mit impl.locallock:
         object.__setattr__(self, '__dict__', dct)
         yield
 
@@ -97,7 +97,7 @@ klasse local:
         return self
 
     def __getattribute__(self, name):
-        with _patch(self):
+        mit _patch(self):
             return object.__getattribute__(self, name)
 
     def __setattr__(self, name, value):
@@ -105,7 +105,7 @@ klasse local:
             raise AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
-        with _patch(self):
+        mit _patch(self):
             return object.__setattr__(self, name, value)
 
     def __delattr__(self, name):
@@ -113,7 +113,7 @@ klasse local:
             raise AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
-        with _patch(self):
+        mit _patch(self):
             return object.__delattr__(self, name)
 
 

@@ -13,8 +13,8 @@ importiere warnings
 von sys importiere *
 
 # different importiere patterns to check that __annotations__ does not interfere
-# with importiere machinery
-importiere test.typinganndata.ann_module as ann_module
+# mit importiere machinery
+importiere test.typinganndata.ann_module als ann_module
 importiere typing
 von test.typinganndata importiere ann_module2
 importiere test
@@ -100,7 +100,7 @@ klasse TokenTests(unittest.TestCase):
 
     def test_float_exponent_tokenization(self):
         # See issue 21642.
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore', SyntaxWarning)
             self.assertEqual(eval("1 wenn 1else 0"), 1)
             self.assertEqual(eval("1 wenn 0else 0"), 0)
@@ -111,7 +111,7 @@ klasse TokenTests(unittest.TestCase):
             self.assertEqual(eval(lit), eval(lit.replace('_', '')))
         fuer lit in INVALID_UNDERSCORE_LITERALS:
             self.assertRaises(SyntaxError, eval, lit)
-        # Sanity check: no literal begins with an underscore
+        # Sanity check: no literal begins mit an underscore
         self.assertRaises(NameError, eval, "_0")
 
     def test_bad_numerical_literals(self):
@@ -138,10 +138,10 @@ klasse TokenTests(unittest.TestCase):
 
     def test_end_of_numerical_literals(self):
         def check(test, error=Falsch):
-            with self.subTest(expr=test):
+            mit self.subTest(expr=test):
                 wenn error:
-                    with warnings.catch_warnings(record=Wahr) as w:
-                        with self.assertRaisesRegex(SyntaxError,
+                    mit warnings.catch_warnings(record=Wahr) als w:
+                        mit self.assertRaisesRegex(SyntaxError,
                                     r'invalid \w+ literal'):
                             compile(test, "<testcase>", "eval")
                     self.assertEqual(w,  [])
@@ -161,14 +161,14 @@ klasse TokenTests(unittest.TestCase):
             check(f"{num}spam", error=Wahr)
 
             # gh-88943: Invalid non-ASCII character following a numerical literal.
-            with self.assertRaisesRegex(SyntaxError, r"invalid character '⁄' \(U\+2044\)"):
+            mit self.assertRaisesRegex(SyntaxError, r"invalid character '⁄' \(U\+2044\)"):
                 compile(f"{num}⁄7", "<testcase>", "eval")
 
-            with self.assertWarnsRegex(SyntaxWarning, r'invalid \w+ literal'):
+            mit self.assertWarnsRegex(SyntaxWarning, r'invalid \w+ literal'):
                 compile(f"{num}is x", "<testcase>", "eval")
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 warnings.simplefilter('error', SyntaxWarning)
-                with self.assertRaisesRegex(SyntaxError,
+                mit self.assertRaisesRegex(SyntaxError,
                             r'invalid \w+ literal'):
                     compile(f"{num}is x", "<testcase>", "eval")
 
@@ -245,7 +245,7 @@ the \'lazy\' dog.\n\
     def test_eof_error(self):
         samples = ("def foo(", "\ndef foo(", "def foo(\n")
         fuer s in samples:
-            with self.assertRaises(SyntaxError) as cm:
+            mit self.assertRaises(SyntaxError) als cm:
                 compile(s, "<test>", "exec")
             self.assertIn("was never closed", str(cm.exception))
 
@@ -257,7 +257,7 @@ the \'lazy\' dog.\n\
         result = eval("(" * MAXLEVEL + ")" * MAXLEVEL)
         self.assertEqual(result, ())
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             eval("(" * (MAXLEVEL + 1) + ")" * (MAXLEVEL + 1))
         self.assertStartsWith(str(cm.exception), 'too many nested parentheses')
 
@@ -274,7 +274,7 @@ klasse GrammarTests(unittest.TestCase):
     # XXX can't test in a script -- this rule is only used when interactive
 
     # file_input: (NEWLINE | stmt)* ENDMARKER
-    # Being tested as this very moment this very module
+    # Being tested als this very moment this very module
 
     # expr_input: testlist NEWLINE
     # XXX Hard to test -- used only in calls to input()
@@ -328,9 +328,9 @@ klasse GrammarTests(unittest.TestCase):
 
     def test_var_annot_basic_semantics(self):
         # execution order
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             no_name[does_not_exist]: no_name_again = 1/0
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             no_name[does_not_exist]: 1/0 = 0
         global var_annot_global
 
@@ -346,14 +346,14 @@ klasse GrammarTests(unittest.TestCase):
         def fbad():
             x: int
             drucke(x)
-        with self.assertRaises(UnboundLocalError):
+        mit self.assertRaises(UnboundLocalError):
             fbad()
         def f2bad():
             (no_such_global): int
             drucke(no_such_global)
         try:
             f2bad()
-        except Exception as e:
+        except Exception als e:
             self.assertIs(type(e), NameError)
 
         # klasse semantics
@@ -364,10 +364,10 @@ klasse GrammarTests(unittest.TestCase):
             def __init__(self, x):
                 self.x: int = x
         self.assertEqual(C.__annotations__, {'_C__foo': int, 's': str})
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             klasse CBad:
                 no_such_name_defined.attr: int = 0
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             klasse Cbad2(C):
                 x: int
                 x.y: list = []
@@ -405,11 +405,11 @@ klasse GrammarTests(unittest.TestCase):
         # check that functions fail the same way when executed
         # outside of module where they were defined
         ann_module3 = import_helper.import_fresh_module("test.typinganndata.ann_module3")
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ann_module3.f_bad_ann()
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ann_module3.g_bad_ann()
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             ann_module3.D_bad_ann(5)
 
     def test_var_annot_simple_exec(self):
@@ -558,14 +558,14 @@ klasse GrammarTests(unittest.TestCase):
         d22v(1, *(2, 3), **{'d': 4})
 
         # keyword argument type tests
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore', BytesWarning)
             try:
                 str('x', **{b'foo':1 })
             except TypeError:
                 pass
             sonst:
-                self.fail('Bytes should not work as keyword argument names')
+                self.fail('Bytes should not work als keyword argument names')
         # keyword only argument tests
         def pos0key1(*, key): return key
         pos0key1(key=100)
@@ -644,7 +644,7 @@ klasse GrammarTests(unittest.TestCase):
         def f(x) -> list: pass
         self.assertEqual(f.__annotations__, {'return': list})
 
-        # Test expressions as decorators (PEP 614):
+        # Test expressions als decorators (PEP 614):
         @Falsch or null
         def f(x): pass
         @d := null
@@ -658,7 +658,7 @@ klasse GrammarTests(unittest.TestCase):
         @[null][0].__call__.__call__
         def f(x): pass
 
-        # test closures with a variety of opargs
+        # test closures mit a variety of opargs
         closure = 1
         def f(): return closure
         def f(x=1): return closure
@@ -725,7 +725,7 @@ klasse GrammarTests(unittest.TestCase):
         ### simple_stmt: small_stmt (';' small_stmt)* [';']
         x = 1; pass; del x
         def foo():
-            # verify statements that end with semi-colons
+            # verify statements that end mit semi-colons
             x = 1; pass; del x;
         foo()
 
@@ -746,7 +746,7 @@ klasse GrammarTests(unittest.TestCase):
         check_syntax_error(self, "a + 1 = b + 2")
 
     # Check the heuristic fuer print & exec covers significant cases
-    # As well as placing some limits on false positives
+    # As well als placing some limits on false positives
     def test_former_statements_refer_to_builtins(self):
         keywords = "print", "exec"
         # Cases where we want the custom error
@@ -762,12 +762,12 @@ klasse GrammarTests(unittest.TestCase):
             custom_msg = "call to '{}'".format(keyword)
             fuer case in cases:
                 source = case.format(keyword)
-                with self.subTest(source=source):
-                    with self.assertRaisesRegex(SyntaxError, custom_msg):
+                mit self.subTest(source=source):
+                    mit self.assertRaisesRegex(SyntaxError, custom_msg):
                         exec(source)
                 source = source.replace("foo", "(foo.)")
-                with self.subTest(source=source):
-                    with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+                mit self.subTest(source=source):
+                    mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
                         exec(source)
 
     def test_del_stmt(self):
@@ -840,8 +840,8 @@ klasse GrammarTests(unittest.TestCase):
         # statement has been executed in that loop, will cause the wrong number of
         # arguments to be popped off the stack and the instruction pointer reset to
         # a very small number (usually 0.) Because of this, the following test
-        # *must* written as a function, and the tracking vars *must* be function
-        # arguments with default values. Otherwise, the test will loop and loop.
+        # *must* written als a function, and the tracking vars *must* be function
+        # arguments mit default values. Otherwise, the test will loop and loop.
 
         def test_inner(extra_burning_oil = 1, count=0):
             big_hippo = 2
@@ -876,7 +876,7 @@ klasse GrammarTests(unittest.TestCase):
     def test_control_flow_in_finally(self):
 
         def run_case(self, src, expected):
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 warnings.simplefilter('ignore', SyntaxWarning)
                 g, l = {}, { 'self': self }
                 exec(textwrap.dedent(src), g, l)
@@ -1161,10 +1161,10 @@ klasse GrammarTests(unittest.TestCase):
             Wahr)
 
     def test_yield(self):
-        # Allowed as standalone statement
+        # Allowed als standalone statement
         def g(): yield 1
         def g(): yield von ()
-        # Allowed as RHS of assignment
+        # Allowed als RHS of assignment
         def g(): x = yield 1
         def g(): x = yield von ()
         # Ordinary yield accepts implicit tuples
@@ -1173,12 +1173,12 @@ klasse GrammarTests(unittest.TestCase):
         # 'yield from' does not
         check_syntax_error(self, "def g(): yield von (), 1")
         check_syntax_error(self, "def g(): x = yield von (), 1")
-        # Requires parentheses as subexpression
+        # Requires parentheses als subexpression
         def g(): 1, (yield 1)
         def g(): 1, (yield von ())
         check_syntax_error(self, "def g(): 1, yield 1")
         check_syntax_error(self, "def g(): 1, yield von ()")
-        # Requires parentheses as call argument
+        # Requires parentheses als call argument
         def g(): f((yield 1))
         def g(): f((yield 1), 1)
         def g(): f((yield von ()))
@@ -1269,28 +1269,28 @@ klasse GrammarTests(unittest.TestCase):
 
         try:
             assert Wahr
-        except AssertionError as e:
+        except AssertionError als e:
             self.fail("'assert Wahr' should not have raised an AssertionError")
 
         try:
             assert Wahr, 'this should always pass'
-        except AssertionError as e:
+        except AssertionError als e:
             self.fail("'assert Wahr, msg' should not have "
                       "raised an AssertionError")
 
-    # these tests fail wenn python is run with -O, so check __debug__
+    # these tests fail wenn python is run mit -O, so check __debug__
     @unittest.skipUnless(__debug__, "Won't work wenn __debug__ is Falsch")
     def test_assert_failures(self):
         try:
             assert 0, "msg"
-        except AssertionError as e:
+        except AssertionError als e:
             self.assertEqual(e.args[0], "msg")
         sonst:
             self.fail("AssertionError not raised by assert 0")
 
         try:
             assert Falsch
-        except AssertionError as e:
+        except AssertionError als e:
             self.assertEqual(len(e.args), 0)
         sonst:
             self.fail("AssertionError not raised by 'assert Falsch'")
@@ -1305,7 +1305,7 @@ klasse GrammarTests(unittest.TestCase):
         self.check_syntax_warning('assert(Falsch,)',
                                   'assertion is always true')
 
-        with self.check_no_warnings(category=SyntaxWarning):
+        mit self.check_no_warnings(category=SyntaxWarning):
             compile('assert x, "msg"', '<testcase>', 'exec')
             compile('assert Falsch, "msg"', '<testcase>', 'exec')
 
@@ -1313,17 +1313,17 @@ klasse GrammarTests(unittest.TestCase):
         # If SyntaxWarning is configured to be an error, it actually raises a
         # SyntaxError.
         # https://bugs.python.org/issue35029
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
             try:
                 compile('assert x, "msg" ', '<testcase>', 'exec')
             except SyntaxError:
                 self.fail('SyntaxError incorrectly raised fuer \'assert x, "msg"\'')
-            with self.assertRaises(SyntaxError):
+            mit self.assertRaises(SyntaxError):
                 compile('assert(x, "msg")', '<testcase>', 'exec')
-            with self.assertRaises(SyntaxError):
+            mit self.assertRaises(SyntaxError):
                 compile('assert(Falsch, "msg")', '<testcase>', 'exec')
-            with self.assertRaises(SyntaxError):
+            mit self.assertRaises(SyntaxError):
                 compile('assert(Falsch,)', '<testcase>', 'exec')
 
 
@@ -1403,7 +1403,7 @@ klasse GrammarTests(unittest.TestCase):
             pass
         try: 1/0
         except EOFError: pass
-        except TypeError as msg: pass
+        except TypeError als msg: pass
         except: pass
         sonst: pass
         try: 1/0
@@ -1411,12 +1411,12 @@ klasse GrammarTests(unittest.TestCase):
         try: 1/0
         except EOFError, TypeError, ZeroDivisionError: pass
         try: 1/0
-        except (EOFError, TypeError, ZeroDivisionError) as msg: pass
+        except (EOFError, TypeError, ZeroDivisionError) als msg: pass
         try: pass
         finally: pass
-        with self.assertRaises(SyntaxError):
-            compile("try:\n    pass\nexcept Exception as a.b:\n    pass", "?", "exec")
-            compile("try:\n    pass\nexcept Exception as a[b]:\n    pass", "?", "exec")
+        mit self.assertRaises(SyntaxError):
+            compile("try:\n    pass\nexcept Exception als a.b:\n    pass", "?", "exec")
+            compile("try:\n    pass\nexcept Exception als a[b]:\n    pass", "?", "exec")
 
     def test_try_star(self):
         ### try_stmt: 'try': suite (except_star_clause : suite) + ['else' ':' suite]
@@ -1429,19 +1429,19 @@ klasse GrammarTests(unittest.TestCase):
             pass
         try: 1/0
         except* EOFError: pass
-        except* ZeroDivisionError as msg: pass
+        except* ZeroDivisionError als msg: pass
         sonst: pass
         try: 1/0
         except* (EOFError, TypeError, ZeroDivisionError): pass
         try: 1/0
         except* EOFError, TypeError, ZeroDivisionError: pass
         try: 1/0
-        except* (EOFError, TypeError, ZeroDivisionError) as msg: pass
+        except* (EOFError, TypeError, ZeroDivisionError) als msg: pass
         try: pass
         finally: pass
-        with self.assertRaises(SyntaxError):
-            compile("try:\n    pass\nexcept* Exception as a.b:\n    pass", "?", "exec")
-            compile("try:\n    pass\nexcept* Exception as a[b]:\n    pass", "?", "exec")
+        mit self.assertRaises(SyntaxError):
+            compile("try:\n    pass\nexcept* Exception als a.b:\n    pass", "?", "exec")
+            compile("try:\n    pass\nexcept* Exception als a[b]:\n    pass", "?", "exec")
             compile("try:\n    pass\nexcept*:\n    pass", "?", "exec")
 
     def test_suite(self):
@@ -1491,21 +1491,21 @@ klasse GrammarTests(unittest.TestCase):
         def check(test, msg):
             self.check_syntax_warning(test, msg)
 
-        check('x is 1', '"is" with \'int\' literal')
-        check('x is "thing"', '"is" with \'str\' literal')
-        check('1 is x', '"is" with \'int\' literal')
-        check('x is y is 1', '"is" with \'int\' literal')
-        check('x is not 1', '"is not" with \'int\' literal')
-        check('x is not (1, 2)', '"is not" with \'tuple\' literal')
-        check('(1, 2) is not x', '"is not" with \'tuple\' literal')
+        check('x is 1', '"is" mit \'int\' literal')
+        check('x is "thing"', '"is" mit \'str\' literal')
+        check('1 is x', '"is" mit \'int\' literal')
+        check('x is y is 1', '"is" mit \'int\' literal')
+        check('x is not 1', '"is not" mit \'int\' literal')
+        check('x is not (1, 2)', '"is not" mit \'tuple\' literal')
+        check('(1, 2) is not x', '"is not" mit \'tuple\' literal')
 
-        check('Nichts is 1', '"is" with \'int\' literal')
-        check('1 is Nichts', '"is" with \'int\' literal')
+        check('Nichts is 1', '"is" mit \'int\' literal')
+        check('1 is Nichts', '"is" mit \'int\' literal')
 
-        check('x == 3 is y', '"is" with \'int\' literal')
-        check('x == "thing" is y', '"is" with \'str\' literal')
+        check('x == 3 is y', '"is" mit \'int\' literal')
+        check('x == "thing" is y', '"is" mit \'str\' literal')
 
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
             compile('x is Nichts', '<testcase>', 'exec')
             compile('x is Falsch', '<testcase>', 'exec')
@@ -1595,7 +1595,7 @@ klasse GrammarTests(unittest.TestCase):
         check('[[1, 2] [Nichts]]')
         check('[[1, 2] [...]]')
 
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('error', SyntaxWarning)
             compile('[(lambda x, y: x) (3, 4)]', '<testcase>', 'exec')
             compile('[[1, 2] [i]]', '<testcase>', 'exec')
@@ -1653,7 +1653,7 @@ klasse GrammarTests(unittest.TestCase):
         s = a[-4:-3]
         # A rough test of SF bug 1333982.  https://bugs.python.org/issue1333982
         # The testing here is fairly incomplete.
-        # Test cases should include: commas with 1 and 2 colons
+        # Test cases should include: commas mit 1 and 2 colons
         d = {}
         d[1] = 1
         d[1,] = 2
@@ -1717,7 +1717,7 @@ klasse GrammarTests(unittest.TestCase):
         @class_decorator
         klasse G: pass
 
-        # Test expressions as decorators (PEP 614):
+        # Test expressions als decorators (PEP 614):
         @Falsch or class_decorator
         klasse H: pass
         @d := class_decorator
@@ -1862,63 +1862,63 @@ klasse GrammarTests(unittest.TestCase):
             def __exit__(self, *args):
                 pass
 
-        with manager():
+        mit manager():
             pass
-        with manager() as x:
+        mit manager() als x:
             pass
-        with manager() as (x, y):
+        mit manager() als (x, y):
             pass
-        with manager(), manager():
+        mit manager(), manager():
             pass
-        with manager() as x, manager() as y:
+        mit manager() als x, manager() als y:
             pass
-        with manager() as x, manager():
+        mit manager() als x, manager():
             pass
 
-        with (
+        mit (
             manager()
         ):
             pass
 
-        with (
-            manager() as x
+        mit (
+            manager() als x
         ):
             pass
 
-        with (
-            manager() as (x, y),
-            manager() as z,
+        mit (
+            manager() als (x, y),
+            manager() als z,
         ):
             pass
 
-        with (
+        mit (
             manager(),
             manager()
         ):
             pass
 
-        with (
-            manager() as x,
-            manager() as y
+        mit (
+            manager() als x,
+            manager() als y
         ):
             pass
 
-        with (
-            manager() as x,
+        mit (
+            manager() als x,
             manager()
         ):
             pass
 
-        with (
-            manager() as x,
-            manager() as y,
-            manager() as z,
+        mit (
+            manager() als x,
+            manager() als y,
+            manager() als z,
         ):
             pass
 
-        with (
-            manager() as x,
-            manager() as y,
+        mit (
+            manager() als x,
+            manager() als y,
             manager(),
         ):
             pass
@@ -2015,7 +2015,7 @@ klasse GrammarTests(unittest.TestCase):
                 pass
             raise Done
 
-        with self.assertRaises(Done):
+        mit self.assertRaises(Done):
             foo().send(Nichts)
 
     def test_async_with(self):
@@ -2028,21 +2028,21 @@ klasse GrammarTests(unittest.TestCase):
                 return Falsch
 
         async def foo():
-            async with manager():
+            async mit manager():
                 pass
-            async with manager() as x:
+            async mit manager() als x:
                 pass
-            async with manager() as (x, y):
+            async mit manager() als (x, y):
                 pass
-            async with manager(), manager():
+            async mit manager(), manager():
                 pass
-            async with manager() as x, manager() as y:
+            async mit manager() als x, manager() als y:
                 pass
-            async with manager() as x, manager():
+            async mit manager() als x, manager():
                 pass
             raise Done
 
-        with self.assertRaises(Done):
+        mit self.assertRaises(Done):
             foo().send(Nichts)
 
     def test_complex_lambda(self):

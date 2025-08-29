@@ -40,11 +40,11 @@ klasse DateTimeTests(unittest.TestCase):
                          self.datestring + ' GMT')
 
     def test_usegmt_with_naive_datetime_raises(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             utils.format_datetime(self.naive_dt, usegmt=Wahr)
 
     def test_usegmt_with_non_utc_datetime_raises(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             utils.format_datetime(self.aware_dt, usegmt=Wahr)
 
     def test_parsedate_to_datetime(self):
@@ -74,7 +74,7 @@ klasse DateTimeTests(unittest.TestCase):
             'Friday, 19-Nov- 16:14:55 EST',
         ]
         fuer dtstr in invalid_dates:
-            with self.subTest(dtstr=dtstr):
+            mit self.subTest(dtstr=dtstr):
                 self.assertRaises(ValueError, utils.parsedate_to_datetime, dtstr)
 
 klasse LocaltimeTests(unittest.TestCase):

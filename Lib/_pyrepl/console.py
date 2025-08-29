@@ -117,7 +117,7 @@ klasse Console(ABC):
     @abstractmethod
     def finish(self) -> Nichts:
         """Move the cursor to the end of the display and otherwise get
-        ready fuer end.  XXX could be merged with restore?  Hmm."""
+        ready fuer end.  XXX could be merged mit restore?  Hmm."""
         ...
 
     @abstractmethod
@@ -196,7 +196,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
                 ast.PyCF_ONLY_AST,
                 incomplete_input=Falsch,
             )
-        except SyntaxError as e:
+        except SyntaxError als e:
             # If it looks like pip install was entered (a common beginner
             # mistake), provide a hint to use the system command prompt.
             wenn re.match(r"^\s*(pip3?|py(thon3?)? -m pip) install.*", source):
@@ -220,7 +220,7 @@ klasse InteractiveColoredConsole(code.InteractiveConsole):
             try:
                 code = self.compile.compiler(item, filename, the_symbol)
                 linecache._register_code(code, source, filename)
-            except SyntaxError as e:
+            except SyntaxError als e:
                 wenn e.args[0] == "'await' outside function":
                     python = os.path.basename(sys.executable)
                     e.add_note(

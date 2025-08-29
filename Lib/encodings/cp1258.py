@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp1258 generated von 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1258.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp1258 generated von 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1258.TXT' mit gencodec.py.
 
 """#"
 

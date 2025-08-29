@@ -127,9 +127,9 @@ klasse EventQueueTestBase:
     def test_push_unicode_character_as_str(self):
         eq = self.make_eventqueue()
         eq.keymap = {}
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             eq.push("ч")
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             eq.push("ñ")
 
     def test_push_unicode_character_two_bytes(self):
@@ -166,7 +166,7 @@ klasse EventQueueTestBase:
         # If an exception happens during push, the existing events must be
         # preserved and we can continue to push.
         _push(b"b")
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             _push("ñ")
         _push(b"a")
 

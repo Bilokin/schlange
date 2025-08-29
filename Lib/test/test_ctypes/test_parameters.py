@@ -70,7 +70,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertRaises(TypeError, c_char_p.from_param, "123\377")
         self.assertRaises(TypeError, c_char_p.from_param, 42)
 
-        # calling c_char_p.from_param with a c_char_p instance
+        # calling c_char_p.from_param mit a c_char_p instance
         # returns the argument itself:
         a = c_char_p(b"123")
         self.assertIs(c_char_p.from_param(a), a)
@@ -85,30 +85,30 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(type(pa), c_wchar_p)
 
     def test_c_char(self):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             c_char.from_param(b"abc")
         self.assertEqual(str(cm.exception),
                          "one character bytes, bytearray, or an integer "
                          "in range(256) expected, not bytes of length 3")
 
     def test_c_wchar(self):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             c_wchar.from_param("abc")
         self.assertEqual(str(cm.exception),
                          "a unicode character expected, not a string of length 3")
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             c_wchar.from_param("")
         self.assertEqual(str(cm.exception),
                          "a unicode character expected, not a string of length 0")
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             c_wchar.from_param(123)
         self.assertEqual(str(cm.exception),
                          "a unicode character expected, not instance of int")
 
         wenn sizeof(c_wchar) < 4:
-            with self.assertRaises(TypeError) as cm:
+            mit self.assertRaises(TypeError) als cm:
                 c_wchar.from_param('\U0001f40d')
             self.assertEqual(str(cm.exception),
                              "the string '\\U0001f40d' cannot be converted to "
@@ -159,7 +159,7 @@ klasse SimpleTypesTestCase(unittest.TestCase):
         self.assertEqual(len(ia), 3)
         self.assertEqual([ia[i] fuer i in range(3)], [0, 0, 0])
 
-        # Pointers are only compatible with arrays containing items of
+        # Pointers are only compatible mit arrays containing items of
         # the same type!
         LPINT = POINTER(c_int)
         LPINT.from_param((c_int*3)())
@@ -215,14 +215,14 @@ klasse SimpleTypesTestCase(unittest.TestCase):
             @property
             def __dict__(self):
                 pass
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             BadStruct().__setstate__({}, b'foo')
 
         klasse WorseStruct(Structure):
             @property
             def __dict__(self):
                 1/0
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             WorseStruct().__setstate__({}, b'foo')
 
     def test_parameter_repr(self):

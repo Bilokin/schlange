@@ -14,11 +14,11 @@ klasse EmscriptenAsyncInputDeviceTest(unittest.TestCase):
         p = Path("/dev/blah")
         self.addCleanup(p.unlink)
         wenn not jspi_supported:
-            with open(p, "r") as f:
+            mit open(p, "r") als f:
                 self.assertRaises(OSError, f.readline)
             return
 
-        with open(p, "r") as f:
+        mit open(p, "r") als f:
             fuer _ in range(10):
                 self.assertEqual(f.readline().strip(), "ab")
                 self.assertEqual(f.readline().strip(), "fi")

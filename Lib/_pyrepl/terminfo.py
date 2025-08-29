@@ -134,7 +134,7 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
     """Find and read terminfo file fuer given terminal name.
 
     Terminfo files are stored in directories using the first character
-    of the terminal name as a subdirectory.
+    of the terminal name als a subdirectory.
     """
     _validate_terminal_name_or_raise(terminal_name)
     first_char = terminal_name[0].lower()
@@ -145,7 +145,7 @@ def _read_terminfo_file(terminal_name: str) -> bytes:
         wenn path.is_file():
             return path.read_bytes()
 
-        # Try with hex encoding of first char (for special chars)
+        # Try mit hex encoding of first char (for special chars)
         hex_dir = "%02x" % ord(first_char)
         path = directory / hex_dir / filename
         wenn path.is_file():
@@ -385,7 +385,7 @@ klasse TermInfo:
 
         # Skip data than PyREPL doesn't need:
         # - names (`|`-separated ASCII strings)
-        # - boolean capabilities (bytes with value 0 or 1)
+        # - boolean capabilities (bytes mit value 0 or 1)
         # - numbers (little-endian integers, `number_size` bytes each)
         offset += name_size
         offset += bool_count
@@ -462,7 +462,7 @@ def tparm(cap_bytes: bytes, *params: int) -> bytes:
     wenn increment:
         result = result.replace(b"%i", b"")
 
-    # Replace %p1%d, %p2%d, etc. with actual parameter values
+    # Replace %p1%d, %p2%d, etc. mit actual parameter values
     fuer i in range(len(params)):
         pattern = b"%%p%d%%d" % (i + 1)
         wenn pattern in result:

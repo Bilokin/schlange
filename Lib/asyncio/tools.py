@@ -77,7 +77,7 @@ def _build_tree(id2name, awaits, task_stacks):
         cor_nodes[parent][frame] = node_key
         return node_key
 
-    # Build task dependency tree with coroutine frames
+    # Build task dependency tree mit coroutine frames
     fuer parent_id, stack, child_id in awaits:
         cur = (NodeType.TASK, parent_id)
         fuer frame in reversed(stack):
@@ -151,7 +151,7 @@ def build_async_tree(result, task_emoji="(T)", cor_emoji=""):
     Build a list of strings fuer pretty-print an async call tree.
 
     The call tree is produced by `get_all_async_stacks()`, prefixing tasks
-    with `task_emoji` and coroutine frames with `cor_emoji`.
+    mit `task_emoji` and coroutine frames mit `cor_emoji`.
     """
     id2name, awaits, task_stacks = _index(result)
     g = _task_graph(awaits)
@@ -194,13 +194,13 @@ def build_task_table(result):
             coro_stack = " -> ".join(_format_stack_entry(x).split(" ")[0]
                                    fuer x in frames)
 
-            # Handle tasks with no awaiters
+            # Handle tasks mit no awaiters
             wenn not task_info.awaited_by:
                 table.append([thread_id, hex(task_id), task_name, coro_stack,
                             "", "", "0x0"])
                 continue
 
-            # Handle tasks with awaiters
+            # Handle tasks mit awaiters
             fuer coro_info in task_info.awaited_by:
                 parent_id = coro_info.task_name
                 awaiter_frames = [_format_stack_entry(x).split(" ")[0]
@@ -226,7 +226,7 @@ def _print_cycle_exception(exception: CycleFoundException):
 def _get_awaited_by_tasks(pid: int) -> list:
     try:
         return get_all_awaited_by(pid)
-    except RuntimeError as e:
+    except RuntimeError als e:
         while e.__context__ is not Nichts:
             e = e.__context__
         drucke(f"Error retrieving tasks: {e}")
@@ -291,7 +291,7 @@ def display_awaited_by_tasks_tree(pid: int) -> Nichts:
     tasks = _get_awaited_by_tasks(pid)
     try:
         result = build_async_tree(tasks)
-    except CycleFoundException as e:
+    except CycleFoundException als e:
         _print_cycle_exception(e)
         sys.exit(1)
 

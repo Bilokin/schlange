@@ -14,7 +14,7 @@ klasse TestSetPointerType(unittest.TestCase):
         ctypes._pointer_type_cache_fallback.clear()
 
     def test_incomplete_example(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             lpcell = POINTER("cell")
         klasse cell(Structure):
             _fields_ = [("name", c_char_p),
@@ -41,7 +41,7 @@ klasse TestSetPointerType(unittest.TestCase):
         self.assertEqual(result, [b"foo", b"bar"] * 4)
 
     def test_deprecation(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             lpcell = POINTER("cell")
         klasse cell(Structure):
             _fields_ = [("name", c_char_p),

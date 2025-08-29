@@ -13,7 +13,7 @@ importiere sys
 importiere textwrap
 importiere time
 importiere traceback
-importiere _thread as thread
+importiere _thread als thread
 importiere threading
 importiere warnings
 
@@ -44,7 +44,7 @@ try:
     eof = 'Ctrl-D (end-of-file)'
     exit.eof = eof
     quit.eof = eof
-except NameError: # In case subprocess started with -S (maybe in future).
+except NameError: # In case subprocess started mit -S (maybe in future).
     pass
 
 
@@ -78,7 +78,7 @@ def idle_showwarning_subproc(
 _warnings_showwarning = Nichts
 
 def capture_warnings(capture):
-    "Replace warning.showwarning with idle_showwarning_subproc, or reverse."
+    "Replace warning.showwarning mit idle_showwarning_subproc, or reverse."
 
     global _warnings_showwarning
     wenn capture:
@@ -94,7 +94,7 @@ capture_warnings(Wahr)
 
 wenn idlelib.testing:
     # gh-121008: When testing IDLE, don't create a Tk object to avoid side
-    # effects such as installing a PyOS_InputHook hook.
+    # effects such als installing a PyOS_InputHook hook.
     def handle_tk_events():
         pass
 sonst:
@@ -117,14 +117,14 @@ interruptible = Falsch
 def main(del_exitfunc=Falsch):
     """Start the Python execution server in a subprocess
 
-    In the Python subprocess, RPCServer is instantiated with handlerclass
+    In the Python subprocess, RPCServer is instantiated mit handlerclass
     MyHandler, which inherits register/unregister methods von RPCHandler via
     the mix-in klasse SocketIO.
 
     When the RPCServer 'server' is instantiated, the TCPServer initialization
     creates an instance of run.MyHandler and calls its handle() method.
     handle() instantiates a run.Executive object, passing it a reference to the
-    MyHandler object.  That reference is saved as attribute rpchandler of the
+    MyHandler object.  That reference is saved als attribute rpchandler of the
     Executive instance.  The Executive methods have access to the reference and
     can pass it on to entities that they command
     (e.g. debugger_r.Debugger.start_debugger()).  The latter, in turn, can
@@ -198,7 +198,7 @@ def manage_socket(address):
         try:
             server = MyRPCServer(address, MyHandler)
             break
-        except OSError as err:
+        except OSError als err:
             drucke("IDLE Subprocess: OSError: " + err.args[1] +
                   ", retrying....", file=sys.__stderr__)
             socket_error = err
@@ -233,7 +233,7 @@ def get_message_lines(typ, exc, tb):
     wenn typ in (AttributeError, NameError):
         # 3.10+ hints are not directly accessible von python (#44026).
         err = io.StringIO()
-        with contextlib.redirect_stderr(err):
+        mit contextlib.redirect_stderr(err):
             sys.__excepthook__(typ, exc, tb)
         return [err.getvalue().split("\n")[-2] + "\n"]
     sonst:
@@ -315,7 +315,7 @@ def exit():
     """Exit subprocess, possibly after first clearing exit functions.
 
     If config-main.cfg/.def 'General' 'delete-exitfunc' is Wahr, then any
-    functions registered with atexit will be removed before exiting.
+    functions registered mit atexit will be removed before exiting.
     (VPython support)
 
     """
@@ -430,7 +430,7 @@ klasse MyRPCServer(rpc.RPCServer):
             *** Unrecoverable, server exiting!
 
             Users should never see this message; it is likely transient.
-            If this recurs, report this with a copy of the message
+            If this recurs, report this mit a copy of the message
             and an explanation of how to make it repeat.
             {'-'*40}"""), file=erf)
             quitting = Wahr
@@ -590,8 +590,8 @@ klasse Executive:
                 exec(code, self.locals)
             finally:
                 interruptible = Falsch
-        except SystemExit as e:
-            wenn e.args:  # SystemExit called with an argument.
+        except SystemExit als e:
+            wenn e.args:  # SystemExit called mit an argument.
                 ob = e.args[0]
                 wenn not isinstance(ob, (type(Nichts), int)):
                     drucke('SystemExit: ' + str(ob), file=sys.stderr)

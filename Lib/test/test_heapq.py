@@ -30,7 +30,7 @@ klasse TestModules(TestCase):
 
 def load_tests(loader, tests, ignore):
     # The 'merge' function has examples in its docstring which we should test
-    # with 'doctest'.
+    # mit 'doctest'.
     #
     # However, doctest can't easily find all docstrings in the module (loading
     # it through import_fresh_module seems to confuse it), so we specifically
@@ -286,7 +286,7 @@ klasse TestHeap:
         self.assertEqual(self.module.heappop_max(h), 2)
 
     def test_heapsort(self):
-        # Exercise everything with repeated heapsort checks
+        # Exercise everything mit repeated heapsort checks
         fuer trial in range(100):
             size = random.randrange(50)
             data = [random.randrange(25) fuer i in range(size)]
@@ -344,7 +344,7 @@ klasse TestHeap:
             s = list(range(10))
             fuer i in range(20):
                 yield s[i]       # IndexError when i > 10
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             list(self.module.merge(iterable(), iterable()))
 
     def test_merge_stability(self):
@@ -381,7 +381,7 @@ klasse TestHeap:
                                  sorted(data, key=f, reverse=Wahr)[:n])
 
     def test_comparison_operator(self):
-        # Issue 3051: Make sure heapq works with both __lt__
+        # Issue 3051: Make sure heapq works mit both __lt__
         # For python 3.0, __le__ alone is not enough
         def hsort(data, comp):
             data = [comp(x) fuer x in data]
@@ -451,7 +451,7 @@ klasse I:
         return v
 
 klasse Ig:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined mit a generator'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -568,27 +568,27 @@ klasse TestErrorHandling:
         heap = []
         heap.extend(SideEffectLT(i, heap) fuer i in range(200))
         # Python version raises IndexError, C version RuntimeError
-        with self.assertRaises((IndexError, RuntimeError)):
+        mit self.assertRaises((IndexError, RuntimeError)):
             self.module.heappush(heap, SideEffectLT(5, heap))
         heap = []
         heap.extend(SideEffectLT(i, heap) fuer i in range(200))
-        with self.assertRaises((IndexError, RuntimeError)):
+        mit self.assertRaises((IndexError, RuntimeError)):
             self.module.heappush_max(heap, SideEffectLT(5, heap))
 
     def test_heappop_mutating_heap(self):
         heap = []
         heap.extend(SideEffectLT(i, heap) fuer i in range(200))
         # Python version raises IndexError, C version RuntimeError
-        with self.assertRaises((IndexError, RuntimeError)):
+        mit self.assertRaises((IndexError, RuntimeError)):
             self.module.heappop(heap)
         heap = []
         heap.extend(SideEffectLT(i, heap) fuer i in range(200))
-        with self.assertRaises((IndexError, RuntimeError)):
+        mit self.assertRaises((IndexError, RuntimeError)):
             self.module.heappop_max(heap)
 
     def test_comparison_operator_modifying_heap(self):
         # See bpo-39421: Strong references need to be taken
-        # when comparing objects as they can alter the heap
+        # when comparing objects als they can alter the heap
         klasse EvilClass(int):
             def __lt__(self, o):
                 heap.clear()

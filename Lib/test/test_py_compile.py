@@ -14,26 +14,26 @@ von test.support importiere os_helper, script_helper
 
 
 def without_source_date_epoch(fxn):
-    """Runs function with SOURCE_DATE_EPOCH unset."""
+    """Runs function mit SOURCE_DATE_EPOCH unset."""
     @functools.wraps(fxn)
     def wrapper(*args, **kwargs):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.unset('SOURCE_DATE_EPOCH')
             return fxn(*args, **kwargs)
     return wrapper
 
 
 def with_source_date_epoch(fxn):
-    """Runs function with SOURCE_DATE_EPOCH set."""
+    """Runs function mit SOURCE_DATE_EPOCH set."""
     @functools.wraps(fxn)
     def wrapper(*args, **kwargs):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env['SOURCE_DATE_EPOCH'] = '123456789'
             return fxn(*args, **kwargs)
     return wrapper
 
 
-# Run tests with SOURCE_DATE_EPOCH set or unset explicitly.
+# Run tests mit SOURCE_DATE_EPOCH set or unset explicitly.
 klasse SourceDateEpochTestMeta(type(unittest.TestCase)):
     def __new__(mcls, name, bases, dct, *, source_date_epoch):
         cls = super().__new__(mcls, name, bases, dct)
@@ -65,7 +65,7 @@ klasse PyCompileTestsBase:
         drive = os.path.splitdrive(self.source_path)[0]
         wenn drive:
             os.chdir(drive)
-        with open(self.source_path, 'w') as file:
+        mit open(self.source_path, 'w') als file:
             file.write('x = 123\n')
 
     def tearDown(self):
@@ -87,7 +87,7 @@ klasse PyCompileTestsBase:
             self.skipTest('need to be able to create a symlink fuer a file')
         sonst:
             assert os.path.islink(self.pyc_path)
-            with self.assertRaises(FileExistsError):
+            mit self.assertRaises(FileExistsError):
                 py_compile.compile(self.source_path, self.pyc_path)
 
     @unittest.skipIf(not os.path.exists(os.devnull) or os.path.isfile(os.devnull),
@@ -95,7 +95,7 @@ klasse PyCompileTestsBase:
     def test_do_not_overwrite_nonregular_files(self):
         # In the face of a cfile argument being a non-regular file, bail out.
         # Issue #17222
-        with self.assertRaises(FileExistsError):
+        mit self.assertRaises(FileExistsError):
             py_compile.compile(self.source_path, os.devnull)
 
     def test_cache_path(self):
@@ -103,7 +103,7 @@ klasse PyCompileTestsBase:
         self.assertWahr(os.path.exists(self.cache_path))
 
     def test_cwd(self):
-        with os_helper.change_cwd(self.directory):
+        mit os_helper.change_cwd(self.directory):
             py_compile.compile(os.path.basename(self.source_path),
                                os.path.basename(self.pyc_path))
         self.assertWahr(os.path.exists(self.pyc_path))
@@ -120,13 +120,13 @@ klasse PyCompileTestsBase:
                      'cannot control directory permissions on Windows')
     @os_helper.skip_unless_working_chmod
     def test_exceptions_propagate(self):
-        # Make sure that exceptions raised thanks to issues with writing
+        # Make sure that exceptions raised thanks to issues mit writing
         # bytecode.
         # http://bugs.python.org/issue17244
         mode = os.stat(self.directory)
         os.chmod(self.directory, stat.S_IREAD)
         try:
-            with self.assertRaises(IOError):
+            mit self.assertRaises(IOError):
                 py_compile.compile(self.source_path, self.pyc_path)
         finally:
             os.chmod(self.directory, mode.st_mode)
@@ -135,7 +135,7 @@ klasse PyCompileTestsBase:
         bad_coding = os.path.join(os.path.dirname(__file__),
                                   'tokenizedata',
                                   'bad_coding2.py')
-        with support.captured_stderr():
+        mit support.captured_stderr():
             self.assertIsNichts(py_compile.compile(bad_coding, doraise=Falsch))
         self.assertFalsch(os.path.exists(
             importlib.util.cache_from_source(bad_coding)))
@@ -144,7 +144,7 @@ klasse PyCompileTestsBase:
         py_compile.compile(self.source_path, self.pyc_path)
         self.assertWahr(os.path.exists(self.pyc_path))
         self.assertFalsch(os.path.exists(self.cache_path))
-        with open(self.pyc_path, 'rb') as fp:
+        mit open(self.pyc_path, 'rb') als fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
         wenn os.environ.get('SOURCE_DATE_EPOCH'):
@@ -154,7 +154,7 @@ klasse PyCompileTestsBase:
 
         self.assertEqual(flags, expected_flags)
 
-    @unittest.skipIf(sys.flags.optimize > 0, 'test does not work with -O')
+    @unittest.skipIf(sys.flags.optimize > 0, 'test does not work mit -O')
     def test_double_dot_no_clobber(self):
         # http://bugs.python.org/issue22966
         # py_compile foo.bar.py -> __pycache__/foo.cpython-34.pyc
@@ -168,7 +168,7 @@ klasse PyCompileTestsBase:
             os.path.join(
                 '__pycache__',
                 'foo.bar.{}.pyc'.format(sys.implementation.cache_tag)))
-        with open(weird_path, 'w') as file:
+        mit open(weird_path, 'w') als file:
             file.write('x = 123\n')
         py_compile.compile(weird_path)
         self.assertWahr(os.path.exists(cache_path))
@@ -183,7 +183,7 @@ klasse PyCompileTestsBase:
             self.source_path,
             invalidation_mode=py_compile.PycInvalidationMode.CHECKED_HASH,
         )
-        with open(self.cache_path, 'rb') as fp:
+        mit open(self.cache_path, 'rb') als fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
         self.assertEqual(flags, 0b11)
@@ -191,7 +191,7 @@ klasse PyCompileTestsBase:
             self.source_path,
             invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH,
         )
-        with open(self.cache_path, 'rb') as fp:
+        mit open(self.cache_path, 'rb') als fp:
             flags = importlib._bootstrap_external._classify_pyc(
                 fp.read(), 'test', {})
         self.assertEqual(flags, 0b1)
@@ -200,11 +200,11 @@ klasse PyCompileTestsBase:
         bad_coding = os.path.join(os.path.dirname(__file__),
                                   'tokenizedata',
                                   'bad_coding2.py')
-        with support.captured_stderr() as stderr:
+        mit support.captured_stderr() als stderr:
             self.assertIsNichts(py_compile.compile(bad_coding, doraise=Falsch, quiet=2))
             self.assertIsNichts(py_compile.compile(bad_coding, doraise=Wahr, quiet=2))
             self.assertEqual(stderr.getvalue(), '')
-            with self.assertRaises(py_compile.PyCompileError):
+            mit self.assertRaises(py_compile.PyCompileError):
                 py_compile.compile(bad_coding, doraise=Wahr, quiet=1)
 
 
@@ -229,7 +229,7 @@ klasse PyCompileCLITestCase(unittest.TestCase):
         self.source_path = os.path.join(self.directory, '_test.py')
         self.cache_path = importlib.util.cache_from_source(self.source_path,
                                 optimization='' wenn __debug__ sonst 1)
-        with open(self.source_path, 'w') as file:
+        mit open(self.source_path, 'w') als file:
             file.write('x = 123\n')
 
     def tearDown(self):

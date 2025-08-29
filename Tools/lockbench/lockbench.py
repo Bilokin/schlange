@@ -1,5 +1,5 @@
 # Measure the performance of PyMutex and PyThread_type_lock locks
-# with short critical sections.
+# mit short critical sections.
 #
 # Usage: python Tools/lockbench/lockbench.py [CRITICAL_SECTION_LENGTH]
 #
@@ -10,7 +10,7 @@
 # particularly fuer the 1 thread case because even in multithreaded programs,
 # most locks acquisitions are not contended. Values fuer 2+ threads are
 # only meaningful fuer `--disable-gil` builds, because the GIL prevents most
-# situations where there is lock contention with short critical sections.
+# situations where there is lock contention mit short critical sections.
 #
 # Fairness: A measure of how evenly the lock acquisitions are distributed.
 # A fairness of 1.0 means that all threads acquired the lock the same number

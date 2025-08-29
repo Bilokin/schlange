@@ -24,7 +24,7 @@ von idlelib importiere zoomheight
 
 ICONDIR = "Icons"
 
-# Look fuer Icons subdirectory in the same directory as this module
+# Look fuer Icons subdirectory in the same directory als this module
 try:
     _icondir = os.path.join(os.path.dirname(__file__), ICONDIR)
 except NameError:
@@ -61,7 +61,7 @@ def wheel_event(event, widget=Nichts):
 
     For wheel up, event.delta = 120*n on Windows, -1*n on darwin,
     where n can be > 1 wenn one scrolls fast.  Flicking the wheel
-    generates up to maybe 20 events with n up to 10 or more 1.
+    generates up to maybe 20 events mit n up to 10 or more 1.
     Macs use wheel down (delta = 1*n) to scroll up, so positive
     delta means to scroll up on both systems.
 
@@ -441,7 +441,7 @@ klasse FileTreeItem(TreeItem):
         return sublist
 
 
-# A canvas widget with scroll bars and some useful bindings
+# A canvas widget mit scroll bars and some useful bindings
 
 klasse ScrolledCanvas:
 

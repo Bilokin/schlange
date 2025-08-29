@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2008-2012 Stefan Krah. All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without
+# Redistribution and use in source and binary forms, mit or without
 # modification, are permitted provided that the following conditions
 # are met:
 #
@@ -10,7 +10,7 @@
 #
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
+#    documentation and/or other materials provided mit the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -136,7 +136,7 @@ sonst:
     wenn os.path.isfile("/var/lib/locales/supported.d/local"):
         # On Ubuntu, `locale -a` gives the wrong case fuer some locales,
         # so we get the correct names directly:
-        with open("/var/lib/locales/supported.d/local") as f:
+        mit open("/var/lib/locales/supported.d/local") als f:
             locale_list = [loc.split()[0] fuer loc in f.readlines() \
                            wenn not loc.startswith('#')]
     sowenn which('locale'):
@@ -156,7 +156,7 @@ except ValueError:
 
 # Debian
 wenn os.path.isfile("/etc/locale.alias"):
-    with open("/etc/locale.alias") as f:
+    mit open("/etc/locale.alias") als f:
         while 1:
             try:
                 line = f.readline()
@@ -174,7 +174,7 @@ wenn os.path.isfile("/etc/locale.alias"):
 # FreeBSD
 wenn platform.system() == 'FreeBSD':
     # http://www.freebsd.org/cgi/query-pr.cgi?pr=142173
-    # en_GB.US-ASCII has 163 as the currency symbol.
+    # en_GB.US-ASCII has 163 als the currency symbol.
     fuer loc in ['it_CH.ISO8859-1', 'it_CH.ISO8859-15', 'it_CH.UTF-8',
                 'it_IT.ISO8859-1', 'it_IT.ISO8859-15', 'it_IT.UTF-8',
                 'sl_SI.ISO8859-2', 'sl_SI.UTF-8',
@@ -205,7 +205,7 @@ def printit(testno, s, fmt, encoding=Nichts):
         sonst:
             sys.stdout.write("xfmt%d  format  %s  '%s'  ->  '%s'\n"
                              % (testno, s, fmt, result))
-    except Exception as err:
+    except Exception als err:
         sys.stderr.write("%s  %s  %s\n" % (err, s, fmt))
 
 
@@ -277,7 +277,7 @@ def all_format_sep():
                             type = random.choice(('', 'E', 'e', 'G', 'g', 'F', 'f', '%'))
                             yield ''.join((fill, align, sign, zeropad, width, ',', prec, type))
 
-# Partially brute force all possible format strings with an 'n' specifier.
+# Partially brute force all possible format strings mit an 'n' specifier.
 # [[fill]align][sign][#][0][width][,][.precision][type]
 def all_format_loc():
     fuer align in ('', '<', '>', '=', '^'):
@@ -290,7 +290,7 @@ def all_format_loc():
                         fuer prec in ['']+['.'+str(y) fuer y in range(1, 20)]:
                             yield ''.join((fill, align, sign, zeropad, width, prec, 'n'))
 
-# Generate random format strings with a unicode fill character
+# Generate random format strings mit a unicode fill character
 # [[fill]align][sign][#][0][width][,][.precision][type]
 def randfill(fill):
     active = sorted(random.sample(range(5), random.randrange(6)))
@@ -313,13 +313,13 @@ def randfill(fill):
             s += random.choice(c)
     return s
 
-# Generate random format strings with random locale setting
+# Generate random format strings mit random locale setting
 # [[fill]align][sign][#][0][width][,][.precision][type]
 def rand_locale():
     try:
         loc = random.choice(locale_list)
         locale.setlocale(locale.LC_ALL, loc)
-    except locale.Error as err:
+    except locale.Error als err:
         pass
     active = sorted(random.sample(range(5), random.randrange(6)))
     s = ''

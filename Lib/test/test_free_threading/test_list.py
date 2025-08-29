@@ -88,7 +88,7 @@ klasse TestList(TestCase):
         barrier = Barrier(NTHREAD)
         threads = [Thread(target=copy_back_and_forth, args=(barrier, l))
                    fuer _ in range(NTHREAD)]
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
 
 

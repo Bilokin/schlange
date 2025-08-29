@@ -5,7 +5,7 @@ von array importiere array
 von weakref importiere proxy
 
 importiere io
-importiere _pyio as pyio
+importiere _pyio als pyio
 
 von test.support importiere gc_collect
 von test.support.os_helper importiere TESTFN
@@ -59,7 +59,7 @@ klasse AutoFileTests:
             self.assertRaises(TypeError, self.f.readinto, a)
 
     def testWritelinesUserList(self):
-        # verify writelines with instance sequence
+        # verify writelines mit instance sequence
         l = UserList([b'1', b'2'])
         self.f.writelines(l)
         self.f.close()
@@ -68,16 +68,16 @@ klasse AutoFileTests:
         self.assertEqual(buf, b'12')
 
     def testWritelinesIntegers(self):
-        # verify writelines with integers
+        # verify writelines mit integers
         self.assertRaises(TypeError, self.f.writelines, [1, 2, 3])
 
     def testWritelinesIntegersUserList(self):
-        # verify writelines with integers in UserList
+        # verify writelines mit integers in UserList
         l = UserList([1,2,3])
         self.assertRaises(TypeError, self.f.writelines, l)
 
     def testWritelinesNonString(self):
-        # verify writelines with non-string object
+        # verify writelines mit non-string object
         klasse NonString:
             pass
 
@@ -167,9 +167,9 @@ klasse OtherFileTests:
             # Issue 14853: stdin becomes seekable when redirected to a file
             self.skipTest('stdin must be a TTY in this test')
 
-        with self.assertRaises((IOError, ValueError)):
+        mit self.assertRaises((IOError, ValueError)):
             sys.stdin.seek(-1)
-        with self.assertRaises((IOError, ValueError)):
+        mit self.assertRaises((IOError, ValueError)):
             sys.stdin.truncate()
 
     def testBadModeArgument(self):
@@ -177,7 +177,7 @@ klasse OtherFileTests:
         bad_mode = "qwerty"
         try:
             f = self.open(TESTFN, bad_mode)
-        except ValueError as msg:
+        except ValueError als msg:
             wenn msg.args[0] != 0:
                 s = str(msg)
                 wenn TESTFN in s or bad_mode not in s:
@@ -198,30 +198,30 @@ klasse OtherFileTests:
             d = int(f.read().decode("ascii"))
             f.close()
             f.close()
-        except OSError as msg:
+        except OSError als msg:
             self.fail('error setting buffer size %d: %s' % (s, str(msg)))
         self.assertEqual(d, s)
 
     def testSetBufferSize(self):
         # make sure that explicitly setting the buffer size doesn't cause
-        # misbehaviour especially with repeated close() calls
+        # misbehaviour especially mit repeated close() calls
         fuer s in (-1, 0, 512):
-            with warnings_helper.check_no_warnings(self,
+            mit warnings_helper.check_no_warnings(self,
                                            message='line buffering',
                                            category=RuntimeWarning):
                 self._checkBufferSize(s)
 
         # test that attempts to use line buffering in binary mode cause
         # a warning
-        with self.assertWarnsRegex(RuntimeWarning, 'line buffering'):
+        mit self.assertWarnsRegex(RuntimeWarning, 'line buffering'):
             self._checkBufferSize(1)
 
     def testDefaultBufferSize(self):
-        with self.open(TESTFN, 'wb') as f:
+        mit self.open(TESTFN, 'wb') als f:
             blksize = f.raw._blksize
             f.write(b"\0" * 5_000_000)
 
-        with self.open(TESTFN, 'rb') as f:
+        mit self.open(TESTFN, 'rb') als f:
             data = f.read1()
             expected_size = max(min(blksize, 8192 * 1024), io.DEFAULT_BUFFER_SIZE)
             self.assertEqual(len(data), expected_size)
@@ -300,39 +300,39 @@ klasse OtherFileTests:
         try:
             line = f.readline()
         except ValueError:
-            self.fail("readline() after next() with supposedly empty "
+            self.fail("readline() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         wenn line != testline:
-            self.fail("readline() after next() with empty buffer "
+            self.fail("readline() after next() mit empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         testline = testlines.pop(0)
         buf = array("b", b"\x00" * len(testline))
         try:
             f.readinto(buf)
         except ValueError:
-            self.fail("readinto() after next() with supposedly empty "
+            self.fail("readinto() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         line = buf.tobytes()
         wenn line != testline:
-            self.fail("readinto() after next() with empty buffer "
+            self.fail("readinto() after next() mit empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
 
         testline = testlines.pop(0)
         try:
             line = f.read(len(testline))
         except ValueError:
-            self.fail("read() after next() with supposedly empty "
+            self.fail("read() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         wenn line != testline:
-            self.fail("read() after next() with empty buffer "
+            self.fail("read() after next() mit empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         try:
             lines = f.readlines()
         except ValueError:
-            self.fail("readlines() after next() with supposedly empty "
+            self.fail("readlines() after next() mit supposedly empty "
                         "iteration-buffer failed anyway")
         wenn lines != testlines:
-            self.fail("readlines() after next() with empty buffer "
+            self.fail("readlines() after next() mit empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         f.close()
 

@@ -1,6 +1,6 @@
 importiere unittest
 importiere sys
-importiere test.support as support
+importiere test.support als support
 
 von test.support importiere import_helper
 
@@ -42,7 +42,7 @@ klasse LongTests(unittest.TestCase):
             *(37**n fuer n in range(14)),
             *(-37**n fuer n in range(14)),
         }:
-            with self.subTest(n=n):
+            mit self.subTest(n=n):
                 is_compact, value = _testcapi.call_long_compact_api(n)
                 wenn is_compact:
                     self.assertEqual(n, value)
@@ -85,7 +85,7 @@ klasse LongTests(unittest.TestCase):
         fromdouble = _testlimitedcapi.pylong_fromdouble
         float_max = sys.float_info.max
         fuer value in (5.0, 5.1, 5.9, -5.1, -5.9, 0.0, -0.0, float_max, -float_max):
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 self.assertEqual(fromdouble(value), int(value))
         self.assertRaises(OverflowError, fromdouble, float('inf'))
         self.assertRaises(OverflowError, fromdouble, float('-inf'))
@@ -172,7 +172,7 @@ klasse LongTests(unittest.TestCase):
         wenn min_val < 0:
             values += (-1, -512, -1234, min_val)
         fuer value in values:
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 self.assertEqual(func(value), value)
                 self.assertEqual(func(IntSubclass(value)), value)
                 wenn use_index:
@@ -202,7 +202,7 @@ klasse LongTests(unittest.TestCase):
     def check_long_asintandoverflow(self, func, min_val, max_val):
         # round trip (object -> C integer -> object)
         fuer value in (min_val, max_val, -1, 0, 1, 1234):
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 self.assertEqual(func(value), (value, 0))
                 self.assertEqual(func(IntSubclass(value)), (value, 0))
                 self.assertEqual(func(Index(value)), (value, 0))
@@ -287,7 +287,7 @@ klasse LongTests(unittest.TestCase):
         asdouble = _testlimitedcapi.pylong_asdouble
         MAX = int(sys.float_info.max)
         fuer value in (-MAX, MAX, -1, 0, 1, 1234):
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 self.assertEqual(asdouble(value), float(value))
                 self.assertIsInstance(asdouble(value), float)
 
@@ -355,7 +355,7 @@ klasse LongTests(unittest.TestCase):
     def test_long_asnativebytes(self):
         importiere math
         von _testcapi importiere (
-            pylong_asnativebytes as asnativebytes,
+            pylong_asnativebytes als asnativebytes,
             SIZE_MAX,
         )
 
@@ -389,7 +389,7 @@ klasse LongTests(unittest.TestCase):
             (2**256, 33),
             (-(2**256), 33),
         ]:
-            with self.subTest(f"sizeof-{v:X}"):
+            mit self.subTest(f"sizeof-{v:X}"):
                 buffer = bytearray(b"\x5a")
                 self.assertEqual(expect, asnativebytes(v, buffer, 0, -1),
                     "PyLong_AsNativeBytes(v, <unknown>, 0, -1)")
@@ -411,7 +411,7 @@ klasse LongTests(unittest.TestCase):
             "PyLong_AsNativeBytes(v, <3 byte buffer>, 2, 1)  // LE")
         self.assertEqual(buffer, b"\x04\x00\x99")
 
-        # We request as many bytes as `expect_be` contains, and always check
+        # We request als many bytes als `expect_be` contains, and always check
         # the result (both big and little endian). We check the return value
         # independently, since the buffer should always be filled correctly even
         # wenn we need more bytes
@@ -447,7 +447,7 @@ klasse LongTests(unittest.TestCase):
             (-(2**255-1),   b'\xff\xff\x80' + b'\x00' * 30 + b'\x01', 32),
 
             # Extracting 256 bits of integer will request 33 bytes, but still
-            # copy as many bits as possible into the buffer. So we *can* copy
+            # copy als many bits als possible into the buffer. So we *can* copy
             # into a 32-byte buffer, though negative number may be unrecoverable
             (2**256-1,      b'\xff' * 32,                           33),
             (2**256-1,      b'\x00' + b'\xff' * 32,                 33),
@@ -460,15 +460,15 @@ klasse LongTests(unittest.TestCase):
             (-(2**255),     b'\x80' + b'\x00' * 31,                 32),
             (-(2**255),     b'\xff\x80' + b'\x00' * 31,             33),
 
-            # The classic "Windows HRESULT as negative number" case
+            # The classic "Windows HRESULT als negative number" case
             #   HRESULT hr;
             #   PyLong_AsNativeBytes(<-2147467259>, &hr, sizeof(HRESULT), -1)
             #   assert(hr == E_FAIL)
             (-2147467259, b'\x80\x00\x40\x05', 4),
         ]:
-            with self.subTest(f"{v:X}-{len(expect_be)}bytes"):
+            mit self.subTest(f"{v:X}-{len(expect_be)}bytes"):
                 n = len(expect_be)
-                # Fill the buffer with dummy data to ensure all bytes
+                # Fill the buffer mit dummy data to ensure all bytes
                 # are overwritten.
                 buffer = bytearray(b"\xa5"*n)
                 expect_le = expect_be[::-1]
@@ -495,7 +495,7 @@ klasse LongTests(unittest.TestCase):
             # We pass a 33 byte buffer so it uses the whole thing
             (2**256-1,  b'\x00' + b'\xff' * 32, 33),
         ]:
-            with self.subTest(f"{v:X}-{len(expect_be)}bytes-unsigned"):
+            mit self.subTest(f"{v:X}-{len(expect_be)}bytes-unsigned"):
                 n = len(expect_be)
                 buffer = bytearray(b"\xa5"*n)
                 self.assertEqual(expect_n, asnativebytes(v, buffer, n, 4),
@@ -504,26 +504,26 @@ klasse LongTests(unittest.TestCase):
                     f"PyLong_AsNativeBytes(v, buffer, {n}, <little|unsigned>)")
 
         # Ensure Py_ASNATIVEBYTES_REJECT_NEGATIVE raises on negative value
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             asnativebytes(-1, buffer, 0, 8)
 
         # Ensure omitting Py_ASNATIVEBYTES_ALLOW_INDEX raises on __index__ value
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             asnativebytes(Index(1), buffer, 0, -1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             asnativebytes(Index(1), buffer, 0, 3)
 
         # Check a few error conditions. These are validated in code, but are
         # unspecified in docs, so wenn we make changes to the implementation, it's
         # fine to just update these tests rather than preserve the behaviour.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             asnativebytes('not a number', buffer, 0, -1)
 
     def test_long_asnativebytes_fuzz(self):
         importiere math
         von random importiere Random
         von _testcapi importiere (
-            pylong_asnativebytes as asnativebytes,
+            pylong_asnativebytes als asnativebytes,
             SIZE_MAX,
         )
 
@@ -569,7 +569,7 @@ klasse LongTests(unittest.TestCase):
                 self.assertIn(actual, expect_2, bytes_be.hex())
                 actual = asnativebytes(v, buffer, n, 5)
                 self.assertIn(actual, expect_2, bytes_be.hex())
-            except AssertionError as ex:
+            except AssertionError als ex:
                 value_hex = ''.join(reversed([
                     f'{b:02X}{"" wenn i % 8 sonst "_"}'
                     fuer i, b in enumerate(bytes_le, start=1)
@@ -585,7 +585,7 @@ klasse LongTests(unittest.TestCase):
     def test_long_fromnativebytes(self):
         importiere math
         von _testcapi importiere (
-            pylong_fromnativebytes as fromnativebytes,
+            pylong_fromnativebytes als fromnativebytes,
             SIZE_MAX,
         )
 
@@ -601,7 +601,7 @@ klasse LongTests(unittest.TestCase):
             (b'\x00\xff', 255, 255),
             (b'\xff\xff', -1, 65535),
         ]:
-            with self.subTest(f"{expect_s}-{expect_u:X}-{len(v_be)}bytes"):
+            mit self.subTest(f"{expect_s}-{expect_u:X}-{len(v_be)}bytes"):
                 n = len(v_be)
                 v_le = v_be[::-1]
 
@@ -792,7 +792,7 @@ klasse LongTests(unittest.TestCase):
         numbers = [*range(0, 10), 12345, 0xdeadbeef, 2**100, 2**100-1]
         numbers.extend(-num fuer num in list(numbers))
         fuer num in numbers:
-            with self.subTest(num=num):
+            mit self.subTest(num=num):
                 data = pylong_export(num)
                 wenn isinstance(data, tuple):
                     negative, digits = data

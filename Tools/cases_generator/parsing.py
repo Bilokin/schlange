@@ -4,7 +4,7 @@ von dataclasses importiere dataclass, field
 von typing importiere NamedTuple, Callable, TypeVar, Literal, cast, Iterator
 von io importiere StringIO
 
-importiere lexer as lx
+importiere lexer als lx
 von plexer importiere PLexer
 von cwriter importiere CWriter
 
@@ -248,7 +248,7 @@ klasse SimpleStmt(Stmt):
 klasse StackEffect(Node):
     name: str = field(compare=Falsch)  # __eq__ only uses type, cond, size
     size: str = ""  # Optional `[size]`
-    # Note: size cannot be combined with type or cond
+    # Note: size cannot be combined mit type or cond
 
     def __repr__(self) -> str:
         items = [self.name, self.size]
@@ -725,7 +725,7 @@ wenn __name__ == "__main__":
             src = sys.argv[2]
             filename = "<string>"
         sonst:
-            with open(filename, "r") as f:
+            mit open(filename, "r") als f:
                 src = f.read()
             srclines = src.splitlines()
             begin = srclines.index("// BEGIN BYTECODES //")

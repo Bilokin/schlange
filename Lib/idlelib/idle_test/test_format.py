@@ -1,12 +1,12 @@
 "Test format, coverage 99%."
 
-von idlelib importiere format as ft
+von idlelib importiere format als ft
 importiere unittest
 von unittest importiere mock
 von test.support importiere requires
 von tkinter importiere Tk, Text
 von idlelib.editor importiere EditorWindow
-von idlelib.idle_test.mock_idle importiere Editor as MockEditor
+von idlelib.idle_test.mock_idle importiere Editor als MockEditor
 
 
 klasse Is_Get_Test(unittest.TestCase):
@@ -43,11 +43,11 @@ klasse Is_Get_Test(unittest.TestCase):
 klasse FindTest(unittest.TestCase):
     """Test the find_paragraph function in paragraph module.
 
-    Using the runcase() function, find_paragraph() is called with 'mark' set at
+    Using the runcase() function, find_paragraph() is called mit 'mark' set at
     multiple indexes before and inside the test paragraph.
 
-    It appears that code with the same indentation as a quoted string is grouped
-    as part of the same paragraph, which is probably incorrect behavior.
+    It appears that code mit the same indentation als a quoted string is grouped
+    als part of the same paragraph, which is probably incorrect behavior.
     """
 
     @classmethod
@@ -70,21 +70,21 @@ klasse FindTest(unittest.TestCase):
 
     def test_find_comment(self):
         comment = (
-            "# Comment block with no blank lines before\n"
+            "# Comment block mit no blank lines before\n"
             "# Comment line\n"
             "\n")
         self.runcase(comment, 3, ('1.0', '3.0', '#', comment[0:58]))
 
         comment = (
             "\n"
-            "# Comment block with whitespace line before and after\n"
+            "# Comment block mit whitespace line before and after\n"
             "# Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '#', comment[1:70]))
 
         comment = (
             "\n"
-            "    # Indented comment block with whitespace before and after\n"
+            "    # Indented comment block mit whitespace before and after\n"
             "    # Comment line\n"
             "\n")
         self.runcase(comment, 4, ('2.0', '4.0', '    #', comment[1:82]))
@@ -97,7 +97,7 @@ klasse FindTest(unittest.TestCase):
 
         comment = (
             "\n"
-            "    # Single line comment with leading whitespace\n"
+            "    # Single line comment mit leading whitespace\n"
             "\n")
         self.runcase(comment, 3, ('2.0', '3.0', '    #', comment[1:51]))
 
@@ -124,7 +124,7 @@ klasse FindTest(unittest.TestCase):
 
     def test_find_paragraph(self):
         teststring = (
-            '"""String with no blank lines before\n'
+            '"""String mit no blank lines before\n'
             'String line\n'
             '"""\n'
             '\n')
@@ -132,7 +132,7 @@ klasse FindTest(unittest.TestCase):
 
         teststring = (
             "\n"
-            '"""String with whitespace line before and after\n'
+            '"""String mit whitespace line before and after\n'
             'String line.\n'
             '"""\n'
             '\n')
@@ -140,7 +140,7 @@ klasse FindTest(unittest.TestCase):
 
         teststring = (
             '\n'
-            '    """Indented string with whitespace before and after\n'
+            '    """Indented string mit whitespace before and after\n'
             '    Comment string.\n'
             '    """\n'
             '\n')
@@ -154,7 +154,7 @@ klasse FindTest(unittest.TestCase):
 
         teststring = (
             '\n'
-            '    """Single line string with leading whitespace."""\n'
+            '    """Single line string mit leading whitespace."""\n'
             '\n')
         self.runcase(teststring, 3, ('2.0', '3.0', '    ', teststring[1:55]))
 
@@ -176,7 +176,7 @@ klasse ReformatFunctionTest(unittest.TestCase):
         Equal(reform(hw, 12), "O hello\nworld")
         Equal(reform(hw, 13), "O hello world")
 
-        # Test with leading newline
+        # Test mit leading newline
         hw = "\nO hello world"
         Equal(reform(hw, 1), "\nO\nhello\nworld")
         Equal(reform(hw, 6), "\nO\nhello\nworld")
@@ -220,7 +220,7 @@ klasse FormatClassTest(unittest.TestCase):
 
 
 # For testing format_paragraph_event, Initialize FormatParagraph with
-# a mock Editor with .text and  .get_selection_indices.  The text must
+# a mock Editor mit .text and  .get_selection_indices.  The text must
 # be a Text wrapper that adds two methods
 
 # A real EditorWindow creates unneeded, time-consuming baggage and
@@ -246,8 +246,8 @@ klasse Editor:
 klasse FormatEventTest(unittest.TestCase):
     """Test the formatting of text inside a Text widget.
 
-    This is done with FormatParagraph.format.paragraph_event,
-    which calls functions in the module as appropriate.
+    This is done mit FormatParagraph.format.paragraph_event,
+    which calls functions in the module als appropriate.
     """
     test_string = (
         "    '''this is a test of a reformat fuer a triple "
@@ -257,14 +257,14 @@ klasse FormatEventTest(unittest.TestCase):
         "    '''The first line is under the max width.\n"
         "    The second line's length is way over the max width. It goes "
         "on and on until it is over 100 characters long.\n"
-        "    Same thing with the third line. It is also way over the max "
+        "    Same thing mit the third line. It is also way over the max "
         "width, but FormatParagraph will fix it.\n"
         "    '''\n")
     multiline_test_comment = (
         "# The first line is under the max width.\n"
         "# The second line's length is way over the max width. It goes on "
         "and on until it is over 100 characters long.\n"
-        "# Same thing with the third line. It is also way over the max "
+        "# Same thing mit the third line. It is also way over the max "
         "width, but FormatParagraph will fix it.\n"
         "# The fourth line is short like the first line.")
 
@@ -327,7 +327,7 @@ klasse FormatEventTest(unittest.TestCase):
         result = text.get('2.0', 'insert')
         expected = (
 "    The second line's length is way over the max width. It goes on and\n"
-"    on until it is over 100 characters long. Same thing with the third\n"
+"    on until it is over 100 characters long. Same thing mit the third\n"
 "    line. It is also way over the max width, but FormatParagraph will\n"
 "    fix it.\n")
         self.assertEqual(result, expected)
@@ -343,7 +343,7 @@ klasse FormatEventTest(unittest.TestCase):
         expected = (
 "# The first line is under the max width. The second line's length is\n"
 "# way over the max width. It goes on and on until it is over 100\n"
-"# characters long. Same thing with the third line. It is also way over\n"
+"# characters long. Same thing mit the third line. It is also way over\n"
 "# the max width, but FormatParagraph will fix it. The fourth line is\n"
 "# short like the first line.\n")
         self.assertEqual(result, expected)
@@ -361,7 +361,7 @@ klasse FormatEventTest(unittest.TestCase):
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
-# The following block worked with EditorWindow but fails with the mock.
+# The following block worked mit EditorWindow but fails mit the mock.
 # Lines 2 and 3 get pasted together even though the previous block left
 # the previous line alone. More investigation is needed.
 ##        # Select lines 3 and 4
@@ -370,7 +370,7 @@ klasse FormatEventTest(unittest.TestCase):
 ##        self.formatter('ParameterDoesNothing')
 ##        result = text.get('3.0', 'insert')
 ##        expected = (
-##"# Same thing with the third line. It is also way over the max width,\n"
+##"# Same thing mit the third line. It is also way over the max width,\n"
 ##"# but FormatParagraph will fix it. The fourth line is short like the\n"
 ##"# first line.\n")
 ##        self.assertEqual(result, expected)
@@ -632,18 +632,18 @@ klasse RstripTest(unittest.TestCase):
 
     def test_rstrip_lines(self):
         original = (
-            "Line with an ending tab    \n"
+            "Line mit an ending tab    \n"
             "Line ending in 5 spaces     \n"
             "Linewithnospaces\n"
             "    indented line\n"
-            "    indented line with trailing space \n"
+            "    indented line mit trailing space \n"
             "    \n")
         stripped = (
-            "Line with an ending tab\n"
+            "Line mit an ending tab\n"
             "Line ending in 5 spaces\n"
             "Linewithnospaces\n"
             "    indented line\n"
-            "    indented line with trailing space\n")
+            "    indented line mit trailing space\n")
 
         self.text.insert('1.0', original)
         self.do_rstrip()
@@ -652,12 +652,12 @@ klasse RstripTest(unittest.TestCase):
     def test_rstrip_end(self):
         text = self.text
         fuer code in ('', '\n', '\n\n\n'):
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 text.insert('1.0', code)
                 self.do_rstrip()
                 self.assertEqual(text.get('1.0','end-1c'), '')
         fuer code in ('a\n', 'a\n\n', 'a\n\n\n'):
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 text.delete('1.0', 'end-1c')
                 text.insert('1.0', code)
                 self.do_rstrip()

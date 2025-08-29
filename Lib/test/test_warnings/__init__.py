@@ -18,9 +18,9 @@ von test.support importiere force_not_colorized
 von test.support.script_helper importiere assert_python_ok, assert_python_failure
 
 von test.test_warnings.data importiere package_helper
-von test.test_warnings.data importiere stacklevel as warning_tests
+von test.test_warnings.data importiere stacklevel als warning_tests
 
-importiere warnings as original_warnings
+importiere warnings als original_warnings
 von warnings importiere deprecated
 
 
@@ -120,20 +120,20 @@ klasse FilterTests(BaseTest):
     """Testing the filtering functionality."""
 
     def test_error(self):
-        with self.module.catch_warnings() as w:
+        mit self.module.catch_warnings() als w:
             self.module.resetwarnings()
             self.module.filterwarnings("error", category=UserWarning)
             self.assertRaises(UserWarning, self.module.warn,
                                 "FilterTests.test_error")
 
     def test_error_after_default(self):
-        with self.module.catch_warnings() as w:
+        mit self.module.catch_warnings() als w:
             self.module.resetwarnings()
             message = "FilterTests.test_ignore_after_default"
             def f():
                 self.module.warn(message, UserWarning)
 
-            with support.captured_stderr() as stderr:
+            mit support.captured_stderr() als stderr:
                 f()
             stderr = stderr.getvalue()
             self.assertIn("UserWarning: FilterTests.test_ignore_after_default",
@@ -145,7 +145,7 @@ klasse FilterTests(BaseTest):
             self.assertRaises(UserWarning, f)
 
     def test_ignore(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             self.module.filterwarnings("ignore", category=UserWarning)
             self.module.warn("FilterTests.test_ignore", UserWarning)
@@ -153,7 +153,7 @@ klasse FilterTests(BaseTest):
             self.assertEqual(list(__warningregistry__), ['version'])
 
     def test_ignore_after_default(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             message = "FilterTests.test_ignore_after_default"
             def f():
@@ -166,7 +166,7 @@ klasse FilterTests(BaseTest):
 
     def test_always_and_all(self):
         fuer mode in {"always", "all"}:
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.resetwarnings()
                 self.module.filterwarnings(mode, category=UserWarning)
                 message = "FilterTests.test_always_and_all"
@@ -181,7 +181,7 @@ klasse FilterTests(BaseTest):
 
     def test_always_and_all_after_default(self):
         fuer mode in {"always", "all"}:
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.resetwarnings()
                 message = "FilterTests.test_always_and_all_after_ignore"
                 def f():
@@ -200,7 +200,7 @@ klasse FilterTests(BaseTest):
                 self.assertEqual(w[-1].message.args[0], message)
 
     def test_default(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             self.module.filterwarnings("default", category=UserWarning)
             message = UserWarning("FilterTests.test_default")
@@ -215,7 +215,7 @@ klasse FilterTests(BaseTest):
                     raise ValueError("loop variant unhandled")
 
     def test_module(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             self.module.filterwarnings("module", category=UserWarning)
             message = UserWarning("FilterTests.test_module")
@@ -226,7 +226,7 @@ klasse FilterTests(BaseTest):
             self.assertEqual(len(w), 0)
 
     def test_once(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             self.module.filterwarnings("once", category=UserWarning)
             message = UserWarning("FilterTests.test_once")
@@ -242,7 +242,7 @@ klasse FilterTests(BaseTest):
             self.assertEqual(len(w), 0)
 
     def test_module_globals(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.simplefilter("always", UserWarning)
 
             # bpo-33509: module_globals=Nichts must not crash
@@ -251,7 +251,7 @@ klasse FilterTests(BaseTest):
             self.assertEqual(len(w), 1)
 
             # Invalid module_globals type
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 self.module.warn_explicit('msg', UserWarning, "filename", 42,
                                           module_globals=Wahr)
             self.assertEqual(len(w), 1)
@@ -262,14 +262,14 @@ klasse FilterTests(BaseTest):
             self.assertEqual(len(w), 2)
 
     def test_inheritance(self):
-        with self.module.catch_warnings() as w:
+        mit self.module.catch_warnings() als w:
             self.module.resetwarnings()
             self.module.filterwarnings("error", category=Warning)
             self.assertRaises(UserWarning, self.module.warn,
                                 "FilterTests.test_inheritance", UserWarning)
 
     def test_ordering(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             self.module.filterwarnings("ignore", category=UserWarning)
             self.module.filterwarnings("error", category=UserWarning,
@@ -284,7 +284,7 @@ klasse FilterTests(BaseTest):
     def test_filterwarnings(self):
         # Test filterwarnings().
         # Implicitly also tests resetwarnings().
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.filterwarnings("error", "", Warning, "", 0)
             self.assertRaises(UserWarning, self.module.warn, 'convert to error')
 
@@ -308,7 +308,7 @@ klasse FilterTests(BaseTest):
             self.assertIs(w[-1].category, UserWarning)
 
     def test_message_matching(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.simplefilter("ignore", UserWarning)
             self.module.filterwarnings("error", "match", UserWarning)
             self.assertRaises(UserWarning, self.module.warn, "match")
@@ -324,13 +324,13 @@ klasse FilterTests(BaseTest):
                 L[:] = []
 
         L = [("default",X(),UserWarning,X(),0) fuer i in range(2)]
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.filters = L
             self.module.warn_explicit(UserWarning("b"), Nichts, "f.py", 42)
             self.assertEqual(str(w[-1].message), "b")
 
     def test_filterwarnings_duplicate_filters(self):
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module.resetwarnings()
             self.module.filterwarnings("error", category=UserWarning)
             self.assertEqual(len(self.module._get_filters()), 1)
@@ -347,7 +347,7 @@ klasse FilterTests(BaseTest):
             )
 
     def test_simplefilter_duplicate_filters(self):
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module.resetwarnings()
             self.module.simplefilter("error", category=UserWarning)
             self.assertEqual(len(self.module._get_filters()), 1)
@@ -363,7 +363,7 @@ klasse FilterTests(BaseTest):
             )
 
     def test_append_duplicate(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             self.module.simplefilter("ignore")
             self.module.simplefilter("error", append=Wahr)
@@ -377,41 +377,41 @@ klasse FilterTests(BaseTest):
             )
 
     def test_argument_validation(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.module.filterwarnings(action='foo')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.module.filterwarnings('ignore', message=0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.module.filterwarnings('ignore', category=0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.module.filterwarnings('ignore', category=int)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.module.filterwarnings('ignore', module=0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.module.filterwarnings('ignore', lineno=int)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.module.filterwarnings('ignore', lineno=-1)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.module.simplefilter(action='foo')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.module.simplefilter('ignore', lineno=int)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.module.simplefilter('ignore', lineno=-1)
 
     def test_catchwarnings_with_simplefilter_ignore(self):
-        with self.module.catch_warnings(module=self.module):
+        mit self.module.catch_warnings(module=self.module):
             self.module.resetwarnings()
             self.module.simplefilter("error")
-            with self.module.catch_warnings(action="ignore"):
+            mit self.module.catch_warnings(action="ignore"):
                 self.module.warn("This will be ignored")
 
     def test_catchwarnings_with_simplefilter_error(self):
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module.resetwarnings()
-            with self.module.catch_warnings(
+            mit self.module.catch_warnings(
                 action="error", category=FutureWarning
             ):
-                with support.captured_stderr() as stderr:
+                mit support.captured_stderr() als stderr:
                     error_msg = "Other types of warnings are not errors"
                     self.module.warn(error_msg)
                     self.assertRaises(FutureWarning,
@@ -431,7 +431,7 @@ klasse WarnTests(BaseTest):
     """Test warnings.warn() and warnings.warn_explicit()."""
 
     def test_message(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.simplefilter("once")
             fuer i in range(4):
                 text = 'multi %d' %i  # Different text on each call.
@@ -443,7 +443,7 @@ klasse WarnTests(BaseTest):
     def test_warn_nonstandard_types(self):
         # warn() should handle non-standard types without issue.
         fuer ob in (Warning, Nichts, 42):
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.simplefilter("once")
                 self.module.warn(ob)
                 # Don't directly compare objects since
@@ -451,8 +451,8 @@ klasse WarnTests(BaseTest):
                 self.assertEqual(str(w[-1].message), str(UserWarning(ob)))
 
     def test_filename(self):
-        with warnings_state(self.module):
-            with self.module.catch_warnings(record=Wahr) as w:
+        mit warnings_state(self.module):
+            mit self.module.catch_warnings(record=Wahr) als w:
                 warning_tests.inner("spam1")
                 self.assertEqual(os.path.basename(w[-1].filename),
                                     "stacklevel.py")
@@ -463,8 +463,8 @@ klasse WarnTests(BaseTest):
     def test_stacklevel(self):
         # Test stacklevel argument
         # make sure all messages are different, so the warning won't be skipped
-        with warnings_state(self.module):
-            with self.module.catch_warnings(record=Wahr) as w:
+        mit warnings_state(self.module):
+            mit self.module.catch_warnings(record=Wahr) als w:
                 warning_tests.inner("spam3", stacklevel=1)
                 self.assertEqual(os.path.basename(w[-1].filename),
                                     "stacklevel.py")
@@ -489,16 +489,16 @@ klasse WarnTests(BaseTest):
     def test_stacklevel_import(self):
         # Issue #24305: With stacklevel=2, module-level warnings should work.
         import_helper.unload('test.test_warnings.data.import_warning')
-        with warnings_state(self.module):
-            with self.module.catch_warnings(record=Wahr) as w:
+        mit warnings_state(self.module):
+            mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.simplefilter('always')
                 importiere test.test_warnings.data.import_warning  # noqa: F401
                 self.assertEqual(len(w), 1)
                 self.assertEqual(w[0].filename, __file__)
 
     def test_skip_file_prefixes(self):
-        with warnings_state(self.module):
-            with self.module.catch_warnings(record=Wahr) as w:
+        mit warnings_state(self.module):
+            mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.simplefilter('always')
 
                 # Warning never attributed to the data/ package.
@@ -523,22 +523,22 @@ klasse WarnTests(BaseTest):
 
     def test_skip_file_prefixes_file_path(self):
         # see: gh-126209
-        with warnings_state(self.module):
+        mit warnings_state(self.module):
             skipped = warning_tests.__file__
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 warning_tests.outer("msg", skip_file_prefixes=(skipped,))
 
             self.assertEqual(len(w), 1)
             self.assertNotEqual(w[-1].filename, skipped)
 
     def test_skip_file_prefixes_type_errors(self):
-        with warnings_state(self.module):
+        mit warnings_state(self.module):
             warn = warning_tests.warnings.warn
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 warn("msg", skip_file_prefixes=[])
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 warn("msg", skip_file_prefixes=(b"bytes",))
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 warn("msg", skip_file_prefixes="a sequence of strs")
 
     def test_exec_filename(self):
@@ -546,13 +546,13 @@ klasse WarnTests(BaseTest):
         codeobj = compile(("import warnings\n"
                            "warnings.warn('hello', UserWarning)"),
                           filename, "exec")
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.simplefilter("always", category=UserWarning)
             exec(codeobj)
         self.assertEqual(w[0].filename, filename)
 
     def test_warn_explicit_non_ascii_filename(self):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.resetwarnings()
             self.module.filterwarnings("always", category=UserWarning)
             filenames = ["nonascii\xe9\u20ac", "surrogate\udc80"]
@@ -581,15 +581,15 @@ klasse WarnTests(BaseTest):
 
     def test_bad_str(self):
         # issue 6415
-        # Warnings instance with a bad format string fuer __str__ should not
+        # Warnings instance mit a bad format string fuer __str__ should not
         # trigger a bus error.
         klasse BadStrWarning(Warning):
-            """Warning with a bad format string fuer __str__."""
+            """Warning mit a bad format string fuer __str__."""
             def __str__(self):
                 return ("A bad formatted string %(err)" %
                         {"err" : "there is no %(err)s"})
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.module.warn(BadStrWarning())
 
     def test_warning_classes(self):
@@ -598,35 +598,35 @@ klasse WarnTests(BaseTest):
 
         # passing a non-subclass of Warning should raise a TypeError
         expected = "category must be a Warning subclass, not 'str'"
-        with self.assertRaisesRegex(TypeError, expected):
+        mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', '')
 
         expected = "category must be a Warning subclass, not klasse 'int'"
-        with self.assertRaisesRegex(TypeError, expected):
+        mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', int)
 
         # check that warning instances also raise a TypeError
         expected = "category must be a Warning subclass, not '.*MyWarningClass'"
-        with self.assertRaisesRegex(TypeError, expected):
+        mit self.assertRaisesRegex(TypeError, expected):
             self.module.warn('bad warning category', MyWarningClass())
 
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module.resetwarnings()
             self.module.filterwarnings('default')
-            with self.assertWarns(MyWarningClass) as cm:
+            mit self.assertWarns(MyWarningClass) als cm:
                 self.module.warn('good warning category', MyWarningClass)
             self.assertEqual('good warning category', str(cm.warning))
 
-            with self.assertWarns(UserWarning) as cm:
+            mit self.assertWarns(UserWarning) als cm:
                 self.module.warn('good warning category', Nichts)
             self.assertEqual('good warning category', str(cm.warning))
 
-            with self.assertWarns(MyWarningClass) as cm:
+            mit self.assertWarns(MyWarningClass) als cm:
                 self.module.warn('good warning category', MyWarningClass)
             self.assertIsInstance(cm.warning, Warning)
 
     def check_module_globals(self, module_globals):
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.filterwarnings('default')
             self.module.warn_explicit(
                 'eggs', UserWarning, 'bar', 1,
@@ -639,9 +639,9 @@ klasse WarnTests(BaseTest):
         wenn self.module is py_warnings:
             self.check_module_globals(module_globals)
             return
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.filterwarnings('always')
-            with self.assertRaisesRegex(errtype, re.escape(errmsg)):
+            mit self.assertRaisesRegex(errtype, re.escape(errmsg)):
                 self.module.warn_explicit(
                     'eggs', UserWarning, 'bar', 1,
                     module_globals=module_globals)
@@ -651,7 +651,7 @@ klasse WarnTests(BaseTest):
         wenn self.module is py_warnings:
             self.check_module_globals(module_globals)
             return
-        with self.module.catch_warnings(record=Wahr) as w:
+        mit self.module.catch_warnings(record=Wahr) als w:
             self.module.filterwarnings('always')
             self.module.warn_explicit(
                 'eggs', UserWarning, 'bar', 1,
@@ -740,33 +740,33 @@ klasse WCmdLineTests(BaseTest):
     def test_improper_input(self):
         # Uses the private _setoption() function to test the parsing
         # of command-line warning arguments
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.assertRaises(self.module._OptionError,
                               self.module._setoption, '1:2:3:4:5:6')
             self.assertRaises(self.module._OptionError,
                               self.module._setoption, 'bogus::Warning')
             self.assertRaises(self.module._OptionError,
                               self.module._setoption, 'ignore:2::4:-5')
-            with self.assertRaises(self.module._OptionError):
+            mit self.assertRaises(self.module._OptionError):
                 self.module._setoption('ignore::123')
-            with self.assertRaises(self.module._OptionError):
+            mit self.assertRaises(self.module._OptionError):
                 self.module._setoption('ignore::123abc')
-            with self.assertRaises(self.module._OptionError):
+            mit self.assertRaises(self.module._OptionError):
                 self.module._setoption('ignore::===')
-            with self.assertRaisesRegex(self.module._OptionError, 'Wärning'):
+            mit self.assertRaisesRegex(self.module._OptionError, 'Wärning'):
                 self.module._setoption('ignore::Wärning')
             self.module._setoption('error::Warning::0')
             self.assertRaises(UserWarning, self.module.warn, 'convert to error')
 
     def test_import_from_module(self):
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module._setoption('ignore::Warning')
-            with self.assertRaises(self.module._OptionError):
+            mit self.assertRaises(self.module._OptionError):
                 self.module._setoption('ignore::TestWarning')
-            with self.assertRaises(self.module._OptionError):
+            mit self.assertRaises(self.module._OptionError):
                 self.module._setoption('ignore::test.test_warnings.bogus')
             self.module._setoption('error::test.test_warnings.TestWarning')
-            with self.assertRaises(TestWarning):
+            mit self.assertRaises(TestWarning):
                 self.module.warn('test warning', TestWarning)
 
 
@@ -778,7 +778,7 @@ klasse PyWCmdLineTests(WCmdLineTests, unittest.TestCase):
     module = py_warnings
 
     def test_improper_option(self):
-        # Same as above, but check that the message is printed out when
+        # Same als above, but check that the message is printed out when
         # the interpreter is executed. This also checks that options are
         # actually parsed at all.
         rc, out, err = assert_python_ok("-Wxxx", "-c", "pass")
@@ -802,7 +802,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
 
     def test_filter(self):
         # Everything should function even wenn 'filters' is not in warnings.
-        with self.module.catch_warnings() as w:
+        mit self.module.catch_warnings() als w:
             self.module.filterwarnings("error", "", Warning, "", 0)
             self.assertRaises(UserWarning, self.module.warn,
                                 'convert to error')
@@ -817,7 +817,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         try:
             original_registry = self.module.onceregistry
             __warningregistry__ = {}
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.resetwarnings()
                 self.module.filterwarnings("once", category=UserWarning)
                 self.module.warn_explicit(message, UserWarning, "file", 42)
@@ -844,7 +844,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         message = UserWarning("defaultaction test")
         original = self.module.defaultaction
         try:
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 self.module.resetwarnings()
                 registry = {}
                 self.module.warn_explicit(message, UserWarning, "<test>", 42,
@@ -882,10 +882,10 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
             # override/restore showwarning()
             return
         text = 'del showwarning test'
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module.filterwarnings("always", category=UserWarning)
             del self.module.showwarning
-            with support.captured_output('stderr') as stream:
+            mit support.captured_output('stderr') als stream:
                 self.module.warn(text)
                 result = stream.getvalue()
         self.assertIn(text, result)
@@ -893,13 +893,13 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
     def test_showwarnmsg_missing(self):
         # Test that _showwarnmsg() missing is okay.
         text = 'del _showwarnmsg test'
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module.filterwarnings("always", category=UserWarning)
 
             show = self.module._showwarnmsg
             try:
                 del self.module._showwarnmsg
-                with support.captured_output('stderr') as stream:
+                mit support.captured_output('stderr') als stream:
                     self.module.warn(text)
                     result = stream.getvalue()
             finally:
@@ -909,10 +909,10 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
     def test_showwarning_not_callable(self):
         orig = self.module.showwarning
         try:
-            with self.module.catch_warnings():
+            mit self.module.catch_warnings():
                 self.module.filterwarnings("always", category=UserWarning)
                 self.module.showwarning = drucke
-                with support.captured_output('stdout'):
+                mit support.captured_output('stdout'):
                     self.module.warn('Warning!')
                 self.module.showwarning = 23
                 self.assertRaises(TypeError, self.module.warn, "Warning!")
@@ -924,10 +924,10 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         orig = self.module.showwarning
         try:
             text = 'test show_warning'
-            with self.module.catch_warnings():
+            mit self.module.catch_warnings():
                 self.module.filterwarnings("always", category=UserWarning)
                 del self.module.showwarning
-                with support.captured_output('stderr') as stream:
+                mit support.captured_output('stderr') als stream:
                     warning_tests.inner(text)
                     result = stream.getvalue()
             self.assertEqual(result.count('\n'), 2,
@@ -952,7 +952,7 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         oldfile = globals_dict['__file__']
         try:
             catch = self.module.catch_warnings(record=Wahr)
-            with catch as w:
+            mit catch als w:
                 self.module.filterwarnings("always", category=UserWarning)
                 globals_dict['__file__'] = Nichts
                 self.module.warn('test', UserWarning)
@@ -992,11 +992,11 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
 
 
         wmod = self.module
-        with wmod.catch_warnings():
+        mit wmod.catch_warnings():
             wmod.filterwarnings('default', category=UserWarning)
 
             linecache.clearcache()
-            with support.captured_stderr() as stderr:
+            mit support.captured_stderr() als stderr:
                 wmod.warn_explicit(
                     'foo', UserWarning, 'bar', 1,
                     module_globals=get_module_globals(splitlines_ret_val=42))
@@ -1004,9 +1004,9 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
             self.assertEqual(get_source_called, [42])
 
             linecache.clearcache()
-            with support.swap_attr(wmod, '_showwarnmsg', Nichts):
+            mit support.swap_attr(wmod, '_showwarnmsg', Nichts):
                 del wmod._showwarnmsg
-                with support.captured_stderr() as stderr:
+                mit support.captured_stderr() als stderr:
                     wmod.warn_explicit(
                         'eggs', UserWarning, 'bar', 1,
                         module_globals=get_module_globals(splitlines_ret_val=[42]))
@@ -1019,10 +1019,10 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         # warn_explicit() shouldn't raise a SystemError in case
         # warnings.onceregistry isn't a dictionary.
         wmod = self.module
-        with wmod.catch_warnings():
+        mit wmod.catch_warnings():
             wmod.filterwarnings('once')
-            with support.swap_attr(wmod, 'onceregistry', Nichts):
-                with self.assertRaises(TypeError):
+            mit support.swap_attr(wmod, 'onceregistry', Nichts):
+                mit self.assertRaises(TypeError):
                     wmod.warn_explicit('foo', Warning, 'bar', 1, registry=Nichts)
 
     @support.cpython_only
@@ -1030,13 +1030,13 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
         # warn_explicit() shouldn't cause an assertion failure in case of a
         # bad warnings.filters or warnings.defaultaction.
         wmod = self.module
-        with wmod.catch_warnings():
+        mit wmod.catch_warnings():
             wmod._get_filters()[:] = [(Nichts, Nichts, Warning, Nichts, 0)]
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 wmod.warn_explicit('foo', Warning, 'bar', 1)
 
             wmod._get_filters()[:] = []
-            with support.swap_attr(wmod, 'defaultaction', Nichts), \
+            mit support.swap_attr(wmod, 'defaultaction', Nichts), \
                  self.assertRaises(TypeError):
                 wmod.warn_explicit('foo', Warning, 'bar', 1)
 
@@ -1044,9 +1044,9 @@ klasse _WarningsTests(BaseTest, unittest.TestCase):
     def test_issue31566(self):
         # warn() shouldn't cause an assertion failure in case of a bad
         # __name__ global.
-        with self.module.catch_warnings():
+        mit self.module.catch_warnings():
             self.module.filterwarnings('error', category=UserWarning)
-            with support.swap_item(globals(), '__name__', b'foo'), \
+            mit support.swap_item(globals(), '__name__', b'foo'), \
                  support.swap_item(globals(), '__file__', Nichts):
                 self.assertRaises(UserWarning, self.module.warn, 'bar')
 
@@ -1097,7 +1097,7 @@ klasse WarningsDisplayTests(BaseTest):
 
     def test_formatwarning_override(self):
         # bpo-35178: Test that a custom formatwarning function gets the 'line'
-        # argument as a positional argument, and not only as a keyword argument
+        # argument als a positional argument, and not only als a keyword argument
         def myformatwarning(message, category, filename, lineno, text):
             return f'm={message}:c={category}:f={filename}:l={lineno}:t={text}'
 
@@ -1109,7 +1109,7 @@ klasse WarningsDisplayTests(BaseTest):
         file_object = StringIO()
         expected = f'm={message}:c={category}:f={file_name}:l={line_num}' + \
                    f':t={file_line}'
-        with support.swap_attr(self.module, 'formatwarning', myformatwarning):
+        mit support.swap_attr(self.module, 'formatwarning', myformatwarning):
             self.module.showwarning(message, category, file_name, line_num,
                                     file_object, file_line)
             self.assertEqual(file_object.getvalue(), expected)
@@ -1124,7 +1124,7 @@ klasse PyWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
     def test_tracemalloc(self):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
 
-        with open(os_helper.TESTFN, 'w', encoding="utf-8") as fp:
+        mit open(os_helper.TESTFN, 'w', encoding="utf-8") als fp:
             fp.write(textwrap.dedent("""
                 def func():
                     f = open(__file__, "rb")
@@ -1178,12 +1178,12 @@ klasse CatchWarningTests(BaseTest):
         orig_filters = wmod.filters
         orig_showwarning = wmod.showwarning
         # Ensure both showwarning and filters are restored when recording
-        with wmod.catch_warnings(record=Wahr):
+        mit wmod.catch_warnings(record=Wahr):
             wmod.filters = wmod.showwarning = object()
         self.assertIs(wmod.filters, orig_filters)
         self.assertIs(wmod.showwarning, orig_showwarning)
-        # Same test, but with recording disabled
-        with wmod.catch_warnings(record=Falsch):
+        # Same test, but mit recording disabled
+        mit wmod.catch_warnings(record=Falsch):
             wmod.filters = wmod.showwarning = object()
         self.assertIs(wmod.filters, orig_filters)
         self.assertIs(wmod.showwarning, orig_showwarning)
@@ -1191,7 +1191,7 @@ klasse CatchWarningTests(BaseTest):
     def test_catch_warnings_recording(self):
         wmod = self.module
         # Ensure warnings are recorded when requested
-        with wmod.catch_warnings(record=Wahr) as w:
+        mit wmod.catch_warnings(record=Wahr) als w:
             self.assertEqual(w, [])
             self.assertIs(type(w), list)
             wmod.simplefilter("always")
@@ -1205,7 +1205,7 @@ klasse CatchWarningTests(BaseTest):
             self.assertEqual(w, [])
         # Ensure warnings are not recorded when not requested
         orig_showwarning = wmod.showwarning
-        with wmod.catch_warnings(record=Falsch) as w:
+        mit wmod.catch_warnings(record=Falsch) als w:
             self.assertIsNichts(w)
             self.assertIs(wmod.showwarning, orig_showwarning)
 
@@ -1214,12 +1214,12 @@ klasse CatchWarningTests(BaseTest):
         # Ensure catch_warnings is protected against incorrect usage
         x = wmod.catch_warnings(record=Wahr)
         self.assertRaises(RuntimeError, x.__exit__)
-        with x:
+        mit x:
             self.assertRaises(RuntimeError, x.__enter__)
-        # Same test, but with recording disabled
+        # Same test, but mit recording disabled
         x = wmod.catch_warnings(record=Falsch)
         self.assertRaises(RuntimeError, x.__exit__)
-        with x:
+        mit x:
             self.assertRaises(RuntimeError, x.__enter__)
 
     def test_catch_warnings_defaults(self):
@@ -1227,14 +1227,14 @@ klasse CatchWarningTests(BaseTest):
         orig_filters = wmod._get_filters()
         orig_showwarning = wmod.showwarning
         # Ensure default behaviour is not to record warnings
-        with wmod.catch_warnings() as w:
+        mit wmod.catch_warnings() als w:
             self.assertIsNichts(w)
             self.assertIs(wmod.showwarning, orig_showwarning)
             self.assertIsNot(wmod._get_filters(), orig_filters)
         self.assertIs(wmod._get_filters(), orig_filters)
         wenn wmod is sys.modules['warnings']:
             # Ensure the default module is this one
-            with wmod.catch_warnings() as w:
+            mit wmod.catch_warnings() als w:
                 self.assertIsNichts(w)
                 self.assertIs(wmod.showwarning, orig_showwarning)
                 self.assertIsNot(wmod._get_filters(), orig_filters)
@@ -1256,8 +1256,8 @@ klasse CatchWarningTests(BaseTest):
             my_log.append(message)
 
         # Override warnings.showwarning() before calling catch_warnings()
-        with support.swap_attr(wmod, 'showwarning', my_logger):
-            with wmod.catch_warnings(record=Wahr) as log:
+        mit support.swap_attr(wmod, 'showwarning', my_logger):
+            mit wmod.catch_warnings(record=Wahr) als log:
                 self.assertIsNot(wmod.showwarning, my_logger)
 
                 wmod.simplefilter("always")
@@ -1284,7 +1284,7 @@ klasse CatchWarningTests(BaseTest):
             nonlocal my_log
             my_log.append(message)
 
-        with wmod.catch_warnings(record=Wahr) as log:
+        mit wmod.catch_warnings(record=Wahr) als log:
             wmod.simplefilter("always")
             wmod.showwarning = my_logger
             wmod.warn(text)
@@ -1298,7 +1298,7 @@ klasse CatchWarningTests(BaseTest):
         wmod = self.module
         wenn wmod is not sys.modules['warnings']:
             self.skipTest('module to test is not loaded warnings module')
-        with warnings_helper.check_warnings(quiet=Falsch) as w:
+        mit warnings_helper.check_warnings(quiet=Falsch) als w:
             self.assertEqual(w.warnings, [])
             wmod.simplefilter("always")
             wmod.warn("foo")
@@ -1310,18 +1310,18 @@ klasse CatchWarningTests(BaseTest):
             w.reset()
             self.assertEqual(w.warnings, [])
 
-        with warnings_helper.check_warnings():
+        mit warnings_helper.check_warnings():
             # defaults to quiet=Wahr without argument
             pass
-        with warnings_helper.check_warnings(('foo', UserWarning)):
+        mit warnings_helper.check_warnings(('foo', UserWarning)):
             wmod.warn("foo")
 
-        with self.assertRaises(AssertionError):
-            with warnings_helper.check_warnings(('', RuntimeWarning)):
-                # defaults to quiet=Falsch with argument
+        mit self.assertRaises(AssertionError):
+            mit warnings_helper.check_warnings(('', RuntimeWarning)):
+                # defaults to quiet=Falsch mit argument
                 pass
-        with self.assertRaises(AssertionError):
-            with warnings_helper.check_warnings(('foo', RuntimeWarning)):
+        mit self.assertRaises(AssertionError):
+            mit warnings_helper.check_warnings(('foo', RuntimeWarning)):
                 wmod.warn("foo")
 
 klasse CCatchWarningTests(CatchWarningTests, unittest.TestCase):
@@ -1428,7 +1428,7 @@ klasse LocksTest(unittest.TestCase):
     @support.cpython_only
     @unittest.skipUnless(c_warnings, 'C module is required')
     def test_release_lock_no_lock(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             RuntimeError,
             'cannot release un-acquired lock',
         ):
@@ -1447,14 +1447,14 @@ klasse _DeprecatedTest(BaseTest, unittest.TestCase):
         fuer remove in test:
             msg = rf".*test_warnings.*{remove[0]}\.{remove[1]}"
             filter = msg, DeprecationWarning
-            with self.subTest(remove=remove):
-                with warnings_helper.check_warnings(filter, quiet=Falsch):
+            mit self.subTest(remove=remove):
+                mit warnings_helper.check_warnings(filter, quiet=Falsch):
                     self.module._deprecated("test_warnings", remove=remove,
                                             _version=version)
 
         version = (3, 11, 0, "alpha", 0)
         msg = r".*test_warnings.*3\.11"
-        with warnings_helper.check_warnings((msg, DeprecationWarning), quiet=Falsch):
+        mit warnings_helper.check_warnings((msg, DeprecationWarning), quiet=Falsch):
             self.module._deprecated("test_warnings", remove=(3, 11),
                                     _version=version)
 
@@ -1462,14 +1462,14 @@ klasse _DeprecatedTest(BaseTest, unittest.TestCase):
         version = (3, 11, 0, "final", 0)
         test = [(2, 0), (2, 12), (3, 10)]
         fuer remove in test:
-            with self.subTest(remove=remove):
-                with self.assertRaises(RuntimeError):
+            mit self.subTest(remove=remove):
+                mit self.assertRaises(RuntimeError):
                     self.module._deprecated("test_warnings", remove=remove,
                                             _version=version)
         fuer level in ["beta", "candidate", "final"]:
             version = (3, 11, 0, level, 0)
-            with self.subTest(releaselevel=level):
-                with self.assertRaises(RuntimeError):
+            mit self.subTest(releaselevel=level):
+                mit self.assertRaises(RuntimeError):
                     self.module._deprecated("test_warnings", remove=(3, 11),
                                             _version=version)
 
@@ -1480,7 +1480,7 @@ klasse BootstrapTest(unittest.TestCase):
         # "import encodings" emits a warning whereas the warnings is not loaded
         # or not completely loaded (warnings imports indirectly encodings by
         # importing linecache) yet
-        with os_helper.temp_cwd() as cwd, os_helper.temp_cwd('encodings'):
+        mit os_helper.temp_cwd() als cwd, os_helper.temp_cwd('encodings'):
             # encodings loaded by initfsencoding()
             assert_python_ok('-c', 'pass', PYTHONPATH=cwd)
 
@@ -1526,7 +1526,7 @@ a=A()
 
 klasse AsyncTests(BaseTest):
     """Verifies that the catch_warnings() context manager behaves
-    as expected when used inside async co-routines.  This requires
+    als expected when used inside async co-routines.  This requires
     that the context_aware_warnings flag is enabled, so that
     the context manager uses a context variable.
     """
@@ -1547,7 +1547,7 @@ klasse AsyncTests(BaseTest):
         step_b2 = asyncio.Event()
 
         async def run_a():
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 await step_a1.wait()
                 # The warning emitted here should be caught be the enclosing
                 # context manager.
@@ -1559,7 +1559,7 @@ klasse AsyncTests(BaseTest):
                 step_b2.set()
 
         async def run_b():
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 step_a1.set()
                 await step_b1.wait()
                 # The warning emitted here should be caught be the enclosing
@@ -1597,12 +1597,12 @@ klasse AsyncTests(BaseTest):
             # This establishes a new catch_warnings() context.  The
             # run_child1() task should still be using the context from
             # run_parent() wenn context-aware warnings are enabled.
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 step1.set()
                 await step2.wait()
 
         async def run_parent():
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 await asyncio.gather(run_child1(), run_child2())
                 self.assertEqual(len(w), 1)
                 self.assertEqual(w[0].message.args[0], 'child warning')
@@ -1639,7 +1639,7 @@ klasse ThreadTests(BaseTest):
         barrier = threading.Barrier(2, timeout=2)
 
         def run_a():
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 barrier.wait()
                 # The warning emitted here should be caught be the enclosing
                 # context manager.
@@ -1651,7 +1651,7 @@ klasse ThreadTests(BaseTest):
             self.module.warn('main warning', UserWarning)
 
         def run_b():
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 barrier.wait()
                 # The warning emitted here should be caught be the enclosing
                 # context manager.
@@ -1667,7 +1667,7 @@ klasse ThreadTests(BaseTest):
                 threading.Thread(target=run_a),
                 threading.Thread(target=run_b),
                 ]
-            with self.module.catch_warnings(record=Wahr) as w:
+            mit self.module.catch_warnings(record=Wahr) als w:
                 fuer thread in threads:
                     thread.start()
                 fuer thread in threads:
@@ -1720,10 +1720,10 @@ klasse DeprecatedTests(PyPublicAPITests):
         klasse A:
             pass
 
-        with self.assertWarnsRegex(DeprecationWarning, "A will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "A will go away soon"):
             A()
-        with self.assertWarnsRegex(DeprecationWarning, "A will go away soon"):
-            with self.assertRaises(TypeError):
+        mit self.assertWarnsRegex(DeprecationWarning, "A will go away soon"):
+            mit self.assertRaises(TypeError):
                 A(42)
 
     def test_class_with_init(self):
@@ -1732,7 +1732,7 @@ klasse DeprecatedTests(PyPublicAPITests):
             def __init__(self, x):
                 self.x = x
 
-        with self.assertWarnsRegex(DeprecationWarning, "HasInit will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "HasInit will go away soon"):
             instance = HasInit(42)
         self.assertEqual(instance.x, 42)
 
@@ -1749,7 +1749,7 @@ klasse DeprecatedTests(PyPublicAPITests):
             def __init__(self, x) -> Nichts:
                 self.x = x
 
-        with self.assertWarnsRegex(DeprecationWarning, "HasNew will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "HasNew will go away soon"):
             instance = HasNew(42)
         self.assertEqual(instance.x, 42)
         self.assertWahr(has_new_called)
@@ -1770,7 +1770,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         klasse HasInheritedNew(NewBase):
             pass
 
-        with self.assertWarnsRegex(DeprecationWarning, "HasInheritedNew will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "HasInheritedNew will go away soon"):
             instance = HasInheritedNew(42)
         self.assertEqual(instance.x, 42)
         self.assertWahr(new_base_called)
@@ -1787,7 +1787,7 @@ klasse DeprecatedTests(PyPublicAPITests):
                 obj.x = x
                 return obj
 
-        with self.assertWarnsRegex(DeprecationWarning, "HasNewNoInit will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "HasNewNoInit will go away soon"):
             instance = HasNewNoInit(42)
         self.assertEqual(instance.x, 42)
         self.assertWahr(new_called)
@@ -1801,7 +1801,7 @@ klasse DeprecatedTests(PyPublicAPITests):
             def __init__(self, a) -> Nichts:
                 self.a = a
 
-        with self.assertWarnsRegex(DeprecationWarning, "Mixin will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "Mixin will go away soon"):
             klasse Child(Base, Mixin):
                 pass
 
@@ -1820,7 +1820,7 @@ klasse DeprecatedTests(PyPublicAPITests):
                 new_called_cls = cls
                 return super().__new__(mcs, name, bases, attrs)
 
-        with self.assertWarnsRegex(DeprecationWarning, "MyMeta will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "MyMeta will go away soon"):
             klasse Foo(metaclass=MyMeta, cls='haha'):
                 pass
 
@@ -1833,10 +1833,10 @@ klasse DeprecatedTests(PyPublicAPITests):
             def __init_subclass__(cls) -> Nichts:
                 cls.inited = Wahr
 
-        with self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
             C()
 
-        with self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
             klasse D(C):
                 pass
 
@@ -1854,10 +1854,10 @@ klasse DeprecatedTests(PyPublicAPITests):
 
         self.assertEqual(C.inited, 42)
 
-        with self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
             C()
 
-        with self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "C will go away soon"):
             klasse D(C, x=3):
                 pass
 
@@ -1874,7 +1874,7 @@ klasse DeprecatedTests(PyPublicAPITests):
 
         self.assertIsNichts(init_subclass_saw)
 
-        with self.assertWarnsRegex(DeprecationWarning, "Base will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "Base will go away soon"):
             klasse C(Base):
                 pass
 
@@ -1892,7 +1892,7 @@ klasse DeprecatedTests(PyPublicAPITests):
 
         self.assertIsNichts(init_subclass_saw)
 
-        with self.assertWarnsRegex(DeprecationWarning, "Base will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "Base will go away soon"):
             klasse C(Base):
                 pass
 
@@ -1903,7 +1903,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         def b():
             pass
 
-        with self.assertWarnsRegex(DeprecationWarning, "b will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "b will go away soon"):
             b()
 
     def test_method(self):
@@ -1913,7 +1913,7 @@ klasse DeprecatedTests(PyPublicAPITests):
                 pass
 
         instance = Capybara()
-        with self.assertWarnsRegex(DeprecationWarning, "x will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "x will go away soon"):
             instance.x()
 
     def test_property(self):
@@ -1933,14 +1933,14 @@ klasse DeprecatedTests(PyPublicAPITests):
                 pass
 
         instance = Capybara()
-        with self.assertWarnsRegex(DeprecationWarning, "x will go away soon"):
+        mit self.assertWarnsRegex(DeprecationWarning, "x will go away soon"):
             instance.x
 
-        with py_warnings.catch_warnings():
+        mit py_warnings.catch_warnings():
             py_warnings.simplefilter("error")
             self.assertEqual(instance.no_more_setting, 42)
 
-        with self.assertWarnsRegex(DeprecationWarning, "no more setting"):
+        mit self.assertWarnsRegex(DeprecationWarning, "no more setting"):
             instance.no_more_setting = 42
 
     def test_category(self):
@@ -1948,7 +1948,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         def c():
             pass
 
-        with self.assertWarnsRegex(RuntimeWarning, "c will go away soon"):
+        mit self.assertWarnsRegex(RuntimeWarning, "c will go away soon"):
             c()
 
     def test_turn_off_warnings(self):
@@ -1956,19 +1956,19 @@ klasse DeprecatedTests(PyPublicAPITests):
         def d():
             pass
 
-        with py_warnings.catch_warnings():
+        mit py_warnings.catch_warnings():
             py_warnings.simplefilter("error")
             d()
 
     def test_only_strings_allowed(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             TypeError,
             "Expected an object of type str fuer 'message', not 'type'"
         ):
             @deprecated
             klasse Foo: ...
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             TypeError,
             "Expected an object of type str fuer 'message', not 'function'"
         ):
@@ -2040,7 +2040,7 @@ klasse DeprecatedTests(PyPublicAPITests):
         # The `@deprecated` decorator will update the klasse in-place.
         # Test the child classes first.
         fuer cls in reversed((Cls1, Cls2, Cls3, Cls4, Cls5, Cls6, Cls7, Cls8)):
-            with self.subTest(f'class {cls.__name__} signature'):
+            mit self.subTest(f'class {cls.__name__} signature'):
                 try:
                     original_signature = inspect.signature(cls)
                 except ValueError:

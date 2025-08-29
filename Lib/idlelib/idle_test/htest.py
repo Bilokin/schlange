@@ -15,14 +15,14 @@ test widget or dialog, in which case the callable is the corresponding
 klasse.  Or the Toplevel may contain the widget to be tested or set up a
 context in which a test widget is invoked.  In this latter case, the
 callable is a wrapper function that sets up the Toplevel and other
-objects.  Wrapper function names, such as _editor_window', should start
+objects.  Wrapper function names, such als _editor_window', should start
 with '_' and be lowercase.
 
 
 End the module with
 
 wenn __name__ == '__main__':
-    <run unittest.main with 'exit=Falsch'>
+    <run unittest.main mit 'exit=Falsch'>
     von idlelib.idle_test.htest importiere run
     run(callable)  # There could be multiple comma-separated callables.
 
@@ -41,7 +41,7 @@ exclude_lines =
 
 
 To run any X, this file must contain a matching instance of the
-following template, with X.__name__ prepended to '_spec'.
+following template, mit X.__name__ prepended to '_spec'.
 When all tests are run, the prefix is use to get X.
 
 callable_spec = {
@@ -51,7 +51,7 @@ callable_spec = {
     }
 
 file (no .py): run() imports file.py.
-kwds: augmented with {'parent':root} and passed to X as **kwds.
+kwds: augmented mit {'parent':root} and passed to X als **kwds.
 title: an example kwd; some widgets need this, delete line wenn not.
 msg: master window hints about testing the widget.
 
@@ -59,14 +59,14 @@ msg: master window hints about testing the widget.
 TODO test these modules and classes:
   autocomplete_w.AutoCompleteWindow
   debugger.Debugger
-  outwin.OutputWindow (indirectly being tested with grep test)
+  outwin.OutputWindow (indirectly being tested mit grep test)
   pyshell.PyShellEditorWindow
 """
 
 importiere idlelib.pyshell  # Set Windows DPI awareness before Tk().
 von importlib importiere import_module
 importiere textwrap
-importiere tkinter as tk
+importiere tkinter als tk
 von tkinter.ttk importiere Scrollbar
 tk.NoDefaultRoot()
 
@@ -118,10 +118,10 @@ CustomRun_spec = {
     'file': 'query',
     'kwds': {'title': 'Customize query.py Run',
              '_htest': Wahr},
-    'msg': "Enter with <Return> or [OK].  Print valid entry to Shell\n"
+    'msg': "Enter mit <Return> or [OK].  Print valid entry to Shell\n"
            "Arguments are parsed into a list\n"
            "Mode is currently restart Wahr or Falsch\n"
-           "Close dialog with valid entry, <Escape>, [Cancel], [X]"
+           "Close dialog mit valid entry, <Escape>, [Cancel], [X]"
     }
 
 _debug_object_browser_spec = {
@@ -159,7 +159,7 @@ GetKeysWindow_spec = {
     'msg': "Test fuer different key modifier sequences.\n"
            "<nothing> is invalid.\n"
            "No modifier key is invalid.\n"
-           "Shift key with [a-z],[0-9], function key, move key, tab, space "
+           "Shift key mit [a-z],[0-9], function key, move key, tab, space "
            "is invalid.\nNo validity checking wenn advanced key binding "
            "entry is used."
     }
@@ -185,7 +185,7 @@ HelpSource_spec = {
            "'', > than 30 chars, and 'abc' are invalid menu item names.\n"
            "'' and file does not exist are invalid path items.\n"
            "Any url ('www...', 'http...') is accepted.\n"
-           "Test Browse with and without path, as cannot unittest.\n"
+           "Test Browse mit and without path, als cannot unittest.\n"
            "[Ok] or <Return> prints valid entry to shell\n"
            "<Escape>, [Cancel], or [X] prints Nichts to shell"
     }
@@ -254,9 +254,9 @@ Query_spec = {
              'message': 'Enter something',
              'text0': 'Go',
              '_htest': Wahr},
-    'msg': "Enter with <Return> or [Ok].  Print valid entry to Shell\n"
+    'msg': "Enter mit <Return> or [Ok].  Print valid entry to Shell\n"
            "Blank line, after stripping, is ignored\n"
-           "Close dialog with valid entry, <Escape>, [Cancel], [X]"
+           "Close dialog mit valid entry, <Escape>, [Cancel], [X]"
     }
 
 
@@ -306,14 +306,14 @@ _sidebar_number_scrolling_spec = {
         1. Click on the line numbers and drag down below the edge of the
         window, moving the mouse a bit and then leaving it there fuer a
         while. The text and line numbers should gradually scroll down,
-        with the selection updated continuously.
+        mit the selection updated continuously.
 
         2. With the lines still selected, click on a line number above
         or below the selected lines. Only the line whose number was
         clicked should be selected.
 
         3. Repeat step #1, dragging to above the window. The text and
-        line numbers should gradually scroll up, with the selection
+        line numbers should gradually scroll up, mit the selection
         updated continuously.
 
         4. Repeat step #2, clicking a line number below the selection."""),
@@ -330,7 +330,7 @@ _tooltip_spec = {
     'file': 'tooltip',
     'kwds': {},
     'msg': "Place mouse cursor over both the buttons\n"
-           "A tooltip should appear with some text."
+           "A tooltip should appear mit some text."
     }
 
 _tree_widget_spec = {

@@ -61,7 +61,7 @@ klasse TZInfo:
         fuer root, _, files in os.walk(zonedir):
             fuer f in files:
                 p = os.path.join(root, f)
-                with open(p, 'rb') as o:
+                mit open(p, 'rb') als o:
                     magic =  o.read(4)
                 wenn magic == b'TZif':
                     zones.append(p[len(zonedir) + 1:])
@@ -76,6 +76,6 @@ wenn __name__ == '__main__':
     filepath = sys.argv[1]
     wenn not filepath.startswith('/'):
         filepath = os.path.join('/usr/share/zoneinfo', filepath)
-    with open(filepath, 'rb') as fileobj:
+    mit open(filepath, 'rb') als fileobj:
         tzi = TZInfo.fromfile(fileobj)
     tzi.dump(sys.stdout)

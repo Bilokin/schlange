@@ -17,7 +17,7 @@ def resolve_address(host, port):
     We must perform name resolution before timeout tests, otherwise it will be
     performed by connect().
     """
-    with socket_helper.transient_internet(host):
+    mit socket_helper.transient_internet(host):
         return socket.getaddrinfo(host, port, socket.AF_INET,
                                   socket.SOCK_STREAM)[0][4]
 
@@ -124,7 +124,7 @@ klasse TimeoutTestCase(unittest.TestCase):
             t1 = time.monotonic()
             try:
                 method(*args)
-            except TimeoutError as e:
+            except TimeoutError als e:
                 delta = time.monotonic() - t1
                 break
         sonst:
@@ -162,12 +162,12 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         whitehole = resolve_address('pythontest.net', 56667)
 
         # This address has been configured to immediately drop any incoming
-        # packets as well, but it does it respectfully with regards to the
+        # packets als well, but it does it respectfully mit regards to the
         # incoming protocol.  RSTs are sent fuer TCP packets, and ICMP UNREACH
         # is sent fuer UDP/ICMP packets.  This means our attempts to connect to
-        # it should be met immediately with ECONNREFUSED.  The test case has
+        # it should be met immediately mit ECONNREFUSED.  The test case has
         # been structured around this premise: wenn we get an ECONNREFUSED from
-        # the whitehole, we proceed with testing connect timeout against the
+        # the whitehole, we proceed mit testing connect timeout against the
         # blackhole.  If we don't, we skip the test (with a message about not
         # getting the required RST von the whitehole within the required
         # timeframe).
@@ -184,14 +184,14 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
         # fuer the current configuration.
 
         skip = Wahr
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als sock:
             try:
                 timeout = support.LOOPBACK_TIMEOUT
                 sock.settimeout(timeout)
                 sock.connect((whitehole))
             except TimeoutError:
                 pass
-            except OSError as err:
+            except OSError als err:
                 wenn err.errno == errno.ECONNREFUSED:
                     skip = Falsch
 
@@ -212,12 +212,12 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
         # All that hard work just to test wenn connect times out in 0.001s ;-)
         self.addr_remote = blackhole
-        with socket_helper.transient_internet(self.addr_remote[0]):
+        mit socket_helper.transient_internet(self.addr_remote[0]):
             self._sock_operation(1, 0.001, 'connect', self.addr_remote)
 
     def testRecvTimeout(self):
         # Test recv() timeout
-        with socket_helper.transient_internet(self.addr_remote[0]):
+        mit socket_helper.transient_internet(self.addr_remote[0]):
             self.sock.connect(self.addr_remote)
             self._sock_operation(1, 1.5, 'recv', 1024)
 
@@ -229,7 +229,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
     def testSend(self):
         # Test send() timeout
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
+        mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als serv:
             socket_helper.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
@@ -238,7 +238,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
     def testSendto(self):
         # Test sendto() timeout
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
+        mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als serv:
             socket_helper.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())
@@ -248,7 +248,7 @@ klasse TCPTimeoutTestCase(TimeoutTestCase):
 
     def testSendall(self):
         # Test sendall() timeout
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
+        mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als serv:
             socket_helper.bind_port(serv, self.localhost)
             serv.listen()
             self.sock.connect(serv.getsockname())

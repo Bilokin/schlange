@@ -426,7 +426,7 @@ klasse CLanguage(Language):
         # we use "parser_parameters" fuer the parsing function
         # because that works better.  but that means we must
         # suppress actually declaring the impl's parameters
-        # as variables in the parsing function.  but since it's
+        # als variables in the parsing function.  but since it's
         # METH_O, we have exactly one anyway, so we know exactly
         # where it is.
         wenn ("METH_O" in templates['methoddef_define'] and

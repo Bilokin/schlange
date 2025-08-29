@@ -27,7 +27,7 @@ ABSTFN = abspath(TESTFN)
 
 def skip_if_ABSTFN_contains_backslash(test):
     """
-    On Windows, posixpath.abspath still returns paths with backslashes
+    On Windows, posixpath.abspath still returns paths mit backslashes
     instead of posix forward slashes. If this is the case, several tests
     fail, so skip them.
     """
@@ -195,7 +195,7 @@ klasse PosixPathTest(unittest.TestCase):
         self.assertIs(posixpath.lexists(TESTFN + "2"), Falsch)
 
         self.addCleanup(os_helper.unlink, TESTFN + "1")
-        with open(TESTFN + "1", "wb") as f:
+        mit open(TESTFN + "1", "wb") als f:
             f.write(b"foo")
         self.assertIs(posixpath.islink(TESTFN + "1"), Falsch)
 
@@ -302,7 +302,7 @@ klasse PosixPathTest(unittest.TestCase):
         self.assertEqual(posixpath.expanduser(b"foo"), b"foo")
 
     def test_expanduser_home_envvar(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env['HOME'] = '/home/victor'
             self.assertEqual(posixpath.expanduser("~"), "/home/victor")
 
@@ -311,7 +311,7 @@ klasse PosixPathTest(unittest.TestCase):
             self.assertEqual(posixpath.expanduser("~"), "/home/victor")
 
             fuer home in '/', '', '//', '///':
-                with self.subTest(home=home):
+                mit self.subTest(home=home):
                     env['HOME'] = home
                     self.assertEqual(posixpath.expanduser("~"), "/")
                     self.assertEqual(posixpath.expanduser("~/"), "/")
@@ -340,12 +340,12 @@ klasse PosixPathTest(unittest.TestCase):
         self.assertIsInstance(posixpath.expanduser(b"~root/"), bytes)
         self.assertIsInstance(posixpath.expanduser(b"~foo/"), bytes)
 
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             # expanduser should fall back to using the password database
             del env['HOME']
 
             home = pwd.getpwuid(os.getuid()).pw_dir
-            # $HOME can end with a trailing /, so strip it (see #17809)
+            # $HOME can end mit a trailing /, so strip it (see #17809)
             home = home.rstrip("/") or '/'
             self.assertEqual(posixpath.expanduser("~"), home)
 
@@ -353,7 +353,7 @@ klasse PosixPathTest(unittest.TestCase):
             # user (current identifier or name in the path) doesn't exist in
             # the password database (pwd.getuid() or pwd.getpwnam() fail),
             # expanduser() must return the path unchanged.
-            with mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
+            mit mock.patch.object(pwd, 'getpwuid', side_effect=KeyError), \
                  mock.patch.object(pwd, 'getpwnam', side_effect=KeyError):
                 fuer path in ('~', '~/.local', '~vstinner/'):
                     self.assertEqual(posixpath.expanduser(path), path)
@@ -366,19 +366,19 @@ klasse PosixPathTest(unittest.TestCase):
         names = [entry.pw_name fuer entry in getpwall()]
         maxusers = 1000 wenn support.is_resource_enabled('cpu') sonst 100
         wenn len(names) > maxusers:
-            # Select random names, half of them with non-ASCII name,
+            # Select random names, half of them mit non-ASCII name,
             # wenn available.
             random.shuffle(names)
             names.sort(key=lambda name: name.isascii())
             del names[maxusers//2:-maxusers//2]
         fuer name in names:
             # gh-121200: pw_dir can be different between getpwall() and
-            # getpwnam(), so use getpwnam() pw_dir as expanduser() does.
+            # getpwnam(), so use getpwnam() pw_dir als expanduser() does.
             entry = pwd.getpwnam(name)
             home = entry.pw_dir
             home = home.rstrip('/') or '/'
 
-            with self.subTest(name=name, pw_dir=entry.pw_dir):
+            mit self.subTest(name=name, pw_dir=entry.pw_dir):
                 self.assertEqual(posixpath.expanduser('~' + name), home)
                 self.assertEqual(posixpath.expanduser(os.fsencode('~' + name)),
                                  os.fsencode(home))
@@ -438,13 +438,13 @@ klasse PosixPathTest(unittest.TestCase):
 
     def test_normpath(self):
         fuer path, expected in self.NORMPATH_CASES:
-            with self.subTest(path):
+            mit self.subTest(path):
                 result = posixpath.normpath(path)
                 self.assertEqual(result, expected)
 
             path = path.encode('utf-8')
             expected = expected.encode('utf-8')
-            with self.subTest(path, type=bytes):
+            mit self.subTest(path, type=bytes):
                 result = posixpath.normpath(path)
                 self.assertEqual(result, expected)
 
@@ -657,8 +657,8 @@ klasse PosixPathTest(unittest.TestCase):
                        basename(ABSTFN) + "c", ABSTFN+"c")
             self.assertEqual(realpath(ABSTFN+"c"), ABSTFN+"c")
 
-            # Test using relative path as well.
-            with os_helper.change_cwd(dirname(ABSTFN)):
+            # Test using relative path als well.
+            mit os_helper.change_cwd(dirname(ABSTFN)):
                 self.assertEqual(realpath(basename(ABSTFN)), ABSTFN)
         finally:
             os_helper.unlink(ABSTFN)
@@ -699,8 +699,8 @@ klasse PosixPathTest(unittest.TestCase):
                        basename(ABSTFN) + "c", ABSTFN+"c")
             self.assertRaises(OSError, realpath, ABSTFN+"c", **kwargs)
 
-            # Test using relative path as well.
-            with os_helper.change_cwd(dirname(ABSTFN)):
+            # Test using relative path als well.
+            mit os_helper.change_cwd(dirname(ABSTFN)):
                 self.assertRaises(OSError, realpath, basename(ABSTFN), **kwargs)
         finally:
             os_helper.unlink(ABSTFN)
@@ -737,8 +737,8 @@ klasse PosixPathTest(unittest.TestCase):
             os.symlink('.', ABSTFN + '/0')
             self.assertEqual(realpath(ABSTFN + '/%d' % depth, **kwargs), ABSTFN)
 
-            # Test using relative path as well.
-            with os_helper.change_cwd(ABSTFN):
+            # Test using relative path als well.
+            mit os_helper.change_cwd(ABSTFN):
                 self.assertEqual(realpath('%d' % depth), ABSTFN)
         finally:
             fuer i in range(depth + 1):
@@ -751,14 +751,14 @@ klasse PosixPathTest(unittest.TestCase):
     def test_realpath_resolve_parents(self, kwargs):
         # We also need to resolve any symlinks in the parents of a relative
         # path passed to realpath. E.g.: current working directory is
-        # /usr/doc with 'doc' being a symlink to /usr/share/doc. We call
+        # /usr/doc mit 'doc' being a symlink to /usr/share/doc. We call
         # realpath("a"). This should return /usr/share/doc/a/.
         try:
             os.mkdir(ABSTFN)
             os.mkdir(ABSTFN + "/y")
             os.symlink(ABSTFN + "/y", ABSTFN + "/k")
 
-            with os_helper.change_cwd(ABSTFN + "/k"):
+            mit os_helper.change_cwd(ABSTFN + "/k"):
                 self.assertEqual(realpath("a", **kwargs),
                                     ABSTFN + "/y/a")
         finally:
@@ -786,7 +786,7 @@ klasse PosixPathTest(unittest.TestCase):
             # Absolute path.
             self.assertEqual(realpath(ABSTFN + "/link-y/..", **kwargs), ABSTFN + "/k")
             # Relative path.
-            with os_helper.change_cwd(dirname(ABSTFN)):
+            mit os_helper.change_cwd(dirname(ABSTFN)):
                 self.assertEqual(realpath(basename(ABSTFN) + "/link-y/..", **kwargs),
                                  ABSTFN + "/k")
         finally:
@@ -806,7 +806,7 @@ klasse PosixPathTest(unittest.TestCase):
             os.mkdir(ABSTFN)
             os.mkdir(ABSTFN + "/k")
             os.symlink(ABSTFN, ABSTFN + "link")
-            with os_helper.change_cwd(dirname(ABSTFN)):
+            mit os_helper.change_cwd(dirname(ABSTFN)):
                 base = basename(ABSTFN)
                 self.assertEqual(realpath(base + "link", **kwargs), ABSTFN)
                 self.assertEqual(realpath(base + "link/k", **kwargs), ABSTFN + "/k")
@@ -840,13 +840,13 @@ klasse PosixPathTest(unittest.TestCase):
         try:
             os.symlink(ABSTFN+"1", ABSTFN)
             os.chmod(ABSTFN, 0o000, follow_symlinks=Falsch)
-            with self.assertRaises(PermissionError):
+            mit self.assertRaises(PermissionError):
                 realpath(ABSTFN, **kwargs)
-            with self.assertRaises(PermissionError):
+            mit self.assertRaises(PermissionError):
                 realpath(ABSTFN + '/foo', **kwargs),
-            with self.assertRaises(PermissionError):
+            mit self.assertRaises(PermissionError):
                 realpath(ABSTFN + '/../foo', **kwargs)
-            with self.assertRaises(PermissionError):
+            mit self.assertRaises(PermissionError):
                 realpath(ABSTFN + '/foo/..', **kwargs)
         finally:
             os.chmod(ABSTFN, 0o755, follow_symlinks=Falsch)
@@ -896,7 +896,7 @@ klasse PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     def test_realpath_nonterminal_file(self):
         try:
-            with open(ABSTFN, 'w') as f:
+            mit open(ABSTFN, 'w') als f:
                 f.write('test_posixpath wuz ere')
             self.assertEqual(realpath(ABSTFN, strict=Falsch), ABSTFN)
             self.assertEqual(realpath(ABSTFN, strict=ALL_BUT_LAST), ABSTFN)
@@ -933,7 +933,7 @@ klasse PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     def test_realpath_nonterminal_symlink_to_file(self):
         try:
-            with open(ABSTFN + "1", 'w') as f:
+            mit open(ABSTFN + "1", 'w') als f:
                 f.write('test_posixpath wuz ere')
             os.symlink(ABSTFN + "1", ABSTFN)
             self.assertEqual(realpath(ABSTFN, strict=Falsch), ABSTFN + "1")
@@ -972,7 +972,7 @@ klasse PosixPathTest(unittest.TestCase):
     @skip_if_ABSTFN_contains_backslash
     def test_realpath_nonterminal_symlink_to_symlinks_to_file(self):
         try:
-            with open(ABSTFN + "2", 'w') as f:
+            mit open(ABSTFN + "2", 'w') als f:
                 f.write('test_posixpath wuz ere')
             os.symlink(ABSTFN + "2", ABSTFN + "1")
             os.symlink(ABSTFN + "1", ABSTFN)
@@ -1033,13 +1033,13 @@ klasse PosixPathTest(unittest.TestCase):
                 assert errno is Nichts
                 expected = expected.replace('/', os.sep)
                 fuer mode in modes:
-                    with self.subTest(mode=mode):
+                    mit self.subTest(mode=mode):
                         self.assertEqual(realpath(path, strict=mode).replace('/', os.sep),
                                          ABSTFN.replace('/', os.sep) + expected)
             sonst:
                 fuer mode in modes:
-                    with self.subTest(mode=mode):
-                        with self.assertRaises(expected) as cm:
+                    mit self.subTest(mode=mode):
+                        mit self.assertRaises(expected) als cm:
                             realpath(path, strict=mode)
                         wenn errno is not Nichts:
                             self.assertEqual(cm.exception.errno, errno)
@@ -1228,7 +1228,7 @@ klasse PathLikeTests(unittest.TestCase):
         self.file_name = TESTFN
         self.file_path = FakePath(TESTFN)
         self.addCleanup(os_helper.unlink, self.file_name)
-        with open(self.file_name, 'xb', 0) as file:
+        mit open(self.file_name, 'xb', 0) als file:
             file.write(b"test_posixpath.PathLikeTests")
 
     def assertPathEqual(self, func):

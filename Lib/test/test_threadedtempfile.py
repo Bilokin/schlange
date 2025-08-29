@@ -3,7 +3,7 @@ Create and delete FILES_PER_THREAD temp files (via tempfile.TemporaryFile)
 in each of NUM_THREADS threads, recording the number of successes and
 failures.  A failure is a bug in tempfile, and may be due to:
 
-+ Trying to create more than one tempfile with the same name.
++ Trying to create more than one tempfile mit the same name.
 + Trying to delete a tempfile that doesn't still exist.
 + Something we've never seen before.
 
@@ -53,7 +53,7 @@ klasse ThreadedTempFileTest(unittest.TestCase):
     @support.bigmemtest(size=NUM_THREADS, memuse=60*2**20, dry_run=Falsch)
     def test_main(self, size):
         threads = [TempFileGreedy() fuer i in range(NUM_THREADS)]
-        with threading_helper.start_threads(threads, startEvent.set):
+        mit threading_helper.start_threads(threads, startEvent.set):
             pass
         ok = sum(t.ok_count fuer t in threads)
         errors = [str(t.name) + str(t.errors.getvalue())

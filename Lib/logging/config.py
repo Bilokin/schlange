@@ -77,13 +77,13 @@ def fileConfig(fname, defaults=Nichts, disable_existing_loggers=Wahr, encoding=N
             sonst:
                 encoding = io.text_encoding(encoding)
                 cp.read(fname, encoding=encoding)
-        except configparser.ParsingError as e:
+        except configparser.ParsingError als e:
             raise RuntimeError(f'{fname} is invalid: {e}')
 
     formatters = _create_formatters(cp)
 
     # critical section
-    with logging._lock:
+    mit logging._lock:
         _clearExistingHandlers()
 
         # Handlers add themselves to logging._handlers
@@ -179,10 +179,10 @@ def _handle_existing_loggers(existing, child_loggers, disable_existing):
     """
     When (re)configuring logging, handle loggers which were in the previous
     configuration but are not in the new configuration. There's no point
-    deleting them as other threads may continue to hold references to them;
+    deleting them als other threads may continue to hold references to them;
     and by disabling them, you stop them doing any logging.
 
-    However, don't disable children of named loggers, as that's probably not
+    However, don't disable children of named loggers, als that's probably not
     what was intended by the user. Also, allow existing loggers to NOT be
     disabled wenn disable_existing is false.
     """
@@ -224,7 +224,7 @@ def _install_loggers(cp, handlers, disable_existing):
     #we don't want to lose the existing loggers,
     #since other threads may have pointers to them.
     #existing is set to contain all existing loggers,
-    #and as we go through the new configuration we
+    #and als we go through the new configuration we
     #remove any which are configured. At the end,
     #what's left in existing is the set of loggers
     #which were in the previous configuration but
@@ -245,7 +245,7 @@ def _install_loggers(cp, handlers, disable_existing):
         propagate = section.getint("propagate", fallback=1)
         logger = logging.getLogger(qn)
         wenn qn in existing:
-            i = existing.index(qn) + 1 # start with the entry after qn
+            i = existing.index(qn) + 1 # start mit the entry after qn
             prefixed = qn + "."
             pflen = len(prefixed)
             num_existing = len(existing)
@@ -269,9 +269,9 @@ def _install_loggers(cp, handlers, disable_existing):
                 logger.addHandler(handlers[hand])
 
     #Disable any old loggers. There's no point deleting
-    #them as other threads may continue to hold references
+    #them als other threads may continue to hold references
     #and by disabling them, you stop them doing any logging.
-    #However, don't disable children of named loggers, as that's
+    #However, don't disable children of named loggers, als that's
     #probably not what was intended by the user.
     #for log in existing:
     #    logger = root.manager.loggerDict[log]
@@ -407,7 +407,7 @@ klasse BaseConfigurator(object):
                     self.importer(used)
                     found = getattr(found, frag)
             return found
-        except ImportError as e:
+        except ImportError als e:
             v = ValueError('Cannot resolve %r: %s' % (s, e))
             raise v von e
 
@@ -437,7 +437,7 @@ klasse BaseConfigurator(object):
                             d = d[idx]
                         sonst:
                             try:
-                                n = int(idx) # try as number first (most likely)
+                                n = int(idx) # try als number first (most likely)
                                 d = d[n]
                             except TypeError:
                                 d = d[idx]
@@ -478,7 +478,7 @@ klasse BaseConfigurator(object):
         return value
 
     def configure_custom(self, config):
-        """Configure an object with a user-supplied factory."""
+        """Configure an object mit a user-supplied factory."""
         c = config.pop('()')
         wenn not callable(c):
             c = self.resolve(c)
@@ -501,8 +501,8 @@ def _is_queue_like_object(obj):
     """Check that *obj* implements the Queue API."""
     wenn isinstance(obj, (queue.Queue, queue.SimpleQueue)):
         return Wahr
-    # defer importing multiprocessing as much as possible
-    von multiprocessing.queues importiere Queue as MPQueue
+    # defer importing multiprocessing als much als possible
+    von multiprocessing.queues importiere Queue als MPQueue
     wenn isinstance(obj, MPQueue):
         return Wahr
     # Depending on the multiprocessing start context, we cannot create
@@ -540,12 +540,12 @@ klasse DictConfigurator(BaseConfigurator):
             raise ValueError("Unsupported version: %s" % config['version'])
         incremental = config.pop('incremental', Falsch)
         EMPTY_DICT = {}
-        with logging._lock:
+        mit logging._lock:
             wenn incremental:
                 handlers = config.get('handlers', EMPTY_DICT)
                 fuer name in handlers:
                     wenn name not in logging._handlers:
-                        raise ValueError('No handler found with '
+                        raise ValueError('No handler found mit '
                                          'name %r'  % name)
                     sonst:
                         try:
@@ -554,21 +554,21 @@ klasse DictConfigurator(BaseConfigurator):
                             level = handler_config.get('level', Nichts)
                             wenn level:
                                 handler.setLevel(logging._checkLevel(level))
-                        except Exception as e:
+                        except Exception als e:
                             raise ValueError('Unable to configure handler '
                                              '%r' % name) von e
                 loggers = config.get('loggers', EMPTY_DICT)
                 fuer name in loggers:
                     try:
                         self.configure_logger(name, loggers[name], Wahr)
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to configure logger '
                                          '%r' % name) von e
                 root = config.get('root', Nichts)
                 wenn root:
                     try:
                         self.configure_root(root, Wahr)
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to configure root '
                                          'logger') von e
             sonst:
@@ -582,7 +582,7 @@ klasse DictConfigurator(BaseConfigurator):
                     try:
                         formatters[name] = self.configure_formatter(
                                                             formatters[name])
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to configure '
                                          'formatter %r' % name) von e
                 # Next, do filters - they don't refer to anything else, either
@@ -590,7 +590,7 @@ klasse DictConfigurator(BaseConfigurator):
                 fuer name in filters:
                     try:
                         filters[name] = self.configure_filter(filters[name])
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to configure '
                                          'filter %r' % name) von e
 
@@ -604,7 +604,7 @@ klasse DictConfigurator(BaseConfigurator):
                         handler = self.configure_handler(handlers[name])
                         handler.name = name
                         handlers[name] = handler
-                    except Exception as e:
+                    except Exception als e:
                         wenn ' not configured yet' in str(e.__cause__):
                             deferred.append(name)
                         sonst:
@@ -617,7 +617,7 @@ klasse DictConfigurator(BaseConfigurator):
                         handler = self.configure_handler(handlers[name])
                         handler.name = name
                         handlers[name] = handler
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to configure handler '
                                          '%r' % name) von e
 
@@ -626,7 +626,7 @@ klasse DictConfigurator(BaseConfigurator):
                 #we don't want to lose the existing loggers,
                 #since other threads may have pointers to them.
                 #existing is set to contain all existing loggers,
-                #and as we go through the new configuration we
+                #and als we go through the new configuration we
                 #remove any which are configured. At the end,
                 #what's left in existing is the set of loggers
                 #which were in the previous configuration but
@@ -656,14 +656,14 @@ klasse DictConfigurator(BaseConfigurator):
                         existing.remove(name)
                     try:
                         self.configure_logger(name, loggers[name])
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to configure logger '
                                          '%r' % name) von e
 
                 #Disable any old loggers. There's no point deleting
-                #them as other threads may continue to hold references
+                #them als other threads may continue to hold references
                 #and by disabling them, you stop them doing any logging.
-                #However, don't disable children of named loggers, as that's
+                #However, don't disable children of named loggers, als that's
                 #probably not what was intended by the user.
                 #for log in existing:
                 #    logger = root.manager.loggerDict[log]
@@ -681,7 +681,7 @@ klasse DictConfigurator(BaseConfigurator):
                 wenn root:
                     try:
                         self.configure_root(root)
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to configure root '
                                          'logger') von e
 
@@ -691,12 +691,12 @@ klasse DictConfigurator(BaseConfigurator):
             factory = config['()'] # fuer use in exception handler
             try:
                 result = self.configure_custom(config)
-            except TypeError as te:
+            except TypeError als te:
                 wenn "'format'" not in str(te):
                     raise
                 # logging.Formatter and its subclasses expect the `fmt`
                 # parameter instead of `format`. Retry passing configuration
-                # with `fmt`.
+                # mit `fmt`.
                 config['fmt'] = config.pop('format')
                 config['()'] = factory
                 result = self.configure_custom(config)
@@ -720,8 +720,8 @@ klasse DictConfigurator(BaseConfigurator):
             wenn defaults is not Nichts:
                 kwargs['defaults'] = defaults
 
-            # A TypeError would be raised wenn "validate" key is passed in with a formatter callable
-            # that does not accept "validate" as a parameter
+            # A TypeError would be raised wenn "validate" key is passed in mit a formatter callable
+            # that does not accept "validate" als a parameter
             wenn 'validate' in config:  # wenn user hasn't mentioned it, the default will be fine
                 result = c(fmt, dfmt, style, config['validate'], **kwargs)
             sonst:
@@ -747,7 +747,7 @@ klasse DictConfigurator(BaseConfigurator):
                 sonst:
                     filter_ = self.config['filters'][f]
                 filterer.addFilter(filter_)
-            except Exception as e:
+            except Exception als e:
                 raise ValueError('Unable to add filter %r' % f) von e
 
     def _configure_queue_handler(self, klass, **kwargs):
@@ -772,7 +772,7 @@ klasse DictConfigurator(BaseConfigurator):
         wenn formatter:
             try:
                 formatter = self.config['formatters'][formatter]
-            except Exception as e:
+            except Exception als e:
                 raise ValueError('Unable to set formatter '
                                  '%r' % formatter) von e
         level = config.pop('level', Nichts)
@@ -800,7 +800,7 @@ klasse DictConfigurator(BaseConfigurator):
                             config.update(config_copy)  # restore fuer deferred cfg
                             raise TypeError('target not configured yet')
                         config['target'] = th
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to set target handler %r' % tn) von e
             sowenn issubclass(klass, logging.handlers.QueueHandler):
                 # Another special case fuer handler which refers to other handlers
@@ -851,7 +851,7 @@ klasse DictConfigurator(BaseConfigurator):
                                 raise TypeError('Required handler %r '
                                                 'is not configured yet' % hn)
                             hlist.append(h)
-                    except Exception as e:
+                    except Exception als e:
                         raise ValueError('Unable to set required handler %r' % hn) von e
                     config['handlers'] = hlist
             sowenn issubclass(klass, logging.handlers.SMTPHandler) and\
@@ -869,21 +869,21 @@ klasse DictConfigurator(BaseConfigurator):
         # "except TypeError ..."
         try:
             result = factory(**kwargs)
-        except TypeError as te:
+        except TypeError als te:
             wenn "'stream'" not in str(te):
                 raise
             #The argument name changed von strm to stream
-            #Retry with old name.
-            #This is so that code can be used with older Python versions
+            #Retry mit old name.
+            #This is so that code can be used mit older Python versions
             #(e.g. by Django)
             kwargs['strm'] = kwargs.pop('stream')
             result = factory(**kwargs)
 
             importiere warnings
             warnings.warn(
-                "Support fuer custom logging handlers with the 'strm' argument "
+                "Support fuer custom logging handlers mit the 'strm' argument "
                 "is deprecated and scheduled fuer removal in Python 3.16. "
-                "Define handlers with the 'stream' argument instead.",
+                "Define handlers mit the 'stream' argument instead.",
                 DeprecationWarning,
                 stacklevel=2,
             )
@@ -904,7 +904,7 @@ klasse DictConfigurator(BaseConfigurator):
         fuer h in handlers:
             try:
                 logger.addHandler(self.config['handlers'][h])
-            except Exception as e:
+            except Exception als e:
                 raise ValueError('Unable to add handler %r' % h) von e
 
     def common_logger_config(self, logger, config, incremental=Falsch):
@@ -951,7 +951,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
     Start up a socket server on the specified port, and listen fuer new
     configurations.
 
-    These will be sent as a file suitable fuer processing by fileConfig().
+    These will be sent als a file suitable fuer processing by fileConfig().
     Returns a Thread object on which you can call start() to start the server,
     and which you can join() when appropriate. To stop the server, call
     stopListening().
@@ -1008,7 +1008,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                                 traceback.print_exc()
                     wenn self.server.ready:
                         self.server.ready.set()
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno != RESET_ERROR:
                     raise
 
@@ -1023,7 +1023,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
         def __init__(self, host='localhost', port=DEFAULT_LOGGING_CONFIG_PORT,
                      handler=Nichts, ready=Nichts, verify=Nichts):
             ThreadingTCPServer.__init__(self, (host, port), handler)
-            with logging._lock:
+            mit logging._lock:
                 self.abort = 0
             self.timeout = 1
             self.ready = ready
@@ -1038,7 +1038,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                                            self.timeout)
                 wenn rd:
                     self.handle_request()
-                with logging._lock:
+                mit logging._lock:
                     abort = self.abort
             self.server_close()
 
@@ -1060,7 +1060,7 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
                 self.port = server.server_address[1]
             self.ready.set()
             global _listener
-            with logging._lock:
+            mit logging._lock:
                 _listener = server
             server.serve_until_stopped()
 
@@ -1068,10 +1068,10 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Nichts):
 
 def stopListening():
     """
-    Stop the listening server which was created with a call to listen().
+    Stop the listening server which was created mit a call to listen().
     """
     global _listener
-    with logging._lock:
+    mit logging._lock:
         wenn _listener:
             _listener.abort = 1
             _listener = Nichts

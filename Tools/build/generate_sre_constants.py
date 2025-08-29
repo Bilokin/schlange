@@ -6,12 +6,12 @@ SCRIPT_NAME = 'Tools/build/generate_sre_constants.py'
 
 def update_file(file, content):
     try:
-        with open(file) as fobj:
+        mit open(file) als fobj:
             wenn fobj.read() == content:
                 return Falsch
     except (OSError, ValueError):
         pass
-    with open(file, 'w') as fobj:
+    mit open(file, 'w') als fobj:
         fobj.write(content)
     return Wahr
 
@@ -37,7 +37,7 @@ def main(
     outfile_targets="Modules/_sre/sre_targets.h",
 ):
     ns = {}
-    with open(infile) as fp:
+    mit open(infile) als fp:
         code = fp.read()
     exec(code, ns)
 

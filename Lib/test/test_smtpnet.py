@@ -14,7 +14,7 @@ SMTP_TEST_SERVER = os.getenv('CPYTHON_TEST_SMTP_SERVER', 'smtp.gmail.com')
 
 def check_ssl_verifiy(host, port):
     context = ssl.create_default_context()
-    with socket.create_connection((host, port)) as sock:
+    mit socket.create_connection((host, port)) als sock:
         try:
             sock = context.wrap_socket(sock, server_hostname=host)
         except Exception:
@@ -33,11 +33,11 @@ klasse SmtpTest(unittest.TestCase):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.check_hostname = Falsch
         context.verify_mode = ssl.CERT_NONE
-        with socket_helper.transient_internet(self.testServer):
+        mit socket_helper.transient_internet(self.testServer):
             server = smtplib.SMTP(self.testServer, self.remotePort)
             try:
                 server.starttls(context=context)
-            except smtplib.SMTPException as e:
+            except smtplib.SMTPException als e:
                 wenn e.args[0] == 'STARTTLS extension not supported by server.':
                     unittest.skip(e.args[0])
                 sonst:
@@ -52,14 +52,14 @@ klasse SmtpSSLTest(unittest.TestCase):
 
     def test_connect(self):
         support.get_attribute(smtplib, 'SMTP_SSL')
-        with socket_helper.transient_internet(self.testServer):
+        mit socket_helper.transient_internet(self.testServer):
             server = smtplib.SMTP_SSL(self.testServer, self.remotePort)
             server.ehlo()
             server.quit()
 
     def test_connect_default_port(self):
         support.get_attribute(smtplib, 'SMTP_SSL')
-        with socket_helper.transient_internet(self.testServer):
+        mit socket_helper.transient_internet(self.testServer):
             server = smtplib.SMTP_SSL(self.testServer)
             server.ehlo()
             server.quit()
@@ -70,20 +70,20 @@ klasse SmtpSSLTest(unittest.TestCase):
         context.check_hostname = Falsch
         context.verify_mode = ssl.CERT_NONE
         support.get_attribute(smtplib, 'SMTP_SSL')
-        with socket_helper.transient_internet(self.testServer):
+        mit socket_helper.transient_internet(self.testServer):
             server = smtplib.SMTP_SSL(self.testServer, self.remotePort, context=context)
             server.ehlo()
             server.quit()
 
     def test_connect_using_sslcontext_verified(self):
-        with socket_helper.transient_internet(self.testServer):
+        mit socket_helper.transient_internet(self.testServer):
             can_verify = check_ssl_verifiy(self.testServer, self.remotePort)
             wenn not can_verify:
                 self.skipTest("SSL certificate can't be verified")
 
         support.get_attribute(smtplib, 'SMTP_SSL')
         context = ssl.create_default_context()
-        with socket_helper.transient_internet(self.testServer):
+        mit socket_helper.transient_internet(self.testServer):
             server = smtplib.SMTP_SSL(self.testServer, self.remotePort, context=context)
             server.ehlo()
             server.quit()

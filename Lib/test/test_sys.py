@@ -45,7 +45,7 @@ klasse DisplayHookTest(unittest.TestCase):
     def test_original_displayhook(self):
         dh = sys.__displayhook__
 
-        with support.captured_stdout() as out:
+        mit support.captured_stdout() als out:
             dh(42)
 
         self.assertEqual(out.getvalue(), "42\n")
@@ -53,7 +53,7 @@ klasse DisplayHookTest(unittest.TestCase):
 
         del builtins._
 
-        with support.captured_stdout() as out:
+        mit support.captured_stdout() als out:
             dh(Nichts)
 
         self.assertEqual(out.getvalue(), "")
@@ -82,7 +82,7 @@ klasse DisplayHookTest(unittest.TestCase):
         def baddisplayhook(obj):
             raise ValueError
 
-        with support.swap_attr(sys, 'displayhook', baddisplayhook):
+        mit support.swap_attr(sys, 'displayhook', baddisplayhook):
             code = compile("42", "<string>", "single")
             self.assertRaises(ValueError, eval, code)
 
@@ -93,7 +93,7 @@ klasse DisplayHookTest(unittest.TestCase):
                 support.gc_collect()
                 return 'foo'
 
-        with support.swap_attr(sys, 'stdout', Nichts):
+        mit support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = io.StringIO()  # the only reference
             sys.displayhook(X())  # should not crash
 
@@ -111,7 +111,7 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
         try:
             f()
-        except Exception as e_:
+        except Exception als e_:
             e = e_
             exc_info = sys.exc_info()
 
@@ -126,7 +126,7 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
         try:
             f()
-        except Exception as e_:
+        except Exception als e_:
             e = e_
             exc_info = sys.exc_info()
 
@@ -141,7 +141,7 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
         try:
             f()
-        except Exception as e_:
+        except Exception als e_:
             e = e_
             exc = sys.exception()
 
@@ -154,7 +154,7 @@ klasse ActiveExceptionTests(unittest.TestCase):
 
         try:
             f()
-        except Exception as e_:
+        except Exception als e_:
             e = e_
             exc = sys.exception()
 
@@ -168,8 +168,8 @@ klasse ExceptHookTest(unittest.TestCase):
     def test_original_excepthook(self):
         try:
             raise ValueError(42)
-        except ValueError as exc:
-            with support.captured_stderr() as err:
+        except ValueError als exc:
+            mit support.captured_stderr() als err:
                 sys.__excepthook__(*sys.exc_info())
 
         self.assertEndsWith(err.getvalue(), "ValueError: 42\n")
@@ -180,13 +180,13 @@ klasse ExceptHookTest(unittest.TestCase):
     def test_excepthook_bytes_filename(self):
         # bpo-37467: sys.excepthook() must not crash wenn a filename
         # is a bytes string
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore', BytesWarning)
 
             try:
                 raise SyntaxError("msg", (b"bytes_filename", 123, 0, "text"))
-            except SyntaxError as exc:
-                with support.captured_stderr() as err:
+            except SyntaxError als exc:
+                mit support.captured_stderr() als err:
                     sys.__excepthook__(*sys.exc_info())
 
         err = err.getvalue()
@@ -195,8 +195,8 @@ klasse ExceptHookTest(unittest.TestCase):
         self.assertEndsWith(err, "SyntaxError: msg\n")
 
     def test_excepthook(self):
-        with test.support.captured_output("stderr") as stderr:
-            with test.support.catch_unraisable_exception():
+        mit test.support.captured_output("stderr") als stderr:
+            mit test.support.catch_unraisable_exception():
                 sys.excepthook(1, '1', 1)
         self.assertWahr("TypeError: print_exception(): Exception expected fuer " \
                          "value, str found" in stderr.getvalue())
@@ -211,11 +211,11 @@ klasse SysModuleTest(unittest.TestCase):
         test.support.reap_children()
 
     def test_exit(self):
-        # call with two arguments
+        # call mit two arguments
         self.assertRaises(TypeError, sys.exit, 42, 42)
 
         # call without argument
-        with self.assertRaises(SystemExit) as cm:
+        mit self.assertRaises(SystemExit) als cm:
             sys.exit()
         self.assertIsNichts(cm.exception.code)
 
@@ -225,7 +225,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertEqual(err, b'')
 
         # gh-125842: Windows uses 32-bit unsigned integers fuer exit codes
-        # so a -1 exit code is sometimes interpreted as 0xffff_ffff.
+        # so a -1 exit code is sometimes interpreted als 0xffff_ffff.
         rc, out, err = assert_python_failure('-c', 'import sys; sys.exit(0xffff_ffff)')
         self.assertIn(rc, (-1, 0xff, 0xffff_ffff))
         self.assertEqual(out, b'')
@@ -238,24 +238,24 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
 
-        # call with integer argument
-        with self.assertRaises(SystemExit) as cm:
+        # call mit integer argument
+        mit self.assertRaises(SystemExit) als cm:
             sys.exit(42)
         self.assertEqual(cm.exception.code, 42)
 
-        # call with tuple argument with one entry
+        # call mit tuple argument mit one entry
         # entry will be unpacked
-        with self.assertRaises(SystemExit) as cm:
+        mit self.assertRaises(SystemExit) als cm:
             sys.exit((42,))
         self.assertEqual(cm.exception.code, 42)
 
-        # call with string argument
-        with self.assertRaises(SystemExit) as cm:
+        # call mit string argument
+        mit self.assertRaises(SystemExit) als cm:
             sys.exit("exit")
         self.assertEqual(cm.exception.code, "exit")
 
-        # call with tuple argument with two entries
-        with self.assertRaises(SystemExit) as cm:
+        # call mit tuple argument mit two entries
+        mit self.assertRaises(SystemExit) als cm:
             sys.exit((17, 23))
         self.assertEqual(cm.exception.code, (17, 23))
 
@@ -277,7 +277,7 @@ klasse SysModuleTest(unittest.TestCase):
             r'import sys; sys.stderr.write("unflushed,"); sys.exit("message")',
             b"unflushed,message")
 
-        # test that the exit message is written with backslashreplace error
+        # test that the exit message is written mit backslashreplace error
         # handler to stderr
         check_exit_message(
             r'import sys; sys.exit("surrogates:\uDCFF")',
@@ -303,8 +303,8 @@ klasse SysModuleTest(unittest.TestCase):
 
         fuer exitfunc in exit_ways:
             fuer return_code in (0, 123):
-                with self.subTest(exitfunc=exitfunc, return_code=return_code):
-                    with tempfile.TemporaryFile("w+") as stdin:
+                mit self.subTest(exitfunc=exitfunc, return_code=return_code):
+                    mit tempfile.TemporaryFile("w+") als stdin:
                         stdin.write(f"{exitfunc}({return_code})\n")
                         stdin.seek(0)
                         proc = subprocess.run([sys.executable], stdin=stdin)
@@ -312,7 +312,7 @@ klasse SysModuleTest(unittest.TestCase):
 
     def test_getdefaultencoding(self):
         self.assertRaises(TypeError, sys.getdefaultencoding, 42)
-        # can't check more than the type, as the user might have changed it
+        # can't check more than the type, als the user might have changed it
         self.assertIsInstance(sys.getdefaultencoding(), str)
 
     # testing sys.settrace() is done in test_sys_settrace.py
@@ -353,7 +353,7 @@ klasse SysModuleTest(unittest.TestCase):
 
     def test_recursionlimit_recovery(self):
         wenn hasattr(sys, 'gettrace') and sys.gettrace():
-            self.skipTest('fatal error wenn run with a trace function')
+            self.skipTest('fatal error wenn run mit a trace function')
 
         old_limit = sys.getrecursionlimit()
         def f():
@@ -369,9 +369,9 @@ klasse SysModuleTest(unittest.TestCase):
 
                 # Issue #5392: test stack overflow after hitting recursion
                 # limit twice
-                with self.assertRaises(RecursionError):
+                mit self.assertRaises(RecursionError):
                     f()
-                with self.assertRaises(RecursionError):
+                mit self.assertRaises(RecursionError):
                     f()
         finally:
             sys.setrecursionlimit(old_limit)
@@ -384,14 +384,14 @@ klasse SysModuleTest(unittest.TestCase):
         old_limit = sys.getrecursionlimit()
         try:
             depth = support.get_recursion_depth()
-            with self.subTest(limit=sys.getrecursionlimit(), depth=depth):
+            mit self.subTest(limit=sys.getrecursionlimit(), depth=depth):
                 # depth + 1 is OK
                 sys.setrecursionlimit(depth + 1)
 
                 # reset the limit to be able to call self.assertRaises()
                 # context manager
                 sys.setrecursionlimit(old_limit)
-                with self.assertRaises(RecursionError) as cm:
+                mit self.assertRaises(RecursionError) als cm:
                     sys.setrecursionlimit(depth)
             self.assertRegex(str(cm.exception),
                              "cannot set the recursion limit to [0-9]+ "
@@ -447,7 +447,7 @@ klasse SysModuleTest(unittest.TestCase):
     @test.support.refcount_test
     def test_refcount(self):
         # n here originally had to be a global in order fuer this test to pass
-        # while tracing with a python function. Tracing used to call
+        # while tracing mit a python function. Tracing used to call
         # PyFrame_FastToLocals, which would add a copy of any locals to the
         # frame object, causing the ref count to increase by 2 instead of 1.
         # While that no longer happens (due to PEP 667), this test case retains
@@ -748,7 +748,7 @@ klasse SysModuleTest(unittest.TestCase):
         self.assertIsInstance(sys._emscripten_info.shared_memory, bool)
 
     def test_43581(self):
-        # Can't use sys.stdout, as this is a StringIO object when
+        # Can't use sys.stdout, als this is a StringIO object when
         # the test runs under regrtest.
         self.assertEqual(sys.__stdout__.encoding, sys.__stderr__.encoding)
 
@@ -816,7 +816,7 @@ klasse SysModuleTest(unittest.TestCase):
         fuer s in ('__init__', 'CANCELLED', '<module>', 'utf-8',
                   '{{', '', '\n', '_', 'x', '\0', '\N{CEDILLA}', '\xff',
                   ):
-            with self.subTest(s=s):
+            mit self.subTest(s=s):
                 t = sys.intern(s)
 
                 interp = interpreters.create()
@@ -836,7 +836,7 @@ klasse SysModuleTest(unittest.TestCase):
         # Implementation detail: singletons are used fuer 0- and 1-character
         # latin1 strings.
         fuer s in '', '\n', '_', 'x', '\0', '\N{CEDILLA}', '\xff':
-            with self.subTest(s=s):
+            mit self.subTest(s=s):
                 interp = interpreters.create()
                 interp.exec(textwrap.dedent(f'''
                     importiere sys
@@ -884,7 +884,7 @@ klasse SysModuleTest(unittest.TestCase):
 
     @test.support.cpython_only
     def test_clear_type_cache(self):
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                                    r"sys\._clear_type_cache\(\) is deprecated.*"):
             sys._clear_type_cache()
 
@@ -893,7 +893,7 @@ klasse SysModuleTest(unittest.TestCase):
     def test_ioencoding(self):
         env = dict(os.environ)
 
-        # Test character: cent sign, encoded as 0x4A (ASCII J) in CP424,
+        # Test character: cent sign, encoded als 0x4A (ASCII J) in CP424,
         # not representable in ASCII.
 
         env["PYTHONIOENCODING"] = "cp424"
@@ -1120,7 +1120,7 @@ klasse SysModuleTest(unittest.TestCase):
         sonst:
             try:
                 alloc_name = _testinternalcapi.pymem_getallocatorsname()
-            except RuntimeError as exc:
+            except RuntimeError als exc:
                 # "cannot get allocators name" (ex: tracemalloc is used)
                 with_pymalloc = Wahr
             sonst:
@@ -1347,29 +1347,29 @@ klasse UnraisableHookTest(unittest.TestCase):
         von _testcapi importiere err_writeunraisable, err_formatunraisable
         obj = hex
 
-        with support.swap_attr(sys, 'unraisablehook',
+        mit support.swap_attr(sys, 'unraisablehook',
                                     sys.__unraisablehook__):
-            with support.captured_stderr() as stderr:
+            mit support.captured_stderr() als stderr:
                 err_writeunraisable(ValueError(42), obj)
             lines = stderr.getvalue().splitlines()
             self.assertEqual(lines[0], f'Exception ignored in: {obj!r}')
             self.assertEqual(lines[1], 'Traceback (most recent call last):')
             self.assertEqual(lines[-1], 'ValueError: 42')
 
-            with support.captured_stderr() as stderr:
+            mit support.captured_stderr() als stderr:
                 err_writeunraisable(ValueError(42), Nichts)
             lines = stderr.getvalue().splitlines()
             self.assertEqual(lines[0], 'Traceback (most recent call last):')
             self.assertEqual(lines[-1], 'ValueError: 42')
 
-            with support.captured_stderr() as stderr:
+            mit support.captured_stderr() als stderr:
                 err_formatunraisable(ValueError(42), 'Error in %R', obj)
             lines = stderr.getvalue().splitlines()
             self.assertEqual(lines[0], f'Error in {obj!r}:')
             self.assertEqual(lines[1], 'Traceback (most recent call last):')
             self.assertEqual(lines[-1], 'ValueError: 42')
 
-            with support.captured_stderr() as stderr:
+            mit support.captured_stderr() als stderr:
                 err_formatunraisable(ValueError(42), Nichts)
             lines = stderr.getvalue().splitlines()
             self.assertEqual(lines[0], 'Traceback (most recent call last):')
@@ -1394,9 +1394,9 @@ klasse UnraisableHookTest(unittest.TestCase):
                 raise exc
 
         fuer test_class in (BrokenDel, BrokenExceptionDel):
-            with self.subTest(test_class):
+            mit self.subTest(test_class):
                 obj = test_class()
-                with test.support.captured_stderr() as stderr, \
+                mit test.support.captured_stderr() als stderr, \
                      test.support.swap_attr(sys, 'unraisablehook',
                                             sys.__unraisablehook__):
                     # Trigger obj.__del__()
@@ -1417,7 +1417,7 @@ klasse UnraisableHookTest(unittest.TestCase):
 
     def test_original_unraisablehook_exception_qualname(self):
         # See bpo-41031, bpo-45083.
-        # Check that the exception is printed with its qualified name
+        # Check that the exception is printed mit its qualified name
         # rather than just classname, and the module names appears
         # unless it is one of the hard-coded exclusions.
         _testcapi = import_helper.import_module('_testcapi')
@@ -1428,9 +1428,9 @@ klasse UnraisableHookTest(unittest.TestCase):
                     pass
 
         fuer moduleName in 'builtins', '__main__', 'some_module':
-            with self.subTest(moduleName=moduleName):
+            mit self.subTest(moduleName=moduleName):
                 A.B.X.__module__ = moduleName
-                with test.support.captured_stderr() as stderr, test.support.swap_attr(
+                mit test.support.captured_stderr() als stderr, test.support.swap_attr(
                     sys, 'unraisablehook', sys.__unraisablehook__
                 ):
                     err_writeunraisable(A.B.X(), "obj")
@@ -1443,9 +1443,9 @@ klasse UnraisableHookTest(unittest.TestCase):
 
     def test_original_unraisablehook_wrong_type(self):
         exc = ValueError(42)
-        with test.support.swap_attr(sys, 'unraisablehook',
+        mit test.support.swap_attr(sys, 'unraisablehook',
                                     sys.__unraisablehook__):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 sys.unraisablehook(exc)
 
     def test_custom_unraisablehook(self):
@@ -1459,7 +1459,7 @@ klasse UnraisableHookTest(unittest.TestCase):
 
         obj = hex
         try:
-            with test.support.swap_attr(sys, 'unraisablehook', hook_func):
+            mit test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 exc = ValueError(42)
                 err_writeunraisable(exc, obj)
                 self.assertIs(hook_args.exc_type, type(exc))
@@ -1485,8 +1485,8 @@ klasse UnraisableHookTest(unittest.TestCase):
         def hook_func(*args):
             raise Exception("hook_func failed")
 
-        with test.support.captured_output("stderr") as stderr:
-            with test.support.swap_attr(sys, 'unraisablehook', hook_func):
+        mit test.support.captured_output("stderr") als stderr:
+            mit test.support.swap_attr(sys, 'unraisablehook', hook_func):
                 err_writeunraisable(ValueError(42), "custom hook fail")
 
         err = stderr.getvalue()
@@ -1542,11 +1542,11 @@ klasse SizeofTest(unittest.TestCase):
                 return int(self)
         self.assertEqual(sys.getsizeof(OverflowSizeof(sys.maxsize)),
                          sys.maxsize + self.gc_headsize + self.managed_pre_header_size)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             sys.getsizeof(OverflowSizeof(sys.maxsize + 1))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             sys.getsizeof(OverflowSizeof(-1))
-        with self.assertRaises((ValueError, OverflowError)):
+        mit self.assertRaises((ValueError, OverflowError)):
             sys.getsizeof(OverflowSizeof(-sys.maxsize - 1))
 
     def test_default(self):
@@ -1786,20 +1786,20 @@ klasse SizeofTest(unittest.TestCase):
                   + typeid              # heap type id (free-threaded only)
                   )
         klasse newstyleclass(object): pass
-        # Separate block fuer PyDictKeysObject with 8 keys and 5 entries
+        # Separate block fuer PyDictKeysObject mit 8 keys and 5 entries
         check(newstyleclass, s + calcsize(DICT_KEY_STRUCT_FORMAT) + 64 + 42*calcsize("2P"))
-        # dict with shared keys
+        # dict mit shared keys
         [newstyleclass() fuer _ in range(100)]
         check(newstyleclass().__dict__, size('nQ2P') + self.P)
         o = newstyleclass()
         o.a = o.b = o.c = o.d = o.e = o.f = o.g = o.h = 1
-        # Separate block fuer PyDictKeysObject with 16 keys and 10 entries
+        # Separate block fuer PyDictKeysObject mit 16 keys and 10 entries
         check(newstyleclass, s + calcsize(DICT_KEY_STRUCT_FORMAT) + 64 + 42*calcsize("2P"))
-        # dict with shared keys
+        # dict mit shared keys
         check(newstyleclass().__dict__, size('nQ2P') + self.P)
         # unicode
         # each tuple contains a string and its expected character size
-        # don't put any static strings here, as they may contain
+        # don't put any static strings here, als they may contain
         # wchar_t or UTF-8 representations
         samples = ['1'*100, '\xff'*50,
                    '\u0100'*40, '\uffff'*100,
@@ -1823,7 +1823,7 @@ klasse SizeofTest(unittest.TestCase):
         s = chr(0x4000)   # 4 bytes canonical representation
         check(s, size(compactfields) + 4)
         # compile() will trigger the generation of the UTF-8
-        # representation as a side effect
+        # representation als a side effect
         compile(s, "<stdin>", "eval")
         check(s, size(compactfields) + 4 + 4)
         # TODO: add check that forces the presence of wchar_t representation
@@ -1880,7 +1880,7 @@ klasse SizeofTest(unittest.TestCase):
         check(_ast.AST(), size('P'))
         try:
             raise TypeError
-        except TypeError as e:
+        except TypeError als e:
             tb = e.__traceback__
             # traceback
             wenn tb is not Nichts:
@@ -1901,14 +1901,14 @@ klasse SizeofTest(unittest.TestCase):
         firstiter = lambda *a: Nichts
         finalizer = lambda *a: Nichts
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             sys.set_asyncgen_hooks(firstiter=firstiter, finalizer="invalid")
         cur = sys.get_asyncgen_hooks()
         self.assertIsNichts(cur.firstiter)
         self.assertIsNichts(cur.finalizer)
 
         # gh-118473
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             sys.set_asyncgen_hooks(firstiter="invalid", finalizer=finalizer)
         cur = sys.get_asyncgen_hooks()
         self.assertIsNichts(cur.firstiter)
@@ -1961,7 +1961,7 @@ klasse TestRemoteExec(unittest.TestCase):
         # Create the script that will be remotely executed
         self.addCleanup(os_helper.unlink, script_path)
 
-        with open(script_path, 'w') as f:
+        mit open(script_path, 'w') als f:
             f.write(script_code)
 
         # Create and run the target process
@@ -1970,7 +1970,7 @@ klasse TestRemoteExec(unittest.TestCase):
 
         port = find_unused_port()
 
-        with open(target, 'w') as f:
+        mit open(target, 'w') als f:
             f.write(f'''
 importiere sys
 importiere time
@@ -1988,8 +1988,8 @@ sock.sendall(b"ready")
 drucke("Target process running...")
 
 # Wait fuer remote script to be executed
-# (the execution will happen as the following
-# code is processed as soon as the recv call
+# (the execution will happen als the following
+# code is processed als soon als the recv call
 # unblocks)
 sock.recv(1024)
 
@@ -2009,17 +2009,17 @@ sock.close()
             cmd.extend(python_args)
         cmd.append(target)
 
-        # Create a socket server to communicate with the target process
+        # Create a socket server to communicate mit the target process
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.bind(('localhost', port))
         server_socket.settimeout(SHORT_TIMEOUT)
         server_socket.listen(1)
 
-        with subprocess.Popen(cmd,
+        mit subprocess.Popen(cmd,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
                               env=env,
-                              ) as proc:
+                              ) als proc:
             client_socket = Nichts
             try:
                 # Accept connection von target process
@@ -2080,15 +2080,15 @@ sock.close()
             self.assertEqual(stderr, b"")
 
     def test_remote_exec_with_self_process(self):
-        """Test remote exec with the target process being the same as the test process"""
+        """Test remote exec mit the target process being the same als the test process"""
 
         code = 'import sys;drucke("Remote script executed successfully!", file=sys.stderr)'
         file = os_helper.TESTFN + '_remote_self.py'
-        with open(file, 'w') as f:
+        mit open(file, 'w') als f:
             f.write(code)
         self.addCleanup(os_helper.unlink, file)
-        with mock.patch('sys.stderr', new_callable=StringIO) as mock_stderr:
-            with mock.patch('sys.stdout', new_callable=StringIO) as mock_stdout:
+        mit mock.patch('sys.stderr', new_callable=StringIO) als mock_stderr:
+            mit mock.patch('sys.stdout', new_callable=StringIO) als mock_stdout:
                 sys.remote_exec(os.getpid(), os.path.abspath(file))
                 drucke("Done")
                 self.assertEqual(mock_stderr.getvalue(), "Remote script executed successfully!\n")
@@ -2112,7 +2112,7 @@ drucke("Remote script executed successfully!")
         self.assertEqual(stderr, b"")
 
     def test_remote_exec_with_exception(self):
-        """Test remote exec with an exception raised in the target process
+        """Test remote exec mit an exception raised in the target process
 
         The exception should be raised in the main thread of the target process
         but not crash the target process.
@@ -2142,28 +2142,28 @@ raise Exception("Remote script exception")
         """Test remote exec is disabled when PYTHON_DISABLE_REMOTE_DEBUG is set"""
         env = os.environ.copy()
         env['PYTHON_DISABLE_REMOTE_DEBUG'] = '1'
-        with self.assertRaisesRegex(RuntimeError, "Remote debugging is not enabled in the remote process"):
+        mit self.assertRaisesRegex(RuntimeError, "Remote debugging is not enabled in the remote process"):
             self._run_remote_exec_test("drucke('should not run')", env=env)
 
     def test_remote_exec_disabled_by_xoption(self):
-        """Test remote exec is disabled with -Xdisable-remote-debug"""
-        with self.assertRaisesRegex(RuntimeError, "Remote debugging is not enabled in the remote process"):
+        """Test remote exec is disabled mit -Xdisable-remote-debug"""
+        mit self.assertRaisesRegex(RuntimeError, "Remote debugging is not enabled in the remote process"):
             self._run_remote_exec_test("drucke('should not run')", python_args=['-Xdisable-remote-debug'])
 
     def test_remote_exec_invalid_pid(self):
-        """Test remote exec with invalid process ID"""
-        with self.assertRaises(OSError):
+        """Test remote exec mit invalid process ID"""
+        mit self.assertRaises(OSError):
             sys.remote_exec(99999, "drucke('should not run')")
 
     def test_remote_exec_invalid_script(self):
-        """Test remote exec with invalid script type"""
-        with self.assertRaises(TypeError):
+        """Test remote exec mit invalid script type"""
+        mit self.assertRaises(TypeError):
             sys.remote_exec(0, Nichts)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             sys.remote_exec(0, 123)
 
     def test_remote_exec_syntax_error(self):
-        """Test remote exec with syntax error in script"""
+        """Test remote exec mit syntax error in script"""
         script = '''
 this is invalid python code
 '''
@@ -2173,15 +2173,15 @@ this is invalid python code
         self.assertEqual(stdout.strip(), b"Target process running...")
 
     def test_remote_exec_invalid_script_path(self):
-        """Test remote exec with invalid script path"""
-        with self.assertRaises(OSError):
+        """Test remote exec mit invalid script path"""
+        mit self.assertRaises(OSError):
             sys.remote_exec(os.getpid(), "invalid_script_path")
 
     def test_remote_exec_in_process_without_debug_fails_envvar(self):
         """Test remote exec in a process without remote debugging enabled"""
         script = os_helper.TESTFN + '_remote.py'
         self.addCleanup(os_helper.unlink, script)
-        with open(script, 'w') as f:
+        mit open(script, 'w') als f:
             f.write('drucke("Remote script executed successfully!")')
         env = os.environ.copy()
         env['PYTHON_DISABLE_REMOTE_DEBUG'] = '1'
@@ -2194,7 +2194,7 @@ this is invalid python code
         """Test remote exec in a process without remote debugging enabled"""
         script = os_helper.TESTFN + '_remote.py'
         self.addCleanup(os_helper.unlink, script)
-        with open(script, 'w') as f:
+        mit open(script, 'w') als f:
             f.write('drucke("Remote script executed successfully!")')
 
         _, out, err = assert_python_failure('-Xdisable-remote-debug', '-c', f'import os, sys; sys.remote_exec(os.getpid(), "{script}")')

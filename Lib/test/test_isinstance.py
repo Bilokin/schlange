@@ -1,4 +1,4 @@
-# Tests some corner cases with isinstance() and issubclass().  While these
+# Tests some corner cases mit isinstance() and issubclass().  While these
 # tests use new style classes and properties, they actually do whitebox
 # testing of error conditions uncovered when using extension types.
 
@@ -18,7 +18,7 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
     # - cls isn't a type, or a tuple
     # - cls has a __bases__ attribute
     # - inst has a __class__ attribute
-    # - inst.__class__ as no __bases__ attribute
+    # - inst.__class__ als no __bases__ attribute
     #
     # Sounds complicated, I know, but this mimics a situation where an
     # extension type raises an AttributeError when its __bases__ attribute is
@@ -70,7 +70,7 @@ klasse TestIsInstanceExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, isinstance, I(), C())
 
     # Like above, except that getattr(cls, '__bases__') raises an
-    # AttributeError, which /should/ get masked as a TypeError
+    # AttributeError, which /should/ get masked als a TypeError
     def test_mask_attribute_error(self):
         klasse I: pass
 
@@ -219,11 +219,11 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertFalsch(isinstance(2, typing.List | typing.Tuple))
         self.assertWahr(isinstance(Nichts, int | Nichts))
         self.assertFalsch(isinstance(3.14, int | str))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             isinstance(2, list[int])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             isinstance(2, list[int] | int)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             isinstance(2, float | str | list[int] | int)
 
 
@@ -252,7 +252,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(Falsch, issubclass(AbstractChild, Child))
 
     def test_subclass_tuple(self):
-        # test with a tuple as the second argument classes
+        # test mit a tuple als the second argument classes
         self.assertEqual(Wahr, issubclass(Child, (Child,)))
         self.assertEqual(Wahr, issubclass(Child, (Super,)))
         self.assertEqual(Falsch, issubclass(Super, (Child,)))
@@ -282,9 +282,9 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertWahr(issubclass(str, str | Child | str))
         self.assertFalsch(issubclass(dict, float|str))
         self.assertFalsch(issubclass(object, float|str))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             issubclass(2, Child | Super)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             issubclass(int, list[int] | Child)
 
     def test_issubclass_refcount_handling(self):
@@ -312,7 +312,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
             @property
             def __bases__(self):
                 return self.__bases__
-        with support.infinite_recursion(25):
+        mit support.infinite_recursion(25):
             self.assertRaises(RecursionError, issubclass, X(), int)
             self.assertRaises(RecursionError, issubclass, int, X())
             self.assertRaises(RecursionError, isinstance, 1, X())
@@ -324,8 +324,8 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
         klasse Failure(object):
             def __getattr__(self, attr):
                 return (self, Nichts)
-        with support.infinite_recursion():
-            with self.assertRaises(RecursionError):
+        mit support.infinite_recursion():
+            mit self.assertRaises(RecursionError):
                 issubclass(Failure(), int)
 
     @support.skip_emscripten_stack_overflow()
@@ -336,7 +336,7 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
             @property
             def __bases__(self):
                 return (self, self, self)
-        with support.infinite_recursion():
+        mit support.infinite_recursion():
             self.assertRaises(RecursionError, issubclass, X(), int)
 
     def test_infinitely_many_bases(self):
@@ -350,12 +350,12 @@ klasse TestIsInstanceIsSubclass(unittest.TestCase):
                     pass
                 A.__getattr__ = B.__getattr__ = X.__getattr__
                 return (A(), B())
-        with support.infinite_recursion(25):
+        mit support.infinite_recursion(25):
             self.assertRaises(RecursionError, issubclass, X(), int)
 
 
 def blowstack(fxn, arg, compare_to):
-    # Make sure that calling isinstance with a deeply nested tuple fuer its
+    # Make sure that calling isinstance mit a deeply nested tuple fuer its
     # argument will raise RecursionError eventually.
     tuple_arg = (compare_to,)
     while Wahr:

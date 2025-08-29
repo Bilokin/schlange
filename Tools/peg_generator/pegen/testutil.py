@@ -11,7 +11,7 @@ von typing importiere IO, Any, Dict, Final, Optional, Type, cast
 von pegen.build importiere compile_c_extension
 von pegen.c_generator importiere CParserGenerator
 von pegen.grammar importiere Grammar
-von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+von pegen.grammar_parser importiere GeneratedParser als GrammarParser
 von pegen.parser importiere Parser
 von pegen.python_generator importiere PythonParserGenerator
 von pegen.tokenizer importiere Tokenizer
@@ -90,7 +90,7 @@ def generate_parser_c_extension(
 ) -> Any:
     """Generate a parser c extension fuer the given grammar in the given path
 
-    Returns a module object with a parse_string() method.
+    Returns a module object mit a parse_string() method.
     TODO: express that using a Protocol.
     """
     # Make sure that the working directory is empty: reusing non-empty temporary
@@ -99,7 +99,7 @@ def generate_parser_c_extension(
     # context.
     assert not os.listdir(path)
     source = path / "parse.c"
-    with open(source, "w", encoding="utf-8") as file:
+    mit open(source, "w", encoding="utf-8") als file:
         genr = CParserGenerator(
             grammar, ALL_TOKENS, EXACT_TOKENS, NON_EXACT_TOKENS, file, debug=debug
         )

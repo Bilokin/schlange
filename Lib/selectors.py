@@ -87,7 +87,7 @@ klasse BaseSelector(metaclass=ABCMeta):
     A selector supports registering file objects to be monitored fuer specific
     I/O events.
 
-    A file object is a file descriptor or any object with a `fileno()` method.
+    A file object is a file descriptor or any object mit a `fileno()` method.
     An arbitrary object can be attached to the file object, which can be used
     fuer example to store context information, a callback, etc.
 
@@ -540,7 +540,7 @@ wenn hasattr(select, 'kqueue'):
         def select(self, timeout=Nichts):
             timeout = Nichts wenn timeout is Nichts sonst max(timeout, 0)
             # If max_ev is 0, kqueue will ignore the timeout. For consistent
-            # behavior with the other selector classes, we prevent that here
+            # behavior mit the other selector classes, we prevent that here
             # (using max). See https://bugs.python.org/issue29255
             max_ev = self._max_events or 1
             ready = []

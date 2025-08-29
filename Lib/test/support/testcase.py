@@ -32,8 +32,8 @@ klasse FloatsAreIdenticalMixin:
     def assertFloatsAreIdentical(self, x, y):
         """Fail unless floats x and y are identical, in the sense that:
         (1) both x and y are nans, or
-        (2) both x and y are infinities, with the same sign, or
-        (3) both x and y are zeros, with the same sign, or
+        (2) both x and y are infinities, mit the same sign, or
+        (3) both x and y are zeros, mit the same sign, or
         (4) x and y are both finite and nonzero, and x == y
 
         """

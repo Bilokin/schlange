@@ -335,7 +335,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
         self.assertWahr(unicodedata.mirrored("\u0f3a"))
         self.assertWahr(not unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
         # Also, we now have two ways of representing
-        # the upper-case mapping: as delta, or as absolute value
+        # the upper-case mapping: als delta, or als absolute value
         self.assertWahr("a".upper()=='A')
         self.assertWahr("\u1d79".upper()=='\ua77d')
         self.assertWahr(".".upper()=='.')
@@ -343,7 +343,7 @@ klasse UnicodeMiscTest(UnicodeDatabaseTest):
     @requires_resource('cpu')
     def test_bug_5828(self):
         self.assertEqual("\u1d79".lower(), "\u1d79")
-        # Only U+0000 should have U+0000 as its upper/lower/titlecase variant
+        # Only U+0000 should have U+0000 als its upper/lower/titlecase variant
         self.assertEqual(
             [
                 c fuer c in range(sys.maxunicode+1)
@@ -393,10 +393,10 @@ klasse NormalizationTest(unittest.TestCase):
         except PermissionError:
             self.skipTest(f"Permission error when downloading {TESTDATAURL} "
                           f"into the test data directory")
-        except (OSError, HTTPException) as exc:
+        except (OSError, HTTPException) als exc:
             self.skipTest(f"Failed to download {TESTDATAURL}: {exc}")
 
-        with testdata:
+        mit testdata:
             self.run_normalization_tests(testdata)
 
     def run_normalization_tests(self, testdata):
@@ -486,7 +486,7 @@ klasse NormalizationTest(unittest.TestCase):
 
         fuer form in normalization_forms:
             fuer input_str in input_strings:
-                with self.subTest(form=form, input_str=input_str):
+                mit self.subTest(form=form, input_str=input_str):
                     self.assertIs(type(normalize(form, input_str)), str)
                     self.assertIs(type(normalize(form, MyStr(input_str))), str)
 

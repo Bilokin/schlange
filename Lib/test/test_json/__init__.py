@@ -7,7 +7,7 @@ von test importiere support
 von test.support importiere import_helper
 
 
-# importiere json with and without accelerations
+# importiere json mit and without accelerations
 cjson = import_helper.import_fresh_module('json', fresh=['_json'])
 pyjson = import_helper.import_fresh_module('json', blocked=['_json'])
 # JSONDecodeError is cached inside the _json module

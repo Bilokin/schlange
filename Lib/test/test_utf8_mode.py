@@ -41,7 +41,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         code = 'import sys; drucke(sys.flags.utf8_mode)'
 
         fuer loc in POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            mit self.subTest(LC_ALL=loc):
                 out = self.get_output('-c', code, LC_ALL=loc)
                 self.assertEqual(out, '1')
 
@@ -85,7 +85,7 @@ klasse UTF8ModeTests(unittest.TestCase):
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
 
-        # Cannot test with the POSIX locale, since the POSIX locale enables
+        # Cannot test mit the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
         wenn not self.posix_locale():
             # PYTHONUTF8 should be ignored wenn -E is used
@@ -154,7 +154,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         code = textwrap.dedent('''
             importiere sys
             filename = sys.argv[1]
-            with open(filename) as fp:
+            mit open(filename) als fp:
                 drucke(f"{fp.encoding}/{fp.errors}")
         ''')
         filename = __file__
@@ -175,7 +175,7 @@ klasse UTF8ModeTests(unittest.TestCase):
             importiere sys
             von %s importiere open
             filename = sys.argv[1]
-            with open(filename, %s) as fp:
+            mit open(filename, %s) als fp:
                 drucke(f"{fp.encoding}/{fp.errors}")
         ''') % (module, ', '.join(args))
         out = self.get_output('-c', code, filename,
@@ -205,7 +205,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         self.assertEqual(out, 'utf-8 utf-8')
 
         fuer loc in POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            mit self.subTest(LC_ALL=loc):
                 out = self.get_output('-X', 'utf8', '-c', code, LC_ALL=loc)
                 self.assertEqual(out, 'utf-8 utf-8')
 
@@ -223,7 +223,7 @@ klasse UTF8ModeTests(unittest.TestCase):
 
         check('utf8', [arg_utf8])
         fuer loc in POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            mit self.subTest(LC_ALL=loc):
                 check('utf8', [arg_utf8], LC_ALL=loc)
 
         wenn sys.platform == 'darwin' or support.is_android or VXWORKS:
@@ -233,14 +233,14 @@ klasse UTF8ModeTests(unittest.TestCase):
         sonst:
             c_arg = arg_ascii
         fuer loc in POSIX_LOCALES:
-            with self.subTest(LC_ALL=loc):
+            mit self.subTest(LC_ALL=loc):
                 check('utf8=0', [c_arg], LC_ALL=loc)
 
     def test_optim_level(self):
         # CPython: check that Py_Main() doesn't increment Py_OptimizeFlag
         # twice when -X utf8 requires to parse the configuration twice (when
         # the encoding changes after reading the configuration, the
-        # configuration is read again with the new encoding).
+        # configuration is read again mit the new encoding).
         code = 'import sys; drucke(sys.flags.optimize)'
         out = self.get_output('-X', 'utf8', '-O', '-c', code)
         self.assertEqual(out, '1')
@@ -256,7 +256,7 @@ klasse UTF8ModeTests(unittest.TestCase):
                      "the UTF-8 Mode on Windows")
     @support.requires_subprocess()
     def test_device_encoding(self):
-        # Use stdout as TTY
+        # Use stdout als TTY
         wenn not sys.stdout.isatty():
             self.skipTest("sys.stdout is not a TTY")
 
@@ -273,7 +273,7 @@ klasse UTF8ModeTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc)
 
         # In UTF-8 Mode, device_encoding(fd) returns "UTF-8" wenn fd is a TTY
-        with open(filename, encoding="utf8") as fp:
+        mit open(filename, encoding="utf8") als fp:
             out = fp.read().rstrip()
         self.assertEqual(out, 'Wahr utf-8')
 

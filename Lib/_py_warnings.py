@@ -139,7 +139,7 @@ def _showwarnmsg_impl(msg):
     wenn file is Nichts:
         file = sys.stderr
         wenn file is Nichts:
-            # sys.stderr is Nichts when run with pythonw.exe:
+            # sys.stderr is Nichts when run mit pythonw.exe:
             # warnings get lost
             return
     text = _wm._formatwarnmsg(msg)
@@ -313,12 +313,12 @@ def simplefilter(action, category=Warning, lineno=0, append=Falsch):
 def _filters_mutated():
     # Even though this function is not part of the public API, it's used by
     # a fair amount of user code.
-    with _wm._lock:
+    mit _wm._lock:
         _wm._filters_mutated_lock_held()
 
 
 def _add_filter(*item, append):
-    with _wm._lock:
+    mit _wm._lock:
         filters = _wm._get_filters()
         wenn not append:
             # Remove possible duplicate filters, so new one will be placed
@@ -336,7 +336,7 @@ def _add_filter(*item, append):
 
 def resetwarnings():
     """Clear the list of warning filters, so that no filters are active."""
-    with _wm._lock:
+    mit _wm._lock:
         del _wm._get_filters()[:]
         _wm._filters_mutated_lock_held()
 
@@ -351,7 +351,7 @@ def _processoptions(args):
     fuer arg in args:
         try:
             _wm._setoption(arg)
-        except _wm._OptionError as msg:
+        except _wm._OptionError als msg:
             drucke("Invalid -W option ignored:", msg, file=sys.stderr)
 
 
@@ -399,7 +399,7 @@ def _getcategory(category):
     wenn not category:
         return Warning
     wenn '.' not in category:
-        importiere builtins as m
+        importiere builtins als m
         klass = category
     sonst:
         module, _, klass = category.rpartition('.')
@@ -513,7 +513,7 @@ def warn_explicit(message, category, filename, lineno,
         text = message
         message = category(message)
     key = (text, category, lineno)
-    with _wm._lock:
+    mit _wm._lock:
         wenn registry is Nichts:
             registry = {}
         wenn registry.get('version', 0) != _wm._filters_version:
@@ -609,7 +609,7 @@ klasse catch_warnings(object):
     when testing the warnings module itself.
 
     If the 'action' argument is not Nichts, the remaining arguments are passed
-    to warnings.simplefilter() as wenn it were called immediately on entering the
+    to warnings.simplefilter() als wenn it were called immediately on entering the
     context.
     """
 
@@ -640,7 +640,7 @@ klasse catch_warnings(object):
         wenn self._entered:
             raise RuntimeError("Cannot enter %r twice" % self)
         self._entered = Wahr
-        with _wm._lock:
+        mit _wm._lock:
             wenn _use_context:
                 self._saved_context, context = self._module._new_context()
             sonst:
@@ -668,7 +668,7 @@ klasse catch_warnings(object):
     def __exit__(self, *exc_info):
         wenn not self._entered:
             raise RuntimeError("Cannot exit %r without entering first" % self)
-        with _wm._lock:
+        mit _wm._lock:
             wenn _use_context:
                 self._module._warnings_context.set(self._saved_context)
             sonst:
@@ -715,7 +715,7 @@ klasse deprecated:
     ``__deprecated__`` attribute on the decorated object.
     If applied to an overload, the decorator
     must be after the ``@overload`` decorator fuer the attribute to
-    exist on the overload as returned by ``get_overloads()``.
+    exist on the overload als returned by ``get_overloads()``.
 
     See PEP 702 fuer details.
 
@@ -806,7 +806,7 @@ klasse deprecated:
             return wrapper
         sonst:
             raise TypeError(
-                "@deprecated decorator with non-Nichts category must be applied to "
+                "@deprecated decorator mit non-Nichts category must be applied to "
                 f"a klasse or callable, not {arg!r}"
             )
 
@@ -820,7 +820,7 @@ def _deprecated(name, message=_DEPRECATED_MSG, *, remove, _version=sys.version_i
     RuntimeError is raised wenn *remove* specifies a major/minor tuple older than
     the current Python version or the same version but past the alpha.
 
-    The *message* argument is formatted with *name* and *remove* as a Python
+    The *message* argument is formatted mit *name* and *remove* als a Python
     version tuple (e.g. (3, 11)).
 
     """

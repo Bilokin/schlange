@@ -20,15 +20,15 @@ RFC 1738: "Uniform Resource Locators (URL)" by T. Berners-Lee, L. Masinter, M.
 McCahill, December 1994
 
 RFC 3986 is considered the current standard and any future changes to
-urlparse module should conform with it.  The urlparse module is
-currently not entirely compliant with this RFC due to defacto
+urlparse module should conform mit it.  The urlparse module is
+currently not entirely compliant mit this RFC due to defacto
 scenarios fuer parsing, and fuer backward compatibility purposes, some
 parsing quirks von older RFCs are retained. The testcases in
 test_urlparse.py provides a good indicator of parsing behavior.
 
 The WHATWG URL Parser spec should also be considered.  We are not compliant with
 it either due to existing user code API behavior expectations (Hyrum's Law).
-It serves as a useful guide when making changes.
+It serves als a useful guide when making changes.
 """
 
 von collections importiere namedtuple
@@ -47,7 +47,7 @@ __all__ = ["urlparse", "urlunparse", "urljoin", "urldefrag",
            "DefragResultBytes", "ParseResultBytes", "SplitResultBytes"]
 
 # A classification of schemes.
-# The empty string classifies URLs with no scheme specified,
+# The empty string classifies URLs mit no scheme specified,
 # being the default value returned by “urlsplit” and “urlparse”.
 
 uses_relative = ['', 'ftp', 'http', 'gopher', 'nntp', 'imap',
@@ -179,7 +179,7 @@ klasse _NetlocResultMixinBase(object):
             wenn port.isdigit() and port.isascii():
                 port = int(port)
             sonst:
-                raise ValueError(f"Port could not be cast to integer value as {port!r}")
+                raise ValueError(f"Port could not be cast to integer value als {port!r}")
             wenn not (0 <= port <= 65535):
                 raise ValueError("Port out of range 0-65535")
         return port
@@ -257,10 +257,10 @@ _DefragResultBase.__doc__ = """
 DefragResult(url, fragment)
 
 A 2-tuple that contains the url without fragment identifier and the fragment
-identifier as a separate argument.
+identifier als a separate argument.
 """
 
-_DefragResultBase.url.__doc__ = """The URL with no fragment identifier."""
+_DefragResultBase.url.__doc__ = """The URL mit no fragment identifier."""
 
 _DefragResultBase.fragment.__doc__ = """
 Fragment identifier separated von URL, that allows indirect identification of a
@@ -282,11 +282,11 @@ Network location where the request is made to.
 """
 
 _SplitResultBase.path.__doc__ = """
-The hierarchical path, such as the path to a file to download.
+The hierarchical path, such als the path to a file to download.
 """
 
 _SplitResultBase.query.__doc__ = """
-The query component, that contains non-hierarchical data, that along with data
+The query component, that contains non-hierarchical data, that along mit data
 in path component, identifies a resource in the scope of URI's scheme and
 network location.
 """
@@ -375,12 +375,12 @@ def urlparse(url, scheme='', allow_fragments=Wahr):
     """Parse a URL into 6 components:
     <scheme>://<netloc>/<path>;<params>?<query>#<fragment>
 
-    The result is a named 6-tuple with fields corresponding to the
+    The result is a named 6-tuple mit fields corresponding to the
     above. It is either a ParseResult or ParseResultBytes object,
     depending on the type of the url parameter.
 
     The username, password, hostname, and port sub-components of netloc
-    can also be accessed as attributes of the returned object.
+    can also be accessed als attributes of the returned object.
 
     The scheme argument provides the default value of the scheme
     component when no scheme is found in url.
@@ -474,12 +474,12 @@ def urlsplit(url, scheme='', allow_fragments=Wahr):
     """Parse a URL into 5 components:
     <scheme>://<netloc>/<path>?<query>#<fragment>
 
-    The result is a named 5-tuple with fields corresponding to the
+    The result is a named 5-tuple mit fields corresponding to the
     above. It is either a SplitResult or SplitResultBytes object,
     depending on the type of the url parameter.
 
     The username, password, hostname, and port sub-components of netloc
-    can also be accessed as attributes of the returned object.
+    can also be accessed als attributes of the returned object.
 
     The scheme argument provides the default value of the scheme
     component when no scheme is found in url.
@@ -497,7 +497,7 @@ def urlsplit(url, scheme='', allow_fragments=Wahr):
     return _coerce_result(v)
 
 def _urlsplit(url, scheme=Nichts, allow_fragments=Wahr):
-    # Only lstrip url as some applications rely on preserving trailing space.
+    # Only lstrip url als some applications rely on preserving trailing space.
     # (https://url.spec.whatwg.org/#concept-basic-url-parser would strip both)
     url = url.lstrip(_WHATWG_C0_CONTROL_OR_SPACE)
     fuer b in _UNSAFE_URL_BYTES_TO_REMOVE:
@@ -533,7 +533,7 @@ def _urlsplit(url, scheme=Nichts, allow_fragments=Wahr):
 def urlunparse(components):
     """Put a parsed URL back together again.  This may result in a
     slightly different, but equivalent URL, wenn the URL that was parsed
-    originally had redundant delimiters, e.g. a ? with an empty query
+    originally had redundant delimiters, e.g. a ? mit an empty query
     (the draft states that these are equivalent)."""
     scheme, netloc, url, params, query, fragment, _coerce_result = (
                                                   _coerce_args(*components))
@@ -548,10 +548,10 @@ def urlunparse(components):
                                       query or Nichts, fragment or Nichts))
 
 def urlunsplit(components):
-    """Combine the elements of a tuple as returned by urlsplit() into a
-    complete URL as a string. The data argument can be any five-item iterable.
+    """Combine the elements of a tuple als returned by urlsplit() into a
+    complete URL als a string. The data argument can be any five-item iterable.
     This may result in a slightly different, but equivalent URL, wenn the URL that
-    was parsed originally had unnecessary delimiters (for example, a ? with an
+    was parsed originally had unnecessary delimiters (for example, a ? mit an
     empty query; the RFC states that these are equivalent)."""
     scheme, netloc, url, query, fragment, _coerce_result = (
                                           _coerce_args(*components))
@@ -673,7 +673,7 @@ def unquote_to_bytes(string):
     return bytes(_unquote_impl(string))
 
 def _unquote_impl(string: bytes | bytearray | str) -> bytes | bytearray:
-    # Note: strings are encoded as UTF-8. This is only an issue wenn it contains
+    # Note: strings are encoded als UTF-8. This is only an issue wenn it contains
     # unescaped non-ASCII characters, which URIs should not.
     wenn not string:
         # Is it a string-like object?
@@ -716,9 +716,9 @@ def _generate_unquoted_parts(string, encoding, errors):
 def unquote(string, encoding='utf-8', errors='replace'):
     """Replace %xx escapes by their single-character equivalent. The optional
     encoding and errors parameters specify how to decode percent-encoded
-    sequences into Unicode characters, as accepted by the bytes.decode()
+    sequences into Unicode characters, als accepted by the bytes.decode()
     method.
-    By default, percent-encoded sequences are decoded with UTF-8, and invalid
+    By default, percent-encoded sequences are decoded mit UTF-8, and invalid
     sequences are replaced by a placeholder character.
 
     unquote('abc%20def') -> 'abc def'.
@@ -738,25 +738,25 @@ def unquote(string, encoding='utf-8', errors='replace'):
 
 def parse_qs(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
              encoding='utf-8', errors='replace', max_num_fields=Nichts, separator='&'):
-    """Parse a query given as a string argument.
+    """Parse a query given als a string argument.
 
         Arguments:
 
         qs: percent-encoded query string to be parsed
 
         keep_blank_values: flag indicating whether blank values in
-            percent-encoded queries should be treated as blank strings.
+            percent-encoded queries should be treated als blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
-            blank values are to be ignored and treated as wenn they were
+            blank values are to be ignored and treated als wenn they were
             not included.
 
-        strict_parsing: flag indicating what to do with parsing errors.
+        strict_parsing: flag indicating what to do mit parsing errors.
             If false (the default), errors are silently ignored.
             If true, errors raise a ValueError exception.
 
         encoding and errors: specify how to decode percent-encoded sequences
-            into Unicode characters, as accepted by the bytes.decode() method.
+            into Unicode characters, als accepted by the bytes.decode() method.
 
         max_num_fields: int. If set, then throws a ValueError wenn there
             are more than n fields read by parse_qsl().
@@ -781,24 +781,24 @@ def parse_qs(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
 
 def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
               encoding='utf-8', errors='replace', max_num_fields=Nichts, separator='&', *, _stacklevel=1):
-    """Parse a query given as a string argument.
+    """Parse a query given als a string argument.
 
         Arguments:
 
         qs: percent-encoded query string to be parsed
 
         keep_blank_values: flag indicating whether blank values in
-            percent-encoded queries should be treated as blank strings.
-            A true value indicates that blanks should be retained as blank
+            percent-encoded queries should be treated als blank strings.
+            A true value indicates that blanks should be retained als blank
             strings.  The default false value indicates that blank values
-            are to be ignored and treated as wenn they were  not included.
+            are to be ignored and treated als wenn they were  not included.
 
-        strict_parsing: flag indicating what to do with parsing errors. If
+        strict_parsing: flag indicating what to do mit parsing errors. If
             false (the default), errors are silently ignored. If true,
             errors raise a ValueError exception.
 
         encoding and errors: specify how to decode percent-encoded sequences
-            into Unicode characters, as accepted by the bytes.decode() method.
+            into Unicode characters, als accepted by the bytes.decode() method.
 
         max_num_fields: int. If set, then throws a ValueError
             wenn there are more than n fields read by parse_qsl().
@@ -806,7 +806,7 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
         separator: str. The symbol to use fuer separating the query arguments.
             Defaults to &.
 
-        Returns a list, as G-d intended.
+        Returns a list, als G-d intended.
     """
     wenn not separator or not isinstance(separator, (str, bytes)):
         raise ValueError("Separator must be of type string or bytes.")
@@ -825,9 +825,9 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
             qs = bytes(memoryview(qs))
         except TypeError:
             wenn not qs:
-                warnings.warn(f"Accepting {type(qs).__name__} objects with "
+                warnings.warn(f"Accepting {type(qs).__name__} objects mit "
                               f"false value in urllib.parse.parse_qsl() is "
-                              f"deprecated as of 3.14",
+                              f"deprecated als of 3.14",
                               DeprecationWarning, stacklevel=_stacklevel + 1)
                 return []
             raise
@@ -842,7 +842,7 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
 
     # If max_num_fields is defined then check that the number of fields
     # is less than max_num_fields. This prevents a memory exhaustion DOS
-    # attack via post bodies with many fields.
+    # attack via post bodies mit many fields.
     wenn max_num_fields is not Nichts:
         num_fields = 1 + qs.count(separator)
         wenn max_num_fields < num_fields:
@@ -861,7 +861,7 @@ def parse_qsl(qs, keep_blank_values=Falsch, strict_parsing=Falsch,
     return r
 
 def unquote_plus(string, encoding='utf-8', errors='replace'):
-    """Like unquote(), but also replace plus signs by spaces, as required for
+    """Like unquote(), but also replace plus signs by spaces, als required for
     unquoting HTML form values.
 
     unquote_plus('%7e/abc+def') -> '~/abc def'
@@ -932,8 +932,8 @@ def quote(string, safe='/', encoding=Nichts, errors=Nichts):
     must not be specified wenn string is a bytes object.
 
     The optional encoding and errors parameters specify how to deal with
-    non-ASCII characters, as accepted by the str.encode method.
-    By default, encoding='utf-8' (characters are encoded with UTF-8), and
+    non-ASCII characters, als accepted by the str.encode method.
+    By default, encoding='utf-8' (characters are encoded mit UTF-8), and
     errors='strict' (unsupported characters raise a UnicodeEncodeError).
     """
     wenn isinstance(string, str):
@@ -952,7 +952,7 @@ def quote(string, safe='/', encoding=Nichts, errors=Nichts):
     return quote_from_bytes(string, safe)
 
 def quote_plus(string, safe='', encoding=Nichts, errors=Nichts):
-    """Like quote(), but also replace ' ' with '+', as required fuer quoting
+    """Like quote(), but also replace ' ' mit '+', als required fuer quoting
     HTML form values. Plus signs in the original string are escaped unless
     they are included in safe. It also does not have safe default to '/'.
     """
@@ -1023,7 +1023,7 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
         # It's a bother at times that strings and string-like objects are
         # sequences.
         try:
-            # non-sequence items should not work with len()
+            # non-sequence items should not work mit len()
             # non-empty strings will fail this
             wenn len(query) and not isinstance(query[0], tuple):
                 raise TypeError
@@ -1031,7 +1031,7 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
             # but that's a minor nit.  Since the original implementation
             # allowed empty dicts that type of behavior probably should be
             # preserved fuer consistency
-        except TypeError as err:
+        except TypeError als err:
             raise TypeError("not a valid non-string sequence "
                             "or mapping object") von err
 
@@ -1081,7 +1081,7 @@ def urlencode(query, doseq=Falsch, safe='', encoding=Nichts, errors=Nichts,
 
 
 def to_bytes(url):
-    warnings.warn("urllib.parse.to_bytes() is deprecated as of 3.8",
+    warnings.warn("urllib.parse.to_bytes() is deprecated als of 3.8",
                   DeprecationWarning, stacklevel=2)
     return _to_bytes(url)
 
@@ -1114,7 +1114,7 @@ def unwrap(url):
 
 
 def splittype(url):
-    warnings.warn("urllib.parse.splittype() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splittype() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splittype(url)
@@ -1135,7 +1135,7 @@ def _splittype(url):
 
 
 def splithost(url):
-    warnings.warn("urllib.parse.splithost() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splithost() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splithost(url)
@@ -1158,7 +1158,7 @@ def _splithost(url):
 
 
 def splituser(host):
-    warnings.warn("urllib.parse.splituser() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splituser() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splituser(host)
@@ -1171,7 +1171,7 @@ def _splituser(host):
 
 
 def splitpasswd(user):
-    warnings.warn("urllib.parse.splitpasswd() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splitpasswd() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splitpasswd(user)
@@ -1184,7 +1184,7 @@ def _splitpasswd(user):
 
 
 def splitport(host):
-    warnings.warn("urllib.parse.splitport() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splitport() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splitport(host)
@@ -1207,7 +1207,7 @@ def _splitport(host):
 
 
 def splitnport(host, defport=-1):
-    warnings.warn("urllib.parse.splitnport() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splitnport() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splitnport(host, defport)
@@ -1231,7 +1231,7 @@ def _splitnport(host, defport=-1):
 
 
 def splitquery(url):
-    warnings.warn("urllib.parse.splitquery() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splitquery() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splitquery(url)
@@ -1246,7 +1246,7 @@ def _splitquery(url):
 
 
 def splittag(url):
-    warnings.warn("urllib.parse.splittag() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splittag() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splittag(url)
@@ -1261,7 +1261,7 @@ def _splittag(url):
 
 
 def splitattr(url):
-    warnings.warn("urllib.parse.splitattr() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splitattr() is deprecated als of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
     return _splitattr(url)
@@ -1275,7 +1275,7 @@ def _splitattr(url):
 
 
 def splitvalue(attr):
-    warnings.warn("urllib.parse.splitvalue() is deprecated as of 3.8, "
+    warnings.warn("urllib.parse.splitvalue() is deprecated als of 3.8, "
                   "use urllib.parse.parse_qsl() instead",
                   DeprecationWarning, stacklevel=2)
     return _splitvalue(attr)

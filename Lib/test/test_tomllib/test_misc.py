@@ -4,7 +4,7 @@
 
 importiere copy
 importiere datetime
-von decimal importiere Decimal as D
+von decimal importiere Decimal als D
 importiere importlib
 von pathlib importiere Path
 importiere sys
@@ -19,22 +19,22 @@ klasse TestMiscellaneous(unittest.TestCase):
     def test_load(self):
         content = "one=1 \n two='two' \n arr=[]"
         expected = {"one": 1, "two": "two", "arr": []}
-        with tempfile.TemporaryDirectory() as tmp_dir_path:
+        mit tempfile.TemporaryDirectory() als tmp_dir_path:
             file_path = Path(tmp_dir_path) / "test.toml"
             file_path.write_text(content)
 
-            with open(file_path, "rb") as bin_f:
+            mit open(file_path, "rb") als bin_f:
                 actual = tomllib.load(bin_f)
         self.assertEqual(actual, expected)
 
     def test_incorrect_load(self):
         content = "one=1"
-        with tempfile.TemporaryDirectory() as tmp_dir_path:
+        mit tempfile.TemporaryDirectory() als tmp_dir_path:
             file_path = Path(tmp_dir_path) / "test.toml"
             file_path.write_text(content)
 
-            with open(file_path, "r") as txt_f:
-                with self.assertRaises(TypeError):
+            mit open(file_path, "r") als txt_f:
+                mit self.assertRaises(TypeError):
                     tomllib.load(txt_f)  # type: ignore[arg-type]
 
     def test_parse_float(self):
@@ -94,22 +94,22 @@ klasse TestMiscellaneous(unittest.TestCase):
         self.assertEqual(obj_copy, expected_obj)
 
     def test_inline_array_recursion_limit(self):
-        with support.infinite_recursion(max_depth=100):
+        mit support.infinite_recursion(max_depth=100):
             available = support.get_recursion_available()
             nest_count = (available // 2) - 2
             # Add details wenn the test fails
-            with self.subTest(limit=sys.getrecursionlimit(),
+            mit self.subTest(limit=sys.getrecursionlimit(),
                               available=available,
                               nest_count=nest_count):
                 recursive_array_toml = "arr = " + nest_count * "[" + nest_count * "]"
                 tomllib.loads(recursive_array_toml)
 
     def test_inline_table_recursion_limit(self):
-        with support.infinite_recursion(max_depth=100):
+        mit support.infinite_recursion(max_depth=100):
             available = support.get_recursion_available()
             nest_count = (available // 3) - 1
             # Add details wenn the test fails
-            with self.subTest(limit=sys.getrecursionlimit(),
+            mit self.subTest(limit=sys.getrecursionlimit(),
                               available=available,
                               nest_count=nest_count):
                 recursive_table_toml = nest_count * "key = {" + nest_count * "}"

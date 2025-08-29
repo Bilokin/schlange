@@ -34,7 +34,7 @@ wenn not hasattr(select, "epoll"):
 
 try:
     select.epoll()
-except OSError as e:
+except OSError als e:
     wenn e.errno == errno.ENOSYS:
         raise unittest.SkipTest("kernel doesn't support epoll()")
     raise
@@ -54,7 +54,7 @@ klasse TestEPoll(unittest.TestCase):
         client.setblocking(Falsch)
         try:
             client.connect(('127.0.0.1', self.serverSocket.getsockname()[1]))
-        except OSError as e:
+        except OSError als e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         sonst:
             raise AssertionError("Connect should have raised EINPROGRESS")
@@ -66,7 +66,7 @@ klasse TestEPoll(unittest.TestCase):
     def test_create(self):
         try:
             ep = select.epoll(16)
-        except OSError as e:
+        except OSError als e:
             raise AssertionError(str(e))
         self.assertWahr(ep.fileno() > 0, ep.fileno())
         self.assertWahr(not ep.closed)
@@ -95,7 +95,7 @@ klasse TestEPoll(unittest.TestCase):
             self.assertRaises(OSError, select.epoll, flags=12356)
 
     def test_context_manager(self):
-        with select.epoll(16) as ep:
+        mit select.epoll(16) als ep:
             self.assertGreater(ep.fileno(), 0)
             self.assertFalsch(ep.closed)
         self.assertWahr(ep.closed)
@@ -142,7 +142,7 @@ klasse TestEPoll(unittest.TestCase):
     def test_fromfd(self):
         server, client = self._connected_pair()
 
-        with select.epoll(2) as ep:
+        mit select.epoll(2) als ep:
             ep2 = select.epoll.fromfd(ep.fileno())
 
             ep2.register(server.fileno(), select.EPOLLIN | select.EPOLLOUT)
@@ -155,7 +155,7 @@ klasse TestEPoll(unittest.TestCase):
 
         try:
             ep2.poll(1, 4)
-        except OSError as e:
+        except OSError als e:
             self.assertEqual(e.args[0], errno.EBADF, e)
         sonst:
             self.fail("epoll on closed fd didn't raise EBADF")
@@ -231,7 +231,7 @@ klasse TestEPoll(unittest.TestCase):
 
         server.close()
 
-        with self.assertRaises(OSError) as cm:
+        mit self.assertRaises(OSError) als cm:
             ep.unregister(fd)
         self.assertEqual(cm.exception.errno, errno.EBADF)
 
@@ -253,7 +253,7 @@ klasse TestEPoll(unittest.TestCase):
         # close() can be called more than once
         epoll.close()
 
-        # operations must fail with ValueError("I/O operation on closed ...")
+        # operations must fail mit ValueError("I/O operation on closed ...")
         self.assertRaises(ValueError, epoll.modify, fd, select.EPOLLIN)
         self.assertRaises(ValueError, epoll.poll, 1.0)
         self.assertRaises(ValueError, epoll.register, fd, select.EPOLLIN)

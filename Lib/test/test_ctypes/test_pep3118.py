@@ -124,8 +124,8 @@ Complete._fields_ = [("a", c_long)]
 
 ################################################################
 #
-# This table contains format strings as they look on little endian
-# machines.  The test replaces '<' with '>' on big endian machines.
+# This table contains format strings als they look on little endian
+# machines.  The test replaces '<' mit '>' on big endian machines.
 #
 
 # Platform-specific type codes
@@ -210,7 +210,7 @@ native_types = [
     (EmptyStruct,               "T{}",                                  (),  EmptyStruct),
     # the pep doesn't support unions
     (aUnion,                    "B",                                   (),  aUnion),
-    # structure with sub-arrays
+    # structure mit sub-arrays
     (StructWithArrays, "T{(2,3)<l:x:(4)T{<l:x:<l:y:}:y:}".replace('l', s_long), (), StructWithArrays),
     (StructWithArrays * 3, "T{(2,3)<l:x:(4)T{<l:x:<l:y:}:y:}".replace('l', s_long), (3,), StructWithArrays),
 
@@ -239,7 +239,7 @@ klasse LEPoint(LittleEndianStructure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
 
-# This table contains format strings as they really look, on both big
+# This table contains format strings als they really look, on both big
 # and little endian machines.
 endian_types = [
     (BEPoint, "T{>l:x:>l:y:}".replace('l', s_long), (), BEPoint),

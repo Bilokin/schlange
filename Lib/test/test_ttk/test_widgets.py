@@ -119,7 +119,7 @@ klasse WidgetTest(AbstractTkTest, unittest.TestCase):
         # verify that widget didn't change its state
         self.assertEqual(currstate, self.widget.state())
 
-        # ensuring that passing Nichts as state doesn't modify current state
+        # ensuring that passing Nichts als state doesn't modify current state
         self.widget.state(['active', '!disabled'])
         self.assertEqual(self.widget.state(), ('active', ))
 
@@ -559,24 +559,24 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
         self.combo.set('d')
         check_get_current('d', -1)
 
-        # testing values with empty string
+        # testing values mit empty string
         self.combo.set('')
         self.combo['values'] = (1, 2, '', 3)
         check_get_current('', 2)
 
-        # testing values with empty string set through configure
+        # testing values mit empty string set through configure
         self.combo.configure(values=[1, '', 2])
         self.assertEqual(self.combo['values'],
                          ('1', '', '2') wenn self.wantobjects sonst
                          '1 {} 2')
 
-        # testing values with spaces
+        # testing values mit spaces
         self.combo['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.combo['values'],
                          ('a b', 'a\tb', 'a\nb') wenn self.wantobjects sonst
                          '{a b} {a\tb} {a\nb}')
 
-        # testing values with special characters
+        # testing values mit special characters
         self.combo['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.combo['values'],
                          (r'a\tb', '"a"', '} {') wenn self.wantobjects sonst
@@ -588,7 +588,7 @@ klasse ComboboxTest(EntryTest, unittest.TestCase):
         # it expects an integer (or something that can be converted to int)
         self.assertRaises(tkinter.TclError, self.combo.current, '')
 
-        # testing creating combobox with empty string in values
+        # testing creating combobox mit empty string in values
         combo2 = ttk.Combobox(self.root, values=[1, 2, ''])
         self.assertEqual(combo2['values'],
                          ('1', '2', '') wenn self.wantobjects sonst '1 2 {}')
@@ -908,7 +908,7 @@ klasse ScaleTest(AbstractWidgetTest, unittest.TestCase):
         del var
         gc_collect()  # For PyPy or other GCs.
 
-        # the same happens with the value option
+        # the same happens mit the value option
         self.scale['value'] = max + 10
         self.assertEqual(conv(self.scale.get()), max + 10)
         self.assertEqual(conv(self.scale.get()), conv(self.scale['value']))
@@ -1050,7 +1050,7 @@ klasse NotebookTest(AbstractWidgetTest, unittest.TestCase):
                 pass
 
         sonst:
-            self.fail("Tab with text 'a' not found")
+            self.fail("Tab mit text 'a' not found")
 
     def test_add_and_hidden(self):
         self.assertRaises(tkinter.TclError, self.nb.hide, -1)
@@ -1376,25 +1376,25 @@ klasse SpinboxTest(EntryTest, unittest.TestCase):
         self._click_decrement_arrow()
         self.assertEqual(self.spin.get(), 'a')
 
-        # testing values with empty string set through configure
+        # testing values mit empty string set through configure
         self.spin.configure(values=[1, '', 2])
         self.assertEqual(self.spin['values'],
                          ('1', '', '2') wenn self.wantobjects sonst
                          '1 {} 2')
 
-        # testing values with spaces
+        # testing values mit spaces
         self.spin['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.spin['values'],
                          ('a b', 'a\tb', 'a\nb') wenn self.wantobjects sonst
                          '{a b} {a\tb} {a\nb}')
 
-        # testing values with special characters
+        # testing values mit special characters
         self.spin['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.spin['values'],
                          (r'a\tb', '"a"', '} {') wenn self.wantobjects sonst
                          r'a\\tb {"a"} \}\ \{')
 
-        # testing creating spinbox with empty string in values
+        # testing creating spinbox mit empty string in values
         spin2 = ttk.Spinbox(self.root, values=[1, 2, ''])
         self.assertEqual(spin2['values'],
                          ('1', '2', '') wenn self.wantobjects sonst '1 2 {}')
@@ -1520,13 +1520,13 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(self.tv.get_children(), tuple)
         self.assertEqual(self.tv.get_children()[0], item_id)
 
-        # add item_id and child3 as children of child2
+        # add item_id and child3 als children of child2
         child2 = self.tv.insert('', 'end')
         child3 = self.tv.insert('', 'end')
         self.tv.set_children(child2, item_id, child3)
         self.assertEqual(self.tv.get_children(child2), (item_id, child3))
 
-        # child3 has child2 as parent, thus trying to set child2 as a children
+        # child3 has child2 als parent, thus trying to set child2 als a children
         # of child3 should result in an error
         self.assertRaises(tkinter.TclError,
             self.tv.set_children, child3, child2)
@@ -1540,7 +1540,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(), ())
 
     def test_column(self):
-        # return a dict with all options/values
+        # return a dict mit all options/values
         self.assertIsInstance(self.tv.column('#0'), dict)
         # return a single value of the given option
         wenn self.wantobjects:
@@ -1599,11 +1599,11 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.get_children(), (item_id, ))
         self.assertEqual(self.tv.get_children(item_id), (item2, ))
 
-        # detach item with children
+        # detach item mit children
         self.tv.detach(item_id)
         self.assertFalsch(self.tv.get_children())
 
-        # reattach item with children
+        # reattach item mit children
         self.tv.reattach(item_id, '', 'end')
         self.assertEqual(self.tv.get_children(), (item_id, ))
         self.assertEqual(self.tv.get_children(item_id), (item2, ))
@@ -1785,7 +1785,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.tv.item(item, tags=Nichts),
                          ('1', '2') wenn self.wantobjects sonst '1 2')
 
-        # values with spaces
+        # values mit spaces
         item = self.tv.insert('', 'end', values=('a b c',
             '%s %s' % (value, value)))
         self.assertEqual(self.tv.item(item, values=Nichts),
@@ -1805,7 +1805,7 @@ klasse TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(itemid, '0')
         itemid = self.tv.insert('', 'end', 0.0)
         self.assertEqual(itemid, '0.0')
-        # this is because Falsch resolves to 0 and element with 0 iid is already present
+        # this is because Falsch resolves to 0 and element mit 0 iid is already present
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', Falsch)
         self.assertRaises(tkinter.TclError, self.tv.insert, '', 'end', '')
 

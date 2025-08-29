@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp1026 generated von 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP1026.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp1026 generated von 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP1026.TXT' mit gencodec.py.
 
 """#"
 

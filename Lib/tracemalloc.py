@@ -427,7 +427,7 @@ klasse Snapshot:
         """
         Write the snapshot into a file.
         """
-        with open(filename, "wb") as fp:
+        mit open(filename, "wb") als fp:
             pickle.dump(self, fp, pickle.HIGHEST_PROTOCOL)
 
     @staticmethod
@@ -435,7 +435,7 @@ klasse Snapshot:
         """
         Load a snapshot von a file.
         """
-        with open(filename, "rb") as fp:
+        mit open(filename, "rb") als fp:
             return pickle.load(fp)
 
     def _filter_trace(self, include_filters, exclude_filters, trace):
@@ -451,9 +451,9 @@ klasse Snapshot:
 
     def filter_traces(self, filters):
         """
-        Create a new Snapshot instance with a filtered traces sequence, filters
+        Create a new Snapshot instance mit a filtered traces sequence, filters
         is a list of Filter or DomainFilter instances.  If filters is an empty
-        list, return a new Snapshot instance with a copy of the traces.
+        list, return a new Snapshot instance mit a copy of the traces.
         """
         wenn not isinstance(filters, Iterable):
             raise TypeError("filters must be a list of filters, not %s"
@@ -537,8 +537,8 @@ klasse Snapshot:
 
     def compare_to(self, old_snapshot, key_type, cumulative=Falsch):
         """
-        Compute the differences with an old snapshot old_snapshot. Get
-        statistics as a sorted list of StatisticDiff instances, grouped by
+        Compute the differences mit an old snapshot old_snapshot. Get
+        statistics als a sorted list of StatisticDiff instances, grouped by
         group_by.
         """
         new_group = self._group_by(key_type, cumulative)

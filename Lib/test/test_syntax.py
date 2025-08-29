@@ -14,7 +14,7 @@ symtable.c.
 
 The parser itself outlaws a lot of invalid syntax.  Nichts of these
 errors are tested here at the moment.  We should add some tests; since
-there are infinitely many programs with invalid syntax, we would need
+there are infinitely many programs mit invalid syntax, we would need
 to be judicious in selecting some.
 
 The compiler generates a synthetic module name fuer code executed by
@@ -45,7 +45,7 @@ SyntaxError: cannot assign to Wahr
 
 >>> (Wahr := 1)
 Traceback (most recent call last):
-SyntaxError: cannot use assignment expressions with Wahr
+SyntaxError: cannot use assignment expressions mit Wahr
 
 >>> obj.__debug__ = 1
 Traceback (most recent call last):
@@ -251,31 +251,31 @@ SyntaxError: invalid syntax
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> with a as b(): pass
+>>> mit a als b(): pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> with a as (b, c()): pass
+>>> mit a als (b, c()): pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> with a as [b, c()]: pass
+>>> mit a als [b, c()]: pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> with a as (*b, c, d+1): pass
+>>> mit a als (*b, c, d+1): pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to expression
 
->>> with a as (x, *(y, z.d())): pass
+>>> mit a als (x, *(y, z.d())): pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> with a as b, c as d(): pass
+>>> mit a als b, c als d(): pass
 Traceback (most recent call last):
 SyntaxError: cannot assign to function call
 
->>> with a as b
+>>> mit a als b
 Traceback (most recent call last):
 SyntaxError: expected ':'
 
@@ -401,12 +401,12 @@ From ast_for_arguments():
 >>> def f(x, y=1, z):
 ...     pass
 Traceback (most recent call last):
-SyntaxError: parameter without a default follows parameter with a default
+SyntaxError: parameter without a default follows parameter mit a default
 
 >>> def f(x, /, y=1, z):
 ...     pass
 Traceback (most recent call last):
-SyntaxError: parameter without a default follows parameter with a default
+SyntaxError: parameter without a default follows parameter mit a default
 
 >>> def f(x, Nichts):
 ...     pass
@@ -629,11 +629,11 @@ SyntaxError: expected default value expression
 
 >>> lambda a,d=3,c: Nichts
 Traceback (most recent call last):
-SyntaxError: parameter without a default follows parameter with a default
+SyntaxError: parameter without a default follows parameter mit a default
 
 >>> lambda a,/,d=3,c: Nichts
 Traceback (most recent call last):
-SyntaxError: parameter without a default follows parameter with a default
+SyntaxError: parameter without a default follows parameter mit a default
 
 >>> importiere ast; ast.parse('''
 ... def f(
@@ -1042,7 +1042,7 @@ From https://bugs.python.org/issue25973
 
 
 This tests assignment-context; there was a bug in Python 2.5 where compiling
-a complex 'if' (one with 'elif') would fail to notice an invalid suite,
+a complex 'if' (one mit 'elif') would fail to notice an invalid suite,
 leading to spurious errors.
 
    >>> wenn 1:
@@ -1165,47 +1165,47 @@ Missing ':' before suites:
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with blech as something
+   >>> mit blech als something
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with blech
+   >>> mit blech
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with blech, block as something
+   >>> mit blech, block als something
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with blech, block as something, bluch
+   >>> mit blech, block als something, bluch
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with (blech as something)
+   >>> mit (blech als something)
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with (blech)
+   >>> mit (blech)
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with (blech, block as something)
+   >>> mit (blech, block als something)
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with (blech, block as something, bluch)
+   >>> mit (blech, block als something, bluch)
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected ':'
 
-   >>> with block ad something:
+   >>> mit block ad something:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: invalid syntax. Did you mean 'and'?
@@ -1357,11 +1357,11 @@ Custom error messages fuer try blocks that are not followed by except/finally
    Traceback (most recent call last):
    SyntaxError: expected 'except' or 'finally' block
 
-Custom error message fuer __debug__ as exception variable
+Custom error message fuer __debug__ als exception variable
 
    >>> try:
    ...    pass
-   ... except TypeError as __debug__:
+   ... except TypeError als __debug__:
    ...    pass
    Traceback (most recent call last):
    SyntaxError: cannot assign to __debug__
@@ -1408,54 +1408,54 @@ Custom error message fuer try block mixing except and except*
    Traceback (most recent call last):
    SyntaxError: cannot have both 'except' and 'except*' on the same 'try'
 
-Better error message fuer using `except as` with not a name:
+Better error message fuer using `except as` mit not a name:
 
    >>> try:
    ...    pass
-   ... except TypeError as obj.attr:
+   ... except TypeError als obj.attr:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot use except statement with attribute
+   SyntaxError: cannot use except statement mit attribute
 
    >>> try:
    ...    pass
-   ... except TypeError as obj[1]:
+   ... except TypeError als obj[1]:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot use except statement with subscript
+   SyntaxError: cannot use except statement mit subscript
 
    >>> try:
    ...    pass
-   ... except* TypeError as (obj, name):
+   ... except* TypeError als (obj, name):
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot use except* statement with tuple
+   SyntaxError: cannot use except* statement mit tuple
 
    >>> try:
    ...    pass
-   ... except* TypeError as 1:
+   ... except* TypeError als 1:
    ...    pass
    Traceback (most recent call last):
-   SyntaxError: cannot use except* statement with literal
+   SyntaxError: cannot use except* statement mit literal
 
 Regression tests fuer gh-133999:
 
    >>> try: pass
-   ... except TypeError as name: raise von Nichts
+   ... except TypeError als name: raise von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
    >>> try: pass
-   ... except* TypeError as name: raise von Nichts
+   ... except* TypeError als name: raise von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
    >>> match 1:
-   ...     case 1 | 2 as abc: raise von Nichts
+   ...     case 1 | 2 als abc: raise von Nichts
    Traceback (most recent call last):
    SyntaxError: did you forget an expression between 'raise' and 'from'?
 
-Ensure that early = are not matched by the parser as invalid comparisons
+Ensure that early = are not matched by the parser als invalid comparisons
    >>> f(2, 4, x=34); 1 $ 2
    Traceback (most recent call last):
    SyntaxError: invalid syntax
@@ -1610,32 +1610,32 @@ Specialized indentation errors:
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'finally' statement on line 5
 
-   >>> with A:
+   >>> mit A:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'with' statement on line 1
 
-   >>> with A as a, B as b:
+   >>> mit A als a, B als b:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'with' statement on line 1
 
-   >>> with (A as a, B as b):
+   >>> mit (A als a, B als b):
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'with' statement on line 1
 
-   >>> async with A:
+   >>> async mit A:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'with' statement on line 1
 
-   >>> async with A as a, B as b:
+   >>> async mit A als a, B als b:
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'with' statement on line 1
 
-   >>> async with (A as a, B as b):
+   >>> async mit (A als a, B als b):
    ... pass
    Traceback (most recent call last):
    IndentationError: expected an indented block after 'with' statement on line 1
@@ -1724,19 +1724,19 @@ Better errors fuer `raise` statement:
     Traceback (most recent call last):
     SyntaxError: did you forget an expression between 'raise' and 'from'?
 
-Check that an multiple exception types with missing parentheses
+Check that an multiple exception types mit missing parentheses
 raise a custom exception only when using 'as'
 
    >>> try:
    ...   pass
-   ... except A, B, C as blech:
+   ... except A, B, C als blech:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: multiple exception types must be parenthesized when using 'as'
 
    >>> try:
    ...   pass
-   ... except A, B, C as blech:
+   ... except A, B, C als blech:
    ...   pass
    ... finally:
    ...   pass
@@ -1746,14 +1746,14 @@ raise a custom exception only when using 'as'
 
    >>> try:
    ...   pass
-   ... except* A, B, C as blech:
+   ... except* A, B, C als blech:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: multiple exception types must be parenthesized when using 'as'
 
    >>> try:
    ...   pass
-   ... except* A, B, C as blech:
+   ... except* A, B, C als blech:
    ...   pass
    ... finally:
    ...   pass
@@ -1764,14 +1764,14 @@ Custom exception fuer 'except*' without an exception type
 
    >>> try:
    ...   pass
-   ... except* A as a:
+   ... except* A als a:
    ...   pass
    ... except*:
    ...   pass
    Traceback (most recent call last):
    SyntaxError: expected one or more exception types
 
-Check custom exceptions fuer keywords with typos
+Check custom exceptions fuer keywords mit typos
 
 >>> fur a in b:
 ...   pass
@@ -2039,11 +2039,11 @@ SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 Traceback (most recent call last):
 SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> importiere a von b as bar
+>>> importiere a von b als bar
 Traceback (most recent call last):
 SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> importiere a.y.z von b.y.z as bar
+>>> importiere a.y.z von b.y.z als bar
 Traceback (most recent call last):
 SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
@@ -2055,11 +2055,11 @@ SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 Traceback (most recent call last):
 SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> importiere a,b,c von b as bar
+>>> importiere a,b,c von b als bar
 Traceback (most recent call last):
 SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
->>> importiere a.y.z, b.y.z, c.y.z von b.y.z as bar
+>>> importiere a.y.z, b.y.z, c.y.z von b.y.z als bar
 Traceback (most recent call last):
 SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 
@@ -2067,11 +2067,11 @@ SyntaxError: Did you mean to use 'from ... importiere ...' instead?
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> importiere a as __debug__
+>>> importiere a als __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> importiere a.b.c as __debug__
+>>> importiere a.b.c als __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
@@ -2079,59 +2079,59 @@ SyntaxError: cannot assign to __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> von a importiere b as __debug__
+>>> von a importiere b als __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to __debug__
 
->>> importiere a as b.c
+>>> importiere a als b.c
 Traceback (most recent call last):
-SyntaxError: cannot use attribute as importiere target
+SyntaxError: cannot use attribute als importiere target
 
->>> importiere a.b as (a, b)
+>>> importiere a.b als (a, b)
 Traceback (most recent call last):
-SyntaxError: cannot use tuple as importiere target
+SyntaxError: cannot use tuple als importiere target
 
->>> importiere a, a.b as 1
+>>> importiere a, a.b als 1
 Traceback (most recent call last):
-SyntaxError: cannot use literal as importiere target
+SyntaxError: cannot use literal als importiere target
 
->>> importiere a.b as 'a', a
+>>> importiere a.b als 'a', a
 Traceback (most recent call last):
-SyntaxError: cannot use literal as importiere target
+SyntaxError: cannot use literal als importiere target
 
->>> von a importiere (b as c.d)
+>>> von a importiere (b als c.d)
 Traceback (most recent call last):
-SyntaxError: cannot use attribute as importiere target
+SyntaxError: cannot use attribute als importiere target
 
->>> von a importiere b as 1
+>>> von a importiere b als 1
 Traceback (most recent call last):
-SyntaxError: cannot use literal as importiere target
-
->>> von a importiere (
-...   b as f())
-Traceback (most recent call last):
-SyntaxError: cannot use function call as importiere target
+SyntaxError: cannot use literal als importiere target
 
 >>> von a importiere (
-...   b as [],
+...   b als f())
+Traceback (most recent call last):
+SyntaxError: cannot use function call als importiere target
+
+>>> von a importiere (
+...   b als [],
 ... )
 Traceback (most recent call last):
-SyntaxError: cannot use list as importiere target
+SyntaxError: cannot use list als importiere target
 
 >>> von a importiere (
 ...   b,
-...   c as ()
+...   c als ()
 ... )
 Traceback (most recent call last):
-SyntaxError: cannot use tuple as importiere target
+SyntaxError: cannot use tuple als importiere target
 
->>> von a importiere b, с as d[e]
+>>> von a importiere b, с als d[e]
 Traceback (most recent call last):
-SyntaxError: cannot use subscript as importiere target
+SyntaxError: cannot use subscript als importiere target
 
->>> von a importiere с as d[e], b
+>>> von a importiere с als d[e], b
 Traceback (most recent call last):
-SyntaxError: cannot use subscript as importiere target
+SyntaxError: cannot use subscript als importiere target
 
 # Check that we dont raise the "trailing comma" error wenn there is more
 # input to the left of the valid part that we parsed.
@@ -2222,7 +2222,7 @@ Corner-cases that used to fail to raise the correct error:
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> with (lambda *:0): pass
+    >>> mit (lambda *:0): pass
     Traceback (most recent call last):
     SyntaxError: named parameters must follow bare *
 
@@ -2243,40 +2243,40 @@ Corner-cases that used to crash:
   Invalid pattern matching constructs:
 
     >>> match ...:
-    ...   case 42 as _:
+    ...   case 42 als _:
     ...     ...
     Traceback (most recent call last):
-    SyntaxError: cannot use '_' as a target
+    SyntaxError: cannot use '_' als a target
 
     >>> match ...:
-    ...   case 42 as 1+2+4:
+    ...   case 42 als 1+2+4:
     ...     ...
     Traceback (most recent call last):
-    SyntaxError: cannot use expression as pattern target
+    SyntaxError: cannot use expression als pattern target
 
     >>> match ...:
-    ...   case 42 as a.b:
+    ...   case 42 als a.b:
     ...     ...
     Traceback (most recent call last):
-    SyntaxError: cannot use attribute as pattern target
+    SyntaxError: cannot use attribute als pattern target
 
     >>> match ...:
-    ...   case 42 as (a, b):
+    ...   case 42 als (a, b):
     ...     ...
     Traceback (most recent call last):
-    SyntaxError: cannot use tuple as pattern target
+    SyntaxError: cannot use tuple als pattern target
 
     >>> match ...:
-    ...   case 42 as (a + 1):
+    ...   case 42 als (a + 1):
     ...     ...
     Traceback (most recent call last):
-    SyntaxError: cannot use expression as pattern target
+    SyntaxError: cannot use expression als pattern target
 
     >>> match ...:
-    ...   case (32 as x) | (42 as a()):
+    ...   case (32 als x) | (42 als a()):
     ...     ...
     Traceback (most recent call last):
-    SyntaxError: cannot use function call as pattern target
+    SyntaxError: cannot use function call als pattern target
 
     >>> match ...:
     ...   case Foo(z=1, y=2, x):
@@ -2697,12 +2697,12 @@ von test importiere support
 
 klasse SyntaxWarningTest(unittest.TestCase):
     def check_warning(self, code, errtext, filename="<testcase>", mode="exec"):
-        """Check that compiling code raises SyntaxWarning with errtext.
+        """Check that compiling code raises SyntaxWarning mit errtext.
 
         errtest is a regular expression that must be present in the
         text of the warning raised.
         """
-        with self.assertWarnsRegex(SyntaxWarning, errtext):
+        mit self.assertWarnsRegex(SyntaxWarning, errtext):
             compile(code, filename, mode)
 
     def test_return_in_finally(self):
@@ -2781,7 +2781,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
     def _check_error(self, code, errtext,
                      filename="<testcase>", mode="exec", subclass=Nichts,
                      lineno=Nichts, offset=Nichts, end_lineno=Nichts, end_offset=Nichts):
-        """Check that compiling code raises SyntaxError with errtext.
+        """Check that compiling code raises SyntaxError mit errtext.
 
         errtest is a regular expression that must be present in the
         text of the exception raised.  If subclass is specified it
@@ -2789,7 +2789,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         """
         try:
             compile(code, filename, mode)
-        except SyntaxError as err:
+        except SyntaxError als err:
             wenn subclass and not isinstance(err, subclass):
                 self.fail("SyntaxError is not a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
@@ -2915,7 +2915,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("class C:\n  wenn 0: break", msg, lineno=2)
         self._check_error("class C:\n  wenn 1: pass\n  sonst: break",
                           msg, lineno=3)
-        self._check_error("with object() as obj:\n break",
+        self._check_error("with object() als obj:\n break",
                           msg, lineno=2)
 
     def test_continue_outside_loop(self):
@@ -2926,7 +2926,7 @@ klasse SyntaxErrorTestCase(unittest.TestCase):
         self._check_error("class C:\n  wenn 0: continue", msg, lineno=2)
         self._check_error("class C:\n  wenn 1: pass\n  sonst: continue",
                           msg, lineno=3)
-        self._check_error("with object() as obj:\n    continue",
+        self._check_error("with object() als obj:\n    continue",
                           msg, lineno=2)
 
     def test_unexpected_indent(self):
@@ -3040,7 +3040,7 @@ klasse A:
         fuer i in range(12):
             code += f"{'    '*i}try:\n"
             code += f"{'    '*(i+1)}raise Exception\n"
-            code += f"{'    '*i}except Exception as e:\n"
+            code += f"{'    '*i}except Exception als e:\n"
         code += f"{' '*4*12}pass"
         self._check_error(code, "too many statically nested blocks")
 
@@ -3051,11 +3051,11 @@ klasse A:
         def get_code(n):
             code = textwrap.dedent("""
                 def bug():
-                    with (
+                    mit (
                     a
                 """)
             fuer i in range(n):
-                code += f"    as a{i}, a\n"
+                code += f"    als a{i}, a\n"
             code += "): yield a"
             return code
 
@@ -3063,11 +3063,11 @@ klasse A:
         MAX_MANAGERS = CO_MAXBLOCKS - 1  # One fuer the StopIteration block
 
         fuer n in range(MAX_MANAGERS):
-            with self.subTest(f"within range: {n=}"):
+            mit self.subTest(f"within range: {n=}"):
                 compile(get_code(n), "<string>", "exec")
 
         fuer n in range(MAX_MANAGERS, MAX_MANAGERS + 5):
-            with self.subTest(f"out of range: {n=}"):
+            mit self.subTest(f"out of range: {n=}"):
                 self._check_error(get_code(n), "too many statically nested blocks")
 
     @support.cpython_only
@@ -3077,11 +3077,11 @@ klasse A:
         def get_code(n):
             code = [ textwrap.dedent("""
                 async def bug():
-                    async with (
+                    async mit (
                     a
                 """) ]
             fuer i in range(n):
-                code.append(f"    as a{i}, a\n")
+                code.append(f"    als a{i}, a\n")
             code.append("): yield a")
             return "".join(code)
 
@@ -3089,11 +3089,11 @@ klasse A:
         MAX_MANAGERS = CO_MAXBLOCKS - 1  # One fuer the StopIteration block
 
         fuer n in range(MAX_MANAGERS):
-            with self.subTest(f"within range: {n=}"):
+            mit self.subTest(f"within range: {n=}"):
                 compile(get_code(n), "<string>", "exec")
 
         fuer n in range(MAX_MANAGERS, MAX_MANAGERS + 5):
-            with self.subTest(f"out of range: {n=}"):
+            mit self.subTest(f"out of range: {n=}"):
                 self._check_error(get_code(n), "too many statically nested blocks")
 
     def test_barry_as_flufl_with_syntax_errors(self):
@@ -3153,7 +3153,7 @@ func(
 
         self._check_error("match y:\n case e(e=v,v,", " was never closed")
 
-        # Examples with dencodings
+        # Examples mit dencodings
         s = b'# coding=latin\n(aaaaaaaaaaaaaaaaa\naaaaaaaaaaa\xb5'
         self._check_error(s, r"'\(' was never closed")
 
@@ -3239,8 +3239,8 @@ while 1:
     def test_error_on_parser_stack_overflow(self):
         source = "-" * 100000 + "4"
         fuer mode in ["exec", "eval", "single"]:
-            with self.subTest(mode=mode):
-                with self.assertRaisesRegex(MemoryError, r"too complex"):
+            mit self.subTest(mode=mode):
+                mit self.assertRaisesRegex(MemoryError, r"too complex"):
                     compile(source, "<string>", mode)
 
     @support.cpython_only
@@ -3249,7 +3249,7 @@ while 1:
         # Check that a very deep invalid rule in the PEG
         # parser doesn't have exponential backtracking.
         source = "d{{{{{{{{{{{{{{{{{{{{{{{{{```{{{{{{{ef f():y"
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             compile(source, "<string>", "exec")
 
     def test_except_stmt_invalid_as_expr(self):
@@ -3258,11 +3258,11 @@ while 1:
                 """
                 try:
                     pass
-                except ValueError as obj.attr:
+                except ValueError als obj.attr:
                     pass
                 """
             ),
-            errtext="cannot use except statement with attribute",
+            errtext="cannot use except statement mit attribute",
             lineno=4,
             end_lineno=4,
             offset=22,
@@ -3274,11 +3274,11 @@ while 1:
             textwrap.dedent(
                 """
                 match 1:
-                    case x as obj.attr:
+                    case x als obj.attr:
                         ...
                 """
             ),
-            errtext="cannot use attribute as pattern target",
+            errtext="cannot use attribute als pattern target",
             lineno=3,
             end_lineno=3,
             offset=15,

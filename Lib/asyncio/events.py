@@ -94,7 +94,7 @@ klasse Handle:
             self._context.run(self._callback, *self._args)
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             cb = format_helpers._format_callback_source(
                 self._callback, self._args,
                 debug=self._loop.get_debug())
@@ -109,7 +109,7 @@ klasse Handle:
             self._loop.call_exception_handler(context)
         self = Nichts  # Needed to break cycles when an exception occurs.
 
-# _ThreadSafeHandle is used fuer callbacks scheduled with call_soon_threadsafe
+# _ThreadSafeHandle is used fuer callbacks scheduled mit call_soon_threadsafe
 # and is thread safe unlike Handle which is not thread safe.
 klasse _ThreadSafeHandle(Handle):
 
@@ -120,11 +120,11 @@ klasse _ThreadSafeHandle(Handle):
         self._lock = threading.RLock()
 
     def cancel(self):
-        with self._lock:
+        mit self._lock:
             return super().cancel()
 
     def cancelled(self):
-        with self._lock:
+        mit self._lock:
             return super().cancelled()
 
     def _run(self):
@@ -132,7 +132,7 @@ klasse _ThreadSafeHandle(Handle):
         # It is possible that the handle is cancelled after the check
         # but before the callback is called so check it again after acquiring
         # the lock and return without calling the callback wenn it is cancelled.
-        with self._lock:
+        mit self._lock:
             wenn self._cancelled:
                 return
             return super()._run()
@@ -196,7 +196,7 @@ klasse TimerHandle(Handle):
         """Return a scheduled callback time.
 
         The time is an absolute timestamp, using the same time
-        reference as loop.time().
+        reference als loop.time().
         """
         return self._when
 
@@ -268,7 +268,7 @@ klasse AbstractEventLoop:
         raise NotImplementedError
 
     def stop(self):
-        """Stop the event loop as soon as reasonable.
+        """Stop the event loop als soon als reasonable.
 
         Exactly how soon that is may depend on the implementation, but
         no more I/O callbacks should be scheduled.
@@ -328,7 +328,7 @@ klasse AbstractEventLoop:
     def create_task(self, coro, **kwargs):
         raise NotImplementedError
 
-    # Methods fuer interacting with threads.
+    # Methods fuer interacting mit threads.
 
     def call_soon_threadsafe(self, callback, *args, context=Nichts):
         raise NotImplementedError
@@ -398,7 +398,7 @@ klasse AbstractEventLoop:
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
-        the same port as other existing endpoints are bound to, so long as
+        the same port als other existing endpoints are bound to, so long as
         they all set this flag when being created. This option is not
         supported on Windows.
 
@@ -520,7 +520,7 @@ klasse AbstractEventLoop:
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
-        the same port as other existing endpoints are bound to, so long as
+        the same port als other existing endpoints are bound to, so long as
         they all set this flag when being created. This option is not
         supported on Windows and some UNIX's. If the
         :py:data:`~socket.SO_REUSEPORT` constant is not defined then this
@@ -539,7 +539,7 @@ klasse AbstractEventLoop:
     async def connect_read_pipe(self, protocol_factory, pipe):
         """Register read pipe in event loop. Set the pipe to non-blocking mode.
 
-        protocol_factory should instantiate object with Protocol interface.
+        protocol_factory should instantiate object mit Protocol interface.
         pipe is a file-like object.
         Return pair (transport, protocol), where transport supports the
         ReadTransport interface."""
@@ -552,7 +552,7 @@ klasse AbstractEventLoop:
     async def connect_write_pipe(self, protocol_factory, pipe):
         """Register write pipe in event loop.
 
-        protocol_factory should instantiate object with BaseProtocol interface.
+        protocol_factory should instantiate object mit BaseProtocol interface.
         Pipe is file-like object already switched to nonblocking.
         Return pair (transport, protocol), where transport support
         WriteTransport interface."""
@@ -681,7 +681,7 @@ klasse _AbstractEventLoopPolicy:
 
     def new_event_loop(self):
         """Create and return a new event loop object according to this
-        policy's rules. If there's need to set this loop as the event loop for
+        policy's rules. If there's need to set this loop als the event loop for
         the current context, set_event_loop must be called explicitly."""
         raise NotImplementedError
 
@@ -786,7 +786,7 @@ def _set_running_loop(loop):
 
 def _init_event_loop_policy():
     global _event_loop_policy
-    with _lock:
+    mit _lock:
         wenn _event_loop_policy is Nichts:  # pragma: no branch
             wenn sys.platform == 'win32':
                 von .windows_events importiere _DefaultEventLoopPolicy
@@ -821,7 +821,7 @@ def set_event_loop_policy(policy):
 def get_event_loop():
     """Return an asyncio event loop.
 
-    When called von a coroutine or a callback (e.g. scheduled with call_soon
+    When called von a coroutine or a callback (e.g. scheduled mit call_soon
     or similar API), this function will always return the running event loop.
 
     If there is no running event loop set, the function will return

@@ -1,6 +1,6 @@
 importiere string
 importiere unittest
-von email importiere _header_value_parser as parser
+von email importiere _header_value_parser als parser
 von email importiere errors
 von email importiere policy
 von test.test_email importiere TestEmailBase, parameterize
@@ -78,19 +78,19 @@ klasse TestParser(TestParserMixin, TestEmailBase):
     # get_encoded_word
 
     def test_get_encoded_word_missing_start_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('abc')
 
     def test_get_encoded_word_missing_end_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?abc')
 
     def test_get_encoded_word_missing_middle_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?abc?=')
 
     def test_get_encoded_word_invalid_cte(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_encoded_word('=?utf-8?X?somevalue?=')
 
     def test_get_encoded_word_valid_ew(self):
@@ -562,9 +562,9 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(bqs.token_type, 'bare-quoted-string')
 
     def test_get_bare_quoted_string_must_start_with_dquote(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_bare_quoted_string('foo"')
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_bare_quoted_string('  "foo"')
 
     def test_get_bare_quoted_string_only_quotes(self):
@@ -630,9 +630,9 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(comment.token_type, 'comment')
 
     def test_get_comment_must_start_with_paren(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_comment('foo"')
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_comment('  (foo"')
 
     def test_get_comment_following_wsp_preserved(self):
@@ -823,11 +823,11 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(qs.quoted_value, ' "bob"')
 
     def test_get_quoted_string_cfws_only_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_quoted_string(' (foo) ')
 
     def test_get_quoted_string_no_quoted_string(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_quoted_string(' (ab) xyz')
 
     def test_get_quoted_string_qs_ends_at_noncfws(self):
@@ -880,11 +880,11 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(atom[2].comments, ['a'])
 
     def test_get_atom_no_atom(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_atom(' (ab) ')
 
     def test_get_atom_no_atom_before_special(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_atom(' (ab) @')
 
     def test_get_atom_atom_ends_at_special(self):
@@ -914,19 +914,19 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             'foo', 'foo', 'foo', [], '')
 
     def test_get_dot_atom_text_raises_on_leading_dot(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('.foo.bar')
 
     def test_get_dot_atom_text_raises_on_trailing_dot(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('foo.bar.')
 
     def test_get_dot_atom_text_raises_on_leading_non_atext(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text(' foo.bar')
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('@foo.bar')
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom_text('"foo.bar"')
 
     def test_get_dot_atom_text_trailing_text_preserved(self):
@@ -960,19 +960,19 @@ klasse TestParser(TestParserMixin, TestEmailBase):
                 ' foo.bar ', [], '.bing (here) ')
 
     def test_get_dot_atom_no_atom_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) ')
 
     def test_get_dot_atom_leading_dot_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) .bar')
 
     def test_get_dot_atom_two_dots_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom('bar..bang')
 
     def test_get_dot_atom_trailing_dot_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_dot_atom(' (foo) bar.bang. foo')
 
     def test_get_dot_atom_rfc2047_atom(self):
@@ -990,7 +990,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
     def test_get_word_all_CFWS(self):
         # bpo-29412: Test that we don't raise IndexError when parsing CFWS only
         # token.
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_word('(Recipients list suppressed')
 
     def test_get_word_qs_yields_qs(self):
@@ -1057,7 +1057,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(phrase[3].comments, ['with trailing comment'])
 
     def get_phrase_cfws_only_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_phrase(' (foo) ')
 
     # get_local_part
@@ -1161,15 +1161,15 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(local_part.local_part, 'Fred.A.Johnson and  dogs')
 
     def test_get_local_part_empty_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_local_part('')
 
     def test_get_local_part_no_part_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_local_part(' (foo) ')
 
     def test_get_local_part_special_instead_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_local_part(' (foo) @python.org')
 
     def test_get_local_part_trailing_dot(self):
@@ -1350,15 +1350,15 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(domain_literal.ip, '127.0.0.1')
 
     def test_get_domain_literal_no_start_char_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) ')
 
     def test_get_domain_literal_no_start_char_before_special_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) @')
 
     def test_get_domain_literal_bad_dtext_char_before_special_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_domain_literal('(foo) [abc[@')
 
     # get_domain
@@ -1429,15 +1429,15 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(domain.domain, 'example.com')
 
     def test_get_domain_empty_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_domain("")
 
     def test_get_domain_no_non_cfws_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_domain("  (foo)\t")
 
     def test_get_domain_no_atom_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_domain("  (foo)\t, broken")
 
 
@@ -1522,13 +1522,13 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(addr_spec.addr_spec, 'star.a.star@example.com')
 
     def test_get_addr_spec_multiple_domains(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_addr_spec('star@a.star@example.com')
 
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_addr_spec('star@a@example.com')
 
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_addr_spec('star@172.17.0.1@example.com')
 
     # get_obs_route
@@ -1554,27 +1554,27 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(obs_route.domains, ['example.com', 'two.example.com'])
 
     def test_get_obs_route_no_route_before_end_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) @example.com,')
 
     def test_get_obs_route_no_route_before_end_raises2(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) @example.com, (foo) ')
 
     def test_get_obs_route_no_route_before_special_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) [abc],')
 
     def test_get_obs_route_no_route_before_special_raises2(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('(foo) @example.com [abc],')
 
     def test_get_obs_route_no_domain_after_at_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('@')
 
     def test_get_obs_route_no_domain_after_at_raises2(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_obs_route('@example.com, @')
 
     # get_angle_addr
@@ -1704,30 +1704,30 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(angle_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_angle_addr_empty_raise(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('')
 
     def test_get_angle_addr_left_angle_only_raise(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('<')
 
     def test_get_angle_addr_no_angle_raise(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) ')
 
     def test_get_angle_addr_no_angle_before_special_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) , next')
 
     def test_get_angle_addr_no_angle_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('bar')
 
     def test_get_angle_addr_special_after_angle_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_angle_addr('(foo) <, bar')
 
-    # get_display_name  This is phrase but with a different value.
+    # get_display_name  This is phrase but mit a different value.
 
     def test_get_display_name_simple(self):
         display_name = self._test_get_x(parser.get_display_name,
@@ -1794,7 +1794,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(display_name.display_name, 'simple phrase.')
 
     def test_get_display_name_for_invalid_address_field(self):
-        # bpo-32178: Test that address fields starting with `:` don't cause
+        # bpo-32178: Test that address fields starting mit `:` don't cause
         # IndexError when parsing the display name.
         display_name = self._test_get_x(
             parser.get_display_name,
@@ -1923,19 +1923,19 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(name_addr.addr_spec, 'dinsdale@example.com')
 
     def test_get_name_addr_empty_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr('')
 
     def test_get_name_addr_no_content_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr(' (foo) ')
 
     def test_get_name_addr_no_content_before_special_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr(' (foo) ,')
 
     def test_get_name_addr_no_angle_after_display_name_raises(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_name_addr('foo bar')
 
     # get_mailbox
@@ -2096,7 +2096,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             ('"Roy A. Bear"[] dinsdale@example.com,'
                 ' "Fred Flintstone" <dinsdale@test. example.com>'),
             [errors.InvalidHeaderDefect,   # the 'extra' text after the local part
-             errors.InvalidHeaderDefect,   # the local part with no angle-addr
+             errors.InvalidHeaderDefect,   # the local part mit no angle-addr
              errors.ObsoleteHeaderDefect,  # period in extra text (example.com)
              errors.ObsoleteHeaderDefect], # (bird) in valid address.
             '')
@@ -2468,7 +2468,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
             'ping example.com, next',
             'ping example.com',
             'ping example.com',
-            [errors.InvalidHeaderDefect,    # addr-spec with no domain
+            [errors.InvalidHeaderDefect,    # addr-spec mit no domain
              errors.InvalidHeaderDefect,    # invalid local-part
              errors.InvalidHeaderDefect,    # missing .s in local-part
             ],
@@ -2712,7 +2712,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
 
     def test_get_msg_id_empty(self):
         # bpo-38708: Test that HeaderParseError is raised and not IndexError.
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id('')
 
     def test_get_msg_id_valid(self):
@@ -2824,7 +2824,7 @@ klasse TestParser(TestParserMixin, TestEmailBase):
                          "Unexpected 'thensomething'")
 
     def test_get_msg_id_no_angle_start(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id("msgwithnoankle")
 
     def test_get_msg_id_no_angle_end(self):
@@ -2839,21 +2839,21 @@ klasse TestParser(TestParserMixin, TestEmailBase):
         self.assertEqual(msg_id.token_type, 'msg-id')
 
     def test_get_msg_id_empty_id_left(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id("<@domain>")
 
     def test_get_msg_id_empty_id_right(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id("<simplelocal@>")
 
     def test_get_msg_id_no_id_right(self):
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id("<simplelocal@")
 
     def test_get_msg_id_with_brackets(self):
         # Microsoft Outlook generates non-standard one-off addresses:
         # https://learn.microsoft.com/en-us/office/client-developer/outlook/mapi/one-off-addresses
-        with self.assertRaises(errors.HeaderParseError):
+        mit self.assertRaises(errors.HeaderParseError):
             parser.get_msg_id("<[abrakadabra@microsoft.com]>")
 
     def test_get_msg_id_ws_only_local(self):
@@ -2911,7 +2911,7 @@ klasse Test_parse_mime_parameters(TestParserMixin, TestEmailBase):
         # there are duplicate parameter names or duplicate parts in a split
         # part.  We choose to ignore all duplicate parameters after the first
         # and to take duplicate or missing rfc 2231 parts in appearance order.
-        # This is backward compatible with get_param's behavior, but the
+        # This is backward compatible mit get_param's behavior, but the
         # decisions are arbitrary.
 
         'duplicate_key': (
@@ -3176,7 +3176,7 @@ klasse TestFolding(TestEmailBase):
              ' <to@example.com>\n'),
         ]
         fuer (to, folded) in cases:
-            with self.subTest(to=to):
+            mit self.subTest(to=to):
                 self._test(parser.get_address_list(to)[0], folded, policy=policy)
 
     def test_address_list_with_list_separator_after_fold(self):
@@ -3216,11 +3216,11 @@ klasse TestFolding(TestEmailBase):
              '"local-part-with-specials@but-no-fws.cannot-fold"@example.com\n'),
         ]
         fuer (to, folded) in cases:
-            with self.subTest(to=to):
+            mit self.subTest(to=to):
                 self._test(parser.get_address_list(to)[0], folded, policy=policy)
 
-    # XXX Need tests with comments on various sides of a unicode token,
-    # and with unicode tokens in the comments.  Spaces inside the quotes
+    # XXX Need tests mit comments on various sides of a unicode token,
+    # and mit unicode tokens in the comments.  Spaces inside the quotes
     # currently don't do the right thing.
 
     def test_split_at_whitespace_after_header_before_long_token(self):

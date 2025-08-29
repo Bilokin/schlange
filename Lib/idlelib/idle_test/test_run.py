@@ -28,8 +28,8 @@ klasse ExceptionTest(unittest.TestCase):
             try:
                 raise ex1
             except UnhashableException:
-                with captured_stderr() as output:
-                    with mock.patch.object(run, 'cleanup_traceback') as ct:
+                mit captured_stderr() als output:
+                    mit mock.patch.object(run, 'cleanup_traceback') als ct:
                         ct.side_effect = lambda t, e: t
                         run.print_exception()
 
@@ -50,7 +50,7 @@ klasse ExceptionTest(unittest.TestCase):
     @force_not_colorized
     def test_get_message(self):
         fuer code, exc, msg in self.data:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 try:
                     eval(compile(code, '', 'eval'))
                 except exc:
@@ -67,14 +67,14 @@ klasse ExceptionTest(unittest.TestCase):
         data2 = ((d[0], d[1]), (d[1], d[2]), (d[2], d[0]))
         subtests = 0
         fuer (code1, exc1, msg1), (code2, exc2, msg2) in data2:
-            with self.subTest(codes=(code1,code2)):
+            mit self.subTest(codes=(code1,code2)):
                 try:
                     eval(compile(code1, '', 'eval'))
                 except exc1:
                     try:
                         eval(compile(code2, '', 'eval'))
                     except exc2:
-                        with captured_stderr() as output:
+                        mit captured_stderr() als output:
                             run.print_exception()
                         actual = output.getvalue()
                         self.assertIn(msg1, actual)
@@ -373,9 +373,9 @@ klasse HandleErrorTest(unittest.TestCase):
     # Method of MyRPCServer
     def test_fatal_error(self):
         eq = self.assertEqual
-        with captured_output('__stderr__') as err,\
+        mit captured_output('__stderr__') als err,\
              mock.patch('idlelib.run.thread.interrupt_main',
-                        new_callable=Func) as func:
+                        new_callable=Func) als func:
             try:
                 raise EOFError
             except EOFError:

@@ -107,7 +107,7 @@ klasse AboutDialog(Toplevel):
 
         tclver = str(self.info_patchlevel())
         tkver = ' and ' + tkpatch wenn tkpatch != tclver sonst ''
-        versions = f"Python {pyver} with tcl/tk {tclver}{tkver}"
+        versions = f"Python {pyver} mit tcl/tk {tclver}{tkver}"
         vers = Label(frame_background, text=versions, fg=self.fg, bg=self.bg)
         vers.grid(row=9, column=0, sticky=W, padx=10, pady=0)
         py_buttons = Frame(frame_background, bg=self.bg)
@@ -160,7 +160,7 @@ klasse AboutDialog(Toplevel):
         self.display_printer_text('About - Python Credits', credits)
 
     # Encode CREDITS.txt to utf-8 fuer proper version of Loewis.
-    # Specify others as ascii until need utf-8, so catch errors.
+    # Specify others als ascii until need utf-8, so catch errors.
     def show_idle_credits(self):
         "Handle Idle Credits button event."
         self.display_file_text('About - Credits', 'CREDITS.txt', 'utf-8')
@@ -178,7 +178,7 @@ klasse AboutDialog(Toplevel):
 
         Built-in constants have type _sitebuiltins._Printer.  The
         text is extracted von the built-in and then sent to a text
-        viewer with self as the parent and title as the title of
+        viewer mit self als the parent and title als the title of
         the popup.
         """
         printer._Printer__setup()
@@ -190,7 +190,7 @@ klasse AboutDialog(Toplevel):
         """Create textview fuer filename.
 
         The filename needs to be in the current directory.  The path
-        is sent to a text viewer with self as the parent, title as
+        is sent to a text viewer mit self als the parent, title as
         the title of the popup, and the file encoding.
         """
         fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)

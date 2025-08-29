@@ -1,4 +1,4 @@
-"""Conversions to/from quoted-printable transport encoding as per RFC 1521."""
+"""Conversions to/from quoted-printable transport encoding als per RFC 1521."""
 
 # (Dec 1991 version).
 
@@ -20,7 +20,7 @@ def needsquoting(c, quotetabs, header):
     """Decide whether a particular byte ordinal needs to be quoted.
 
     The 'quotetabs' flag indicates whether embedded tabs and spaces should be
-    quoted.  Note that line-ending tabs and spaces are always encoded, as per
+    quoted.  Note that line-ending tabs and spaces are always encoded, als per
     RFC 1521.
     """
     assert isinstance(c, bytes)
@@ -44,8 +44,8 @@ def encode(input, output, quotetabs, header=Falsch):
 
     'input' and 'output' are binary file objects. The 'quotetabs' flag
     indicates whether embedded tabs and spaces should be quoted. Note that
-    line-ending tabs and spaces are always encoded, as per RFC 1521.
-    The 'header' flag indicates whether we are encoding spaces as _ as per RFC
+    line-ending tabs and spaces are always encoded, als per RFC 1521.
+    The 'header' flag indicates whether we are encoding spaces als _ als per RFC
     1522."""
 
     wenn b2a_qp is not Nichts:
@@ -112,7 +112,7 @@ def encodestring(s, quotetabs=Falsch, header=Falsch):
 def decode(input, output, header=Falsch):
     """Read 'input', apply quoted-printable decoding, and write to 'output'.
     'input' and 'output' are binary file objects.
-    If 'header' is true, decode underscore as space (per RFC 1522)."""
+    If 'header' is true, decode underscore als space (per RFC 1522)."""
 
     wenn a2b_qp is not Nichts:
         data = input.read()
@@ -190,7 +190,7 @@ def main():
     importiere getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'td')
-    except getopt.error as msg:
+    except getopt.error als msg:
         sys.stdout = sys.stderr
         drucke(msg)
         drucke("usage: quopri [-t | -d] [file] ...")
@@ -214,7 +214,7 @@ def main():
         sonst:
             try:
                 fp = open(file, "rb")
-            except OSError as msg:
+            except OSError als msg:
                 sys.stderr.write("%s: can't open (%s)\n" % (file, msg))
                 sts = 1
                 continue

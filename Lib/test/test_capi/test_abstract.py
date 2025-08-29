@@ -197,13 +197,13 @@ klasse CAPITest(unittest.TestCase):
         self.assertFalsch(xhasattr(obj, 'b'))
         self.assertWahr(xhasattr(obj, '\U0001f40d'))
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(xhasattr(obj, 'evil'))
             self.assertEqual(cm.unraisable.exc_type, RuntimeError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              'do not get evil')
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(xhasattr(obj, 1))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
@@ -221,13 +221,13 @@ klasse CAPITest(unittest.TestCase):
         self.assertFalsch(hasattrstring(obj, b'b'))
         self.assertWahr(hasattrstring(obj, '\U0001f40d'.encode()))
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(hasattrstring(obj, b'evil'))
             self.assertEqual(cm.unraisable.exc_type, RuntimeError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              'do not get evil')
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(hasattrstring(obj, b'\xff'))
             self.assertEqual(cm.unraisable.exc_type, UnicodeDecodeError)
             self.assertRegex(str(cm.unraisable.exc_value),
@@ -450,38 +450,38 @@ klasse CAPITest(unittest.TestCase):
 
         self.assertWahr(haskey(['a', 'b', 'c'], 1))
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey(42, 'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              "'int' object is not subscriptable")
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey({}, []))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
-                             "cannot use 'list' as a dict key "
+                             "cannot use 'list' als a dict key "
                              "(unhashable type: 'list')")
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey([], 1))
             self.assertEqual(cm.unraisable.exc_type, IndexError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              'list index out of range')
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey([], 'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              'list indices must be integers or slices, not str')
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey({}, NULL))
             self.assertEqual(cm.unraisable.exc_type, SystemError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              'null argument to internal routine')
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskey(NULL, 'a'))
             self.assertEqual(cm.unraisable.exc_type, SystemError)
             self.assertEqual(str(cm.unraisable.exc_value),
@@ -498,31 +498,31 @@ klasse CAPITest(unittest.TestCase):
         self.assertWahr(haskeystring(dct2, b'a'))
         self.assertFalsch(haskeystring(dct2, b'b'))
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring(42, b'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              "'int' object is not subscriptable")
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring({}, b'\xff'))
             self.assertEqual(cm.unraisable.exc_type, UnicodeDecodeError)
             self.assertRegex(str(cm.unraisable.exc_value),
                              "'utf-8' codec can't decode")
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring({}, NULL))
             self.assertEqual(cm.unraisable.exc_type, SystemError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              "null argument to internal routine")
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring([], b'a'))
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
                              'list indices must be integers or slices, not str')
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertFalsch(haskeystring(NULL, b'a'))
             self.assertEqual(cm.unraisable.exc_type, SystemError)
             self.assertEqual(str(cm.unraisable.exc_value),
@@ -1039,7 +1039,7 @@ klasse CAPITest(unittest.TestCase):
 
     def run_iter_api_test(self, next_func):
         fuer data in (), [], (1, 2, 3), [1 , 2, 3], "123":
-            with self.subTest(data=data):
+            mit self.subTest(data=data):
                 items = []
                 it = iter(data)
                 while (item := next_func(it)) is not Nichts:
@@ -1061,7 +1061,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(next_func(it), 1)
         self.assertEqual(next_func(it), 2)
         self.assertEqual(next_func(it), 3)
-        with self.assertRaisesRegex(TypeError, 'bad type'):
+        mit self.assertRaisesRegex(TypeError, 'bad type'):
             next_func(it)
 
     def test_iter_next(self):
@@ -1074,7 +1074,7 @@ klasse CAPITest(unittest.TestCase):
         self.run_iter_api_test(PyIter_NextItem)
 
         regex = "expected.*iterator.*got.*'int'"
-        with self.assertRaisesRegex(TypeError, regex):
+        mit self.assertRaisesRegex(TypeError, regex):
             PyIter_NextItem(10)
 
     def test_object_setattr_null_exc(self):
@@ -1084,19 +1084,19 @@ klasse CAPITest(unittest.TestCase):
         obj.attr = 123
 
         exc = ValueError("error")
-        with self.assertRaises(SystemError) as cm:
+        mit self.assertRaises(SystemError) als cm:
             _testcapi.object_setattr_null_exc(obj, 'attr', exc)
         self.assertIs(cm.exception.__context__, exc)
         self.assertIsNichts(cm.exception.__cause__)
         self.assertHasAttr(obj, 'attr')
 
-        with self.assertRaises(SystemError) as cm:
+        mit self.assertRaises(SystemError) als cm:
             _testcapi.object_setattrstring_null_exc(obj, 'attr', exc)
         self.assertIs(cm.exception.__context__, exc)
         self.assertIsNichts(cm.exception.__cause__)
         self.assertHasAttr(obj, 'attr')
 
-        with self.assertRaises(SystemError) as cm:
+        mit self.assertRaises(SystemError) als cm:
             # undecodable name
             _testcapi.object_setattrstring_null_exc(obj, b'\xff', exc)
         self.assertIs(cm.exception.__context__, exc)

@@ -73,7 +73,7 @@ async def glob_assigned_async_meth_pep_695[T](): pass
 
 # The following symbols are defined in ComplexClass after
 # being introduced by a 'global' statement (and therefore
-# are not considered as local symbols of ComplexClass).
+# are not considered als local symbols of ComplexClass).
 glob_unassigned_meth_ignore: Any
 glob_unassigned_meth_pep_695_ignore: Any
 
@@ -123,16 +123,16 @@ klasse ComplexClass:
     @staticmethod
     async def an_async_staticmethod_pep_695[T](self): pass
 
-    # These ones will be considered as methods because of the 'def' although
+    # These ones will be considered als methods because of the 'def' although
     # they are *not* valid methods at runtime since they are not decorated
-    # with @staticmethod.
+    # mit @staticmethod.
     def a_fakemethod(): pass
     def a_fakemethod_pep_695[T](): pass
 
     async def an_async_fakemethod(): pass
     async def an_async_fakemethod_pep_695[T](): pass
 
-    # Check that those are still considered as methods
+    # Check that those are still considered als methods
     # since they are not using the 'global' keyword.
     def glob_unassigned_meth(): pass
     def glob_unassigned_meth_pep_695[T](): pass
@@ -146,7 +146,7 @@ klasse ComplexClass:
     async def glob_assigned_async_meth(): pass
     async def glob_assigned_async_meth_pep_695[T](): pass
 
-    # The following are not picked as local symbols because they are not
+    # The following are not picked als local symbols because they are not
     # visible by the klasse at runtime (this is equivalent to having the
     # definitions outside of the class).
     global glob_unassigned_meth_ignore
@@ -337,12 +337,12 @@ klasse SymtableTest(unittest.TestCase):
         self.assertFalsch(st4.lookup('x').is_annotated())
 
         # Test that annotations in the global scope are valid after the
-        # variable is declared as nonlocal.
+        # variable is declared als nonlocal.
         st5 = symtable.symtable('global x\nx: int', 'test', 'exec')
         self.assertWahr(st5.lookup("x").is_global())
 
         # Test that annotations fuer nonlocals are valid after the
-        # variable is declared as nonlocal.
+        # variable is declared als nonlocal.
         st6 = symtable.symtable('def g():\n'
                                 '    x = 2\n'
                                 '    def f():\n'
@@ -365,13 +365,13 @@ klasse SymtableTest(unittest.TestCase):
                       'and will be removed in Python 3.16.')
         )
 
-        with self.assertWarnsRegex(DeprecationWarning, deprecation_mess):
+        mit self.assertWarnsRegex(DeprecationWarning, deprecation_mess):
             self.assertEqual(self.Mine.get_methods(), ('a_method',))
 
         top = symtable.symtable(TEST_COMPLEX_CLASS_CODE, "?", "exec")
         this = find_block(top, "ComplexClass")
 
-        with self.assertWarnsRegex(DeprecationWarning, deprecation_mess):
+        mit self.assertWarnsRegex(DeprecationWarning, deprecation_mess):
             self.assertEqual(this.get_methods(), (
                 'a_method', 'a_method_pep_695',
                 'an_async_method', 'an_async_method_pep_695',
@@ -391,17 +391,17 @@ klasse SymtableTest(unittest.TestCase):
         # but will not be reported by get_methods() since they are
         # not functions per se.
         #
-        # Other kind of comprehensions such as list, set or dict
+        # Other kind of comprehensions such als list, set or dict
         # expressions do not have the TYPE_FUNCTION type.
 
         def check_body(body, expected_methods):
             indented = textwrap.indent(body, ' ' * 4)
             top = symtable.symtable(f"class A:\n{indented}", "?", "exec")
             this = find_block(top, "A")
-            with self.assertWarnsRegex(DeprecationWarning, deprecation_mess):
+            mit self.assertWarnsRegex(DeprecationWarning, deprecation_mess):
                 self.assertEqual(this.get_methods(), expected_methods)
 
-        # statements with 'genexpr' inside it
+        # statements mit 'genexpr' inside it
         GENEXPRS = (
             'x = (x fuer x in [])',
             'x = (x async fuer x in [])',
@@ -415,11 +415,11 @@ klasse SymtableTest(unittest.TestCase):
 
         fuer gen in GENEXPRS:
             # test generator expression
-            with self.subTest(gen=gen):
+            mit self.subTest(gen=gen):
                 check_body(gen, ())
 
             # test generator expression + variable named 'genexpr'
-            with self.subTest(gen=gen, isvar=Wahr):
+            mit self.subTest(gen=gen, isvar=Wahr):
                 check_body('\n'.join((gen, 'genexpr = 1')), ())
                 check_body('\n'.join(('genexpr = 1', gen)), ())
 
@@ -430,12 +430,12 @@ klasse SymtableTest(unittest.TestCase):
                 f'def genexpr[T]{paramlist}:pass',
                 f'async def genexpr[T]{paramlist}:pass',
             ):
-                with self.subTest(func=func):
+                mit self.subTest(func=func):
                     # test function named 'genexpr'
                     check_body(func, ('genexpr',))
 
                 fuer gen in GENEXPRS:
-                    with self.subTest(gen=gen, func=func):
+                    mit self.subTest(gen=gen, func=func):
                         # test generator expression + function named 'genexpr'
                         check_body('\n'.join((gen, func)), ('genexpr',))
                         check_body('\n'.join((func, gen)), ('genexpr',))
@@ -446,7 +446,7 @@ klasse SymtableTest(unittest.TestCase):
         def checkfilename(brokencode, offset):
             try:
                 symtable.symtable(brokencode, "spam", "exec")
-            except SyntaxError as e:
+            except SyntaxError als e:
                 self.assertEqual(e.filename, "spam")
                 self.assertEqual(e.lineno, 1)
                 self.assertEqual(e.offset, offset)
@@ -455,11 +455,11 @@ klasse SymtableTest(unittest.TestCase):
         checkfilename("def f(x): foo)(", 14)  # parse-time
         checkfilename("def f(x): global x", 11)  # symtable-build-time
         symtable.symtable("pass", b"spam", "exec")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             symtable.symtable("pass", bytearray(b"spam"), "exec")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             symtable.symtable("pass", memoryview(b"spam"), "exec")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             symtable.symtable("pass", list(b"spam"), "exec")
 
     def test_eval(self):
@@ -594,7 +594,7 @@ klasse ComprehensionTests(unittest.TestCase):
             "{x:x*x fuer x in [1]}",
         ]
         fuer comp in comps:
-            with self.subTest(comp=comp):
+            mit self.subTest(comp=comp):
                 st = symtable.symtable(comp, "?", "exec")
                 ids = []
                 self.get_identifiers_recursive(st, ids)
@@ -607,9 +607,9 @@ klasse CommandLineTest(unittest.TestCase):
     def test_file(self):
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, filename)
-        with open(filename, 'w') as f:
+        mit open(filename, 'w') als f:
             f.write(TEST_CODE)
-        with support.captured_stdout() as stdout:
+        mit support.captured_stdout() als stdout:
             symtable.main([filename])
         out = stdout.getvalue()
         self.assertIn('\n\n', out)
@@ -622,14 +622,14 @@ klasse CommandLineTest(unittest.TestCase):
         self.assertIn("    symbol table fuer function 'spam':", lines)
 
     def test_stdin(self):
-        with support.captured_stdin() as stdin:
+        mit support.captured_stdin() als stdin:
             stdin.write(TEST_CODE)
             stdin.seek(0)
-            with support.captured_stdout() as stdout:
+            mit support.captured_stdout() als stdout:
                 symtable.main([])
             out = stdout.getvalue()
             stdin.seek(0)
-            with support.captured_stdout() as stdout:
+            mit support.captured_stdout() als stdout:
                 symtable.main(['-'])
             self.assertEqual(stdout.getvalue(), out)
         lines = out.splitlines()

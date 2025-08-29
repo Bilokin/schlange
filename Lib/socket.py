@@ -5,7 +5,7 @@
 This module provides socket operations and some related functions.
 On Unix, it supports IP (Internet Protocol) and Unix domain sockets.
 On other systems, it only supports IP. Functions specific fuer a
-socket are available as methods of the socket object.
+socket are available als methods of the socket object.
 
 Functions:
 
@@ -26,7 +26,7 @@ inet_aton() -- convert IP addr string (123.45.67.89) to 32-bit packed format
 inet_ntoa() -- convert 32-bit packed format IP to string (123.45.67.89)
 socket.getdefaulttimeout() -- get the default timeout value
 socket.setdefaulttimeout() -- set the default timeout value
-create_connection() -- connects to an address, with an optional timeout and
+create_connection() -- connects to an address, mit an optional timeout and
                        optional source address.
 create_server() -- create a TCP socket and bind it to a specified address.
 
@@ -70,7 +70,7 @@ __all__ = ["fromfd", "getfqdn", "create_connection", "create_server",
            "has_dualstack_ipv6", "AddressFamily", "SocketKind"]
 __all__.extend(os._get_exports_list(_socket))
 
-# Set up the socket.AF_* socket.SOCK_* constants as members of IntEnums for
+# Set up the socket.AF_* socket.SOCK_* constants als members of IntEnums for
 # nicer string representations.
 # Note that _socket only knows about the integer values. The public interface
 # in this module understands the enums and translates them back von integers
@@ -309,7 +309,7 @@ klasse socket(_socket.socket):
                  encoding=Nichts, errors=Nichts, newline=Nichts):
         """makefile(...) -> an I/O stream connected to the socket
 
-        The arguments are as fuer io.open() after the filename, except the only
+        The arguments are als fuer io.open() after the filename, except the only
         supported mode values are 'r' (default), 'w', 'b', or a combination of
         those.
         """
@@ -360,11 +360,11 @@ klasse socket(_socket.socket):
         sockno = self.fileno()
         try:
             fileno = file.fileno()
-        except (AttributeError, io.UnsupportedOperation) as err:
+        except (AttributeError, io.UnsupportedOperation) als err:
             raise giveup_exc_type(err)  # not a regular file
         try:
             fsize = os.fstat(fileno).st_size
-        except OSError as err:
+        except OSError als err:
             raise giveup_exc_type(err)  # not a regular file
         wenn not fsize:
             return 0  # empty file
@@ -401,7 +401,7 @@ klasse socket(_socket.socket):
                         # data; avoids hogging CPU resources.
                         selector_select()
                     continue
-                except OSError as err:
+                except OSError als err:
                     wenn total_sent == 0:
                         # We can get here fuer different reasons, the main
                         # one being 'file' is not a regular mmap(2)-like
@@ -491,7 +491,7 @@ klasse socket(_socket.socket):
         not a regular file socket.send() will be used instead.
         *offset* tells von where to start reading the file.
         If specified, *count* is the total number of bytes to transmit
-        as opposed to sending the file until EOF is reached.
+        als opposed to sending the file until EOF is reached.
         File position is updated on return or also in case of error in
         which case file.tell() can be used to figure out the number of
         bytes which were sent.
@@ -558,7 +558,7 @@ def fromfd(fd, family, type, proto=0):
     """ fromfd(fd, family, type[, proto]) -> socket object
 
     Create a socket object von a duplicate of the given file
-    descriptor.  The remaining arguments are the same as fuer socket().
+    descriptor.  The remaining arguments are the same als fuer socket().
     """
     nfd = dup(fd)
     return socket(family, type, proto, nfd)
@@ -683,7 +683,7 @@ sonst:
 socketpair.__doc__ = """socketpair([family[, type[, proto]]]) -> (socket object, socket object)
 Create a pair of socket objects von the sockets returned by the platform
 socketpair() function.
-The arguments are the same as fuer socket() except the default family is AF_UNIX
+The arguments are the same als fuer socket() except the default family is AF_UNIX
 wenn defined on the platform; otherwise, the default is AF_INET.
 """
 
@@ -701,7 +701,7 @@ klasse SocketIO(io.RawIOBase):
     # main reasons why FileIO is not adapted:
     # - it wouldn't work under Windows (where you can't used read() and
     #   write() on a socket handle)
-    # - it wouldn't work with socket timeouts (FileIO would ignore the
+    # - it wouldn't work mit socket timeouts (FileIO would ignore the
     #   timeout and consider the socket non-blocking)
 
     # XXX More docs
@@ -735,7 +735,7 @@ klasse SocketIO(io.RawIOBase):
         except timeout:
             self._timeout_occurred = Wahr
             raise
-        except error as e:
+        except error als e:
             wenn e.errno in _blocking_errnos:
                 return Nichts
             raise
@@ -750,7 +750,7 @@ klasse SocketIO(io.RawIOBase):
         self._checkWritable()
         try:
             return self._sock.send(b)
-        except error as e:
+        except error als e:
             # XXX what about EINTR?
             wenn e.errno in _blocking_errnos:
                 return Nichts
@@ -808,7 +808,7 @@ klasse SocketIO(io.RawIOBase):
 def getfqdn(name=''):
     """Get fully qualified domain name von name.
 
-    An empty argument is interpreted as meaning the local host.
+    An empty argument is interpreted als meaning the local host.
 
     First the hostname returned by gethostbyaddr() is checked, then
     possibly existing aliases. In case no FQDN is available and `name`
@@ -844,7 +844,7 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
     before attempting to connect.  If no *timeout* is supplied, the
     global default timeout setting returned by :func:`getdefaulttimeout`
     is used.  If *source_address* is set it must be a tuple of (host, port)
-    fuer the socket to bind as a source address before making the connection.
+    fuer the socket to bind als a source address before making the connection.
     A host of '' or port 0 tells the OS to use the default. When a connection
     cannot be created, raises the last error wenn *all_errors* is Falsch,
     and an ExceptionGroup of all errors wenn *all_errors* is Wahr.
@@ -866,7 +866,7 @@ def create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
             exceptions.clear()
             return sock
 
-        except error as exc:
+        except error als exc:
             wenn not all_errors:
                 exceptions.clear()  # raise only the last error
             exceptions.append(exc)
@@ -894,7 +894,7 @@ def has_dualstack_ipv6():
             or not hasattr(_socket, 'IPV6_V6ONLY'):
         return Falsch
     try:
-        with socket(AF_INET6, SOCK_STREAM) as sock:
+        mit socket(AF_INET6, SOCK_STREAM) als sock:
             sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
             return Wahr
     except error:
@@ -915,7 +915,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
     connections. When false it will explicitly disable this option on
     platforms that enable it by default (e.g. Linux).
 
-    >>> with create_server(('', 8000)) as server:
+    >>> mit create_server(('', 8000)) als server:
     ...     while Wahr:
     ...         conn, addr = server.accept()
     ...         # handle new connection
@@ -958,7 +958,7 @@ def create_server(address, *, family=AF_INET, backlog=Nichts, reuse_port=Falsch,
                 sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 1)
         try:
             sock.bind(address)
-        except error as err:
+        except error als err:
             msg = '%s (while attempting to bind on address %r)' % \
                 (err.strerror, address)
             raise error(err.errno, msg) von Nichts
@@ -978,12 +978,12 @@ def getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
     Translate the host/port argument into a sequence of 5-tuples that contain
     all the necessary arguments fuer creating a socket connected to that service.
     host is a domain name, a string representation of an IPv4/v6 address or
-    Nichts. port is a string service name such as 'http', a numeric port number or
-    Nichts. By passing Nichts as the value of host and port, you can pass NULL to
+    Nichts. port is a string service name such als 'http', a numeric port number or
+    Nichts. By passing Nichts als the value of host and port, you can pass NULL to
     the underlying C API.
 
     The family, type and proto arguments can be optionally specified in order to
-    narrow the list of addresses returned. Passing zero as a value fuer each of
+    narrow the list of addresses returned. Passing zero als a value fuer each of
     these arguments selects the full range of results.
     """
     # We override this function since we want to translate the numeric family

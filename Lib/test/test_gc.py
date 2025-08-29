@@ -65,7 +65,7 @@ klasse GC_Detector(object):
 
 @with_tp_del
 klasse Uncollectable(object):
-    """Create a reference cycle with multiple __del__ methods.
+    """Create a reference cycle mit multiple __del__ methods.
 
     An object in a reference cycle will never have zero references,
     and so must be garbage collected.  If one or more objects in the
@@ -84,7 +84,7 @@ wenn sysconfig.get_config_vars().get('PY_CFLAGS', ''):
 sonst:
     # Usually, sys.gettotalrefcount() is only present wenn Python has been
     # compiled in debug mode. If it's missing, expect that Python has
-    # been released in release mode: with NDEBUG defined.
+    # been released in release mode: mit NDEBUG defined.
     BUILD_WITH_NDEBUG = (not hasattr(sys, 'gettotalrefcount'))
 
 ### Tests
@@ -106,7 +106,7 @@ klasse GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 1)
 
     def test_tuple(self):
-        # since tuples are immutable we close the loop with a list
+        # since tuples are immutable we close the loop mit a list
         l = []
         t = (l,)
         l.append(t)
@@ -258,7 +258,7 @@ klasse GCTests(unittest.TestCase):
             __slots__ = ()
 
             # 4. The finalizers of all garbage objects are called. In
-            #    this case this is only us as `func` doesn't have a
+            #    this case this is only us als `func` doesn't have a
             #    finalizer.
             def __del__(self):
 
@@ -287,12 +287,12 @@ klasse GCTests(unittest.TestCase):
         func.__module__ = cyc
 
         # 2. Make the cycle unreachable, but keep the global reference
-        #    to `latefin` so that it isn't detected as garbage. This
+        #    to `latefin` so that it isn't detected als garbage. This
         #    way its finalizer will not be called immediately.
         del func, cyc
 
         # 3. Invoke garbage collection,
-        #    which will find `cyc` and `func` as garbage.
+        #    which will find `cyc` and `func` als garbage.
         gc.collect()
 
         # 9. Previously, this would crash because the weakref
@@ -512,7 +512,7 @@ klasse GCTests(unittest.TestCase):
             fuer i in range(N_THREADS):
                 t = threading.Thread(target=run_thread)
                 threads.append(t)
-            with threading_helper.start_threads(threads, lambda: exit.append(1)):
+            mit threading_helper.start_threads(threads, lambda: exit.append(1)):
                 time.sleep(1.0)
         finally:
             sys.setswitchinterval(old_switchinterval)
@@ -535,9 +535,9 @@ klasse GCTests(unittest.TestCase):
         del a, b
         # a<->b are in a trash cycle now.  Collection will invoke
         # Boom.__getattr__ (to see whether a and b have __del__ methods), and
-        # __getattr__ deletes the internal "attr" attributes as a side effect.
+        # __getattr__ deletes the internal "attr" attributes als a side effect.
         # That causes the trash cycle to get reclaimed via refcounts falling to
-        # 0, thus mutating the trash graph as a side effect of merely asking
+        # 0, thus mutating the trash graph als a side effect of merely asking
         # whether __del__ exists.  This used to (before 2.3b1) crash Python.
         # Now __getattr__ isn't called.
         self.assertEqual(gc.collect(), 2)
@@ -596,7 +596,7 @@ klasse GCTests(unittest.TestCase):
     def test_is_tracked(self):
         # Atomic built-in types are not tracked, user-defined objects and
         # mutable containers are.
-        # NOTE: types with special optimizations (e.g. tuple) have tests
+        # NOTE: types mit special optimizations (e.g. tuple) have tests
         # in their own test files instead.
         self.assertFalsch(gc.is_tracked(Nichts))
         self.assertFalsch(gc.is_tracked(1))
@@ -761,7 +761,7 @@ klasse GCTests(unittest.TestCase):
         self.assertWahr(
             (b"[<X 'first'>, <X 'second'>]" in stderr) or
             (b"[<X 'second'>, <X 'first'>]" in stderr), stderr)
-        # we expect two lines with uncollectable objects
+        # we expect two lines mit uncollectable objects
         self.assertRegex(stderr, expected_re)
         # With DEBUG_SAVEALL, no additional message should get printed
         # (because gc.garbage also contains normally reclaimable cyclic
@@ -783,8 +783,8 @@ klasse GCTests(unittest.TestCase):
         self.assertEqual(out.strip(), b'__del__ called')
 
     def test_gc_ordinary_module_at_shutdown(self):
-        # Same as above, but with a non-__main__ module.
-        with temp_dir() as script_dir:
+        # Same als above, but mit a non-__main__ module.
+        mit temp_dir() als script_dir:
             module = """if 1:
                 klasse C:
                     def __del__(self):
@@ -810,7 +810,7 @@ klasse GCTests(unittest.TestCase):
             a.link = a
             raise SystemExit(0)"""
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, 'w', encoding="utf-8") as script:
+        mit open(TESTFN, 'w', encoding="utf-8") als script:
             script.write(code)
         rc, out, err = assert_python_ok(TESTFN)
         self.assertEqual(out.strip(), b'__del__ called')
@@ -896,7 +896,7 @@ klasse GCTests(unittest.TestCase):
         gc.collect()
         gc.disable()
 
-        # We start with 0 resurrections
+        # We start mit 0 resurrections
         laz = Lazarus()
         self.assertEqual(Lazarus.resurrected, 0)
 
@@ -1028,7 +1028,7 @@ klasse GCTests(unittest.TestCase):
         #             ^  |
         #             +--+
         # where:
-        #   WZ is a weakref to Z with callback C
+        #   WZ is a weakref to Z mit callback C
         #   Y doesn't implement tp_traverse
         #   A contains a reference to itself, Y and WZ
         #
@@ -1046,7 +1046,7 @@ klasse GCTests(unittest.TestCase):
         # trash.  Normally, handle_weakrefs() would find the weakref via Z and
         # clear it.  However, since the GC cannot find Z, WR is not cleared and
         # it can execute during delete_garbage().  That can lead to disaster
-        # since the callback might tinker with objects that have already had
+        # since the callback might tinker mit objects that have already had
         # tp_clear called on them (leaving them in possibly invalid states).
 
         callback = unittest.mock.Mock()
@@ -1057,7 +1057,7 @@ klasse GCTests(unittest.TestCase):
         klasse Z:
             pass
 
-        # setup required object graph, as described above
+        # setup required object graph, als described above
         a = A()
         a.a = a
         a.y = ContainerNoGC(Z())
@@ -1132,7 +1132,7 @@ klasse GCTests(unittest.TestCase):
     def test_deferred_refcount_frozen(self):
         # Also von GH-126312: objects that use deferred reference counting
         # weren't ignored wenn they were frozen. Unfortunately, it's pretty
-        # difficult to come up with a case that triggers this.
+        # difficult to come up mit a case that triggers this.
         #
         # Calling gc.collect() while the garbage collector is frozen doesn't
         # trigger this normally, but it *does* wenn it's inside unittest fuer whatever
@@ -1321,10 +1321,10 @@ klasse GCCallbackTests(unittest.TestCase):
 
     @requires_subprocess()
     @unittest.skipIf(BUILD_WITH_NDEBUG,
-                     'built with -NDEBUG')
+                     'built mit -NDEBUG')
     def test_refcount_errors(self):
         self.preclean()
-        # Verify the "handling" of objects with broken refcounts
+        # Verify the "handling" of objects mit broken refcounts
 
         # Skip the test wenn ctypes is not available
         import_module("ctypes")
@@ -1405,7 +1405,7 @@ klasse GCTogglingTests(unittest.TestCase):
         def callback(ignored):
             ouch[:] = [c2wr()]
 
-        # The callback gets associated with a wr on an object in generation 2.
+        # The callback gets associated mit a wr on an object in generation 2.
         c0wr = weakref.ref(c0, callback)
 
         c0 = c1 = c2 = Nichts
@@ -1417,7 +1417,7 @@ klasse GCTogglingTests(unittest.TestCase):
         # There's also a global weakref to c0 (c0wr), and that does have a
         # callback, and that callback references c2 via c2wr().
         #
-        #               c0 has a wr with callback, which references c2wr
+        #               c0 has a wr mit callback, which references c2wr
         #               ^
         #               |
         #               |     Generation 2 above dots
@@ -1432,7 +1432,7 @@ klasse GCTogglingTests(unittest.TestCase):
         # So this is the nightmare:  when generation 0 gets collected, we see
         # that c2 has a callback-free weakref, and c1 doesn't even have a
         # weakref.  Collecting generation 0 doesn't see c0 at all, and c0 is
-        # the only object that has a weakref with a callback.  gc clears c1
+        # the only object that has a weakref mit a callback.  gc clears c1
         # and c2.  Clearing c1 has the side effect of dropping the refcount on
         # c0 to 0, so c0 goes away (despite that it's in an older generation)
         # and c0's wr callback triggers.  That in turn materializes a reference
@@ -1457,7 +1457,7 @@ klasse GCTogglingTests(unittest.TestCase):
         self.assertEqual(len(ouch), 1)  # sonst the callback wasn't invoked
         fuer x in ouch:
             # If the callback resurrected c2, the instance would be damaged,
-            # with an empty __dict__.
+            # mit an empty __dict__.
             self.assertEqual(x, Nichts)
 
     @gc_threshold(1000, 0, 0)
@@ -1529,7 +1529,7 @@ klasse GCTogglingTests(unittest.TestCase):
 
         self.assertEqual(len(ouch), 1)  # sonst __del__ wasn't invoked
         fuer x in ouch:
-            # If __del__ resurrected c2, the instance would be damaged, with an
+            # If __del__ resurrected c2, the instance would be damaged, mit an
             # empty __dict__.
             self.assertEqual(x, Nichts)
 
@@ -1565,7 +1565,7 @@ klasse PythonFinalizationTests(unittest.TestCase):
         # bpo-44184: Regression test fuer subtype_dealloc() when deallocating
         # an AST instance also destroy its AST type: subtype_dealloc() must
         # not access the type memory after deallocating the instance, since
-        # the type memory can be freed as well. The test is also related to
+        # the type memory can be freed als well. The test is also related to
         # _PyAST_Fini() which clears references to AST types.
         code = textwrap.dedent("""
             importiere ast

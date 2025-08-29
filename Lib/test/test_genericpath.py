@@ -17,7 +17,7 @@ von test.support.os_helper importiere FakePath
 
 
 def create_file(filename, data=b'foo'):
-    with open(filename, 'xb', 0) as fp:
+    mit open(filename, 'xb', 0) als fp:
         fp.write(data)
 
 
@@ -28,7 +28,7 @@ klasse GenericTest:
 
     def test_no_argument(self):
         fuer attr in self.common_attributes + self.attributes:
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
                 raise self.fail("{}.{}() did not raise a TypeError"
                                 .format(self.pathmodule.__name__, attr))
@@ -117,10 +117,10 @@ klasse GenericTest:
 
         create_file(filename, b'foo')
 
-        with open(filename, "ab", 0) as f:
+        mit open(filename, "ab", 0) als f:
             f.write(b"bar")
 
-        with open(filename, "rb", 0) as f:
+        mit open(filename, "rb", 0) als f:
             data = f.read()
         self.assertEqual(data, b"foobar")
 
@@ -174,8 +174,8 @@ klasse GenericTest:
 
     def test_exists_bool(self):
         fuer fd in Falsch, Wahr:
-            with self.assertWarnsRegex(RuntimeWarning,
-                    'bool is used as a file descriptor'):
+            mit self.assertWarnsRegex(RuntimeWarning,
+                    'bool is used als a file descriptor'):
                 self.pathmodule.exists(fd)
 
     def test_isdir(self):
@@ -265,7 +265,7 @@ klasse GenericTest:
     def test_samefile_on_link(self):
         try:
             self._test_samefile_on_link_func(os.link)
-        except PermissionError as e:
+        except PermissionError als e:
             self.skipTest('os.link(): %s' % e)
 
     def test_samestat(self):
@@ -308,7 +308,7 @@ klasse GenericTest:
     def test_samestat_on_link(self):
         try:
             self._test_samestat_on_link_func(os.link)
-        except PermissionError as e:
+        except PermissionError als e:
             self.skipTest('os.link(): %s' % e)
 
     def test_sameopenfile(self):
@@ -316,15 +316,15 @@ klasse GenericTest:
         self.addCleanup(os_helper.unlink, filename)
         create_file(filename)
 
-        with open(filename, "rb", 0) as fp1:
+        mit open(filename, "rb", 0) als fp1:
             fd1 = fp1.fileno()
-            with open(filename, "rb", 0) as fp2:
+            mit open(filename, "rb", 0) als fp2:
                 fd2 = fp2.fileno()
                 self.assertWahr(self.pathmodule.sameopenfile(fd1, fd2))
 
     def test_realpath_mode_values(self):
         fuer name in 'ALL_BUT_LAST', 'ALLOW_MISSING':
-            with self.subTest(name):
+            mit self.subTest(name):
                 mode = getattr(self.pathmodule, name)
                 self.assertEqual(repr(mode), 'os.path.' + name)
                 self.assertEqual(str(mode), 'os.path.' + name)
@@ -332,7 +332,7 @@ klasse GenericTest:
                 self.assertIs(copy.copy(mode), mode)
                 self.assertIs(copy.deepcopy(mode), mode)
                 fuer proto in range(pickle.HIGHEST_PROTOCOL+1):
-                    with self.subTest(protocol=proto):
+                    mit self.subTest(protocol=proto):
                         pickled = pickle.dumps(mode, proto)
                         unpickled = pickle.loads(pickled)
                         self.assertIs(unpickled, mode)
@@ -350,20 +350,20 @@ klasse TestGenericTest(GenericTest, unittest.TestCase):
             wenn attr == 'commonprefix':
                 continue
             func = getattr(self.pathmodule, attr)
-            with self.subTest(attr=attr):
+            mit self.subTest(attr=attr):
                 wenn attr in ('exists', 'isdir', 'isfile'):
                     func('/tmp\udfffabcds')
                     func(b'/tmp\xffabcds')
                     func('/tmp\x00abcds')
                     func(b'/tmp\x00abcds')
                 sonst:
-                    with self.assertRaises((OSError, UnicodeEncodeError)):
+                    mit self.assertRaises((OSError, UnicodeEncodeError)):
                         func('/tmp\udfffabcds')
-                    with self.assertRaises((OSError, UnicodeDecodeError)):
+                    mit self.assertRaises((OSError, UnicodeDecodeError)):
                         func(b'/tmp\xffabcds')
-                    with self.assertRaisesRegex(ValueError, 'embedded null'):
+                    mit self.assertRaisesRegex(ValueError, 'embedded null'):
                         func('/tmp\x00abcds')
-                    with self.assertRaisesRegex(ValueError, 'embedded null'):
+                    mit self.assertRaisesRegex(ValueError, 'embedded null'):
                         func(b'/tmp\x00abcds')
 
 # Following TestCase is not supposed to be run von test_genericpath.
@@ -407,7 +407,7 @@ klasse CommonTest(GenericTest):
 
     def test_expandvars(self):
         expandvars = self.pathmodule.expandvars
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.clear()
             env["foo"] = "bar"
             env["{foo"] = "baz1"
@@ -441,7 +441,7 @@ klasse CommonTest(GenericTest):
         expandvars = self.pathmodule.expandvars
         def check(value, expected):
             self.assertEqual(expandvars(value), expected)
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.clear()
             nonascii = os_helper.FS_NONASCII
             env['spam'] = nonascii
@@ -464,7 +464,7 @@ klasse CommonTest(GenericTest):
 
     def test_abspath(self):
         self.assertIn("foo", self.pathmodule.abspath("foo"))
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.assertIn(b"foo", self.pathmodule.abspath(b"foo"))
 
@@ -472,14 +472,14 @@ klasse CommonTest(GenericTest):
         undecodable_path = b'' wenn sys.platform == 'win32' sonst b'f\xf2\xf2'
 
         # Abspath returns bytes when the arg is bytes
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             fuer path in (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
                 self.assertIsInstance(self.pathmodule.abspath(path), bytes)
 
     def test_realpath(self):
         self.assertIn("foo", self.pathmodule.realpath("foo"))
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.assertIn(b"foo", self.pathmodule.realpath(b"foo"))
 
@@ -494,7 +494,7 @@ klasse CommonTest(GenericTest):
 
     def test_abspath_issue3426(self):
         # Check that abspath returns unicode when the arg is unicode
-        # with both ASCII and non-ASCII cwds.
+        # mit both ASCII and non-ASCII cwds.
         abspath = self.pathmodule.abspath
         fuer path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
             self.assertIsInstance(abspath(path), str)
@@ -506,7 +506,7 @@ klasse CommonTest(GenericTest):
             # FS encoding is probably ASCII
             pass
         sonst:
-            with os_helper.temp_cwd(unicwd):
+            mit os_helper.temp_cwd(unicwd):
                 fuer path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
                     self.assertIsInstance(abspath(path), str)
 
@@ -514,8 +514,8 @@ klasse CommonTest(GenericTest):
         wenn (
             os_helper.TESTFN_UNDECODABLE
             # Apple platforms and Emscripten/WASI deny the creation of a
-            # directory with an invalid UTF-8 name. Windows allows creating a
-            # directory with an arbitrary bytes name, but fails to enter this
+            # directory mit an invalid UTF-8 name. Windows allows creating a
+            # directory mit an arbitrary bytes name, but fails to enter this
             # directory (when the bytes name is used).
             and sys.platform not in {
                 "win32", "emscripten", "wasi"
@@ -527,45 +527,45 @@ klasse CommonTest(GenericTest):
         sonst:
             self.skipTest("need os_helper.TESTFN_NONASCII")
 
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
-            with os_helper.temp_cwd(name):
+            mit os_helper.temp_cwd(name):
                 self.test_abspath()
 
     def test_join_errors(self):
         # Check join() raises friendly TypeErrors.
-        with warnings_helper.check_warnings(('', BytesWarning), quiet=Wahr):
+        mit warnings_helper.check_warnings(('', BytesWarning), quiet=Wahr):
             errmsg = "Can't mix strings and bytes in path components"
-            with self.assertRaisesRegex(TypeError, errmsg):
+            mit self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.join(b'bytes', 'str')
-            with self.assertRaisesRegex(TypeError, errmsg):
+            mit self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.join('str', b'bytes')
             # regression, see #15377
-            with self.assertRaisesRegex(TypeError, 'int'):
+            mit self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.join(42, 'str')
-            with self.assertRaisesRegex(TypeError, 'int'):
+            mit self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.join('str', 42)
-            with self.assertRaisesRegex(TypeError, 'int'):
+            mit self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.join(42)
-            with self.assertRaisesRegex(TypeError, 'list'):
+            mit self.assertRaisesRegex(TypeError, 'list'):
                 self.pathmodule.join([])
-            with self.assertRaisesRegex(TypeError, 'bytearray'):
+            mit self.assertRaisesRegex(TypeError, 'bytearray'):
                 self.pathmodule.join(bytearray(b'foo'), bytearray(b'bar'))
 
     def test_relpath_errors(self):
         # Check relpath() raises friendly TypeErrors.
-        with warnings_helper.check_warnings(
+        mit warnings_helper.check_warnings(
                 ('', (BytesWarning, DeprecationWarning)), quiet=Wahr):
             errmsg = "Can't mix strings and bytes in path components"
-            with self.assertRaisesRegex(TypeError, errmsg):
+            mit self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.relpath(b'bytes', 'str')
-            with self.assertRaisesRegex(TypeError, errmsg):
+            mit self.assertRaisesRegex(TypeError, errmsg):
                 self.pathmodule.relpath('str', b'bytes')
-            with self.assertRaisesRegex(TypeError, 'int'):
+            mit self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.relpath(42, 'str')
-            with self.assertRaisesRegex(TypeError, 'int'):
+            mit self.assertRaisesRegex(TypeError, 'int'):
                 self.pathmodule.relpath('str', 42)
-            with self.assertRaisesRegex(TypeError, 'bytearray'):
+            mit self.assertRaisesRegex(TypeError, 'bytearray'):
                 self.pathmodule.relpath(bytearray(b'foo'), bytearray(b'bar'))
 
     def test_import(self):

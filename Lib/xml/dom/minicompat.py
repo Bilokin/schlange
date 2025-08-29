@@ -15,9 +15,9 @@ should not be imported; use xml.dom.minidom instead.
 #
 #   StringTypes   -- tuple of defined string types
 #
-#   defproperty   -- function used in conjunction with GetattrMagic;
+#   defproperty   -- function used in conjunction mit GetattrMagic;
 #                    using these together is needed to make them work
-#                    as efficiently as possible in both Python 2.2+
+#                    als efficiently als possible in both Python 2.2+
 #                    and older versions.  For example:
 #
 #                        klasse MyClass(GetattrMagic):

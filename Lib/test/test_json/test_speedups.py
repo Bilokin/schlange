@@ -46,9 +46,9 @@ klasse TestEncode(CTest):
         enc = self.json.encoder.c_make_encoder(Nichts, lambda obj: str(obj),
                                                bad_encoder1, Nichts, ': ', ', ',
                                                Falsch, Falsch, Falsch)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             enc('spam', 4)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             enc({'spam': 42}, 4)
 
         def bad_encoder2(*args):
@@ -56,12 +56,12 @@ klasse TestEncode(CTest):
         enc = self.json.encoder.c_make_encoder(Nichts, lambda obj: str(obj),
                                                bad_encoder2, Nichts, ': ', ', ',
                                                Falsch, Falsch, Falsch)
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             enc('spam', 4)
 
     def test_bad_markers_argument_to_encoder(self):
         # https://bugs.python.org/issue45269
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             TypeError,
             r'make_encoder\(\) argument 1 must be dict or Nichts, not int',
         ):
@@ -78,5 +78,5 @@ klasse TestEncode(CTest):
         self.assertRaises(ZeroDivisionError, test, 'sort_keys')
 
     def test_unsortable_keys(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.json.encoder.JSONEncoder(sort_keys=Wahr).encode({'a': 1, 1: 'a'})

@@ -27,10 +27,10 @@
 #   by Timothy O'Malley <timo@alum.mit.edu>
 #
 #  Cookie.py is a Python module fuer the handling of HTTP
-#  cookies as a Python dictionary.  See RFC 2109 fuer more
+#  cookies als a Python dictionary.  See RFC 2109 fuer more
 #  information on cookies.
 #
-#  The original idea to treat Cookies as a dictionary came from
+#  The original idea to treat Cookies als a dictionary came from
 #  Dave Mitchell (davem@magnet.com) in 1995, when he released the
 #  first version of nscookie.py.
 #
@@ -51,7 +51,7 @@ Most of the time you start by creating a cookie.
 
    >>> C = cookies.SimpleCookie()
 
-Once you've created your Cookie, you can add values just as wenn it were
+Once you've created your Cookie, you can add values just als wenn it were
 a dictionary.
 
    >>> C = cookies.SimpleCookie()
@@ -102,7 +102,7 @@ attribute.
    Set-Cookie: oreo=doublestuff; Path=/
 
 Each dictionary element has a 'value' attribute, which gives you
-back the value associated with the key.
+back the value associated mit the key.
 
    >>> C = cookies.SimpleCookie()
    >>> C["twix"] = "none fuer you"
@@ -151,7 +151,7 @@ klasse CookieError(Exception):
 # a two-way quoting algorithm.  Any non-text character is translated
 # into a 4 character sequence: a forward-slash followed by the
 # three-digit octal equivalent of the character.  Any '\' or '"' is
-# quoted with a preceding '\' slash.
+# quoted mit a preceding '\' slash.
 # Because of the way browsers really handle cookies (as opposed to what
 # the RFC says) we also encode "," and ";".
 #
@@ -237,11 +237,11 @@ klasse Morsel(dict):
     """A klasse to hold ONE (key, value) pair.
 
     In a cookie, each such pair may have several attributes, so this klasse is
-    used to keep the attributes associated with the appropriate key,value pair.
+    used to keep the attributes associated mit the appropriate key,value pair.
     This klasse also includes a coded_value attribute, which is used to hold
     the network representation of the value.
     """
-    # RFC 2109 lists these attributes as reserved:
+    # RFC 2109 lists these attributes als reserved:
     #   path       comment         domain
     #   max-age    secure      version
     #
@@ -547,7 +547,7 @@ klasse BaseCookie(dict):
             wenn key[0] == "$":
                 wenn not morsel_seen:
                     # We ignore attributes which pertain to the cookie
-                    # mechanism as a whole, such as "$Version".
+                    # mechanism als a whole, such als "$Version".
                     # See RFC 2965. (Does anyone care?)
                     continue
                 parsed_items.append((TYPE_ATTRIBUTE, key[1:], value))
@@ -585,10 +585,10 @@ klasse BaseCookie(dict):
 
 klasse SimpleCookie(BaseCookie):
     """
-    SimpleCookie supports strings as cookie values.  When setting
+    SimpleCookie supports strings als cookie values.  When setting
     the value using the dictionary assignment notation, SimpleCookie
     calls the builtin str() to convert the value to a string.  Values
-    received von HTTP are kept as strings.
+    received von HTTP are kept als strings.
     """
     def value_decode(self, val):
         return _unquote(val), val

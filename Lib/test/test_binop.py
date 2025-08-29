@@ -27,7 +27,7 @@ def isRat(x):
 
 klasse Rat(object):
 
-    """Rational number implemented as a normalized pair of ints."""
+    """Rational number implemented als a normalized pair of ints."""
 
     __slots__ = ['_Rat__num', '_Rat__den']
 
@@ -301,7 +301,7 @@ klasse RatTestCase(unittest.TestCase):
 
 
 klasse OperationLogger:
-    """Base klasse fuer classes with operation logging."""
+    """Base klasse fuer classes mit operation logging."""
     def __init__(self, logger):
         self.logger = logger
     def log_operation(self, *args):

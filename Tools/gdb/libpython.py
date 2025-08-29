@@ -1,12 +1,12 @@
 #!/usr/bin/python
 '''
 From gdb 7 onwards, gdb's build can be configured --with-python, allowing gdb
-to be extended with Python code e.g. fuer library-specific data visualizations,
-such as fuer the C++ STL types.  Documentation on this API can be seen at:
+to be extended mit Python code e.g. fuer library-specific data visualizations,
+such als fuer the C++ STL types.  Documentation on this API can be seen at:
 http://sourceware.org/gdb/current/onlinedocs/gdb/Python-API.html
 
 
-This python module deals with the case when the process being debugged (the
+This python module deals mit the case when the process being debugged (the
 "inferior process" in gdb parlance) is itself python, or more specifically,
 linked against libpython.  In this situation, almost every item of data is a
 (PyObject*), and having the debugger merely print their addresses is not very
@@ -33,12 +33,12 @@ With both "proxyval" and "write_repr" we keep track of the set of all addresses
 visited so far in the traversal, to avoid infinite recursion due to cycles in
 the graph of object references.
 
-We try to defer gdb.lookup_type() invocations fuer python types until as late as
+We try to defer gdb.lookup_type() invocations fuer python types until als late as
 possible: fuer a dynamically linked python binary, when the process starts in
 the debugger, the libpython.so hasn't been dynamically loaded yet, so none of
 the type names are known to the debugger
 
-The module also extends gdb with some python-specific commands.
+The module also extends gdb mit some python-specific commands.
 '''
 
 importiere gdb
@@ -48,7 +48,7 @@ importiere sys
 
 
 # Look up the gdb.Type fuer some standard types:
-# Those need to be refreshed as types (pointer sizes) may change when
+# Those need to be refreshed als types (pointer sizes) may change when
 # gdb loads different executables
 
 def _type_char_ptr():
@@ -183,7 +183,7 @@ klasse PyObjectPtr(object):
         Various libpython types are defined using the "PyObject_HEAD" and
         "PyObject_VAR_HEAD" macros.
 
-        In Python, this is defined as an embedded PyVarObject type thus:
+        In Python, this is defined als an embedded PyVarObject type thus:
            PyVarObject ob_base;
         so that the "ob_size" field is located insize the "ob_base" field, and
         the "ob_type" is most easily accessed by casting back to a (PyObject*).
@@ -219,7 +219,7 @@ klasse PyObjectPtr(object):
     def get_truncated_repr(self, maxlen):
         '''
         Get a repr-like string fuer the data, but truncate it at "maxlen" bytes
-        (ending the object graph traversal as soon as you do)
+        (ending the object graph traversal als soon als you do)
         '''
         out = TruncatedStringIO(maxlen)
         try:
@@ -241,7 +241,7 @@ klasse PyObjectPtr(object):
         '''
         Is the value of the underlying PyObject* visible to the debugger?
 
-        This can vary with the precise version of the compiler used to build
+        This can vary mit the precise version of the compiler used to build
         Python, and the precise version of gdb.
 
         See e.g. https://bugzilla.redhat.com/show_bug.cgi?id=556975 with
@@ -268,12 +268,12 @@ klasse PyObjectPtr(object):
 
         Derived classes will override this.
 
-        For example, a PyLongObjectPtr* with long_value 42 in the inferior process
+        For example, a PyLongObjectPtr* mit long_value 42 in the inferior process
         should result in an int(42) in this process.
 
         visited: a set of all gdb.Value pyobject pointers already visited
         whilst generating this value (to guard against infinite recursion when
-        visiting object graphs with loops).  Analogous to Py_ReprEnter and
+        visiting object graphs mit loops).  Analogous to Py_ReprEnter and
         Py_ReprLeave
         '''
 
@@ -290,7 +290,7 @@ klasse PyObjectPtr(object):
 
             def __repr__(self):
                 # For the NULL pointer, we have no way of knowing a type, so
-                # special-case it as per
+                # special-case it als per
                 # http://bugs.python.org/issue8032#msg100882
                 wenn self.address == 0:
                     return '0x0'
@@ -728,8 +728,8 @@ klasse PyCodeObjectPtr(PyObjectPtr):
         '''
         co_linetable = self.pyop_field('co_linetable').proxyval(set())
 
-        # Initialize lineno to co_firstlineno as per PyCode_Addr2Line
-        # not 0, as lnotab_notes.txt has it:
+        # Initialize lineno to co_firstlineno als per PyCode_Addr2Line
+        # not 0, als lnotab_notes.txt has it:
         lineno = int_from_int(self.field('co_firstlineno'))
 
         wenn addrq < 0:
@@ -856,7 +856,7 @@ klasse PyListObjectPtr(PyObjectPtr):
     _typename = 'PyListObject'
 
     def __getitem__(self, i):
-        # Get the gdb.Value fuer the (PyObject*) with the given index:
+        # Get the gdb.Value fuer the (PyObject*) mit the given index:
         field_ob_item = self.field('ob_item')
         return field_ob_item[i]
 
@@ -902,7 +902,7 @@ klasse PyLongObjectPtr(PyObjectPtr):
                 _PyLongValue long_value;
             };
 
-        with this description:
+        mit this description:
             The absolute value of a number is equal to
                 SUM(for i=0 through ndigits-1) ob_digit[i] * 2**(PyLong_SHIFT*i)
             The sign of the value is stored in the lower 2 bits of lv_tag.
@@ -936,7 +936,7 @@ klasse PyLongObjectPtr(PyObjectPtr):
         return result
 
     def write_repr(self, out, visited):
-        # Write this out as a Python int literal
+        # Write this out als a Python int literal
         proxy = self.proxyval(visited)
         out.write("%s" % proxy)
 
@@ -955,7 +955,7 @@ klasse PyBoolObjectPtr(PyLongObjectPtr):
 klasse PyNichtsStructPtr(PyObjectPtr):
     """
     Class wrapping a gdb.Value that's a PyObject* pointing to the
-    singleton (we hope) _Py_NichtsStruct with ob_type PyNichts_Type
+    singleton (we hope) _Py_NichtsStruct mit ob_type PyNichts_Type
     """
     _typename = 'PyObject'
 
@@ -1005,13 +1005,13 @@ klasse PyFrameObjectPtr(PyObjectPtr):
         return self._frame.get_var_by_name(name)
 
     def filename(self):
-        '''Get the path of the current Python source file, as a string'''
+        '''Get the path of the current Python source file, als a string'''
         wenn self.is_optimized_out():
             return FRAME_INFO_OPTIMIZED_OUT
         return self._frame.filename()
 
     def current_line_num(self):
-        '''Get current line number as an integer (1-based)
+        '''Get current line number als an integer (1-based)
 
         Translated von PyFrame_GetLineNumber and PyCode_Addr2Line
 
@@ -1022,7 +1022,7 @@ klasse PyFrameObjectPtr(PyObjectPtr):
         return self._frame.current_line_num()
 
     def current_line(self):
-        '''Get the text of the current source line as a string, with a trailing
+        '''Get the text of the current source line als a string, mit a trailing
         newline character'''
         wenn self.is_optimized_out():
             return FRAME_INFO_OPTIMIZED_OUT
@@ -1158,13 +1158,13 @@ klasse PyFramePtr:
         return Nichts, Nichts
 
     def filename(self):
-        '''Get the path of the current Python source file, as a string'''
+        '''Get the path of the current Python source file, als a string'''
         wenn self.is_optimized_out():
             return FRAME_INFO_OPTIMIZED_OUT
         return self.co_filename.proxyval(set())
 
     def current_line_num(self):
-        '''Get current line number as an integer (1-based)
+        '''Get current line number als an integer (1-based)
 
         Translated von PyFrame_GetLineNumber and PyCode_Addr2Line
 
@@ -1174,16 +1174,16 @@ klasse PyFramePtr:
             return Nichts
         try:
             return self.co.addr2line(self.f_lasti)
-        except Exception as ex:
+        except Exception als ex:
             # bpo-34989: addr2line() is a complex function, it can fail in many
-            # ways. For example, it fails with a TypeError on "FakeRepr" if
+            # ways. For example, it fails mit a TypeError on "FakeRepr" if
             # gdb fails to load debug symbols. Use a catch-all "except
             # Exception" to make the whole function safe. The caller has to
             # handle Nichts anyway fuer optimized Python.
             return Nichts
 
     def current_line(self):
-        '''Get the text of the current source line as a string, with a trailing
+        '''Get the text of the current source line als a string, mit a trailing
         newline character'''
         wenn self.is_optimized_out():
             return FRAME_INFO_OPTIMIZED_OUT
@@ -1194,7 +1194,7 @@ klasse PyFramePtr:
 
         filename = self.filename()
         try:
-            with open(os.fsencode(filename), 'r', encoding="utf-8") as fp:
+            mit open(os.fsencode(filename), 'r', encoding="utf-8") als fp:
                 lines = fp.readlines()
         except IOError:
             return Nichts
@@ -1246,7 +1246,7 @@ klasse PyFramePtr:
     def get_truncated_repr(self, maxlen):
         '''
         Get a repr-like string fuer the data, but truncate it at "maxlen" bytes
-        (ending the object graph traversal as soon as you do)
+        (ending the object graph traversal als soon als you do)
         '''
         out = TruncatedStringIO(maxlen)
         try:
@@ -1333,7 +1333,7 @@ klasse PyBytesObjectPtr(PyObjectPtr):
         return str(self)
 
     def write_repr(self, out, visited):
-        # Write this out as a Python bytes literal, i.e. with a "b" prefix
+        # Write this out als a Python bytes literal, i.e. mit a "b" prefix
 
         # Get a PyStringObject* within the Python gdb process:
         proxy = self.proxyval(visited)
@@ -1367,7 +1367,7 @@ klasse PyTupleObjectPtr(PyObjectPtr):
     _typename = 'PyTupleObject'
 
     def __getitem__(self, i):
-        # Get the gdb.Value fuer the (PyObject*) with the given index:
+        # Get the gdb.Value fuer the (PyObject*) mit the given index:
         field_ob_item = self.field('ob_item')
         return field_ob_item[i]
 
@@ -1444,7 +1444,7 @@ klasse PyUnicodeObjectPtr(PyObjectPtr):
         return result
 
     def write_repr(self, out, visited):
-        # Write this out as a Python str literal
+        # Write this out als a Python str literal
 
         # Get a PyUnicodeObject* within the Python gdb process:
         proxy = self.proxyval(visited)
@@ -1633,7 +1633,7 @@ then reloading it after each edit like this:
 
 The following code should ensure that the prettyprinter is registered
 wenn the code is autoloaded by gdb when visiting libpython.so, provided
-that this python file is installed to the same path as the library (or its
+that this python file is installed to the same path als the library (or its
 .debug file) plus a "-gdb.py" suffix, e.g:
   /usr/lib/libpython3.12.so.1.0-gdb.py
   /usr/lib/debug/usr/lib/libpython3.12.so.1.0.debug-gdb.py
@@ -1720,9 +1720,9 @@ klasse Frame(object):
             '''
             I believe we also need to filter on the inline
             struct frame_id.inline_depth, only regarding frames with
-            an inline depth of 0 as actually being this function
+            an inline depth of 0 als actually being this function
 
-            So we reject those with type gdb.INLINE_FRAME
+            So we reject those mit type gdb.INLINE_FRAME
             '''
             wenn self._gdbframe.type() == gdb.NORMAL_FRAME:
                 # We have a _PyEval_EvalFrameDefault frame:
@@ -1959,14 +1959,14 @@ klasse PyList(gdb.Command):
 
         try:
             f = open(os.fsencode(filename), 'r', encoding="utf-8")
-        except IOError as err:
+        except IOError als err:
             sys.stdout.write('Unable to open %s: %s\n'
                              % (filename, err))
             return
-        with f:
+        mit f:
             all_lines = f.readlines()
             # start and end are 1-based, all_lines is 0-based;
-            # so [start-1:end] as a python slice gives us [start, end] as a
+            # so [start-1:end] als a python slice gives us [start, end] als a
             # closed interval
             fuer i, line in enumerate(all_lines[start-1:end]):
                 linestr = str(i+start)
@@ -1983,7 +1983,7 @@ def move_in_stack(move_up):
     '''Move up or down the stack (for the py-up/py-down command)'''
     # Important:
     # The amount of frames that are printed out depends on how many frames are inlined
-    # in the same evaluation loop. As this command links directly the C stack with the
+    # in the same evaluation loop. As this command links directly the C stack mit the
     # Python stack, the results are sensitive to the number of inlined frames and this
     # is likely to change between versions and optimizations.
     frame = Frame.get_selected_python_frame()

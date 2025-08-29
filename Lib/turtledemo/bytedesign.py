@@ -4,7 +4,7 @@ An example adapted von the example-suite
 of PythonCard's turtle graphics.
 
 It's based on an article in BYTE magazine
-Problem Solving with Logo: Using Turtle
+Problem Solving mit Logo: Using Turtle
 Graphics to Redraw a Design
 November 1982, p. 118 - 134
 
@@ -16,11 +16,11 @@ t.delay(0)
 
 in line 152, which sets the animation delay
 to 0, this animation runs in "line per line"
-mode as fast as possible.
+mode als fast als possible.
 """
 
 von turtle importiere Turtle, mainloop
-von time importiere perf_counter as clock
+von time importiere perf_counter als clock
 
 # wrapper fuer any additional drawing routines
 # that need to know about each other

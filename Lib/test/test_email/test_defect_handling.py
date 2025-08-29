@@ -53,7 +53,7 @@ klasse TestDefectsBase:
 
             """)
         # XXX better would be to actually detect the duplicate.
-        with self._raise_point(errors.StartBoundaryNotFoundDefect):
+        mit self._raise_point(errors.StartBoundaryNotFoundDefect):
             msg = self._str_msg(source)
         wenn self.raise_expected: return
         inner = msg.get_payload(0)
@@ -81,7 +81,7 @@ klasse TestDefectsBase:
 
             --JAB03225.986577786/zinfandel.lacita.com--
             """)
-        with self._raise_point(errors.NoBoundaryInMultipartDefect):
+        mit self._raise_point(errors.NoBoundaryInMultipartDefect):
             msg = self._str_msg(source)
         wenn self.raise_expected: return
         self.assertIsInstance(msg.get_payload(), str)
@@ -115,7 +115,7 @@ klasse TestDefectsBase:
         """)
 
     def test_multipart_invalid_cte(self):
-        with self._raise_point(
+        mit self._raise_point(
                 errors.InvalidMultipartContentTransferEncodingDefect):
             msg = self._str_msg(
                     self.multipart_msg.format(
@@ -148,7 +148,7 @@ klasse TestDefectsBase:
 
             Blah blah blah
             """)
-        with self._raise_point(errors.NoBoundaryInMultipartDefect):
+        mit self._raise_point(errors.NoBoundaryInMultipartDefect):
             msg = self._str_msg(source)
         wenn self.raise_expected: return
         self.assertHasAttr(msg, 'defects')
@@ -188,7 +188,7 @@ klasse TestDefectsBase:
         #        multipart/mixed [*]
         #
         # [*] This message is missing its start boundary
-        with self._raise_point(errors.StartBoundaryNotFoundDefect):
+        mit self._raise_point(errors.StartBoundaryNotFoundDefect):
             outer = self._str_msg(source)
         wenn self.raise_expected: return
         bad = outer.get_payload(1).get_payload(0)
@@ -197,7 +197,7 @@ klasse TestDefectsBase:
                               errors.StartBoundaryNotFoundDefect)
 
     def test_first_line_is_continuation_header(self):
-        with self._raise_point(errors.FirstHeaderLineIsContinuationDefect):
+        mit self._raise_point(errors.FirstHeaderLineIsContinuationDefect):
             msg = self._str_msg(' Line 1\nSubject: test\n\nbody')
         wenn self.raise_expected: return
         self.assertEqual(msg.keys(), ['Subject'])
@@ -212,7 +212,7 @@ klasse TestDefectsBase:
         # leading whitespace but no ':') is to assume that the blank line that
         # separates the header von the body is missing, and to stop parsing
         # headers and start parsing the body.
-        with self._raise_point(errors.MissingHeaderBodySeparatorDefect):
+        mit self._raise_point(errors.MissingHeaderBodySeparatorDefect):
             msg = self._str_msg('Subject: test\nnot a header\nTo: abc\n\nb\n')
         wenn self.raise_expected: return
         self.assertEqual(msg.keys(), ['Subject'])
@@ -230,7 +230,7 @@ klasse TestDefectsBase:
             dmk
             """)
         msg = self._str_msg(source)
-        with self._raise_point(errors.InvalidBase64PaddingDefect):
+        mit self._raise_point(errors.InvalidBase64PaddingDefect):
             payload = msg.get_payload(decode=Wahr)
         wenn self.raise_expected: return
         self.assertEqual(payload, b'vi')
@@ -247,7 +247,7 @@ klasse TestDefectsBase:
             dm\x01k===
             """)
         msg = self._str_msg(source)
-        with self._raise_point(errors.InvalidBase64CharactersDefect):
+        mit self._raise_point(errors.InvalidBase64CharactersDefect):
             payload = msg.get_payload(decode=Wahr)
         wenn self.raise_expected: return
         self.assertEqual(payload, b'vi')
@@ -264,7 +264,7 @@ klasse TestDefectsBase:
             abcde
             """)
         msg = self._str_msg(source)
-        with self._raise_point(errors.InvalidBase64LengthDefect):
+        mit self._raise_point(errors.InvalidBase64LengthDefect):
             payload = msg.get_payload(decode=Wahr)
         wenn self.raise_expected: return
         self.assertEqual(payload, b'abcde')
@@ -292,7 +292,7 @@ klasse TestDefectsBase:
             Alternative 2
 
             """)
-        with self._raise_point(errors.CloseBoundaryNotFoundDefect):
+        mit self._raise_point(errors.CloseBoundaryNotFoundDefect):
             msg = self._str_msg(source)
         wenn self.raise_expected: return
         self.assertEqual(len(msg.get_payload()), 2)
@@ -329,7 +329,7 @@ klasse TestDefectRaising(TestDefectsBase, TestEmailBase):
 
     @contextlib.contextmanager
     def _raise_point(self, defect):
-        with self.assertRaises(defect):
+        mit self.assertRaises(defect):
             yield
 
 

@@ -305,12 +305,12 @@ klasse ChannelIDTests(TestBase):
         self.assertRaises(OverflowError, _channels._channel_id, 2**64)
 
     def test_bad_kwargs(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _channels._channel_id(10, send=Falsch, recv=Falsch)
 
     def test_does_not_exist(self):
         cid = _channels.create(REPLACE)
-        with self.assertRaises(_channels.ChannelNotFoundError):
+        mit self.assertRaises(_channels.ChannelNotFoundError):
             _channels._channel_id(int(cid) + 1)  # unforced
 
     def test_str(self):
@@ -386,7 +386,7 @@ klasse ChannelTests(TestBase):
     def test_ids_global(self):
         id1 = _interpreters.create()
         out = _run_output(id1, dedent("""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             cid = _channels.create(3)
             drucke(cid)
             """))
@@ -394,7 +394,7 @@ klasse ChannelTests(TestBase):
 
         id2 = _interpreters.create()
         out = _run_output(id2, dedent("""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             cid = _channels.create(3)
             drucke(cid)
             """))
@@ -403,8 +403,8 @@ klasse ChannelTests(TestBase):
         self.assertEqual(cid2, int(cid1) + 1)
 
     def test_channel_list_interpreters_none(self):
-        """Test listing interpreters fuer a channel with no associations."""
-        # Test fuer channel with no associated _interpreters.
+        """Test listing interpreters fuer a channel mit no associations."""
+        # Test fuer channel mit no associated _interpreters.
         cid = _channels.create(REPLACE)
         send_interps = _channels.list_interpreters(cid, send=Wahr)
         recv_interps = _channels.list_interpreters(cid, send=Falsch)
@@ -424,7 +424,7 @@ klasse ChannelTests(TestBase):
 
         interp1 = _interpreters.create()
         _run_output(interp1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.recv({cid})
             """))
         # Test fuer channel that has both ends associated to an interpreter.
@@ -434,7 +434,7 @@ klasse ChannelTests(TestBase):
         self.assertEqual(recv_interps, [interp1])
 
     def test_channel_list_interpreters_multiple(self):
-        """Test listing interpreters fuer a channel with many associations."""
+        """Test listing interpreters fuer a channel mit many associations."""
         interp0, *_ = _interpreters.get_main()
         interp1 = _interpreters.create()
         interp2 = _interpreters.create()
@@ -443,15 +443,15 @@ klasse ChannelTests(TestBase):
 
         _channels.send(cid, "send", blocking=Falsch)
         _run_output(interp1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.send({cid}, "send", blocking=Falsch)
             """))
         _run_output(interp2, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.recv({cid})
             """))
         _run_output(interp3, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.recv({cid})
             """))
         send_interps = _channels.list_interpreters(cid, send=Wahr)
@@ -460,16 +460,16 @@ klasse ChannelTests(TestBase):
         self.assertEqual(set(recv_interps), {interp2, interp3})
 
     def test_channel_list_interpreters_destroyed(self):
-        """Test listing channel interpreters with a destroyed interpreter."""
+        """Test listing channel interpreters mit a destroyed interpreter."""
         interp0, *_ = _interpreters.get_main()
         interp1 = _interpreters.create()
         cid = _channels.create(REPLACE)
         _channels.send(cid, "send", blocking=Falsch)
         _run_output(interp1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.recv({cid})
             """))
-        # Should be one interpreter associated with each end.
+        # Should be one interpreter associated mit each end.
         send_interps = _channels.list_interpreters(cid, send=Wahr)
         recv_interps = _channels.list_interpreters(cid, send=Falsch)
         self.assertEqual(send_interps, [interp0])
@@ -483,8 +483,8 @@ klasse ChannelTests(TestBase):
         self.assertEqual(recv_interps, [])
 
     def test_channel_list_interpreters_released(self):
-        """Test listing channel interpreters with a released channel."""
-        # Set up one channel with main interpreter on the send end and two
+        """Test listing channel interpreters mit a released channel."""
+        # Set up one channel mit main interpreter on the send end and two
         # subinterpreters on the receive end.
         interp0, *_ = _interpreters.get_main()
         interp1 = _interpreters.create()
@@ -492,12 +492,12 @@ klasse ChannelTests(TestBase):
         cid = _channels.create(REPLACE)
         _channels.send(cid, "data", blocking=Falsch)
         _run_output(interp1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.recv({cid})
             """))
         _channels.send(cid, "data", blocking=Falsch)
         _run_output(interp2, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.recv({cid})
             """))
         # Check the setup.
@@ -516,7 +516,7 @@ klasse ChannelTests(TestBase):
 
         # Release one of the subinterpreters von the receive end.
         _run_output(interp2, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.release({cid})
             """))
         # Receive end should have the released interpreter removed.
@@ -526,7 +526,7 @@ klasse ChannelTests(TestBase):
         self.assertEqual(recv_interps, [interp1])
 
     def test_channel_list_interpreters_closed(self):
-        """Test listing channel interpreters with a closed channel."""
+        """Test listing channel interpreters mit a closed channel."""
         interp0, *_ = _interpreters.get_main()
         interp1 = _interpreters.create()
         cid = _channels.create(REPLACE)
@@ -542,13 +542,13 @@ klasse ChannelTests(TestBase):
         # Force close the channel.
         _channels.close(cid, force=Wahr)
         # Both ends should raise an error.
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Falsch)
 
     def test_channel_list_interpreters_closed_send_end(self):
-        """Test listing channel interpreters with a channel's send end closed."""
+        """Test listing channel interpreters mit a channel's send end closed."""
         interp0, *_ = _interpreters.get_main()
         interp1 = _interpreters.create()
         cid = _channels.create(REPLACE)
@@ -564,7 +564,7 @@ klasse ChannelTests(TestBase):
         # Close the send end of the channel.
         _channels.close(cid, send=Wahr)
         # Send end should raise an error.
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
         # Receive end should not be closed (since channel is not empty).
         recv_interps = _channels.list_interpreters(cid, send=Falsch)
@@ -572,14 +572,14 @@ klasse ChannelTests(TestBase):
 
         # Close the receive end of the channel von a subinterpreter.
         _run_output(interp1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.close({cid}, force=Wahr)
             """))
         return
         # Both ends should raise an error.
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Falsch)
 
     def test_allowed_types(self):
@@ -591,7 +591,7 @@ klasse ChannelTests(TestBase):
             42,
         ]
         fuer obj in objects:
-            with self.subTest(obj):
+            mit self.subTest(obj):
                 _channels.send(cid, obj, blocking=Falsch)
                 got = recv_nowait(cid)
 
@@ -607,7 +607,7 @@ klasse ChannelTests(TestBase):
 
         _interpreters.set___main___attrs(interp, dict(cid=cid.send))
         out = _run_output(interp, dedent("""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             drucke(cid.end)
             _channels.send(cid, b'spam', blocking=Falsch)
             """))
@@ -626,7 +626,7 @@ klasse ChannelTests(TestBase):
         interp = _interpreters.create()
 
         out = _run_output(interp, dedent("""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             drucke(chan.id.end)
             _channels.send(chan.id, b'spam', blocking=Falsch)
             """),
@@ -651,7 +651,7 @@ klasse ChannelTests(TestBase):
     def test_send_recv_same_interpreter(self):
         id1 = _interpreters.create()
         out = _run_output(id1, dedent("""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             cid = _channels.create(REPLACE)
             orig = b'spam'
             _channels.send(cid, orig, blocking=Falsch)
@@ -664,7 +664,7 @@ klasse ChannelTests(TestBase):
         cid = _channels.create(REPLACE)
         id1 = _interpreters.create()
         out = _run_output(id1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.send({cid}, b'spam', blocking=Falsch)
             """))
         obj = recv_nowait(cid)
@@ -695,7 +695,7 @@ klasse ChannelTests(TestBase):
             nonlocal out
             out = _run_output(id1, dedent(f"""
                 importiere time
-                importiere _interpchannels as _channels
+                importiere _interpchannels als _channels
                 while Wahr:
                     try:
                         obj, _ = _channels.recv({cid})
@@ -715,16 +715,16 @@ klasse ChannelTests(TestBase):
         self.assertEqual(obj, b'eggs')
 
     def test_send_not_found(self):
-        with self.assertRaises(_channels.ChannelNotFoundError):
+        mit self.assertRaises(_channels.ChannelNotFoundError):
             _channels.send(10, b'spam')
 
     def test_recv_not_found(self):
-        with self.assertRaises(_channels.ChannelNotFoundError):
+        mit self.assertRaises(_channels.ChannelNotFoundError):
             _channels.recv(10)
 
     def test_recv_empty(self):
         cid = _channels.create(REPLACE)
-        with self.assertRaises(_channels.ChannelEmptyError):
+        mit self.assertRaises(_channels.ChannelEmptyError):
             _channels.recv(cid)
 
     def test_recv_default(self):
@@ -749,24 +749,24 @@ klasse ChannelTests(TestBase):
         self.assertIs(obj6, default)
 
     def test_recv_sending_interp_destroyed(self):
-        with self.subTest('closed'):
+        mit self.subTest('closed'):
             cid1 = _channels.create(REPLACE)
             interp = _interpreters.create()
             _interpreters.run_string(interp, dedent(f"""
-                importiere _interpchannels as _channels
+                importiere _interpchannels als _channels
                 _channels.send({cid1}, b'spam', blocking=Falsch)
                 """))
             _interpreters.destroy(interp)
 
-            with self.assertRaisesRegex(RuntimeError,
+            mit self.assertRaisesRegex(RuntimeError,
                                         f'channel {cid1} is closed'):
                 _channels.recv(cid1)
             del cid1
-        with self.subTest('still open'):
+        mit self.subTest('still open'):
             cid2 = _channels.create(REPLACE)
             interp = _interpreters.create()
             _interpreters.run_string(interp, dedent(f"""
-                importiere _interpchannels as _channels
+                importiere _interpchannels als _channels
                 _channels.send({cid2}, b'spam', blocking=Falsch)
                 """))
             _channels.send(cid2, b'eggs', blocking=Falsch)
@@ -774,7 +774,7 @@ klasse ChannelTests(TestBase):
 
             recv_nowait(cid2, unbound=Wahr)
             recv_nowait(cid2, unbound=Falsch)
-            with self.assertRaisesRegex(RuntimeError,
+            mit self.assertRaisesRegex(RuntimeError,
                                         f'channel {cid2} is empty'):
                 _channels.recv(cid2)
             del cid2
@@ -798,7 +798,7 @@ klasse ChannelTests(TestBase):
         self.assertEqual(obj, buf)
 
     #-------------------
-    # send with waiting
+    # send mit waiting
 
     def build_send_waiter(self, obj, *, buffer=Falsch):
         # We want a long enough sleep that send() actually has to wait.
@@ -886,20 +886,20 @@ klasse ChannelTests(TestBase):
     def test_send_timeout(self):
         obj = b'spam'
 
-        with self.subTest('non-blocking with timeout'):
+        mit self.subTest('non-blocking mit timeout'):
             cid = _channels.create(REPLACE)
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _channels.send(cid, obj, blocking=Falsch, timeout=0.1)
 
-        with self.subTest('timeout hit'):
+        mit self.subTest('timeout hit'):
             cid = _channels.create(REPLACE)
-            with self.assertRaises(TimeoutError):
+            mit self.assertRaises(TimeoutError):
                 _channels.send(cid, obj, blocking=Wahr, timeout=0.1)
-            with self.assertRaises(_channels.ChannelEmptyError):
+            mit self.assertRaises(_channels.ChannelEmptyError):
                 received = recv_nowait(cid)
                 drucke(repr(received))
 
-        with self.subTest('timeout not hit'):
+        mit self.subTest('timeout not hit'):
             cid = _channels.create(REPLACE)
             def f():
                 recv_wait(cid)
@@ -913,7 +913,7 @@ klasse ChannelTests(TestBase):
             self._has_run_once_timeout
         except AttributeError:
             # At the moment, this test leaks a few references.
-            # It looks like the leak originates with the addition
+            # It looks like the leak originates mit the addition
             # of _channels.send_buffer() (gh-110246), whereas the
             # tests were added afterward.  We want this test even
             # wenn the refleak isn't fixed yet, so we skip here.
@@ -923,20 +923,20 @@ klasse ChannelTests(TestBase):
 
         obj = bytearray(b'spam')
 
-        with self.subTest('non-blocking with timeout'):
+        mit self.subTest('non-blocking mit timeout'):
             cid = _channels.create(REPLACE)
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _channels.send_buffer(cid, obj, blocking=Falsch, timeout=0.1)
 
-        with self.subTest('timeout hit'):
+        mit self.subTest('timeout hit'):
             cid = _channels.create(REPLACE)
-            with self.assertRaises(TimeoutError):
+            mit self.assertRaises(TimeoutError):
                 _channels.send_buffer(cid, obj, blocking=Wahr, timeout=0.1)
-            with self.assertRaises(_channels.ChannelEmptyError):
+            mit self.assertRaises(_channels.ChannelEmptyError):
                 received = recv_nowait(cid)
                 drucke(repr(received))
 
-        with self.subTest('timeout not hit'):
+        mit self.subTest('timeout not hit'):
             cid = _channels.create(REPLACE)
             def f():
                 recv_wait(cid)
@@ -949,25 +949,25 @@ klasse ChannelTests(TestBase):
         obj = b'spam'
         wait = self.build_send_waiter(obj)
 
-        with self.subTest('without timeout'):
+        mit self.subTest('without timeout'):
             cid = _channels.create(REPLACE)
             def f():
                 wait()
                 _channels.close(cid, force=Wahr)
             t = threading.Thread(target=f)
             t.start()
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.send(cid, obj, blocking=Wahr)
             t.join()
 
-        with self.subTest('with timeout'):
+        mit self.subTest('with timeout'):
             cid = _channels.create(REPLACE)
             def f():
                 wait()
                 _channels.close(cid, force=Wahr)
             t = threading.Thread(target=f)
             t.start()
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.send(cid, obj, blocking=Wahr, timeout=30)
             t.join()
 
@@ -976,7 +976,7 @@ klasse ChannelTests(TestBase):
             self._has_run_once_closed
         except AttributeError:
             # At the moment, this test leaks a few references.
-            # It looks like the leak originates with the addition
+            # It looks like the leak originates mit the addition
             # of _channels.send_buffer() (gh-110246), whereas the
             # tests were added afterward.  We want this test even
             # wenn the refleak isn't fixed yet, so we skip here.
@@ -987,25 +987,25 @@ klasse ChannelTests(TestBase):
         obj = bytearray(b'spam')
         wait = self.build_send_waiter(obj, buffer=Wahr)
 
-        with self.subTest('without timeout'):
+        mit self.subTest('without timeout'):
             cid = _channels.create(REPLACE)
             def f():
                 wait()
                 _channels.close(cid, force=Wahr)
             t = threading.Thread(target=f)
             t.start()
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.send_buffer(cid, obj, blocking=Wahr)
             t.join()
 
-        with self.subTest('with timeout'):
+        mit self.subTest('with timeout'):
             cid = _channels.create(REPLACE)
             def f():
                 wait()
                 _channels.close(cid, force=Wahr)
             t = threading.Thread(target=f)
             t.start()
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.send_buffer(cid, obj, blocking=Wahr, timeout=30)
             t.join()
 
@@ -1018,9 +1018,9 @@ klasse ChannelTests(TestBase):
         recv_nowait(cid)
         _channels.close(cid)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_close_multiple_users(self):
@@ -1028,11 +1028,11 @@ klasse ChannelTests(TestBase):
         id1 = _interpreters.create()
         id2 = _interpreters.create()
         _interpreters.run_string(id1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.send({cid}, b'spam', blocking=Falsch)
             """))
         _interpreters.run_string(id2, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.recv({cid})
             """))
         _channels.close(cid)
@@ -1053,7 +1053,7 @@ klasse ChannelTests(TestBase):
         recv_nowait(cid)
         _channels.close(cid)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.close(cid)
 
     def test_close_empty(self):
@@ -1064,15 +1064,15 @@ klasse ChannelTests(TestBase):
             (Wahr, Wahr),
             ]
         fuer send, recv in tests:
-            with self.subTest((send, recv)):
+            mit self.subTest((send, recv)):
                 cid = _channels.create(REPLACE)
                 _channels.send(cid, b'spam', blocking=Falsch)
                 recv_nowait(cid)
                 _channels.close(cid, send=send, recv=recv)
 
-                with self.assertRaises(_channels.ChannelClosedError):
+                mit self.assertRaises(_channels.ChannelClosedError):
                     _channels.send(cid, b'eggs')
-                with self.assertRaises(_channels.ChannelClosedError):
+                mit self.assertRaises(_channels.ChannelClosedError):
                     _channels.recv(cid)
 
     def test_close_defaults_with_unused_items(self):
@@ -1080,7 +1080,7 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'spam', blocking=Falsch)
         _channels.send(cid, b'ham', blocking=Falsch)
 
-        with self.assertRaises(_channels.ChannelNotEmptyError):
+        mit self.assertRaises(_channels.ChannelNotEmptyError):
             _channels.close(cid)
         recv_nowait(cid)
         _channels.send(cid, b'eggs', blocking=Falsch)
@@ -1090,7 +1090,7 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'spam', blocking=Falsch)
         _channels.send(cid, b'ham', blocking=Falsch)
 
-        with self.assertRaises(_channels.ChannelNotEmptyError):
+        mit self.assertRaises(_channels.ChannelNotEmptyError):
             _channels.close(cid, recv=Wahr)
         recv_nowait(cid)
         _channels.send(cid, b'eggs', blocking=Falsch)
@@ -1104,11 +1104,11 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'ham', blocking=Falsch)
         _channels.close(cid, send=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
         recv_nowait(cid)
         recv_nowait(cid)
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_close_both_with_unused_items_unforced(self):
@@ -1116,7 +1116,7 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'spam', blocking=Falsch)
         _channels.send(cid, b'ham', blocking=Falsch)
 
-        with self.assertRaises(_channels.ChannelNotEmptyError):
+        mit self.assertRaises(_channels.ChannelNotEmptyError):
             _channels.close(cid, recv=Wahr, send=Wahr)
         recv_nowait(cid)
         _channels.send(cid, b'eggs', blocking=Falsch)
@@ -1130,9 +1130,9 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'ham', blocking=Falsch)
         _channels.close(cid, recv=Wahr, force=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_close_send_with_unused_items_forced(self):
@@ -1141,9 +1141,9 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'ham', blocking=Falsch)
         _channels.close(cid, send=Wahr, force=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_close_both_with_unused_items_forced(self):
@@ -1152,18 +1152,18 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'ham', blocking=Falsch)
         _channels.close(cid, send=Wahr, recv=Wahr, force=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_close_never_used(self):
         cid = _channels.create(REPLACE)
         _channels.close(cid)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'spam')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_close_by_unassociated_interp(self):
@@ -1171,12 +1171,12 @@ klasse ChannelTests(TestBase):
         _channels.send(cid, b'spam', blocking=Falsch)
         interp = _interpreters.create()
         _interpreters.run_string(interp, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.close({cid}, force=Wahr)
             """))
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.close(cid)
 
     def test_close_used_multiple_times_by_single_user(self):
@@ -1187,26 +1187,26 @@ klasse ChannelTests(TestBase):
         recv_nowait(cid)
         _channels.close(cid, force=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_channel_list_interpreters_invalid_channel(self):
         cid = _channels.create(REPLACE)
         # Test fuer invalid channel ID.
-        with self.assertRaises(_channels.ChannelNotFoundError):
+        mit self.assertRaises(_channels.ChannelNotFoundError):
             _channels.list_interpreters(1000, send=Wahr)
 
         _channels.close(cid)
         # Test fuer a channel that has been closed.
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.list_interpreters(cid, send=Wahr)
 
     def test_channel_list_interpreters_invalid_args(self):
         # Tests fuer invalid arguments passed to the API.
         cid = _channels.create(REPLACE)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _channels.list_interpreters(cid)
 
 
@@ -1259,9 +1259,9 @@ klasse ChannelReleaseTests(TestBase):
         recv_nowait(cid)
         _channels.release(cid, send=Wahr, recv=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_multiple_users(self):
@@ -1269,11 +1269,11 @@ klasse ChannelReleaseTests(TestBase):
         id1 = _interpreters.create()
         id2 = _interpreters.create()
         _interpreters.run_string(id1, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.send({cid}, b'spam', blocking=Falsch)
             """))
         out = _run_output(id2, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             obj, _ = _channels.recv({cid})
             _channels.release({cid})
             drucke(repr(obj))
@@ -1290,9 +1290,9 @@ klasse ChannelReleaseTests(TestBase):
         recv_nowait(cid)
         _channels.release(cid)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_multiple_times(self):
@@ -1301,7 +1301,7 @@ klasse ChannelReleaseTests(TestBase):
         recv_nowait(cid)
         _channels.release(cid, send=Wahr, recv=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.release(cid, send=Wahr, recv=Wahr)
 
     def test_with_unused_items(self):
@@ -1310,16 +1310,16 @@ klasse ChannelReleaseTests(TestBase):
         _channels.send(cid, b'ham', blocking=Falsch)
         _channels.release(cid, send=Wahr, recv=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_never_used(self):
         cid = _channels.create(REPLACE)
         _channels.release(cid)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'spam')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_by_unassociated_interp(self):
@@ -1327,27 +1327,27 @@ klasse ChannelReleaseTests(TestBase):
         _channels.send(cid, b'spam', blocking=Falsch)
         interp = _interpreters.create()
         _interpreters.run_string(interp, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             _channels.release({cid})
             """))
         obj = recv_nowait(cid)
         _channels.release(cid)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
         self.assertEqual(obj, b'spam')
 
     def test_close_if_unassociated(self):
-        # XXX Something's not right with this test...
+        # XXX Something's not right mit this test...
         cid = _channels.create(REPLACE)
         interp = _interpreters.create()
         _interpreters.run_string(interp, dedent(f"""
-            importiere _interpchannels as _channels
+            importiere _interpchannels als _channels
             obj = _channels.send({cid}, b'spam', blocking=Falsch)
             _channels.release({cid})
             """))
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
     def test_partially(self):
@@ -1369,9 +1369,9 @@ klasse ChannelReleaseTests(TestBase):
         recv_nowait(cid)
         _channels.release(cid, send=Wahr, recv=Wahr)
 
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.send(cid, b'eggs')
-        with self.assertRaises(_channels.ChannelClosedError):
+        mit self.assertRaises(_channels.ChannelClosedError):
             _channels.recv(cid)
 
 
@@ -1478,8 +1478,8 @@ klasse ChannelCloseFixture(namedtuple('ChannelCloseFixture',
         wenn interp.name == 'main':
             return
         run_interp(interp.id, f"""
-            importiere _interpchannels as channels
-            importiere test.test__interpchannels as helpers
+            importiere _interpchannels als channels
+            importiere test.test__interpchannels als helpers
             ChannelState = helpers.ChannelState
             try:
                 cid
@@ -1708,34 +1708,34 @@ klasse ExhaustiveChannelTests(TestBase):
         wenn not fix.expect_closed_error():
             self.run_action(fix, close, hideclosed=Falsch)
         sonst:
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 self.run_action(fix, close, hideclosed=Falsch)
 
     def _assert_closed_in_interp(self, fix, interp=Nichts):
         wenn interp is Nichts or interp.name == 'main':
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.recv(fix.cid)
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.send(fix.cid, b'spam')
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.close(fix.cid)
-            with self.assertRaises(_channels.ChannelClosedError):
+            mit self.assertRaises(_channels.ChannelClosedError):
                 _channels.close(fix.cid, force=Wahr)
         sonst:
             run_interp(interp.id, """
-                with helpers.expect_channel_closed():
+                mit helpers.expect_channel_closed():
                     _channels.recv(cid)
                 """)
             run_interp(interp.id, """
-                with helpers.expect_channel_closed():
+                mit helpers.expect_channel_closed():
                     _channels.send(cid, b'spam', blocking=Falsch)
                 """)
             run_interp(interp.id, """
-                with helpers.expect_channel_closed():
+                mit helpers.expect_channel_closed():
                     _channels.close(cid)
                 """)
             run_interp(interp.id, """
-                with helpers.expect_channel_closed():
+                mit helpers.expect_channel_closed():
                     _channels.close(cid, force=Wahr)
                 """)
 
@@ -1784,7 +1784,7 @@ klasse ExhaustiveChannelTests(TestBase):
 
     def test_close(self):
         fuer i, fix, actions in self._iter_close_tests():
-            with self.subTest('{} {}  {}'.format(i, fix, actions)):
+            mit self.subTest('{} {}  {}'.format(i, fix, actions)):
                 fix.prep_interpreter(fix.interp)
                 self.run_actions(fix, actions)
 
@@ -1796,7 +1796,7 @@ klasse ExhaustiveChannelTests(TestBase):
 
     def test_force_close(self):
         fuer i, fix, actions in self._iter_close_tests():
-            with self.subTest('{} {}  {}'.format(i, fix, actions)):
+            mit self.subTest('{} {}  {}'.format(i, fix, actions)):
                 fix.prep_interpreter(fix.interp)
                 self.run_actions(fix, actions)
 

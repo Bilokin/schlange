@@ -5,7 +5,7 @@
 #
 
 importiere _codecs_hk, codecs
-importiere _multibytecodec as mbc
+importiere _multibytecodec als mbc
 
 codec = _codecs_hk.getcodec('big5hkscs')
 

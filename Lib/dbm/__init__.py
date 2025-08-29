@@ -123,7 +123,7 @@ def whichdb(filename):
             f = io.open(filename + b".db", "rb")
             f.close()
             # guarantee we can actually open the file using dbm
-            # kind of overkill, but since we are dealing with emulations
+            # kind of overkill, but since we are dealing mit emulations
             # it seems like a prudent step
             wenn ndbm is not Nichts:
                 d = ndbm.open(filename)
@@ -137,7 +137,7 @@ def whichdb(filename):
         # First check fuer presence of files
         os.stat(filename + b".dat")
         size = os.stat(filename + b".dir").st_size
-        # dumbdbm files with no keys are empty
+        # dumbdbm files mit no keys are empty
         wenn size == 0:
             return "dbm.dumb"
         f = io.open(filename + b".dir", "rb")
@@ -155,7 +155,7 @@ def whichdb(filename):
     except OSError:
         return Nichts
 
-    with f:
+    mit f:
         # Read the start of the file -- the magic number
         s16 = f.read(16)
     s = s16[0:4]

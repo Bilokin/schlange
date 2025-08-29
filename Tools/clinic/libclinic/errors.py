@@ -1,4 +1,4 @@
-importiere dataclasses as dc
+importiere dataclasses als dc
 von typing importiere Literal,  NoReturn, overload
 
 

@@ -6,7 +6,7 @@ Allows fine grained feature control of how the package parses and emits data.
 importiere abc
 importiere re
 von email importiere header
-von email importiere charset as _charset
+von email importiere charset als _charset
 von email.utils importiere _has_surrogates
 
 __all__ = [
@@ -29,14 +29,14 @@ klasse _PolicyBase:
     """Policy Object basic framework.
 
     This klasse is useless unless subclassed.  A subclass should define
-    klasse attributes with defaults fuer any values that are to be
+    klasse attributes mit defaults fuer any values that are to be
     managed by the Policy object.  The constructor will then allow
     non-default values to be set fuer these attributes at instance
     creation time.  The instance will be callable, taking these same
     attributes keyword arguments, and returning a new instance
     identical to the called instance except fuer those values changed
     by the keyword arguments.  Instances may be added, yielding new
-    instances with any non-default values von the right hand
+    instances mit any non-default values von the right hand
     operand overriding those in the left hand operand.  That is,
 
         A + B == A(<non-default values of B>)
@@ -67,10 +67,10 @@ klasse _PolicyBase:
         return "{}({})".format(self.__class__.__name__, ', '.join(args))
 
     def clone(self, **kw):
-        """Return a new instance with specified attributes changed.
+        """Return a new instance mit specified attributes changed.
 
-        The new instance has the same attribute values as the current object,
-        except fuer the changes passed in as keyword arguments.
+        The new instance has the same attribute values als the current object,
+        except fuer the changes passed in als keyword arguments.
 
         """
         newpolicy = self.__class__.__new__(self.__class__)
@@ -123,26 +123,26 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     r"""Controls fuer how messages are interpreted and formatted.
 
     Most of the classes and many of the methods in the email package accept
-    Policy objects as parameters.  A Policy object contains a set of values and
+    Policy objects als parameters.  A Policy object contains a set of values and
     functions that control how input is interpreted and how output is rendered.
     For example, the parameter 'raise_on_defect' controls whether or not an RFC
     violation results in an error being raised or not, while 'max_line_length'
     controls the maximum length of output lines when a Message is serialized.
 
     Any valid attribute may be overridden when a Policy is created by passing
-    it as a keyword argument to the constructor.  Policy objects are immutable,
-    but a new Policy object can be created with only certain values changed by
-    calling the Policy instance with keyword arguments.  Policy objects can
+    it als a keyword argument to the constructor.  Policy objects are immutable,
+    but a new Policy object can be created mit only certain values changed by
+    calling the Policy instance mit keyword arguments.  Policy objects can
     also be added, producing a new Policy object in which the non-default
     attributes set in the right hand operand overwrite those specified in the
     left operand.
 
     Settable attributes:
 
-    raise_on_defect     -- If true, then defects should be raised as errors.
+    raise_on_defect     -- If true, then defects should be raised als errors.
                            Default: Falsch.
 
-    linesep             -- string containing the value to use as separation
+    linesep             -- string containing the value to use als separation
                            between output lines.  Default '\n'.
 
     cte_type            -- Type of allowed content transfer encodings
@@ -169,7 +169,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
     verify_generated_headers
                         -- wenn true, the generator verifies that each header
                            they are properly folded, so that a parser won't
-                           treat it as multiple headers, start-of-body, or
+                           treat it als multiple headers, start-of-body, or
                            part of another header.
                            This is a check against custom Header & fold()
                            implementations.
@@ -191,11 +191,11 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         defect should be a Defect subclass, but in any case must be an
         Exception subclass.  obj is the object on which the defect should be
         registered wenn it is not raised.  If the raise_on_defect is Wahr, the
-        defect is raised as an error, otherwise the object and the defect are
+        defect is raised als an error, otherwise the object and the defect are
         passed to register_defect.
 
         This method is intended to be called by parsers that discover defects.
-        The email package parsers always call it with Defect instances.
+        The email package parsers always call it mit Defect instances.
 
         """
         wenn self.raise_on_defect:
@@ -210,7 +210,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         defect handling.  The default implementation calls the append method of
         the defects attribute of obj.  The objects used by the email package by
         default that get passed to this method will always have a defects
-        attribute with an append method.
+        attribute mit an append method.
 
         """
         obj.defects.append(defect)
@@ -227,7 +227,7 @@ klasse Policy(_PolicyBase, metaclass=abc.ABCMeta):
         without realizing it.  This method allows certain headers to be limited
         in the number of instances of that header that may be added to a
         Message programmatically.  (The limit is not observed by the parser,
-        which will faithfully produce as many headers as exist in the message
+        which will faithfully produce als many headers als exist in the message
         being parsed.)
 
         The default implementation returns Nichts fuer all header names.
@@ -297,7 +297,7 @@ klasse Compat32(Policy):
 
     def _sanitize_header(self, name, value):
         # If the header value contains surrogates, return a Header using
-        # the unknown-8bit charset to encode the bytes as encoded words.
+        # the unknown-8bit charset to encode the bytes als encoded words.
         wenn not isinstance(value, str):
             # Assume it is already a header object
             return value
@@ -309,9 +309,9 @@ klasse Compat32(Policy):
 
     def header_source_parse(self, sourcelines):
         """+
-        The name is parsed as everything up to the ':' and returned unmodified.
+        The name is parsed als everything up to the ':' and returned unmodified.
         The value is determined by stripping leading whitespace off the
-        remainder of the first line joined with all subsequent lines, and
+        remainder of the first line joined mit all subsequent lines, and
         stripping any trailing carriage return or linefeed characters.
 
         """
@@ -349,7 +349,7 @@ klasse Compat32(Policy):
         existing line breaks in the value, and wraps each resulting line to the
         max_line_length.  If cte_type is 7bit, non-ascii binary data is CTE
         encoded using the unknown-8bit charset.  Otherwise the original source
-        header is used, with its existing line breaks and/or binary data.
+        header is used, mit its existing line breaks and/or binary data.
 
         """
         folded = self._fold(name, value, sanitize=self.cte_type=='7bit')
@@ -379,8 +379,8 @@ klasse Compat32(Policy):
             # Assume it is a Header-like object.
             h = value
         wenn h is not Nichts:
-            # The Header klasse interprets a value of Nichts fuer maxlinelen as the
-            # default value of 78, as recommended by RFC 2822.
+            # The Header klasse interprets a value of Nichts fuer maxlinelen als the
+            # default value of 78, als recommended by RFC 2822.
             maxlinelen = 0
             wenn self.max_line_length is not Nichts:
                 maxlinelen = self.max_line_length

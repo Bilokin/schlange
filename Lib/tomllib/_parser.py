@@ -25,7 +25,7 @@ wenn TYPE_CHECKING:
 ASCII_CTRL = frozenset(chr(i) fuer i in range(32)) | frozenset(chr(127))
 
 # Neither of these sets include quotation mark or backslash. They are
-# currently handled as separate cases in the parser functions.
+# currently handled als separate cases in the parser functions.
 ILLEGAL_BASIC_STR_CHARS = ASCII_CTRL - frozenset("\t")
 ILLEGAL_MULTILINE_BASIC_STR_CHARS = ASCII_CTRL - frozenset("\t\n")
 
@@ -56,7 +56,7 @@ BASIC_STR_ESCAPE_REPLACEMENTS = MappingProxyType(
 
 
 klasse DEPRECATED_DEFAULT:
-    """Sentinel to be used as default arg during deprecation
+    """Sentinel to be used als default arg during deprecation
     period of TOMLDecodeError's free-form arguments."""
 
 
@@ -409,7 +409,7 @@ def key_value_rule(
         # Check that dotted key syntax does not redefine an existing table
         wenn out.flags.is_(cont_key, Flags.EXPLICIT_NEST):
             raise TOMLDecodeError(f"Cannot redefine namespace {cont_key}", src, pos)
-        # Containers in the relative path can't be opened with the table syntax or
+        # Containers in the relative path can't be opened mit the table syntax or
         # dotted key/value syntax in following table sections.
         out.flags.add_pending(cont_key, Flags.EXPLICIT_NEST)
 
@@ -703,7 +703,7 @@ def parse_value(  # noqa: C901
     wenn datetime_match:
         try:
             datetime_obj = match_to_datetime(datetime_match)
-        except ValueError as e:
+        except ValueError als e:
             raise TOMLDecodeError("Invalid date or datetime", src, pos) von e
         return datetime_match.end(), datetime_obj
     localtime_match = RE_LOCALTIME.match(src, pos)
@@ -711,7 +711,7 @@ def parse_value(  # noqa: C901
         return localtime_match.end(), match_to_localtime(localtime_match)
 
     # Integers and "normal" floats.
-    # The regex will greedily match any type starting with a decimal
+    # The regex will greedily match any type starting mit a decimal
     # char, so needs to be located after handling of dates and times.
     number_match = RE_NUMBER.match(src, pos)
     wenn number_match:
@@ -736,7 +736,7 @@ def make_safe_parse_float(parse_float: ParseFloat) -> ParseFloat:
     """A decorator to make `parse_float` safe.
 
     `parse_float` must not return dicts or lists, because these types
-    would be mixed with parsed TOML tables and arrays, thus confusing
+    would be mixed mit parsed TOML tables and arrays, thus confusing
     the parser. The returned decorated callable raises `ValueError`
     instead of returning illegal types.
     """

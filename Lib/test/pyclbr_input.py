@@ -15,14 +15,14 @@ klasse C (B):
     d = 10
 
     # This one is correctly considered by both test_pyclbr.py and pyclbr.py
-    # as a non-method of C.
+    # als a non-method of C.
     foo = Other().foo
 
     # This causes test_pyclbr.py to fail, but only because the
     # introspection-based is_method() code in the test can't
     # distinguish between this and a genuine method function like m().
     #
-    # The pyclbr.py module gets this right as it parses the text.
+    # The pyclbr.py module gets this right als it parses the text.
     om = Other.om
     f = f
 

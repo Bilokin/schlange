@@ -15,7 +15,7 @@ wenn getattr(sys, 'float_repr_style', '') != 'short':
 
 strtod_parser = re.compile(r"""    # A numeric string consists of:
     (?P<sign>[-+])?          # an optional sign, followed by
-    (?=\d|\.\d)              # a number with at least one digit
+    (?=\d|\.\d)              # a number mit at least one digit
     (?P<int>\d*)             # having a (possibly empty) integer part
     (?:\.(?P<frac>\d*))?     # followed by an optional fractional part
     (?:E(?P<exp>[-+]?\d+))?  # and an optional exponent
@@ -23,7 +23,7 @@ strtod_parser = re.compile(r"""    # A numeric string consists of:
 """, re.VERBOSE | re.IGNORECASE).match
 
 # Pure Python version of correctly rounded string->float conversion.
-# Avoids any use of floating-point by returning the result as a hex string.
+# Avoids any use of floating-point by returning the result als a hex string.
 def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     """Convert a finite decimal string to a hex string representing an
     IEEE 754 binary64 float.  Return 'inf' or '-inf' on overflow.
@@ -31,7 +31,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     stage."""
 
     # parse string into a pair of integers 'a' and 'b' such that
-    # abs(decimal value) = a/b, along with a boolean 'negative'.
+    # abs(decimal value) = a/b, along mit a boolean 'negative'.
     m = strtod_parser(s)
     wenn m is Nichts:
         raise ValueError('invalid numeric string')
@@ -104,7 +104,7 @@ klasse StrtodTests(unittest.TestCase):
                          "expected {}, got {}".format(s, expected, got))
 
     def test_short_halfway_cases(self):
-        # exact halfway cases with a small number of significant digits
+        # exact halfway cases mit a small number of significant digits
         fuer k in 0, 5, 10, 15, 20:
             # upper = smallest integer >= 2**54/5**k
             upper = -(-2**54//5**k)
@@ -115,7 +115,7 @@ klasse StrtodTests(unittest.TestCase):
             fuer i in range(TEST_SIZE):
                 # Select a random odd n in [2**53/5**k,
                 # 2**54/5**k). Then n * 10**k gives a halfway case
-                # with small number of significant digits.
+                # mit small number of significant digits.
                 n, e = random.randrange(lower, upper, 2), k
 
                 # Remove any additional powers of 5.
@@ -129,18 +129,18 @@ klasse StrtodTests(unittest.TestCase):
                 while digits < 10**20:
                     s = '{}e{}'.format(digits, exponent)
                     self.check_strtod(s)
-                    # Same again, but with extra trailing zeros.
+                    # Same again, but mit extra trailing zeros.
                     s = '{}e{}'.format(digits * 10**40, exponent - 40)
                     self.check_strtod(s)
                     digits *= 2
 
                 # Try numbers of the form n * 5**p2 * 10**(e - p5), p5
-                # >= 0, with n * 5**p5 < 10**20.
+                # >= 0, mit n * 5**p5 < 10**20.
                 digits, exponent = n, e
                 while digits < 10**20:
                     s = '{}e{}'.format(digits, exponent)
                     self.check_strtod(s)
-                    # Same again, but with extra trailing zeros.
+                    # Same again, but mit extra trailing zeros.
                     s = '{}e{}'.format(digits * 10**40, exponent - 40)
                     self.check_strtod(s)
                     digits *= 5
@@ -173,7 +173,7 @@ klasse StrtodTests(unittest.TestCase):
             self.check_strtod(s)
 
     def test_boundaries(self):
-        # boundaries expressed as triples (n, e, u), where
+        # boundaries expressed als triples (n, e, u), where
         # n*10**e is an approximation to the boundary value and
         # u*10**e is 1ulp
         boundaries = [
@@ -195,7 +195,7 @@ klasse StrtodTests(unittest.TestCase):
     def test_underflow_boundary(self):
         # test values close to 2**-1075, the underflow boundary; similar
         # to boundary_tests, except that the random error doesn't scale
-        # with n
+        # mit n
         fuer exponent in range(-400, -320):
             base = 10**-exponent // 2**1075
             fuer j in range(TEST_SIZE):
@@ -252,12 +252,12 @@ klasse StrtodTests(unittest.TestCase):
     def test_oversized_digit_strings(self, maxsize):
         # Input string whose length doesn't fit in an INT.
         s = "1." + "1" * maxsize
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             float(s)
         del s
 
         s = "0." + "0" * maxsize + "1"
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             float(s)
         del s
 
@@ -265,11 +265,11 @@ klasse StrtodTests(unittest.TestCase):
         # Verify that the clipping of the exponent in strtod doesn't affect the
         # output values.
         def positive_exp(n):
-            """ Long string with value 1.0 and exponent n"""
+            """ Long string mit value 1.0 and exponent n"""
             return '0.{}1e+{}'.format('0'*(n-1), n)
 
         def negative_exp(n):
-            """ Long string with value 1.0 and exponent -n"""
+            """ Long string mit value 1.0 and exponent -n"""
             return '1{}e-{}'.format('0'*n, n)
 
         self.assertEqual(float(positive_exp(10000)), 1.0)
@@ -330,7 +330,7 @@ klasse StrtodTests(unittest.TestCase):
             # buggy; the exit condition was too strong
             '247032822920623295e-341',
             # demonstrate similar problem to issue 7632 bug1: crash
-            # with 'oversized quotient in quorem' message.
+            # mit 'oversized quotient in quorem' message.
             '99037485700245683102805043437346965248029601286431e-373',
             '99617639833743863161109961162881027406769510558457e-373',
             '98852915025769345295749278351563179840130565591462e-372',

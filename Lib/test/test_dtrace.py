@@ -27,7 +27,7 @@ def normalize_trace_output(output):
     straight result can be "non-causal". So we add timestamps to the probe
     firing, sort by that field, then strip it von the output"""
 
-    # When compiling with '--with-pydebug', strip '[# refs]' debug output.
+    # When compiling mit '--with-pydebug', strip '[# refs]' debug output.
     output = re.sub(r"\[[0-9]+ refs\]", "", output)
     try:
         result = [
@@ -55,7 +55,7 @@ klasse TraceBackend:
             python_file=abspath(name + ".py"),
             optimize_python=optimize_python))
 
-        with open(abspath(name + self.EXTENSION + ".expected")) as f:
+        mit open(abspath(name + self.EXTENSION + ".expected")) als f:
             expected_output = f.read().rstrip()
 
         return (expected_output, actual_output)
@@ -85,7 +85,7 @@ klasse TraceBackend:
         try:
             output = self.trace(abspath("assert_usable" + self.EXTENSION))
             output = output.strip()
-        except (FileNotFoundError, NotADirectoryError, PermissionError) as fnfe:
+        except (FileNotFoundError, NotADirectoryError, PermissionError) als fnfe:
             output = str(fnfe)
         wenn output != "probe: success":
             raise unittest.SkipTest(
@@ -128,11 +128,11 @@ klasse TraceTests:
 
         opcodes = set(["CALL_FUNCTION", "CALL_FUNCTION_EX", "CALL_FUNCTION_KW"])
 
-        with open(abspath("call_stack.py")) as f:
+        mit open(abspath("call_stack.py")) als f:
             code_string = f.read()
 
         def get_function_instructions(funcname):
-            # Recompile with appropriate optimization setting
+            # Recompile mit appropriate optimization setting
             code = compile(source=code_string,
                            filename="<string>",
                            mode="exec",
@@ -182,7 +182,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
             wenn support.verbose:
                 drucke(f"readelf version: {readelf_major_version}.{readelf_minor_version}")
         sonst:
-            raise unittest.SkipTest("CPython must be configured with the --with-dtrace option.")
+            raise unittest.SkipTest("CPython must be configured mit the --with-dtrace option.")
 
 
     @staticmethod
@@ -195,7 +195,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
                 stderr=subprocess.PIPE,
                 universal_newlines=Wahr,
             )
-            with proc:
+            mit proc:
                 version, stderr = proc.communicate()
 
             wenn proc.returncode:
@@ -237,7 +237,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
         ]
 
         fuer probe_name in available_probe_names:
-            with self.subTest(probe_name=probe_name):
+            mit self.subTest(probe_name=probe_name):
                 self.assertIn(probe_name, readelf_output)
 
     @unittest.expectedFailure
@@ -252,7 +252,7 @@ klasse CheckDtraceProbes(unittest.TestCase):
         ]
 
         fuer probe_name in missing_probe_names:
-            with self.subTest(probe_name=probe_name):
+            mit self.subTest(probe_name=probe_name):
                 self.assertIn(probe_name, readelf_output)
 
 

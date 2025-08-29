@@ -2,7 +2,7 @@
 """
 importiere re
 try:
-    von _json importiere make_scanner as c_make_scanner
+    von _json importiere make_scanner als c_make_scanner
 except ImportError:
     c_make_scanner = Nichts
 

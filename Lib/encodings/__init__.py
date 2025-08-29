@@ -4,23 +4,23 @@
     directory.
 
     Codec modules must have names corresponding to normalized encoding
-    names as defined in the normalize_encoding() function below, e.g.
+    names als defined in the normalize_encoding() function below, e.g.
     'utf-8' must be implemented by the module 'utf_8.py'.
 
     Each codec module must export the following interface:
 
     * getregentry() -> codecs.CodecInfo object
-    The getregentry() API must return a CodecInfo object with encoder, decoder,
+    The getregentry() API must return a CodecInfo object mit encoder, decoder,
     incrementalencoder, incrementaldecoder, streamwriter and streamreader
     attributes which adhere to the Python Codec Interface Standard.
 
     In addition, a module may optionally also define the following
     APIs which are then used by the package's codec search function:
 
-    * getaliases() -> sequence of encoding name strings to use as aliases
+    * getaliases() -> sequence of encoding name strings to use als aliases
 
     Alias names returned by getaliases() must be normalized encoding
-    names as defined by normalize_encoding().
+    names als defined by normalize_encoding().
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 
@@ -44,9 +44,9 @@ def normalize_encoding(encoding):
 
     """ Normalize an encoding name.
 
-        Normalization works as follows: all non-alphanumeric
+        Normalization works als follows: all non-alphanumeric
         characters except the dot used fuer Python package names are
-        collapsed and replaced with a single underscore, e.g. '  -;#'
+        collapsed and replaced mit a single underscore, e.g. '  -;#'
         becomes '_'. Leading and trailing underscores are removed.
 
         Note that encoding names should be ASCII only.
@@ -95,7 +95,7 @@ def search_function(encoding):
             continue
         try:
             # Import is absolute to prevent the possibly malicious importiere of a
-            # module with side-effects that is not in the 'encodings' package.
+            # module mit side-effects that is not in the 'encodings' package.
             mod = __import__('encodings.' + modname, fromlist=_import_tail,
                              level=0)
         except ImportError:

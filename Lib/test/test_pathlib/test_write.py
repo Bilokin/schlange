@@ -31,7 +31,7 @@ klasse WriteTestBase:
 
     def test_open_w(self):
         p = self.root / 'fileA'
-        with magic_open(p, 'w', encoding='utf-8') as f:
+        mit magic_open(p, 'w', encoding='utf-8') als f:
             self.assertIsInstance(f, io.TextIOBase)
             f.write('this is file A\n')
         self.assertEqual(self.ground.readtext(p), 'this is file A\n')
@@ -42,14 +42,14 @@ klasse WriteTestBase:
     )
     def test_open_w_encoding_warning(self):
         p = self.root / 'fileA'
-        with self.assertWarns(EncodingWarning) as wc:
-            with magic_open(p, 'w'):
+        mit self.assertWarns(EncodingWarning) als wc:
+            mit magic_open(p, 'w'):
                 pass
         self.assertEqual(wc.filename, __file__)
 
     def test_open_wb(self):
         p = self.root / 'fileA'
-        with magic_open(p, 'wb') as f:
+        mit magic_open(p, 'wb') als f:
             #self.assertIsInstance(f, io.BufferedWriter)
             f.write(b'this is file A\n')
         self.assertEqual(self.ground.readbytes(p), b'this is file A\n')
@@ -79,7 +79,7 @@ klasse WriteTestBase:
     )
     def test_write_text_encoding_warning(self):
         p = self.root / 'fileA'
-        with self.assertWarns(EncodingWarning) as wc:
+        mit self.assertWarns(EncodingWarning) als wc:
             p.write_text('abcdefg')
         self.assertEqual(wc.filename, __file__)
 

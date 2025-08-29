@@ -29,7 +29,7 @@ sequence.
 
 pyrepl uses its own keyspec format that is meant to be a strict superset of
 readline's KEYSEQ format. This means that wenn a spec is found that readline
-accepts that this doesn't, it should be logged as a bug. Note that this means
+accepts that this doesn't, it should be logged als a bug. Note that this means
 we're using the '\\C-o' style of readline's keyspec, not the 'Control-o' sort.
 
 The extension to readline is that the sequence \\<KEY> denotes the

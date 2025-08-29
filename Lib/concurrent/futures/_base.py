@@ -73,17 +73,17 @@ klasse _AsCompletedWaiter(_Waiter):
         self.lock = threading.Lock()
 
     def add_result(self, future):
-        with self.lock:
+        mit self.lock:
             super(_AsCompletedWaiter, self).add_result(future)
             self.event.set()
 
     def add_exception(self, future):
-        with self.lock:
+        mit self.lock:
             super(_AsCompletedWaiter, self).add_exception(future)
             self.event.set()
 
     def add_cancelled(self, future):
-        with self.lock:
+        mit self.lock:
             super(_AsCompletedWaiter, self).add_cancelled(future)
             self.event.set()
 
@@ -112,7 +112,7 @@ klasse _AllCompletedWaiter(_Waiter):
         super().__init__()
 
     def _decrement_pending_calls(self):
-        with self.lock:
+        mit self.lock:
             self.num_pending_calls -= 1
             wenn not self.num_pending_calls:
                 self.event.set()
@@ -183,7 +183,7 @@ def _yield_finished_futures(fs, waiter, ref_collect):
         f = fs[-1]
         fuer futures_set in ref_collect:
             futures_set.remove(f)
-        with f._condition:
+        mit f._condition:
             f._waiters.remove(waiter)
         del f
         # Careful not to keep a reference to the popped value
@@ -191,7 +191,7 @@ def _yield_finished_futures(fs, waiter, ref_collect):
 
 
 def as_completed(fs, timeout=Nichts):
-    """An iterator over the given futures that yields each as it completes.
+    """An iterator over the given futures that yields each als it completes.
 
     Args:
         fs: The sequence of Futures (possibly created by different Executors) to
@@ -200,7 +200,7 @@ def as_completed(fs, timeout=Nichts):
             is no limit on the wait time.
 
     Returns:
-        An iterator that yields the given Futures as they complete (finished or
+        An iterator that yields the given Futures als they complete (finished or
         cancelled). If any given Futures are duplicated, they will be returned
         once.
 
@@ -213,7 +213,7 @@ def as_completed(fs, timeout=Nichts):
 
     fs = set(fs)
     total_futures = len(fs)
-    with _AcquireFutures(fs):
+    mit _AcquireFutures(fs):
         finished = set(
                 f fuer f in fs
                 wenn f._state in [CANCELLED_AND_NOTIFIED, FINISHED])
@@ -236,7 +236,7 @@ def as_completed(fs, timeout=Nichts):
 
             waiter.event.wait(wait_timeout)
 
-            with waiter.lock:
+            mit waiter.lock:
                 finished = waiter.finished_futures
                 waiter.finished_futures = []
                 waiter.event.clear()
@@ -249,7 +249,7 @@ def as_completed(fs, timeout=Nichts):
     finally:
         # Remove waiter von unfinished futures
         fuer f in fs:
-            with f._condition:
+            mit f._condition:
                 f._waiters.remove(waiter)
 
 DoneAndNotDoneFutures = collections.namedtuple(
@@ -280,7 +280,7 @@ def wait(fs, timeout=Nichts, return_when=ALL_COMPLETED):
         returned only once.
     """
     fs = set(fs)
-    with _AcquireFutures(fs):
+    mit _AcquireFutures(fs):
         done = {f fuer f in fs
                    wenn f._state in [CANCELLED_AND_NOTIFIED, FINISHED]}
         not_done = fs - done
@@ -298,7 +298,7 @@ def wait(fs, timeout=Nichts, return_when=ALL_COMPLETED):
 
     waiter.event.wait(timeout)
     fuer f in fs:
-        with f._condition:
+        mit f._condition:
             f._waiters.remove(waiter)
 
     done.update(waiter.finished_futures)
@@ -312,7 +312,7 @@ def _result_or_cancel(fut, timeout=Nichts):
         finally:
             fut.cancel()
     finally:
-        # Break a reference cycle with the exception in self._exception
+        # Break a reference cycle mit the exception in self._exception
         del fut
 
 
@@ -336,7 +336,7 @@ klasse Future(object):
                 LOGGER.exception('exception calling callback fuer %r', self)
 
     def __repr__(self):
-        with self._condition:
+        mit self._condition:
             wenn self._state == FINISHED:
                 wenn self._exception:
                     return '<%s at %#x state=%s raised %s>' % (
@@ -361,7 +361,7 @@ klasse Future(object):
         Returns Wahr wenn the future was cancelled, Falsch otherwise. A future
         cannot be cancelled wenn it is running or has already completed.
         """
-        with self._condition:
+        mit self._condition:
             wenn self._state in [RUNNING, FINISHED]:
                 return Falsch
 
@@ -376,17 +376,17 @@ klasse Future(object):
 
     def cancelled(self):
         """Return Wahr wenn the future was cancelled."""
-        with self._condition:
+        mit self._condition:
             return self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]
 
     def running(self):
         """Return Wahr wenn the future is currently executing."""
-        with self._condition:
+        mit self._condition:
             return self._state == RUNNING
 
     def done(self):
         """Return Wahr wenn the future was cancelled or finished executing."""
-        with self._condition:
+        mit self._condition:
             return self._state in [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]
 
     def __get_result(self):
@@ -394,7 +394,7 @@ klasse Future(object):
             try:
                 raise self._exception
             finally:
-                # Break a reference cycle with the exception in self._exception
+                # Break a reference cycle mit the exception in self._exception
                 self = Nichts
         sonst:
             return self._result
@@ -403,14 +403,14 @@ klasse Future(object):
         """Attaches a callable that will be called when the future finishes.
 
         Args:
-            fn: A callable that will be called with this future as its only
+            fn: A callable that will be called mit this future als its only
                 argument when the future completes or is cancelled. The callable
                 will always be called by a thread in the same process in which
                 it was added. If the future has already completed or been
                 cancelled then the callable will be called immediately. These
                 callables are called in the order that they were added.
         """
-        with self._condition:
+        mit self._condition:
             wenn self._state not in [CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED]:
                 self._done_callbacks.append(fn)
                 return
@@ -436,7 +436,7 @@ klasse Future(object):
             Exception: If the call raised then that exception will be raised.
         """
         try:
-            with self._condition:
+            mit self._condition:
                 wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
                     raise CancelledError()
                 sowenn self._state == FINISHED:
@@ -451,7 +451,7 @@ klasse Future(object):
                 sonst:
                     raise TimeoutError()
         finally:
-            # Break a reference cycle with the exception in self._exception
+            # Break a reference cycle mit the exception in self._exception
             self = Nichts
 
     def exception(self, timeout=Nichts):
@@ -472,7 +472,7 @@ klasse Future(object):
                 timeout.
         """
 
-        with self._condition:
+        mit self._condition:
             wenn self._state in [CANCELLED, CANCELLED_AND_NOTIFIED]:
                 raise CancelledError()
             sowenn self._state == FINISHED:
@@ -489,7 +489,7 @@ klasse Future(object):
 
     # The following methods should only be used by Executors and in tests.
     def set_running_or_notify_cancel(self):
-        """Mark the future as running or process any cancel notifications.
+        """Mark the future als running or process any cancel notifications.
 
         Should only be used by Executor implementations and unit tests.
 
@@ -501,7 +501,7 @@ klasse Future(object):
         (future calls to running() will return Wahr) and Wahr is returned.
 
         This method should be called by Executor implementations before
-        executing the work associated with this future. If this method returns
+        executing the work associated mit this future. If this method returns
         Falsch then the work should not be executed.
 
         Returns:
@@ -511,7 +511,7 @@ klasse Future(object):
             RuntimeError: wenn this method was already called or wenn set_result()
                 or set_exception() was called.
         """
-        with self._condition:
+        mit self._condition:
             wenn self._state == CANCELLED:
                 self._state = CANCELLED_AND_NOTIFIED
                 fuer waiter in self._waiters:
@@ -529,11 +529,11 @@ klasse Future(object):
                 raise RuntimeError('Future in unexpected state')
 
     def set_result(self, result):
-        """Sets the return value of work associated with the future.
+        """Sets the return value of work associated mit the future.
 
         Should only be used by Executor implementations and unit tests.
         """
-        with self._condition:
+        mit self._condition:
             wenn self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
                 raise InvalidStateError('{}: {!r}'.format(self._state, self))
             self._result = result
@@ -544,11 +544,11 @@ klasse Future(object):
         self._invoke_callbacks()
 
     def set_exception(self, exception):
-        """Sets the result of the future as being the given exception.
+        """Sets the result of the future als being the given exception.
 
         Should only be used by Executor implementations and unit tests.
         """
-        with self._condition:
+        mit self._condition:
             wenn self._state in {CANCELLED, CANCELLED_AND_NOTIFIED, FINISHED}:
                 raise InvalidStateError('{}: {!r}'.format(self._state, self))
             self._exception = exception
@@ -576,7 +576,7 @@ klasse Future(object):
             return Wahr, Falsch, self._result, self._exception
 
         # Need lock fuer other states since they can change
-        with self._condition:
+        mit self._condition:
             # We have to check the state again after acquiring the lock
             # because it may have changed in the meantime.
             wenn self._state == FINISHED:
@@ -591,9 +591,9 @@ klasse Executor(object):
     """This is an abstract base klasse fuer concrete asynchronous executors."""
 
     def submit(self, fn, /, *args, **kwargs):
-        """Submits a callable to be executed with the given arguments.
+        """Submits a callable to be executed mit the given arguments.
 
-        Schedules the callable to be executed as fn(*args, **kwargs) and returns
+        Schedules the callable to be executed als fn(*args, **kwargs) and returns
         a Future instance representing the execution of the callable.
 
         Returns:
@@ -605,7 +605,7 @@ klasse Executor(object):
         """Returns an iterator equivalent to map(fn, iter).
 
         Args:
-            fn: A callable that will take as many arguments as there are
+            fn: A callable that will take als many arguments als there are
                 passed iterables.
             timeout: The maximum number of seconds to wait. If Nichts, then there
                 is no limit on the wait time.
@@ -672,7 +672,7 @@ klasse Executor(object):
         return result_iterator()
 
     def shutdown(self, wait=Wahr, *, cancel_futures=Falsch):
-        """Clean-up the resources associated with the Executor.
+        """Clean-up the resources associated mit the Executor.
 
         It is safe to call this method several times. Otherwise, no other
         methods can be called after this one.

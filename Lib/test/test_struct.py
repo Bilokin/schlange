@@ -279,8 +279,8 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                     def __int__(self):
                         return 42
 
-                # Objects with an '__index__' method should be allowed
-                # to pack as integers.  That is assuming the implemented
+                # Objects mit an '__index__' method should be allowed
+                # to pack als integers.  That is assuming the implemented
                 # '__index__' method returns an 'int'.
                 klasse Indexable(object):
                     def __init__(self, value):
@@ -290,7 +290,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                         return self._value
 
                 # If the '__index__' method raises a type error, then
-                # '__int__' should be used with a deprecation warning.
+                # '__int__' should be used mit a deprecation warning.
                 klasse BadIndex(object):
                     def __index__(self):
                         raise TypeError
@@ -338,7 +338,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_nN_code(self):
         # n and N don't exist in standard sizes
         def assertStructError(func, *args, **kwargs):
-            with self.assertRaises(struct.error) as cm:
+            mit self.assertRaises(struct.error) als cm:
                 func(*args, **kwargs)
             self.assertIn("bad char in struct format", str(cm.exception))
         fuer code in 'nN':
@@ -378,7 +378,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             # Packing this rounds away a solid string of trailing 1 bits.
             packed = struct.pack("<f", smaller)
             unpacked = struct.unpack("<f", packed)[0]
-            # This failed at base = 2, 4, and 32, with unpacked = 1, 2, and
+            # This failed at base = 2, 4, and 32, mit unpacked = 1, 2, and
             # 16, respectively.
             self.assertEqual(base, unpacked)
             bigpacked = struct.pack(">f", smaller)
@@ -444,7 +444,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         from_buf = writable_buf.tobytes()[:len(test_string)]
         self.assertEqual(from_buf, test_string)
 
-        # Test with offset.
+        # Test mit offset.
         s.pack_into(writable_buf, 10, test_string)
         from_buf = writable_buf.tobytes()[:len(test_string)+10]
         self.assertEqual(from_buf, test_string[:10] + test_string)
@@ -472,7 +472,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         from_buf = writable_buf.tobytes()[:len(test_string)]
         self.assertEqual(from_buf, test_string)
 
-        # Test with offset.
+        # Test mit offset.
         pack_into(writable_buf, 10, test_string)
         from_buf = writable_buf.tobytes()[:len(test_string)+10]
         self.assertEqual(from_buf, test_string[:10] + test_string)
@@ -554,7 +554,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertRaises(struct.error, struct.pack_into, '12345', store, 0)
         self.assertRaises(struct.error, struct.unpack_from, '12345', store, 0)
 
-        # Format lists with trailing count spec should result in an error
+        # Format lists mit trailing count spec should result in an error
         self.assertRaises(struct.error, struct.pack, 'c12345', 'x')
         self.assertRaises(struct.error, struct.unpack, 'c12345', b'x')
         self.assertRaises(struct.error, struct.pack_into, 'c12345', store, 0,
@@ -573,7 +573,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
     def test_Struct_reinitialization(self):
         # Issue 9422: there was a memory leak when reinitializing a
         # Struct instance.  This test can be used to detect the leak
-        # when running with regrtest -L.
+        # when running mit regrtest -L.
         s = struct.Struct('i')
         s.__init__('ii')
 
@@ -605,7 +605,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             r'bytes fuer packing 1 bytes at offset 5 '
             r'\(actual buffer size is 1\)'
         )
-        with self.assertRaisesRegex(struct.error, regex1):
+        mit self.assertRaisesRegex(struct.error, regex1):
             struct.pack_into('b', bytearray(1), 5, 1)
 
         regex2 = (
@@ -613,27 +613,27 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             r'bytes fuer unpacking 1 bytes at offset 5 '
             r'\(actual buffer size is 1\)'
         )
-        with self.assertRaisesRegex(struct.error, regex2):
+        mit self.assertRaisesRegex(struct.error, regex2):
             struct.unpack_from('b', bytearray(1), 5)
 
     def test_boundary_error_message_with_negative_offset(self):
         byte_list = bytearray(10)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 struct.error,
                 r'no space to pack 4 bytes at offset -2'):
             struct.pack_into('<I', byte_list, -2, 123)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 struct.error,
                 'offset -11 out of range fuer 10-byte buffer'):
             struct.pack_into('<B', byte_list, -11, 123)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 struct.error,
                 r'not enough data to unpack 4 bytes at offset -2'):
             struct.unpack_from('<I', byte_list, -2)
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 struct.error,
                 "offset -11 out of range fuer 10-byte buffer"):
             struct.unpack_from('<B', byte_list, -11)
@@ -645,7 +645,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             r' bytes fuer packing 4 bytes at offset ' + str(sys.maxsize) +
             r' \(actual buffer size is 10\)'
         )
-        with self.assertRaisesRegex(struct.error, regex1):
+        mit self.assertRaisesRegex(struct.error, regex1):
             struct.pack_into('<I', bytearray(10), sys.maxsize, 1)
 
         regex2 = (
@@ -653,14 +653,14 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
             r' bytes fuer unpacking 4 bytes at offset ' + str(sys.maxsize) +
             r' \(actual buffer size is 10\)'
         )
-        with self.assertRaisesRegex(struct.error, regex2):
+        mit self.assertRaisesRegex(struct.error, regex2):
             struct.unpack_from('<I', bytearray(10), sys.maxsize)
 
     def test_issue29802(self):
         # When the second argument of struct.unpack() was of wrong type
         # the Struct object was decrefed twice and the reference to
         # deallocated object was left in a cache.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             struct.unpack('b', 0)
         # Shouldn't crash.
         self.assertEqual(struct.unpack('b', b'a'), (b'a'[0],))
@@ -713,15 +713,15 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
         Struct = struct.Struct
         unpack_iterator = type(struct.iter_unpack("b", b'x'))
         fuer cls in (Struct, unpack_iterator):
-            with self.subTest(cls=cls):
-                with self.assertRaises(TypeError):
+            mit self.subTest(cls=cls):
+                mit self.assertRaises(TypeError):
                     cls.x = 1
 
 
     def test_issue35714(self):
         # Embedded null characters should not be allowed in format strings.
         fuer s in '\0', '2\0i', b'\0':
-            with self.assertRaisesRegex(struct.error,
+            mit self.assertRaisesRegex(struct.error,
                                         'embedded null character'):
                 struct.calcsize(s)
 
@@ -738,13 +738,13 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 min_ = -2 ** (size * 8 - 1)
             error_msg = f"'{int_type}' format requires {min_} <= number <= {max_}"
             fuer number in [int(-1e50), min_ - 1, max_ + 1, int(1e50)]:
-                with self.subTest(format_str=fmt_str, number=number):
-                    with self.assertRaisesRegex(struct.error, error_msg):
+                mit self.subTest(format_str=fmt_str, number=number):
+                    mit self.assertRaisesRegex(struct.error, error_msg):
                         struct.pack(fmt_str, number)
             error_msg = "required argument is not an integer"
             not_number = ""
-            with self.subTest(format_str=fmt_str, number=not_number):
-                with self.assertRaisesRegex(struct.error, error_msg):
+            mit self.subTest(format_str=fmt_str, number=not_number):
+                mit self.assertRaisesRegex(struct.error, error_msg):
                     struct.pack(fmt_str, not_number)
 
         fuer prefix in '@=<>':
@@ -766,8 +766,8 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                 1 / 0
 
         def test_error_propagation(fmt_str):
-            with self.subTest(format_str=fmt_str, exception="ZeroDivisionError"):
-                with self.assertRaises(ZeroDivisionError):
+            mit self.subTest(format_str=fmt_str, exception="ZeroDivisionError"):
+                mit self.assertRaises(ZeroDivisionError):
                     struct.pack(fmt_str, Div0())
 
         fuer prefix in '@=<>':
@@ -795,7 +795,7 @@ klasse StructTest(ComplexesAreIdenticalMixin, unittest.TestCase):
                                                      -3, INF, -INF, NAN], 2)]
         fuer z in values:
             fuer f in ['F', 'D', '>F', '>D', '<F', '<D']:
-                with self.subTest(z=z, format=f):
+                mit self.subTest(z=z, format=f):
                     round_trip = struct.unpack(f, struct.pack(f, z))[0]
                     self.assertComplexesAreIdentical(z, round_trip)
 
@@ -815,15 +815,15 @@ klasse UnpackIteratorTest(unittest.TestCase):
         it = s.iter_unpack(b"1234567")
         _check_iterator(it)
         # Wrong bytes length
-        with self.assertRaises(struct.error):
+        mit self.assertRaises(struct.error):
             s.iter_unpack(b"123456")
-        with self.assertRaises(struct.error):
+        mit self.assertRaises(struct.error):
             s.iter_unpack(b"12345678")
         # Zero-length struct
         s = struct.Struct('>')
-        with self.assertRaises(struct.error):
+        mit self.assertRaises(struct.error):
             s.iter_unpack(b"")
-        with self.assertRaises(struct.error):
+        mit self.assertRaises(struct.error):
             s.iter_unpack(b"12")
 
     def test_uninstantiable(self):

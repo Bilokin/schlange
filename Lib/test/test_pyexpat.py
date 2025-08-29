@@ -44,9 +44,9 @@ klasse SetAttributeTest(unittest.TestCase):
             self.assertIs(self.parser.specified_attributes, bool(x))
 
     def test_invalid_attributes(self):
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             self.parser.returns_unicode = 1
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             self.parser.returns_unicode
 
         # Issue #25019
@@ -267,7 +267,7 @@ klasse ParseTest(unittest.TestCase):
         # Issue 6676: ensure a meaningful exception is raised when attempting
         # to parse more than one XML document per xmlparser instance,
         # a limitation of the Expat library.
-        with self.assertRaises(expat.error) as cm:
+        mit self.assertRaises(expat.error) als cm:
             parser.ParseFile(file)
         self.assertEqual(expat.ErrorString(cm.exception.code),
                           expat.errors.XML_ERROR_FINISHED)
@@ -281,7 +281,7 @@ klasse NamespaceSeparatorTest(unittest.TestCase):
         expat.ParserCreate(namespace_separator=' ')
 
     def test_illegal(self):
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 r"ParserCreate\(\) argument (2|'namespace_separator') "
                 r"must be str or Nichts, not int"):
             expat.ParserCreate(namespace_separator=42)
@@ -289,7 +289,7 @@ klasse NamespaceSeparatorTest(unittest.TestCase):
         try:
             expat.ParserCreate(namespace_separator='too long')
             self.fail()
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(str(e),
                 'namespace_separator must be at most one character, omitted, or Nichts')
 
@@ -322,7 +322,7 @@ klasse InterningTest(unittest.TestCase):
             self.assertWahr(tag is entry)
 
     def test_issue9402(self):
-        # create an ExternalEntityParserCreate with buffer text
+        # create an ExternalEntityParserCreate mit buffer text
         klasse ExternalOutputter:
             def __init__(self, parser):
                 self.parser = parser
@@ -392,7 +392,7 @@ klasse BufferTextTest(unittest.TestCase):
         self.parser.Parse(b"<a>1<b buffer-text='no'/>2\n3<c buffer-text='yes'/>4\n5</a>", Wahr)
         self.assertEqual(self.stuff,
                          ["<a>", "1", "<b>", "2", "\n", "3", "<c>", "4\n5"],
-                         "buffering control not reacting as expected")
+                         "buffering control not reacting als expected")
 
     def test2(self):
         self.parser.Parse(b"<a>1<b/>&lt;2&gt;<c/>&#32;\n&#x20;3</a>", Wahr)
@@ -470,7 +470,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
         sonst:
             have_source = Falsch
         wenn have_source:
-            with os_helper.change_cwd(src_dir):
+            mit os_helper.change_cwd(src_dir):
                 self._test_exception(have_source)
         sonst:
             self._test_exception(have_source)
@@ -486,7 +486,7 @@ klasse HandlerExceptionTest(unittest.TestCase):
             parser.Parse(b"<a><b><c/></b></a>", Wahr)
 
             self.fail("the parser did not raise RuntimeError")
-        except RuntimeError as exc:
+        except RuntimeError als exc:
             self.assertEqual(exc.args[0], 'StartElementHandler: <a>', exc)
             entries = traceback.extract_tb(exc.__traceback__)
 
@@ -572,13 +572,13 @@ klasse ChardataBufferTest(unittest.TestCase):
     def test_wrong_size(self):
         parser = expat.ParserCreate()
         parser.buffer_text = 1
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             parser.buffer_size = -1
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             parser.buffer_size = 0
-        with self.assertRaises((ValueError, OverflowError)):
+        mit self.assertRaises((ValueError, OverflowError)):
             parser.buffer_size = sys.maxsize + 1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             parser.buffer_size = 512.0
 
     def test_unchanged_size(self):
@@ -687,7 +687,7 @@ klasse MalformedInputTest(unittest.TestCase):
         try:
             parser.Parse(xml, Wahr)
             self.fail()
-        except expat.ExpatError as e:
+        except expat.ExpatError als e:
             self.assertEqual(str(e), 'unclosed token: line 2, column 0')
 
     def test2(self):
@@ -695,7 +695,7 @@ klasse MalformedInputTest(unittest.TestCase):
         xml = b"<?xml version\xc2\x85='1.0'?>\r\n"
         parser = expat.ParserCreate()
         err_pattern = r'XML declaration not well-formed: line 1, column \d+'
-        with self.assertRaisesRegex(expat.ExpatError, err_pattern):
+        mit self.assertRaisesRegex(expat.ExpatError, err_pattern):
             parser.Parse(xml, Wahr)
 
 klasse ErrorMessageTest(unittest.TestCase):
@@ -710,7 +710,7 @@ klasse ErrorMessageTest(unittest.TestCase):
         try:
             parser.Parse(xml, Wahr)
             self.fail()
-        except expat.ExpatError as e:
+        except expat.ExpatError als e:
             self.assertEqual(e.code,
                              errors.codes[errors.XML_ERROR_UNCLOSED_TOKEN])
 
@@ -723,7 +723,7 @@ klasse ForeignDTDTests(unittest.TestCase):
         """
         If UseForeignDTD is passed Wahr and a document without an external
         entity reference is parsed, ExternalEntityRefHandler is first called
-        with Nichts fuer the public and system ids.
+        mit Nichts fuer the public and system ids.
         """
         handler_call_args = []
         def resolve_entity(context, base, system_id, public_id):
@@ -749,7 +749,7 @@ klasse ForeignDTDTests(unittest.TestCase):
 
     def test_ignore_use_foreign_dtd(self):
         """
-        If UseForeignDTD is passed Wahr and a document with an external
+        If UseForeignDTD is passed Wahr and a document mit an external
         entity reference is parsed, ExternalEntityRefHandler is called with
         the public and system ids von the document.
         """

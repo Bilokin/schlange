@@ -84,7 +84,7 @@ def _run_suite(suite):
     result = runner.run(suite)
 
     wenn support.junit_xml_list is not Nichts:
-        importiere xml.etree.ElementTree as ET
+        importiere xml.etree.ElementTree als ET
         xml_elem = result.get_xml_element()
         xml_str = ET.tostring(xml_elem).decode('ascii')
         support.junit_xml_list.append(xml_str)
@@ -205,10 +205,10 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         clear_caches()
         support.gc_collect()
 
-        with saved_test_environment(test_name,
+        mit saved_test_environment(test_name,
                                     runtests.verbose, quiet, pgo=pgo):
             _load_run_test(result, runtests)
-    except support.ResourceDenied as exc:
+    except support.ResourceDenied als exc:
         wenn not quiet and not pgo:
             drucke(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
@@ -216,7 +216,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
             )
         result.state = State.RESOURCE_DENIED
         return
-    except unittest.SkipTest as exc:
+    except unittest.SkipTest als exc:
         wenn not quiet and not pgo:
             drucke(
                 f"{stdout.YELLOW}{test_name} skipped -- {exc}{stdout.RESET}",
@@ -224,7 +224,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
             )
         result.state = State.SKIPPED
         return
-    except support.TestFailedWithDetails as exc:
+    except support.TestFailedWithDetails als exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"
@@ -234,7 +234,7 @@ def _runtest_env_changed_exc(result: TestResult, runtests: RunTests,
         result.failures = exc.failures
         result.stats = exc.stats
         return
-    except support.TestFailed as exc:
+    except support.TestFailed als exc:
         msg = f"{stderr.RED}test {test_name} failed{stderr.RESET}"
         wenn display_failure:
             msg = f"{stderr.RED}{msg} -- {exc}{stderr.RESET}"

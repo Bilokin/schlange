@@ -267,9 +267,9 @@ klasse Emitter:
         try:
             wenn not self.cannot_escape:
                 storage.close_inputs(self.out)
-        except StackError as ex:
+        except StackError als ex:
             raise analysis_error(ex.args[0], tkn)
-        except Exception as ex:
+        except Exception als ex:
             ex.args = (ex.args[0] + str(tkn),)
             raise
         return Wahr
@@ -467,7 +467,7 @@ klasse Emitter:
         storage: Storage,
         inst: Instruction | Nichts,
     ) -> bool:
-        """Replace the INSTRUCTION_SIZE macro with the size of the current instruction."""
+        """Replace the INSTRUCTION_SIZE macro mit the size of the current instruction."""
         wenn uop.instruction_size is Nichts:
             raise analysis_error("The INSTRUCTION_SIZE macro requires uop.instruction_size to be set", tkn)
         self.out.emit(f" {uop.instruction_size} ")
@@ -544,7 +544,7 @@ klasse Emitter:
             wenn stmt in uop.properties.escaping_calls and not self.cannot_escape:
                 self.emit_reload(storage)
             return reachable, Nichts, storage
-        except StackError as ex:
+        except StackError als ex:
             raise analysis_error(ex.args[0], tkn) #from Nichts
 
 
@@ -619,7 +619,7 @@ klasse Emitter:
                     # Discard the wenn storage
                     reachable = Wahr
             return reachable, rbrace, storage
-        except StackError as ex:
+        except StackError als ex:
             assert rbrace is not Nichts
             raise analysis_error(ex.args[0], rbrace) von Nichts
 
@@ -644,7 +644,7 @@ klasse Emitter:
                 wenn not reachable:
                     break
             return reachable, stmt.close, storage
-        except StackError as ex:
+        except StackError als ex:
             wenn tkn is Nichts:
                 tkn = stmt.close
             raise analysis_error(ex.args[0], tkn) von Nichts
@@ -691,7 +691,7 @@ klasse Emitter:
                 storage.push_outputs()
             wenn emit_braces:
                 self.out.emit(tkn)
-        except StackError as ex:
+        except StackError als ex:
             raise analysis_error(ex.args[0], tkn) von Nichts
         return reachable, storage
 

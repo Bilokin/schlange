@@ -79,7 +79,7 @@ def make_hkscs_map(table):
         b1, b2 = split_bytes(mbcode)
         decode_map.setdefault(b1, {})
         decode_map[b1][b2] = cp & 0xffff
-    # Encode table needs to mark code points beginning a sequence as tuples.
+    # Encode table needs to mark code points beginning a sequence als tuples.
     fuer cp, mbcodes in beginnings.items():
         plane = cp >> 16
         wenn plane == 0:
@@ -102,9 +102,9 @@ def make_hkscs_map(table):
 
 def load_big5_map():
     mapfile = open_mapping_file('python-mappings/BIG5.txt', MAPPINGS_BIG5)
-    with mapfile:
+    mit mapfile:
         big5decmap = loadmap(mapfile)
-    # big5 mapping fix: use the cp950 mapping fuer these characters as the file
+    # big5 mapping fix: use the cp950 mapping fuer these characters als the file
     # provided by unicode.org doesn't define a mapping. See notes in BIG5.txt.
     # Since U+5341, U+5345, U+FF0F, U+FF3C already have a big5 mapping, no
     # roundtrip compatibility is guaranteed fuer those.
@@ -136,7 +136,7 @@ def load_big5_map():
 
 def load_cp950_map():
     mapfile = open_mapping_file('python-mappings/CP950.TXT', MAPPINGS_CP950)
-    with mapfile:
+    mit mapfile:
         cp950decmap = loadmap(mapfile)
     cp950encmap = {}
     fuer c1, m in list(cp950decmap.items()):
@@ -168,7 +168,7 @@ def main_tw():
                     and big5decmap[c1][c2] == code):
                 del cp950decmap[c1][c2]
 
-    with open('mappings_tw.h', 'w') as fp:
+    mit open('mappings_tw.h', 'w') als fp:
         print_autogen(fp, os.path.basename(__file__))
         write_big5_maps(fp, 'BIG5', 'big5', big5decmap, big5encmap)
         write_big5_maps(fp, 'CP950', 'cp950ext', cp950decmap, cp950encmap)
@@ -207,12 +207,12 @@ klasse HintsWriter:
 
 def main_hkscs():
     filename = f'python-mappings/hkscs-{HKSCS_VERSION}-big5-iso.txt'
-    with open_mapping_file(filename, MAPPINGS_HKSCS) as f:
+    mit open_mapping_file(filename, MAPPINGS_HKSCS) als f:
         table = parse_hkscs_map(f)
     hkscsdecmap, hkscsencmap_bmp, hkscsencmap_nonbmp, isbmpmap = (
         make_hkscs_map(table)
     )
-    with open('mappings_hk.h', 'w') as fp:
+    mit open('mappings_hk.h', 'w') als fp:
         drucke('Generating BIG5HKSCS decode map...')
         print_autogen(fp, os.path.basename(__file__))
         writer = DecodeMapWriter(fp, 'big5hkscs', hkscsdecmap)

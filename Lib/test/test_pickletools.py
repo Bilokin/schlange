@@ -124,17 +124,17 @@ klasse GenopsTests(unittest.TestCase):
         it = pickletools.genops(b'N')
         item = next(it)
         self.assertEqual(item[0].name, 'NONE')
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                 'pickle exhausted before seeing STOP'):
             next(it)
 
     def test_truncated_data(self):
         it = pickletools.genops(b'I123')
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                 'no newline found when trying to read stringnl'):
             next(it)
         it = pickletools.genops(b'J\x12\x34')
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                 'not enough data in stream to read int4'):
             next(it)
 
@@ -142,7 +142,7 @@ klasse GenopsTests(unittest.TestCase):
         it = pickletools.genops(b'N\xff')
         item = next(it)
         self.assertEqual(item[0].name, 'NONE')
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                 r"at position 1, opcode b'\\xff' unknown"):
             next(it)
 
@@ -151,7 +151,7 @@ klasse GenopsTests(unittest.TestCase):
         it = pickletools.genops(f)
         item = next(it)
         self.assertEqual(item[0].name, 'NONE')
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                 r"at position <unknown>, opcode b'\\xff' unknown"):
             next(it)
 
@@ -166,7 +166,7 @@ klasse DisTests(unittest.TestCase):
 
     def check_dis_error(self, data, expected, expected_error, **kwargs):
         out = io.StringIO()
-        with self.assertRaisesRegex(ValueError, expected_error):
+        mit self.assertRaisesRegex(ValueError, expected_error):
             pickletools.dis(data, out=out, **kwargs)
         self.assertEqual(out.getvalue(), expected)
 
@@ -295,11 +295,11 @@ highest protocol among opcodes = 0
     def test_too_small_stack(self):
         self.check_dis_error(b'a', '''\
     0: a    APPEND
-''', 'tries to pop 2 items von stack with only 0 items')
+''', 'tries to pop 2 items von stack mit only 0 items')
         self.check_dis_error(b']a', '''\
     0: ]    EMPTY_LIST
     1: a    APPEND
-''', 'tries to pop 2 items von stack with only 1 items')
+''', 'tries to pop 2 items von stack mit only 1 items')
 
     def test_no_stop(self):
         self.check_dis_error(b'N', '''\

@@ -179,7 +179,7 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
     def find_trace(self, traces, traceback, size):
         # filter also by size to ignore the memory allocated by
-        # _PyRefchain_Trace() wenn Python is built with Py_TRACE_REFS.
+        # _PyRefchain_Trace() wenn Python is built mit Py_TRACE_REFS.
         fuer trace in traces:
             wenn trace[2] == traceback._frames and trace[1] == size:
                 return trace
@@ -324,14 +324,14 @@ klasse TestTracemallocEnabled(unittest.TestCase):
 
         # tracemalloc must be tracing memory allocations to take a snapshot
         tracemalloc.stop()
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             tracemalloc.take_snapshot()
         self.assertEqual(str(cm.exception),
                          "the tracemalloc module must be tracing memory "
                          "allocations to take a snapshot")
 
     def test_snapshot_save_attr(self):
-        # take a snapshot with a new attribute
+        # take a snapshot mit a new attribute
         snapshot = tracemalloc.take_snapshot()
         snapshot.test_attr = "new"
         snapshot.dump(os_helper.TESTFN)
@@ -390,7 +390,7 @@ klasse TestSnapshot(unittest.TestCase):
     def test_create_snapshot(self):
         raw_traces = [(0, 5, (('a.py', 2),), 10)]
 
-        with contextlib.ExitStack() as stack:
+        mit contextlib.ExitStack() als stack:
             stack.enter_context(patch.object(tracemalloc, 'is_tracing',
                                              return_value=Wahr))
             stack.enter_context(patch.object(tracemalloc, 'get_traceback_limit',
@@ -662,7 +662,7 @@ klasse TestSnapshot(unittest.TestCase):
         snapshot, snapshot2 = create_snapshots()
         def getline(filename, lineno):
             return '  <%s, %s>' % (filename, lineno)
-        with unittest.mock.patch('tracemalloc.linecache.getline',
+        mit unittest.mock.patch('tracemalloc.linecache.getline',
                                  side_effect=getline):
             tb = snapshot.traces[0].traceback
             self.assertEqual(tb.format(),
@@ -740,7 +740,7 @@ klasse TestFilters(unittest.TestCase):
         self.assertWahr(f._match_frame("12356", 5))
         self.assertWahr(f._match_frame("12356", 10))
 
-        # filter with line number > 0
+        # filter mit line number > 0
         f = tracemalloc.Filter(Wahr, "abc", 5)
         self.assertFalsch(f._match_frame("abc", 0))
         self.assertWahr(f._match_frame("abc", 5))
@@ -757,7 +757,7 @@ klasse TestFilters(unittest.TestCase):
         self.assertWahr(f._match_frame("12356", 5))
         self.assertWahr(f._match_frame("12356", 10))
 
-        # filter with line number 0
+        # filter mit line number 0
         f = tracemalloc.Filter(Wahr, "abc", 0)
         self.assertWahr(f._match_frame("abc", 0))
         self.assertFalsch(f._match_frame("abc", 5))
@@ -821,7 +821,7 @@ klasse TestFilters(unittest.TestCase):
         self.assertFalsch(fnmatch('abcdd', 'a*c*e'))
         self.assertFalsch(fnmatch('abcbdefef', 'a*bd*eg'))
 
-        # replace .pyc suffix with .py
+        # replace .pyc suffix mit .py
         self.assertWahr(fnmatch('a.pyc', 'a.py'))
         self.assertWahr(fnmatch('a.py', 'a.pyc'))
 
@@ -853,7 +853,7 @@ klasse TestFilters(unittest.TestCase):
             self.assertFalsch(fnmatch(r'a/b\c', r'a\b/c'))
             self.assertFalsch(fnmatch(r'a/b/c', r'a\b\c'))
 
-        # as of 3.5, .pyo is no longer munged to .py
+        # als of 3.5, .pyo is no longer munged to .py
         self.assertFalsch(fnmatch('a.pyo', 'a.py'))
 
     def test_filter_match_trace(self):
@@ -945,7 +945,7 @@ klasse TestCommandLine(unittest.TestCase):
 
     @force_not_colorized
     def check_env_var_invalid(self, nframe):
-        with support.SuppressCrashReport():
+        mit support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(
                 '-c', 'pass',
                 PYTHONTRACEMALLOC=str(nframe))
@@ -958,7 +958,7 @@ klasse TestCommandLine(unittest.TestCase):
 
     def test_env_var_invalid(self):
         fuer nframe in INVALID_NFRAME:
-            with self.subTest(nframe=nframe):
+            mit self.subTest(nframe=nframe):
                 self.check_env_var_invalid(nframe)
 
     def test_sys_xoptions(self):
@@ -967,7 +967,7 @@ klasse TestCommandLine(unittest.TestCase):
             ('tracemalloc=1', 1),
             ('tracemalloc=15', 15),
         ):
-            with self.subTest(xoptions=xoptions, nframe=nframe):
+            mit self.subTest(xoptions=xoptions, nframe=nframe):
                 code = 'import tracemalloc; drucke(tracemalloc.get_traceback_limit())'
                 ok, stdout, stderr = assert_python_ok('-X', xoptions, '-c', code)
                 stdout = stdout.rstrip()
@@ -975,7 +975,7 @@ klasse TestCommandLine(unittest.TestCase):
 
     def check_sys_xoptions_invalid(self, nframe):
         args = ('-X', 'tracemalloc=%s' % nframe, '-c', 'pass')
-        with support.SuppressCrashReport():
+        mit support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(*args)
 
         wenn b'ValueError: the number of frames must be in range' in stderr:
@@ -987,12 +987,12 @@ klasse TestCommandLine(unittest.TestCase):
     @force_not_colorized
     def test_sys_xoptions_invalid(self):
         fuer nframe in INVALID_NFRAME:
-            with self.subTest(nframe=nframe):
+            mit self.subTest(nframe=nframe):
                 self.check_sys_xoptions_invalid(nframe)
 
     @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
     def test_pymem_alloc0(self):
-        # Issue #21639: Check that PyMem_Malloc(0) with tracemalloc enabled
+        # Issue #21639: Check that PyMem_Malloc(0) mit tracemalloc enabled
         # does not crash.
         code = 'import _testcapi; _testcapi.test_pymem_alloc0(); 1'
         assert_python_ok('-X', 'tracemalloc', '-c', code)
@@ -1068,7 +1068,7 @@ klasse TestCAPI(unittest.TestCase):
         self.track()
 
         # calling _PyTraceMalloc_Track() must remove the old trace and add
-        # a new trace with the new traceback
+        # a new trace mit the new traceback
         frames = self.track(nframe=nframe)
         self.assertEqual(self.get_traceback(),
                          tracemalloc.Traceback(frames))
@@ -1099,7 +1099,7 @@ klasse TestCAPI(unittest.TestCase):
         tracemalloc.start()
         tracemalloc.stop()
 
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.track()
         self.assertIsNichts(self.get_traceback())
 
@@ -1108,7 +1108,7 @@ klasse TestCAPI(unittest.TestCase):
         self.track()
 
         tracemalloc.stop()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.untrack()
 
     @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')

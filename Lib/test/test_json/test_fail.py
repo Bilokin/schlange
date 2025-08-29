@@ -93,30 +93,30 @@ klasse TestFail:
 
     def test_non_string_keys_dict(self):
         data = {'a' : 1, (1, 2) : 2}
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 'keys must be str, int, float, bool or Nichts, not tuple'):
             self.dumps(data)
 
     def test_not_serializable(self):
         importiere sys
-        with self.assertRaisesRegex(TypeError,
-                'Object of type module is not JSON serializable') as cm:
+        mit self.assertRaisesRegex(TypeError,
+                'Object of type module is not JSON serializable') als cm:
             self.dumps(sys)
         self.assertNotHasAttr(cm.exception, '__notes__')
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             self.dumps([1, [2, 3, sys]])
         self.assertEqual(cm.exception.__notes__,
                          ['when serializing list item 2',
                           'when serializing list item 1'])
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             self.dumps((1, (2, 3, sys)))
         self.assertEqual(cm.exception.__notes__,
                          ['when serializing tuple item 2',
                           'when serializing tuple item 1'])
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             self.dumps({'a': {'b': sys}})
         self.assertEqual(cm.exception.__notes__,
                          ["when serializing dict item 'b'",
@@ -145,7 +145,7 @@ klasse TestFail:
             ('"spam', 'Unterminated string starting at', 0),
         ]
         fuer data, msg, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+            mit self.assertRaises(self.JSONDecodeError) als cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -183,7 +183,7 @@ klasse TestFail:
             ('[123  , ]', "Illegal trailing comma before end of array", 6),
         ]
         fuer data, msg, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+            mit self.assertRaises(self.JSONDecodeError) als cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -206,7 +206,7 @@ klasse TestFail:
             ('"spam",42', 'Extra data', 6),
         ]
         fuer data, msg, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+            mit self.assertRaises(self.JSONDecodeError) als cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -225,7 +225,7 @@ klasse TestFail:
             ('\n  \n\n     !', 4, 6, 10),
         ]
         fuer data, line, col, idx in test_cases:
-            with self.assertRaises(self.JSONDecodeError) as cm:
+            mit self.assertRaises(self.JSONDecodeError) als cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, 'Expecting value')

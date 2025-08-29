@@ -40,7 +40,7 @@ def generate_c_code(
             skip_actions=args.skip_actions,
         )
         return grammar, parser, tokenizer, gen
-    except Exception as err:
+    except Exception als err:
         wenn args.verbose:
             raise  # Show traceback
         traceback.print_exception(err.__class__, err, Nichts)
@@ -65,7 +65,7 @@ def generate_python_code(
             skip_actions=args.skip_actions,
         )
         return grammar, parser, tokenizer, gen
-    except Exception as err:
+    except Exception als err:
         wenn args.verbose:
             raise  # Show traceback
         traceback.print_exception(err.__class__, err, Nichts)
@@ -109,7 +109,7 @@ c_parser.add_argument(
 
 python_parser = subparsers.add_parser(
     "python",
-    help="Generate Python code, needs grammar definition with Python actions",
+    help="Generate Python code, needs grammar definition mit Python actions",
 )
 python_parser.set_defaults(func=generate_python_code)
 python_parser.add_argument("grammar_filename", help="Grammar description")

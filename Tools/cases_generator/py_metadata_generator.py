@@ -74,7 +74,7 @@ def generate_py_metadata(
 
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the Python file with opcode metadata.",
+    description="Generate the Python file mit opcode metadata.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
@@ -91,5 +91,5 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_py_metadata(args.input, data, outfile)

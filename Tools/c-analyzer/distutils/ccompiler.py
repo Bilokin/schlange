@@ -45,9 +45,9 @@ klasse CCompiler:
     #     compilers, much less on other platforms.  And I'm even less
     #     sure how useful it is; maybe fuer cross-compiling, but
     #     support fuer that is a ways off.  (And anyways, cross
-    #     compilers probably have a dedicated binary with the
+    #     compilers probably have a dedicated binary mit the
     #     right paths compiled in.  I hope.)
-    #   * can't do really freaky things with the library list/library
+    #   * can't do really freaky things mit the library list/library
     #     dirs, e.g. "-Ldir1 -lfoo -Ldir2 -lfoo" to link against
     #     different versions of libfoo.a in different locations.  I
     #     think this is useless without the ability to null out the
@@ -62,15 +62,15 @@ klasse CCompiler:
     static_lib_extension = Nichts
     shared_lib_extension = Nichts         # string
     static_lib_format = Nichts            # format string
-    shared_lib_format = Nichts            # prob. same as static_lib_format
+    shared_lib_format = Nichts            # prob. same als static_lib_format
     exe_extension = Nichts                # string
 
     # Default language settings. language_map is used to detect a source
     # file or Extension target language, checking source filenames.
     # language_order is used to detect the language precedence, when deciding
     # what language to use when mixing source types. For example, wenn some
-    # extension has two files with ".c" extension, and one with ".cpp", it
-    # is still linked as c++.
+    # extension has two files mit ".c" extension, and one mit ".cpp", it
+    # is still linked als c++.
     language_map = {".c"   : "c",
                     ".cc"  : "c++",
                     ".cpp" : "c++",
@@ -108,7 +108,7 @@ klasse CCompiler:
         # shared libraries/objects at runtime
         self.runtime_library_dirs = []
 
-        # 'objects': a list of object files (or similar, such as explicitly
+        # 'objects': a list of object files (or similar, such als explicitly
         # named library files) to include on any link
         self.objects = []
 
@@ -125,7 +125,7 @@ klasse CCompiler:
           linker_exe    linker used to create binary executables
           archiver      static library creator
 
-        On platforms with a command-line (Unix, DOS/Windows), each of these
+        On platforms mit a command-line (Unix, DOS/Windows), each of these
         is a string that will be split into executable name and (optional)
         list of arguments.  (Splitting the string is done similarly to how
         Unix shells operate: words are delimited by spaces, but quotes and
@@ -134,12 +134,12 @@ klasse CCompiler:
         """
 
         # Note that some CCompiler implementation classes will define class
-        # attributes 'cpp', 'cc', etc. with hard-coded executable names;
+        # attributes 'cpp', 'cc', etc. mit hard-coded executable names;
         # this is appropriate when a compiler klasse is fuer exactly one
         # compiler/OS combination (eg. MSVCCompiler).  Other compiler
         # classes (UnixCCompiler, in particular) are driven by information
         # discovered at run-time, since there are many different ways to do
-        # basically the same things with Unix C compilers.
+        # basically the same things mit Unix C compilers.
 
         fuer key in kwargs:
             wenn key not in self.executables:
@@ -238,9 +238,9 @@ klasse CCompiler:
     def _fix_compile_args(self, output_dir, macros, include_dirs):
         """Typecheck and fix-up some of the arguments to the 'compile()'
         method, and return fixed-up values.  Specifically: wenn 'output_dir'
-        is Nichts, replaces it with 'self.output_dir'; ensures that 'macros'
-        is a list, and augments it with 'self.macros'; ensures that
-        'include_dirs' is a list, and augments it with 'self.include_dirs'.
+        is Nichts, replaces it mit 'self.output_dir'; ensures that 'macros'
+        is a list, and augments it mit 'self.macros'; ensures that
+        'include_dirs' is a list, and augments it mit 'self.include_dirs'.
         Guarantees that the returned values are of the correct type,
         i.e. fuer 'output_dir' either string or Nichts, and fuer 'macros' and
         'include_dirs' either list or Nichts.
@@ -276,8 +276,8 @@ klasse CCompiler:
         """Preprocess a single C/C++ source file, named in 'source'.
         Output will be written to file named 'output_file', or stdout if
         'output_file' not supplied.  'macros' is a list of macro
-        definitions as fuer 'compile()', which will augment the macros set
-        with 'define_macro()' and 'undefine_macro()'.  'include_dirs' is a
+        definitions als fuer 'compile()', which will augment the macros set
+        mit 'define_macro()' and 'undefine_macro()'.  'include_dirs' is a
         list of directory names that will be added to the default list.
 
         Raises PreprocessError on failure.
@@ -325,7 +325,7 @@ klasse CCompiler:
 
 
 # Map a sys.platform/os.name ('posix', 'nt') to the default compiler
-# type fuer that platform. Keys are interpreted as re match
+# type fuer that platform. Keys are interpreted als re match
 # patterns. Order is important; platform mappings are preferred over
 # OS names.
 _default_compilers = (
@@ -401,7 +401,7 @@ def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
     except KeyError:
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
         wenn compiler is not Nichts:
-            msg = msg + " with '%s' compiler" % compiler
+            msg = msg + " mit '%s' compiler" % compiler
         raise DistutilsPlatformError(msg)
 
     try:
@@ -420,13 +420,13 @@ def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
                "in module '%s'" % (class_name, module_name))
 
     # XXX The Nichts is necessary to preserve backwards compatibility
-    # with classes that expect verbose to be the first positional
+    # mit classes that expect verbose to be the first positional
     # argument.
     return klass(Nichts, dry_run, force)
 
 
 def gen_preprocess_options(macros, include_dirs):
-    """Generate C pre-processor options (-D, -U, -I) as used by at least
+    """Generate C pre-processor options (-D, -U, -I) als used by at least
     two types of compilers: the typical Unix compiler and Visual C++.
     'macros' is the usual thing, a list of 1- or 2-tuples, where (name,)
     means undefine (-U) macro 'name', and (name,value) means define (-D)
@@ -457,7 +457,7 @@ def gen_preprocess_options(macros, include_dirs):
         wenn len(macro) == 1:        # undefine this macro
             pp_opts.append("-U%s" % macro[0])
         sowenn len(macro) == 2:
-            wenn macro[1] is Nichts:    # define with no explicit value
+            wenn macro[1] is Nichts:    # define mit no explicit value
                 pp_opts.append("-D%s" % macro[0])
             sonst:
                 # XXX *don't* need to be clever about quoting the

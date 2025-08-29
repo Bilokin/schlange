@@ -54,9 +54,9 @@ klasse ExecutorTest:
         self.assertEqual(16, future.result())
         future = self.executor.submit(capture, 1, self=2, fn=3)
         self.assertEqual(future.result(), ((1,), {'self': 2, 'fn': 3}))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.executor.submit(fn=capture, arg=1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.executor.submit(arg=1)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -74,7 +74,7 @@ klasse ExecutorTest:
         i = self.executor.map(divmod, [1, 1, 1, 1], [2, 3, 0, 5])
         self.assertEqual(i.__next__(), (0, 1))
         self.assertEqual(i.__next__(), (0, 1))
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             i.__next__()
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -97,8 +97,8 @@ klasse ExecutorTest:
 
     def test_map_buffersize_type_validation(self):
         fuer buffersize in ("foo", 2.0):
-            with self.subTest(buffersize=buffersize):
-                with self.assertRaisesRegex(
+            mit self.subTest(buffersize=buffersize):
+                mit self.assertRaisesRegex(
                     TypeError,
                     "buffersize must be an integer or Nichts",
                 ):
@@ -106,8 +106,8 @@ klasse ExecutorTest:
 
     def test_map_buffersize_value_validation(self):
         fuer buffersize in (0, -1):
-            with self.subTest(buffersize=buffersize):
-                with self.assertRaisesRegex(
+            mit self.subTest(buffersize=buffersize):
+                mit self.assertRaisesRegex(
                     ValueError,
                     "buffersize must be Nichts or > 0",
                 ):
@@ -117,7 +117,7 @@ klasse ExecutorTest:
     def test_map_buffersize(self):
         ints = range(4)
         fuer buffersize in (1, 2, len(ints), len(ints) * 2):
-            with self.subTest(buffersize=buffersize):
+            mit self.subTest(buffersize=buffersize):
                 res = self.executor.map(str, ints, buffersize=buffersize)
                 self.assertListEqual(list(res), ["0", "1", "2", "3"])
 
@@ -125,7 +125,7 @@ klasse ExecutorTest:
     def test_map_buffersize_on_multiple_iterables(self):
         ints = range(4)
         fuer buffersize in (1, 2, len(ints), len(ints) * 2):
-            with self.subTest(buffersize=buffersize):
+            mit self.subTest(buffersize=buffersize):
                 res = self.executor.map(add, ints, ints, buffersize=buffersize)
                 self.assertListEqual(list(res), [0, 2, 4, 6])
 
@@ -216,7 +216,7 @@ klasse ExecutorTest:
 
     def test_max_workers_negative(self):
         fuer number in (0, -1):
-            with self.assertRaisesRegex(ValueError,
+            mit self.assertRaisesRegex(ValueError,
                                         "max_workers must be greater "
                                         "than 0"):
                 self.executor_type(max_workers=number)
@@ -236,14 +236,14 @@ klasse ExecutorTest:
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_swallows_falsey_exceptions(self):
-        # see gh-132063: Prevent exceptions that evaluate as falsey
+        # see gh-132063: Prevent exceptions that evaluate als falsey
         # von being ignored.
         # Recall: `x` is falsey wenn `len(x)` returns 0 or `bool(x)` returns Falsch.
 
         msg = 'boolbool'
-        with self.assertRaisesRegex(FalschyBoolException, msg):
+        mit self.assertRaisesRegex(FalschyBoolException, msg):
             self.executor.submit(raiser, FalschyBoolException, msg).result()
 
         msg = 'lenlen'
-        with self.assertRaisesRegex(FalschyLenException, msg):
+        mit self.assertRaisesRegex(FalschyLenException, msg):
             self.executor.submit(raiser, FalschyLenException, msg).result()

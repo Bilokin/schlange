@@ -7,101 +7,101 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
     def test_named_expression_invalid_01(self):
         code = """x := 0"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_02(self):
         code = """x = y := 0"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_03(self):
         code = """y := f(x)"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_04(self):
         code = """y0 = y1 := f(x)"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_06(self):
         code = """((a, b) := (1, 2))"""
 
-        with self.assertRaisesRegex(SyntaxError, "cannot use assignment expressions with tuple"):
+        mit self.assertRaisesRegex(SyntaxError, "cannot use assignment expressions mit tuple"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_07(self):
         code = """def spam(a = b := 42): pass"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_08(self):
         code = """def spam(a: b := 42 = 5): pass"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_09(self):
         code = """spam(a=b := 'c')"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_10(self):
         code = """spam(x = y := f(x))"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_11(self):
         code = """spam(a=1, b := 2)"""
 
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
             "positional argument follows keyword argument"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_12(self):
         code = """spam(a=1, (b := 2))"""
 
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
             "positional argument follows keyword argument"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_13(self):
         code = """spam(a=1, (b := 2))"""
 
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
             "positional argument follows keyword argument"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_14(self):
         code = """(x := lambda: y := 1)"""
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_15(self):
         code = """(lambda: x := 1)"""
 
-        with self.assertRaisesRegex(SyntaxError,
-            "cannot use assignment expressions with lambda"):
+        mit self.assertRaisesRegex(SyntaxError,
+            "cannot use assignment expressions mit lambda"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_16(self):
         code = "[i + 1 fuer i in i := [1,2]]"
 
-        with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
+        mit self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     def test_named_expression_invalid_17(self):
         code = "[i := 0, j := 1 fuer i, j in [(1, 2), (3, 4)]]"
 
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
                 "did you forget parentheses around the comprehension target?"):
             exec(code, {}, {})
 
@@ -110,7 +110,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             [(42, 1 + ((( j := i )))) fuer i in range(5)]
         """
 
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
             "assignment expression within a comprehension cannot be used in a klasse body"):
             exec(code, {}, {})
 
@@ -140,14 +140,14 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         fuer test_case, code in cases:
             fuer lpar, rpar in [('(', ')'), ('[', ']'), ('{', '}')]:
                 code = code.format(lpar, rpar)
-                with self.subTest(case=test_case, lpar=lpar, rpar=rpar):
+                mit self.subTest(case=test_case, lpar=lpar, rpar=rpar):
                     # Names used in snippets are not defined,
-                    # but we are fine with it: just must not be a SyntaxError.
+                    # but we are fine mit it: just must not be a SyntaxError.
                     # Names used in snippets are not defined,
-                    # but we are fine with it: just must not be a SyntaxError.
-                    with self.assertRaises(NameError):
+                    # but we are fine mit it: just must not be a SyntaxError.
+                    mit self.assertRaises(NameError):
                         exec(code, {}) # Module scope
-                    with self.assertRaises(NameError):
+                    mit self.assertRaises(NameError):
                         exec(code, {}, {}) # Class scope
                     exec(f"lambda: {code}", {}) # Function scope
 
@@ -165,16 +165,16 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
             fuer lpar, rpar in [('(', ')'), ('[', ']'), ('{', '}')]:
                 code = code.format(lpar, rpar)
-                with self.subTest(case=test_case, lpar=lpar, rpar=rpar):
+                mit self.subTest(case=test_case, lpar=lpar, rpar=rpar):
                     # Names used in snippets are not defined,
-                    # but we are fine with it: just must not be a SyntaxError.
+                    # but we are fine mit it: just must not be a SyntaxError.
                     # Names used in snippets are not defined,
-                    # but we are fine with it: just must not be a SyntaxError.
-                    with self.assertRaisesRegex(SyntaxError, msg):
+                    # but we are fine mit it: just must not be a SyntaxError.
+                    mit self.assertRaisesRegex(SyntaxError, msg):
                         exec(code, {}) # Module scope
-                    with self.assertRaisesRegex(SyntaxError, msg):
+                    mit self.assertRaisesRegex(SyntaxError, msg):
                         exec(code, {}, {}) # Class scope
-                    with self.assertRaisesRegex(SyntaxError, msg):
+                    mit self.assertRaisesRegex(SyntaxError, msg):
                         exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_rebinding_list_comprehension_iteration_variable(self):
@@ -190,12 +190,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         fuer case, target, code in cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_rebinding_list_comprehension_inner_loop(self):
@@ -205,12 +205,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         fuer case, target, code in cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_list_comprehension_iterable_expression(self):
@@ -227,12 +227,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
         fuer case, code in cases:
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_rebinding_set_comprehension_iteration_variable(self):
@@ -253,12 +253,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         fuer case, target, code in cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_rebinding_set_comprehension_inner_loop(self):
@@ -268,12 +268,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         fuer case, target, code in cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_set_comprehension_iterable_expression(self):
@@ -290,12 +290,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
         fuer case, code in cases:
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_rebinding_dict_comprehension_iteration_variable(self):
@@ -319,12 +319,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         fuer case, target, code in cases:
             msg = f"assignment expression cannot rebind comprehension iteration variable '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_rebinding_dict_comprehension_inner_loop(self):
@@ -334,12 +334,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         fuer case, target, code in cases:
             msg = f"comprehension inner loop cannot rebind assignment expression target '{target}'"
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_dict_comprehension_iterable_expression(self):
@@ -356,12 +356,12 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
         ]
         msg = "assignment expression cannot be used in a comprehension iterable expression"
         fuer case, code in cases:
-            with self.subTest(case=case):
-                with self.assertRaisesRegex(SyntaxError, msg):
+            mit self.subTest(case=case):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}) # Module scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(code, {}, {}) # Class scope
-                with self.assertRaisesRegex(SyntaxError, msg):
+                mit self.assertRaisesRegex(SyntaxError, msg):
                     exec(f"lambda: {code}", {}) # Function scope
 
     def test_named_expression_invalid_mangled_class_variables(self):
@@ -370,7 +370,7 @@ klasse NamedExpressionInvalidTest(unittest.TestCase):
                 [[(__x:=2) fuer _ in range(2)] fuer __x in range(2)]
         """
 
-        with self.assertRaisesRegex(SyntaxError,
+        mit self.assertRaisesRegex(SyntaxError,
             "assignment expression cannot rebind comprehension iteration variable '__x'"):
             exec(code, {}, {})
 
@@ -453,8 +453,8 @@ klasse NamedExpressionAssignmentTest(unittest.TestCase):
 
     def test_named_expression_assignment_14(self):
         """
-        Where all variables are positive integers, and a is at least as large
-        as the n'th root of x, this algorithm returns the floor of the n'th
+        Where all variables are positive integers, and a is at least als large
+        als the n'th root of x, this algorithm returns the floor of the n'th
         root of x (and roughly doubling the number of accurate bits per
         iteration):
         """
@@ -507,7 +507,7 @@ klasse NamedExpressionScopeTest(unittest.TestCase):
     (a := 5)
 drucke(a)"""
 
-        with self.assertRaisesRegex(NameError, "name 'a' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'a' is not defined"):
             exec(code, {}, {})
 
     def test_named_expression_scope_02(self):
@@ -672,7 +672,7 @@ spam()"""
 
     def test_named_expression_variable_reuse_in_comprehensions(self):
         # The compiler is expected to raise syntax error fuer comprehension
-        # iteration variables, but should be fine with rebinding of other
+        # iteration variables, but should be fine mit rebinding of other
         # names (e.g. globals, nonlocals, other assignment expressions)
 
         # The cases are all defined to produce the same expected result
@@ -692,7 +692,7 @@ spam()"""
             ("Nested nonlocal", f"result, x = (lambda x=1: ({nested_ref}, x))()"),
         ]
         fuer case, code in cases:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 ns = {}
                 exec(code, ns)
                 self.assertEqual(ns["x"], 2)

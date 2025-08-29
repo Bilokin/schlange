@@ -10,11 +10,11 @@ def setUpModule():
 
 
 @unittest.skipIf(support.python_is_optimized(),
-                 "Python was compiled with optimizations")
+                 "Python was compiled mit optimizations")
 @support.requires_resource('cpu')
 klasse CFunctionTests(DebuggerTests):
     def check(self, func_name, cmd):
-        # Verify with "py-bt":
+        # Verify mit "py-bt":
         gdb_output = self.get_stack_trace(
             cmd,
             breakpoint=func_name,
@@ -27,7 +27,7 @@ klasse CFunctionTests(DebuggerTests):
 
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
-    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
+    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 als a workaround
     #
     # gdb will also generate many erroneous errors such as:
     #     Function "meth_varargs" not defined.
@@ -51,7 +51,7 @@ klasse CFunctionTests(DebuggerTests):
             # XXX: bound methods don't yet give nice tracebacks
             # '_testcapi.MethInstance()',
         ):
-            with self.subTest(f'{obj}.{func_name}'):
+            mit self.subTest(f'{obj}.{func_name}'):
                 call = f'{obj}.{func_name}({args})'
                 cmd = textwrap.dedent(f'''
                     importiere _testcapi

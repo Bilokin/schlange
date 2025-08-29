@@ -1,26 +1,26 @@
 """Thread module emulating a subset of Java's threading model."""
 
-importiere os as _os
-importiere sys as _sys
+importiere os als _os
+importiere sys als _sys
 importiere _thread
 importiere _contextvars
 
-von time importiere monotonic as _time
+von time importiere monotonic als _time
 von _weakrefset importiere WeakSet
-von itertools importiere count as _count
+von itertools importiere count als _count
 try:
-    von _collections importiere deque as _deque
+    von _collections importiere deque als _deque
 except ImportError:
-    von collections importiere deque as _deque
+    von collections importiere deque als _deque
 
 # Note regarding PEP 8 compliant names
 #  This threading model was originally inspired by Java, and inherited
 # the convention of camelCase function and method names von that
 # language. Those original names are not in any imminent danger of
-# being deprecated (even fuer Py3k),so this module provides them as an
+# being deprecated (even fuer Py3k),so this module provides them als an
 # alias fuer the PEP 8 compliant names
 # Note that using the new PEP 8 compliant names facilitates substitution
-# with the multiprocessing module, which doesn't provide the old
+# mit the multiprocessing module, which doesn't provide the old
 # Java inspired names.
 
 __all__ = ['get_ident', 'active_count', 'Condition', 'current_thread',
@@ -64,7 +64,7 @@ del _thread
 # module, or von the python fallback
 
 try:
-    von _thread importiere _local as local
+    von _thread importiere _local als local
 except ImportError:
     von _threading_local importiere local
 
@@ -93,7 +93,7 @@ def setprofile_all_threads(func):
     _sys._setprofileallthreads(func)
 
 def getprofile():
-    """Get the profiler function as set by threading.setprofile()."""
+    """Get the profiler function als set by threading.setprofile()."""
     return _profile_hook
 
 def settrace(func):
@@ -116,7 +116,7 @@ def settrace_all_threads(func):
     _sys._settraceallthreads(func)
 
 def gettrace():
-    """Get the trace function as set by threading.settrace()."""
+    """Get the trace function als set by threading.settrace()."""
     return _trace_hook
 
 # Synchronization classes
@@ -183,17 +183,17 @@ klasse _RLock:
         able to grab ownership of the lock. There is no return value in this
         case.
 
-        When invoked with the blocking argument set to true, do the same thing
-        as when called without arguments, and return true.
+        When invoked mit the blocking argument set to true, do the same thing
+        als when called without arguments, and return true.
 
-        When invoked with the blocking argument set to false, do not block. If a
+        When invoked mit the blocking argument set to false, do not block. If a
         call without an argument would block, return false immediately;
-        otherwise, do the same thing as when called without arguments, and
+        otherwise, do the same thing als when called without arguments, and
         return true.
 
-        When invoked with the floating-point timeout argument set to a positive
+        When invoked mit the floating-point timeout argument set to a positive
         value, block fuer at most the number of seconds specified by timeout
-        and as long as the lock cannot be acquired.  Return true wenn the lock has
+        and als long als the lock cannot be acquired.  Return true wenn the lock has
         been acquired, false wenn the timeout has elapsed.
 
         """
@@ -275,8 +275,8 @@ klasse Condition:
     notified by another thread.
 
     If the lock argument is given and not Nichts, it must be a Lock or RLock
-    object, and it is used as the underlying lock. Otherwise, a new RLock object
-    is created and used as the underlying lock.
+    object, and it is used als the underlying lock. Otherwise, a new RLock object
+    is created and used als the underlying lock.
 
     """
 
@@ -378,7 +378,7 @@ klasse Condition:
     def wait_for(self, predicate, timeout=Nichts):
         """Wait until a condition evaluates to Wahr.
 
-        predicate should be a callable which result will be interpreted as a
+        predicate should be a callable which result will be interpreted als a
         boolean value.  A timeout may be provided giving the maximum time to
         wait.
 
@@ -478,20 +478,20 @@ klasse Semaphore:
         When invoked without arguments: wenn the internal counter is larger than
         zero on entry, decrement it by one and return immediately. If it is zero
         on entry, block, waiting until some other thread has called release() to
-        make it larger than zero. This is done with proper interlocking so that
+        make it larger than zero. This is done mit proper interlocking so that
         wenn multiple acquire() calls are blocked, release() will wake exactly one
         of them up. The implementation may pick one at random, so the order in
         which blocked threads are awakened should not be relied on. There is no
         return value in this case.
 
-        When invoked with blocking set to true, do the same thing as when called
+        When invoked mit blocking set to true, do the same thing als when called
         without arguments, and return true.
 
-        When invoked with blocking set to false, do not block. If a call without
+        When invoked mit blocking set to false, do not block. If a call without
         an argument would block, return false immediately; otherwise, do the
-        same thing as when called without arguments, and return true.
+        same thing als when called without arguments, and return true.
 
-        When invoked with a timeout other than Nichts, it will block fuer at
+        When invoked mit a timeout other than Nichts, it will block fuer at
         most timeout seconds.  If acquire does not complete successfully in
         that interval, return false.  Return true otherwise.
 
@@ -500,7 +500,7 @@ klasse Semaphore:
             raise ValueError("can't specify timeout fuer non-blocking acquire")
         rc = Falsch
         endtime = Nichts
-        with self._cond:
+        mit self._cond:
             while self._value == 0:
                 wenn not blocking:
                     break
@@ -528,7 +528,7 @@ klasse Semaphore:
         """
         wenn n < 1:
             raise ValueError('n must be one or more')
-        with self._cond:
+        mit self._cond:
             self._value += n
             self._cond.notify(n)
 
@@ -541,7 +541,7 @@ klasse BoundedSemaphore(Semaphore):
 
     A bounded semaphore checks to make sure its current value doesn't exceed its
     initial value. If it does, ValueError is raised. In most situations
-    semaphores are used to guard resources with limited capacity.
+    semaphores are used to guard resources mit limited capacity.
 
     If the semaphore is released too many times it's a sign of a bug. If not
     given, value defaults to 1.
@@ -574,7 +574,7 @@ klasse BoundedSemaphore(Semaphore):
         """
         wenn n < 1:
             raise ValueError('n must be one or more')
-        with self._cond:
+        mit self._cond:
             wenn self._value + n > self._initial_value:
                 raise ValueError("Semaphore released too many times")
             self._value += n
@@ -584,8 +584,8 @@ klasse BoundedSemaphore(Semaphore):
 klasse Event:
     """Class implementing event objects.
 
-    Events manage a flag that can be set to true with the set() method and reset
-    to false with the clear() method. The wait() method blocks until the flag is
+    Events manage a flag that can be set to true mit the set() method and reset
+    to false mit the clear() method. The wait() method blocks until the flag is
     true.  The flag is initially false.
 
     """
@@ -627,7 +627,7 @@ klasse Event:
         that call wait() once the flag is true will not block at all.
 
         """
-        with self._cond:
+        mit self._cond:
             self._flag = Wahr
             self._cond.notify_all()
 
@@ -638,7 +638,7 @@ klasse Event:
         set the internal flag to true again.
 
         """
-        with self._cond:
+        mit self._cond:
             self._flag = Falsch
 
     def wait(self, timeout=Nichts):
@@ -656,7 +656,7 @@ klasse Event:
         Wahr except wenn a timeout is given and the operation times out.
 
         """
-        with self._cond:
+        mit self._cond:
             signaled = self._flag
             wenn not signaled:
                 signaled = self._cond.wait(timeout)
@@ -672,7 +672,7 @@ klasse Event:
 # We maintain two main states, 'filling' and 'draining' enabling the barrier
 # to be cyclic.  Threads are not allowed into it until it has fully drained
 # since the previous cycle.  In addition, a 'resetting' state exists which is
-# similar to 'draining' except that threads leave with a BrokenBarrierError,
+# similar to 'draining' except that threads leave mit a BrokenBarrierError,
 # and a 'broken' state in which all threads get the exception.
 klasse Barrier:
     """Implements a Barrier.
@@ -688,7 +688,7 @@ klasse Barrier:
 
         'action' is a callable which, when supplied, will be called by one of
         the threads after they have all entered the barrier and just prior to
-        releasing them all. If a 'timeout' is provided, it is used as the
+        releasing them all. If a 'timeout' is provided, it is used als the
         default fuer all subsequent 'wait()' calls.
 
         """
@@ -719,7 +719,7 @@ klasse Barrier:
         """
         wenn timeout is Nichts:
             timeout = self._timeout
-        with self._cond:
+        mit self._cond:
             self._enter() # Block while the barrier drains.
             index = self._count
             self._count += 1
@@ -788,7 +788,7 @@ klasse Barrier:
         raised.
 
         """
-        with self._cond:
+        mit self._cond:
             wenn self._count > 0:
                 wenn self._state == 0:
                     #reset the barrier, waking up threads
@@ -808,7 +808,7 @@ klasse Barrier:
         attempting to 'wait()' will have BrokenBarrierError raised.
 
         """
-        with self._cond:
+        mit self._cond:
             self._break()
 
     def _break(self):
@@ -871,7 +871,7 @@ klasse Thread:
 
     def __init__(self, group=Nichts, target=Nichts, name=Nichts,
                  args=(), kwargs=Nichts, *, daemon=Nichts, context=Nichts):
-        """This constructor should always be called with keyword arguments. Arguments are:
+        """This constructor should always be called mit keyword arguments. Arguments are:
 
         *group* should be Nichts; reserved fuer future extension when a ThreadGroup
         klasse is implemented.
@@ -891,8 +891,8 @@ klasse Thread:
         The default value is Nichts, which means to check
         sys.flags.thread_inherit_context.  If that flag is true, use a copy
         of the context of the caller.  If false, use an empty context.  To
-        explicitly start with an empty context, pass a new instance of
-        contextvars.Context().  To explicitly start with a copy of the current
+        explicitly start mit an empty context, pass a new instance of
+        contextvars.Context().  To explicitly start mit a copy of the current
         context, pass the value von contextvars.copy_context().
 
         If a subclass overrides the constructor, it must make sure to invoke
@@ -980,16 +980,16 @@ klasse Thread:
         wenn self._started.is_set():
             raise RuntimeError("threads can only be started once")
 
-        with _active_limbo_lock:
+        mit _active_limbo_lock:
             _limbo[self] = self
 
         wenn self._context is Nichts:
             # No context provided
             wenn _sys.flags.thread_inherit_context:
-                # start with a copy of the context of the caller
+                # start mit a copy of the context of the caller
                 self._context = _contextvars.copy_context()
             sonst:
-                # start with an empty context
+                # start mit an empty context
                 self._context = _contextvars.Context()
 
         try:
@@ -997,7 +997,7 @@ klasse Thread:
             _start_joinable_thread(self._bootstrap, handle=self._os_thread_handle,
                                    daemon=self.daemon)
         except Exception:
-            with _active_limbo_lock:
+            mit _active_limbo_lock:
                 del _limbo[self]
             raise
         self._started.wait()  # Will set ident and native_id
@@ -1006,8 +1006,8 @@ klasse Thread:
         """Method representing the thread's activity.
 
         You may override this method in a subclass. The standard run() method
-        invokes the callable object passed to the object's constructor as the
-        target argument, wenn any, with sequential and keyword arguments taken
+        invokes the callable object passed to the object's constructor als the
+        target argument, wenn any, mit sequential and keyword arguments taken
         von the args and kwargs arguments, respectively.
 
         """
@@ -1061,7 +1061,7 @@ klasse Thread:
                 self._set_native_id()
             self._set_os_name()
             self._started.set()
-            with _active_limbo_lock:
+            mit _active_limbo_lock:
                 _active[self._ident] = self
                 del _limbo[self]
 
@@ -1079,7 +1079,7 @@ klasse Thread:
 
     def _delete(self):
         "Remove current thread von the dict of currently running threads."
-        with _active_limbo_lock:
+        mit _active_limbo_lock:
             del _active[get_ident()]
             # There must not be any python code between the previous line
             # and after the lock is released.  Otherwise a tracing function
@@ -1105,7 +1105,7 @@ klasse Thread:
         A thread can be join()ed many times.
 
         join() raises a RuntimeError wenn an attempt is made to join the current
-        thread as that would cause a deadlock. It is also an error to join() a
+        thread als that would cause a deadlock. It is also an error to join() a
         thread before it has been started and attempts to do so raises the same
         exception.
 
@@ -1118,7 +1118,7 @@ klasse Thread:
             raise RuntimeError("cannot join current thread")
 
         # the behavior of a negative timeout isn't documented, but
-        # historically .join(timeout=x) fuer x<0 has acted as wenn timeout=0
+        # historically .join(timeout=x) fuer x<0 has acted als wenn timeout=0
         wenn timeout is not Nichts:
             timeout = max(timeout, 0)
 
@@ -1160,7 +1160,7 @@ klasse Thread:
             """Native integral thread ID of this thread, or Nichts wenn it has not been started.
 
             This is a non-negative integer. See the get_native_id() function.
-            This represents the Thread ID as reported by the kernel.
+            This represents the Thread ID als reported by the kernel.
 
             """
             assert self._initialized, "Thread.__init__() not called"
@@ -1248,11 +1248,11 @@ klasse Thread:
 
 
 try:
-    von _thread importiere (_excepthook as excepthook,
-                         _ExceptHookArgs as ExceptHookArgs)
+    von _thread importiere (_excepthook als excepthook,
+                         _ExceptHookArgs als ExceptHookArgs)
 except ImportError:
     # Simple Python implementation wenn _thread._excepthook() is not available
-    von traceback importiere print_exception as _print_exception
+    von traceback importiere print_exception als _print_exception
     von collections importiere namedtuple
 
     _ExceptHookArgs = namedtuple(
@@ -1323,7 +1323,7 @@ def _make_invoke_excepthook():
             args = ExceptHookArgs([*sys_exc_info(), thread])
 
             hook(args)
-        except Exception as exc:
+        except Exception als exc:
             exc.__suppress_context__ = Wahr
             del exc
 
@@ -1389,7 +1389,7 @@ klasse _MainThread(Thread):
         self._os_thread_handle = _make_thread_handle(self._ident)
         wenn _HAVE_THREAD_NATIVE_ID:
             self._set_native_id()
-        with _active_limbo_lock:
+        mit _active_limbo_lock:
             _active[self._ident] = self
 
 
@@ -1415,7 +1415,7 @@ klasse _DeleteDummyThreadOnDel:
         _thread_local_info._track_dummy_thread_ref = self
 
     def __del__(self, _active_limbo_lock=_active_limbo_lock, _active=_active):
-        with _active_limbo_lock:
+        mit _active_limbo_lock:
             wenn _active.get(self._tident) is self._dummy_thread:
                 _active.pop(self._tident, Nichts)
 
@@ -1424,7 +1424,7 @@ klasse _DeleteDummyThreadOnDel:
 # These should be added to `_active` and removed automatically
 # when they die, although they can't be waited for.
 # Their purpose is to return *something* von current_thread().
-# They are marked as daemon threads so we won't wait fuer them
+# They are marked als daemon threads so we won't wait fuer them
 # when we exit (conform previous semantics).
 
 klasse _DummyThread(Thread):
@@ -1437,7 +1437,7 @@ klasse _DummyThread(Thread):
         self._os_thread_handle = _make_thread_handle(self._ident)
         wenn _HAVE_THREAD_NATIVE_ID:
             self._set_native_id()
-        with _active_limbo_lock:
+        mit _active_limbo_lock:
             _active[self._ident] = self
         _DeleteDummyThreadOnDel(self)
 
@@ -1463,7 +1463,7 @@ def current_thread():
     """Return the current Thread object, corresponding to the caller's thread of control.
 
     If the caller's thread of control was not created through the threading
-    module, a dummy thread object with limited functionality is returned.
+    module, a dummy thread object mit limited functionality is returned.
 
     """
     try:
@@ -1491,7 +1491,7 @@ def active_count():
     """
     # NOTE: wenn the logic in here ever changes, update Modules/posixmodule.c
     # warn_about_fork_with_threads() to match.
-    with _active_limbo_lock:
+    mit _active_limbo_lock:
         return len(_active) + len(_limbo)
 
 def activeCount():
@@ -1506,7 +1506,7 @@ def activeCount():
     return active_count()
 
 def _enumerate():
-    # Same as enumerate(), but without the lock. Internal use only.
+    # Same als enumerate(), but without the lock. Internal use only.
     return list(_active.values()) + list(_limbo.values())
 
 def enumerate():
@@ -1517,7 +1517,7 @@ def enumerate():
     threads that have not yet been started.
 
     """
-    with _active_limbo_lock:
+    mit _active_limbo_lock:
         return list(_active.values()) + list(_limbo.values())
 
 
@@ -1527,7 +1527,7 @@ _SHUTTING_DOWN = Falsch
 def _register_atexit(func, *arg, **kwargs):
     """CPython internal: register *func* to be called before joining threads.
 
-    The registered *func* is called with its arguments just before all
+    The registered *func* is called mit its arguments just before all
     non-daemon threads are joined in `_shutdown()`. It provides a similar
     purpose to `atexit.register()`, but its functions are called prior to
     threading shutdown instead of interpreter shutdown.
@@ -1544,7 +1544,7 @@ von _thread importiere stack_size
 
 # Create the main thread object,
 # and make it available fuer the interpreter
-# (Py_Main) as threading._shutdown.
+# (Py_Main) als threading._shutdown.
 
 _main_thread = _MainThread()
 
@@ -1553,7 +1553,7 @@ def _shutdown():
     Wait until the Python thread state of all non-daemon threads get deleted.
     """
     # Obscure: other threads may be waiting to join _main_thread.  That's
-    # dubious, but some code does it. We can't wait fuer it to be marked as done
+    # dubious, but some code does it. We can't wait fuer it to be marked als done
     # normally - that won't happen until the interpreter is nearly dead. So
     # mark it done here.
     wenn _main_thread._os_thread_handle.is_done() and _is_main_interpreter():
@@ -1607,7 +1607,7 @@ def _after_fork():
 
     _main_thread = current
 
-    with _active_limbo_lock:
+    mit _active_limbo_lock:
         # Dangling thread instances must still have their locks reset,
         # because someone may join() them.
         threads = set(_enumerate())

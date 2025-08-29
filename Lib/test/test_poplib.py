@@ -11,7 +11,7 @@ importiere threading
 
 importiere unittest
 von unittest importiere TestCase, skipUnless
-von test importiere support as test_support
+von test importiere support als test_support
 von test.support importiere hashlib_helper
 von test.support importiere socket_helper
 von test.support importiere threading_helper
@@ -177,7 +177,7 @@ klasse DummyPOP3Handler(asynchat.async_chat):
         def _do_tls_handshake(self):
             try:
                 self.socket.do_handshake()
-            except ssl.SSLError as err:
+            except ssl.SSLError als err:
                 wenn err.args[0] in (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
@@ -188,7 +188,7 @@ klasse DummyPOP3Handler(asynchat.async_chat):
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" in err.args[1]):
                     return self.handle_close()
                 raise
-            except OSError as err:
+            except OSError als err:
                 wenn err.args[0] == errno.ECONNABORTED:
                     return self.handle_close()
             sonst:
@@ -231,7 +231,7 @@ klasse DummyPOP3Server(asyncore.dispatcher, threading.Thread):
         self.__flag.set()
         try:
             while self.active and asyncore.socket_map:
-                with self.active_lock:
+                mit self.active_lock:
                     asyncore.loop(timeout=0.1, count=1)
         finally:
             asyncore.close_all(ignore_all=Wahr)
@@ -296,7 +296,7 @@ klasse TestPOP3Class(TestCase):
             return original_shortcmd(cmd)
 
         self.client._shortcmd = mock_shortcmd_invalid_format
-        with self.assertRaises(poplib.error_proto):
+        mit self.assertRaises(poplib.error_proto):
             self.client.stat()
 
         def mock_shortcmd_invalid_data(cmd):
@@ -305,7 +305,7 @@ klasse TestPOP3Class(TestCase):
             return original_shortcmd(cmd)
 
         self.client._shortcmd = mock_shortcmd_invalid_data
-        with self.assertRaises(poplib.error_proto):
+        mit self.assertRaises(poplib.error_proto):
             self.client.stat()
 
         def mock_shortcmd_extra_fields(cmd):
@@ -354,12 +354,12 @@ klasse TestPOP3Class(TestCase):
 
     @hashlib_helper.requires_hashdigest('md5', openssl=Wahr)
     def test_apop_REDOS(self):
-        # Replace welcome with very long evil welcome.
+        # Replace welcome mit very long evil welcome.
         # NB The upper bound on welcome length is currently 2048.
         # At this length, evil input makes each apop call take
         # on the order of milliseconds instead of microseconds.
         evil_welcome = b'+OK' + (b'<' * 1000000)
-        with test_support.swap_attr(self.client, 'welcome', evil_welcome):
+        mit test_support.swap_attr(self.client, 'welcome', evil_welcome):
             # The evil welcome is invalid, so apop should throw.
             self.assertRaises(poplib.error_proto, self.client.apop, 'a', 'kb')
 
@@ -413,7 +413,7 @@ klasse TestPOP3Class(TestCase):
         ctx.load_verify_locations(CAFILE)
         self.assertEqual(ctx.verify_mode, ssl.CERT_REQUIRED)
         self.assertEqual(ctx.check_hostname, Wahr)
-        with self.assertRaises(ssl.CertificateError):
+        mit self.assertRaises(ssl.CertificateError):
             resp = self.client.stls(context=ctx)
         self.client = poplib.POP3("localhost", self.server.port,
                                   timeout=test_support.LOOPBACK_TIMEOUT)
@@ -488,7 +488,7 @@ klasse TestPOP3_TLSClass(TestPOP3Class):
                 self.client.quit()
             except poplib.error_proto:
                 # happens in the test_too_long_lines case; the overlong
-                # response will be treated as response to QUIT and raise
+                # response will be treated als response to QUIT and raise
                 # this exception
                 self.client.close()
         self.server.stop()
@@ -558,7 +558,7 @@ klasse TestTimeouts(TestCase):
         pop = poplib.POP3(HOST, self.port, timeout=test_support.LOOPBACK_TIMEOUT)
         self.assertEqual(pop.sock.gettimeout(), test_support.LOOPBACK_TIMEOUT)
         pop.close()
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             poplib.POP3(HOST, self.port, timeout=0)
 
 

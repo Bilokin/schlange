@@ -32,7 +32,7 @@ klasse TestTopologicalSort(unittest.TestCase):
             ts.add(node, *dependson)
         try:
             ts.prepare()
-        except graphlib.CycleError as e:
+        except graphlib.CycleError als e:
             _, seq = e.args
             self.assertIn(" ".join(map(str, cycle)), " ".join(map(str, seq * 2)))
         sonst:
@@ -130,11 +130,11 @@ klasse TestTopologicalSort(unittest.TestCase):
     def test_calls_before_prepare(self):
         ts = graphlib.TopologicalSorter()
 
-        with self.assertRaisesRegex(ValueError, r"prepare\(\) must be called first"):
+        mit self.assertRaisesRegex(ValueError, r"prepare\(\) must be called first"):
             ts.get_ready()
-        with self.assertRaisesRegex(ValueError, r"prepare\(\) must be called first"):
+        mit self.assertRaisesRegex(ValueError, r"prepare\(\) must be called first"):
             ts.done(3)
-        with self.assertRaisesRegex(ValueError, r"prepare\(\) must be called first"):
+        mit self.assertRaisesRegex(ValueError, r"prepare\(\) must be called first"):
             ts.is_active()
 
     def test_prepare_multiple_times(self):
@@ -146,13 +146,13 @@ klasse TestTopologicalSort(unittest.TestCase):
         ts = graphlib.TopologicalSorter({'a': 'bc'})
         ts.prepare()
         self.assertEqual(set(ts.get_ready()), {'b', 'c'})
-        with self.assertRaisesRegex(ValueError, r"cannot prepare\(\) after starting sort"):
+        mit self.assertRaisesRegex(ValueError, r"cannot prepare\(\) after starting sort"):
             ts.prepare()
 
     def test_prepare_cycleerror_each_time(self):
         ts = graphlib.TopologicalSorter({'a': 'b', 'b': 'a'})
         fuer attempt in range(1, 4):
-            with self.assertRaises(graphlib.CycleError, msg=f"{attempt=}"):
+            mit self.assertRaises(graphlib.CycleError, msg=f"{attempt=}"):
                 ts.prepare()
 
     def test_invalid_nodes_in_done(self):
@@ -162,9 +162,9 @@ klasse TestTopologicalSort(unittest.TestCase):
         ts.prepare()
         ts.get_ready()
 
-        with self.assertRaisesRegex(ValueError, "node 2 was not passed out"):
+        mit self.assertRaisesRegex(ValueError, "node 2 was not passed out"):
             ts.done(2)
-        with self.assertRaisesRegex(ValueError, r"node 24 was not added using add\(\)"):
+        mit self.assertRaisesRegex(ValueError, r"node 24 was not added using add\(\)"):
             ts.done(24)
 
     def test_done(self):
@@ -174,10 +174,10 @@ klasse TestTopologicalSort(unittest.TestCase):
         ts.prepare()
 
         self.assertEqual(ts.get_ready(), (3, 4))
-        # If we don't mark anything as done, get_ready() returns nothing
+        # If we don't mark anything als done, get_ready() returns nothing
         self.assertEqual(ts.get_ready(), ())
         ts.done(3)
-        # Now 2 becomes available as 3 is done
+        # Now 2 becomes available als 3 is done
         self.assertEqual(ts.get_ready(), (2,))
         self.assertEqual(ts.get_ready(), ())
         ts.done(4)

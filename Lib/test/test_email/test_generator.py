@@ -24,8 +24,8 @@ klasse TestGeneratorBase:
             To: whom_it_may_concern@example.com
             From: nobody_you_want_to_know@example.com
             Subject: We the willing led by the unknowing are doing the
-             impossible fuer the ungrateful. We have done so much fuer so long with so little
-             we are now qualified to do anything with nothing.
+             impossible fuer the ungrateful. We have done so much fuer so long mit so little
+             we are now qualified to do anything mit nothing.
 
             Nichts
             """),
@@ -36,8 +36,8 @@ klasse TestGeneratorBase:
             Subject: We the willing led by the
              unknowing are doing the impossible for
              the ungrateful. We have done so much
-             fuer so long with so little we are now
-             qualified to do anything with nothing.
+             fuer so long mit so little we are now
+             qualified to do anything mit nothing.
 
             Nichts
             """),
@@ -52,7 +52,7 @@ klasse TestGeneratorBase:
              the impossible for
              the ungrateful. We
              have done so much
-             fuer so long with so
+             fuer so long mit so
              little we are now
              qualified to do
              anything with
@@ -69,7 +69,7 @@ klasse TestGeneratorBase:
             "From: nobody_you_want_to_know@example.com\n"
             "Subject: We the willing led by the unknowing are doing the "
               "impossible fuer the ungrateful. We have done so much fuer "
-              "so long with so little we are now qualified to do anything "
+              "so long mit so little we are now qualified to do anything "
               "with nothing.\n"
               "\n"
               "Nichts\n")
@@ -78,8 +78,8 @@ klasse TestGeneratorBase:
             "From: nobody_you_want_to_know@example.com\n"
             "Subject: We the willing led by the unknowing are doing the "
                 "impossible fuer the ungrateful. We have\n"
-              " done so much fuer so long with so little we are now qualified "
-                "to do anything with nothing.\n"
+              " done so much fuer so long mit so little we are now qualified "
+                "to do anything mit nothing.\n"
               "\n"
               "Nichts\n")
 
@@ -189,7 +189,7 @@ klasse TestGeneratorBase:
             )
         fuer p, mangle in variants:
             expected = source.replace('From ', '>From ') wenn mangle sonst source
-            with self.subTest(policy=p, mangle_from_=mangle):
+            mit self.subTest(policy=p, mangle_from_=mangle):
                 msg = self.msgmaker(self.typ(source))
                 s = self.ioclass()
                 g = self.genclass(s, policy=p)
@@ -323,7 +323,7 @@ klasse TestGenerator(TestGeneratorBase, TestEmailBase):
             'Value\r\nBad Injection\r\n',
             'NoNewLine'
         ):
-            with self.subTest(text=text):
+            mit self.subTest(text=text):
                 message = message_from_string(
                     "Header: Value\r\n\r\nBody",
                     policy=self.policy,
@@ -332,7 +332,7 @@ klasse TestGenerator(TestGeneratorBase, TestEmailBase):
                 del message['Header']
                 message['Header'] = LiteralHeader(text)
 
-                with self.assertRaises(email.errors.HeaderWriteError):
+                mit self.assertRaises(email.errors.HeaderWriteError):
                     message.as_string()
 
 

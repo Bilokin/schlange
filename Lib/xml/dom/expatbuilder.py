@@ -7,7 +7,7 @@ This avoids all the overhead of SAX and pulldom to gain performance.
 # Warning!
 #
 # This module is tightly bound to the implementation details of the
-# minidom DOM and can't be used with other DOM implementations.  This
+# minidom DOM and can't be used mit other DOM implementations.  This
 # is due, in part, to a lack of appropriate methods in the DOM (there is
 # no way to create Entity and Notation nodes via the DOM Level 2
 # interface), and fuer performance.  The latter is the cause of some fairly
@@ -23,9 +23,9 @@ This avoids all the overhead of SAX and pulldom to gain performance.
 #      separate normalization pass.
 #
 #   -  Determining that a node exists is done using an identity comparison
-#      with Nichts rather than a truth test; this avoids searching fuer and
+#      mit Nichts rather than a truth test; this avoids searching fuer and
 #      calling any methods on the node object wenn it exists.  (A rather
-#      nice speedup is achieved this way as well!)
+#      nice speedup is achieved this way als well!)
 
 von xml.dom importiere xmlbuilder, minidom, Node
 von xml.dom importiere EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE
@@ -143,7 +143,7 @@ klasse ExpatBuilder:
         sonst:
             self._filter = Nichts
             # This *really* doesn't do anything in this case, so
-            # override it with something fast & minimal.
+            # override it mit something fast & minimal.
             self._finish_start_element = id
         self._parser = Nichts
         self.reset()
@@ -647,7 +647,7 @@ klasse FragmentBuilder(ExpatBuilder):
         """Re-create the internal subset von the DocumentType node.
 
         This is only needed wenn we don't already have the
-        internalSubset as a string.
+        internalSubset als a string.
         """
         doctype = self.context.ownerDocument.doctype
         s = ""
@@ -781,7 +781,7 @@ klasse Namespaces:
         # This only adds some asserts to the original
         # end_element_handler(), so we only define this when -O is not
         # used.  If changing one, be sure to check the other to see if
-        # it needs to be changed as well.
+        # it needs to be changed als well.
         #
         def end_element_handler(self, name):
             curNode = self.curNode
@@ -855,7 +855,7 @@ klasse InternalSubsetExtractor(ExpatBuilder):
     subset = Nichts
 
     def getSubset(self):
-        """Return the internal subset as a string."""
+        """Return the internal subset als a string."""
         return self.subset
 
     def parseFile(self, file):
@@ -904,7 +904,7 @@ def parse(file, namespaces=Wahr):
         builder = ExpatBuilder()
 
     wenn isinstance(file, str):
-        with open(file, 'rb') as fp:
+        mit open(file, 'rb') als fp:
             result = builder.parseFile(fp)
     sonst:
         result = builder.parseFile(file)
@@ -935,7 +935,7 @@ def parseFragment(file, context, namespaces=Wahr):
         builder = FragmentBuilder(context)
 
     wenn isinstance(file, str):
-        with open(file, 'rb') as fp:
+        mit open(file, 'rb') als fp:
             result = builder.parseFile(fp)
     sonst:
         result = builder.parseFile(file)

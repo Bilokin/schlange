@@ -1,7 +1,7 @@
 """ Test the bdb module.
 
-    A test defines a list of tuples that may be seen as paired tuples, each
-    pair being defined by 'expect_tuple, set_tuple' as follows:
+    A test defines a list of tuples that may be seen als paired tuples, each
+    pair being defined by 'expect_tuple, set_tuple' als follows:
 
         ([event, [lineno[, co_name[, eargs]]]]), (set_type, [sargs])
 
@@ -48,7 +48,7 @@
             The arguments of the set method wenn any, packed in a tuple.
 """
 
-importiere bdb as _bdb
+importiere bdb als _bdb
 importiere sys
 importiere os
 importiere unittest
@@ -191,16 +191,16 @@ klasse Tracer(Bdb):
             try:
                 res = super().trace_dispatch(frame, event, arg)
                 return res
-            except BdbException as e:
+            except BdbException als e:
                 self.cur_except = e
                 return self.trace_dispatch
         sonst:
             return super().trace_dispatch(frame, event, arg)
 
     def user_call(self, frame, argument_list):
-        # Adopt the same behavior as pdb and, as a side effect, skip also the
-        # first 'call' event when the Tracer is started with Tracer.runcall()
-        # which may be possibly considered as a bug.
+        # Adopt the same behavior als pdb and, als a side effect, skip also the
+        # first 'call' event when the Tracer is started mit Tracer.runcall()
+        # which may be possibly considered als a bug.
         wenn not self.stop_here(frame):
             return
         self.process_event('call', frame, argument_list)
@@ -253,7 +253,7 @@ klasse Tracer(Bdb):
         self.set_tuple = self.set_list.pop(0)
 
     def process_event(self, event, frame, *args):
-        # Call get_stack() to enable walking the stack with set_up() and
+        # Call get_stack() to enable walking the stack mit set_up() and
         # set_down().
         tb = Nichts
         wenn event == 'exception':
@@ -415,7 +415,7 @@ klasse Tracer(Bdb):
                                  self.set_tuple)
 
 klasse TracerRun():
-    """Provide a context fuer running a Tracer instance with a test case."""
+    """Provide a context fuer running a Tracer instance mit a test case."""
 
     def __init__(self, test_case, skip=Nichts):
         self.test_case = test_case
@@ -453,7 +453,7 @@ klasse TracerRun():
                 sonst:
                     self.test_case.fail(err_msg)
             sonst:
-                assert Falsch, 'BdbNotExpectedError with empty args'
+                assert Falsch, 'BdbNotExpectedError mit empty args'
 
         wenn not_empty:
             wenn self.dry_run:
@@ -464,9 +464,9 @@ klasse TracerRun():
 def run_test(modules, set_list, skip=Nichts):
     """Run a test and print the dry-run results.
 
-    'modules':  A dictionary mapping module names to their source code as a
+    'modules':  A dictionary mapping module names to their source code als a
                 string. The dictionary MUST include one module named
-                'test_module' with a main() function.
+                'test_module' mit a main() function.
     'set_list': A list of set_type tuples to be run on the module.
 
     For example, running the following script outputs the following results:
@@ -531,18 +531,18 @@ def run_test(modules, set_list, skip=Nichts):
     test.dry_run = Wahr
     test.id = lambda : Nichts
     test.expect_set = list(gen(repeat(()), iter(sl)))
-    with create_modules(modules):
-        with TracerRun(test, skip=skip) as tracer:
+    mit create_modules(modules):
+        mit TracerRun(test, skip=skip) als tracer:
             tracer.runcall(tfunc_import)
 
 @contextmanager
 def create_modules(modules):
-    with os_helper.temp_cwd():
+    mit os_helper.temp_cwd():
         sys.path.append(os.getcwd())
         try:
             fuer m in modules:
                 fname = m + '.py'
-                with open(fname, 'w', encoding="utf-8") as f:
+                mit open(fname, 'w', encoding="utf-8") als f:
                     f.write(textwrap.dedent(modules[m]))
                 linecache.checkcache(fname)
             importlib.invalidate_caches()
@@ -597,12 +597,12 @@ klasse StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_first'), ('step', ),
             ('line', 2, 'tfunc_first'), ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_step_next_on_last_statement(self):
         fuer set_type in ('step', 'next'):
-            with self.subTest(set_type=set_type):
+            mit self.subTest(set_type=set_type):
                 self.expect_set = [
                     ('line', 2, 'tfunc_main'),               ('step', ),
                     ('line', 3, 'tfunc_main'),               ('step', ),
@@ -611,7 +611,7 @@ klasse StateTestCase(BaseTestCase):
                     ('line', 3, 'tfunc_first', ({1:1}, [])), (set_type, ),
                     ('line', 4, 'tfunc_first'),              ('quit', ),
                 ]
-                with TracerRun(self) as tracer:
+                mit TracerRun(self) als tracer:
                     tracer.runcall(tfunc_main)
 
     def test_stepinstr(self):
@@ -620,7 +620,7 @@ klasse StateTestCase(BaseTestCase):
             ('opcode', 2, 'tfunc_main'),  ('next', ),
             ('line',   3, 'tfunc_main'),  ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_next(self):
@@ -631,7 +631,7 @@ klasse StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_second'), ('step', ),
             ('line', 2, 'tfunc_second'), ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_next_over_import(self):
@@ -640,12 +640,12 @@ klasse StateTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'), ('next', ),
                 ('line', 3, 'tfunc_import'), ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_next_on_plain_statement(self):
@@ -657,7 +657,7 @@ klasse StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_first'), ('next', ),
             ('line', 2, 'tfunc_first'), ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_next_in_caller_frame(self):
@@ -670,7 +670,7 @@ klasse StateTestCase(BaseTestCase):
             ('Nichts', 3, 'tfunc_main'),  ('next', ),
             ('line', 4, 'tfunc_main'),  ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_return(self):
@@ -682,7 +682,7 @@ klasse StateTestCase(BaseTestCase):
             ('return', 4, 'tfunc_first'), ('step', ),
             ('line', 4, 'tfunc_main'),    ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_return_in_caller_frame(self):
@@ -693,7 +693,7 @@ klasse StateTestCase(BaseTestCase):
             ('Nichts', 3, 'tfunc_main'),   ('return', ),
             ('return', 7, 'tfunc_main'), ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_until(self):
@@ -704,7 +704,7 @@ klasse StateTestCase(BaseTestCase):
             ('line', 2, 'tfunc_first'), ('until', (4, )),
             ('line', 4, 'tfunc_first'), ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_until_with_too_large_count(self):
@@ -714,7 +714,7 @@ klasse StateTestCase(BaseTestCase):
             ('line', 2, 'tfunc_first', ({1:1}, [])), ('until', (9999, )),
             ('return', 4, 'tfunc_first'),            ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     def test_until_in_caller_frame(self):
@@ -725,7 +725,7 @@ klasse StateTestCase(BaseTestCase):
             ('Nichts', 3, 'tfunc_main'),  ('until', (6, )),
             ('line', 6, 'tfunc_main'),  ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
     @patch_list(sys.meta_path)
@@ -745,17 +745,17 @@ klasse StateTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'), ('step', ),
                 ('line', 3, 'tfunc_import'), ('quit', ),
             ]
             skip = ('importlib*', 'zipimport', 'encodings.*', TEST_MODULE)
-            with TracerRun(self, skip=skip) as tracer:
+            mit TracerRun(self, skip=skip) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_skip_with_no_name_module(self):
-        # some frames have `globals` with no `__name__`
+        # some frames have `globals` mit no `__name__`
         # fuer instance the second frame in this traceback
         # exec(compile('raise ValueError()', '', 'exec'), {})
         bdb = Bdb(skip=['anything*'])
@@ -766,7 +766,7 @@ klasse StateTestCase(BaseTestCase):
         self.expect_set = [
             ('line', 2, 'tfunc_main'), ('down', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             self.assertRaises(BdbError, tracer.runcall, tfunc_main)
 
     def test_up(self):
@@ -776,7 +776,7 @@ klasse StateTestCase(BaseTestCase):
             ('call', 1, 'tfunc_first'), ('up', ),
             ('Nichts', 3, 'tfunc_main'),  ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.runcall(tfunc_main)
 
 klasse BreakpointTestCase(BaseTestCase):
@@ -786,7 +786,7 @@ klasse BreakpointTestCase(BaseTestCase):
         self.expect_set = [
             ('line', 2, 'tfunc_import'), ('break', ('/non/existent/module.py', 1))
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             self.assertRaises(BdbError, tracer.runcall, tfunc_import)
 
     def test_bp_after_last_statement(self):
@@ -795,11 +795,11 @@ klasse BreakpointTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'), ('break', (TEST_MODULE_FNAME, 4))
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 self.assertRaises(BdbError, tracer.runcall, tfunc_import)
 
     def test_temporary_bp(self):
@@ -812,7 +812,7 @@ klasse BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('func', TEST_MODULE_FNAME, Wahr),
@@ -822,7 +822,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 ('line', 3, 'func', ({1:1}, [1])), ('continue', ),
                 ('line', 3, 'func', ({2:1}, [2])), ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_disabled_temporary_bp(self):
@@ -835,7 +835,7 @@ klasse BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('func', TEST_MODULE_FNAME),
@@ -850,7 +850,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 ('Nichts', 3, 'func'),               ('continue', ),
                 ('line', 3, 'func', ({1:2}, [])),  ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_bp_condition(self):
@@ -863,14 +863,14 @@ klasse BreakpointTestCase(BaseTestCase):
                     func(i)
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('func', TEST_MODULE_FNAME, Falsch, 'a == 2'),
                 ('Nichts', 2, 'tfunc_import'),       ('continue', ),
                 ('line', 3, 'func', ({1:3}, [])),  ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_bp_exception_on_condition_evaluation(self):
@@ -882,14 +882,14 @@ klasse BreakpointTestCase(BaseTestCase):
                 func(0)
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('func', TEST_MODULE_FNAME, Falsch, '1 / 0'),
                 ('Nichts', 2, 'tfunc_import'),       ('continue', ),
                 ('line', 3, 'func', ({1:1}, [])),  ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_bp_ignore_count(self):
@@ -902,7 +902,7 @@ klasse BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('func', TEST_MODULE_FNAME),
@@ -910,7 +910,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 ('Nichts', 2, 'tfunc_import'),      ('continue', ),
                 ('line', 3, 'func', ({1:2}, [])), ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_ignore_count_on_disabled_bp(self):
@@ -923,7 +923,7 @@ klasse BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('func', TEST_MODULE_FNAME),
@@ -937,7 +937,7 @@ klasse BreakpointTestCase(BaseTestCase):
                 ('line', 3, 'func', ({2:2}, [])), ('continue', ),
                 ('line', 3, 'func', ({1:2}, [])), ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_clear_two_bp_on_same_line(self):
@@ -951,7 +951,7 @@ klasse BreakpointTestCase(BaseTestCase):
                     func()
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),      ('break', (TEST_MODULE_FNAME, 3)),
                 ('Nichts', 2, 'tfunc_import'),      ('break', (TEST_MODULE_FNAME, 3)),
@@ -962,14 +962,14 @@ klasse BreakpointTestCase(BaseTestCase):
                 ('Nichts', 4, 'func'),              ('continue', ),
                 ('line', 4, 'func', ({3:2}, [])), ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_clear_at_no_bp(self):
         self.expect_set = [
             ('line', 2, 'tfunc_import'), ('clear', (__file__, 1))
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             self.assertRaises(BdbError, tracer.runcall, tfunc_import)
 
     def test_load_bps_from_previous_Bdb_instance(self):
@@ -1027,7 +1027,7 @@ klasse RunTestCase(BaseTestCase):
             ('line', 2, '<module>'),   ('step', ),
             ('return', 2, '<module>'), ('quit', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.run(compile(textwrap.dedent(code), '<string>', 'exec'))
 
     def test_runeval_step(self):
@@ -1037,7 +1037,7 @@ klasse RunTestCase(BaseTestCase):
                 lno = 3
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 1, '<module>'),   ('step', ),
                 ('call', 2, 'main'),       ('step', ),
@@ -1047,7 +1047,7 @@ klasse RunTestCase(BaseTestCase):
             ]
             importiere test_module_for_bdb
             ns = {'test_module_for_bdb': test_module_for_bdb}
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runeval('test_module_for_bdb.main()', ns, ns)
 
 klasse IssuesTestCase(BaseTestCase):
@@ -1071,7 +1071,7 @@ klasse IssuesTestCase(BaseTestCase):
             TEST_MODULE: code_1,
             'test_module_for_bdb_2': code_2,
         }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('func', 'test_module_for_bdb_2.py'),
@@ -1080,13 +1080,13 @@ klasse IssuesTestCase(BaseTestCase):
                 ('return', 3, 'func'),            ('step', ),
                 ('line', 5, 'main'),              ('quit', ),
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_next_until_return_in_generator(self):
         # Issue #16596.
         # Check that set_next(), set_until() and set_return() do not treat the
-        # `yield` and `yield from` statements as wenn they were returns and stop
+        # `yield` and `yield from` statements als wenn they were returns and stop
         # instead in the current frame.
         code = """
             def test_gen():
@@ -1102,8 +1102,8 @@ klasse IssuesTestCase(BaseTestCase):
         """
         modules = { TEST_MODULE: code }
         fuer set_type in ('next', 'until', 'return'):
-            with self.subTest(set_type=set_type):
-                with create_modules(modules):
+            mit self.subTest(set_type=set_type):
+                mit create_modules(modules):
                     self.expect_set = [
                         ('line', 2, 'tfunc_import'),
                             break_in_func('test_gen', TEST_MODULE_FNAME),
@@ -1121,7 +1121,7 @@ klasse IssuesTestCase(BaseTestCase):
                         self.expect_set.extend(
                             [('line', 4, 'test_gen'), ('quit', ),]
                         )
-                    with TracerRun(self) as tracer:
+                    mit TracerRun(self) als tracer:
                         tracer.runcall(tfunc_import)
 
     def test_next_command_in_generator_for_loop(self):
@@ -1139,7 +1139,7 @@ klasse IssuesTestCase(BaseTestCase):
                 lno = 11
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('test_gen', TEST_MODULE_FNAME),
@@ -1152,7 +1152,7 @@ klasse IssuesTestCase(BaseTestCase):
                 ('line', 11, 'main'),                    ('quit', ),
 
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_next_command_in_generator_with_subiterator(self):
@@ -1172,7 +1172,7 @@ klasse IssuesTestCase(BaseTestCase):
                 lno = 13
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('test_gen', TEST_MODULE_FNAME),
@@ -1183,7 +1183,7 @@ klasse IssuesTestCase(BaseTestCase):
                 ('line', 13, 'main'),                     ('quit', ),
 
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_return_command_in_generator_with_subiterator(self):
@@ -1203,7 +1203,7 @@ klasse IssuesTestCase(BaseTestCase):
                 lno = 13
         """
         modules = { TEST_MODULE: code }
-        with create_modules(modules):
+        mit create_modules(modules):
             self.expect_set = [
                 ('line', 2, 'tfunc_import'),
                     break_in_func('test_subgen', TEST_MODULE_FNAME),
@@ -1214,7 +1214,7 @@ klasse IssuesTestCase(BaseTestCase):
                 ('line', 13, 'main'),                         ('quit', ),
 
             ]
-            with TracerRun(self) as tracer:
+            mit TracerRun(self) als tracer:
                 tracer.runcall(tfunc_import)
 
     def test_next_to_botframe(self):
@@ -1227,7 +1227,7 @@ klasse IssuesTestCase(BaseTestCase):
             ('line', 2, '<module>'),   ('step', ),
             ('return', 2, '<module>'), ('next', ),
         ]
-        with TracerRun(self) as tracer:
+        mit TracerRun(self) als tracer:
             tracer.run(compile(textwrap.dedent(code), '<string>', 'exec'))
 
 

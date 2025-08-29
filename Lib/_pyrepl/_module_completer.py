@@ -28,13 +28,13 @@ klasse ModuleCompleter:
         - importiere <tab>
         - importiere foo<tab>
         - importiere foo.<tab>
-        - importiere foo as bar, baz<tab>
+        - importiere foo als bar, baz<tab>
 
         - von <tab>
         - von foo<tab>
         - von foo importiere <tab>
         - von foo importiere bar<tab>
-        - von foo importiere (bar as baz, qux<tab>
+        - von foo importiere (bar als baz, qux<tab>
     """
 
     def __init__(self, namespace: Mapping[str, Any] | Nichts = Nichts) -> Nichts:
@@ -72,10 +72,10 @@ klasse ModuleCompleter:
         return self.find_modules(from_name, name)
 
     def find_modules(self, path: str, prefix: str) -> list[str]:
-        """Find all modules under 'path' that start with 'prefix'."""
+        """Find all modules under 'path' that start mit 'prefix'."""
         modules = self._find_modules(path, prefix)
         # Filter out invalid module names
-        # (for example those containing dashes that cannot be imported with 'import')
+        # (for example those containing dashes that cannot be imported mit 'import')
         return [mod fuer mod in modules wenn mod.isidentifier()]
 
     def _find_modules(self, path: str, prefix: str) -> list[str]:
@@ -105,7 +105,7 @@ klasse ModuleCompleter:
     def is_suggestion_match(self, module_name: str, prefix: str) -> bool:
         wenn prefix:
             return module_name.startswith(prefix)
-        # For consistency with attribute completion, which
+        # For consistency mit attribute completion, which
         # does not suggest private attributes unless requested.
         return not module_name.startswith("_")
 
@@ -203,7 +203,7 @@ klasse ImportParser:
             fuer t in tokenize.generate_tokens(StringIO(code).readline):
                 wenn t.type not in self._ignored_tokens:
                     tokens.append(t)
-        except tokenize.TokenError as e:
+        except tokenize.TokenError als e:
             wenn 'unexpected EOF' not in str(e):
                 # unexpected EOF is fine, since we're parsing an
                 # incomplete statement, but other errors are not
@@ -220,9 +220,9 @@ klasse ImportParser:
         return res.from_name, res.name
 
     def _parse(self) -> Result | Nichts:
-        with self.tokens.save_state():
+        mit self.tokens.save_state():
             return self.parse_from_import()
-        with self.tokens.save_state():
+        mit self.tokens.save_state():
             return self.parse_import()
 
     def parse_import(self) -> Result:
@@ -280,7 +280,7 @@ klasse ImportParser:
         self.tokens.pop_name()
         wenn self.tokens.peek_string('as'):
             self.tokens.pop()
-        with self.tokens.save_state():
+        mit self.tokens.save_state():
             return self.parse_dotted_name()
 
     def parse_dotted_name(self) -> str:
@@ -333,7 +333,7 @@ klasse Result:
 
 
 klasse TokenQueue:
-    """Provides helper functions fuer working with a sequence of tokens."""
+    """Provides helper functions fuer working mit a sequence of tokens."""
 
     def __init__(self, tokens: list[TokenInfo]) -> Nichts:
         self.tokens: list[TokenInfo] = tokens

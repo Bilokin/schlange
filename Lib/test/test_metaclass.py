@@ -57,7 +57,7 @@ Use **kwds notation fuer the metaclass keyword.
     Wahr
     >>>
 
-Use a metaclass with a __prepare__ static method.
+Use a metaclass mit a __prepare__ static method.
 
     >>> klasse M(type):
     ...    @staticmethod
@@ -192,7 +192,7 @@ Use a metaclass that doesn't derive von type.
     [('__firstlineno__', 1), ('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('__static_attributes__', ()), ('a', 42), ('b', 24)]
     >>>
 
-And again, with a __prepare__ attribute.
+And again, mit a __prepare__ attribute.
 
     >>> def prepare(name, bases, **kwds):
     ...     drucke("prepare:", name, bases, sorted(kwds.items()))
@@ -223,7 +223,7 @@ The default metaclass must define a __prepare__() method.
     {}
     >>>
 
-Make sure it works with subclassing.
+Make sure it works mit subclassing.
 
     >>> klasse M(type):
     ...     @classmethod
@@ -254,7 +254,7 @@ Test failures in looking up the __prepare__ method work.
     [...]
     test.test_metaclass.ObscureException
 
-Test setting attributes with a non-base type in mro() (gh-127773).
+Test setting attributes mit a non-base type in mro() (gh-127773).
 
     >>> klasse Base:
     ...     value = 1

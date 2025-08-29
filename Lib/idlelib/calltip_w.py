@@ -22,9 +22,9 @@ klasse CalltipWindow(TooltipBase):
     def __init__(self, text_widget):
         """Create a call-tip; shown by showtip().
 
-        text_widget: a Text widget with code fuer which call-tips are desired
+        text_widget: a Text widget mit code fuer which call-tips are desired
         """
-        # Note: The Text widget will be accessible as self.anchor_widget
+        # Note: The Text widget will be accessible als self.anchor_widget
         super().__init__(text_widget)
 
         self.label = self.text = Nichts

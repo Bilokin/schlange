@@ -8,11 +8,11 @@ klasse FLUFLTests(unittest.TestCase):
         code = "from __future__ importiere barry_as_FLUFL\n2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec',
                 __future__.CO_FUTURE_BARRY_AS_BDFL)
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             compile(code.format('!='), '<FLUFL test>', 'exec',
                     __future__.CO_FUTURE_BARRY_AS_BDFL)
         self.assertRegex(str(cm.exception),
-                         "with Barry as BDFL, use '<>' instead of '!='")
+                         "with Barry als BDFL, use '<>' instead of '!='")
         self.assertIn('2 != 3', cm.exception.text)
         self.assertEqual(cm.exception.filename, '<FLUFL test>')
 
@@ -24,7 +24,7 @@ klasse FLUFLTests(unittest.TestCase):
     def test_guido_as_bdfl(self):
         code = '2 {0} 3'
         compile(code.format('!='), '<BDFL test>', 'exec')
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             compile(code.format('<>'), '<FLUFL test>', 'exec')
         self.assertRegex(str(cm.exception), "invalid syntax")
         self.assertIn('2 <> 3', cm.exception.text)
@@ -39,9 +39,9 @@ klasse FLUFLTests(unittest.TestCase):
         # even wenn the compiler flags are not passed.
         code = "from __future__ importiere barry_as_FLUFL;2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec')
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             compile(code.format('!='), '<FLUFL test>', 'exec')
-        self.assertRegex(str(cm.exception), "with Barry as BDFL, use '<>' instead of '!='")
+        self.assertRegex(str(cm.exception), "with Barry als BDFL, use '<>' instead of '!='")
         self.assertIn('2 != 3', cm.exception.text)
         self.assertEqual(cm.exception.filename, '<FLUFL test>')
         self.assertEqual(cm.exception.lineno, 1)
@@ -50,7 +50,7 @@ klasse FLUFLTests(unittest.TestCase):
     def test_barry_as_bdfl_relative_import(self):
         code = "from .__future__ importiere barry_as_FLUFL;2 {0} 3"
         compile(code.format('!='), '<FLUFL test>', 'exec')
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             compile(code.format('<>'), '<BDFL test>', 'exec')
         self.assertRegex(str(cm.exception), "<BDFL test>")
         self.assertIn('2 <> 3', cm.exception.text)

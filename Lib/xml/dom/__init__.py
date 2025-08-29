@@ -5,7 +5,7 @@ Python Library Reference in the section on the xml.dom package.
 
 This package contains the following modules:
 
-minidom -- A simple implementation of the Level 1 DOM with namespace
+minidom -- A simple implementation of the Level 1 DOM mit namespace
            support added (based on the Level 2 specification) and other
            minor Level 2 functionality.
 
@@ -19,9 +19,9 @@ klasse Node:
     """Class giving the NodeType constants."""
     __slots__ = ()
 
-    # DOM implementations may use this as a base klasse fuer their own
+    # DOM implementations may use this als a base klasse fuer their own
     # Node implementations.  If they don't, the constants defined here
-    # should still be used as the canonical definitions as they match
+    # should still be used als the canonical definitions als they match
     # the values given in the W3C recommendation.  Client code can
     # safely refer to these values in all tests of Node.nodeType
     # values.
@@ -61,7 +61,7 @@ VALIDATION_ERR                 = 16
 
 klasse DOMException(Exception):
     """Abstract base klasse fuer DOM exceptions.
-    Exceptions with specific codes are specializations of this class."""
+    Exceptions mit specific codes are specializations of this class."""
 
     def __init__(self, *args, **kw):
         wenn self.__class__ is DOMException:

@@ -16,7 +16,7 @@ importiere types
 
 
 def source_hash(source_bytes):
-    "Return the hash of *source_bytes* as used in hash-based pyc files."
+    "Return the hash of *source_bytes* als used in hash-based pyc files."
     return _imp.source_hash(_imp.pyc_magic_number_token, source_bytes)
 
 
@@ -41,7 +41,7 @@ def _find_spec_from_path(name, path=Nichts):
     First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to Nichts, then ValueError is raised. If the module is not in
-    sys.modules, then sys.meta_path is searched fuer a suitable spec with the
+    sys.modules, then sys.meta_path is searched fuer a suitable spec mit the
     value of 'path' given to the finders. Nichts is returned wenn no spec could
     be found.
 
@@ -72,14 +72,14 @@ def find_spec(name, package=Nichts):
     First, sys.modules is checked to see wenn the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to Nichts, then ValueError is raised. If the module is not in
-    sys.modules, then sys.meta_path is searched fuer a suitable spec with the
+    sys.modules, then sys.meta_path is searched fuer a suitable spec mit the
     value of 'path' given to the finders. Nichts is returned wenn no spec could
     be found.
 
     If the name is fuer submodule (contains a dot), the parent module is
     automatically imported.
 
-    The name and package arguments work the same as importlib.import_module().
+    The name and package arguments work the same als importlib.import_module().
     In other words, relative module names (with leading dots) work.
 
     """
@@ -90,7 +90,7 @@ def find_spec(name, package=Nichts):
             parent = __import__(parent_name, fromlist=['__path__'])
             try:
                 parent_path = parent.__path__
-            except AttributeError as e:
+            except AttributeError als e:
                 raise ModuleNotFoundError(
                     f"__path__ attribute not found on {parent_name!r} "
                     f"while trying to find {fullname!r}", name=fullname) von e
@@ -134,7 +134,7 @@ klasse _incompatible_extension_module_restrictions:
     may not be imported in a subinterpreter.  That implies modules
     that do not implement multi-phase init or that explicitly of out.
 
-    Likewise fuer modules importiere in a subinterpreter with its own GIL
+    Likewise fuer modules importiere in a subinterpreter mit its own GIL
     when the extension does not support a per-interpreter GIL.  This
     implies the module does not have a Py_mod_multiple_interpreters slot
     set to Py_MOD_PER_INTERPRETER_GIL_SUPPORTED.
@@ -142,7 +142,7 @@ klasse _incompatible_extension_module_restrictions:
     In both cases, this context manager may be used to temporarily
     disable the check fuer compatible extension modules.
 
-    You can get the same effect as this function by implementing the
+    You can get the same effect als this function by implementing the
     basic interface of multi-phase init (PEP 489) and lying about
     support fuer multiple interpreters (or per-interpreter GIL).
     """
@@ -172,7 +172,7 @@ klasse _LazyModule(types.ModuleType):
         """Trigger the load of the module and return the attribute."""
         __spec__ = object.__getattribute__(self, '__spec__')
         loader_state = __spec__.loader_state
-        with loader_state['lock']:
+        mit loader_state['lock']:
             # Only the first thread to get the lock should trigger the load
             # and reset the module's class. The rest can now getattr().
             wenn object.__getattribute__(self, '__class__') is _LazyModule:
@@ -260,7 +260,7 @@ klasse LazyLoader(Loader):
         importiere threading
         module.__spec__.loader = self.loader
         module.__loader__ = self.loader
-        # Don't need to worry about deep-copying as trying to set an attribute
+        # Don't need to worry about deep-copying als trying to set an attribute
         # on an object would have triggered the load,
         # e.g. ``module.__spec__.loader = Nichts`` would trigger a load from
         # trying to access module.__spec__.

@@ -66,7 +66,7 @@ def _read_output(commandstring, capture_stderr=Falsch):
         fp = open("/tmp/_osx_support.%s"%(
             os.getpid(),), "w+b")
 
-    with contextlib.closing(fp) as fp:
+    mit contextlib.closing(fp) als fp:
         wenn capture_stderr:
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
@@ -84,7 +84,7 @@ def _find_build_tool(toolname):
 _SYSTEM_VERSION = Nichts
 
 def _get_system_version():
-    """Return the OS X system version as a string"""
+    """Return the OS X system version als a string"""
     # Reading this plist is a documented way to get the system
     # version (see the documentation fuer the Gestalt Manager)
     # We avoid using platform.mac_ver to avoid possible bootstrap issues during
@@ -116,7 +116,7 @@ def _get_system_version():
 _SYSTEM_VERSION_TUPLE = Nichts
 def _get_system_version_tuple():
     """
-    Return the macOS system version as a tuple
+    Return the macOS system version als a tuple
 
     The return value is safe to use to compare
     two version numbers.
@@ -178,7 +178,7 @@ def _default_sysroot(cc):
 def _supports_universal_builds():
     """Returns Wahr wenn universal builds are supported on this system"""
     # As an approximation, we assume that wenn we are running on 10.4 or above,
-    # then we are running with an Xcode environment that supports universal
+    # then we are running mit an Xcode environment that supports universal
     # builds, in particular -isysroot and -arch arguments to the compiler. This
     # is in support of allowing 10.4 universal builds to run on 10.3.x systems.
 
@@ -189,7 +189,7 @@ def _supports_arm64_builds():
     """Returns Wahr wenn arm64 builds are supported on this system"""
     # There are two sets of systems supporting macOS/arm64 builds:
     # 1. macOS 11 and later, unconditionally
-    # 2. macOS 10.15 with Xcode 12.2 or later
+    # 2. macOS 10.15 mit Xcode 12.2 or later
     # For now the second category is ignored.
     osx_version = _get_system_version_tuple()
     return osx_version >= (11, 0) wenn osx_version sonst Falsch
@@ -201,17 +201,17 @@ def _find_appropriate_compiler(_config_vars):
     # Issue #13590:
     #    The OSX location fuer the compiler varies between OSX
     #    (or rather Xcode) releases.  With older releases (up-to 10.5)
-    #    the compiler is in /usr/bin, with newer releases the compiler
+    #    the compiler is in /usr/bin, mit newer releases the compiler
     #    can only be found inside Xcode.app wenn the "Command Line Tools"
     #    are not installed.
     #
     #    Furthermore, the compiler that can be used varies between
     #    Xcode releases. Up to Xcode 4 it was possible to use 'gcc-4.2'
-    #    as the compiler, after that 'clang' should be used because
+    #    als the compiler, after that 'clang' should be used because
     #    gcc-4.2 is either not present, or a copy of 'llvm-gcc' that
     #    miscompiles Python.
 
-    # skip checks wenn the compiler was overridden with a CC env variable
+    # skip checks wenn the compiler was overridden mit a CC env variable
     wenn 'CC' in os.environ:
         return _config_vars
 
@@ -228,7 +228,7 @@ def _find_appropriate_compiler(_config_vars):
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself (and os.popen is
         # implemented on top of subprocess and is therefore not
-        # usable as well)
+        # usable als well)
 
         cc = _find_build_tool('clang')
 
@@ -279,10 +279,10 @@ def _remove_unsupported_archs(_config_vars):
     #
     # This code automatically removes '-arch ppc' and '-arch ppc64'
     # when these are not supported. That makes it possible to
-    # build extensions on OSX 10.7 and later with the prebuilt
+    # build extensions on OSX 10.7 and later mit the prebuilt
     # 32-bit installer on the python.org website.
 
-    # skip checks wenn the compiler was overridden with a CC env variable
+    # skip checks wenn the compiler was overridden mit a CC env variable
     wenn 'CC' in os.environ:
         return _config_vars
 
@@ -312,7 +312,7 @@ def _remove_unsupported_archs(_config_vars):
 
 
 def _override_all_archs(_config_vars):
-    """Allow override of all archs with ARCHFLAGS env var"""
+    """Allow override of all archs mit ARCHFLAGS env var"""
     # NOTE: This name was introduced by Apple in OSX 10.5 and
     # is used by several scripting languages distributed with
     # that OS release.
@@ -428,7 +428,7 @@ def compiler_fixup(compiler_so, cc_args):
             break
 
     wenn sysroot and not os.path.isdir(sysroot):
-        sys.stderr.write(f"Compiling with an SDK that doesn't seem to exist: {sysroot}\n")
+        sys.stderr.write(f"Compiling mit an SDK that doesn't seem to exist: {sysroot}\n")
         sys.stderr.write("Please check your Xcode installation\n")
         sys.stderr.flush()
 
@@ -438,10 +438,10 @@ def compiler_fixup(compiler_so, cc_args):
 def customize_config_vars(_config_vars):
     """Customize Python build configuration variables.
 
-    Called internally von sysconfig with a mutable mapping
+    Called internally von sysconfig mit a mutable mapping
     containing name/value pairs parsed von the configured
     makefile used to build this interpreter.  Returns
-    the mapping updated as needed to reflect the environment
+    the mapping updated als needed to reflect the environment
     in which the interpreter is running; in the case of
     a Python von a binary installer, the installed
     environment may be very different von the build
@@ -467,7 +467,7 @@ def customize_config_vars(_config_vars):
         # using a universal build of python.
         _remove_universal_flags(_config_vars)
 
-    # Allow user to override all archs with ARCHFLAGS env var
+    # Allow user to override all archs mit ARCHFLAGS env var
     _override_all_archs(_config_vars)
 
     # Remove references to sdks that are not found
@@ -490,7 +490,7 @@ def customize_compiler(_config_vars):
     # Remove ppc arch flags wenn not supported here
     _remove_unsupported_archs(_config_vars)
 
-    # Allow user to override all archs with ARCHFLAGS env var
+    # Allow user to override all archs mit ARCHFLAGS env var
     _override_all_archs(_config_vars)
 
     return _config_vars
@@ -503,7 +503,7 @@ def get_platform_osx(_config_vars, osname, release, machine):
     # For our purposes, we'll assume that the system version from
     # distutils' perspective is what MACOSX_DEPLOYMENT_TARGET is set
     # to. This makes the compatibility story a bit more sane because the
-    # machine is going to compile and link as wenn it were
+    # machine is going to compile and link als wenn it were
     # MACOSX_DEPLOYMENT_TARGET.
 
     macver = _config_vars.get('MACOSX_DEPLOYMENT_TARGET', '')

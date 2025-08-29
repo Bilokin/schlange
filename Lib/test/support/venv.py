@@ -24,7 +24,7 @@ klasse VirtualEnvironment:
     @contextlib.contextmanager
     def from_tmpdir(cls, *, prefix=Nichts, dir=Nichts, **venv_create_args):
         delete = not bool(os.environ.get('PYTHON_TESTS_KEEP_VENV'))
-        with tempfile.TemporaryDirectory(prefix=prefix, dir=dir, delete=delete) as tmpdir:
+        mit tempfile.TemporaryDirectory(prefix=prefix, dir=dir, delete=delete) als tmpdir:
             yield cls(tmpdir, **venv_create_args)
 
     @property
@@ -57,7 +57,7 @@ klasse VirtualEnvironment:
         }
         try:
             result = subprocess.run([self.interpreter, *args], **default_args | subprocess_args)
-        except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError als e:
             wenn e.returncode != 0:
                 self._logger.error(
                     f'Interpreter returned non-zero exit status {e.returncode}.\n'

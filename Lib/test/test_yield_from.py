@@ -61,7 +61,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         try:
             fuer x in g1():
                 trace.append("Yielded %s" % (x,))
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(e.args[0], "spanish inquisition occurred")
         sonst:
             self.fail("subgenerator failed to raise ValueError")
@@ -125,7 +125,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         try:
             fuer x in g1():
                 trace.append("Yielded %s" % (x,))
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(e.args[0], "hovercraft is full of eels")
         sonst:
             self.fail("subgenerator failed to raise ValueError")
@@ -277,15 +277,15 @@ klasse TestPEP380Operation(unittest.TestCase):
                 yield "g2 more spam"
             finally:
                 trace.append("Finishing g2")
-                raise ValueError("nybbles have exploded with delight")
+                raise ValueError("nybbles have exploded mit delight")
         try:
             g = g1()
             fuer i in range(2):
                 x = next(g)
                 trace.append("Yielded %s" % (x,))
             g.close()
-        except ValueError as e:
-            self.assertEqual(e.args[0], "nybbles have exploded with delight")
+        except ValueError als e:
+            self.assertEqual(e.args[0], "nybbles have exploded mit delight")
             self.assertIsInstance(e.__context__, GeneratorExit)
         sonst:
             self.fail("subgenerator failed to raise ValueError")
@@ -325,7 +325,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("Yielded %s" % (x,))
             e = ValueError("tomato ejected")
             g.throw(e)
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(e.args[0], "tomato ejected")
         sonst:
             self.fail("subgenerator failed to raise ValueError")
@@ -471,7 +471,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("finishing g")
         gi = g()
         next(gi)
-        with captured_stderr() as output:
+        mit captured_stderr() als output:
             gi.close()
         self.assertEqual(output.getvalue(), '')
         self.assertEqual(trace,[
@@ -497,7 +497,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("Yielded %s" % (x,))
             e = ValueError("tomato ejected")
             gi.throw(e)
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(e.args[0],"tomato ejected")
         sonst:
             self.fail("subgenerator failed to raise ValueError")
@@ -529,7 +529,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             fuer x in range(3):
                 y = gi.send(42)
                 trace.append("Should not have yielded: %s" % (y,))
-        except AttributeError as e:
+        except AttributeError als e:
             self.assertIn("send", e.args[0])
         sonst:
             self.fail("was able to send into non-generator")
@@ -540,7 +540,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_broken_getattr_handling(self):
         """
-        Test subiterator with a broken getattr implementation
+        Test subiterator mit a broken getattr implementation
         """
         klasse Broken:
             def __iter__(self):
@@ -553,17 +553,17 @@ klasse TestPEP380Operation(unittest.TestCase):
         def g():
             yield von Broken()
 
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             gi = g()
             self.assertEqual(next(gi), 1)
             gi.send(1)
 
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             gi = g()
             self.assertEqual(next(gi), 1)
             gi.throw(AttributeError)
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             gi = g()
             self.assertEqual(next(gi), 1)
             gi.close()
@@ -611,7 +611,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             gi = g1()
             fuer y in gi:
                 trace.append("Yielded: %s" % (y,))
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(e.args[0],"generator already executing")
         sonst:
             self.fail("subgenerator didn't raise ValueError")
@@ -669,7 +669,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_next_and_return_with_value(self):
         """
-        Test next and return with value
+        Test next and return mit value
         """
         trace = []
         def f(r):
@@ -679,7 +679,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("f resuming g")
                 next(gi)
                 trace.append("f SHOULD NOT BE HERE")
-            except StopIteration as e:
+            except StopIteration als e:
                 trace.append("f caught %r" % (e,))
         def g(r):
             trace.append("g starting")
@@ -711,7 +711,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 
     def test_send_and_return_with_value(self):
         """
-        Test send and return with value
+        Test send and return mit value
         """
         trace = []
         def f(r):
@@ -721,7 +721,7 @@ klasse TestPEP380Operation(unittest.TestCase):
                 trace.append("f sending spam to g")
                 gi.send("spam")
                 trace.append("f SHOULD NOT BE HERE")
-            except StopIteration as e:
+            except StopIteration als e:
                 trace.append("f caught %r" % (e,))
         def g(r):
             trace.append("g starting")
@@ -836,7 +836,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except RuntimeError as e:
+        except RuntimeError als e:
             self.assertEqual(e.args[0], "generator ignored GeneratorExit")
         sonst:
             self.fail("subgenerator failed to raise GeneratorExit")
@@ -866,7 +866,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             gi = g()
             next(gi)
             gi.throw(GeneratorExit)
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(e.args[0], "Vorpal bunny encountered")
             self.assertIsInstance(e.__context__, GeneratorExit)
         sonst:
@@ -882,7 +882,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         self.assertRaises(StopIteration, next, g())
 
     def test_delegating_generators_claim_to_be_running(self):
-        # Check with basic iteration
+        # Check mit basic iteration
         def one():
             yield 0
             yield von two()
@@ -897,7 +897,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         g1 = one()
         self.assertEqual(list(g1), [0, 1, 2, 3])
 
-        # Check with send
+        # Check mit send
         g1 = one()
         res = [next(g1)]
         try:
@@ -908,7 +908,7 @@ klasse TestPEP380Operation(unittest.TestCase):
         self.assertEqual(res, [0, 1, 2, 3])
 
     def test_delegating_generators_claim_to_be_running_with_throw(self):
-        # Check with throw
+        # Check mit throw
         klasse MyErr(Exception):
             pass
         def one():
@@ -946,7 +946,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             raise
 
     def test_delegating_generators_claim_to_be_running_with_close(self):
-        # Check with close
+        # Check mit close
         klasse MyIt:
             def __iter__(self):
                 return self
@@ -1024,7 +1024,7 @@ klasse TestPEP380Operation(unittest.TestCase):
             inner_gen = yield
             yield von inner_gen
 
-        with disable_gc():
+        mit disable_gc():
             inner_gen = inner()
             outer_gen = outer()
             outer_gen.send(Nichts)
@@ -1057,7 +1057,7 @@ klasse TestPEP380Operation(unittest.TestCase):
 klasse TestInterestingEdgeCases(unittest.TestCase):
 
     def assert_stop_iteration(self, iterator):
-        with self.assertRaises(StopIteration) as caught:
+        mit self.assertRaises(StopIteration) als caught:
             next(iterator)
         self.assertIsNichts(caught.exception.value)
         self.assertIsNichts(caught.exception.__context__)
@@ -1082,48 +1082,48 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def outer():
             return (yield von inner())
 
-        with self.subTest("close"):
+        mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             g.close()
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw GeneratorExit"):
+        mit self.subTest("throw GeneratorExit"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = GeneratorExit()
-            with self.assertRaises(GeneratorExit) as caught:
+            mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw StopIteration"):
+        mit self.subTest("throw StopIteration"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = StopIteration()
             # PEP 479:
-            with self.assert_generator_raised_stop_iteration() as caught:
+            mit self.assert_generator_raised_stop_iteration() als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw BaseException"):
+        mit self.subTest("throw BaseException"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = BaseException()
-            with self.assertRaises(BaseException) as caught:
+            mit self.assertRaises(BaseException) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw Exception"):
+        mit self.subTest("throw Exception"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = Exception()
-            with self.assertRaises(Exception) as caught:
+            mit self.assertRaises(Exception) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
@@ -1146,59 +1146,59 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def outer():
             return (yield von inner())
 
-        with self.subTest("close"):
+        mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = GeneratorExit()
-            # GeneratorExit is suppressed. This is consistent with PEP 342:
+            # GeneratorExit is suppressed. This is consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
             g.close()
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw GeneratorExit"):
+        mit self.subTest("throw GeneratorExit"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = GeneratorExit()
             thrown = GeneratorExit()
-            with self.assertRaises(GeneratorExit) as caught:
+            mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)
             # The raised GeneratorExit is suppressed, but the thrown one
-            # propagates. This is consistent with PEP 380:
+            # propagates. This is consistent mit PEP 380:
             # https://peps.python.org/pep-0380/#proposal
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw StopIteration"):
+        mit self.subTest("throw StopIteration"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = GeneratorExit()
             thrown = StopIteration()
-            with self.assertRaises(GeneratorExit) as caught:
+            mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw BaseException"):
+        mit self.subTest("throw BaseException"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = GeneratorExit()
             thrown = BaseException()
-            with self.assertRaises(GeneratorExit) as caught:
+            mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw Exception"):
+        mit self.subTest("throw Exception"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = GeneratorExit()
             thrown = Exception()
-            with self.assertRaises(GeneratorExit) as caught:
+            mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
@@ -1222,66 +1222,66 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def outer():
             return (yield von inner())
 
-        with self.subTest("close"):
+        mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = StopIteration()
             # PEP 479:
-            with self.assert_generator_raised_stop_iteration() as caught:
+            mit self.assert_generator_raised_stop_iteration() als caught:
                 g.close()
             self.assertIs(caught.exception.__context__, raised)
             self.assertIsInstance(caught.exception.__context__.__context__, GeneratorExit)
             self.assertIsNichts(caught.exception.__context__.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw GeneratorExit"):
+        mit self.subTest("throw GeneratorExit"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = StopIteration()
             thrown = GeneratorExit()
             # PEP 479:
-            with self.assert_generator_raised_stop_iteration() as caught:
+            mit self.assert_generator_raised_stop_iteration() als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.__context__, raised)
-            # This isn't the same GeneratorExit as thrown! It's the one created
+            # This isn't the same GeneratorExit als thrown! It's the one created
             # by calling inner.close():
             self.assertIsInstance(caught.exception.__context__.__context__, GeneratorExit)
             self.assertIsNichts(caught.exception.__context__.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw StopIteration"):
+        mit self.subTest("throw StopIteration"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = StopIteration()
             thrown = StopIteration()
             # PEP 479:
-            with self.assert_generator_raised_stop_iteration() as caught:
+            mit self.assert_generator_raised_stop_iteration() als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.__context__, raised)
             self.assertIs(caught.exception.__context__.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw BaseException"):
+        mit self.subTest("throw BaseException"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = StopIteration()
             thrown = BaseException()
             # PEP 479:
-            with self.assert_generator_raised_stop_iteration() as caught:
+            mit self.assert_generator_raised_stop_iteration() als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.__context__, raised)
             self.assertIs(caught.exception.__context__.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw Exception"):
+        mit self.subTest("throw Exception"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = StopIteration()
             thrown = Exception()
             # PEP 479:
-            with self.assert_generator_raised_stop_iteration() as caught:
+            mit self.assert_generator_raised_stop_iteration() als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.__context__, raised)
             self.assertIs(caught.exception.__context__.__context__, thrown)
@@ -1305,61 +1305,61 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def outer():
             return (yield von inner())
 
-        with self.subTest("close"):
+        mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = BaseException()
-            with self.assertRaises(BaseException) as caught:
+            mit self.assertRaises(BaseException) als caught:
                 g.close()
             self.assertIs(caught.exception, raised)
             self.assertIsInstance(caught.exception.__context__, GeneratorExit)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw GeneratorExit"):
+        mit self.subTest("throw GeneratorExit"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = BaseException()
             thrown = GeneratorExit()
-            with self.assertRaises(BaseException) as caught:
+            mit self.assertRaises(BaseException) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
-            # This isn't the same GeneratorExit as thrown! It's the one created
+            # This isn't the same GeneratorExit als thrown! It's the one created
             # by calling inner.close():
             self.assertIsInstance(caught.exception.__context__, GeneratorExit)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw StopIteration"):
+        mit self.subTest("throw StopIteration"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = BaseException()
             thrown = StopIteration()
-            with self.assertRaises(BaseException) as caught:
+            mit self.assertRaises(BaseException) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw BaseException"):
+        mit self.subTest("throw BaseException"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = BaseException()
             thrown = BaseException()
-            with self.assertRaises(BaseException) as caught:
+            mit self.assertRaises(BaseException) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw Exception"):
+        mit self.subTest("throw Exception"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = BaseException()
             thrown = Exception()
-            with self.assertRaises(BaseException) as caught:
+            mit self.assertRaises(BaseException) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
@@ -1383,61 +1383,61 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def outer():
             return (yield von inner())
 
-        with self.subTest("close"):
+        mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = Exception()
-            with self.assertRaises(Exception) as caught:
+            mit self.assertRaises(Exception) als caught:
                 g.close()
             self.assertIs(caught.exception, raised)
             self.assertIsInstance(caught.exception.__context__, GeneratorExit)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw GeneratorExit"):
+        mit self.subTest("throw GeneratorExit"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = Exception()
             thrown = GeneratorExit()
-            with self.assertRaises(Exception) as caught:
+            mit self.assertRaises(Exception) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
-            # This isn't the same GeneratorExit as thrown! It's the one created
+            # This isn't the same GeneratorExit als thrown! It's the one created
             # by calling inner.close():
             self.assertIsInstance(caught.exception.__context__, GeneratorExit)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw StopIteration"):
+        mit self.subTest("throw StopIteration"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = Exception()
             thrown = StopIteration()
-            with self.assertRaises(Exception) as caught:
+            mit self.assertRaises(Exception) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw BaseException"):
+        mit self.subTest("throw BaseException"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = Exception()
             thrown = BaseException()
-            with self.assertRaises(Exception) as caught:
+            mit self.assertRaises(Exception) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw Exception"):
+        mit self.subTest("throw Exception"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             raised = Exception()
             thrown = Exception()
-            with self.assertRaises(Exception) as caught:
+            mit self.assertRaises(Exception) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, raised)
             self.assertIs(caught.exception.__context__, thrown)
@@ -1460,56 +1460,56 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def outer():
             return (yield von inner())
 
-        with self.subTest("close"):
+        mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
-            # No chaining happens. This is consistent with PEP 342:
+            # No chaining happens. This is consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
-            with self.assert_generator_ignored_generator_exit() as caught:
+            mit self.assert_generator_ignored_generator_exit() als caught:
                 g.close()
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw GeneratorExit"):
+        mit self.subTest("throw GeneratorExit"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = GeneratorExit()
-            # No chaining happens. This is consistent with PEP 342:
+            # No chaining happens. This is consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
-            with self.assert_generator_ignored_generator_exit() as caught:
+            mit self.assert_generator_ignored_generator_exit() als caught:
                 g.throw(thrown)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw StopIteration"):
+        mit self.subTest("throw StopIteration"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = StopIteration()
             self.assertEqual(g.throw(thrown), yielded_second)
             # PEP 479:
-            with self.assert_generator_raised_stop_iteration() as caught:
+            mit self.assert_generator_raised_stop_iteration() als caught:
                 next(g)
             self.assertIs(caught.exception.__context__, thrown)
             self.assertIsNichts(caught.exception.__context__.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw BaseException"):
+        mit self.subTest("throw BaseException"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = BaseException()
             self.assertEqual(g.throw(thrown), yielded_second)
-            with self.assertRaises(BaseException) as caught:
+            mit self.assertRaises(BaseException) als caught:
                 next(g)
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw Exception"):
+        mit self.subTest("throw Exception"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = Exception()
             self.assertEqual(g.throw(thrown), yielded_second)
-            with self.assertRaises(Exception) as caught:
+            mit self.assertRaises(Exception) als caught:
                 next(g)
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
@@ -1532,51 +1532,51 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def outer():
             return (yield von inner())
 
-        with self.subTest("close"):
+        mit self.subTest("close"):
             g = outer()
             self.assertIs(next(g), yielded_first)
-            # StopIteration is suppressed. This is consistent with PEP 342:
+            # StopIteration is suppressed. This is consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
             g.close()
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw GeneratorExit"):
+        mit self.subTest("throw GeneratorExit"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = GeneratorExit()
-            # StopIteration is suppressed. This is consistent with PEP 342:
+            # StopIteration is suppressed. This is consistent mit PEP 342:
             # https://peps.python.org/pep-0342/#new-generator-method-close
-            with self.assertRaises(GeneratorExit) as caught:
+            mit self.assertRaises(GeneratorExit) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception, thrown)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw StopIteration"):
+        mit self.subTest("throw StopIteration"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = StopIteration()
-            with self.assertRaises(StopIteration) as caught:
+            mit self.assertRaises(StopIteration) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.value, returned)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw BaseException"):
+        mit self.subTest("throw BaseException"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = BaseException()
-            with self.assertRaises(StopIteration) as caught:
+            mit self.assertRaises(StopIteration) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.value, returned)
             self.assertIsNichts(caught.exception.__context__)
             self.assert_stop_iteration(g)
 
-        with self.subTest("throw Exception"):
+        mit self.subTest("throw Exception"):
             g = outer()
             self.assertIs(next(g), yielded_first)
             thrown = Exception()
-            with self.assertRaises(StopIteration) as caught:
+            mit self.assertRaises(StopIteration) als caught:
                 g.throw(thrown)
             self.assertIs(caught.exception.value, returned)
             self.assertIsNichts(caught.exception.__context__)
@@ -1592,7 +1592,7 @@ klasse TestInterestingEdgeCases(unittest.TestCase):
         def my_generator():
             yield von Silly()
 
-        with self.assertRaisesRegex(RuntimeError, "nobody expects the spanish inquisition"):
+        mit self.assertRaisesRegex(RuntimeError, "nobody expects the spanish inquisition"):
             next(iter(my_generator()))
 
 

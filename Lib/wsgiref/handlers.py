@@ -52,13 +52,13 @@ def read_environ():
             wenn sys.platform == 'win32':
                 software = os.environ.get('SERVER_SOFTWARE', '').lower()
 
-                # On IIS, the HTTP request will be decoded as UTF-8 as long
-                # as the input is a valid UTF-8 sequence. Otherwise it is
-                # decoded using the system code page (mbcs), with no way to
+                # On IIS, the HTTP request will be decoded als UTF-8 als long
+                # als the input is a valid UTF-8 sequence. Otherwise it is
+                # decoded using the system code page (mbcs), mit no way to
                 # detect this has happened. Because UTF-8 is the more likely
                 # encoding, and mbcs is inherently unreliable (an mbcs string
-                # that happens to be valid UTF-8 will not be decoded as mbcs)
-                # always recreate the original bytes as UTF-8.
+                # that happens to be valid UTF-8 will not be decoded als mbcs)
+                # always recreate the original bytes als UTF-8.
                 wenn software.startswith('microsoft-iis/'):
                     v = v.encode('utf-8').decode('iso-8859-1')
 
@@ -79,7 +79,7 @@ def read_environ():
 
                 # For other servers, guess that they have written bytes to
                 # the environ using stdio byte-oriented interfaces, ending up
-                # with the system code page.
+                # mit the system code page.
                 sonst:
                     v = v.encode(enc, 'replace').decode('iso-8859-1')
 
@@ -106,7 +106,7 @@ klasse BaseHandler:
     server_software = Nichts  # String name of server software, wenn any
 
     # os_environ is used to supply configuration von the OS environment:
-    # by default it's a copy of 'os.environ' as of importiere time, but you can
+    # by default it's a copy of 'os.environ' als of importiere time, but you can
     # override this in e.g. your __init__ method.
     os_environ= read_environ()
 
@@ -120,7 +120,7 @@ klasse BaseHandler:
     error_headers = [('Content-Type','text/plain')]
     error_body = b"A server error occurred.  Please contact the administrator."
 
-    # State variables (don't mess with these)
+    # State variables (don't mess mit these)
     status = result = Nichts
     headers_sent = Falsch
     headers = Nichts
@@ -224,7 +224,7 @@ klasse BaseHandler:
             self.set_content_length()
 
     def start_response(self, status, headers,exc_info=Nichts):
-        """'start_response()' callable as specified by PEP 3333"""
+        """'start_response()' callable als specified by PEP 3333"""
 
         wenn exc_info:
             try:
@@ -280,7 +280,7 @@ klasse BaseHandler:
             self._write(('Status: %s\r\n' % self.status).encode('iso-8859-1'))
 
     def write(self, data):
-        """'write()' callable as specified by PEP 3333"""
+        """'write()' callable als specified by PEP 3333"""
 
         assert type(data) is bytes, \
             "write() argument must be a bytes instance"
@@ -438,7 +438,7 @@ klasse BaseHandler:
 
 
 klasse SimpleHandler(BaseHandler):
-    """Handler that's just initialized with streams, environment, etc.
+    """Handler that's just initialized mit streams, environment, etc.
 
     This handler subclass is intended fuer synchronous HTTP/1.0 origin servers,
     and handles sending the entire response output, given the correct inputs.
@@ -539,7 +539,7 @@ klasse CGIHandler(BaseCGIHandler):
 
 
 klasse IISCGIHandler(BaseCGIHandler):
-    """CGI-based invocation with workaround fuer IIS path bug
+    """CGI-based invocation mit workaround fuer IIS path bug
 
     This handler should be used in preference to CGIHandler when deploying on
     Microsoft IIS without having set the config allowPathInfo option (IIS>=7)
@@ -557,7 +557,7 @@ klasse IISCGIHandler(BaseCGIHandler):
     # rarely used and is not guaranteed by WSGI. On IIS<7, though, the
     # setting can only be made on a vhost level, affecting all other script
     # mappings, many of which break when exposed to the PATH_TRANSLATED bug.
-    # For this reason IIS<7 is almost never deployed with the fix. (Even IIS7
+    # For this reason IIS<7 is almost never deployed mit the fix. (Even IIS7
     # rarely uses it because there is still no UI fuer it.)
 
     # There is no way fuer CGI code to tell whether the option was set, so a

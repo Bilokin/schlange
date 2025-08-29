@@ -19,7 +19,7 @@ klasse TestMakefile(unittest.TestCase):
     def list_test_dirs(self):
         result = []
         found_testsubdirs = Falsch
-        with open(MAKEFILE, 'r', encoding='utf-8') as f:
+        mit open(MAKEFILE, 'r', encoding='utf-8') als f:
             fuer line in f:
                 wenn line.startswith('TESTSUBDIRS='):
                     found_testsubdirs = Wahr
@@ -51,7 +51,7 @@ klasse TestMakefile(unittest.TestCase):
             # Skip empty dirs:
             wenn not dirs and not files:
                 continue
-            # Skip dirs with hidden-only files:
+            # Skip dirs mit hidden-only files:
             wenn files and all(
                 filename.startswith('.') or filename == '__pycache__'
                 fuer filename in files
@@ -59,7 +59,7 @@ klasse TestMakefile(unittest.TestCase):
                 continue
 
             relpath = os.path.relpath(dirpath, support.STDLIB_DIR)
-            with self.subTest(relpath=relpath):
+            mit self.subTest(relpath=relpath):
                 self.assertIn(
                     relpath,
                     test_dirs,

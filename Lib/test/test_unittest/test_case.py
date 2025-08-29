@@ -92,14 +92,14 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         self.assertEndsWith(Test().id(), '.Test.runTest')
 
-        # test that TestCase can be instantiated with no args
+        # test that TestCase can be instantiated mit no args
         # primarily fuer use at the interactive interpreter
         test = unittest.TestCase()
         test.assertEqual(3, 3)
-        with test.assertRaises(test.failureException):
+        mit test.assertRaises(test.failureException):
             test.assertEqual(3, 2)
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             test.run()
 
     # "class TestCase([methodName])"
@@ -140,7 +140,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "Return the default type of test result object to be used to run this
     # test. For TestCase instances, this will always be
     # unittest.TestResult;  subclasses of TestCase should
-    # override this as necessary."
+    # override this als necessary."
     def test_defaultTestResult(self):
         klasse Foo(unittest.TestCase):
             def runTest(self):
@@ -246,7 +246,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         Foo(events).run(result)
         self.assertEqual(events, expected)
 
-    # "When a test fails with a default result stopTestRun is still called."
+    # "When a test fails mit a default result stopTestRun is still called."
     def test_run_call_order__failure_in_test_default_result(self):
 
         klasse Foo(Test.LoggingTestCase):
@@ -283,7 +283,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'stopTest']
         self.assertEqual(events, expected)
 
-    # "When tearDown errors with a default result stopTestRun is still called."
+    # "When tearDown errors mit a default result stopTestRun is still called."
     def test_run_call_order__error_in_tearDown_default_result(self):
 
         klasse Foo(Test.LoggingTestCase):
@@ -309,7 +309,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             def test(self):
                 pass
 
-        with self.assertWarns(RuntimeWarning):
+        mit self.assertWarns(RuntimeWarning):
             Foo('test').run()
 
     def test_deprecation_of_return_val_from_test(self):
@@ -325,21 +325,21 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             def test3(self):
                 return Nothing()
 
-        with self.assertWarns(DeprecationWarning) as w:
+        mit self.assertWarns(DeprecationWarning) als w:
             Foo('test1').run()
         self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
-        with self.assertWarns(DeprecationWarning) as w:
+        mit self.assertWarns(DeprecationWarning) als w:
             Foo('test2').run()
         self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'generator'", str(w.warning))
 
-        with self.assertWarns(DeprecationWarning) as w:
+        mit self.assertWarns(DeprecationWarning) als w:
             Foo('test3').run()
         self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
@@ -351,7 +351,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             async def test1(self):
                 return 1
 
-        with self.assertWarns(DeprecationWarning) as w:
+        mit self.assertWarns(DeprecationWarning) als w:
             warnings.filterwarnings('ignore',
                     'coroutine .* was never awaited', RuntimeWarning)
             Foo('test1').run()
@@ -361,7 +361,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'coroutine'", str(w.warning))
         self.assertIn(
-            'Maybe you forgot to use IsolatedAsyncioTestCase as the base class?',
+            'Maybe you forgot to use IsolatedAsyncioTestCase als the base class?',
             str(w.warning),
         )
 
@@ -370,11 +370,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             def test(self):
                 super(Foo, self).test()
                 fuer i in [1, 2, 3]:
-                    with self.subTest(i=i):
+                    mit self.subTest(i=i):
                         wenn i == 1:
                             self.fail('failure')
                         fuer j in [2, 3]:
-                            with self.subTest(j=j):
+                            mit self.subTest(j=j):
                                 wenn i * j == 6:
                                     raise RuntimeError('raised by Foo.test')
                 1 / 0
@@ -412,9 +412,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             def test(self):
                 super(Foo, self).test()
                 fuer i in [1, 2]:
-                    with self.subTest(i=i):
+                    mit self.subTest(i=i):
                         fuer j in [2, 3]:
-                            with self.subTest(j=j):
+                            mit self.subTest(j=j):
                                 pass
 
         Foo(events).run(result)
@@ -446,9 +446,9 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         klasse Foo(Test.LoggingTestCase):
             def test(self):
                 super(Foo, self).test()
-                with self.subTest(i=1):
+                mit self.subTest(i=1):
                     self.fail('failure')
-                with self.subTest(i=2):
+                mit self.subTest(i=2):
                     self.fail('failure')
                 self.fail('failure')
 
@@ -458,19 +458,19 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     def test_subtests_failfast(self):
-        # Ensure proper test flow with subtests and failfast (issue #22894)
+        # Ensure proper test flow mit subtests and failfast (issue #22894)
         events = []
 
         klasse Foo(unittest.TestCase):
             def test_a(self):
-                with self.subTest():
+                mit self.subTest():
                     events.append('a1')
                 events.append('a2')
 
             def test_b(self):
-                with self.subTest():
+                mit self.subTest():
                     events.append('b1')
-                with self.subTest():
+                mit self.subTest():
                     self.fail('failure')
                 events.append('b2')
 
@@ -486,13 +486,13 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     def test_subtests_debug(self):
-        # Test debug() with a test that uses subTest() (bpo-34900)
+        # Test debug() mit a test that uses subTest() (bpo-34900)
         events = []
 
         klasse Foo(unittest.TestCase):
             def test_a(self):
                 events.append('test case')
-                with self.subTest():
+                mit self.subTest():
                     events.append('subtest 1')
 
         Foo('test_a').debug()
@@ -502,7 +502,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "This klasse attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
     # carry additional information, it must subclass this exception in
-    # order to ``play fair'' with the framework.  The initial value of this
+    # order to ``play fair'' mit the framework.  The initial value of this
     # attribute is AssertionError"
     def test_failureException__default(self):
         klasse Foo(unittest.TestCase):
@@ -514,7 +514,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "This klasse attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
     # carry additional information, it must subclass this exception in
-    # order to ``play fair'' with the framework."
+    # order to ``play fair'' mit the framework."
     #
     # Make sure TestCase.run() respects the designated failureException
     def test_failureException__subclassing__explicit_raise(self):
@@ -537,7 +537,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # "This klasse attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
     # carry additional information, it must subclass this exception in
-    # order to ``play fair'' with the framework."
+    # order to ``play fair'' mit the framework."
     #
     # Make sure TestCase.run() respects the designated failureException
     def test_failureException__subclassing__implicit_raise(self):
@@ -649,17 +649,17 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertIsNichts(self.shortDescription())
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def testShortDescriptionWithOneLineDocstring(self):
-        """Tests shortDescription() fuer a method with a docstring."""
+        """Tests shortDescription() fuer a method mit a docstring."""
         self.assertEqual(
                 self.shortDescription(),
-                'Tests shortDescription() fuer a method with a docstring.')
+                'Tests shortDescription() fuer a method mit a docstring.')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def testShortDescriptionWithMultiLineDocstring(self):
-        """Tests shortDescription() fuer a method with a longer docstring.
+        """Tests shortDescription() fuer a method mit a longer docstring.
 
         This method ensures that only the first line of a docstring is
         returned used in the short description, no matter how long the
@@ -667,11 +667,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         """
         self.assertEqual(
                 self.shortDescription(),
-                 'Tests shortDescription() fuer a method with a longer '
+                 'Tests shortDescription() fuer a method mit a longer '
                  'docstring.')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def testShortDescriptionWhitespaceTrimming(self):
         """
             Tests shortDescription() whitespace is trimmed, so that the first
@@ -708,19 +708,19 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         thing = List()
         self.assertIsInstance(thing, list)
         self.assertIsInstance(thing, (int, list))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, int)
         self.assertEqual(str(cm.exception),
                 "[] is not an instance of <class 'int'>")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, (int, float))
         self.assertEqual(str(cm.exception),
                 "[] is not an instance of any of (<class 'int'>, <class 'float'>)")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, int, 'ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsInstance(thing, int, msg='ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -728,63 +728,63 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         thing = List()
         self.assertNotIsInstance(thing, int)
         self.assertNotIsInstance(thing, (int, float))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsInstance(thing, list)
         self.assertEqual(str(cm.exception),
                 "[] is an instance of <class 'list'>")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsInstance(thing, (int, list))
         self.assertEqual(str(cm.exception),
                 "[] is an instance of <class 'list'>")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsInstance(thing, list, 'ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsInstance(thing, list, msg='ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
 
     def testAssertIsSubclass(self):
         self.assertIsSubclass(List, list)
         self.assertIsSubclass(List, (int, list))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, int)
         self.assertEqual(str(cm.exception),
                 f"{List!r} is not a subclass of <class 'int'>")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, (int, float))
         self.assertEqual(str(cm.exception),
                 f"{List!r} is not a subclass of any of (<class 'int'>, <class 'float'>)")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(1, int)
         self.assertEqual(str(cm.exception), "1 is not a class")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, int, 'ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertIsSubclass(List, int, msg='ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
 
     def testAssertNotIsSubclass(self):
         self.assertNotIsSubclass(List, int)
         self.assertNotIsSubclass(List, (int, float))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, list)
         self.assertEqual(str(cm.exception),
                 f"{List!r} is a subclass of <class 'list'>")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, (int, list))
         self.assertEqual(str(cm.exception),
                 f"{List!r} is a subclass of <class 'list'>")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(1, int)
         self.assertEqual(str(cm.exception), "1 is not a class")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, list, 'ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotIsSubclass(List, list, msg='ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -792,23 +792,23 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         a = List()
         a.x = 1
         self.assertHasAttr(a, 'x')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertHasAttr(a, 'y')
         self.assertEqual(str(cm.exception),
                 "'List' object has no attribute 'y'")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertHasAttr(List, 'spam')
         self.assertEqual(str(cm.exception),
                 "type object 'List' has no attribute 'spam'")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertHasAttr(sys, 'nonexistent')
         self.assertEqual(str(cm.exception),
                 "module 'sys' has no attribute 'nonexistent'")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertHasAttr(a, 'y', 'ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertHasAttr(a, 'y', msg='ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -816,23 +816,23 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         a = List()
         a.x = 1
         self.assertNotHasAttr(a, 'y')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotHasAttr(a, 'x')
         self.assertEqual(str(cm.exception),
                 "'List' object has unexpected attribute 'x'")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotHasAttr(List, 'append')
         self.assertEqual(str(cm.exception),
                 "type object 'List' has unexpected attribute 'append'")
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotHasAttr(sys, 'modules')
         self.assertEqual(str(cm.exception),
                 "module 'sys' has unexpected attribute 'modules'")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotHasAttr(a, 'x', 'ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotHasAttr(a, 'x', msg='ababahalamaha')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -874,11 +874,11 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             try:
                 self.assertEqual(a, b, msg='foo')
             except self.failureException:
-                self.fail('assertEqual(%r, %r) with msg= failed' % (a, b))
+                self.fail('assertEqual(%r, %r) mit msg= failed' % (a, b))
             try:
                 self.assertEqual(a, b, 'foo')
             except self.failureException:
-                self.fail('assertEqual(%r, %r) with third parameter failed' %
+                self.fail('assertEqual(%r, %r) mit third parameter failed' %
                           (a, b))
 
         unequal_pairs = [
@@ -959,7 +959,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         try:
 
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException as e:
+        except self.failureException als e:
             msg = e.args[0]
         sonst:
             self.fail('assertSequenceEqual did not fail.')
@@ -969,7 +969,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.maxDiff = len(diff) * 2
         try:
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException as e:
+        except self.failureException als e:
             msg = e.args[0]
         sonst:
             self.fail('assertSequenceEqual did not fail.')
@@ -979,7 +979,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.maxDiff = Nichts
         try:
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException as e:
+        except self.failureException als e:
             msg = e.args[0]
         sonst:
             self.fail('assertSequenceEqual did not fail.')
@@ -1007,7 +1007,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         test._truncateMessage = truncate
         try:
             test.assertDictEqual({}, {1: 0})
-        except self.failureException as e:
+        except self.failureException als e:
             self.assertEqual(str(e), 'foo')
         sonst:
             self.fail('assertDictEqual did not fail')
@@ -1019,7 +1019,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         test._truncateMessage = truncate
         try:
             test.assertMultiLineEqual('foo', 'bar')
-        except self.failureException as e:
+        except self.failureException als e:
             self.assertEqual(str(e), 'foo')
         sonst:
             self.fail('assertMultiLineEqual did not fail')
@@ -1037,7 +1037,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         # under the threshold: diff marker (^) in error message
         s = 'x' * (2**4)
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEqual(s + 'a', s + 'b')
         self.assertIn('^', str(cm.exception))
         self.assertEqual(s + 'a', s + 'a')
@@ -1045,7 +1045,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         # over the threshold: diff not used and marker (^) not in error message
         s = 'x' * (2**6)
         # wenn the path that uses difflib is taken, _truncateMessage will be
-        # called -- replace it with explodingTruncation to verify that this
+        # called -- replace it mit explodingTruncation to verify that this
         # doesn't happen
         def explodingTruncation(message, diff):
             raise SystemError('this should not be raised')
@@ -1054,7 +1054,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.addCleanup(lambda: setattr(self, '_truncateMessage', old_truncate))
 
         s1, s2 = s + 'a', s + 'b'
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEqual(s1, s2)
         self.assertNotIn('^', str(cm.exception))
         self.assertEqual(str(cm.exception), '%r != %r' % (s1, s2))
@@ -1068,7 +1068,7 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         s = 'x' * 100
         s1, s2 = s + 'a', s + 'b'
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEqual(s1, s2)
         c = 'xxxx[35 chars]' + 'x' * 61
         self.assertEqual(str(cm.exception), "'%sa' != '%sb'" % (c, c))
@@ -1076,14 +1076,14 @@ klasse Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         p = 'y' * 50
         s1, s2 = s + 'a' + p, s + 'b' + p
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEqual(s1, s2)
         c = 'xxxx[85 chars]xxxxxxxxxxx'
         self.assertEqual(str(cm.exception), "'%sa%s' != '%sb%s'" % (c, p, c, p))
 
         p = 'y' * 100
         s1, s2 = s + 'a' + p, s + 'b' + p
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEqual(s1, s2)
         c = 'xxxx[91 chars]xxxxx'
         d = 'y' * 40 + '[56 chars]yyyy'
@@ -1275,7 +1275,7 @@ test case
         self.maxDiff = Nichts
         try:
             self.assertMultiLineEqual(sample_text, revised_sample_text)
-        except self.failureException as e:
+        except self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1293,7 +1293,7 @@ test case
 """
         try:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException as e:
+        except self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1302,8 +1302,8 @@ test case
 
     def testAssertEqualwithEmptyString(self):
         '''Verify when there is an empty string involved, the diff output
-         does not treat the empty string as a single empty line. It should
-         instead be handled as a non-line.
+         does not treat the empty string als a single empty line. It should
+         instead be handled als a non-line.
         '''
         sample_text = ''
         revised_sample_text = 'unladen swallows fly quickly'
@@ -1312,7 +1312,7 @@ test case
 '''
         try:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException as e:
+        except self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1321,7 +1321,7 @@ test case
 
     def testAssertEqualMultipleLinesMissingNewlineTerminator(self):
         '''Verifying format of diff output von assertEqual involving strings
-         with multiple lines, but missing the terminating newline on both.
+         mit multiple lines, but missing the terminating newline on both.
         '''
         sample_text = 'laden swallows\nfly sloely'
         revised_sample_text = 'laden swallows\nfly slowly'
@@ -1334,7 +1334,7 @@ test case
 '''
         try:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException as e:
+        except self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1343,7 +1343,7 @@ test case
 
     def testAssertEqualMultipleLinesMismatchedNewlinesTerminators(self):
         '''Verifying format of diff output von assertEqual involving strings
-         with multiple lines and mismatched newlines. The output should
+         mit multiple lines and mismatched newlines. The output should
          include a - on it's own line to indicate the newline difference
          between the two strings
         '''
@@ -1359,7 +1359,7 @@ test case
 '''
         try:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException as e:
+        except self.failureException als e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1375,71 +1375,71 @@ test case
             def bytes_warning():
                 return contextlib.ExitStack()
 
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertEqual('a', b'a')
-        with bytes_warning():
+        mit bytes_warning():
             self.assertNotEqual('a', b'a')
 
         a = [0, 'a']
         b = [0, b'a']
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertListEqual(a, b)
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertTupleEqual(tuple(a), tuple(b))
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertSequenceEqual(a, tuple(b))
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertSequenceEqual(tuple(a), b)
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertSequenceEqual('a', b'a')
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertSetEqual(set(a), set(b))
 
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertListEqual(a, tuple(b))
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertTupleEqual(tuple(a), b)
 
         a = [0, b'a']
         b = [0]
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertListEqual(a, b)
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertTupleEqual(tuple(a), tuple(b))
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertSequenceEqual(a, tuple(b))
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertSequenceEqual(tuple(a), b)
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertSetEqual(set(a), set(b))
 
         a = [0]
         b = [0, b'a']
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertListEqual(a, b)
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertTupleEqual(tuple(a), tuple(b))
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertSequenceEqual(a, tuple(b))
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertSequenceEqual(tuple(a), b)
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertSetEqual(set(a), set(b))
 
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertDictEqual({'a': 0}, {b'a': 0})
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertDictEqual({}, {b'a': 0})
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertDictEqual({b'a': 0}, {})
 
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertCountEqual([b'a', b'a'], [b'a', b'a', b'a'])
-        with bytes_warning():
+        mit bytes_warning():
             self.assertCountEqual(['a', b'a'], ['a', b'a'])
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertCountEqual(['a', 'a'], [b'a', b'a'])
-        with bytes_warning(), self.assertRaises(self.failureException):
+        mit bytes_warning(), self.assertRaises(self.failureException):
             self.assertCountEqual(['a', 'a', []], [b'a', b'a', []])
 
     def testAssertIsNichts(self):
@@ -1464,13 +1464,13 @@ test case
         # *args and **kwargs also work
         self.assertRaises(ValueError, int, '19', base=8)
         # Failure when no exception is raised
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertRaises(ExceptionMock, lambda: 0)
         # Failure when the function is Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaises(ExceptionMock, Nichts)
         # Failure when another exception is raised
-        with self.assertRaises(ExceptionMock):
+        mit self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
 
     def testAssertRaisesContext(self):
@@ -1478,43 +1478,43 @@ test case
             pass
         def Stub():
             raise ExceptionMock('We expect')
-        with self.assertRaises(ExceptionMock):
+        mit self.assertRaises(ExceptionMock):
             Stub()
         # A tuple of exception classes is accepted
-        with self.assertRaises((ValueError, ExceptionMock)) as cm:
+        mit self.assertRaises((ValueError, ExceptionMock)) als cm:
             Stub()
         # The context manager exposes caught exception
         self.assertIsInstance(cm.exception, ExceptionMock)
         self.assertEqual(cm.exception.args[0], 'We expect')
         # *args and **kwargs also work
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('19', base=8)
         # Failure when no exception is raised
-        with self.assertRaises(self.failureException):
-            with self.assertRaises(ExceptionMock):
+        mit self.assertRaises(self.failureException):
+            mit self.assertRaises(ExceptionMock):
                 pass
         # Custom message
-        with self.assertRaisesRegex(self.failureException, 'foobar'):
-            with self.assertRaises(ExceptionMock, msg='foobar'):
+        mit self.assertRaisesRegex(self.failureException, 'foobar'):
+            mit self.assertRaises(ExceptionMock, msg='foobar'):
                 pass
         # Invalid keyword argument
-        with self.assertRaisesRegex(TypeError, 'foobar'):
-            with self.assertRaises(ExceptionMock, foobar=42):
+        mit self.assertRaisesRegex(TypeError, 'foobar'):
+            mit self.assertRaises(ExceptionMock, foobar=42):
                 pass
         # Failure when another exception is raised
-        with self.assertRaises(ExceptionMock):
+        mit self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
 
     def testAssertRaisesNoExceptionType(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaises()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaises(1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaises(object)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaises((ValueError, 1))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaises((ValueError, object))
 
     def testAssertRaisesRefcount(self):
@@ -1539,7 +1539,7 @@ test case
 
         self.assertRaisesRegex(ExceptionMock, re.compile('expect$'), Stub)
         self.assertRaisesRegex(ExceptionMock, 'expect$', Stub)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaisesRegex(ExceptionMock, 'expect$', Nichts)
 
     def testAssertNotRaisesRegex(self):
@@ -1552,12 +1552,12 @@ test case
                 self.assertRaisesRegex, Exception, 'x',
                 lambda: Nichts)
         # Custom message
-        with self.assertRaisesRegex(self.failureException, 'foobar'):
-            with self.assertRaisesRegex(Exception, 'expect', msg='foobar'):
+        mit self.assertRaisesRegex(self.failureException, 'foobar'):
+            mit self.assertRaisesRegex(Exception, 'expect', msg='foobar'):
                 pass
         # Invalid keyword argument
-        with self.assertRaisesRegex(TypeError, 'foobar'):
-            with self.assertRaisesRegex(Exception, 'expect', foobar=42):
+        mit self.assertRaisesRegex(TypeError, 'foobar'):
+            mit self.assertRaisesRegex(Exception, 'expect', foobar=42):
                 pass
 
     def testAssertRaisesRegexInvalidRegex(self):
@@ -1610,24 +1610,24 @@ test case
         v = "particular value"
 
         ctx = self.assertRaises(ExceptionMock)
-        with ctx:
+        mit ctx:
             Stub(v)
         e = ctx.exception
         self.assertIsInstance(e, ExceptionMock)
         self.assertEqual(e.args[0], v)
 
     def testAssertRaisesRegexNoExceptionType(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaisesRegex()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaisesRegex(ValueError)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaisesRegex(1, 'expect')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaisesRegex(object, 'expect')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaisesRegex((ValueError, 1), 'expect')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertRaisesRegex((ValueError, object), 'expect')
 
     def testAssertWarnsCallable(self):
@@ -1642,21 +1642,21 @@ test case
         self.assertWarns(RuntimeWarning,
                          warnings.warn, "foo", category=RuntimeWarning)
         # Failure when no warning is triggered
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertWarns(RuntimeWarning, lambda: 0)
         # Failure when the function is Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarns(RuntimeWarning, Nichts)
         # Failure when another warning is triggered
-        with warnings.catch_warnings():
-            # Force default filter (in case tests are run with -We)
+        mit warnings.catch_warnings():
+            # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
-            with self.assertRaises(self.failureException):
+            mit self.assertRaises(self.failureException):
                 self.assertWarns(DeprecationWarning, _runtime_warn)
         # Filters fuer other warnings are not modified
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
-            with self.assertRaises(RuntimeWarning):
+            mit self.assertRaises(RuntimeWarning):
                 self.assertWarns(DeprecationWarning, _runtime_warn)
 
     def testAssertWarnsContext(self):
@@ -1665,60 +1665,60 @@ test case
         def _runtime_warn():
             warnings.warn("foo", RuntimeWarning)
         _runtime_warn_lineno = inspect.getsourcelines(_runtime_warn)[1]
-        with self.assertWarns(RuntimeWarning) as cm:
+        mit self.assertWarns(RuntimeWarning) als cm:
             _runtime_warn()
         # A tuple of warning classes is accepted
-        with self.assertWarns((DeprecationWarning, RuntimeWarning)) as cm:
+        mit self.assertWarns((DeprecationWarning, RuntimeWarning)) als cm:
             _runtime_warn()
         # The context manager exposes various useful attributes
         self.assertIsInstance(cm.warning, RuntimeWarning)
         self.assertEqual(cm.warning.args[0], "foo")
         self.assertIn("test_case.py", cm.filename)
         self.assertEqual(cm.lineno, _runtime_warn_lineno + 1)
-        # Same with several warnings
-        with self.assertWarns(RuntimeWarning):
+        # Same mit several warnings
+        mit self.assertWarns(RuntimeWarning):
             _runtime_warn()
             _runtime_warn()
-        with self.assertWarns(RuntimeWarning):
+        mit self.assertWarns(RuntimeWarning):
             warnings.warn("foo", category=RuntimeWarning)
         # Failure when no warning is triggered
-        with self.assertRaises(self.failureException):
-            with self.assertWarns(RuntimeWarning):
+        mit self.assertRaises(self.failureException):
+            mit self.assertWarns(RuntimeWarning):
                 pass
         # Custom message
-        with self.assertRaisesRegex(self.failureException, 'foobar'):
-            with self.assertWarns(RuntimeWarning, msg='foobar'):
+        mit self.assertRaisesRegex(self.failureException, 'foobar'):
+            mit self.assertWarns(RuntimeWarning, msg='foobar'):
                 pass
         # Invalid keyword argument
-        with self.assertRaisesRegex(TypeError, 'foobar'):
-            with self.assertWarns(RuntimeWarning, foobar=42):
+        mit self.assertRaisesRegex(TypeError, 'foobar'):
+            mit self.assertWarns(RuntimeWarning, foobar=42):
                 pass
         # Failure when another warning is triggered
-        with warnings.catch_warnings():
-            # Force default filter (in case tests are run with -We)
+        mit warnings.catch_warnings():
+            # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
-            with self.assertRaises(self.failureException):
-                with self.assertWarns(DeprecationWarning):
+            mit self.assertRaises(self.failureException):
+                mit self.assertWarns(DeprecationWarning):
                     _runtime_warn()
         # Filters fuer other warnings are not modified
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
-            with self.assertRaises(RuntimeWarning):
-                with self.assertWarns(DeprecationWarning):
+            mit self.assertRaises(RuntimeWarning):
+                mit self.assertWarns(DeprecationWarning):
                     _runtime_warn()
 
     def testAssertWarnsNoExceptionType(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarns()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarns(1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarns(object)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarns((UserWarning, 1))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarns((UserWarning, object))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarns((UserWarning, Exception))
 
     def testAssertWarnsRegexCallable(self):
@@ -1727,96 +1727,96 @@ test case
         self.assertWarnsRegex(RuntimeWarning, "o+",
                               _runtime_warn, "foox")
         # Failure when no warning is triggered
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertWarnsRegex(RuntimeWarning, "o+",
                                   lambda: 0)
         # Failure when the function is Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex(RuntimeWarning, "o+", Nichts)
         # Failure when another warning is triggered
-        with warnings.catch_warnings():
-            # Force default filter (in case tests are run with -We)
+        mit warnings.catch_warnings():
+            # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
-            with self.assertRaises(self.failureException):
+            mit self.assertRaises(self.failureException):
                 self.assertWarnsRegex(DeprecationWarning, "o+",
                                       _runtime_warn, "foox")
         # Failure when message doesn't match
-        with self.assertRaises(self.failureException):
+        mit self.assertRaises(self.failureException):
             self.assertWarnsRegex(RuntimeWarning, "o+",
                                   _runtime_warn, "barz")
         # A little trickier: we ask RuntimeWarnings to be raised, and then
         # check fuer some of them.  It is implementation-defined whether
         # non-matching RuntimeWarnings are simply re-raised, or produce a
         # failureException.
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
-            with self.assertRaises((RuntimeWarning, self.failureException)):
+            mit self.assertRaises((RuntimeWarning, self.failureException)):
                 self.assertWarnsRegex(RuntimeWarning, "o+",
                                       _runtime_warn, "barz")
 
     def testAssertWarnsRegexContext(self):
-        # Same as above, but with assertWarnsRegex as a context manager
+        # Same als above, but mit assertWarnsRegex als a context manager
         def _runtime_warn(msg):
             warnings.warn(msg, RuntimeWarning)
         _runtime_warn_lineno = inspect.getsourcelines(_runtime_warn)[1]
-        with self.assertWarnsRegex(RuntimeWarning, "o+") as cm:
+        mit self.assertWarnsRegex(RuntimeWarning, "o+") als cm:
             _runtime_warn("foox")
         self.assertIsInstance(cm.warning, RuntimeWarning)
         self.assertEqual(cm.warning.args[0], "foox")
         self.assertIn("test_case.py", cm.filename)
         self.assertEqual(cm.lineno, _runtime_warn_lineno + 1)
         # Failure when no warning is triggered
-        with self.assertRaises(self.failureException):
-            with self.assertWarnsRegex(RuntimeWarning, "o+"):
+        mit self.assertRaises(self.failureException):
+            mit self.assertWarnsRegex(RuntimeWarning, "o+"):
                 pass
         # Custom message
-        with self.assertRaisesRegex(self.failureException, 'foobar'):
-            with self.assertWarnsRegex(RuntimeWarning, 'o+', msg='foobar'):
+        mit self.assertRaisesRegex(self.failureException, 'foobar'):
+            mit self.assertWarnsRegex(RuntimeWarning, 'o+', msg='foobar'):
                 pass
         # Invalid keyword argument
-        with self.assertRaisesRegex(TypeError, 'foobar'):
-            with self.assertWarnsRegex(RuntimeWarning, 'o+', foobar=42):
+        mit self.assertRaisesRegex(TypeError, 'foobar'):
+            mit self.assertWarnsRegex(RuntimeWarning, 'o+', foobar=42):
                 pass
         # Failure when another warning is triggered
-        with warnings.catch_warnings():
-            # Force default filter (in case tests are run with -We)
+        mit warnings.catch_warnings():
+            # Force default filter (in case tests are run mit -We)
             warnings.simplefilter("default", RuntimeWarning)
-            with self.assertRaises(self.failureException):
-                with self.assertWarnsRegex(DeprecationWarning, "o+"):
+            mit self.assertRaises(self.failureException):
+                mit self.assertWarnsRegex(DeprecationWarning, "o+"):
                     _runtime_warn("foox")
         # Failure when message doesn't match
-        with self.assertRaises(self.failureException):
-            with self.assertWarnsRegex(RuntimeWarning, "o+"):
+        mit self.assertRaises(self.failureException):
+            mit self.assertWarnsRegex(RuntimeWarning, "o+"):
                 _runtime_warn("barz")
         # A little trickier: we ask RuntimeWarnings to be raised, and then
         # check fuer some of them.  It is implementation-defined whether
         # non-matching RuntimeWarnings are simply re-raised, or produce a
         # failureException.
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
-            with self.assertRaises((RuntimeWarning, self.failureException)):
-                with self.assertWarnsRegex(RuntimeWarning, "o+"):
+            mit self.assertRaises((RuntimeWarning, self.failureException)):
+                mit self.assertWarnsRegex(RuntimeWarning, "o+"):
                     _runtime_warn("barz")
 
     def testAssertWarnsRegexNoExceptionType(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex(UserWarning)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex(1, 'expect')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex(object, 'expect')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex((UserWarning, 1), 'expect')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex((UserWarning, object), 'expect')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertWarnsRegex((UserWarning, Exception), 'expect')
 
     @contextlib.contextmanager
     def assertNoStderr(self):
-        with captured_stderr() as buf:
+        mit captured_stderr() als buf:
             yield
         self.assertEqual(buf.getvalue(), "")
 
@@ -1829,17 +1829,17 @@ test case
 
     def testAssertLogsDefaults(self):
         # defaults: root logger, level INFO
-        with self.assertNoStderr():
-            with self.assertLogs() as cm:
+        mit self.assertNoStderr():
+            mit self.assertLogs() als cm:
                 log_foo.info("1")
                 log_foobar.debug("2")
             self.assertEqual(cm.output, ["INFO:foo:1"])
             self.assertLogRecords(cm.records, [{'name': 'foo'}])
 
     def testAssertLogsTwoMatchingMessages(self):
-        # Same, but with two matching log messages
-        with self.assertNoStderr():
-            with self.assertLogs() as cm:
+        # Same, but mit two matching log messages
+        mit self.assertNoStderr():
+            mit self.assertLogs() als cm:
                 log_foo.info("1")
                 log_foobar.debug("2")
                 log_quux.warning("3")
@@ -1849,8 +1849,8 @@ test case
 
     def checkAssertLogsPerLevel(self, level):
         # Check level filtering
-        with self.assertNoStderr():
-            with self.assertLogs(level=level) as cm:
+        mit self.assertNoStderr():
+            mit self.assertLogs(level=level) als cm:
                 log_foo.warning("1")
                 log_foobar.error("2")
                 log_quux.critical("3")
@@ -1864,9 +1864,9 @@ test case
 
     def checkAssertLogsPerLogger(self, logger):
         # Check per-logger filtering
-        with self.assertNoStderr():
-            with self.assertLogs(level='DEBUG') as outer_cm:
-                with self.assertLogs(logger, level='DEBUG') as cm:
+        mit self.assertNoStderr():
+            mit self.assertLogs(level='DEBUG') als outer_cm:
+                mit self.assertLogs(logger, level='DEBUG') als cm:
                     log_foo.info("1")
                     log_foobar.debug("2")
                     log_quux.warning("3")
@@ -1882,26 +1882,26 @@ test case
 
     def testAssertLogsFailureNoLogs(self):
         # Failure due to no logs
-        with self.assertNoStderr():
-            with self.assertRaises(self.failureException):
-                with self.assertLogs():
+        mit self.assertNoStderr():
+            mit self.assertRaises(self.failureException):
+                mit self.assertLogs():
                     pass
 
     def testAssertLogsFailureLevelTooHigh(self):
         # Failure due to level too high
-        with self.assertNoStderr():
-            with self.assertRaises(self.failureException):
-                with self.assertLogs(level='WARNING'):
+        mit self.assertNoStderr():
+            mit self.assertRaises(self.failureException):
+                mit self.assertLogs(level='WARNING'):
                     log_foo.info("1")
 
     def testAssertLogsFailureLevelTooHigh_FilterInRootLogger(self):
         # Failure due to level too high - message propagated to root
-        with self.assertNoStderr():
+        mit self.assertNoStderr():
             oldLevel = log_foo.level
             log_foo.setLevel(logging.INFO)
             try:
-                with self.assertRaises(self.failureException):
-                    with self.assertLogs(level='WARNING'):
+                mit self.assertRaises(self.failureException):
+                    mit self.assertLogs(level='WARNING'):
                         log_foo.info("1")
             finally:
                 log_foo.setLevel(oldLevel)
@@ -1909,36 +1909,36 @@ test case
     def testAssertLogsFailureMismatchingLogger(self):
         # Failure due to mismatching logger (and the logged message is
         # passed through)
-        with self.assertLogs('quux', level='ERROR'):
-            with self.assertRaises(self.failureException):
-                with self.assertLogs('foo'):
+        mit self.assertLogs('quux', level='ERROR'):
+            mit self.assertRaises(self.failureException):
+                mit self.assertLogs('foo'):
                     log_quux.error("1")
 
     def testAssertLogsUnexpectedException(self):
         # Check unexpected exception will go through.
-        with self.assertRaises(ZeroDivisionError):
-            with self.assertLogs():
+        mit self.assertRaises(ZeroDivisionError):
+            mit self.assertLogs():
                 raise ZeroDivisionError("Unexpected")
 
     def testAssertLogsWithFormatter(self):
         # Check alternative formats will be respected
         format = "[No.1: the larch] %(levelname)s:%(name)s:%(message)s"
         formatter = logging.Formatter(format)
-        with self.assertNoStderr():
-            with self.assertLogs() as cm:
+        mit self.assertNoStderr():
+            mit self.assertLogs() als cm:
                 log_foo.info("1")
                 log_foobar.debug("2")
             self.assertEqual(cm.output, ["INFO:foo:1"])
             self.assertLogRecords(cm.records, [{'name': 'foo'}])
-            with self.assertLogs(formatter=formatter) as cm:
+            mit self.assertLogs(formatter=formatter) als cm:
                 log_foo.info("1")
                 log_foobar.debug("2")
             self.assertEqual(cm.output, ["[No.1: the larch] INFO:foo:1"])
             self.assertLogRecords(cm.records, [{'name': 'foo'}])
 
     def testAssertNoLogsDefault(self):
-        with self.assertRaises(self.failureException) as cm:
-            with self.assertNoLogs():
+        mit self.assertRaises(self.failureException) als cm:
+            mit self.assertNoLogs():
                 log_foo.info("1")
                 log_foobar.debug("2")
         self.assertEqual(
@@ -1947,8 +1947,8 @@ test case
         )
 
     def testAssertNoLogsFailureFoundLogs(self):
-        with self.assertRaises(self.failureException) as cm:
-            with self.assertNoLogs():
+        mit self.assertRaises(self.failureException) als cm:
+            mit self.assertNoLogs():
                 log_quux.error("1")
                 log_foo.error("foo")
 
@@ -1958,17 +1958,17 @@ test case
         )
 
     def testAssertNoLogsPerLogger(self):
-        with self.assertNoStderr():
-            with self.assertLogs(log_quux):
-                with self.assertNoLogs(logger=log_foo):
+        mit self.assertNoStderr():
+            mit self.assertLogs(log_quux):
+                mit self.assertNoLogs(logger=log_foo):
                     log_quux.error("1")
 
     def testAssertNoLogsFailurePerLogger(self):
         # Failure due to unexpected logs fuer the given logger or its
         # children.
-        with self.assertRaises(self.failureException) as cm:
-            with self.assertLogs(log_quux):
-                with self.assertNoLogs(logger=log_foo):
+        mit self.assertRaises(self.failureException) als cm:
+            mit self.assertLogs(log_quux):
+                mit self.assertNoLogs(logger=log_foo):
                     log_quux.error("1")
                     log_foobar.info("2")
         self.assertEqual(
@@ -1978,15 +1978,15 @@ test case
 
     def testAssertNoLogsPerLevel(self):
         # Check per-level filtering
-        with self.assertNoStderr():
-            with self.assertNoLogs(level="ERROR"):
+        mit self.assertNoStderr():
+            mit self.assertNoLogs(level="ERROR"):
                 log_foo.info("foo")
                 log_quux.debug("1")
 
     def testAssertNoLogsFailurePerLevel(self):
         # Failure due to unexpected logs at the specified level.
-        with self.assertRaises(self.failureException) as cm:
-            with self.assertNoLogs(level="DEBUG"):
+        mit self.assertRaises(self.failureException) als cm:
+            mit self.assertNoLogs(level="DEBUG"):
                 log_foo.debug("foo")
                 log_quux.debug("1")
         self.assertEqual(
@@ -1996,12 +1996,12 @@ test case
 
     def testAssertNoLogsUnexpectedException(self):
         # Check unexpected exception will go through.
-        with self.assertRaises(ZeroDivisionError):
-            with self.assertNoLogs():
+        mit self.assertRaises(ZeroDivisionError):
+            mit self.assertNoLogs():
                 raise ZeroDivisionError("Unexpected")
 
     def testAssertNoLogsYieldsNichts(self):
-        with self.assertNoLogs() as value:
+        mit self.assertNoLogs() als value:
             pass
         self.assertIsNichts(value)
 
@@ -2016,37 +2016,37 @@ test case
         self.assertStartsWith(b'ababahalamaha',
                 (bytearray(b'x'), bytearray(b'ababa'), bytearray(b'y')))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', 'amaha')
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' doesn't start with 'amaha'")
-        with self.assertRaises(self.failureException) as cm:
+                "'ababahalamaha' doesn't start mit 'amaha'")
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', ('x', 'y'))
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' doesn't start with any of ('x', 'y')")
+                "'ababahalamaha' doesn't start mit any of ('x', 'y')")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith(b'ababahalamaha', 'ababa')
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith(b'ababahalamaha', ('amaha', 'ababa'))
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith([], 'ababa')
         self.assertEqual(str(cm.exception), 'Expected str, not list')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', b'ababa')
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', (b'amaha', b'ababa'))
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertStartsWith('ababahalamaha', ord('a'))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', 'amaha', 'abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertStartsWith('ababahalamaha', 'amaha', msg='abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -2061,37 +2061,37 @@ test case
         self.assertNotStartsWith(b'ababahalamaha',
                 (bytearray(b'x'), bytearray(b'amaha'), bytearray(b'y')))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', 'ababa')
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' starts with 'ababa'")
-        with self.assertRaises(self.failureException) as cm:
+                "'ababahalamaha' starts mit 'ababa'")
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', ('x', 'ababa', 'y'))
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' starts with 'ababa'")
+                "'ababahalamaha' starts mit 'ababa'")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith(b'ababahalamaha', 'ababa')
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith(b'ababahalamaha', ('amaha', 'ababa'))
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith([], 'ababa')
         self.assertEqual(str(cm.exception), 'Expected str, not list')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', b'ababa')
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', (b'amaha', b'ababa'))
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertNotStartsWith('ababahalamaha', ord('a'))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', 'ababa', 'abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotStartsWith('ababahalamaha', 'ababa', msg='abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -2106,37 +2106,37 @@ test case
         self.assertEndsWith(b'ababahalamaha',
                 (bytearray(b'x'), bytearray(b'amaha'), bytearray(b'y')))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', 'ababa')
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' doesn't end with 'ababa'")
-        with self.assertRaises(self.failureException) as cm:
+                "'ababahalamaha' doesn't end mit 'ababa'")
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', ('x', 'y'))
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' doesn't end with any of ('x', 'y')")
+                "'ababahalamaha' doesn't end mit any of ('x', 'y')")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith(b'ababahalamaha', 'amaha')
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith(b'ababahalamaha', ('ababa', 'amaha'))
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith([], 'amaha')
         self.assertEqual(str(cm.exception), 'Expected str, not list')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', b'amaha')
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', (b'ababa', b'amaha'))
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertEndsWith('ababahalamaha', ord('a'))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', 'ababa', 'abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertEndsWith('ababahalamaha', 'ababa', msg='abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -2151,37 +2151,37 @@ test case
         self.assertNotEndsWith(b'ababahalamaha',
                 (bytearray(b'x'), bytearray(b'ababa'), bytearray(b'y')))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', 'amaha')
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' ends with 'amaha'")
-        with self.assertRaises(self.failureException) as cm:
+                "'ababahalamaha' ends mit 'amaha'")
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', ('x', 'amaha', 'y'))
         self.assertEqual(str(cm.exception),
-                "'ababahalamaha' ends with 'amaha'")
+                "'ababahalamaha' ends mit 'amaha'")
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith(b'ababahalamaha', 'amaha')
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith(b'ababahalamaha', ('ababa', 'amaha'))
         self.assertEqual(str(cm.exception), 'Expected str, not bytes')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith([], 'amaha')
         self.assertEqual(str(cm.exception), 'Expected str, not list')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', b'amaha')
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', (b'ababa', b'amaha'))
         self.assertEqual(str(cm.exception), 'Expected bytes, not str')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertNotEndsWith('ababahalamaha', ord('a'))
 
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', 'amaha', 'abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
-        with self.assertRaises(self.failureException) as cm:
+        mit self.assertRaises(self.failureException) als cm:
             self.assertNotEndsWith('ababahalamaha', 'amaha', msg='abracadabra')
         self.assertIn('ababahalamaha', str(cm.exception))
 
@@ -2195,7 +2195,7 @@ test case
             'assertRaisesRegexp', 'assertRegexpMatches'
         ]
         fuer deprecated_name in deprecated_names:
-            with self.assertRaises(AttributeError):
+            mit self.assertRaises(AttributeError):
                 getattr(self, deprecated_name)
 
     def testDeepcopy(self):
@@ -2213,7 +2213,7 @@ test case
         # Issue 10326
 
         # Can't use TestCase classes defined in Test klasse as
-        # pickle does not work with inner classes
+        # pickle does not work mit inner classes
         test = unittest.TestCase('run')
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
 
@@ -2248,7 +2248,7 @@ test case
                 self.addCleanup(_raise)
 
         fuer klass in (Test1, Test2, Test3, Test4):
-            with self.assertRaises(KeyboardInterrupt):
+            mit self.assertRaises(KeyboardInterrupt):
                 klass('test_something').run()
 
     def testSkippingEverywhere(self):
@@ -2309,7 +2309,7 @@ test case
     def testNoCycles(self):
         case = unittest.TestCase()
         wr = weakref.ref(case)
-        with support.disable_gc():
+        mit support.disable_gc():
             del case
             self.assertFalsch(wr())
 

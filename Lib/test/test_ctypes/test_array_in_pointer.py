@@ -5,7 +5,7 @@ von ctypes importiere c_byte, Structure, POINTER, cast
 
 
 def dump(obj):
-    # helper function to dump memory contents in hex, with a hyphen
+    # helper function to dump memory contents in hex, mit a hyphen
     # between the bytes.
     h = binascii.hexlify(memoryview(obj)).decode()
     return re.sub(r"(..)", r"\1-", h)[:-1]

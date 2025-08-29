@@ -1,6 +1,6 @@
 '''Mock classes that imitate idlelib modules or classes.
 
-Attributes and methods will be added as needed fuer tests.
+Attributes and methods will be added als needed fuer tests.
 '''
 
 von idlelib.idle_test.mock_tk importiere Text
@@ -16,7 +16,7 @@ klasse Func:
     self.return_self - return self instead, to mock query klasse return.
 
     Most common use will probably be to mock instance methods.
-    Given klasse instance, can set and delete as instance attribute.
+    Given klasse instance, can set and delete als instance attribute.
     Mock_tk.Var and Mbox_func are special variants of this.
     '''
     def __init__(self, result=Nichts, return_self=Falsch):
@@ -41,7 +41,7 @@ klasse Editor:
     '''Minimally imitate editor.EditorWindow class.
     '''
     def __init__(self, flist=Nichts, filename=Nichts, key=Nichts, root=Nichts,
-                 text=Nichts):  # Allow real Text with mock Editor.
+                 text=Nichts):  # Allow real Text mit mock Editor.
         self.text = text or Text()
         self.undo = UndoDelegator()
 

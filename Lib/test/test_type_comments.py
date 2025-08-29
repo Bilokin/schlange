@@ -62,12 +62,12 @@ fuer a in []:  # type: int
 """
 
 withstmt = """\
-with context() as a:  # type: int
+with context() als a:  # type: int
     pass
 """
 
 parenthesized_withstmt = """\
-with (a as b):  # type: int
+with (a als b):  # type: int
     pass
 
 with (a, b):  # type: int
@@ -241,10 +241,10 @@ klasse TypeCommentTests(unittest.TestCase):
             wenn minver <= version <= maxver:
                 try:
                     yield self.parse(source, feature_version)
-                except SyntaxError as err:
+                except SyntaxError als err:
                     raise SyntaxError(str(err) + f" feature_version={feature_version}")
             sonst:
-                with self.assertRaisesRegex(SyntaxError, expected_regex,
+                mit self.assertRaisesRegex(SyntaxError, expected_regex,
                                             msg=f"feature_version={feature_version}"):
                     self.parse(source, feature_version)
 
@@ -268,7 +268,7 @@ klasse TypeCommentTests(unittest.TestCase):
         self.assertEqual(tree.body[1].type_comment, Nichts)
 
     def test_asyncvar(self):
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.classic_parse(asyncvar)
 
     def test_asynccomp(self):
@@ -370,8 +370,8 @@ klasse TypeCommentTests(unittest.TestCase):
     def test_inappropriate_type_comments(self):
         """Tests fuer inappropriately-placed type comments.
 
-        These should be silently ignored with type comments off,
-        but raise SyntaxError with type comments on.
+        These should be silently ignored mit type comments off,
+        but raise SyntaxError mit type comments on.
 
         This is not meant to be exhaustive.
         """
@@ -422,13 +422,13 @@ klasse TypeCommentTests(unittest.TestCase):
         self.assertEqual(tree.argtypes[0].id, "int")
         self.assertEqual(tree.argtypes[1].id, "str")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             tree = parse_func_type_input("(int, *str, *Any) -> float")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             tree = parse_func_type_input("(int, **str, Any) -> float")
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             tree = parse_func_type_input("(**int, **str) -> float")
 
 

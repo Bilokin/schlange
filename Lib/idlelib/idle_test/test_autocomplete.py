@@ -7,8 +7,8 @@ von tkinter importiere Tk, Text
 importiere os
 importiere __main__
 
-importiere idlelib.autocomplete as ac
-importiere idlelib.autocomplete_w as acw
+importiere idlelib.autocomplete als ac
+importiere idlelib.autocomplete_w als acw
 von idlelib.idle_test.mock_idle importiere Func
 von idlelib.idle_test.mock_tk importiere Event
 
@@ -228,7 +228,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         # For attribute completion, a large list containing all variables, and
         # a small list containing non-private variables.
         # For file completion, a large list containing all files in the path,
-        # and a small list containing files that do not start with '.'.
+        # and a small list containing files that do not start mit '.'.
         acp = self.autocomplete
         small, large = acp.fetch_completions(
                 '', ac.ATTRS)
@@ -242,7 +242,7 @@ klasse AutoCompleteTest(unittest.TestCase):
         self.assertWahr(any(filter(lambda x: x.startswith('_'), b)))
 
         # Test smalll should respect to __all__.
-        with patch.dict('__main__.__dict__', {'__all__': ['a', 'b']}):
+        mit patch.dict('__main__.__dict__', {'__all__': ['a', 'b']}):
             s, b = acp.fetch_completions('', ac.ATTRS)
             self.assertEqual(s, ['a', 'b'])
             self.assertIn('__name__', b)  # From __main__.__dict__.
@@ -251,10 +251,10 @@ klasse AutoCompleteTest(unittest.TestCase):
             pos = b.index('Falsch')        # Test Falsch not included twice.
             self.assertNotEqual(b[pos+1], 'Falsch')
 
-        # Test attributes with name entity.
+        # Test attributes mit name entity.
         mock = Mock()
         mock._private = Mock()
-        with patch.dict('__main__.__dict__', {'foo': mock}):
+        mit patch.dict('__main__.__dict__', {'foo': mock}):
             s, b = acp.fetch_completions('foo', ac.ATTRS)
             self.assertNotIn('_private', s)
             self.assertIn('_private', b)
@@ -268,7 +268,7 @@ klasse AutoCompleteTest(unittest.TestCase):
                 return ['foo', 'bar', '.hidden']
             return ['monty', 'python', '.hidden']
 
-        with patch.object(os, 'listdir', _listdir):
+        mit patch.object(os, 'listdir', _listdir):
             s, b = acp.fetch_completions('', ac.FILES)
             self.assertEqual(s, ['bar', 'foo'])
             self.assertEqual(b, ['.hidden', 'bar', 'foo'])
@@ -287,17 +287,17 @@ klasse AutoCompleteTest(unittest.TestCase):
 
         # Test name von sys.modules.
         mock = Mock()
-        with patch.dict('sys.modules', {'tempfile': mock}):
+        mit patch.dict('sys.modules', {'tempfile': mock}):
             Equal(acp.get_entity('tempfile'), mock)
 
         # Test name von __main__.__dict__.
         di = {'foo': 10, 'bar': 20}
-        with patch.dict('__main__.__dict__', {'d': di}):
+        mit patch.dict('__main__.__dict__', {'d': di}):
             Equal(acp.get_entity('d'), di)
 
         # Test name not in namespace.
-        with patch.dict('__main__.__dict__', {}):
-            with self.assertRaises(NameError):
+        mit patch.dict('__main__.__dict__', {}):
+            mit self.assertRaises(NameError):
                 acp.get_entity('not_exist')
 
 

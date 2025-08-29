@@ -13,7 +13,7 @@ klasse FindSpecTests(abc.FinderTests):
 
     def test_module(self):
         # Common case.
-        with util.uncache(util.BUILTINS.good_name):
+        mit util.uncache(util.BUILTINS.good_name):
             found = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name)
             self.assertWahr(found)
             self.assertEqual(found.origin, 'built-in')

@@ -86,7 +86,7 @@ klasse MemFunctionsTest(unittest.TestCase):
             byref(b),
             addressof(b),
         ):
-            with self.subTest(foreign_ptr=type(foreign_ptr).__name__):
+            mit self.subTest(foreign_ptr=type(foreign_ptr).__name__):
                 b[:] = b"initialval"
                 v = memoryview_at(foreign_ptr, size)
                 self.assertIsInstance(v, memoryview)
@@ -100,10 +100,10 @@ klasse MemFunctionsTest(unittest.TestCase):
                 v[:] = b"9876543210"
                 self.assertEqual(bytes(b), b"9876543210")
 
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     memoryview_at(foreign_ptr, -1)
 
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     memoryview_at(foreign_ptr, sys.maxsize + 1)
 
                 v0 = memoryview_at(foreign_ptr, 0)
@@ -119,7 +119,7 @@ klasse MemFunctionsTest(unittest.TestCase):
             byref(b),
             addressof(b),
         ):
-            with self.subTest(foreign_ptr=type(foreign_ptr).__name__):
+            mit self.subTest(foreign_ptr=type(foreign_ptr).__name__):
                 b[:] = b"initialval"
                 v = memoryview_at(foreign_ptr, size, readonly=Wahr)
                 self.assertIsInstance(v, memoryview)
@@ -130,7 +130,7 @@ klasse MemFunctionsTest(unittest.TestCase):
                 self.assertEqual(bytes(v), b"0123456789")
 
                 # test that writes to the memoryview are blocked
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     v[:] = b"9876543210"
 
 wenn __name__ == "__main__":

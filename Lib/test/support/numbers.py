@@ -1,4 +1,4 @@
-# These are shared with test_tokenize and other test modules.
+# These are shared mit test_tokenize and other test modules.
 #
 # Note: since several test cases filter out floats by looking fuer "e" and ".",
 # don't add hexadecimal literals that contain "e" or "E".
@@ -74,7 +74,7 @@ INVALID_UNDERSCORE_LITERALS = [
     '1e_1',
     '1.4e_1',
     '1.4e_1j',
-    # Complex cases with parens:
+    # Complex cases mit parens:
     '(1+1.5_j_)',
     '(1+1.5_j)',
 ]

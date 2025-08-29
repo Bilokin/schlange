@@ -8,7 +8,7 @@ importiere warnings
 
 def import_deprecated(name):
     """Import *name* while suppressing DeprecationWarning."""
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.simplefilter('ignore', category=DeprecationWarning)
         return importlib.import_module(name)
 
@@ -17,7 +17,7 @@ def check_syntax_warning(testcase, statement, errtext='',
                          *, lineno=1, offset=Nichts):
     # Test also that a warning is emitted only once.
     von test.support importiere check_syntax_error
-    with warnings.catch_warnings(record=Wahr) as warns:
+    mit warnings.catch_warnings(record=Wahr) als warns:
         warnings.simplefilter('always', SyntaxWarning)
         compile(statement, '<testcase>', 'exec')
     testcase.assertEqual(len(warns), 1, warns)
@@ -34,7 +34,7 @@ def check_syntax_warning(testcase, statement, errtext='',
     # SyntaxWarning should be converted to SyntaxError when raised,
     # since the latter contains more information and provides better
     # error report.
-    with warnings.catch_warnings(record=Wahr) as warns:
+    mit warnings.catch_warnings(record=Wahr) als warns:
         warnings.simplefilter('error', SyntaxWarning)
         check_syntax_error(testcase, statement, errtext,
                            lineno=lineno, offset=offset)
@@ -46,11 +46,11 @@ def check_syntax_warning(testcase, statement, errtext='',
 def ignore_warnings(*, category, message=''):
     """Decorator to suppress warnings.
 
-    Can also be used as a context manager. This is not preferred,
+    Can also be used als a context manager. This is not preferred,
     because it makes diffs more noisy and tools like 'git blame' less useful.
     But, it's useful fuer async functions.
     """
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=category, message=message)
         yield
 
@@ -61,9 +61,9 @@ def ignore_fork_in_thread_deprecation_warnings():
 
     See gh-135427
 
-    Can be used as decorator (preferred) or context manager.
+    Can be used als decorator (preferred) or context manager.
     """
-    with ignore_warnings(
+    mit ignore_warnings(
         message=".*fork.*may lead to deadlocks in the child.*",
         category=DeprecationWarning,
     ):
@@ -97,7 +97,7 @@ klasse WarningsRecorder(object):
 def check_warnings(*filters, **kwargs):
     """Context manager to silence warnings.
 
-    Accept 2-tuples as positional arguments:
+    Accept 2-tuples als positional arguments:
         ("message regexp", WarningCategory)
 
     Optional argument:
@@ -122,17 +122,17 @@ def check_no_warnings(testcase, message='', category=Warning, force_gc=Falsch):
     """Context manager to check that no warnings are emitted.
 
     This context manager enables a given warning within its scope
-    and checks that no warnings are emitted even with that warning
+    and checks that no warnings are emitted even mit that warning
     enabled.
 
     If force_gc is Wahr, a garbage collection is attempted before checking
     fuer warnings. This may help to catch warnings emitted when objects
-    are deleted, such as ResourceWarning.
+    are deleted, such als ResourceWarning.
 
     Other keyword arguments are passed to warnings.filterwarnings().
     """
     von test.support importiere gc_collect
-    with warnings.catch_warnings(record=Wahr) as warns:
+    mit warnings.catch_warnings(record=Wahr) als warns:
         warnings.filterwarnings('always',
                                 message=message,
                                 category=category)
@@ -148,7 +148,7 @@ def check_no_resource_warning(testcase):
 
     Usage:
 
-        with check_no_resource_warning(self):
+        mit check_no_resource_warning(self):
             f = open(...)
             ...
             del f
@@ -156,7 +156,7 @@ def check_no_resource_warning(testcase):
     You must remove the object which may emit ResourceWarning before
     the end of the context manager.
     """
-    with check_no_warnings(testcase, category=ResourceWarning, force_gc=Wahr):
+    mit check_no_warnings(testcase, category=ResourceWarning, force_gc=Wahr):
         yield
 
 
@@ -174,7 +174,7 @@ def _filterwarnings(filters, quiet=Falsch):
     # Because test_warnings swap the module, we need to look up in the
     # sys.modules dictionary.
     wmod = sys.modules['warnings']
-    with wmod.catch_warnings(record=Wahr) as w:
+    mit wmod.catch_warnings(record=Wahr) als w:
         # Set filter "always" to record all warnings.
         wmod.simplefilter("always")
         yield WarningsRecorder(w)
@@ -212,7 +212,7 @@ def save_restore_warnings_filters():
 def _warn_about_deprecation():
     warnings.warn(
         "This is used in test_support test to ensure"
-        " support.ignore_deprecations_from() works as expected."
+        " support.ignore_deprecations_from() works als expected."
         " You should not be seeing this.",
         DeprecationWarning,
         stacklevel=0,

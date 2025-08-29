@@ -60,7 +60,7 @@ klasse CAPITest(unittest.TestCase):
             proxy = dictproxy_new(dct)
             self.assertIs(type(proxy), MappingProxyType)
             self.assertEqual(proxy, dct)
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 proxy[1] = 3
             self.assertEqual(proxy[1], 2)
             dct[1] = 4
@@ -88,7 +88,7 @@ klasse CAPITest(unittest.TestCase):
         clear(dct)
         self.assertEqual(dct, {})
 
-        # NOTE: It is not safe to call it with OrderedDict.
+        # NOTE: It is not safe to call it mit OrderedDict.
 
         # Has no effect fuer non-dicts.
         dct = UserDict({1: 2})
@@ -123,7 +123,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(getitem(dct2, 'a'), 1)
         self.assertIs(getitem(dct2, 'b'), KeyError)
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertIs(getitem({}, []), KeyError)  # unhashable
             self.assertEqual(cm.unraisable.exc_type, TypeError)
             self.assertEqual(str(cm.unraisable.exc_value),
@@ -145,7 +145,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(getitemstring(dct2, b'a'), 1)
         self.assertIs(getitemstring(dct2, b'b'), KeyError)
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertIs(getitemstring({}, INVALID_UTF8), KeyError)
             self.assertEqual(cm.unraisable.exc_type, UnicodeDecodeError)
             self.assertRegex(str(cm.unraisable.exc_value),
@@ -493,7 +493,7 @@ klasse CAPITest(unittest.TestCase):
         # key error; don't hash key wenn dict is empty
         not_hashable_key = ["list"]
         self.assertEqual(dict_pop({}, not_hashable_key), (0, NULL))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dict_pop({'key': 1}, not_hashable_key)
         dict_pop({}, NULL)  # key is not checked wenn dict is empty
 

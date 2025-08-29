@@ -50,9 +50,9 @@ klasse IdleConfParser(ConfigParser):
     def Get(self, section, option, type=Nichts, default=Nichts, raw=Falsch):
         """
         Get an option value fuer given section/option or return default.
-        If type is specified, return as type.
+        If type is specified, return als type.
         """
-        # TODO Use default as fallback, at least wenn not Nichts
+        # TODO Use default als fallback, at least wenn not Nichts
         # Should also print Warning(file, section, option).
         # Currently may raise ValueError
         wenn not self.has_option(section, option):
@@ -137,7 +137,7 @@ klasse IdleUserConfParser(IdleConfParser):
                 except OSError:
                     os.unlink(fname)
                     cfgFile = open(fname, 'w')
-                with cfgFile:
+                mit cfgFile:
                     self.write(cfgFile)
             sowenn os.path.exists(self.file):
                 os.remove(self.file)
@@ -219,7 +219,7 @@ klasse IdleConf:
         If type is not Nichts, return a value of that type.  Also pass raw
         to the config parser.  First try to return a valid value
         (including type) von a user configuration. If that fails, try
-        the default configuration. If that fails, return default, with a
+        the default configuration. If that fails, return default, mit a
         default of Nichts.
 
         Warn wenn either user or default configurations have an invalid value.
@@ -452,7 +452,7 @@ klasse IdleConf:
             return extns
 
     def RemoveKeyBindNames(self, extnNameList):
-        "Return extnNameList with keybinding section names removed."
+        "Return extnNameList mit keybinding section names removed."
         return [n fuer n in extnNameList wenn not n.endswith(('_bindings', '_cfgBindings'))]
 
     def GetExtnNameForEvent(self, virtualEvent):
@@ -508,9 +508,9 @@ klasse IdleConf:
     def GetExtensionBindings(self, extensionName):
         """Return dict {extensionName event : active or defined keybinding}.
 
-        Augment self.GetExtensionKeys(extensionName) with mapping of non-
+        Augment self.GetExtensionKeys(extensionName) mit mapping of non-
         configurable events (from default config) to GetOption splits,
-        as in self.__GetRawExtensionKeys.
+        als in self.__GetRawExtensionKeys.
         """
         bindsName = extensionName + '_bindings'
         extBinds = self.GetExtensionKeys(extensionName)
@@ -529,7 +529,7 @@ klasse IdleConf:
         """Return the keybinding list fuer keySetName eventStr.
 
         keySetName - name of key binding set (config-keys section).
-        eventStr - virtual event, including brackets, as in '<<event>>'.
+        eventStr - virtual event, including brackets, als in '<<event>>'.
         """
         eventName = eventStr[2:-2] #trim off the angle brackets
         binding = self.GetOption('keys', keySetName, eventName, default='',
@@ -537,12 +537,12 @@ klasse IdleConf:
         return binding
 
     def GetCurrentKeySet(self):
-        "Return CurrentKeys with 'darwin' modifications."
+        "Return CurrentKeys mit 'darwin' modifications."
         result = self.GetKeySet(self.CurrentKeys())
 
         wenn sys.platform == "darwin":
             # macOS (OS X) Tk variants do not support the "Alt"
-            # keyboard modifier.  Replace it with "Option".
+            # keyboard modifier.  Replace it mit "Option".
             # TODO (Ned?): the "Option" modifier does not work properly
             #     fuer Cocoa Tk and XQuartz Tk so we should not use it
             #     in the default 'OSX' keyset.
@@ -582,7 +582,7 @@ klasse IdleConf:
 # TODO make keyBindings a file or klasse attribute used fuer test above
 # and copied in function below.
 
-    former_extension_events = {  #  Those with user-configurable keys.
+    former_extension_events = {  #  Those mit user-configurable keys.
         '<<force-open-completions>>', '<<expand-word>>',
         '<<force-open-calltip>>', '<<flash-paren>>', '<<format-paragraph>>',
          '<<run-module>>', '<<check-module>>', '<<zoom-height>>',
@@ -707,10 +707,10 @@ klasse IdleConf:
         options=cfgParser.GetOptionList('HelpFiles')
         fuer option in options:
             value=cfgParser.Get('HelpFiles', option, default=';')
-            wenn value.find(';') == -1: #malformed config entry with no ';'
+            wenn value.find(';') == -1: #malformed config entry mit no ';'
                 menuItem = '' #make these empty
                 helpPath = '' #so value won't be added to list
-            sonst: #config entry contains ';' as expected
+            sonst: #config entry contains ';' als expected
                 value=value.split(';')
                 menuItem=value[0].strip()
                 helpPath=value[1].strip()
@@ -913,5 +913,5 @@ wenn __name__ == '__main__':
     main('idlelib.idle_test.test_config', verbosity=2, exit=Falsch)
 
     _dump()
-    # Run revised _dump() (700+ lines) as htest?  More sorting.
-    # Perhaps as window with tabs fuer textviews, making it config viewer.
+    # Run revised _dump() (700+ lines) als htest?  More sorting.
+    # Perhaps als window mit tabs fuer textviews, making it config viewer.

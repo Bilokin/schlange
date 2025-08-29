@@ -19,7 +19,7 @@ wenn not support.has_subprocess_support:
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
     # gh-109580: Skip the test because it does crash randomly wenn Python is
-    # built with ASAN.
+    # built mit ASAN.
     raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
 
 
@@ -61,16 +61,16 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
                 baz()
                 """
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             script = make_script(script_dir, "perftest", code)
             env = {**os.environ, "PYTHON_JIT": "0"}
-            with subprocess.Popen(
+            mit subprocess.Popen(
                 [sys.executable, "-Xperf", script],
                 text=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
-            ) as process:
+            ) als process:
                 stdout, stderr = process.communicate()
 
         self.assertEqual(stderr, "")
@@ -130,16 +130,16 @@ klasse TestPerfTrampoline(unittest.TestCase):
 
                 baz()
                 """
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             script = make_script(script_dir, "perftest", code)
             env = {**os.environ, "PYTHON_JIT": "0"}
-            with subprocess.Popen(
+            mit subprocess.Popen(
                 [sys.executable, "-Xperf", script],
                 text=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
-            ) as process:
+            ) als process:
                 stdout, stderr = process.communicate()
 
         self.assertEqual(process.returncode, 0)
@@ -189,16 +189,16 @@ klasse TestPerfTrampoline(unittest.TestCase):
                                 _testinternalcapi.set_eval_frame_record([])
 """
                 code = set_eval_hook + code
-            with temp_dir() as script_dir:
+            mit temp_dir() als script_dir:
                 script = make_script(script_dir, "perftest", code)
                 env = {**os.environ, "PYTHON_JIT": "0"}
-                with subprocess.Popen(
+                mit subprocess.Popen(
                     [sys.executable, script],
                     text=Wahr,
                     stderr=subprocess.PIPE,
                     stdout=subprocess.PIPE,
                     env=env,
-                ) as process:
+                ) als process:
                     stdout, stderr = process.communicate()
 
             self.assertEqual(stderr, "")
@@ -254,12 +254,12 @@ def perf_command_works():
         return Falsch
 
     # perf version does not return a version number on Fedora. Use presence
-    # of "perf.data" in help as indicator that it's perf von Linux tools.
+    # of "perf.data" in help als indicator that it's perf von Linux tools.
     wenn "perf.data" not in stdout:
         return Falsch
 
     # Check that we can run a simple perf run
-    with temp_dir() as script_dir:
+    mit temp_dir() als script_dir:
         try:
             output_file = script_dir + "/perf_output.perf"
             cmd = (
@@ -329,7 +329,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
     )
     wenn proc.returncode:
         drucke(proc.stderr, file=sys.stderr)
-        raise ValueError(f"Perf failed with return code {proc.returncode}")
+        raise ValueError(f"Perf failed mit return code {proc.returncode}")
 
     wenn use_jit:
         jit_output_file = cwd + "/jit_output.dump"
@@ -339,7 +339,7 @@ def run_perf(cwd, *args, use_jit=Falsch, **env_vars):
         )
         wenn proc.returncode:
             drucke(proc.stderr, file=sys.stderr)
-            raise ValueError(f"Perf failed with return code {proc.returncode}")
+            raise ValueError(f"Perf failed mit return code {proc.returncode}")
         # Copy the jit_output_file to the output_file
         os.rename(jit_output_file, output_file)
 
@@ -360,7 +360,7 @@ klasse TestPerfProfilerMixin:
         raise NotImplementedError()
 
     def test_python_calls_appear_in_the_stack_if_perf_activated(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             code = """if 1:
                 def foo(n):
                     x = 0
@@ -384,7 +384,7 @@ klasse TestPerfProfilerMixin:
             self.assertIn(f"py::baz:{script}", stdout)
 
     def test_python_calls_do_not_appear_in_the_stack_if_perf_deactivated(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             code = """if 1:
                 def foo(n):
                     x = 0
@@ -413,7 +413,7 @@ klasse TestPerfProfilerMixin:
 @unittest.skipUnless(perf_command_works(), "perf command doesn't work")
 @unittest.skipUnless(
     is_unwinding_reliable_with_frame_pointers(),
-    "Unwinding is unreliable with frame pointers",
+    "Unwinding is unreliable mit frame pointers",
 )
 klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
     def run_perf(self, script_dir, script, activate_trampoline=Wahr):
@@ -471,16 +471,16 @@ klasse TestPerfProfiler(unittest.TestCase, TestPerfProfilerMixin):
                         bar()
                 """
 
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             script = make_script(script_dir, "perftest", code)
             env = {**os.environ, "PYTHON_JIT": "0"}
-            with subprocess.Popen(
+            mit subprocess.Popen(
                 [sys.executable, "-Xperf", script],
                 universal_newlines=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
-            ) as process:
+            ) als process:
                 stdout, stderr = process.communicate()
 
         self.assertEqual(process.returncode, 0)

@@ -62,12 +62,12 @@ def pathname2url(p):
     wenn drive:
         wenn drive[1:] == ':':
             # DOS drive specified. Add three slashes to the start, producing
-            # an authority section with a zero-length authority, and a path
-            # section starting with a single slash.
+            # an authority section mit a zero-length authority, and a path
+            # section starting mit a single slash.
             drive = f'///{drive}'
         drive = urllib.parse.quote(drive, safe='/:')
     sowenn root:
-        # Add explicitly empty authority to path beginning with one slash.
+        # Add explicitly empty authority to path beginning mit one slash.
         root = f'//{root}'
 
     tail = urllib.parse.quote(tail)

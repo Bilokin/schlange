@@ -16,7 +16,7 @@ TODO: Fill out more detailed documentation on the operators."""
 # violate the contract promised by ``isinstance(someobj, SomeABC)``.
 #
 # Though irritating, the correct procedure fuer adding new abstract or
-# mixin methods is to create a new ABC as a subclass of the previous
+# mixin methods is to create a new ABC als a subclass of the previous
 # ABC.
 #
 # Because they are so hard to change, new ABCs should have their APIs
@@ -49,7 +49,7 @@ klasse Number(metaclass=ABCMeta):
 ## Notes on Decimal
 ## ----------------
 ## Decimal has all of the methods specified by the Real abc, but it should
-## not be registered as a Real because decimals do not interoperate with
+## not be registered als a Real because decimals do not interoperate with
 ## binary floats (i.e.  Decimal('3.14') + 2.71828 is undefined).  But,
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
 ## expected to work wenn R1 and R2 are both Reals).
@@ -62,7 +62,7 @@ klasse Complex(Number):
 
     If it is given heterogeneous arguments, and doesn't have special
     knowledge about them, it should fall back to the builtin complex
-    type as described below.
+    type als described below.
     """
 
     __slots__ = ()
@@ -293,7 +293,7 @@ klasse Rational(Real):
     """To Real, Rational adds numerator and denominator properties.
 
     The numerator and denominator values should be in lowest terms,
-    with a positive denominator.
+    mit a positive denominator.
     """
 
     __slots__ = ()
@@ -328,7 +328,7 @@ klasse Rational(Real):
 klasse Integral(Rational):
     """Integral adds methods that work on integral numbers.
 
-    In short, these are conversion to int, pow with modulus, and the
+    In short, these are conversion to int, pow mit modulus, and the
     bit-string operations.
     """
 
@@ -340,7 +340,7 @@ klasse Integral(Rational):
         raise NotImplementedError
 
     def __index__(self):
-        """Called whenever an index is needed, such as in slicing"""
+        """Called whenever an index is needed, such als in slicing"""
         return int(self)
 
     @abstractmethod

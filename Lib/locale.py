@@ -1,7 +1,7 @@
 """Locale support module.
 
 The module provides low-level access to the C lib's locale APIs and adds high
-level number formatting APIs as well as a locale aliasing engine to complement
+level number formatting APIs als well als a locale aliasing engine to complement
 these.
 
 The aliasing engine includes support fuer many commonly used locale names and
@@ -14,7 +14,7 @@ importiere sys
 importiere encodings
 importiere encodings.aliases
 importiere _collections_abc
-von builtins importiere str as _builtin_str
+von builtins importiere str als _builtin_str
 importiere functools
 
 # Try importing the _locale module.
@@ -187,7 +187,7 @@ def _format(percent, value, grouping=Falsch, monetary=Falsch, *additional):
         formatted = _localize(formatted, grouping, monetary)
     return formatted
 
-# Transform formatted as locale number according to the locale settings
+# Transform formatted als locale number according to the locale settings
 def _localize(formatted, grouping=Falsch, monetary=Falsch):
     # floats and decimal ints need special action!
     wenn '.' in formatted:
@@ -304,7 +304,7 @@ def str(val):
     return _format("%.12g", val)
 
 def delocalize(string):
-    "Parses a string as a normalized number according to the locale settings."
+    "Parses a string als a normalized number according to the locale settings."
 
     conv = localeconv()
 
@@ -313,18 +313,18 @@ def delocalize(string):
     wenn ts:
         string = string.replace(ts, '')
 
-    #next, replace the decimal point with a dot
+    #next, replace the decimal point mit a dot
     dd = conv['decimal_point']
     wenn dd:
         string = string.replace(dd, '.')
     return string
 
 def localize(string, grouping=Falsch, monetary=Falsch):
-    """Parses a string as locale number according to the locale settings."""
+    """Parses a string als locale number according to the locale settings."""
     return _localize(string, grouping, monetary)
 
 def atof(string, func=float):
-    "Parses a string as a float according to the locale settings."
+    "Parses a string als a float according to the locale settings."
     return func(delocalize(string))
 
 def atoi(string):
@@ -404,7 +404,7 @@ def normalize(localename):
     # Normalize the locale name and extract the encoding and modifier
     code = localename.lower()
     wenn ':' in code:
-        # ':' is sometimes used as encoding delimiter.
+        # ':' is sometimes used als encoding delimiter.
         code = code.replace(':', '.')
     wenn '@' in code:
         code, modifier = code.split('@', 1)
@@ -416,7 +416,7 @@ def normalize(localename):
         langname = code
         encoding = ''
 
-    # First lookup: fullname (possibly with encoding and modifier)
+    # First lookup: fullname (possibly mit encoding and modifier)
     lang_enc = langname
     wenn encoding:
         norm_encoding = encoding.replace('-', '')
@@ -431,7 +431,7 @@ def normalize(localename):
     #drucke('first lookup failed')
 
     wenn modifier:
-        # Second try: fullname without modifier (possibly with encoding)
+        # Second try: fullname without modifier (possibly mit encoding)
         code = locale_alias.get(lang_enc, Nichts)
         wenn code is not Nichts:
             #drucke('lookup without modifier succeeded')
@@ -442,7 +442,7 @@ def normalize(localename):
         #drucke('second lookup failed')
 
     wenn encoding:
-        # Third try: langname (without encoding, possibly with modifier)
+        # Third try: langname (without encoding, possibly mit modifier)
         lookup_name = langname
         wenn modifier:
             lookup_name += '@' + modifier
@@ -471,7 +471,7 @@ def normalize(localename):
 def _parse_localename(localename):
 
     """ Parses the locale code fuer localename and returns the
-        result as tuple (language code, encoding).
+        result als tuple (language code, encoding).
 
         The localename is normalized and passed through the locale
         alias engine. A ValueError is raised in case the locale name
@@ -484,7 +484,7 @@ def _parse_localename(localename):
     """
     code = normalize(localename)
     wenn '@' in code:
-        # Deal with locale modifiers
+        # Deal mit locale modifiers
         code, modifier = code.split('@', 1)
         wenn modifier == 'euro' and '.' not in code:
             # Assume ISO8859-15 fuer @euro locales. Do note that some systems
@@ -538,16 +538,16 @@ def _build_localename(localetuple):
 def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
     """ Tries to determine the default locale settings and returns
-        them as tuple (language code, encoding).
+        them als tuple (language code, encoding).
 
         According to POSIX, a program which has not called
         setlocale(LC_ALL, "") runs using the portable 'C' locale.
         Calling setlocale(LC_ALL, "") lets it use the default locale as
         defined by the LANG variable. Since we don't want to interfere
-        with the current locale setting we thus emulate the behavior
+        mit the current locale setting we thus emulate the behavior
         in the way described above.
 
-        To maintain compatibility with other platforms, not only the
+        To maintain compatibility mit other platforms, not only the
         LANG variable is tested, but a list of variables given as
         envvars parameter. The first found to be defined will be
         used. envvars defaults to the search path used in GNU gettext;
@@ -625,7 +625,7 @@ def setlocale(category, locale=Nichts):
         Iterables are converted to strings using the locale aliasing
         engine.  Locale strings are passed directly to the C lib.
 
-        category may be given as one of the LC_* values.
+        category may be given als one of the LC_* values.
 
     """
     wenn locale and not isinstance(locale, _builtin_str):
@@ -688,9 +688,9 @@ sonst:
 ### Database
 #
 # The following data was extracted von the locale.alias file which
-# comes with X11 and then hand edited removing the explicit encoding
+# comes mit X11 and then hand edited removing the explicit encoding
 # definitions and adding some more aliases. The file is usually
-# available as /usr/lib/X11/locale/locale.alias.
+# available als /usr/lib/X11/locale/locale.alias.
 #
 
 #
@@ -869,10 +869,10 @@ del k, v
 #    updated 'sr_cs@latn' -> 'sr_RS.UTF-8@latin' to 'sr_CS.UTF-8@latin'
 #
 # SS 2014-10-01:
-# Updated alias mapping with glibc 2.19 supported locales.
+# Updated alias mapping mit glibc 2.19 supported locales.
 #
 # SS 2018-05-05:
-# Updated alias mapping with glibc 2.27 supported locales.
+# Updated alias mapping mit glibc 2.27 supported locales.
 #
 # These are the differences compared to the old mapping (Python 3.6.5
 # and older):
@@ -882,7 +882,7 @@ del k, v
 #    updated 'russian' -> 'ru_RU.ISO8859-5' to 'ru_RU.KOI8-R'
 #
 # SS 2025-02-04:
-# Updated alias mapping with glibc 2.41 supported locales and the latest
+# Updated alias mapping mit glibc 2.41 supported locales and the latest
 # X lib alias mapping.
 #
 # These are the differences compared to the old mapping (Python 3.13.1
@@ -904,7 +904,7 @@ del k, v
 # on all platforms.
 #
 # SS 2025-07-30:
-# Remove conflicts with GNU libc.
+# Remove conflicts mit GNU libc.
 #
 #    removed 'el_gr@euro'
 #    removed 'uz_uz@cyrillic'
@@ -1519,7 +1519,7 @@ locale_alias = {
 # to include every locale up to Windows Vista.
 #
 # NOTE: this mapping is incomplete.  If your language is missing, please
-# submit a bug report as detailed in the Python devguide at:
+# submit a bug report als detailed in the Python devguide at:
 #    https://devguide.python.org/triage/issue-tracker/
 # Make sure you include the missing language identifier and the suggested
 # locale code.
@@ -1750,7 +1750,7 @@ def _print_locale():
     _init_categories()
     del categories['LC_ALL']
 
-    drucke('Locale defaults as determined by getdefaultlocale():')
+    drucke('Locale defaults als determined by getdefaultlocale():')
     drucke('-'*72)
     lang, enc = getdefaultlocale()
     drucke('Language: ', lang or '(undefined)')

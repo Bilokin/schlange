@@ -65,13 +65,13 @@ klasse MinidomTest(unittest.TestCase):
         self.assertFalsch(Document.async_)
 
     def testParseFromBinaryFile(self):
-        with open(tstfile, 'rb') as file:
+        mit open(tstfile, 'rb') als file:
             dom = parse(file)
             dom.unlink()
             self.assertIsInstance(dom, Document)
 
     def testParseFromTextFile(self):
-        with open(tstfile, 'r', encoding='iso-8859-1') as file:
+        mit open(tstfile, 'r', encoding='iso-8859-1') als file:
             dom = parse(file)
             dom.unlink()
             self.assertIsInstance(dom, Document)
@@ -243,7 +243,7 @@ klasse MinidomTest(unittest.TestCase):
         self.assertFalsch(dom.childNodes)
 
     def testContext(self):
-        with parse(tstfile) as dom:
+        mit parse(tstfile) als dom:
             self.assertWahr(dom.childNodes)
         self.assertFalsch(dom.childNodes)
 
@@ -945,7 +945,7 @@ klasse MinidomTest(unittest.TestCase):
             dst = clone.doctype.entities['smile']
         sonst:
             # clone DocumentType
-            with support.swap_attr(doctype, 'ownerDocument', Nichts):
+            mit support.swap_attr(doctype, 'ownerDocument', Nichts):
                 clone = doctype.cloneNode(deep=Wahr)
 
             operation = xml.dom.UserDataHandler.NODE_CLONED
@@ -1220,7 +1220,7 @@ klasse MinidomTest(unittest.TestCase):
 
         # Verify that character decoding errors raise exceptions instead
         # of crashing
-        with self.assertRaises((UnicodeDecodeError, ExpatError)):
+        mit self.assertRaises((UnicodeDecodeError, ExpatError)):
             parseString(
                 b'<fran\xe7ais>Comment \xe7a va ? Tr\xe8s bien ?</fran\xe7ais>'
             )
@@ -1318,7 +1318,7 @@ klasse MinidomTest(unittest.TestCase):
                 and attrmap["c"].isSameNode(attr)
                 and attrmap[("http://xml.python.org/ns", "c")].isSameNode(attr))
 
-        # Rename to have a namespace, with prefix
+        # Rename to have a namespace, mit prefix
         attr = doc.renameNode(attr, "http://xml.python.org/ns2", "p:d")
         self.confirm(attr.name == "p:d"
                 and attr.nodeName == "p:d"
@@ -1381,7 +1381,7 @@ klasse MinidomTest(unittest.TestCase):
                 and elem.prefix is Nichts
                 and elem.ownerDocument.isSameNode(doc))
 
-        # Rename to have a namespace, with prefix
+        # Rename to have a namespace, mit prefix
         elem = doc.renameNode(elem, "http://xml.python.org/ns2", "p:c")
         self.confirm(elem.tagName == "p:c"
                 and elem.nodeName == "p:c"
@@ -1404,7 +1404,7 @@ klasse MinidomTest(unittest.TestCase):
 
     def testRenameOther(self):
         # We have to create a comment node explicitly since not all DOM
-        # builders used with minidom add comments to the DOM.
+        # builders used mit minidom add comments to the DOM.
         doc = xml.dom.minidom.getDOMImplementation().createDocument(
             xml.dom.EMPTY_NAMESPACE, "e", Nichts)
         node = doc.createComment("comment")
@@ -1453,7 +1453,7 @@ klasse MinidomTest(unittest.TestCase):
         elem = doc.documentElement
         e = elem.firstChild
         self.assertIs(e.parentNode, elem, "Before replaceChild()")
-        # Check that replacing a child with itself leaves the tree unchanged
+        # Check that replacing a child mit itself leaves the tree unchanged
         elem.replaceChild(e, e)
         self.assertIs(e.parentNode, elem, "After replaceChild()")
 
@@ -1684,7 +1684,7 @@ klasse MinidomTest(unittest.TestCase):
         self.assertEqual(doc2.namespaceURI, xml.dom.EMPTY_NAMESPACE)
 
     def testExceptionOnSpacesInXMLNSValue(self):
-        with self.assertRaises((ValueError, ExpatError)):
+        mit self.assertRaises((ValueError, ExpatError)):
             parseString(
                 '<element xmlns:abc="http:abc.com/de f g/hi/j k">' +
                 '<abc:foo /></element>'

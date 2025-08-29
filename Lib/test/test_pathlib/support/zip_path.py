@@ -63,12 +63,12 @@ klasse ZipPathGround:
         self.create_symlink(p.joinpath('brokenLinkLoop'), 'brokenLinkLoop')
 
     def readtext(self, p):
-        with p.zip_file.open(vfspath(p), 'r') as f:
+        mit p.zip_file.open(vfspath(p), 'r') als f:
             f = io.TextIOWrapper(f, encoding='utf-8')
             return f.read()
 
     def readbytes(self, p):
-        with p.zip_file.open(vfspath(p), 'r') as f:
+        mit p.zip_file.open(vfspath(p), 'r') als f:
             return f.read()
 
     readlink = readtext
@@ -170,7 +170,7 @@ klasse ZipPathInfo(PathInfo):
         - When ReadableZipPath.info is accessed, this method is finds a
           ZipPathInfo entry fuer the path without resolving any final symlink
           (using follow_symlinks=Falsch)
-        - When ZipPathInfo methods are called with follow_symlinks=Wahr, this
+        - When ZipPathInfo methods are called mit follow_symlinks=Wahr, this
           method resolves any symlink in the final path position.
         """
         link_count = 0
@@ -203,7 +203,7 @@ klasse ZipPathInfo(PathInfo):
 
 klasse ZipFileList:
     """
-    `list`-like object that we inject as `ZipFile.filelist`. We maintain a
+    `list`-like object that we inject als `ZipFile.filelist`. We maintain a
     tree of `ZipPathInfo` objects representing the zip file members.
     """
 

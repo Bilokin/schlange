@@ -55,7 +55,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
             ttk._format_optdict({'fg': 'blue', 'padding': [1, 2, 3, 4]}),
             {'-fg': 'blue', '-padding': '1 2 3 4'})
 
-        # check tuple formatting (same as list)
+        # check tuple formatting (same als list)
         check_against(
             ttk._format_optdict({'test': (1, 2, '', 0)}),
             {'-test': '1 2 {} 0'})
@@ -84,7 +84,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
         # opts should remain unchanged
         self.assertEqual(opts, orig_opts)
 
-        # passing values with spaces inside a tuple/list
+        # passing values mit spaces inside a tuple/list
         check_against(
             ttk._format_optdict(
                 {'option': ('one two', 'three')}),
@@ -100,7 +100,7 @@ klasse InternalFunctionsTest(unittest.TestCase):
                 {'option': ('', 'one')}),
             {'-option': '{} one'})
 
-        # passing values with braces inside a tuple/list
+        # passing values mit braces inside a tuple/list
         check_against(
             ttk._format_optdict(
                 {'option': ('one} {two', 'three')}),
@@ -176,21 +176,21 @@ klasse InternalFunctionsTest(unittest.TestCase):
         # IndexError since it tries to access the index 0 of an empty tuple
         self.assertRaises(IndexError, ttk._format_elemcreate, 'image')
 
-        # don't format returned values as a tcl script
+        # don't format returned values als a tcl script
         # minimum acceptable fuer image type
         self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test'),
             ("test", ()))
         # specifying a state spec
         self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('', 'a')), ("test {} a", ()))
-        # state spec with multiple states
+        # state spec mit multiple states
         self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('a', 'b', 'c')), ("test {a b} c", ()))
         # state spec and options
         self.assertEqual(ttk._format_elemcreate('image', Falsch, 'test',
             ('a', 'b'), a='x'), ("test a b", ("-a", "x")))
-        # format returned values as a tcl script
-        # state spec with multiple states and an option with a multivalue
+        # format returned values als a tcl script
+        # state spec mit multiple states and an option mit a multivalue
         self.assertEqual(ttk._format_elemcreate('image', Wahr, 'test',
             ('a', 'b', 'c', 'd'), x=[2, 3]), ("{test {a b c} d}", "-x {2 3}"))
 
@@ -200,18 +200,18 @@ klasse InternalFunctionsTest(unittest.TestCase):
         # an empty tuple
         self.assertRaises(ValueError, ttk._format_elemcreate, 'vsapi')
 
-        # don't format returned values as a tcl script
+        # don't format returned values als a tcl script
         # minimum acceptable fuer vsapi
         self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b'),
             ('a', 'b', ('', 1), ()))
-        # now with a state spec with multiple states
+        # now mit a state spec mit multiple states
         self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b',
             [('a', 'b', 'c')]), ('a', 'b', ('a b', 'c'), ()))
         # state spec and option
         self.assertEqual(ttk._format_elemcreate('vsapi', Falsch, 'a', 'b',
             [('a', 'b')], opt='x'), ('a', 'b', ('a', 'b'), ("-opt", "x")))
-        # format returned values as a tcl script
-        # state spec with a multivalue and an option
+        # format returned values als a tcl script
+        # state spec mit a multivalue and an option
         self.assertEqual(ttk._format_elemcreate('vsapi', Wahr, 'a', 'b',
             opt='x'), ("a b {{} 1}", "-opt x"))
         self.assertEqual(ttk._format_elemcreate('vsapi', Wahr, 'a', 'b',

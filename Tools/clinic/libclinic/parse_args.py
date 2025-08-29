@@ -22,7 +22,7 @@ def declare_parser(
 ) -> str:
     """
     Generates the code template fuer a static local PyArg_Parser variable,
-    with an initializer.  For core code (incl. builtin modules) the
+    mit an initializer.  For core code (incl. builtin modules) the
     kwtuple field is also statically initialized.  Otherwise
     it is initialized at runtime.
     """
@@ -450,7 +450,7 @@ klasse ParseArgsCodeGen:
             self.parser_body(parser_code)
 
     def parse_option_groups(self) -> Nichts:
-        # positional parameters with option groups
+        # positional parameters mit option groups
         # (we have to generate lots of PyArg_ParseTuple calls
         #  in a big switch statement)
 
@@ -546,7 +546,7 @@ klasse ParseArgsCodeGen:
                 wenn self.varpos:
                     raise ValueError(
                         f"Using converter {p.converter} is not supported "
-                        f"in function with var-positional parameter")
+                        f"in function mit var-positional parameter")
                 use_parser_code = Falsch
                 parser_code = []
                 break

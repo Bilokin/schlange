@@ -66,10 +66,10 @@ klasse AbstractWidgetTest(AbstractTkTest):
         wenn errmsg is not Nichts:
             errmsg = errmsg.format(re.escape(str(value)))
             errmsg = fr'\A{errmsg}\z'
-        with self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
+        mit self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
             widget[name] = value
         self.assertEqual(widget[name], orig)
-        with self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
+        mit self.assertRaisesRegex(tkinter.TclError, errmsg or ''):
             widget.configure({name: value})
         self.assertEqual(widget[name], orig)
 
@@ -227,8 +227,8 @@ klasse AbstractWidgetTest(AbstractTkTest):
 klasse PixelOptionsTests:
     """Standard options that accept all formats acceptable to Tk_GetPixels.
 
-    In addition to numbers, these options can be set with distances
-    specified as a string consisting of a number followed by a single
+    In addition to numbers, these options can be set mit distances
+    specified als a string consisting of a number followed by a single
     character giving the unit of distance. The allowed units are:
     millimeters ('m'), centimeters ('c'), inches ('i') or points ('p').
     In Tk 9 a cget call fuer one of these options returns a Tcl_Obj of

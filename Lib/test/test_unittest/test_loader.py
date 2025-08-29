@@ -184,7 +184,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
 
     # Check that loadTestsFromModule honors a module
-    # with a load_tests function.
+    # mit a load_tests function.
     def test_loadTestsFromModule__load_tests(self):
         m = types.ModuleType('m')
         klasse MyTestCase(unittest.TestCase):
@@ -206,9 +206,9 @@ klasse Test_TestLoader(unittest.TestCase):
 
         # In Python 3.12, the undocumented and unofficial use_load_tests has
         # been removed.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             loader.loadTestsFromModule(m, Falsch)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             loader.loadTestsFromModule(m, use_load_tests=Falsch)
 
     def test_loadTestsFromModule__pattern(self):
@@ -269,7 +269,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         try:
             loader.loadTestsFromName('')
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(str(e), "Empty module name")
         sonst:
             self.fail("TestLoader.loadTestsFromName failed to raise ValueError")
@@ -606,9 +606,9 @@ klasse Test_TestLoader(unittest.TestCase):
             self.fail("TestLoader.loadTestsFromName failed to raise TypeError")
 
     # "The specifier can refer to modules and packages which have not been
-    # imported; they will be imported as a side-effect"
+    # imported; they will be imported als a side-effect"
     def test_loadTestsFromName__module_not_loaded(self):
-        # We're going to try to load this module as a side-effect, so it
+        # We're going to try to load this module als a side-effect, so it
         # better not be loaded before we try.
         #
         module_name = 'test.test_unittest.dummy'
@@ -636,7 +636,7 @@ klasse Test_TestLoader(unittest.TestCase):
     def check_deferred_error(self, loader, suite):
         """Helper function fuer checking that errors in loading are reported.
 
-        :param loader: A loader with some errors.
+        :param loader: A loader mit some errors.
         :param suite: A suite that should have a late bound error.
         :return: The first error message von the loader and the test object
             von the suite.
@@ -687,7 +687,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
         try:
             loader.loadTestsFromNames([''])
-        except ValueError as e:
+        except ValueError als e:
             self.assertEqual(str(e), "Empty module name")
         sonst:
             self.fail("TestLoader.loadTestsFromNames failed to raise ValueError")
@@ -697,7 +697,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # within a test case class, or a callable object which returns a
     # TestCase or TestSuite instance."
     #
-    # What happens when presented with an impossible module name?
+    # What happens when presented mit an impossible module name?
     def test_loadTestsFromNames__malformed_name(self):
         loader = unittest.TestLoader()
 
@@ -794,7 +794,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # What happens when faced with the empty string?
+    # What happens when faced mit the empty string?
     #
     # XXX This currently raises AttributeError, though ValueError is probably
     # more appropriate
@@ -816,7 +816,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # ...
     # "The method optionally resolves name relative to the given module"
     #
-    # What happens when presented with an impossible attribute name?
+    # What happens when presented mit an impossible attribute name?
     def test_loadTestsFromNames__relative_malformed_name(self):
         loader = unittest.TestLoader()
 
@@ -919,7 +919,7 @@ klasse Test_TestLoader(unittest.TestCase):
         self.assertEqual(list(suite), [ref_suite])
 
     # #14971: Make sure the dotted name resolution works even wenn the actual
-    # function doesn't have the same name as is used to find it.
+    # function doesn't have the same name als is used to find it.
     def test_loadTestsFromName__function_with_different_name_than_method(self):
         # lambdas have the name '<lambda>'.
         m = types.ModuleType('m')
@@ -1031,9 +1031,9 @@ klasse Test_TestLoader(unittest.TestCase):
             self.fail("TestLoader.loadTestsFromNames failed to raise TypeError")
 
     # "The specifier can refer to modules and packages which have not been
-    # imported; they will be imported as a side-effect"
+    # imported; they will be imported als a side-effect"
     def test_loadTestsFromNames__module_not_loaded(self):
-        # We're going to try to load this module as a side-effect, so it
+        # We're going to try to load this module als a side-effect, so it
         # better not be loaded before we try.
         #
         module_name = 'test.test_unittest.dummy'
@@ -1155,7 +1155,7 @@ klasse Test_TestLoader(unittest.TestCase):
     # patterns should be included.
     #
     # For backwards compatibility reasons (see bpo-32071), the check may only
-    # touch a TestCase's attribute wenn it starts with the test method prefix.
+    # touch a TestCase's attribute wenn it starts mit the test method prefix.
     def test_getTestCaseNames__testNamePatterns__attribute_access_regression(self):
         klasse Trap:
             def __get__(*ignored):
@@ -1370,7 +1370,7 @@ klasse Test_TestLoader(unittest.TestCase):
 
     # "The default value is the built-in cmp() function"
     # Since cmp is now defunct, we simply verify that the results
-    # occur in the same order as they would with the default sort.
+    # occur in the same order als they would mit the default sort.
     def test_sortTestMethodsUsing__default_value(self):
         loader = unittest.TestLoader()
 

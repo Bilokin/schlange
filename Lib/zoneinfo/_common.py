@@ -24,9 +24,9 @@ def load_tzdata(key):
         # FileNotFoundError: If resource_name doesn't exist in the package
         #   (e.g. Europe/Krasnoy)
         # UnicodeEncodeError: If package_name or resource_name are not UTF-8,
-        #   such as keys containing a surrogate character.
+        #   such als keys containing a surrogate character.
         # IsADirectoryError: If package_name without a resource_name specified.
-        raise ZoneInfoNotFoundError(f"No time zone found with key {key}")
+        raise ZoneInfoNotFoundError(f"No time zone found mit key {key}")
 
 
 def load_data(fobj):
@@ -40,7 +40,7 @@ def load_data(fobj):
         time_size = 8
         time_type = "q"
 
-        # Version 2+ also starts with a Version 1 header and data, which
+        # Version 2+ also starts mit a Version 1 header and data, which
         # we need to skip now
         skip_bytes = (
             header.timecnt * 5  # Transition times and types
@@ -54,14 +54,14 @@ def load_data(fobj):
         fobj.seek(skip_bytes, 1)
 
         # Now we need to read the second header, which is not the same
-        # as the first
+        # als the first
         header = _TZifHeader.from_file(fobj)
 
     typecnt = header.typecnt
     timecnt = header.timecnt
     charcnt = header.charcnt
 
-    # The data portion starts with timecnt transitions and indices
+    # The data portion starts mit timecnt transitions and indices
     wenn timecnt:
         trans_list_utc = struct.unpack(
             f">{timecnt}{time_type}", fobj.read(timecnt * time_size)
@@ -146,7 +146,7 @@ klasse _TZifHeader:
 
     @classmethod
     def from_file(cls, stream):
-        # The header starts with a 4-byte "magic" value
+        # The header starts mit a 4-byte "magic" value
         wenn stream.read(4) != b"TZif":
             raise ValueError("Invalid TZif file: magic not found")
 

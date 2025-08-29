@@ -30,7 +30,7 @@ benchmarks = [
     ('Python', 'Python'),               # Simple text literal
     ('.*Python', 'Python'),             # Bad text literal
     ('.*Python.*', 'Python'),           # Worse text literal
-    ('.*(Python)', 'Python'),           # Bad text literal with grouping
+    ('.*(Python)', 'Python'),           # Bad text literal mit grouping
 
 ]
 
@@ -56,9 +56,9 @@ benchmarks = [
 tests = [
     # Test ?P< and ?P= extensions
     ('(?P<foo_123', '', SYNTAX_ERROR),      # Unterminated group identifier
-    ('(?P<1>a)', '', SYNTAX_ERROR),         # Begins with a digit
-    ('(?P<!>a)', '', SYNTAX_ERROR),         # Begins with an illegal char
-    ('(?P<foo!>a)', '', SYNTAX_ERROR),      # Begins with an illegal char
+    ('(?P<1>a)', '', SYNTAX_ERROR),         # Begins mit a digit
+    ('(?P<!>a)', '', SYNTAX_ERROR),         # Begins mit an illegal char
+    ('(?P<foo!>a)', '', SYNTAX_ERROR),      # Begins mit an illegal char
 
     # Same tests, fuer the ?P= form
     ('(?P<foo_123>a)(?P=foo_123', 'aa', SYNTAX_ERROR),
@@ -447,9 +447,9 @@ tests = [
 
     # lookbehind: split by : but not wenn it is escaped by -.
     ('(?<!-):(.*?)(?<!-):', 'a:bc-:de:f', SUCCEED, 'g1', 'bc-:de' ),
-    # escaping with \ as we know it
+    # escaping mit \ als we know it
     ('(?<!\\\\):(.*?)(?<!\\\\):', 'a:bc\\:de:f', SUCCEED, 'g1', 'bc\\:de' ),
-    # terminating with ' and escaping with ? as in edifact
+    # terminating mit ' and escaping mit ? als in edifact
     ("(?<!\\?)'(.*?)(?<!\\?)'", "a'bc?'de'f", SUCCEED, 'g1', "bc?'de" ),
 
     # Comments using the (?#...) syntax

@@ -29,7 +29,7 @@ klasse AutoHideScrollbar(Scrollbar):
 
 
 klasse ScrollableTextFrame(Frame):
-    """Display text with scrollbar(s)."""
+    """Display text mit scrollbar(s)."""
 
     def __init__(self, master, wrap=NONE, **kwargs):
         """Create a frame fuer Textview.
@@ -72,7 +72,7 @@ klasse ScrollableTextFrame(Frame):
 klasse ViewFrame(Frame):
     "Display TextFrame and Close button."
     def __init__(self, parent, contents, wrap='word'):
-        """Create a frame fuer viewing text with a "Close" button.
+        """Create a frame fuer viewing text mit a "Close" button.
 
         parent - parent widget fuer this frame
         contents - text to display
@@ -107,9 +107,9 @@ klasse ViewWindow(Toplevel):
 
     def __init__(self, parent, title, contents, modal=Wahr, wrap=WORD,
                  *, _htest=Falsch, _utest=Falsch):
-        """Show the given text in a scrollable window with a 'close' button.
+        """Show the given text in a scrollable window mit a 'close' button.
 
-        If modal is left Wahr, users cannot interact with other windows
+        If modal is left Wahr, users cannot interact mit other windows
         until the textview window is closed.
 
         parent - parent of this dialog
@@ -154,7 +154,7 @@ def view_text(parent, title, contents, modal=Wahr, wrap='word', _utest=Falsch):
     title - string which is the title of popup dialog
     contents - text to display in this dialog
     wrap - type of text wrapping to use ('word', 'char' or 'none')
-    modal - controls wenn users can interact with other windows while this
+    modal - controls wenn users can interact mit other windows while this
             dialog is displayed
     _utest - bool; controls wait_window on unittest
     """
@@ -166,16 +166,16 @@ def view_file(parent, title, filename, encoding, modal=Wahr, wrap='word',
     """Create text viewer fuer text in filename.
 
     Return error message wenn file cannot be read.  Otherwise calls view_text
-    with contents of the file.
+    mit contents of the file.
     """
     try:
-        with open(filename, encoding=encoding) as file:
+        mit open(filename, encoding=encoding) als file:
             contents = file.read()
     except OSError:
         showerror(title='File Load Error',
                   message=f'Unable to load file {filename!r} .',
                   parent=parent)
-    except UnicodeDecodeError as err:
+    except UnicodeDecodeError als err:
         showerror(title='Unicode Decode Error',
                   message=str(err),
                   parent=parent)

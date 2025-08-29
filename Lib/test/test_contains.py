@@ -25,9 +25,9 @@ klasse TestContains(unittest.TestCase):
         self.assertIn(1, c)
         self.assertNotIn(0, c)
         msg = "argument of type 'base_set' is not a container or iterable"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             1 in a
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             1 not in a
 
         # test char in string
@@ -83,7 +83,7 @@ klasse TestContains(unittest.TestCase):
             self.assertWahr(container == container)
 
     def test_block_fallback(self):
-        # blocking fallback with __contains__ = Nichts
+        # blocking fallback mit __contains__ = Nichts
         klasse ByContains(object):
             def __contains__(self, other):
                 return Falsch
@@ -92,7 +92,7 @@ klasse TestContains(unittest.TestCase):
             """Is not a container
 
             This klasse is a perfectly good iterable (as tested by
-            list(bc)), as well as inheriting von a perfectly good
+            list(bc)), als well als inheriting von a perfectly good
             container, but __contains__ = Nichts prevents the usual
             fallback to iteration in the container protocol. That
             is, normally, 0 in bc would fall back to the equivalent

@@ -11,7 +11,7 @@ klasse BytesTest(unittest.TestCase, StructCheckMixin):
         x = c_char(b"x")
         self.assertRaises(TypeError, c_char, "x")
         x.value = b"y"
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             x.value = "y"
         c_char.from_param(b"x")
         self.assertRaises(TypeError, c_char.from_param, "x")
@@ -23,7 +23,7 @@ klasse BytesTest(unittest.TestCase, StructCheckMixin):
         x = c_wchar("x")
         self.assertRaises(TypeError, c_wchar, b"x")
         x.value = "y"
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             x.value = b"y"
         c_wchar.from_param("x")
         self.assertRaises(TypeError, c_wchar.from_param, b"x")

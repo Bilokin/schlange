@@ -53,8 +53,8 @@ klasse Test_TestSkipping(unittest.TestCase):
             def defaultTestResult(self):
                 return LoggingResult(events)
             def test_skip_me(self):
-                with self.subTest(a=1):
-                    with self.subTest(b=2):
+                mit self.subTest(a=1):
+                    mit self.subTest(b=2):
                         self.skipTest("skip 1")
                     self.skipTest("skip 2")
                 self.skipTest("skip 3")
@@ -268,17 +268,17 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertWahr(result.wasSuccessful())
 
     def test_expected_failure_subtests(self):
-        # A failure in any subtest counts as the expected failure of the
+        # A failure in any subtest counts als the expected failure of the
         # whole test.
         klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
-                with self.subTest():
+                mit self.subTest():
                     # This one succeeds
                     pass
-                with self.subTest():
+                mit self.subTest():
                     self.fail("help me!")
-                with self.subTest():
+                mit self.subTest():
                     # This one doesn't get executed
                     self.fail("shouldn't come here")
         events = []
@@ -350,15 +350,15 @@ klasse Test_TestSkipping(unittest.TestCase):
         self.assertFalsch(result.wasSuccessful())
 
     def test_unexpected_success_subtests(self):
-        # Success in all subtests counts as the unexpected success of
+        # Success in all subtests counts als the unexpected success of
         # the whole test.
         klasse Foo(unittest.TestCase):
             @unittest.expectedFailure
             def test_die(self):
-                with self.subTest():
+                mit self.subTest():
                     # This one succeeds
                     pass
-                with self.subTest():
+                mit self.subTest():
                     # So does this one
                     pass
         events = []
@@ -478,14 +478,14 @@ klasse Test_TestSkipping(unittest.TestCase):
 
         events = []
         test = Foo("test1")
-        with self.assertRaises(unittest.SkipTest) as cm:
+        mit self.assertRaises(unittest.SkipTest) als cm:
             test.debug()
         self.assertIn("skipping exception", str(cm.exception))
         self.assertEqual(events, ["setUp"])
 
         events = []
         test = Foo("test2")
-        with self.assertRaises(unittest.SkipTest) as cm:
+        mit self.assertRaises(unittest.SkipTest) als cm:
             test.debug()
         self.assertIn("skipping decorator", str(cm.exception))
         self.assertEqual(events, [])
@@ -502,7 +502,7 @@ klasse Test_TestSkipping(unittest.TestCase):
 
         events = []
         test = Foo("test")
-        with self.assertRaises(unittest.SkipTest) as cm:
+        mit self.assertRaises(unittest.SkipTest) als cm:
             test.debug()
         self.assertIn("testing", str(cm.exception))
         self.assertEqual(events, [])
@@ -514,7 +514,7 @@ klasse Test_TestSkipping(unittest.TestCase):
             def tearDown(self):
                 events.append("tearDown")
             def test(self):
-                with self.subTest(a=1):
+                mit self.subTest(a=1):
                     events.append('subtest')
                     self.skipTest("skip subtest")
                     events.append('end subtest')
@@ -523,7 +523,7 @@ klasse Test_TestSkipping(unittest.TestCase):
         events = []
         result = LoggingResult(events)
         test = Foo("test")
-        with self.assertRaises(unittest.SkipTest) as cm:
+        mit self.assertRaises(unittest.SkipTest) als cm:
             test.debug()
         self.assertIn("skip subtest", str(cm.exception))
         self.assertEqual(events, ['setUp', 'subtest'])

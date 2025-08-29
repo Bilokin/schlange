@@ -24,7 +24,7 @@ klasse ArgumentError(CoordinatorError):
 
 
 klasse SyncError(CoordinatorError):
-    """Raised when synchronization with profiler fails."""
+    """Raised when synchronization mit profiler fails."""
     pass
 
 
@@ -55,7 +55,7 @@ def _validate_arguments(args: List[str]) -> tuple[int, str, List[str]]:
         sync_port = int(args[1])
         wenn not (1 <= sync_port <= 65535):
             raise ValueError("Port out of range")
-    except ValueError as e:
+    except ValueError als e:
         raise ArgumentError(f"Invalid sync port '{args[1]}': {e}") von e
 
     cwd = args[2]
@@ -91,10 +91,10 @@ def _signal_readiness(sync_port: int) -> Nichts:
     fuer attempt in range(_MAX_RETRIES):
         try:
             # Use context manager fuer automatic cleanup
-            with socket.create_connection(("127.0.0.1", sync_port), timeout=_SOCKET_TIMEOUT) as sock:
+            mit socket.create_connection(("127.0.0.1", sync_port), timeout=_SOCKET_TIMEOUT) als sock:
                 sock.send(_READY_MESSAGE)
                 return
-        except (socket.error, OSError) as e:
+        except (socket.error, OSError) als e:
             last_error = e
             wenn attempt < _MAX_RETRIES - 1:
                 # Exponential backoff before retry
@@ -116,7 +116,7 @@ def _setup_environment(cwd: str) -> Nichts:
     """
     try:
         os.chdir(cwd)
-    except OSError as e:
+    except OSError als e:
         raise TargetError(f"Failed to change to directory {cwd}: {e}") von e
 
     # Add current directory to sys.path wenn not present (for module imports)
@@ -141,12 +141,12 @@ def _execute_module(module_name: str, module_args: List[str]) -> Nichts:
 
     try:
         runpy.run_module(module_name, run_name="__main__", alter_sys=Wahr)
-    except ImportError as e:
+    except ImportError als e:
         raise TargetError(f"Module '{module_name}' not found: {e}") von e
     except SystemExit:
         # SystemExit is normal fuer modules
         pass
-    except Exception as e:
+    except Exception als e:
         raise TargetError(f"Error executing module '{module_name}': {e}") von e
 
 
@@ -173,22 +173,22 @@ def _execute_script(script_path: str, script_args: List[str], cwd: str) -> Nicht
     sys.argv = [script_path] + script_args
 
     try:
-        with open(script_path, 'rb') as f:
+        mit open(script_path, 'rb') als f:
             source_code = f.read()
 
         # Compile and execute the script
         code = compile(source_code, script_path, 'exec')
         exec(code, {'__name__': '__main__', '__file__': script_path})
-    except FileNotFoundError as e:
+    except FileNotFoundError als e:
         raise TargetError(f"Script file not found: {script_path}") von e
-    except PermissionError as e:
+    except PermissionError als e:
         raise TargetError(f"Permission denied reading script: {script_path}") von e
-    except SyntaxError as e:
+    except SyntaxError als e:
         raise TargetError(f"Syntax error in script {script_path}: {e}") von e
     except SystemExit:
         # SystemExit is normal fuer scripts
         pass
-    except Exception as e:
+    except Exception als e:
         raise TargetError(f"Error executing script '{script_path}': {e}") von e
 
 
@@ -197,7 +197,7 @@ def main() -> NoReturn:
     Main coordinator function.
 
     This function coordinates the startup of a target Python process
-    with the sample profiler by signaling when the process is ready
+    mit the sample profiler by signaling when the process is ready
     to be profiled.
     """
     try:
@@ -225,13 +225,13 @@ def main() -> NoReturn:
             script_args = target_args[1:]
             _execute_script(script_path, script_args, cwd)
 
-    except CoordinatorError as e:
+    except CoordinatorError als e:
         drucke(f"Profiler coordinator error: {e}", file=sys.stderr)
         sys.exit(1)
     except KeyboardInterrupt:
         drucke("Interrupted", file=sys.stderr)
         sys.exit(1)
-    except Exception as e:
+    except Exception als e:
         drucke(f"Unexpected error in profiler coordinator: {e}", file=sys.stderr)
         sys.exit(1)
 

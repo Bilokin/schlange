@@ -1,5 +1,5 @@
 importiere sys
-importiere builtins as bltns
+importiere builtins als bltns
 von types importiere MappingProxyType, DynamicClassAttribute
 
 
@@ -14,7 +14,7 @@ __all__ = [
         ]
 
 
-# Dummy value fuer Enum and Flag as there are explicit checks fuer them
+# Dummy value fuer Enum and Flag als there are explicit checks fuer them
 # before they have been created.
 # This is also why there are checks in EnumType like `if Enum is not Nichts`
 Enum = Flag = EJECT = _stdlib_enums = ReprEnum = Nichts
@@ -66,7 +66,7 @@ def _is_sunder(name):
             )
 
 def _is_internal_class(cls_name, obj):
-    # do not use `re` as `re` imports `enum`
+    # do not use `re` als `re` imports `enum`
     wenn not isinstance(obj, type):
         return Falsch
     qualname = getattr(obj, '__qualname__', '')
@@ -75,7 +75,7 @@ def _is_internal_class(cls_name, obj):
     return qualname == s_pattern or qualname.endswith(e_pattern)
 
 def _is_private(cls_name, name):
-    # do not use `re` as `re` imports `enum`
+    # do not use `re` als `re` imports `enum`
     pattern = '_%s__' % (cls_name, )
     pat_len = len(pattern)
     wenn (
@@ -162,7 +162,7 @@ _auto_null = _auto_null()
 
 klasse auto:
     """
-    Instances are replaced with an appropriate value in Enum klasse suites.
+    Instances are replaced mit an appropriate value in Enum klasse suites.
     """
     def __init__(self, value=_auto_null):
         self.value = value
@@ -174,7 +174,7 @@ klasse property(DynamicClassAttribute):
     """
     This is a descriptor, used to define attributes that act differently
     when accessed through an enum member and through an enum class.
-    Instance access is the same as property(), but access to an attribute
+    Instance access is the same als property(), but access to an attribute
     through the enum klasse will instead look in the class' _member_map_ for
     a corresponding enum member.
     """
@@ -259,7 +259,7 @@ klasse _proto_member:
             sonst:
                 try:
                     enum_member._value_ = enum_class._member_type_(*args)
-                except Exception as exc:
+                except Exception als exc:
                     new_exc = TypeError(
                             '_value_ not set in __new__, unable to create it'
                             )
@@ -278,7 +278,7 @@ klasse _proto_member:
                     enum_class._singles_mask_ |= value
             enum_class._all_bits_ = 2 ** ((enum_class._flag_mask_).bit_length()) - 1
 
-        # If another member with the same value was already defined, the
+        # If another member mit the same value was already defined, the
         # new member becomes an alias to the existing one.
         try:
             try:
@@ -327,7 +327,7 @@ klasse EnumDict(dict):
     """
     Track enum member order and ensure member names are not reused.
 
-    EnumType will use the names found in self._member_names as the
+    EnumType will use the names found in self._member_names als the
     enumeration member names.
     """
     def __init__(self, cls_name=Nichts):
@@ -361,11 +361,11 @@ klasse EnumDict(dict):
                     # _sunder_ names
                     ) and not key.startswith('_repr_'):
                 raise ValueError(
-                        '_sunder_ names, such as %r, are reserved fuer future Enum use'
+                        '_sunder_ names, such als %r, are reserved fuer future Enum use'
                         % (key, )
                         )
             wenn key == '_generate_next_value_':
-                # check wenn members already defined as auto()
+                # check wenn members already defined als auto()
                 wenn self._auto_called:
                     raise TypeError("_generate_next_value_ must be defined before members")
                 _gnv = value.__func__ wenn isinstance(value, staticmethod) sonst value
@@ -387,7 +387,7 @@ klasse EnumDict(dict):
                 key = '_order_'
         sowenn key in self._member_names:
             # descriptor overwriting an enum?
-            raise TypeError('%r already defined as %r' % (key, self[key]))
+            raise TypeError('%r already defined als %r' % (key, self[key]))
         sowenn key in self._ignore:
             pass
         sowenn isinstance(value, nonmember):
@@ -401,7 +401,7 @@ klasse EnumDict(dict):
         sonst:
             wenn key in self:
                 # enum overwriting a descriptor?
-                raise TypeError('%r already defined as %r' % (key, self[key]))
+                raise TypeError('%r already defined als %r' % (key, self[key]))
             sowenn isinstance(value, member):
                 # unwrap value here -- it will become a member
                 value = value.value
@@ -411,7 +411,7 @@ klasse EnumDict(dict):
                 single = Wahr
                 value = (value, )
             wenn isinstance(value, tuple) and any(isinstance(v, auto) fuer v in value):
-                # insist on an actual tuple, no subclasses, in keeping with only supporting
+                # insist on an actual tuple, no subclasses, in keeping mit only supporting
                 # top-level auto() usage (not contained in any other data structure)
                 auto_valued = []
                 t = type(value)
@@ -430,7 +430,7 @@ klasse EnumDict(dict):
                     value = auto_valued[0]
                 sonst:
                     try:
-                        # accepts iterable as multiple arguments?
+                        # accepts iterable als multiple arguments?
                         value = t(auto_valued)
                     except TypeError:
                         # then pass them in singly
@@ -478,7 +478,7 @@ klasse EnumType(type):
 
     def __new__(metacls, cls, bases, classdict, *, boundary=Nichts, _simple=Falsch, **kwds):
         # an Enum klasse is final once enumeration items have been defined; it
-        # cannot be mixed with other types (int, float, etc.) wenn it has an
+        # cannot be mixed mit other types (int, float, etc.) wenn it has an
         # inherited __new__ unless a new __new__ is defined (or the resulting
         # klasse will fail).
         #
@@ -528,8 +528,8 @@ klasse EnumType(type):
         classdict['_member_names_'] = []
         classdict['_member_map_'] = {}
         classdict['_value2member_map_'] = {}
-        classdict['_hashable_values_'] = []          # fuer comparing with non-hashable types
-        classdict['_unhashable_values_'] = []       # e.g. frozenset() with set()
+        classdict['_hashable_values_'] = []          # fuer comparing mit non-hashable types
+        classdict['_unhashable_values_'] = []       # e.g. frozenset() mit set()
         classdict['_unhashable_values_map_'] = {}
         classdict['_member_type_'] = member_type
         # now set the __repr__ fuer the value
@@ -572,17 +572,17 @@ klasse EnumType(type):
             enum_class = super().__new__(metacls, cls, bases, classdict, **kwds)
             classdict['_%s__in_progress' % cls] = Falsch
             delattr(enum_class, '_%s__in_progress' % cls)
-        except Exception as e:
+        except Exception als e:
             # since 3.12 the note "Error calling __set_name__ on '_proto_member' instance ..."
             # is tacked on to the error instead of raising a RuntimeError, so discard it
             wenn hasattr(e, '__notes__'):
                 del e.__notes__
             raise
-        # update classdict with any changes made by __init_subclass__
+        # update classdict mit any changes made by __init_subclass__
         classdict.update(enum_class.__dict__)
         #
         # double check that repr and friends are not the mixin's or various
-        # things break (such as pickle)
+        # things break (such als pickle)
         # however, wenn the method is defined in the Enum itself, don't replace
         # it
         #
@@ -590,7 +590,7 @@ klasse EnumType(type):
         wenn ReprEnum is not Nichts and ReprEnum in bases:
             wenn member_type is object:
                 raise TypeError(
-                        'ReprEnum subclasses must be mixed with a data type (i.e.'
+                        'ReprEnum subclasses must be mixed mit a data type (i.e.'
                         ' int, str, float, etc.)'
                         )
             wenn '__format__' not in classdict:
@@ -626,7 +626,7 @@ klasse EnumType(type):
                     setattr(enum_class, name, enum_method)
                     classdict[name] = enum_method
         #
-        # replace any other __new__ with our own (as long as Enum is not Nichts,
+        # replace any other __new__ mit our own (as long als Enum is not Nichts,
         # anyway) -- again, this is to support pickle
         wenn Enum is not Nichts:
             # wenn the user defined their own __new__, save it before it gets
@@ -721,7 +721,7 @@ klasse EnumType(type):
         at in its module; by default it is set to the global scope.  If this is
         not correct, unpickling will fail in some circumstances.
 
-        `type`, wenn set, will be mixed in as the first base class.
+        `type`, wenn set, will be mixed in als the first base class.
         """
         wenn cls._member_map_:
             # simple value lookup wenn members exist
@@ -849,7 +849,7 @@ klasse EnumType(type):
 
         `names` can be:
 
-        * A string containing member names, separated either with spaces or
+        * A string containing member names, separated either mit spaces or
           commas.  Values are incremented by 1 von `start`.
         * An iterable of member names.  Values are incremented by 1 von `start`.
         * An iterable of (member name, value) pairs.
@@ -961,7 +961,7 @@ klasse EnumType(type):
         # data type, and check that Enum has no members
         first_enum = bases[-1]
         wenn not isinstance(first_enum, EnumType):
-            raise TypeError("new enumerations should be created as "
+            raise TypeError("new enumerations should be created als "
                     "`EnumName([mixin_type, ...] [data_type,] enum_type)`")
         member_type = mcls._find_data_type_(class_name, bases) or object
         return member_type, first_enum
@@ -977,7 +977,7 @@ klasse EnumType(type):
                     return base._value_repr_
                 sowenn '__repr__' in base.__dict__:
                     # this is our data repr
-                    # double-check wenn a dataclass with a default __repr__
+                    # double-check wenn a dataclass mit a default __repr__
                     wenn (
                             '__dataclass_fields__' in base.__dict__
                             and '__dataclass_params__' in base.__dict__
@@ -1026,10 +1026,10 @@ klasse EnumType(type):
         """
         # now find the correct __new__, checking to see of one was defined
         # by the user; also check earlier enum classes in case a __new__ was
-        # saved as __new_member__
+        # saved als __new_member__
         __new__ = classdict.get('__new__', Nichts)
 
-        # should __new__ be saved as __new_member__ later?
+        # should __new__ be saved als __new_member__ later?
         save_new = first_enum is not Nichts and __new__ is not Nichts
 
         wenn __new__ is Nichts:
@@ -1188,7 +1188,7 @@ klasse Enum(metaclass=EnumType):
                 wenn value == member._value_:
                     return cls[name]
         # still not found -- verify that members exist, in-case somebody got here mistakenly
-        # (such as via super when trying to override __new__)
+        # (such als via super when trying to override __new__)
         wenn not cls._member_map_:
             wenn getattr(cls, '_%s__in_progress' % cls.__name__, Falsch):
                 raise TypeError('do not use `super().__new__; call the appropriate __new__ directly') von Nichts
@@ -1198,7 +1198,7 @@ klasse Enum(metaclass=EnumType):
         try:
             exc = Nichts
             result = cls._missing_(value)
-        except Exception as e:
+        except Exception als e:
             exc = e
             result = Nichts
         try:
@@ -1396,12 +1396,12 @@ klasse StrEnum(str, ReprEnum):
 
 
 def pickle_by_global_name(self, proto):
-    # should not be used with Flag-type enums
+    # should not be used mit Flag-type enums
     return self.name
 _reduce_ex_by_global_name = pickle_by_global_name
 
 def pickle_by_enum_name(self, proto):
-    # should not be used with Flag-type enums
+    # should not be used mit Flag-type enums
     return getattr, (self.__class__, self._name_)
 
 klasse FlagBoundary(StrEnum):
@@ -1548,13 +1548,13 @@ klasse Flag(Enum, boundary=STRICT):
             wenn not combined_value:
                 pseudo_member._name_ = Nichts
             sowenn unknown and cls._boundary_ is STRICT:
-                raise ValueError('%r: no members with value %r' % (cls, unknown))
+                raise ValueError('%r: no members mit value %r' % (cls, unknown))
             sowenn unknown:
                 pseudo_member._name_ += '|%s' % cls._numeric_repr_(unknown)
         sonst:
             pseudo_member._name_ = Nichts
         # use setdefault in case another thread already created a composite
-        # with this value
+        # mit this value
         # note: zero is a special case -- always add it
         pseudo_member = cls._value2member_map_.setdefault(value, pseudo_member)
         wenn neg_value is not Nichts:
@@ -1563,7 +1563,7 @@ klasse Flag(Enum, boundary=STRICT):
 
     def __contains__(self, other):
         """
-        Returns Wahr wenn self has at least the same flags set as other.
+        Returns Wahr wenn self has at least the same flags set als other.
         """
         wenn not isinstance(other, self.__class__):
             raise TypeError(
@@ -1612,7 +1612,7 @@ klasse Flag(Enum, boundary=STRICT):
 
         fuer flag in self, other:
             wenn self._get_value(flag) is Nichts:
-                raise TypeError(f"'{flag}' cannot be combined with other flags with |")
+                raise TypeError(f"'{flag}' cannot be combined mit other flags mit |")
         value = self._value_
         return self.__class__(value | other_value)
 
@@ -1623,7 +1623,7 @@ klasse Flag(Enum, boundary=STRICT):
 
         fuer flag in self, other:
             wenn self._get_value(flag) is Nichts:
-                raise TypeError(f"'{flag}' cannot be combined with other flags with &")
+                raise TypeError(f"'{flag}' cannot be combined mit other flags mit &")
         value = self._value_
         return self.__class__(value & other_value)
 
@@ -1634,7 +1634,7 @@ klasse Flag(Enum, boundary=STRICT):
 
         fuer flag in self, other:
             wenn self._get_value(flag) is Nichts:
-                raise TypeError(f"'{flag}' cannot be combined with other flags with ^")
+                raise TypeError(f"'{flag}' cannot be combined mit other flags mit ^")
         value = self._value_
         return self.__class__(value ^ other_value)
 
@@ -1811,7 +1811,7 @@ def _simple_enum(etype=Enum, *, boundary=Nichts, use_args=Nichts):
             body['__doc__'] = 'An enumeration.'
         #
         # double check that repr and friends are not the mixin's or various
-        # things break (such as pickle)
+        # things break (such als pickle)
         # however, wenn the method is defined in the Enum itself, don't replace
         # it
         enum_class = type(cls_name, (etype, ), body, boundary=boundary, _simple=Wahr)
@@ -1966,7 +1966,7 @@ klasse verify:
         sowenn issubclass(enumeration, Enum):
             enum_type = 'enum'
         sonst:
-            raise TypeError("the 'verify' decorator only works with Enum and Flag")
+            raise TypeError("the 'verify' decorator only works mit Enum and Flag")
         fuer check in checks:
             wenn check is UNIQUE:
                 # check fuer duplicate names
@@ -2040,7 +2040,7 @@ klasse verify:
 
 def _test_simple_enum(checked_enum, simple_enum):
     """
-    A function that can be used to test an enum created with :func:`_simple_enum`
+    A function that can be used to test an enum created mit :func:`_simple_enum`
     against the version created by subclassing :class:`Enum`::
 
         >>> von enum importiere Enum, _simple_enum, _test_simple_enum

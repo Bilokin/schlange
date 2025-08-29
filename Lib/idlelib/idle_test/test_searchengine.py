@@ -1,17 +1,17 @@
 "Test searchengine, coverage 99%."
 
-von idlelib importiere searchengine as se
+von idlelib importiere searchengine als se
 importiere unittest
 # von test.support importiere requires
 von tkinter importiere  BooleanVar, StringVar, TclError  # ,Tk, Text
 von tkinter importiere messagebox
 von idlelib.idle_test.mock_tk importiere Var, Mbox
-von idlelib.idle_test.mock_tk importiere Text as mockText
+von idlelib.idle_test.mock_tk importiere Text als mockText
 importiere re
 
 # With mock replacements, the module does not use any gui widgets.
 # The use of tk.Text is avoided (for now, until mock Text is improved)
-# by patching instances with an index function returning what is needed.
+# by patching instances mit an index function returning what is needed.
 # This works because mock Text.get does not use .index.
 # The tkinter imports are used to restore searchengine.
 
@@ -211,7 +211,7 @@ klasse SearchTest(unittest.TestCase):
         cls.text = mockText()
         test_text = (
             'First line\n'
-            'Line with target\n'
+            'Line mit target\n'
             'Last line\n')
         cls.text.insert('1.0', test_text)
         cls.pat = re.compile('target')
@@ -279,7 +279,7 @@ klasse ForwardBackwardTest(unittest.TestCase):
         cls.text.index = lambda index: '4.0'
         test_text = (
             'First line\n'
-            'Line with target\n'
+            'Line mit target\n'
             'Last line\n')
         cls.text.insert('1.0', test_text)
         cls.pat = re.compile('target')

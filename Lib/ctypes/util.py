@@ -46,7 +46,7 @@ wenn os.name == "nt":
             # discussion about alternative approaches.
             return Nichts
 
-        # If python was built with in debug mode
+        # If python was built mit in debug mode
         importiere importlib.machinery
         wenn '_d.pyd' in importlib.machinery.EXTENSION_SUFFIXES:
             clibname += 'd'
@@ -127,7 +127,7 @@ wenn os.name == "nt":
         return libraries
 
 sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos"}:
-    von ctypes.macholib.dyld importiere dyld_find as _dyld_find
+    von ctypes.macholib.dyld importiere dyld_find als _dyld_find
     def find_library(name):
         possible = ['lib%s.dylib' % name,
                     '%s.dylib' % name,
@@ -157,9 +157,9 @@ sowenn os.name == "posix" and sys.platform in {"darwin", "ios", "tvos", "watchos
 
 sowenn sys.platform.startswith("aix"):
     # AIX has two styles of storing shared libraries
-    # GNU auto_tools refer to these as svr4 and aix
-    # svr4 (System V Release 4) is a regular file, often with .so as suffix
-    # AIX style uses an archive (suffix .a) with members (e.g., shr.o, libssl.so)
+    # GNU auto_tools refer to these als svr4 and aix
+    # svr4 (System V Release 4) is a regular file, often mit .so als suffix
+    # AIX style uses an archive (suffix .a) mit members (e.g., shr.o, libssl.so)
     # see issue#26439 and _aix.py fuer more details
 
     von ctypes._aix importiere find_library
@@ -181,15 +181,15 @@ sowenn os.name == "posix":
         "Return Wahr wenn the given file is an ELF file"
         elf_header = b'\x7fELF'
         try:
-            with open(filename, 'br') as thefile:
+            mit open(filename, 'br') als thefile:
                 return thefile.read(4) == elf_header
         except FileNotFoundError:
             return Falsch
 
     def _findLib_gcc(name):
-        # Run GCC's linker with the -t (aka --trace) option and examine the
+        # Run GCC's linker mit the -t (aka --trace) option and examine the
         # library name it prints out. The GCC command will fail because we
-        # haven't supplied a proper program with main(), but that does not
+        # haven't supplied a proper program mit main(), but that does not
         # matter.
         expr = os.fsencode(r'[^\(\)\s]*lib%s\.[^\(\)\s]*' % re.escape(name))
 
@@ -214,7 +214,7 @@ sowenn os.name == "posix":
                                         env=env)
             except OSError:  # E.g. bad executable
                 return Nichts
-            with proc:
+            mit proc:
                 trace = proc.stdout.read()
         finally:
             try:
@@ -248,7 +248,7 @@ sowenn os.name == "posix":
                                         stderr=subprocess.DEVNULL)
             except OSError:  # E.g. command not found
                 return Nichts
-            with proc:
+            mit proc:
                 data = proc.stdout.read()
             res = re.search(br'\[.*\]\sSONAME\s+([^\s]+)', data)
             wenn not res:
@@ -270,7 +270,7 @@ sowenn os.name == "posix":
                                         stderr=subprocess.DEVNULL)
             except OSError:  # E.g. bad executable
                 return Nichts
-            with proc:
+            mit proc:
                 dump = proc.stdout.read()
             res = re.search(br'\sSONAME\s+([^\s]+)', dump)
             wenn not res:
@@ -302,7 +302,7 @@ sowenn os.name == "posix":
             except OSError:  # E.g. command not found
                 data = b''
             sonst:
-                with proc:
+                mit proc:
                     data = proc.stdout.read()
 
             res = re.findall(expr, data)
@@ -333,7 +333,7 @@ sowenn os.name == "posix":
                                         env=env)
             except OSError:  # E.g. bad executable
                 return Nichts
-            with proc:
+            mit proc:
                 fuer line in proc.stdout:
                     line = line.strip()
                     wenn line.startswith(b'Default Library Path (ELF):'):
@@ -373,11 +373,11 @@ sowenn os.name == "posix":
             regex = r'\s+(lib%s\.[^\s]+)\s+\(%s'
             regex = os.fsencode(regex % (re.escape(name), abi_type))
             try:
-                with subprocess.Popen(['/sbin/ldconfig', '-p'],
+                mit subprocess.Popen(['/sbin/ldconfig', '-p'],
                                       stdin=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL,
                                       stdout=subprocess.PIPE,
-                                      env={'LC_ALL': 'C', 'LANG': 'C'}) as p:
+                                      env={'LC_ALL': 'C', 'LANG': 'C'}) als p:
                     res = re.search(regex, p.stdout.read())
                     wenn res:
                         return os.fsdecode(res.group(1))
@@ -493,7 +493,7 @@ def test():
             wenn sys.maxsize < 2**32:
                 drucke(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
                 drucke(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
-                # librpm.so is only available as 32-bit shared library
+                # librpm.so is only available als 32-bit shared library
                 drucke(find_library("rpm"))
                 drucke(cdll.LoadLibrary("librpm.so"))
             sonst:

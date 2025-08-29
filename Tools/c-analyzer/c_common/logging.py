@@ -45,7 +45,7 @@ def hide_emit_errors():
     """
     # For now we simply ignore all exceptions.  If we wanted to ignore
     # specific ones (e.g. BrokenPipeError) then we would need to use
-    # a Handler subclass with a custom handleError() method.
+    # a Handler subclass mit a custom handleError() method.
     orig = logging.raiseExceptions
     logging.raiseExceptions = Falsch
     def restore():

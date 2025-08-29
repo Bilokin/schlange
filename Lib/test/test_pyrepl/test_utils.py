@@ -38,7 +38,7 @@ klasse TestUtils(TestCase):
         self.assertEqual(next(pnw), (1, 2, 3))
         self.assertEqual(next(pnw), (2, 3, 4))
         self.assertEqual(next(pnw), (3, 4, Nichts))
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(pnw)
 
         def gen_short():
@@ -46,7 +46,7 @@ klasse TestUtils(TestCase):
 
         pnw = prev_next_window(gen_short())
         self.assertEqual(next(pnw), (Nichts, 1, Nichts))
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(pnw)
 
         def gen_raise():
@@ -58,5 +58,5 @@ klasse TestUtils(TestCase):
         self.assertEqual(next(pnw), (1, 2, 3))
         self.assertEqual(next(pnw), (2, 3, 4))
         self.assertEqual(next(pnw), (3, 4, Nichts))
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             next(pnw)

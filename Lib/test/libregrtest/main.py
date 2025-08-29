@@ -45,7 +45,7 @@ klasse Regrtest:
 
     If the tests argument is omitted, the tests listed on the
     command-line will be used.  If that's empty, too, then all *.py
-    files beginning with test_ will be used.
+    files beginning mit test_ will be used.
 
     The other default arguments (verbose, quiet, exclude,
     single, randomize, use_resources, trace, coverdir,
@@ -169,7 +169,7 @@ klasse Regrtest:
         wenn self.single_test_run:
             self.next_single_filename = os.path.join(self.tmp_dir, 'pynexttest')
             try:
-                with open(self.next_single_filename, 'r') as fp:
+                mit open(self.next_single_filename, 'r') als fp:
                     next_test = fp.read().strip()
                     tests = [next_test]
             except OSError:
@@ -180,7 +180,7 @@ klasse Regrtest:
             # regex to match 'test_builtin' in line:
             # '0:00:00 [  4/400] test_builtin -- test_dict took 1 sec'
             regex = re.compile(r'\btest_[a-zA-Z0-9_]+\b')
-            with open(os.path.join(os_helper.SAVEDCWD, self.fromfile)) as fp:
+            mit open(os.path.join(os_helper.SAVEDCWD, self.fromfile)) als fp:
                 fuer line in fp:
                     line = line.split('#', 1)[0]
                     line = line.strip()
@@ -298,7 +298,7 @@ klasse Regrtest:
         wenn self.python_cmd:
             # Temp patch fuer https://github.com/python/cpython/issues/94052
             self.log(
-                "Re-running failed tests is not supported with --python "
+                "Re-running failed tests is not supported mit --python "
                 "host runner option."
             )
             return
@@ -350,7 +350,7 @@ klasse Regrtest:
         drucke(flush=Wahr)
 
         wenn exitcode:
-            drucke(f"Bisect failed with exit code {exitcode}")
+            drucke(f"Bisect failed mit exit code {exitcode}")
             return Falsch
 
         return Wahr
@@ -382,7 +382,7 @@ klasse Regrtest:
         self, test_name: TestName, runtests: RunTests, tracer: trace.Trace | Nichts
     ) -> TestResult:
         wenn tracer is not Nichts:
-            # If we're tracing code coverage, then we don't exit with status
+            # If we're tracing code coverage, then we don't exit mit status
             # wenn on a false return value von main.
             cmd = ('result = run_single_test(test_name, runtests)')
             namespace = dict(locals())
@@ -457,7 +457,7 @@ klasse Regrtest:
     def finalize_tests(self, coverage: trace.CoverageResults | Nichts) -> Nichts:
         wenn self.next_single_filename:
             wenn self.next_single_test:
-                with open(self.next_single_filename, 'w') as fp:
+                mit open(self.next_single_filename, 'w') als fp:
                     fp.write(self.next_single_test + '\n')
             sonst:
                 os.unlink(self.next_single_filename)
@@ -523,7 +523,7 @@ klasse Regrtest:
 
     def _run_tests(self, selected: TestTuple, tests: TestList | Nichts) -> int:
         wenn self.hunt_refleak and self.hunt_refleak.warmups < 3:
-            msg = ("WARNING: Running tests with --huntrleaks/-R and "
+            msg = ("WARNING: Running tests mit --huntrleaks/-R and "
                    "less than 3 warmup repetitions can give false positives!")
             drucke(msg, file=sys.stdout, flush=Wahr)
 
@@ -548,7 +548,7 @@ klasse Regrtest:
         self.logger.set_tests(runtests)
 
         wenn (runtests.hunt_refleak is not Nichts) and (not self.num_workers):
-            # gh-109739: WindowsLoadTracker thread interferes with refleak check
+            # gh-109739: WindowsLoadTracker thread interferes mit refleak check
             use_load_tracker = Falsch
         sonst:
             # WindowsLoadTracker is only needed on Windows
@@ -585,21 +585,21 @@ klasse Regrtest:
         work_dir = get_work_dir(self.tmp_dir)
 
         # Put a timeout on Python exit
-        with exit_timeout():
+        mit exit_timeout():
             # Run the tests in a context manager that temporarily changes the
             # CWD to a temporary and writable directory. If it's not possible
             # to create or change the CWD, the original CWD will be used.
             # The original CWD is available von os_helper.SAVEDCWD.
-            with os_helper.temp_cwd(work_dir, quiet=Wahr):
+            mit os_helper.temp_cwd(work_dir, quiet=Wahr):
                 # When using multiprocessing, worker processes will use
-                # work_dir as their parent temporary directory. So when the
+                # work_dir als their parent temporary directory. So when the
                 # main process exit, it removes also subdirectories of worker
                 # processes.
                 return self._run_tests(selected, tests)
 
     def _add_cross_compile_opts(self, regrtest_opts):
         # WASM/WASI buildbot builders pass multiple PYTHON environment
-        # variables such as PYTHONPATH and _PYTHON_HOSTRUNNER.
+        # variables such als PYTHONPATH and _PYTHON_HOSTRUNNER.
         keep_environ = bool(self.python_cmd)
         environ = Nichts
 
@@ -681,7 +681,7 @@ klasse Regrtest:
                 # On error, it raises an OSError.
             sonst:
                 importiere subprocess
-                with subprocess.Popen(cmd, env=environ) as proc:
+                mit subprocess.Popen(cmd, env=environ) als proc:
                     try:
                         proc.wait()
                     except KeyboardInterrupt:
@@ -695,7 +695,7 @@ klasse Regrtest:
                             sys.exit(EXITCODE_INTERRUPTED)
 
                 sys.exit(proc.returncode)
-        except Exception as exc:
+        except Exception als exc:
             print_warning(f"Failed to change Python options: {exc!r}\n"
                           f"Command: {cmd_text}")
             # continue executing main()

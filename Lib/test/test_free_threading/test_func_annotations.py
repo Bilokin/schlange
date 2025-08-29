@@ -34,7 +34,7 @@ klasse TestFTFuncAnnotations(TestCase):
             return x + 1
 
         fuer _ in range(10):
-            with concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) as executor:
+            mit concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) als executor:
                 b = Barrier(self.NUM_THREADS)
                 futures = {executor.submit(get_func_annotation, f, b): i fuer i in range(self.NUM_THREADS)}
                 fuer fut in concurrent.futures.as_completed(futures):
@@ -42,7 +42,7 @@ klasse TestFTFuncAnnotations(TestCase):
                     self.assertIsNotNichts(annotate)
                     self.assertEqual(annotate, {'x': int, 'return': int})
 
-            with concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) as executor:
+            mit concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) als executor:
                 b = Barrier(self.NUM_THREADS)
                 futures = {executor.submit(get_func_annotation_dunder, f, b): i fuer i in range(self.NUM_THREADS)}
                 fuer fut in concurrent.futures.as_completed(futures):
@@ -55,7 +55,7 @@ klasse TestFTFuncAnnotations(TestCase):
             return y ** x
 
         fuer _ in range(10):
-            with concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) as executor:
+            mit concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) als executor:
                 b = Barrier(self.NUM_THREADS)
                 futures = {executor.submit(set_func_annotation, bar, b): i fuer i in range(self.NUM_THREADS)}
                 fuer fut in concurrent.futures.as_completed(futures):
@@ -63,5 +63,5 @@ klasse TestFTFuncAnnotations(TestCase):
                     self.assertIsNotNichts(annotate)
                     self.assertEqual(annotate, {'x': int, 'y': int, 'return': int})
 
-            # func_get_annotations returns in-place dict, so bar.__annotations__ should be modified as well
+            # func_get_annotations returns in-place dict, so bar.__annotations__ should be modified als well
             self.assertEqual(bar.__annotations__, {'x': int, 'y': int, 'return': int})

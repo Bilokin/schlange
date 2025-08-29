@@ -49,7 +49,7 @@ klasse TestContentManager(TestEmailBase):
         cm = ContentManager()
         m = self._make_message()
         m['Content-Type'] = 'text/plain'
-        with self.assertRaisesRegex(KeyError, 'text/plain'):
+        mit self.assertRaisesRegex(KeyError, 'text/plain'):
             cm.get_content(m)
 
     klasse BaseThing(str):
@@ -107,14 +107,14 @@ klasse TestContentManager(TestEmailBase):
         cm = ContentManager()
         m = self._make_message()
         msg_obj = self.Thing()
-        with self.assertRaisesRegex(KeyError, self.testobject_full_path):
+        mit self.assertRaisesRegex(KeyError, self.testobject_full_path):
             cm.set_content(m, msg_obj)
 
     def test_set_content_raises_if_called_on_multipart(self):
         cm = ContentManager()
         m = self._make_message()
         m['Content-Type'] = 'multipart/foo'
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             cm.set_content(m, 'test')
 
     def test_set_content_calls_clear_content(self):
@@ -223,7 +223,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             Basic text.
             """))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             raw_data_manager.get_content(m, foo='ignore')
 
     def test_get_non_text(self):
@@ -234,7 +234,7 @@ klasse TestRawDataManager(TestEmailBase):
             Ym9ndXMgZGF0YQ==
             """)
         fuer maintype in 'audio image video application'.split():
-            with self.subTest(maintype=maintype):
+            mit self.subTest(maintype=maintype):
                 m = self._str_msg(template.format(maintype+'/foo'))
                 self.assertEqual(raw_data_manager.get_content(m), b"bogus data")
 
@@ -245,7 +245,7 @@ klasse TestRawDataManager(TestEmailBase):
 
             Ym9ndXMgZGF0YQ==
             """))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             raw_data_manager.get_content(m, errors='ignore')
 
     def test_get_raises_on_multipart(self):
@@ -255,7 +255,7 @@ klasse TestRawDataManager(TestEmailBase):
             --===
             --===--
             """))
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             raw_data_manager.get_content(m)
 
     def test_get_message_rfc822_and_external_body(self):
@@ -269,7 +269,7 @@ klasse TestRawDataManager(TestEmailBase):
             an example message
             """)
         fuer subtype in 'rfc822 external-body'.split():
-            with self.subTest(subtype=subtype):
+            mit self.subTest(subtype=subtype):
                 m = self._str_msg(template.format(subtype))
                 sub_msg = raw_data_manager.get_content(m)
                 self.assertIsInstance(sub_msg, self.message)
@@ -452,7 +452,7 @@ klasse TestRawDataManager(TestEmailBase):
 
     def test_set_text_11_lines_long_line_maximal_non_ascii_heuristics(self):
         # Yes, it chooses "wrong" here.  It's a heuristic.  So this result
-        # could change wenn we come up with a better heuristic.
+        # could change wenn we come up mit a better heuristic.
         m = self._make_message()
         content = ('\n'*10 +
                    "áàäéèęöőáàäéèęöőáàäéèęöőáàäéèęöő"
@@ -483,17 +483,17 @@ klasse TestRawDataManager(TestEmailBase):
 
     def test_set_text_non_ascii_with_cte_7bit_raises(self):
         m = self._make_message()
-        with self.assertRaises(UnicodeError):
+        mit self.assertRaises(UnicodeError):
             raw_data_manager.set_content(m,"áàäéèęöő.\n", cte='7bit')
 
     def test_set_text_non_ascii_with_charset_ascii_raises(self):
         m = self._make_message()
-        with self.assertRaises(UnicodeError):
+        mit self.assertRaises(UnicodeError):
             raw_data_manager.set_content(m,"áàäéèęöő.\n", charset='ascii')
 
     def test_set_text_non_ascii_with_cte_7bit_and_charset_ascii_raises(self):
         m = self._make_message()
-        with self.assertRaises(UnicodeError):
+        mit self.assertRaises(UnicodeError):
             raw_data_manager.set_content(m,"áàäéèęöő.\n", cte='7bit', charset='ascii')
 
     def test_set_message(self):
@@ -550,7 +550,7 @@ klasse TestRawDataManager(TestEmailBase):
             j'ai un problème de python. il est sorti de son vivarium.
             """).encode('utf-8'))
         # The choice of base64 fuer the body encoding is because generator
-        # doesn't bother with heuristics and uses it unconditionally fuer utf-8
+        # doesn't bother mit heuristics and uses it unconditionally fuer utf-8
         # text.
         # XXX: the first cte should be 7bit, too...that's a generator bug.
         # XXX: the line length in the body also looks like a generator bug.
@@ -578,16 +578,16 @@ klasse TestRawDataManager(TestEmailBase):
         content = self._make_message()
         fuer cte in 'quoted-printable base64'.split():
             fuer subtype in 'rfc822 external-body'.split():
-                with self.subTest(cte=cte, subtype=subtype):
-                    with self.assertRaises(ValueError) as ar:
+                mit self.subTest(cte=cte, subtype=subtype):
+                    mit self.assertRaises(ValueError) als ar:
                         m.set_content(content, subtype, cte=cte)
                     exc = str(ar.exception)
                     self.assertIn(cte, exc)
                     self.assertIn(subtype, exc)
         subtype = 'external-body'
         fuer cte in '8bit binary'.split():
-            with self.subTest(cte=cte, subtype=subtype):
-                with self.assertRaises(ValueError) as ar:
+            mit self.subTest(cte=cte, subtype=subtype):
+                mit self.assertRaises(ValueError) als ar:
                     m.set_content(content, subtype, cte=cte)
                 exc = str(ar.exception)
                 self.assertIn(cte, exc)
@@ -597,7 +597,7 @@ klasse TestRawDataManager(TestEmailBase):
         fuer content in (b"bogus content",
                         bytearray(b"bogus content"),
                         memoryview(b"bogus content")):
-            with self.subTest(content=content):
+            mit self.subTest(content=content):
                 m = self._make_message()
                 raw_data_manager.set_content(m, content, 'image', 'jpeg')
                 self.assertEqual(str(m), textwrap.dedent("""\
@@ -701,7 +701,7 @@ klasse TestRawDataManager(TestEmailBase):
     def test_set_headers_with_invalid_duplicate_string_header_raises(self):
         m = self._make_message()
         content = "Simple message.\n"
-        with self.assertRaisesRegex(ValueError, 'Content-Type'):
+        mit self.assertRaisesRegex(ValueError, 'Content-Type'):
             raw_data_manager.set_content(m, content, headers=(
                 "Content-Type: foo/bar",)
                 )
@@ -710,7 +710,7 @@ klasse TestRawDataManager(TestEmailBase):
         m = self._make_message()
         content = "Simple message.\n"
         header_factory = self.policy.header_factory
-        with self.assertRaisesRegex(ValueError, 'Content-Type'):
+        mit self.assertRaisesRegex(ValueError, 'Content-Type'):
             raw_data_manager.set_content(m, content, headers=(
                 header_factory("Content-Type", " foo/bar"),)
                 )
@@ -718,7 +718,7 @@ klasse TestRawDataManager(TestEmailBase):
     def test_set_headers_with_defective_string_header_raises(self):
         m = self._make_message()
         content = "Simple message.\n"
-        with self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
+        mit self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
             raw_data_manager.set_content(m, content, headers=(
                 'To: a@fairly@@invalid@address',)
                 )
@@ -728,7 +728,7 @@ klasse TestRawDataManager(TestEmailBase):
         m = self._make_message()
         content = "Simple message.\n"
         header_factory = self.policy.header_factory
-        with self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
+        mit self.assertRaisesRegex(ValueError, 'a@fairly@@invalid@address'):
             raw_data_manager.set_content(m, content, headers=(
                 header_factory('To', 'a@fairly@@invalid@address'),)
                 )

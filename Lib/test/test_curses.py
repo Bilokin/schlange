@@ -95,7 +95,7 @@ klasse TestCurses(unittest.TestCase):
                     # As a fallback, use regular file to write control codes.
                     # Some functions (like savetty) will not work, but at
                     # least the garbage control sequences will not be mixed
-                    # with the testing report.
+                    # mit the testing report.
                     tmp = tempfile.TemporaryFile(mode='wb', buffering=0)
                     self.isatty = Falsch
                 self.addCleanup(tmp.close)
@@ -280,11 +280,11 @@ klasse TestCurses(unittest.TestCase):
         stdscr.echochar('A')
         stdscr.echochar(b'A')
         stdscr.echochar(65)
-        with self.assertRaises((UnicodeEncodeError, OverflowError)):
+        mit self.assertRaises((UnicodeEncodeError, OverflowError)):
             # Unicode is not fully supported yet, but at least it does
             # not crash.
             # It is supposed to fail because either the character is
-            # not encodable with the current encoding, or it is encoded to
+            # not encodable mit the current encoding, or it is encoded to
             # a multibyte sequence.
             stdscr.echochar('\u0114')
         stdscr.echochar('A', curses.A_BOLD)
@@ -295,7 +295,7 @@ klasse TestCurses(unittest.TestCase):
         encoding = stdscr.encoding
         # addstr()/insstr()
         fuer func in [stdscr.addstr, stdscr.insstr]:
-            with self.subTest(func.__qualname__):
+            mit self.subTest(func.__qualname__):
                 stdscr.move(0, 0)
                 func('abcd')
                 func(b'abcd')
@@ -310,7 +310,7 @@ klasse TestCurses(unittest.TestCase):
 
         # addnstr()/insnstr()
         fuer func in [stdscr.addnstr, stdscr.insnstr]:
-            with self.subTest(func.__qualname__):
+            mit self.subTest(func.__qualname__):
                 stdscr.move(0, 0)
                 func('1234', 3)
                 func(b'1234', 3)
@@ -328,7 +328,7 @@ klasse TestCurses(unittest.TestCase):
         # reject embedded null bytes and characters
         stdscr = self.stdscr
         fuer arg in ['a\0', b'a\0']:
-            with self.subTest(arg=arg):
+            mit self.subTest(arg=arg):
                 self.assertRaises(ValueError, stdscr.addstr, arg)
                 self.assertRaises(ValueError, stdscr.addnstr, arg, 1)
                 self.assertRaises(ValueError, stdscr.insstr, arg)
@@ -353,7 +353,7 @@ klasse TestCurses(unittest.TestCase):
     def test_getch(self):
         win = curses.newwin(5, 12, 5, 2)
 
-        # TODO: Test with real input by writing to master fd.
+        # TODO: Test mit real input by writing to master fd.
         fuer c in 'spam\n'[::-1]:
             curses.ungetch(c)
         self.assertEqual(win.getch(3, 1), b's'[0])
@@ -373,7 +373,7 @@ klasse TestCurses(unittest.TestCase):
         self.assertRaises(ValueError, win.getstr, -400)
         self.assertRaises(ValueError, win.getstr, 2, 3, -400)
 
-        # TODO: Test with real input by writing to master fd.
+        # TODO: Test mit real input by writing to master fd.
         fuer c in 'Lorem\nipsum\ndolor\nsit\namet\n'[::-1]:
             curses.ungetch(c)
         self.assertEqual(win.getstr(3, 1, 2), b'Lo')
@@ -595,7 +595,7 @@ klasse TestCurses(unittest.TestCase):
     def test_putwin(self):
         win = curses.newwin(5, 12, 1, 2)
         win.addstr(2, 1, 'Lorem ipsum')
-        with tempfile.TemporaryFile() as f:
+        mit tempfile.TemporaryFile() als f:
             win.putwin(f)
             del win
             f.seek(0)
@@ -1048,7 +1048,7 @@ klasse TestCurses(unittest.TestCase):
         w = curses.newwin(10, 10)
         p = curses.panel.new_panel(w)
         # try to access userptr() before calling set_userptr() -- segfaults
-        with self.assertRaises(curses.panel.error,
+        mit self.assertRaises(curses.panel.error,
                                msg='userptr should fail since not set'):
             p.userptr()
 
@@ -1103,9 +1103,9 @@ klasse TestCurses(unittest.TestCase):
         self.assertEqual(curses.LINES, lines)
         self.assertEqual(curses.COLS, cols)
 
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             curses.resize_term(35000, 1)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             curses.resize_term(1, 35000)
         # GH-120378: Overflow failure in resize_term() causes refresh to fail
         tmp = curses.initscr()
@@ -1125,9 +1125,9 @@ klasse TestCurses(unittest.TestCase):
         self.assertEqual(curses.LINES, lines)
         self.assertEqual(curses.COLS, cols)
 
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             curses.resizeterm(35000, 1)
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             curses.resizeterm(1, 35000)
         # GH-120378: Overflow failure in resizeterm() causes refresh to fail
         tmp = curses.initscr()
@@ -1158,8 +1158,8 @@ klasse TestCurses(unittest.TestCase):
                 continue
             try:
                 curses.unget_wch(ch)
-            except Exception as err:
-                self.fail("unget_wch(%a) failed with encoding %s: %s"
+            except Exception als err:
+                self.fail("unget_wch(%a) failed mit encoding %s: %s"
                           % (ch, stdscr.encoding, err))
             read = stdscr.get_wch()
             self.assertEqual(read, ch)
@@ -1174,10 +1174,10 @@ klasse TestCurses(unittest.TestCase):
         importiere codecs
         encoding = stdscr.encoding
         codecs.lookup(encoding)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             stdscr.encoding = 10
         stdscr.encoding = encoding
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del stdscr.encoding
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
@@ -1202,7 +1202,7 @@ klasse TestCurses(unittest.TestCase):
 
         # So.  No signature fuer addch.
         # But Argument Clinic gave us a human-readable equivalent
-        # as the first line of the docstring.  So we parse that,
+        # als the first line of the docstring.  So we parse that,
         # and ensure that the parameters appear in the correct order.
         # Since this is parsing output von Argument Clinic, we can
         # be reasonably certain the generated parsing code will be
@@ -1264,7 +1264,7 @@ klasse TestAscii(unittest.TestCase):
 
     def test_ctypes(self):
         def check(func, expected):
-            with self.subTest(ch=c, func=func):
+            mit self.subTest(ch=c, func=func):
                 self.assertEqual(func(i), expected)
                 self.assertEqual(func(c), expected)
 

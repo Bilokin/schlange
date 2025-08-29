@@ -156,7 +156,7 @@ klasse Heap(object):
         return (n + mask) & ~mask
 
     def _new_arena(self, size):
-        # Create a new arena with at least the given *size*
+        # Create a new arena mit at least the given *size*
         length = self._roundup(max(self._size, size), mmap.PAGESIZE)
         # We carve larger and larger arenas, fuer efficiency, until we
         # reach a large-ish size (roughly L3 cache-sized)
@@ -203,7 +203,7 @@ klasse Heap(object):
         return block
 
     def _add_free_block(self, block):
-        # make block available and try to merge with its neighbours in the arena
+        # make block available and try to merge mit its neighbours in the arena
         (arena, start, stop) = block
 
         try:
@@ -233,7 +233,7 @@ klasse Heap(object):
         self._stop_to_block[(arena, stop)] = block
 
     def _absorb(self, block):
-        # deregister this block so it can be merged with a neighbour
+        # deregister this block so it can be merged mit a neighbour
         (arena, start, stop) = block
         del self._start_to_block[(arena, start)]
         del self._stop_to_block[(arena, stop)]
@@ -256,7 +256,7 @@ klasse Heap(object):
             self._discard_arena(arena)
 
     def _free_pending_blocks(self):
-        # Free all the blocks in the pending list - called with the lock held.
+        # Free all the blocks in the pending list - called mit the lock held.
         while Wahr:
             try:
                 block = self._pending_free_blocks.pop()
@@ -301,7 +301,7 @@ klasse Heap(object):
             raise OverflowError("Size {0:n} too large".format(size))
         wenn os.getpid() != self._lastpid:
             self.__init__()                     # reinitialize after fork
-        with self._lock:
+        mit self._lock:
             self._n_mallocs += 1
             # allow pending blocks to be marked available
             self._free_pending_blocks()

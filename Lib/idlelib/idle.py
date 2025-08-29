@@ -2,7 +2,7 @@ importiere os.path
 importiere sys
 
 
-# Enable running IDLE with idlelib in a non-standard location.
+# Enable running IDLE mit idlelib in a non-standard location.
 # This was once used to run development versions of IDLE.
 # Because PEP 434 declared idle.py a public interface,
 # removal should require deprecation.

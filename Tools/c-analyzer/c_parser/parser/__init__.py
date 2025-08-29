@@ -15,7 +15,7 @@ conditions that must be applied when parsing C code:
 (see: https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf)
 
 We have taken advantage of the elements of the C grammar that are used
-only in a few limited contexts, mostly as delimiters.  They allow us to
+only in a few limited contexts, mostly als delimiters.  They allow us to
 focus the regex patterns confidently.  Here are the relevant tokens and
 in which grammar rules they are used:
 
@@ -95,7 +95,7 @@ Here are the cases where we've taken shortcuts or made assumptions:
 * only inline struct/union/enum decls may be anonymous (without a name)
 * no function pointers in function pointer parameters
 * fuer loop "headers" do not have curly braces (e.g. compound init)
-* syntactically, variable decls do not overlap with stmts/exprs, except
+* syntactically, variable decls do not overlap mit stmts/exprs, except
   in the following case:
     spam (*eggs) (...)
   This could be either a function pointer variable named "eggs"
@@ -129,7 +129,7 @@ def parse(srclines, **srckwargs):
         yield ParsedItem.from_raw(result)
 
 
-# XXX Later: Add a separate function to deal with preprocessor directives
+# XXX Later: Add a separate function to deal mit preprocessor directives
 # parsed out of raw source.
 
 
@@ -161,7 +161,7 @@ def _parse(srclines, anon_name, **srckwargs):
         yield result
 
 
-# We use defaults that cover most files.  Files with bigger declarations
+# We use defaults that cover most files.  Files mit bigger declarations
 # are covered elsewhere (MAX_SIZES in cpython/_parser.py).
 
 def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
@@ -169,7 +169,7 @@ def _iter_source(lines, *, maxtext=11_000, maxlines=200, showtext=Falsch):
     maxlines = maxlines wenn maxlines and maxlines > 0 sonst Nichts
     filestack = []
     allinfo = {}
-    # "lines" should be (fileinfo, data), as produced by the preprocessor code.
+    # "lines" should be (fileinfo, data), als produced by the preprocessor code.
     fuer fileinfo, line in lines:
         wenn fileinfo.filename in filestack:
             while fileinfo.filename != filestack[-1]:

@@ -126,8 +126,8 @@ klasse StaggeredTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_cancelled(self):
         log = []
-        with self.assertRaises(TimeoutError):
-            async with asyncio.timeout(Nichts) as cs_outer, asyncio.timeout(Nichts) as cs_inner:
+        mit self.assertRaises(TimeoutError):
+            async mit asyncio.timeout(Nichts) als cs_outer, asyncio.timeout(Nichts) als cs_inner:
                 async def coro_fn():
                     cs_inner.reschedule(-1)
                     await asyncio.sleep(0)

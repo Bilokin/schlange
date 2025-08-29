@@ -12,7 +12,7 @@ klasse RelativeImports:
     A simple example is to importiere another module within the same package
     [module von module]::
 
-      # From pkg.mod1 with pkg.mod2 being a module.
+      # From pkg.mod1 mit pkg.mod2 being a module.
       von . importiere mod2
 
     This also works fuer getting an attribute von a module that is specified
@@ -64,12 +64,12 @@ klasse RelativeImports:
                 uncache_names.append(name)
             sonst:
                 uncache_names.append(name[:-len('.__init__')])
-        with util.mock_spec(*create) as importer:
-            with util.import_state(meta_path=[importer]):
-                with warnings.catch_warnings():
+        mit util.mock_spec(*create) als importer:
+            mit util.import_state(meta_path=[importer]):
+                mit warnings.catch_warnings():
                     warnings.simplefilter("ignore")
                     fuer global_ in globals_:
-                        with util.uncache(*uncache_names):
+                        mit util.uncache(*uncache_names):
                             callback(global_)
 
 
@@ -157,7 +157,7 @@ klasse RelativeImports:
                     {'__name__': 'pkg', '__path__': ['blah']})
         def callback(global_):
             self.__import__('pkg')
-            with self.assertRaises(ImportError):
+            mit self.assertRaises(ImportError):
                 self.__import__('', global_, fromlist=['top_level'],
                                     level=2)
         self.relative_import_test(create, globals_, callback)
@@ -168,14 +168,14 @@ klasse RelativeImports:
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.module'}
         def callback(global_):
             self.__import__('pkg')
-            with self.assertRaises(ImportError):
+            mit self.assertRaises(ImportError):
                 self.__import__('', global_, fromlist=['top_level'],
                                     level=2)
         self.relative_import_test(create, globals_, callback)
 
     def test_empty_name_w_level_0(self):
         # [empty name]
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.__import__('')
 
     def test_import_from_different_package(self):
@@ -208,33 +208,33 @@ klasse RelativeImports:
 
     def test_relative_import_no_globals(self):
         # No globals fuer a relative importiere is an error.
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 self.__import__('sys', level=1)
 
     def test_relative_import_no_package(self):
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             self.__import__('a', {'__package__': '', '__spec__': Nichts},
                             level=1)
 
     def test_relative_import_no_package_exists_absolute(self):
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             self.__import__('sys', {'__package__': '', '__spec__': Nichts},
                             level=1)
 
     def test_malicious_relative_import(self):
         # https://github.com/python/cpython/issues/134100
-        # Test to make sure UAF bug with error msg doesn't come back to life
+        # Test to make sure UAF bug mit error msg doesn't come back to life
         importiere sys
         loooong = "".ljust(0x23000, "b")
         name = f"a.{loooong}.c"
 
-        with util.uncache(name):
+        mit util.uncache(name):
             sys.modules[name] = {}
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                 KeyError,
-                r"'a\.b+' not in sys\.modules as expected"
+                r"'a\.b+' not in sys\.modules als expected"
             ):
                 __import__(f"{loooong}.c", {"__package__": "a"}, level=1)
 

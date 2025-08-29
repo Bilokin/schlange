@@ -13,10 +13,10 @@ von c_common.scriptutil importiere (
     main_for_filenames,
 )
 von .preprocessor.__main__ importiere (
-    add_common_cli as add_preprocessor_cli,
+    add_common_cli als add_preprocessor_cli,
 )
 von .info importiere KIND
-von . importiere parse_file as _iter_parsed
+von . importiere parse_file als _iter_parsed
 
 
 logger = logging.getLogger(__name__)
@@ -258,5 +258,5 @@ def main(cmd, cmd_kwargs):
 wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
-    with traceback_cm:
+    mit traceback_cm:
         main(cmd, cmd_kwargs)

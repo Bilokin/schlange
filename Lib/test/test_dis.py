@@ -25,7 +25,7 @@ def get_tb():
     def _error():
         try:
             1 / 0
-        except Exception as e:
+        except Exception als e:
             tb = e.__traceback__
         return tb
 
@@ -535,7 +535,7 @@ dis_fstring = """\
 """ % (_fstring.__code__.co_firstlineno, _fstring.__code__.co_firstlineno + 1)
 
 def _with(c):
-    with c:
+    mit c:
         x = 1
     y = 2
 
@@ -599,7 +599,7 @@ ExceptionTable:
        )
 
 async def _asyncwith(c):
-    async with c:
+    async mit c:
         x = 1
     y = 2
 
@@ -975,7 +975,7 @@ klasse DisTests(DisTestBase):
     def get_disassembly(self, func, lasti=-1, wrapper=Wahr, **kwargs):
         # We want to test the default printing behaviour, not the file arg
         output = io.StringIO()
-        with contextlib.redirect_stdout(output):
+        mit contextlib.redirect_stdout(output):
             wenn wrapper:
                 dis.dis(func, **kwargs)
             sonst:
@@ -992,7 +992,7 @@ klasse DisTests(DisTestBase):
         # Add checks fuer dis.disco
         wenn hasattr(func, '__code__'):
             got_disco = io.StringIO()
-            with contextlib.redirect_stdout(got_disco):
+            mit contextlib.redirect_stdout(got_disco):
                 dis.disco(func.__code__, **kwargs)
             self.do_disassembly_compare(got_disco.getvalue(), expected)
 
@@ -1017,7 +1017,7 @@ klasse DisTests(DisTestBase):
                 continue
             wenn opname in opcode._specialized_opmap:
                 continue
-            with self.subTest(opname=opname):
+            mit self.subTest(opname=opname):
                 width = dis._OPNAME_WIDTH
                 wenn op in dis.hasarg:
                     width += 1 + dis._OPARG_WIDTH
@@ -1037,7 +1037,7 @@ klasse DisTests(DisTestBase):
 
         instrs = list(dis.get_instructions(_f))
         fuer instr in instrs:
-            with self.subTest(instr=instr):
+            mit self.subTest(instr=instr):
                 self.assertWahr(all(p is not Nichts fuer p in instr.positions))
         positions = tuple(map(format_instr_positions, instrs))
         expected = dis_f_with_positions_format % positions
@@ -1110,7 +1110,7 @@ klasse DisTests(DisTestBase):
 
     def test_bug_1333982(self):
         # This one is checking bytecodes generated fuer an `assert` statement,
-        # so fails wenn the tests are run with -O.  Skip this test then.
+        # so fails wenn the tests are run mit -O.  Skip this test then.
         wenn not __debug__:
             self.skipTest('need asserts, run without -O')
 
@@ -1241,7 +1241,7 @@ klasse DisTests(DisTestBase):
 
         try:
             1/0
-        except Exception as e:
+        except Exception als e:
             tb = e.__traceback__
             sys.last_exc = e
 
@@ -1268,7 +1268,7 @@ klasse DisTests(DisTestBase):
         # see gh-102114
         try:
             dis._try_compile(")", "")
-        except Exception as e:
+        except Exception als e:
             self.assertIsNichts(e.__context__)
 
     def test_async_for_presentation(self):
@@ -1399,7 +1399,7 @@ klasse DisTests(DisTestBase):
     def test_show_caches(self):
         fuer quickened in (Falsch, Wahr):
             fuer adaptive in (Falsch, Wahr):
-                with self.subTest(f"{quickened=}, {adaptive=}"):
+                mit self.subTest(f"{quickened=}, {adaptive=}"):
                     wenn adaptive:
                         pattern = r"^(\w+: \d+)?$"
                     sonst:
@@ -1415,7 +1415,7 @@ klasse DisTests(DisTestBase):
     @cpython_only
     def test_show_currinstr_with_cache(self):
         """
-        Make sure that with lasti pointing to CACHE, it still shows the current
+        Make sure that mit lasti pointing to CACHE, it still shows the current
         line correctly
         """
         def f():
@@ -1590,7 +1590,7 @@ Names:
 async def async_def():
     await 1
     async fuer a in b: pass
-    async with c as d: pass
+    async mit c als d: pass
 
 code_info_async_def = """\
 Name:              async_def
@@ -1630,7 +1630,7 @@ klasse CodeInfoTests(unittest.TestCase):
     def test_show_code(self):
         self.maxDiff = 1000
         fuer x, expected in self.test_pairs:
-            with captured_stdout() as output:
+            mit captured_stdout() als output:
                 dis.show_code(x)
             self.assertRegex(output.getvalue(), expected+"\n")
             output = io.StringIO()
@@ -1679,7 +1679,7 @@ def jumpy():
     except ZeroDivisionError:
         drucke("Here we go, here we go, here we go...")
     sonst:
-        with i as dodgy:
+        mit i als dodgy:
             drucke("Never reach this")
     finally:
         drucke("OK, now we're done")
@@ -1713,7 +1713,7 @@ def _stringify_instruction(instr):
 
 def _prepare_test_cases():
     ignore = io.StringIO()
-    with contextlib.redirect_stdout(ignore):
+    mit contextlib.redirect_stdout(ignore):
         f = outer()
         inner = f()
     _instructions_outer = dis.get_instructions(outer, first_line=expected_outer_line)
@@ -1991,13 +1991,13 @@ klasse InstructionTests(InstructionTestCase):
         self.assertInstructionsEqual(list(actual), expected_opinfo_outer)
 
     def test_nested(self):
-        with captured_stdout():
+        mit captured_stdout():
             f = outer()
         actual = dis.get_instructions(f, first_line=expected_f_line)
         self.assertInstructionsEqual(list(actual), expected_opinfo_f)
 
     def test_doubly_nested(self):
-        with captured_stdout():
+        mit captured_stdout():
             inner = outer()()
         actual = dis.get_instructions(inner, first_line=expected_inner_line)
         self.assertInstructionsEqual(list(actual), expected_opinfo_inner)
@@ -2039,7 +2039,7 @@ klasse InstructionTests(InstructionTestCase):
         code_without_location_table = code.replace(co_linetable=b'')
         actual = dis.get_instructions(code_without_location_table)
         fuer instruction in actual:
-            with self.subTest(instruction=instruction):
+            mit self.subTest(instruction=instruction):
                 positions = instruction.positions
                 self.assertEqual(len(positions), 4)
                 wenn instruction.opname == "RESUME":
@@ -2065,7 +2065,7 @@ klasse InstructionTests(InstructionTestCase):
         assert 1 / 3 <= caches / non_caches, "this test needs more caches!"
         fuer show_caches in (Falsch, Wahr):
             fuer adaptive in (Falsch, Wahr):
-                with self.subTest(f"{adaptive=}, {show_caches=}"):
+                mit self.subTest(f"{adaptive=}, {show_caches=}"):
                     co_positions = [
                         positions
                         fuer op, positions in zip(ops, code.co_positions(), strict=Wahr)
@@ -2290,9 +2290,9 @@ klasse InstructionTests(InstructionTestCase):
 klasse BytecodeTests(InstructionTestCase, DisTestBase):
 
     def test_instantiation(self):
-        # Test with function, method, code string and code object
+        # Test mit function, method, code string and code object
         fuer obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
-            with self.subTest(obj=obj):
+            mit self.subTest(obj=obj):
                 b = dis.Bytecode(obj)
                 self.assertIsInstance(b.codeobj, types.CodeType)
 
@@ -2300,7 +2300,7 @@ klasse BytecodeTests(InstructionTestCase, DisTestBase):
 
     def test_iteration(self):
         fuer obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
-            with self.subTest(obj=obj):
+            mit self.subTest(obj=obj):
                 via_object = list(dis.Bytecode(obj))
                 via_generator = list(dis.get_instructions(obj))
                 self.assertInstructionsEqual(via_object, via_generator)
@@ -2364,7 +2364,7 @@ klasse TestBytecodeTestCase(BytecodeTestCase):
 
     def test_assert_not_in_with_arg_in_bytecode(self):
         code = compile("a = 1", "<string>", "exec")
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertNotInBytecode(code, "LOAD_SMALL_INT", 1)
 
 klasse TestFinderMethods(unittest.TestCase):
@@ -2372,14 +2372,14 @@ klasse TestFinderMethods(unittest.TestCase):
         cases = [
             ("import a.b.c", ('a.b.c', 0, Nichts)),
             ("from a.b importiere c", ('a.b', 0, ('c',))),
-            ("from a.b importiere c as d", ('a.b', 0, ('c',))),
+            ("from a.b importiere c als d", ('a.b', 0, ('c',))),
             ("from a.b importiere *", ('a.b', 0, ('*',))),
-            ("from ...a.b importiere c as d", ('a.b', 3, ('c',))),
-            ("from ..a.b importiere c as d, e as f", ('a.b', 2, ('c', 'e'))),
+            ("from ...a.b importiere c als d", ('a.b', 3, ('c',))),
+            ("from ..a.b importiere c als d, e als f", ('a.b', 2, ('c', 'e'))),
             ("from ..a.b importiere *", ('a.b', 2, ('*',))),
         ]
         fuer src, expected in cases:
-            with self.subTest(src=src):
+            mit self.subTest(src=src):
                 code = compile(src, "<string>", "exec")
                 res = tuple(dis._find_imports(code))
                 self.assertEqual(len(res), 1)
@@ -2394,7 +2394,7 @@ klasse TestFinderMethods(unittest.TestCase):
             ("global x\nz=x", ('z',)),
         ]
         fuer src, expected in cases:
-            with self.subTest(src=src):
+            mit self.subTest(src=src):
                 code = compile(src, "<string>", "exec")
                 res = tuple(dis._find_store_names(code))
                 self.assertEqual(res, expected)
@@ -2432,12 +2432,12 @@ klasse TestDisTraceback(DisTestBase):
 
     def get_disassembly(self, tb):
         output = io.StringIO()
-        with contextlib.redirect_stdout(output):
+        mit contextlib.redirect_stdout(output):
             dis.distb(tb)
         return output.getvalue()
 
     def test_distb_empty(self):
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             dis.distb()
 
     def test_distb_last_traceback(self):
@@ -2459,12 +2459,12 @@ klasse TestDisTracebackWithFile(TestDisTraceback):
     # Run the `distb` tests again, using the file arg instead of print
     def get_disassembly(self, tb):
         output = io.StringIO()
-        with contextlib.redirect_stdout(output):
+        mit contextlib.redirect_stdout(output):
             dis.distb(tb, file=output)
         return output.getvalue()
 
 def _unroll_caches_as_Instructions(instrs, show_caches=Falsch):
-    # Cache entries are no longer reported by dis as fake instructions,
+    # Cache entries are no longer reported by dis als fake instructions,
     # but some tests assume that do. We should rewrite the tests to assume
     # the new API, but it will be clearer to keep the tests working as
     # before and do that in a separate PR.
@@ -2505,17 +2505,17 @@ klasse TestDisCLI(unittest.TestCase):
         return textwrap.dedent(string).strip()
 
     def set_source(self, content):
-        with open(self.filename, 'w') as fp:
+        mit open(self.filename, 'w') als fp:
             fp.write(self.text_normalize(content))
 
     def invoke_dis(self, *flags):
         output = io.StringIO()
-        with contextlib.redirect_stdout(output):
+        mit contextlib.redirect_stdout(output):
             dis.main(args=[*flags, self.filename])
         return self.text_normalize(output.getvalue())
 
     def check_output(self, source, expect, *flags):
-        with self.subTest(source=source, flags=flags):
+        mit self.subTest(source=source, flags=flags):
             self.set_source(source)
             res = self.invoke_dis(*flags)
             expect = self.text_normalize(expect)
@@ -2539,12 +2539,12 @@ klasse TestDisCLI(unittest.TestCase):
         fuer r in range(1, len(base_flags) + 1):
             fuer choices in itertools.combinations(base_flags, r=r):
                 fuer args in itertools.product(*choices):
-                    with self.subTest(args=args[1:]):
+                    mit self.subTest(args=args[1:]):
                         _ = self.invoke_dis(*args)
 
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             # suppress argparse error message
-            with contextlib.redirect_stderr(io.StringIO()):
+            mit contextlib.redirect_stderr(io.StringIO()):
                 _ = self.invoke_dis('--unknown')
 
     def test_show_cache(self):

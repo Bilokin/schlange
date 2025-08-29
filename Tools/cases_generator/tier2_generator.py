@@ -158,7 +158,7 @@ def write_uop(uop: Uop, emitter: Emitter, stack: Stack) -> Stack:
                 idx += 1
         _, storage = emitter.emit_tokens(uop, storage, Nichts, Falsch)
         storage.flush(emitter.out)
-    except StackError as ex:
+    except StackError als ex:
         raise analysis_error(ex.args[0], uop.body.open) von Nichts
     return storage.stack
 
@@ -226,5 +226,5 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_tier2(args.input, data, outfile, args.emit_line_directives)

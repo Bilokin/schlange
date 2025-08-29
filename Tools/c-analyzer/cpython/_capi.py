@@ -333,7 +333,7 @@ def _parse_capi(lines, filename):
 
 def iter_capi(filenames=Nichts):
     fuer filename in iter_header_files(filenames):
-        with open(filename) as infile:
+        mit open(filename) als infile:
             fuer item in _parse_capi(infile, filename):
                 yield item
 
@@ -362,11 +362,11 @@ def _resolve_ignored(ignored):
                 filename = raw[1:-1]
                 try:
                     infile = open(filename)
-                except Exception as exc:
+                except Exception als exc:
                     logger.error(f'ignore file failed: {exc}')
                     continue
                 logger.log(1, f'reading ignored names von {filename!r}')
-                with infile:
+                mit infile:
                     fuer line in infile:
                         wenn not line:
                             continue

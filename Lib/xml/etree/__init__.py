@@ -8,7 +8,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# and will comply mit the following terms and conditions:
 #
 # Permission to use, copy, modify, and distribute this software and
 # its associated documentation fuer any purpose and without fee is

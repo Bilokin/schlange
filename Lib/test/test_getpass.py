@@ -39,8 +39,8 @@ klasse GetpassGetuserTest(unittest.TestCase):
         expected_name = 'some_name'
         environ.get.return_value = Nichts
         wenn pwd:
-            with mock.patch('os.getuid') as uid, \
-                    mock.patch('pwd.getpwuid') as getpw:
+            mit mock.patch('os.getuid') als uid, \
+                    mock.patch('pwd.getpwuid') als getpw:
                 uid.return_value = 42
                 getpw.return_value = [expected_name]
                 self.assertEqual(expected_name,
@@ -62,7 +62,7 @@ klasse GetpassRawinputTest(unittest.TestCase):
     def test_uses_stderr_as_default(self):
         input = StringIO('input_string')
         prompt = 'some_prompt'
-        with mock.patch('sys.stderr') as stderr:
+        mit mock.patch('sys.stderr') als stderr:
             getpass._raw_input(prompt, input=input)
             stderr.write.assert_called_once_with(prompt)
 
@@ -94,13 +94,13 @@ klasse GetpassRawinputTest(unittest.TestCase):
 # on the screen, unless we are falling back to stderr/stdin.
 
 # Some of these might run on platforms without termios, but play it safe.
-@unittest.skipUnless(termios, 'tests require system with termios')
+@unittest.skipUnless(termios, 'tests require system mit termios')
 klasse UnixGetpassTest(unittest.TestCase):
 
     def test_uses_tty_directly(self):
-        with mock.patch('os.open') as open, \
-                mock.patch('io.FileIO') as fileio, \
-                mock.patch('io.TextIOWrapper') as textio:
+        mit mock.patch('os.open') als open, \
+                mock.patch('io.FileIO') als fileio, \
+                mock.patch('io.TextIOWrapper') als textio:
             # By setting open's return value to Nichts the implementation will
             # skip code we don't care about in this test.  We can mock this out
             # fully wenn an alternate implementation works differently.
@@ -112,11 +112,11 @@ klasse UnixGetpassTest(unittest.TestCase):
             textio.assert_called_once_with(fileio.return_value)
 
     def test_resets_termios(self):
-        with mock.patch('os.open') as open, \
+        mit mock.patch('os.open') als open, \
                 mock.patch('io.FileIO'), \
                 mock.patch('io.TextIOWrapper'), \
-                mock.patch('termios.tcgetattr') as tcgetattr, \
-                mock.patch('termios.tcsetattr') as tcsetattr:
+                mock.patch('termios.tcgetattr') als tcgetattr, \
+                mock.patch('termios.tcsetattr') als tcsetattr:
             open.return_value = 3
             fake_attrs = [255, 255, 255, 255, 255]
             tcgetattr.return_value = list(fake_attrs)
@@ -124,12 +124,12 @@ klasse UnixGetpassTest(unittest.TestCase):
             tcsetattr.assert_called_with(3, mock.ANY, fake_attrs)
 
     def test_falls_back_to_fallback_if_termios_raises(self):
-        with mock.patch('os.open') as open, \
-                mock.patch('io.FileIO') as fileio, \
-                mock.patch('io.TextIOWrapper') as textio, \
+        mit mock.patch('os.open') als open, \
+                mock.patch('io.FileIO') als fileio, \
+                mock.patch('io.TextIOWrapper') als textio, \
                 mock.patch('termios.tcgetattr'), \
-                mock.patch('termios.tcsetattr') as tcsetattr, \
-                mock.patch('getpass.fallback_getpass') as fallback:
+                mock.patch('termios.tcsetattr') als tcsetattr, \
+                mock.patch('getpass.fallback_getpass') als fallback:
             open.return_value = 3
             fileio.return_value = BytesIO()
             tcsetattr.side_effect = termios.error
@@ -139,7 +139,7 @@ klasse UnixGetpassTest(unittest.TestCase):
 
     def test_flushes_stream_after_input(self):
         # issue 7208
-        with mock.patch('os.open') as open, \
+        mit mock.patch('os.open') als open, \
                 mock.patch('io.FileIO'), \
                 mock.patch('io.TextIOWrapper'), \
                 mock.patch('termios.tcgetattr'), \
@@ -150,12 +150,12 @@ klasse UnixGetpassTest(unittest.TestCase):
             mock_stream.flush.assert_called_with()
 
     def test_falls_back_to_stdin(self):
-        with mock.patch('os.open') as os_open, \
-                mock.patch('sys.stdin', spec=StringIO) as stdin:
+        mit mock.patch('os.open') als os_open, \
+                mock.patch('sys.stdin', spec=StringIO) als stdin:
             os_open.side_effect = IOError
             stdin.fileno.side_effect = AttributeError
-            with support.captured_stderr() as stderr:
-                with self.assertWarns(getpass.GetPassWarning):
+            mit support.captured_stderr() als stderr:
+                mit self.assertWarns(getpass.GetPassWarning):
                     getpass.unix_getpass()
             stdin.readline.assert_called_once_with()
             self.assertIn('Warning', stderr.getvalue())
@@ -163,12 +163,12 @@ klasse UnixGetpassTest(unittest.TestCase):
 
     def test_echo_char_replaces_input_with_asterisks(self):
         mock_result = '*************'
-        with mock.patch('os.open') as os_open, \
+        mit mock.patch('os.open') als os_open, \
                 mock.patch('io.FileIO'), \
-                mock.patch('io.TextIOWrapper') as textio, \
+                mock.patch('io.TextIOWrapper') als textio, \
                 mock.patch('termios.tcgetattr'), \
                 mock.patch('termios.tcsetattr'), \
-                mock.patch('getpass._raw_input') as mock_input:
+                mock.patch('getpass._raw_input') als mock_input:
             os_open.return_value = 3
             mock_input.return_value = mock_result
 
@@ -181,7 +181,7 @@ klasse UnixGetpassTest(unittest.TestCase):
         passwd = 'my1pa$$word!'
         mock_input = StringIO(f'{passwd}\n')
         mock_output = StringIO()
-        with mock.patch('sys.stdin', mock_input), \
+        mit mock.patch('sys.stdin', mock_input), \
                 mock.patch('sys.stdout', mock_output):
             result = getpass._raw_input('Password: ', mock_output, mock_input,
                                         '*')
@@ -193,7 +193,7 @@ klasse UnixGetpassTest(unittest.TestCase):
         expect_result = 'pass\tw'
         mock_input = StringIO(f'{passwd}\n')
         mock_output = StringIO()
-        with mock.patch('sys.stdin', mock_input), \
+        mit mock.patch('sys.stdin', mock_input), \
                 mock.patch('sys.stdout', mock_output):
             result = getpass._raw_input('Password: ', mock_output, mock_input,
                                         '*')

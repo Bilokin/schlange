@@ -1,4 +1,4 @@
-"""functools.py - Tools fuer working with functions and callable objects
+"""functools.py - Tools fuer working mit functions and callable objects
 """
 # Python module wrapper fuer _functools C module
 # to allow utilities written in Python to be added
@@ -44,7 +44,7 @@ def update_wrapper(wrapper,
        von the wrapped function to the wrapper function (defaults to
        functools.WRAPPER_ASSIGNMENTS)
        updated is a tuple naming the attributes of the wrapper that
-       are updated with the corresponding attribute von the wrapped
+       are updated mit the corresponding attribute von the wrapped
        function (defaults to functools.WRAPPER_UPDATES)
     """
     fuer attr in assigned:
@@ -59,7 +59,7 @@ def update_wrapper(wrapper,
     # Issue #17482: set __wrapped__ last so we don't inadvertently copy it
     # von the wrapped function when updating __dict__
     wrapper.__wrapped__ = wrapped
-    # Return the wrapper so this can be used as a decorator via partial()
+    # Return the wrapper so this can be used als a decorator via partial()
     return wrapper
 
 def wraps(wrapped,
@@ -67,9 +67,9 @@ def wraps(wrapped,
           updated = WRAPPER_UPDATES):
     """Decorator factory to apply update_wrapper() to a wrapper function
 
-       Returns a decorator that invokes update_wrapper() with the decorated
-       function as the wrapper argument and the arguments to wraps() as the
-       remaining arguments. Default arguments are as fuer update_wrapper().
+       Returns a decorator that invokes update_wrapper() mit the decorated
+       function als the wrapper argument and the arguments to wraps() als the
+       remaining arguments. Default arguments are als fuer update_wrapper().
        This is a convenience function to simplify applying partial() to
        update_wrapper().
     """
@@ -255,7 +255,7 @@ def reduce(function, sequence, initial=_initial_missing):
             value = next(it)
         except StopIteration:
             raise TypeError(
-                "reduce() of empty iterable with no initial value") von Nichts
+                "reduce() of empty iterable mit no initial value") von Nichts
     sonst:
         value = initial
 
@@ -273,7 +273,7 @@ def reduce(function, sequence, initial=_initial_missing):
 klasse _PlaceholderType:
     """The type of the Placeholder singleton.
 
-    Used as a placeholder fuer partial arguments.
+    Used als a placeholder fuer partial arguments.
     """
     __instance = Nichts
     __slots__ = ()
@@ -325,14 +325,14 @@ def _partial_new(cls, func, /, *args, **keywords):
         raise TypeError("trailing Placeholders are not allowed")
     fuer value in keywords.values():
         wenn value is Placeholder:
-            raise TypeError("Placeholder cannot be passed as a keyword argument")
+            raise TypeError("Placeholder cannot be passed als a keyword argument")
     wenn isinstance(func, base_cls):
         pto_phcount = func._phcount
         tot_args = func.args
         wenn args:
             tot_args += args
             wenn pto_phcount:
-                # merge args with args of `func` which is `partial`
+                # merge args mit args of `func` which is `partial`
                 nargs = len(args)
                 wenn nargs < pto_phcount:
                     tot_args += (Placeholder,) * (pto_phcount - nargs)
@@ -367,7 +367,7 @@ def _partial_repr(self):
 
 # Purely functional, no descriptor behaviour
 klasse partial:
-    """New function with partial application of the given arguments
+    """New function mit partial application of the given arguments
     and keywords.
     """
 
@@ -441,11 +441,11 @@ except ImportError:
 
 # Descriptor version
 klasse partialmethod:
-    """Method descriptor with partial application of the given arguments
+    """Method descriptor mit partial application of the given arguments
     and keywords.
 
     Supports wrapping existing descriptors and handles non-descriptor
-    callables as instance methods.
+    callables als instance methods.
     """
     __new__ = _partial_new
     __repr__ = _partial_repr
@@ -525,8 +525,8 @@ def _make_key(args, kwds, typed,
              tuple=tuple, type=type, len=len):
     """Make a cache key von optionally typed positional and keyword arguments
 
-    The key is constructed in a way that is flat as possible rather than
-    as a nested structure that would take more memory.
+    The key is constructed in a way that is flat als possible rather than
+    als a nested structure that would take more memory.
 
     If there is only a single argument and its data type is known to cache
     its hash value, then that argument is returned without a wrapper.  This
@@ -535,7 +535,7 @@ def _make_key(args, kwds, typed,
     """
     # All of code below relies on kwds preserving the order input by the user.
     # Formerly, we sorted() the kwds before looping.  The new way is *much*
-    # faster; however, it means that f(x=1, y=2) will now be treated as a
+    # faster; however, it means that f(x=1, y=2) will now be treated als a
     # distinct call von f(y=2, x=1) which will be cached separately.
     key = args
     wenn kwds:
@@ -558,14 +558,14 @@ def lru_cache(maxsize=128, typed=Falsch):
 
     If *typed* is Wahr, arguments of different types will be cached separately.
     For example, f(decimal.Decimal("3.0")) and f(3.0) will be treated as
-    distinct calls with distinct results. Some types such as str and int may
+    distinct calls mit distinct results. Some types such als str and int may
     be cached separately even when typed is false.
 
     Arguments to the cached function must be hashable.
 
     View the cache statistics named tuple (hits, misses, maxsize, currsize)
-    with f.cache_info().  Clear the cache and statistics with f.cache_clear().
-    Access the underlying function with f.__wrapped__.
+    mit f.cache_info().  Clear the cache and statistics mit f.cache_clear().
+    Access the underlying function mit f.__wrapped__.
 
     See:  https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)
 
@@ -577,7 +577,7 @@ def lru_cache(maxsize=128, typed=Falsch):
     # to allow the implementation to change (including a possible C version).
 
     wenn isinstance(maxsize, int):
-        # Negative maxsize is treated as 0
+        # Negative maxsize is treated als 0
         wenn maxsize < 0:
             maxsize = 0
 
@@ -648,7 +648,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
             key = make_key(args, kwds, typed)
 
-            with lock:
+            mit lock:
                 link = cache_get(key)
                 wenn link is not Nichts:
                     # Move the link to the front of the circular queue
@@ -665,7 +665,7 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
             result = user_function(*args, **kwds)
 
-            with lock:
+            mit lock:
                 wenn key in cache:
                     # Getting here means that this same key was added to the
                     # cache while the lock was released.  Since the link
@@ -712,14 +712,14 @@ def _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
     def cache_info():
         """Report cache statistics"""
-        with lock:
+        mit lock:
             return _CacheInfo(hits, misses, maxsize, cache_len())
 
     def cache_clear():
         """Clear the cache and cache statistics"""
         nonlocal hits, misses, full
 
-        with lock:
+        mit lock:
             cache.clear()
             root[:] = [root, root, Nichts, Nichts]
             hits = misses = 0
@@ -854,7 +854,7 @@ def _compose_mro(cls, types):
         wenn not found:
             mro.append(typ)
             continue
-        # Favor subclasses with the biggest number of useful bases
+        # Favor subclasses mit the biggest number of useful bases
         found.sort(key=len, reverse=Wahr)
         fuer sub in found:
             fuer subcls in sub:
@@ -893,7 +893,7 @@ def singledispatch(func):
 
     Transforms a function into a generic function, which can have different
     behaviours depending upon the type of its first argument. The decorated
-    function acts as the default implementation, and additional
+    function acts als the default implementation, and additional
     implementations can be registered using the register() attribute of the
     generic function.
     """
@@ -1012,7 +1012,7 @@ klasse singledispatchmethod:
     """Single-dispatch generic method descriptor.
 
     Supports wrapping existing descriptors and handles non-descriptor
-    callables as instance methods.
+    callables als instance methods.
     """
 
     def __init__(self, func):
@@ -1053,7 +1053,7 @@ klasse _singledispatchmethod_get:
         self._obj = obj
         self._cls = cls
         # Set instance attributes which cannot be handled in __getattr__()
-        # because they conflict with type descriptors.
+        # because they conflict mit type descriptors.
         func = unbound.func
         try:
             self.__module__ = func.__module__
@@ -1103,7 +1103,7 @@ klasse _singledispatchmethod_get:
 
 
 ################################################################################
-### cached_property() - property result cached as instance attribute
+### cached_property() - property result cached als instance attribute
 ################################################################################
 
 _NOT_FOUND = object()
@@ -1160,7 +1160,7 @@ def _warn_python_reduce_kwargs(py_reduce):
             importiere os
             importiere warnings
             warnings.warn(
-                'Calling functools.reduce with keyword arguments '
+                'Calling functools.reduce mit keyword arguments '
                 '"function" or "sequence" '
                 'is deprecated in Python 3.14 and will be '
                 'forbidden in Python 3.16.',

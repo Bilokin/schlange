@@ -44,12 +44,12 @@ klasse GetConstantTest(unittest.TestCase):
             (Constant.Py_CONSTANT_EMPTY_BYTES, bytes, b""),
             (Constant.Py_CONSTANT_EMPTY_TUPLE, tuple, ()),
         ):
-            with self.subTest(constant_id=constant_id):
+            mit self.subTest(constant_id=constant_id):
                 obj = get_constant(constant_id)
                 self.assertEqual(type(obj), constant_type, obj)
                 self.assertEqual(obj, value)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             get_constant(Constant.INVALID_CONSTANT)
 
     def test_get_constant(self):
@@ -76,12 +76,12 @@ klasse PrintTest(unittest.TestCase):
 
         # Test repr printing
         _testcapi.call_pyobject_drucke(obj, output_filename, Falsch)
-        with open(output_filename, 'r') as output_file:
+        mit open(output_filename, 'r') als output_file:
             self.assertEqual(output_file.read(), repr(obj))
 
         # Test str printing
         _testcapi.call_pyobject_drucke(obj, output_filename, Wahr)
-        with open(output_filename, 'r') as output_file:
+        mit open(output_filename, 'r') als output_file:
             self.assertEqual(output_file.read(), str(obj))
 
     def testPyObjectPrintNULL(self):
@@ -90,7 +90,7 @@ klasse PrintTest(unittest.TestCase):
 
         # Test repr printing
         _testcapi.pyobject_print_null(output_filename)
-        with open(output_filename, 'r') as output_file:
+        mit open(output_filename, 'r') als output_file:
             self.assertEqual(output_file.read(), '<nil>')
 
     def testPyObjectPrintNoRefObject(self):
@@ -99,7 +99,7 @@ klasse PrintTest(unittest.TestCase):
 
         # Test repr printing
         correct_output = _testcapi.pyobject_print_noref_object(output_filename)
-        with open(output_filename, 'r') as output_file:
+        mit open(output_filename, 'r') als output_file:
             self.assertEqual(output_file.read(), correct_output)
 
     def testPyObjectPrintOSError(self):
@@ -107,7 +107,7 @@ klasse PrintTest(unittest.TestCase):
         self.addCleanup(os_helper.unlink, output_filename)
 
         open(output_filename, "w+").close()
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             _testcapi.pyobject_print_os_error(output_filename)
 
 
@@ -133,7 +133,7 @@ klasse ClearWeakRefsNoCallbacksTest(unittest.TestCase):
         """Don't fail on objects that don't support weakrefs"""
         importiere weakref
         obj = object()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             ref = weakref.ref(obj)
         _testcapi.pyobject_clear_weakrefs_no_callbacks(obj)
 
@@ -166,7 +166,7 @@ klasse EnableDeferredRefcountingTest(unittest.TestCase):
             Thread(target=silly_func, args=(silly_list,)) fuer _ in range(4)
         ]
 
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             fuer i in range(10):
                 silly_list.append(i)
 
@@ -202,7 +202,7 @@ klasse CAPITest(unittest.TestCase):
             importiere _testcapi
             von test importiere support
 
-            with support.SuppressCrashReport():
+            mit support.SuppressCrashReport():
                 _testcapi.negative_refcount()
         """
         self.check_negative_refcount(code)
@@ -216,7 +216,7 @@ klasse CAPITest(unittest.TestCase):
             importiere _testcapi
             von test importiere support
 
-            with support.SuppressCrashReport():
+            mit support.SuppressCrashReport():
                 _testcapi.decref_freed_object()
         """
         self.check_negative_refcount(code)

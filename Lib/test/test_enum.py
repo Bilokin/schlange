@@ -8,7 +8,7 @@ importiere sys
 importiere unittest
 importiere threading
 importiere typing
-importiere builtins as bltns
+importiere builtins als bltns
 von collections importiere OrderedDict
 von datetime importiere date
 von enum importiere Enum, EnumMeta, IntEnum, StrEnum, EnumType, Flag, IntFlag, unique, auto
@@ -72,7 +72,7 @@ try:
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+except Exception als exc:
     Stooges = exc
 
 try:
@@ -80,7 +80,7 @@ try:
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+except Exception als exc:
     IntStooges = exc
 
 try:
@@ -88,7 +88,7 @@ try:
         LARRY = 1.39
         CURLY = 2.72
         MOE = 3.142596
-except Exception as exc:
+except Exception als exc:
     FloatStooges = exc
 
 try:
@@ -97,7 +97,7 @@ try:
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception as exc:
+except Exception als exc:
     FlagStooges = exc
 
 try:
@@ -107,7 +107,7 @@ try:
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception as exc:
+except Exception als exc:
     FlagStoogesWithZero = exc
 
 try:
@@ -116,7 +116,7 @@ try:
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception as exc:
+except Exception als exc:
     IntFlagStooges = exc
 
 try:
@@ -126,7 +126,7 @@ try:
         CURLY = 2
         MOE = 4
         BIG = 389
-except Exception as exc:
+except Exception als exc:
     IntFlagStoogesWithZero = exc
 
 # fuer pickle test and subclass tests
@@ -134,22 +134,22 @@ try:
     klasse Name(StrEnum):
         BDFL = 'Guido van Rossum'
         FLUFL = 'Barry Warsaw'
-except Exception as exc:
+except Exception als exc:
     Name = exc
 
 try:
     Question = Enum('Question', 'who what when where why', module=__name__)
-except Exception as exc:
+except Exception als exc:
     Question = exc
 
 try:
     Answer = Enum('Answer', 'him this then there because')
-except Exception as exc:
+except Exception als exc:
     Answer = exc
 
 try:
     Theory = Enum('Theory', 'rule law supposition', qualname='spanish_inquisition')
-except Exception as exc:
+except Exception als exc:
     Theory = exc
 
 # fuer doctests
@@ -169,7 +169,7 @@ def test_pickle_dump_load(assertion, source, target=Nichts):
 
 def test_pickle_exception(assertion, exception, obj):
     fuer protocol in range(HIGHEST_PROTOCOL + 1):
-        with assertion(exception):
+        mit assertion(exception):
             dumps(obj, protocol=protocol)
 
 klasse TestHelpers(unittest.TestCase):
@@ -248,7 +248,7 @@ try:
         LOW_BEAM_K = auto()
         HIGH_BEAM_K = auto()
         FOG_K = auto()
-except Exception as exc:
+except Exception als exc:
     HeadlightsK = exc
 
 
@@ -259,7 +259,7 @@ try:
         LOW_BEAM_C = auto()
         HIGH_BEAM_C = auto()
         FOG_C = auto()
-except Exception as exc:
+except Exception als exc:
     HeadlightsC = exc
 
 
@@ -268,7 +268,7 @@ try:
     klasse NoName(Flag):
         ONE = 1
         TWO = 2
-except Exception as exc:
+except Exception als exc:
     NoName = exc
 
 
@@ -438,15 +438,15 @@ klasse _EnumTests:
         del Season.spam
         self.assertNotHasAttr(Season, 'spam')
         #
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del Season.SPRING
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del Season.DRY
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del Season.SPRING.name
 
     def test_bad_new_super(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 TypeError,
                 'do not use .super...__new__;',
             ):
@@ -505,7 +505,7 @@ klasse _EnumTests:
 
     def test_changing_member_fails(self):
         MainEnum = self.MainEnum
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             self.MainEnum.second = 'really first'
 
     def test_contains_tf(self):
@@ -531,7 +531,7 @@ klasse _EnumTests:
             self.assertNotIn(NotEqualEnum.this, MainEnum)
             self.assertNotIn(NotEqualEnum.that, MainEnum)
         sonst:
-            # enums with mixed data types may be Wahr
+            # enums mit mixed data types may be Wahr
             klasse EqualEnum(self.enum_type):
                 this = self.source_values[0]
                 that = self.source_values[1]
@@ -609,7 +609,7 @@ klasse _EnumTests:
         self.assertWahr('description' in dir(SubEnum.sample), dir(SubEnum.sample))
 
     def test_empty_enum_has_no_values(self):
-        with self.assertRaisesRegex(TypeError, "<.... 'NewBaseEnum'> has no members"):
+        mit self.assertRaisesRegex(TypeError, "<.... 'NewBaseEnum'> has no members"):
             self.NewBaseEnum(7)
 
     def test_enum_in_enum_out(self):
@@ -631,19 +631,19 @@ klasse _EnumTests:
         self.assertEqual(mapping[MainEnum.second], '0315')
 
     def test_invalid_names(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse Wrong(self.enum_type):
                 mro = 9
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse Wrong(self.enum_type):
                 _create_= 11
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse Wrong(self.enum_type):
                 _get_mixins_ = 9
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse Wrong(self.enum_type):
                 _find_new_ = 1
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse Wrong(self.enum_type):
                 _any_name_ = 9
 
@@ -949,10 +949,10 @@ klasse _MinimalOutputTests:
 klasse _FlagTests:
 
     def test_default_missing_with_wrong_type_value(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             ValueError,
             "'RED' is not a valid ",
-            ) as ctx:
+            ) als ctx:
             self.MainEnum('RED')
         self.assertIs(ctx.exception.__context__, Nichts)
 
@@ -1088,13 +1088,13 @@ klasse TestPlainFlagClass(_EnumTests, _PlainOutputTests, _FlagTests, unittest.Te
 
         self.assertEqual(FlagWithNichtsMember.A.value, 1)
         self.assertIs(FlagWithNichtsMember.E.value, Nichts)
-        with self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be combined with other flags with |"):
+        mit self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be combined mit other flags mit |"):
             FlagWithNichtsMember.A | FlagWithNichtsMember.E
-        with self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be combined with other flags with &"):
+        mit self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be combined mit other flags mit &"):
             FlagWithNichtsMember.E & FlagWithNichtsMember.A
-        with self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be combined with other flags with \^"):
+        mit self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be combined mit other flags mit \^"):
             FlagWithNichtsMember.A ^ FlagWithNichtsMember.E
-        with self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be inverted"):
+        mit self.assertRaisesRegex(TypeError, r"'FlagWithNichtsMember.E' cannot be inverted"):
             ~FlagWithNichtsMember.E
 
 
@@ -1330,9 +1330,9 @@ klasse TestSpecial(unittest.TestCase):
 
     def test_comparisons(self):
         Season = self.Season
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Season.SPRING < Season.WINTER
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Season.SPRING > 4
         #
         self.assertNotEqual(Season.SPRING, 1)
@@ -1343,7 +1343,7 @@ klasse TestSpecial(unittest.TestCase):
             BARREL = 3
         #
         self.assertNotEqual(Season.SPRING, Part.SPRING)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Season.SPRING < Part.CLIP
 
     @unittest.skip('to-do list')
@@ -1372,14 +1372,14 @@ klasse TestSpecial(unittest.TestCase):
         self.assertIn('__init__', cls_dir)
 
     def test_duplicate_name_error(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse Color(Enum):
                 red = 1
                 green = 2
                 blue = 3
                 red = 4
         #
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse Color(Enum):
                 red = 1
                 green = 2
@@ -1387,7 +1387,7 @@ klasse TestSpecial(unittest.TestCase):
                 def red(self):  # noqa: F811
                     return 'red'
         #
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse Color(Enum):
                 @enum.property
                 def red(self):
@@ -1441,7 +1441,7 @@ klasse TestSpecial(unittest.TestCase):
         """
         Check fuer warnings pre-3.13
         """
-        with self.assertWarnsRegex(DeprecationWarning, 'will not become a member'):
+        mit self.assertWarnsRegex(DeprecationWarning, 'will not become a member'):
             klasse Outer(Enum):
                 a = 1
                 b = 2
@@ -1641,7 +1641,7 @@ klasse TestSpecial(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, MyOtherEnum.E)
         test_pickle_dump_load(self.assertIs, MyOtherEnum)
         #
-        # This did not work in 3.10, but does now with pickling by name
+        # This did not work in 3.10, but does now mit pickling by name
         klasse UnBrokenInt(int):
             __qualname__ = 'UnBrokenInt'
             def __new__(cls, value):
@@ -1663,7 +1663,7 @@ klasse TestSpecial(unittest.TestCase):
         h = float.hex(FloatStooges.MOE.value)
         self.assertIs(FloatStooges.fromhex(h), FloatStooges.MOE)
         h = float.hex(FloatStooges.MOE.value + 0.01)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             FloatStooges.fromhex(h)
 
     def test_programmatic_function_type(self):
@@ -1782,19 +1782,19 @@ klasse TestSpecial(unittest.TestCase):
     @reraise_if_not_enum(IntStooges)
     def test_intenum_from_bytes(self):
         self.assertIs(IntStooges.from_bytes(b'\x00\x03', 'big'), IntStooges.MOE)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             IntStooges.from_bytes(b'\x00\x05', 'big')
 
     def test_reserved_sunder_error(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
-                '_sunder_ names, such as ._bad_., are reserved',
+                '_sunder_ names, such als ._bad_., are reserved',
             ):
             klasse Bad(Enum):
                 _bad_ = 1
 
     def test_too_many_data_types(self):
-        with self.assertRaisesRegex(TypeError, 'too many data types'):
+        mit self.assertRaisesRegex(TypeError, 'too many data types'):
             klasse Huh(str, int, Enum):
                 One = 1
 
@@ -1804,7 +1804,7 @@ klasse TestSpecial(unittest.TestCase):
         klasse MyInt(int):
             def repr(self):
                 return hex(self)
-        with self.assertRaisesRegex(TypeError, 'too many data types'):
+        mit self.assertRaisesRegex(TypeError, 'too many data types'):
             klasse Huh(MyStr, MyInt, Enum):
                 One = 1
 
@@ -1905,17 +1905,17 @@ klasse TestSpecial(unittest.TestCase):
             green = 2
             blue = 3
         #
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse MoreColor(Color):
                 cyan = 4
                 magenta = 5
                 yellow = 6
         #
-        with self.assertRaisesRegex(TypeError, "<enum .EvenMoreColor.> cannot extend <enum .Color.>"):
+        mit self.assertRaisesRegex(TypeError, "<enum .EvenMoreColor.> cannot extend <enum .Color.>"):
             klasse EvenMoreColor(Color, IntEnum):
                 chartruese = 7
         #
-        with self.assertRaisesRegex(ValueError, r"\(.Foo., \(.pink., .black.\)\) is not a valid .*Color"):
+        mit self.assertRaisesRegex(ValueError, r"\(.Foo., \(.pink., .black.\)\) is not a valid .*Color"):
             Color('Foo', ('pink', 'black'))
 
     def test_exclude_methods(self):
@@ -1928,7 +1928,7 @@ klasse TestSpecial(unittest.TestCase):
         self.assertEqual(whatever.this.really(), 'no, not that')
 
     def test_wrong_inheritance_order(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse Wrong(Enum, str):
                 NotHere = 'error before this point'
 
@@ -1940,7 +1940,7 @@ klasse TestSpecial(unittest.TestCase):
                 self.b = b
                 super().__init__(f'({r}, {g}, {b}) is not a valid RGB color')
 
-        with self.assertRaises(InvalidRgbColorError):
+        mit self.assertRaises(InvalidRgbColorError):
             klasse RgbColor(Enum):
                 RED = (255, 0, 0)
                 GREEN = (0, 255, 0)
@@ -2033,9 +2033,9 @@ klasse TestSpecial(unittest.TestCase):
             red = 1
             green = 2
             blue = 3
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             Color(4)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             Color['chartreuse']
 
     # tests that need to be evalualted fuer moving
@@ -2367,7 +2367,7 @@ klasse TestSpecial(unittest.TestCase):
         NI5 = NamedInt('test', 5)
         self.assertEqual(NI5, 5)
         self.assertEqual(NEI.y.value, 2)
-        with self.assertRaisesRegex(TypeError, "name and value must be specified"):
+        mit self.assertRaisesRegex(TypeError, "name and value must be specified"):
             test_pickle_dump_load(self.assertIs, NEI.y)
         # fix pickle support and try again
         NEI.__reduce_ex__ = enum.pickle_by_enum_name
@@ -2573,7 +2573,7 @@ klasse TestSpecial(unittest.TestCase):
             red = 1
             green = 2
             blue = 3
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse MoreColor(Color):
                 cyan = 4
                 magenta = 5
@@ -2634,7 +2634,7 @@ klasse TestSpecial(unittest.TestCase):
             red = 1
             green = 2
             blue = 3
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse Color(UniqueEnum):
                 red = 1
                 green = 2
@@ -2731,7 +2731,7 @@ klasse TestSpecial(unittest.TestCase):
             BLUE = 3
         try:
             Color(7)
-        except ValueError as exc:
+        except ValueError als exc:
             self.assertWahr(exc.__context__ is Nichts)
         sonst:
             raise Exception('Exception not raised.')
@@ -2756,19 +2756,19 @@ klasse TestSpecial(unittest.TestCase):
         self.assertIs(Color('three'), Color.blue)
         try:
             Color(7)
-        except ValueError as exc:
+        except ValueError als exc:
             self.assertWahr(exc.__context__ is Nichts)
         sonst:
             raise Exception('Exception not raised.')
         try:
             Color('bad return')
-        except TypeError as exc:
+        except TypeError als exc:
             self.assertWahr(isinstance(exc.__context__, ValueError))
         sonst:
             raise Exception('Exception not raised.')
         try:
             Color('error out')
-        except ZeroDivisionError as exc:
+        except ZeroDivisionError als exc:
             self.assertWahr(isinstance(exc.__context__, ValueError))
         sonst:
             raise Exception('Exception not raised.')
@@ -2838,7 +2838,7 @@ klasse TestSpecial(unittest.TestCase):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
-            __str__ = StrMixin.__str__          # needed as of 3.11
+            __str__ = StrMixin.__str__          # needed als of 3.11
         self.assertEqual(Color.RED.value, 1)
         self.assertEqual(Color.GREEN.value, 2)
         self.assertEqual(Color.BLUE.value, 3)
@@ -2848,7 +2848,7 @@ klasse TestSpecial(unittest.TestCase):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
-            __str__ = StrMixin.__str__          # needed as of 3.11
+            __str__ = StrMixin.__str__          # needed als of 3.11
         self.assertEqual(Color.RED.value, 1)
         self.assertEqual(Color.GREEN.value, 2)
         self.assertEqual(Color.BLUE.value, 3)
@@ -2858,7 +2858,7 @@ klasse TestSpecial(unittest.TestCase):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
-            __str__ = StrMixin.__str__          # needed as of 3.11
+            __str__ = StrMixin.__str__          # needed als of 3.11
         self.assertEqual(CoolColor.RED.value, 1)
         self.assertEqual(CoolColor.GREEN.value, 2)
         self.assertEqual(CoolColor.BLUE.value, 3)
@@ -2868,7 +2868,7 @@ klasse TestSpecial(unittest.TestCase):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
-            __str__ = StrMixin.__str__          # needed as of 3.11
+            __str__ = StrMixin.__str__          # needed als of 3.11
         self.assertEqual(CoolerColor.RED.value, 1)
         self.assertEqual(CoolerColor.GREEN.value, 2)
         self.assertEqual(CoolerColor.BLUE.value, 3)
@@ -2879,7 +2879,7 @@ klasse TestSpecial(unittest.TestCase):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
-            __str__ = StrMixin.__str__          # needed as of 3.11
+            __str__ = StrMixin.__str__          # needed als of 3.11
         self.assertEqual(CoolestColor.RED.value, 1)
         self.assertEqual(CoolestColor.GREEN.value, 2)
         self.assertEqual(CoolestColor.BLUE.value, 3)
@@ -2890,7 +2890,7 @@ klasse TestSpecial(unittest.TestCase):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
-            __str__ = StrMixin.__str__          # needed as of 3.11
+            __str__ = StrMixin.__str__          # needed als of 3.11
         self.assertEqual(ConfusedColor.RED.value, 1)
         self.assertEqual(ConfusedColor.GREEN.value, 2)
         self.assertEqual(ConfusedColor.BLUE.value, 3)
@@ -2901,7 +2901,7 @@ klasse TestSpecial(unittest.TestCase):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
-            __str__ = StrMixin.__str__          # needed as of 3.11
+            __str__ = StrMixin.__str__          # needed als of 3.11
         self.assertEqual(ReformedColor.RED.value, 1)
         self.assertEqual(ReformedColor.GREEN.value, 2)
         self.assertEqual(ReformedColor.BLUE.value, 3)
@@ -2996,7 +2996,7 @@ klasse TestSpecial(unittest.TestCase):
         self.assertFalsch(missing.valid)
 
     def test_empty_globals(self):
-        # bpo-35717: sys._getframe(2).f_globals['__name__'] fails with KeyError
+        # bpo-35717: sys._getframe(2).f_globals['__name__'] fails mit KeyError
         # when using compile and exec because f_globals is empty
         code = "from enum importiere Enum; Enum('Animal', 'ANT BEE CAT DOG')"
         code = compile(code, "<string>", "exec")
@@ -3024,7 +3024,7 @@ klasse TestSpecial(unittest.TestCase):
             five = '5'
             six = '6'
             seven = '7'
-            __str__ = DumbMixin.__str__             # needed as of 3.11
+            __str__ = DumbMixin.__str__             # needed als of 3.11
         self.assertEqual(DumbStrEnum.seven, '7')
         self.assertEqual(str(DumbStrEnum.seven), "don't do this")
         #
@@ -3044,24 +3044,24 @@ klasse TestSpecial(unittest.TestCase):
         self.assertEqual(GoodbyeEnum.nine, '9')
         self.assertEqual(GoodbyeEnum.nine, str(GoodbyeEnum.nine))
         #
-        with self.assertRaisesRegex(TypeError, '1 is not a string'):
+        mit self.assertRaisesRegex(TypeError, '1 is not a string'):
             klasse FirstFailedStrEnum(StrEnum):
                 one = 1
                 two = '2'
-        with self.assertRaisesRegex(TypeError, "2 is not a string"):
+        mit self.assertRaisesRegex(TypeError, "2 is not a string"):
             klasse SecondFailedStrEnum(StrEnum):
                 one = '1'
                 two = 2,
                 three = '3'
-        with self.assertRaisesRegex(TypeError, '2 is not a string'):
+        mit self.assertRaisesRegex(TypeError, '2 is not a string'):
             klasse ThirdFailedStrEnum(StrEnum):
                 one = '1'
                 two = 2
-        with self.assertRaisesRegex(TypeError, 'encoding must be a string, not %r' % (sys.getdefaultencoding, )):
+        mit self.assertRaisesRegex(TypeError, 'encoding must be a string, not %r' % (sys.getdefaultencoding, )):
             klasse ThirdFailedStrEnum(StrEnum):
                 one = '1'
                 two = b'2', sys.getdefaultencoding
-        with self.assertRaisesRegex(TypeError, 'errors must be a string, not 9'):
+        mit self.assertRaisesRegex(TypeError, 'errors must be a string, not 9'):
             klasse ThirdFailedStrEnum(StrEnum):
                 one = '1'
                 two = b'2', 'ascii', 9
@@ -3086,7 +3086,7 @@ klasse TestSpecial(unittest.TestCase):
             five = '5'
             six = '6'
             seven = '7'
-            __str__ = DumbMixin.__str__         # needed as of 3.11
+            __str__ = DumbMixin.__str__         # needed als of 3.11
         self.assertEqual(DumbStrEnum.seven, '7')
         self.assertEqual(str(DumbStrEnum.seven), "don't do this")
         #
@@ -3116,19 +3116,19 @@ klasse TestSpecial(unittest.TestCase):
         klasse ThirdFailedStrEnum(CustomStrEnum):
             one = '1'
             two = 2  # this will become '2'
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 r"argument (2|'encoding') must be str, not "):
             klasse ThirdFailedStrEnum(CustomStrEnum):
                 one = '1'
                 two = b'2', sys.getdefaultencoding
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 r"argument (3|'errors') must be str, not "):
             klasse ThirdFailedStrEnum(CustomStrEnum):
                 one = '1'
                 two = b'2', 'ascii', 9
 
     def test_missing_value_error(self):
-        with self.assertRaisesRegex(TypeError, "_value_ not set in __new__"):
+        mit self.assertRaisesRegex(TypeError, "_value_ not set in __new__"):
             klasse Combined(str, Enum):
                 #
                 def __new__(cls, value, sequence):
@@ -3185,7 +3185,7 @@ klasse TestSpecial(unittest.TestCase):
         self.assertEqual(Foo.FOO_CAT.value, 'aloof')
         self.assertEqual(Foo.FOO_HORSE.upper(), 'BIG')
         #
-        with self.assertRaisesRegex(TypeError, "'FOO_CAT' already defined as 'aloof'"):
+        mit self.assertRaisesRegex(TypeError, "'FOO_CAT' already defined als 'aloof'"):
             klasse FooBar(Enum):
                 vars().update({
                         k: v
@@ -3419,12 +3419,12 @@ klasse TestSpecial(unittest.TestCase):
                 return object.__new__(cls)
             def __init__(self, x):
                 raise ValueError("I don't like", x)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse MyEnum(Base, enum.Enum):
                 A = 'a'
                 def __init__(self, y):
                     self.y = y
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse MyEnum(Base, enum.Enum):
                 A = 'a'
                 def __init__(self, y):
@@ -3503,12 +3503,12 @@ klasse TestSpecial(unittest.TestCase):
         self.assertIs(Cardinal(-1, 0), Cardinal.LEFT)
 
     def test_no_members(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 TypeError,
                 'has no members',
             ):
             Enum(7)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 TypeError,
                 'has no members',
             ):
@@ -3550,7 +3550,7 @@ klasse TestOrder(unittest.TestCase):
             verde = green
 
     def test_same_members_wrong_order(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        mit self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
             klasse Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -3558,7 +3558,7 @@ klasse TestOrder(unittest.TestCase):
                 green = 2
 
     def test_order_has_extra_members(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        mit self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
             klasse Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
@@ -3566,7 +3566,7 @@ klasse TestOrder(unittest.TestCase):
                 blue = 3
 
     def test_order_has_extra_members_with_aliases(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        mit self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
             klasse Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
@@ -3575,7 +3575,7 @@ klasse TestOrder(unittest.TestCase):
                 verde = green
 
     def test_enum_has_extra_members(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        mit self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
             klasse Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -3584,7 +3584,7 @@ klasse TestOrder(unittest.TestCase):
                 purple = 4
 
     def test_enum_has_extra_members_with_aliases(self):
-        with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
+        mit self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
             klasse Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
@@ -3948,7 +3948,7 @@ klasse OldTestFlag(unittest.TestCase):
         self.assertEqual(Color.green.value, 4)
 
     def test_auto_number_garbage(self):
-        with self.assertRaisesRegex(TypeError, 'invalid flag value .not an int.'):
+        mit self.assertRaisesRegex(TypeError, 'invalid flag value .not an int.'):
             klasse Color(Flag):
                 red = 'not an int'
                 blue = auto()
@@ -4036,7 +4036,7 @@ klasse OldTestFlag(unittest.TestCase):
                 threading.Thread(target=cycle_enum)
                 fuer _ in range(8)
                 ]
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
         # check that only 248 members were created
         self.assertFalsch(
@@ -4444,7 +4444,7 @@ klasse OldTestIntFlag(unittest.TestCase):
         self.assertFalsch(R in WX)
         self.assertFalsch(W in RX)
         self.assertFalsch(X in RW)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.assertFalsch('test' in RW)
 
     def test_member_iter(self):
@@ -4556,7 +4556,7 @@ klasse OldTestIntFlag(unittest.TestCase):
                 threading.Thread(target=cycle_enum)
                 fuer _ in range(8)
                 ]
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
         # check that only 248 members were created
         self.assertFalsch(
@@ -4568,7 +4568,7 @@ klasse OldTestIntFlag(unittest.TestCase):
 klasse TestEmptyAndNonLatinStrings(unittest.TestCase):
 
     def test_empty_string(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             empty_abc = Enum('empty_abc', ('', 'B', 'C'))
 
     def test_non_latin_character_string(self):
@@ -4598,13 +4598,13 @@ klasse TestUnique(unittest.TestCase):
             triple = 3
 
     def test_unique_dirty(self):
-        with self.assertRaisesRegex(ValueError, 'tres.*one'):
+        mit self.assertRaisesRegex(ValueError, 'tres.*one'):
             @unique
             klasse Dirty(Enum):
                 one = 1
                 two = 'dos'
                 tres = 1
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
                 'double.*single.*turkey.*triple',
                 ):
@@ -4646,7 +4646,7 @@ klasse TestVerify(unittest.TestCase):
             THIRD = 5
             FORTH = 6
         #
-        with self.assertRaisesRegex(ValueError, 'invalid enum .Missing.: missing values 5, 6, 7, 8, 9, 10, 12'):
+        mit self.assertRaisesRegex(ValueError, 'invalid enum .Missing.: missing values 5, 6, 7, 8, 9, 10, 12'):
             @verify(CONTINUOUS)
             klasse Missing(Enum):
                 FIRST = 3
@@ -4654,7 +4654,7 @@ klasse TestVerify(unittest.TestCase):
                 THIRD = 11
                 FORTH = 13
         #
-        with self.assertRaisesRegex(ValueError, 'invalid flag .Incomplete.: missing values 32'):
+        mit self.assertRaisesRegex(ValueError, 'invalid flag .Incomplete.: missing values 32'):
             @verify(CONTINUOUS)
             klasse Incomplete(Flag):
                 FIRST = 4
@@ -4662,7 +4662,7 @@ klasse TestVerify(unittest.TestCase):
                 THIRD = 16
                 FORTH = 64
         #
-        with self.assertRaisesRegex(ValueError, 'invalid flag .StillIncomplete.: missing values 16'):
+        mit self.assertRaisesRegex(ValueError, 'invalid flag .StillIncomplete.: missing values 16'):
             @verify(CONTINUOUS)
             klasse StillIncomplete(Flag):
                 FIRST = 4
@@ -4680,7 +4680,7 @@ klasse TestVerify(unittest.TestCase):
         self.assertEqual(Bizarre.b.value, 3)
         self.assertEqual(Bizarre.c.value, 4)
         self.assertEqual(Bizarre.d.value, 6)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
                 "invalid Flag 'Bizarre': aliases b and d are missing combined values of 0x3 .use enum.show_flag_values.value. fuer details.",
             ):
@@ -4699,7 +4699,7 @@ klasse TestVerify(unittest.TestCase):
         self.assertEqual(Bizarre.b.value, 3)
         self.assertEqual(Bizarre.c.value, 4)
         self.assertEqual(Bizarre.d.value, 6)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
                 "invalid Flag 'Bizarre': alias d is missing value 0x2 .use enum.show_flag_values.value. fuer details.",
             ):
@@ -4723,13 +4723,13 @@ klasse TestVerify(unittest.TestCase):
             triple = 3
 
     def test_unique_dirty(self):
-        with self.assertRaisesRegex(ValueError, 'tres.*one'):
+        mit self.assertRaisesRegex(ValueError, 'tres.*one'):
             @verify(UNIQUE)
             klasse Dirty(Enum):
                 one = 1
                 two = 'dos'
                 tres = 1
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
                 'double.*single.*turkey.*triple',
                 ):
@@ -4832,10 +4832,10 @@ klasse TestInternals(unittest.TestCase):
 
     @unittest.skipIf(
             python_version >= (3, 13),
-            'mixed types with auto() no longer supported',
+            'mixed types mit auto() no longer supported',
             )
     def test_auto_garbage_ok(self):
-        with self.assertWarnsRegex(DeprecationWarning, 'will require all values to be sortable'):
+        mit self.assertWarnsRegex(DeprecationWarning, 'will require all values to be sortable'):
             klasse Color(Enum):
                 red = 'red'
                 blue = auto()
@@ -4843,10 +4843,10 @@ klasse TestInternals(unittest.TestCase):
 
     @unittest.skipIf(
             python_version >= (3, 13),
-            'mixed types with auto() no longer supported',
+            'mixed types mit auto() no longer supported',
             )
     def test_auto_garbage_corrected_ok(self):
-        with self.assertWarnsRegex(DeprecationWarning, 'will require all values to be sortable'):
+        mit self.assertWarnsRegex(DeprecationWarning, 'will require all values to be sortable'):
             klasse Color(Enum):
                 red = 'red'
                 blue = 2
@@ -4859,27 +4859,27 @@ klasse TestInternals(unittest.TestCase):
 
     @unittest.skipIf(
             python_version < (3, 13),
-            'mixed types with auto() will raise in 3.13',
+            'mixed types mit auto() will raise in 3.13',
             )
     def test_auto_garbage_fail(self):
-        with self.assertRaisesRegex(TypeError, "unable to increment 'red'"):
+        mit self.assertRaisesRegex(TypeError, "unable to increment 'red'"):
             klasse Color(Enum):
                 red = 'red'
                 blue = auto()
 
     @unittest.skipIf(
             python_version < (3, 13),
-            'mixed types with auto() will raise in 3.13',
+            'mixed types mit auto() will raise in 3.13',
             )
     def test_auto_garbage_corrected_fail(self):
-        with self.assertRaisesRegex(TypeError, 'unable to sort non-numeric values'):
+        mit self.assertRaisesRegex(TypeError, 'unable to sort non-numeric values'):
             klasse Color(Enum):
                 red = 'red'
                 blue = 2
                 green = auto()
 
     def test_auto_order(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse Color(Enum):
                 red = auto()
                 green = auto()
@@ -5174,8 +5174,8 @@ klasse TestStdLib(unittest.TestCase):
         fuer v, r in zip(values, result):
             wenn r.name in ('__init_subclass__', '__doc__'):
                 # not sure how to make the __init_subclass_ Attributes match
-                # so as long as there is one, call it good
-                # __doc__ is too big to check exactly, so treat the same as __init_subclass__
+                # so als long als there is one, call it good
+                # __doc__ is too big to check exactly, so treat the same als __init_subclass__
                 fuer name in ('name','kind','defining_class'):
                     wenn getattr(v, name) != getattr(r, name):
                         drucke('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
@@ -5478,7 +5478,7 @@ klasse TestConvert(unittest.TestCase):
         self.assertEqual(format(test_type.CONVERT_STR_TEST_1), 'hello')
 
     def test_convert_raise(self):
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             enum.IntEnum._convert(
                 'UnittestConvert',
                 MODULE,
@@ -5497,7 +5497,7 @@ klasse TestConvert(unittest.TestCase):
 
 klasse TestEnumDict(unittest.TestCase):
     def test_enum_dict_in_metaclass(self):
-        """Test that EnumDict is usable as a klasse namespace"""
+        """Test that EnumDict is usable als a klasse namespace"""
         klasse Meta(type):
             @classmethod
             def __prepare__(metacls, cls, bases, **kwds):
@@ -5506,10 +5506,10 @@ klasse TestEnumDict(unittest.TestCase):
         klasse MyClass(metaclass=Meta):
             a = 1
 
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 a = 2  # duplicate
 
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 _a_sunder_ = 3
 
     def test_enum_dict_standalone(self):
@@ -5517,7 +5517,7 @@ klasse TestEnumDict(unittest.TestCase):
         enumdict = EnumDict()
         enumdict['a'] = 1
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             enumdict['a'] = 'other value'
 
         # Only MutableMapping interface is overridden fuer now.

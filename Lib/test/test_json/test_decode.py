@@ -19,7 +19,7 @@ klasse TestDecode:
     def test_nonascii_digits_rejected(self):
         # JSON specifies only ascii digits, see gh-125687
         fuer num in ["1\uff10", "0.\uff10", "0e\uff10"]:
-            with self.assertRaises(self.JSONDecodeError):
+            mit self.assertRaises(self.JSONDecodeError):
                 self.loads(num)
 
     def test_bytes(self):
@@ -39,7 +39,7 @@ klasse TestDecode:
         fuer constant in [
             "nan", "NAN", "naN", "infinity", "INFINITY", "inFiniTy"
         ]:
-            with self.assertRaises(self.JSONDecodeError):
+            mit self.assertRaises(self.JSONDecodeError):
                 self.loads(constant)
 
     def test_empty_objects(self):
@@ -107,10 +107,10 @@ klasse TestDecode:
     def test_string_with_utf8_bom(self):
         # see #18958
         bom_json = "[1,2,3]".encode('utf-8-sig').decode('utf-8')
-        with self.assertRaises(self.JSONDecodeError) as cm:
+        mit self.assertRaises(self.JSONDecodeError) als cm:
             self.loads(bom_json)
         self.assertIn('BOM', str(cm.exception))
-        with self.assertRaises(self.JSONDecodeError) as cm:
+        mit self.assertRaises(self.JSONDecodeError) als cm:
             self.json.load(StringIO(bom_json))
         self.assertIn('BOM', str(cm.exception))
         # make sure that the BOM is not detected in the middle of a string
@@ -125,9 +125,9 @@ klasse TestDecode:
 
     def test_limit_int(self):
         maxdigits = 5000
-        with support.adjust_int_max_str_digits(maxdigits):
+        mit support.adjust_int_max_str_digits(maxdigits):
             self.loads('1' * maxdigits)
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self.loads('1' * (maxdigits + 1))
 
 

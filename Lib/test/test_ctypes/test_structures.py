@@ -1,9 +1,9 @@
 """Tests fuer ctypes.Structure
 
-Features common with Union should go in test_structunion.py instead.
+Features common mit Union should go in test_structunion.py instead.
 """
 
-von platform importiere architecture as _architecture
+von platform importiere architecture als _architecture
 importiere struct
 importiere sys
 importiere unittest
@@ -62,7 +62,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(sizeof(X), min(8, longlong_align) + longlong_size)
         self.assertEqual(X.b.offset, min(8, longlong_align))
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse X(Structure):
                 _fields_ = [("a", "b"), ("b", "q")]
                 _pack_ = -1
@@ -72,13 +72,13 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     def test_packed_c_limits(self):
         # Issue 15989
         importiere _testcapi
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse X(Structure):
                 _fields_ = [("a", c_byte)]
                 _pack_ = _testcapi.INT_MAX + 1
                 _layout_ = "ms"
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse X(Structure):
                 _fields_ = [("a", c_byte)]
                 _pack_ = _testcapi.UINT_MAX + 2
@@ -183,7 +183,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
     def get_except(self, func, *args):
         try:
             func(*args)
-        except Exception as detail:
+        except Exception als detail:
             return detail.__class__, str(detail)
 
     def test_positional_args(self):
@@ -444,7 +444,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertAlmostEqual(s.more_data[0], -3.0, places=6)
         self.assertAlmostEqual(s.more_data[1], -2.0, places=6)
 
-        # Test3B, Test3C, Test3D, Test3E have the same logic with different
+        # Test3B, Test3C, Test3D, Test3E have the same logic mit different
         # sizes hence putting them in a loop.
         StructCtype = namedtuple(
             "StructCtype",
@@ -561,7 +561,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
 
         test4 = Test4()
         dll = CDLL(_ctypes_test.__file__)
-        with self.assertRaises(TypeError) as ctx:
+        mit self.assertRaises(TypeError) als ctx:
             func = dll._testfunc_union_by_value1
             func.restype = c_long
             func.argtypes = (Test4,)
@@ -569,7 +569,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(ctx.exception.args[0], 'item 1 in _argtypes_ passes '
                          'a union by value, which is unsupported.')
         test5 = Test5()
-        with self.assertRaises(TypeError) as ctx:
+        mit self.assertRaises(TypeError) als ctx:
             func = dll._testfunc_union_by_value2
             func.restype = c_long
             func.argtypes = (Test5,)
@@ -632,13 +632,13 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         test6.C = 7
         test6.D = 3
         dll = CDLL(_ctypes_test.__file__)
-        with self.assertRaises(TypeError) as ctx:
+        mit self.assertRaises(TypeError) als ctx:
             func = dll._testfunc_bitfield_by_value1
             func.restype = c_long
             func.argtypes = (Test6,)
             result = func(test6)
         self.assertEqual(ctx.exception.args[0], 'item 1 in _argtypes_ passes '
-                         'a struct/union with a bitfield by value, which is '
+                         'a struct/union mit a bitfield by value, which is '
                          'unsupported.')
         # passing by reference should be OK
         func = dll._testfunc_bitfield_by_reference1
@@ -675,7 +675,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(test7.C, 0)
         self.assertEqual(test7.D, 0)
 
-        # fuer a union with bitfields, the union check happens first
+        # fuer a union mit bitfields, the union check happens first
         klasse Test8(Union):
             _fields_ = [
                 ('A', c_int, 1),
@@ -686,7 +686,7 @@ klasse StructureTestCase(unittest.TestCase, StructCheckMixin):
         self.check_union(Test8)
 
         test8 = Test8()
-        with self.assertRaises(TypeError) as ctx:
+        mit self.assertRaises(TypeError) als ctx:
             func = dll._testfunc_bitfield_by_value2
             func.restype = c_long
             func.argtypes = (Test8,)

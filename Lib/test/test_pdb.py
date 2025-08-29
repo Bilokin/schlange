@@ -52,7 +52,7 @@ def test_pdb_displayhook():
     >>> def test_function(foo, bar):
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([
+    >>> mit PdbTestInput([
     ...     'foo',
     ...     'bar',
     ...     'for i in range(5): drucke(i)',
@@ -101,7 +101,7 @@ def test_pdb_basic_commands():
     ...     test_function4(1, 2, 3)
     ...     drucke(ret)
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'step',       # go to line ret = test_function_2('baz')
     ...     'step',       # entering the function call
     ...     'args',       # display function args
@@ -241,7 +241,7 @@ def test_pdb_breakpoint_commands():
     the breakpoint list outputs a tab fuer the "stop only" and "ignore next"
     lines, which we don't want to put in here.
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'break 3',
     ...     'break 4, +',
     ...     'disable 1',
@@ -366,7 +366,7 @@ def test_pdb_breakpoint_ignore_and_condition():
     ...     fuer i in range(5):
     ...         drucke(i)
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'break 4',
     ...     'ignore 1 2',  # ignore once
     ...     'continue',
@@ -401,7 +401,7 @@ def test_pdb_breakpoint_ignore_and_condition():
     """
 
 def test_pdb_breakpoint_on_annotated_function_def():
-    """Test breakpoints on function definitions with annotation.
+    """Test breakpoints on function definitions mit annotation.
 
     >>> def foo[T]():
     ...     return 0
@@ -416,7 +416,7 @@ def test_pdb_breakpoint_on_annotated_function_def():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     pass
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'break foo',
     ...     'break bar',
     ...     'break foobar',
@@ -443,7 +443,7 @@ def test_pdb_commands():
     ...     drucke(2)
     ...     drucke(3)
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'b 3',
     ...     'commands',
     ...     'silent',      # suppress the frame status output
@@ -481,16 +481,16 @@ def test_pdb_commands():
     """
 
 def test_pdb_breakpoint_with_filename():
-    """Breakpoints with filename:lineno
+    """Breakpoints mit filename:lineno
 
     >>> def test_function():
-    ...     # inspect_fodder2 is a great module as the line number is stable
-    ...     von test.test_inspect importiere inspect_fodder2 as mod2
+    ...     # inspect_fodder2 is a great module als the line number is stable
+    ...     von test.test_inspect importiere inspect_fodder2 als mod2
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     mod2.func88()
     ...     mod2.func114()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
     ...     'break test.test_inspect.inspect_fodder2:90',
     ...     'continue', # will stop at func88
     ...     'break test/test_inspect/inspect_fodder2.py:115',
@@ -522,7 +522,7 @@ def test_pdb_breakpoint_on_disabled_line():
     ...         j = i * 2
     ...         drucke(j)
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'break 5',
     ...     'c',
     ...     'clear 1',
@@ -557,7 +557,7 @@ def test_pdb_breakpoint_on_disabled_line():
 def test_pdb_breakpoints_preserved_across_interactive_sessions():
     """Breakpoints are remembered between interactive sessions
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...    'import test.test_pdb',
     ...    'break test.test_pdb.do_something',
     ...    'break test.test_pdb.do_nothing',
@@ -577,7 +577,7 @@ def test_pdb_breakpoints_preserved_across_interactive_sessions():
     2   breakpoint   keep yes   at ...test_pdb.py:...
     (Pdb) continue
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...    'break',
     ...    'break pdb.find_function',
     ...    'break',
@@ -601,7 +601,7 @@ def test_pdb_breakpoints_preserved_across_interactive_sessions():
     Deleted breakpoint 1 at ...test_pdb.py:...
     (Pdb) continue
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...    'break',
     ...    'clear 2',
     ...    'clear 3',
@@ -641,7 +641,7 @@ def test_pdb_break_anywhere():
     >>> def test_function():
     ...     caller()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'b 3',
     ...     'c',
     ... ]):
@@ -667,7 +667,7 @@ def test_pdb_pp_repr_exc():
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'p obj',
     ...     'pp obj',
     ...     'continue',
@@ -690,10 +690,10 @@ def test_pdb_empty_line():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     y = 2
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'p x',
     ...     '',  # Should repeat p x
-    ...     'n ;; p 0 ;; p x',  # Fill cmdqueue with multiple commands
+    ...     'n ;; p 0 ;; p x',  # Fill cmdqueue mit multiple commands
     ...     '',  # Should still repeat p x
     ...     'continue',
     ... ]):
@@ -743,7 +743,7 @@ def test_list_commands():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     ret = test_function_2('baz')
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'step',      # go to the test function line
     ...     'list',      # list first function
     ...     'step',      # step into second function
@@ -833,7 +833,7 @@ def test_pdb_whatis_command():
     >>> def test_function():
     ...   importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...    'whatis myvar',
     ...    'whatis myfunc',
     ...    'whatis MyClass',
@@ -871,7 +871,7 @@ def test_pdb_display_command():
     ...     a = 3
     ...     a = 4
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS
     ...     's',
     ...     'display +',
     ...     'display',
@@ -938,7 +938,7 @@ def test_pdb_alias_command():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     o.method()
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS
     ...     's',
     ...     'alias pi',
     ...     'alias pi fuer k in %1.__dict__.keys(): drucke(f"%1.{k} = {%1.__dict__[k]}")',
@@ -1008,7 +1008,7 @@ def test_pdb_where_command():
     >>> def test_function():
     ...     f()
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS
     ...     'w',
     ...     'where',
     ...     'w 1',
@@ -1094,7 +1094,7 @@ def test_pdb_restart_command():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch, mode='inline').set_trace()
     ...     x = 1
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS
     ...     'restart',
     ...     'continue',
     ... ]):
@@ -1134,7 +1134,7 @@ wenn not sys.flags.no_site:
         ...     lst_local = []
         ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-        >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+        >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
         ...     'interact',
         ...     'x',
         ...     'g',
@@ -1189,7 +1189,7 @@ def test_convenience_variables():
     >>> def test_function():
     ...     util_function()
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'step',             # Step to try statement
     ...     '$_frame.f_lineno', # Check frame convenience variable
     ...     '$ _frame',         # This should be a syntax error
@@ -1279,7 +1279,7 @@ def test_post_mortem_chained():
     >>> def test_function_reraise():
     ...     try:
     ...         test_function_2()
-    ...     except ZeroDivisionError as e:
+    ...     except ZeroDivisionError als e:
     ...         raise ZeroDivisionError('reraised') von e
 
     >>> def test_function():
@@ -1287,10 +1287,10 @@ def test_post_mortem_chained():
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         test_function_reraise()
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         pdb._post_mortem(e, instance)
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'exceptions',
     ...     'exceptions 0',
     ...     '$_exception',
@@ -1338,9 +1338,9 @@ def test_post_mortem_chained():
     > <doctest test.test_pdb.test_post_mortem_chained[1]>(5)test_function_reraise()
     -> raise ZeroDivisionError('reraised') von e
     (Pdb) exceptions -1
-    *** No exception with that number
+    *** No exception mit that number
     (Pdb) exceptions 3
-    *** No exception with that number
+    *** No exception mit that number
     (Pdb) up
     > <doctest test.test_pdb.test_post_mortem_chained[2]>(5)test_function()
     -> test_function_reraise()
@@ -1354,14 +1354,14 @@ def test_post_mortem_cause_no_context():
     >>> def make_exc_with_stack(type_, *content, from_=Nichts):
     ...     try:
     ...         raise type_(*content) von from_
-    ...     except Exception as out:
+    ...     except Exception als out:
     ...         return out
     ...
 
     >>> def main():
     ...     try:
     ...         raise ValueError('Context Not Shown')
-    ...     except Exception as e1:
+    ...     except Exception als e1:
     ...         raise ValueError("With Cause") von make_exc_with_stack(TypeError,'The Cause')
 
     >>> def test_function():
@@ -1369,10 +1369,10 @@ def test_post_mortem_cause_no_context():
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         pdb._post_mortem(e, instance)
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'exceptions',
     ...     'exceptions 0',
     ...     'exceptions 1',
@@ -1411,10 +1411,10 @@ def test_post_mortem_context_of_the_cause():
     >>> def main():
     ...     try:
     ...         raise TypeError('Context of the cause')
-    ...     except Exception as e1:
+    ...     except Exception als e1:
     ...         try:
     ...             raise ValueError('Root Cause')
-    ...         except Exception as e2:
+    ...         except Exception als e2:
     ...             ex = e2
     ...         raise ValueError("With Cause, and cause has context") von ex
 
@@ -1423,10 +1423,10 @@ def test_post_mortem_context_of_the_cause():
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         pdb._post_mortem(e, instance)
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'exceptions',
     ...     'exceptions 2',
     ...     'up',
@@ -1459,7 +1459,7 @@ def test_post_mortem_context_of_the_cause():
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
     -> raise ValueError("With Cause, and cause has context") von ex
     (Pdb) exceptions 3
-    *** No exception with that number
+    *** No exception mit that number
     (Pdb) up
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[1]>(5)test_function()
     -> main()
@@ -1467,7 +1467,7 @@ def test_post_mortem_context_of_the_cause():
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[0]>(9)main()
     -> raise ValueError("With Cause, and cause has context") von ex
     (Pdb) exceptions 4
-    *** No exception with that number
+    *** No exception mit that number
     (Pdb) up
     > <doctest test.test_pdb.test_post_mortem_context_of_the_cause[1]>(5)test_function()
     -> main()
@@ -1488,7 +1488,7 @@ def test_post_mortem_from_none():
     >>> def main():
     ...     try:
     ...         raise TypeError('Context of the cause')
-    ...     except Exception as e1:
+    ...     except Exception als e1:
     ...         raise ValueError("With Cause, and cause has context") von Nichts
 
     >>> def test_function():
@@ -1496,10 +1496,10 @@ def test_post_mortem_from_none():
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         pdb._post_mortem(e, instance)
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'exceptions',
     ...     'exit',
     ... ]):
@@ -1529,10 +1529,10 @@ def test_post_mortem_from_no_stack():
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         pdb._post_mortem(e, instance)
 
-    >>> with PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     ["exceptions",
     ...      "exceptions 0",
     ...     "exit"],
@@ -1563,12 +1563,12 @@ def test_post_mortem_single_no_stack():
     ...     sys.last_exc = Exception()
     ...     pdb._post_mortem(sys.last_exc, instance)
 
-    >>> with PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     []
     ... ):
     ...    try:
     ...        test_function()
-    ...    except ValueError as e:
+    ...    except ValueError als e:
     ...        drucke(e)
     A valid traceback must be passed wenn no exception is being handled
     """
@@ -1576,19 +1576,19 @@ def test_post_mortem_single_no_stack():
 def test_post_mortem_complex():
     """Test post mortem traceback debugging of chained exception
 
-    Test with simple and complex cycles, exception groups,...
+    Test mit simple and complex cycles, exception groups,...
 
     >>> def make_ex_with_stack(type_, *content, from_=Nichts):
     ...     try:
     ...         raise type_(*content) von from_
-    ...     except Exception as out:
+    ...     except Exception als out:
     ...         return out
     ...
 
     >>> def cycle():
     ...     try:
     ...         raise ValueError("Cycle Leaf")
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         raise e von e
     ...
 
@@ -1606,14 +1606,14 @@ def test_post_mortem_complex():
     >>> def cause():
     ...     try:
     ...         raise ValueError("Cause Leaf")
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         raise e
     ...
 
     >>> def context(n=10):
     ...     try:
     ...         raise ValueError(f"Context Leaf {n}")
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         wenn n == 0:
     ...             raise ValueError(f"With Context {n}") von e
     ...         sonst:
@@ -1623,10 +1623,10 @@ def test_post_mortem_complex():
     >>> def main():
     ...     try:
     ...         cycle()
-    ...     except Exception as e1:
+    ...     except Exception als e1:
     ...         try:
     ...             tri_cycle()
-    ...         except Exception as e2:
+    ...         except Exception als e2:
     ...             ex = e2
     ...         raise ValueError("With Context and With Cause") von ex
 
@@ -1636,10 +1636,10 @@ def test_post_mortem_complex():
     ...     instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     try:
     ...         main()
-    ...     except Exception as e:
+    ...     except Exception als e:
     ...         pdb._post_mortem(e, instance)
 
-    >>> with PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput(  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     ["exceptions",
     ...     "exceptions 0",
     ...     "exceptions 1",
@@ -1688,7 +1688,7 @@ def test_post_mortem():
     ...     test_function_2()
     ...     drucke('Not reached.')
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'step',      # step to test_function_2() line
     ...     'next',      # step over exception-raising call
     ...     'bt',        # get a backtrace
@@ -1754,7 +1754,7 @@ def test_pdb_return_to_different_file():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     pprint.pdrucke(A())
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'b A.__repr__',
     ...     'continue',
     ...     'return',
@@ -1799,7 +1799,7 @@ def test_pdb_skip_modules():
     ...     importiere pdb; pdb.Pdb(skip=['stri*'], nosigint=Wahr, readrc=Falsch).set_trace()
     ...     string.capwords('FOO')
 
-    >>> with PdbTestInput([
+    >>> mit PdbTestInput([
     ...     'step',
     ...     'step',
     ...     'continue',
@@ -1823,7 +1823,7 @@ def test_pdb_invalid_arg():
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'a = 3',
     ...     'll 4',
     ...     'step 1',
@@ -1867,7 +1867,7 @@ def test_pdb_skip_modules_with_callback():
     ...     importiere pdb; pdb.Pdb(skip=['module_to_skip*'], nosigint=Wahr, readrc=Falsch).set_trace()
     ...     mod.foo_pony(callback)
 
-    >>> with PdbTestInput([
+    >>> mit PdbTestInput([
     ...     'step',
     ...     'step',
     ...     'step',
@@ -1917,7 +1917,7 @@ def test_pdb_continue_in_bottomframe():
     ...     drucke(3)
     ...     drucke(4)
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS
     ...     'step',
     ...     'next',
     ...     'break 7',
@@ -1957,15 +1957,15 @@ def pdb_invoke(method, arg):
 
 
 def test_pdb_run_with_incorrect_argument():
-    """Testing run and runeval with incorrect first argument.
+    """Testing run and runeval mit incorrect first argument.
 
     >>> pti = PdbTestInput(['continue',])
-    >>> with pti:
+    >>> mit pti:
     ...     pdb_invoke('run', lambda x: x)
     Traceback (most recent call last):
     TypeError: exec() arg 1 must be a string, bytes or code object
 
-    >>> with pti:
+    >>> mit pti:
     ...     pdb_invoke('runeval', lambda x: x)
     Traceback (most recent call last):
     TypeError: eval() arg 1 must be a string, bytes or code object
@@ -1973,9 +1973,9 @@ def test_pdb_run_with_incorrect_argument():
 
 
 def test_pdb_run_with_code_object():
-    """Testing run and runeval with code object as a first argument.
+    """Testing run and runeval mit code object als a first argument.
 
-    >>> with PdbTestInput(['step','x', 'continue']):  # doctest: +ELLIPSIS
+    >>> mit PdbTestInput(['step','x', 'continue']):  # doctest: +ELLIPSIS
     ...     pdb_invoke('run', compile('x=1', '<string>', 'exec'))
     > <string>(1)<module>()...
     (Pdb) step
@@ -1985,7 +1985,7 @@ def test_pdb_run_with_code_object():
     1
     (Pdb) continue
 
-    >>> with PdbTestInput(['x', 'continue']):
+    >>> mit PdbTestInput(['x', 'continue']):
     ...     x=0
     ...     pdb_invoke('runeval', compile('x+1', '<string>', 'eval'))
     > <string>(1)<module>()->Nichts
@@ -2008,7 +2008,7 @@ def test_next_until_return_at_return_event():
     ...     test_function_2()
     ...     end = 1
 
-    >>> with PdbTestInput(['break test_function_2',
+    >>> mit PdbTestInput(['break test_function_2',
     ...                    'continue',
     ...                    'return',
     ...                    'next',
@@ -2072,12 +2072,12 @@ def test_pdb_next_command_for_generator():
     ...         wenn next(it) != 0:
     ...             raise AssertionError
     ...         next(it)
-    ...     except StopIteration as ex:
+    ...     except StopIteration als ex:
     ...         wenn ex.value != 1:
     ...             raise AssertionError
     ...     drucke("finished")
 
-    >>> with PdbTestInput(['step',
+    >>> mit PdbTestInput(['step',
     ...                    'step',
     ...                    'step',
     ...                    'step',
@@ -2133,7 +2133,7 @@ wenn not SKIP_CORO_TESTS:
             >>> def test_function():
             ...     asyncio.run(test(), loop_factory=asyncio.EventLoop)
 
-            >>> with PdbTestInput([  # doctest: +ELLIPSIS
+            >>> mit PdbTestInput([  # doctest: +ELLIPSIS
             ...     '$_asynctask',
             ...     'continue',
             ... ]):
@@ -2165,7 +2165,7 @@ wenn not SKIP_CORO_TESTS:
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
-            >>> with PdbTestInput([  # doctest: +ELLIPSIS
+            >>> mit PdbTestInput([  # doctest: +ELLIPSIS
             ...     'x = await task',
             ...     'p x',
             ...     'x = await test()',
@@ -2210,7 +2210,7 @@ wenn not SKIP_CORO_TESTS:
             """
 
         def test_pdb_await_with_breakpoint():
-            """Testing await support with breakpoints set in tasks
+            """Testing await support mit breakpoints set in tasks
 
             >>> importiere asyncio
 
@@ -2227,7 +2227,7 @@ wenn not SKIP_CORO_TESTS:
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
-            >>> with PdbTestInput([  # doctest: +ELLIPSIS
+            >>> mit PdbTestInput([  # doctest: +ELLIPSIS
             ...     'b test',
             ...     'k = await task',
             ...     'n',
@@ -2280,7 +2280,7 @@ wenn not SKIP_CORO_TESTS:
             >>> def test_function():
             ...     asyncio.run(main(), loop_factory=asyncio.EventLoop)
 
-            >>> with PdbTestInput([
+            >>> mit PdbTestInput([
             ...     'p var.get()',
             ...     'drucke(await get_var())',
             ...     'drucke(await asyncio.create_task(set_var(100)))',
@@ -2336,7 +2336,7 @@ wenn not SKIP_CORO_TESTS:
         ...     run_yielding_async_fn(test_main)
         ...     drucke("finished")
 
-        >>> with PdbTestInput(['step',
+        >>> mit PdbTestInput(['step',
         ...                    'step',
         ...                    'step',
         ...                    'next',
@@ -2397,7 +2397,7 @@ wenn not SKIP_CORO_TESTS:
         ...     run_yielding_async_fn(test_main)
         ...     drucke("finished")
 
-        >>> with PdbTestInput(['step',
+        >>> mit PdbTestInput(['step',
         ...                    'step',
         ...                    'step',
         ...                    'next',
@@ -2453,12 +2453,12 @@ def test_pdb_return_command_for_generator():
     ...         wenn next(it) != 0:
     ...             raise AssertionError
     ...         next(it)
-    ...     except StopIteration as ex:
+    ...     except StopIteration als ex:
     ...         wenn ex.value != 1:
     ...             raise AssertionError
     ...     drucke("finished")
 
-    >>> with PdbTestInput(['step',
+    >>> mit PdbTestInput(['step',
     ...                    'step',
     ...                    'step',
     ...                    'step',
@@ -2488,7 +2488,7 @@ def test_pdb_return_command_for_generator():
     -> next(it)
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(8)test_function()
-    -> except StopIteration as ex:
+    -> except StopIteration als ex:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(9)test_function()
     -> wenn ex.value != 1:
@@ -2515,7 +2515,7 @@ wenn not SKIP_CORO_TESTS:
         ...     run_yielding_async_fn(test_main)
         ...     drucke("finished")
 
-        >>> with PdbTestInput(['step',
+        >>> mit PdbTestInput(['step',
         ...                    'step',
         ...                    'step',
         ...                    'next',
@@ -2555,7 +2555,7 @@ def test_pdb_until_command_for_generator():
     ...         drucke(i)
     ...     drucke("finished")
 
-    >>> with PdbTestInput(['step',
+    >>> mit PdbTestInput(['step',
     ...                    'step',
     ...                    'until 4',
     ...                    'step',
@@ -2612,7 +2612,7 @@ wenn not SKIP_CORO_TESTS:
         ...     run_yielding_async_fn(test_main)
         ...     drucke("finished")
 
-        >>> with PdbTestInput(['step',
+        >>> mit PdbTestInput(['step',
         ...                    'step',
         ...                    'until 8',
         ...                    'continue']):
@@ -2650,7 +2650,7 @@ def test_pdb_next_command_in_generator_for_loop():
     ...         drucke('value', i)
     ...     x = 123
 
-    >>> with PdbTestInput(['break test_gen',
+    >>> mit PdbTestInput(['break test_gen',
     ...                    'continue',
     ...                    'next',
     ...                    'next',
@@ -2679,7 +2679,7 @@ def test_pdb_next_command_in_generator_for_loop():
     """
 
 def test_pdb_next_command_subiterator():
-    """The next command in a generator with a subiterator.
+    """The next command in a generator mit a subiterator.
 
     >>> def test_subgenerator():
     ...     yield 0
@@ -2695,7 +2695,7 @@ def test_pdb_next_command_subiterator():
     ...         drucke('value', i)
     ...     x = 123
 
-    >>> with PdbTestInput(['step',
+    >>> mit PdbTestInput(['step',
     ...                    'step',
     ...                    'step',
     ...                    'next',
@@ -2743,7 +2743,7 @@ def test_pdb_breakpoint_with_throw():
     ...     except TypeError:
     ...         pass
 
-    >>> with PdbTestInput([
+    >>> mit PdbTestInput([
     ...     'b 7',
     ...     'continue',
     ...     'clear 1',
@@ -2768,7 +2768,7 @@ def test_pdb_multiline_statement():
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'def f(x):',
     ...     '  return x * 2',
     ...     '',
@@ -2806,7 +2806,7 @@ def test_pdb_closure():
     ...     g = 3
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'k',
     ...     'g',
     ...     'y = y',
@@ -2860,14 +2860,14 @@ def test_pdb_closure():
     """
 
 def test_pdb_show_attribute_and_item():
-    """Test fuer expressions with command prefix
+    """Test fuer expressions mit command prefix
 
     >>> def test_function():
     ...     n = lambda x: x
     ...     c = {"a": 1}
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'c["a"]',
     ...     'c.get("a")',
     ...     'n(1)',
@@ -2912,7 +2912,7 @@ def test_pdb_with_inline_breakpoint():
     ...     original_pdb_settrace()
     ...     x = 2
 
-    >>> with PdbTestInput(['display x',
+    >>> mit PdbTestInput(['display x',
     ...                    'n',
     ...                    'n',
     ...                    'n',
@@ -2953,7 +2953,7 @@ def test_pdb_issue_20766():
     ...         drucke('pdb %d: %s' % (i, sess._previous_sigint_handler))
     ...         i += 1
 
-    >>> with PdbTestInput(['continue',
+    >>> mit PdbTestInput(['continue',
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_issue_20766[0]>(5)test_function()
@@ -2967,7 +2967,7 @@ def test_pdb_issue_20766():
     """
 
 def test_pdb_issue_43318():
-    """echo breakpoints cleared with filename:lineno
+    """echo breakpoints cleared mit filename:lineno
 
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
@@ -2975,7 +2975,7 @@ def test_pdb_issue_43318():
     ...     drucke(2)
     ...     drucke(3)
     ...     drucke(4)
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'break 3',
     ...     'clear <doctest test.test_pdb.test_pdb_issue_43318[0]>:3',
     ...     'continue'
@@ -3011,7 +3011,7 @@ def test_pdb_issue_gh_91742():
     ...    about()
 
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'step',
     ...     'step',
     ...     'next',
@@ -3057,7 +3057,7 @@ def test_pdb_issue_gh_94215():
     ...    importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...    func()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'step',
     ...     'step',
     ...     'next',
@@ -3120,7 +3120,7 @@ def test_pdb_issue_gh_101673():
     ...    a = 1
     ...    importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     '!a = 2',
     ...     'll',
     ...     'p a',
@@ -3158,7 +3158,7 @@ def test_pdb_issue_gh_103225():
 
     Make sure longlist uses 1-based line numbers in frames that correspond to a module
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'longlist',
     ...     'continue'
     ... ]):
@@ -3168,7 +3168,7 @@ def test_pdb_issue_gh_103225():
     > <doctest test.test_pdb.test_pdb_issue_gh_103225[0]>(6)<module>()
     -> importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     (Pdb) longlist
-      1     with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+      1     mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
       2         'longlist',
       3         'continue'
       4     ]):
@@ -3186,10 +3186,10 @@ def test_pdb_issue_gh_101517():
     >>> def test_function():
     ...     try:
     ...         raise KeyError
-    ...     except* Exception as e:
+    ...     except* Exception als e:
     ...         importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
     ... ]):
     ...    test_function()
@@ -3206,7 +3206,7 @@ def test_pdb_issue_gh_108976():
     ...     sys._getframe().f_trace_opcodes = Wahr
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
     ...     a = 1
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
     ... ]):
     ...    test_function()
@@ -3222,7 +3222,7 @@ def test_pdb_issue_gh_127321():
     ...     importiere pdb; pdb_instance = pdb.Pdb(nosigint=Wahr, readrc=Falsch)
     ...     [1, 2] and pdb_instance.set_trace()
     ...     a = 1
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
     ... ]):
     ...    test_function()
@@ -3237,7 +3237,7 @@ def test_pdb_issue_gh_80731():
 
     pdb should correctly print exception info wenn in an except block.
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS
     ...     'import sys',
     ...     'sys.exc_info()',
     ...     'continue'
@@ -3260,7 +3260,7 @@ def test_pdb_ambiguous_statements():
 
     Make sure that ambiguous statements prefixed by '!' are properly disambiguated
 
-    >>> with PdbTestInput([
+    >>> mit PdbTestInput([
     ...     's',         # step to the print line
     ...     '! n = 42',  # disambiguated statement: reassign the name n
     ...     'n',         # advance the debugger into the drucke()
@@ -3278,7 +3278,7 @@ def test_pdb_ambiguous_statements():
     (Pdb) n
     The value of n is 42
     > <doctest test.test_pdb.test_pdb_ambiguous_statements[0]>(1)<module>()
-    -> with PdbTestInput([
+    -> mit PdbTestInput([
     (Pdb) continue
     """
 
@@ -3295,7 +3295,7 @@ def test_pdb_f_trace_lines():
     ...     wenn frame.f_trace_lines != Falsch:
     ...         drucke("f_trace_lines is not reset after continue!")
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue'
     ... ]):
     ...    test_function()
@@ -3326,7 +3326,7 @@ def test_pdb_frame_refleak():
     ...     frame_leaker(container)  # r c
     ...     drucke(len(gc.get_referrers(container[0])))
 
-    >>> with PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +NORMALIZE_WHITESPACE
     ...     'continue',
     ...     'next',
     ...     'continue',
@@ -3375,7 +3375,7 @@ def test_pdb_function_break():
     >>> def test_function():
     ...     importiere pdb; pdb.Pdb(nosigint=Wahr, readrc=Falsch).set_trace()
 
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     ...     'break foo',
     ...     'break bar',
     ...     'break boo',
@@ -3412,7 +3412,7 @@ def test_pdb_issue_gh_65052():
 
     >>> def test_function():
     ...     A()
-    >>> with PdbTestInput([  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    >>> mit PdbTestInput([  # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     ...     's',
     ...     's',
     ...     'retval',
@@ -3465,13 +3465,13 @@ klasse PdbTestCase(unittest.TestCase):
             env = os.environ | extra_env
         sonst:
             env = os.environ
-        with subprocess.Popen(
+        mit subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 env = {**env, 'PYTHONIOENCODING': 'utf-8'}
-        ) as proc:
+        ) als proc:
             stdout, stderr = proc.communicate(str.encode(commands))
         stdout = bytes.decode(stdout) wenn isinstance(stdout, bytes) sonst stdout
         stderr = bytes.decode(stderr) wenn isinstance(stderr, bytes) sonst stderr
@@ -3488,18 +3488,18 @@ klasse PdbTestCase(unittest.TestCase):
                        script_args=Nichts,
                        pdbrc=Nichts,
                        remove_home=Falsch):
-        """Run 'script' lines with pdb and the pdb 'commands'."""
+        """Run 'script' lines mit pdb and the pdb 'commands'."""
         filename = 'main.py'
-        with open(filename, 'w') as f:
+        mit open(filename, 'w') als f:
             f.write(textwrap.dedent(script))
 
         wenn pdbrc is not Nichts:
-            with open('.pdbrc', 'w') as f:
+            mit open('.pdbrc', 'w') als f:
                 f.write(textwrap.dedent(pdbrc))
             self.addCleanup(os_helper.unlink, '.pdbrc')
         self.addCleanup(os_helper.unlink, filename)
 
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             wenn remove_home:
                 env.unset('HOME')
             wenn script_args is Nichts:
@@ -3508,21 +3508,21 @@ klasse PdbTestCase(unittest.TestCase):
         return stdout, stderr
 
     def run_pdb_module(self, script, commands):
-        """Runs the script code as part of a module"""
+        """Runs the script code als part of a module"""
         self.module_name = 't_main'
         os_helper.rmtree(self.module_name)
         main_file = self.module_name + '/__main__.py'
         init_file = self.module_name + '/__init__.py'
         os.mkdir(self.module_name)
-        with open(init_file, 'w') as f:
+        mit open(init_file, 'w') als f:
             pass
-        with open(main_file, 'w') as f:
+        mit open(main_file, 'w') als f:
             f.write(textwrap.dedent(script))
         self.addCleanup(os_helper.rmtree, self.module_name)
         return self._run_pdb(['-m', self.module_name], commands)
 
     def _assert_find_function(self, file_content, func_name, expected):
-        with open(os_helper.TESTFN, 'wb') as f:
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(file_content)
 
         expected = Nichts wenn not expected sonst (
@@ -3614,8 +3614,8 @@ def bœr():
         self._assert_find_function(code, 'mul', ('mul', 12))
 
     def test_issue7964(self):
-        # open the file as binary so we can force \r\n newline
-        with open(os_helper.TESTFN, 'wb') as f:
+        # open the file als binary so we can force \r\n newline
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(b'drucke("testing my pdb")\r\n')
         cmd = [sys.executable, '-m', 'pdb', os_helper.TESTFN]
         proc = subprocess.Popen(cmd,
@@ -3645,9 +3645,9 @@ def bœr():
         stdout, stderr = self.run_pdb_script(script, commands)
         output = (stdout or '') + (stderr or '')
         self.assertNotIn('AttributeError', output,
-                         'Calling help on a command with no docs should be handled gracefully')
+                         'Calling help on a command mit no docs should be handled gracefully')
         self.assertIn("*** No help fuer 'testcmdwithnodocs'; __doc__ string missing", output,
-                      'Calling help on a command with no docs should print an error')
+                      'Calling help on a command mit no docs should print an error')
 
     def test_issue13183(self):
         script = """
@@ -3677,7 +3677,7 @@ def bœr():
             def bar():
                 pass
         """
-        with open('bar.py', 'w') as f:
+        mit open('bar.py', 'w') als f:
             f.write(textwrap.dedent(bar))
         self.addCleanup(os_helper.unlink, 'bar.py')
         stdout, stderr = self.run_pdb_script(script, commands)
@@ -3689,7 +3689,7 @@ def bœr():
         # Invoking "continue" on a non-main thread triggered an exception
         # inside signal.signal.
 
-        with open(os_helper.TESTFN, 'wb') as f:
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(textwrap.dedent("""
                 importiere threading
                 importiere pdb
@@ -3715,7 +3715,7 @@ def bœr():
 
     def test_issue36250(self):
 
-        with open(os_helper.TESTFN, 'wb') as f:
+        mit open(os_helper.TESTFN, 'wb') als f:
             f.write(textwrap.dedent("""
                 importiere threading
                 importiere pdb
@@ -3783,8 +3783,8 @@ def bœr():
         """
         stdout, stderr = self.run_pdb_script(script, commands)
         res = '\n'.join([x.strip() fuer x in stdout.splitlines()])
-        self.assertRegex(res, "Restarting .* with arguments:\na b c")
-        self.assertRegex(res, "Restarting .* with arguments:\nd e f")
+        self.assertRegex(res, "Restarting .* mit arguments:\na b c")
+        self.assertRegex(res, "Restarting .* mit arguments:\nd e f")
 
     def test_issue58956(self):
         # Set a breakpoint in a function that already exists on the call stack
@@ -3808,7 +3808,7 @@ def bœr():
             def bar():
                 return 42
         """
-        with open('bar.py', 'w') as f:
+        mit open('bar.py', 'w') als f:
             f.write(textwrap.dedent(bar))
         self.addCleanup(os_helper.unlink, 'bar.py')
         stdout, stderr = self.run_pdb_script(script, commands)
@@ -3926,24 +3926,24 @@ def bœr():
         self.assertIn("NameError: name 'invalid' is not defined", stdout)
 
     def test_readrc_homedir(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.unset("HOME")
-            with os_helper.temp_dir() as temp_dir, patch("os.path.expanduser"):
+            mit os_helper.temp_dir() als temp_dir, patch("os.path.expanduser"):
                 rc_path = os.path.join(temp_dir, ".pdbrc")
                 os.path.expanduser.return_value = rc_path
-                with open(rc_path, "w") as f:
+                mit open(rc_path, "w") als f:
                     f.write("invalid")
                 self.assertEqual(pdb.Pdb().rcLines[0], "invalid")
 
     def test_header(self):
         stdout = StringIO()
         header = 'Nobody expects... blah, blah, blah'
-        with ExitStack() as resources:
+        mit ExitStack() als resources:
             resources.enter_context(patch('sys.stdout', stdout))
             # patch pdb.Pdb.set_trace() to avoid entering the debugger
             resources.enter_context(patch.object(pdb.Pdb, 'set_trace'))
             # We need to manually clear pdb.Pdb._last_pdb_instance so a
-            # new instance with stdout redirected could be created when
+            # new instance mit stdout redirected could be created when
             # pdb.set_trace() is called.
             pdb.Pdb._last_pdb_instance = Nichts
             pdb.set_trace(header=header)
@@ -4026,7 +4026,7 @@ def bœr():
         os_helper.rmtree(module_name)
         init_file = module_name + '/__init__.py'
         os.mkdir(module_name)
-        with open(init_file, 'w'):
+        mit open(init_file, 'w'):
             pass
         self.addCleanup(os_helper.rmtree, module_name)
         stdout, stderr = self._run_pdb(
@@ -4040,7 +4040,7 @@ def bœr():
         os_helper.rmtree(pkg_name)
         modpath = pkg_name + '/' + module_name
         os.makedirs(modpath)
-        with open(modpath + '/__init__.py', 'w'):
+        mit open(modpath + '/__init__.py', 'w'):
             pass
         self.addCleanup(os_helper.rmtree, pkg_name)
         stdout, stderr = self._run_pdb(
@@ -4056,7 +4056,7 @@ def bœr():
         self.assertIn(f"ImportError: No module named {os_helper.TESTFN}", stdout)
 
     def test_dir_as_script(self):
-        with os_helper.temp_dir() as temp_dir:
+        mit os_helper.temp_dir() als temp_dir:
             stdout, stderr = self._run_pdb([temp_dir], "", expected_returncode=1)
             self.assertIn(f"Error: {temp_dir} is a directory", stdout)
 
@@ -4121,7 +4121,7 @@ def bœr():
         # the time.sleep is needed fuer low-resolution filesystems like HFS+
         script = """
             importiere pdb; pdb.Pdb().set_trace()
-            with open(__file__, "w") as f:
+            mit open(__file__, "w") als f:
                 f.write("drucke('goodbye')\\n" * 5)
                 importiere time; time.sleep(1)
             importiere pdb; pdb.Pdb().set_trace()
@@ -4133,18 +4133,18 @@ def bœr():
         """
 
         filename = 'main.py'
-        with open(filename, 'w') as f:
+        mit open(filename, 'w') als f:
             f.write(textwrap.dedent(script))
         self.addCleanup(os_helper.unlink, filename)
         self.addCleanup(os_helper.rmtree, '__pycache__')
         cmd = [sys.executable, filename]
-        with subprocess.Popen(
+        mit subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'},
-        ) as proc:
+        ) als proc:
             stdout, _ = proc.communicate(str.encode(commands))
         stdout = stdout and bytes.decode(stdout)
 
@@ -4155,7 +4155,7 @@ def bœr():
     def test_file_modified_after_execution_with_restart(self):
         script = """
             importiere random
-            # Any code with a source to step into so this script is not checked
+            # Any code mit a source to step into so this script is not checked
             # fuer changes when it's being changed
             random.randint(1, 4)
             drucke("hello")
@@ -4167,7 +4167,7 @@ def bœr():
             s
             filename = $_frame.f_back.f_code.co_filename
             def change_file(content, filename):
-                with open(filename, "w") as f:
+                mit open(filename, "w") als f:
                     f.write(f"drucke({content})")
 
             change_file('world', filename)
@@ -4180,7 +4180,7 @@ def bœr():
         self.assertIn("hello", stdout)
         self.assertIn("world", stdout)
         # The file was edited, but restart should clear the state and consider
-        # the file as up to date
+        # the file als up to date
         self.assertNotIn("WARNING:", stdout)
 
     def test_post_mortem_restart(self):
@@ -4208,18 +4208,18 @@ def bœr():
         module_file = self.module_name + '/module.py'
         self.addCleanup(os_helper.rmtree, self.module_name)
         os.mkdir(self.module_name)
-        with open(init_file, 'w') as f:
+        mit open(init_file, 'w') als f:
             f.write(textwrap.dedent("""
                 top_var = "VAR von top"
             """))
-        with open(main_file, 'w') as f:
+        mit open(main_file, 'w') als f:
             f.write(textwrap.dedent("""
                 von . importiere top_var
                 von .module importiere var
                 von . importiere module
                 pass # We'll stop here and print the vars
             """))
-        with open(module_file, 'w') as f:
+        mit open(module_file, 'w') als f:
             f.write(textwrap.dedent("""
                 var = "VAR von module"
                 var2 = "second var"
@@ -4246,16 +4246,16 @@ def bœr():
         module_file = self.module_name + '/module.py'
         self.addCleanup(os_helper.rmtree, self.module_name)
         os.mkdir(self.module_name)
-        with open(init_file, 'w') as f:
+        mit open(init_file, 'w') als f:
             f.write(textwrap.dedent("""
                 top_var = "VAR von top"
             """))
-        with open(main_file, 'w') as f:
+        mit open(main_file, 'w') als f:
             f.write(textwrap.dedent("""
                 von . importiere module
                 pass # We'll stop here and print the vars
             """))
-        with open(module_file, 'w') as f:
+        mit open(module_file, 'w') als f:
             f.write(textwrap.dedent("""
                 var = "VAR von module"
             """))
@@ -4317,7 +4317,7 @@ def bœr():
         """)
         commands = 'c\nq'
 
-        with os_helper.temp_cwd() as cwd:
+        mit os_helper.temp_cwd() als cwd:
             expected = f'(Pdb) sys.path[0] is {os.path.realpath(cwd)}'
 
             stdout, stderr = self.run_pdb_script(script, commands)
@@ -4333,14 +4333,14 @@ def bœr():
         """)
         commands = 'c\nq'
 
-        with os_helper.temp_cwd() as cwd:
+        mit os_helper.temp_cwd() als cwd:
             cwd = os.path.realpath(cwd)
             dir_one = os.path.join(cwd, 'dir_one')
             dir_two = os.path.join(cwd, 'dir_two')
             expected = f'(Pdb) sys.path[0] is {dir_one}'
 
             os.mkdir(dir_one)
-            with open(os.path.join(dir_one, 'foo.py'), 'w') as f:
+            mit open(os.path.join(dir_one, 'foo.py'), 'w') als f:
                 f.write(script)
             os.mkdir(dir_two)
             os.symlink(os.path.join(dir_one, 'foo.py'), os.path.join(dir_two, 'foo.py'))
@@ -4360,15 +4360,15 @@ def bœr():
         commands = 'c\n'
 
 
-        with os_helper.temp_cwd() as cwd:
+        mit os_helper.temp_cwd() als cwd:
             stdout, _ = self.run_pdb_script(script, commands, extra_env={'PYTHONSAFEPATH': '1'})
 
             unexpected = f'sys.path[0] is {os.path.realpath(cwd)}'
             self.assertNotIn(unexpected, stdout)
 
     def test_issue42383(self):
-        with os_helper.temp_cwd() as cwd:
-            with open('foo.py', 'w') as f:
+        mit os_helper.temp_cwd() als cwd:
+            mit open('foo.py', 'w') als f:
                 s = textwrap.dedent("""
                     drucke('The correct file was executed')
 
@@ -4382,7 +4382,7 @@ def bœr():
             os.mkdir(os.path.join(subdir, 'subdir'))
             wrong_file = os.path.join(subdir, 'foo.py')
 
-            with open(wrong_file, 'w') as f:
+            mit open(wrong_file, 'w') als f:
                 f.write('drucke("The wrong file was executed")')
 
             stdout, stderr = self._run_pdb(['foo.py'], 'c\nc\nq')
@@ -4419,10 +4419,10 @@ def bœr():
         importiere sys
 
         def _create_fake_frozen_module():
-            with open('gh93696.py') as f:
+            mit open('gh93696.py') als f:
                 src = f.read()
 
-            # this function has a co_filename as wenn it were in a frozen module
+            # this function has a co_filename als wenn it were in a frozen module
             dummy_mod = compile(src, "<frozen gh93696>", "exec")
             func_code = dummy_mod.co_consts[0]
 
@@ -4451,10 +4451,10 @@ def bœr():
             longlist
             quit
         """
-        with open('gh93696.py', 'w') as f:
+        mit open('gh93696.py', 'w') als f:
             f.write(textwrap.dedent(frozen_src))
 
-        with open('gh93696_host.py', 'w') as f:
+        mit open('gh93696_host.py', 'w') als f:
             f.write(textwrap.dedent(host_program))
 
         self.addCleanup(os_helper.unlink, 'gh93696.py')
@@ -4472,7 +4472,7 @@ def bœr():
         script = ''
         commands = 'q\n'
         # We check that pdb stopped at line 0, but anything reasonable
-        # is acceptable here, as long as it does not halt
+        # is acceptable here, als long als it does not halt
         stdout, _ = self.run_pdb_script(script, commands)
         self.assertIn('main.py(0)', stdout)
         stdout, _ = self.run_pdb_module(script, commands)
@@ -4485,7 +4485,7 @@ def bœr():
                 self._run_pdb([os.path.join(script_dir, filename)], 'q')
 
     def test_zipapp(self):
-        with os_helper.temp_dir() as temp_dir:
+        mit os_helper.temp_dir() als temp_dir:
             os.mkdir(os.path.join(temp_dir, 'source'))
             script = textwrap.dedent(
                 """
@@ -4494,7 +4494,7 @@ def bœr():
                 f(21 + 21)
                 """
             )
-            with open(os.path.join(temp_dir, 'source', '__main__.py'), 'w') as f:
+            mit open(os.path.join(temp_dir, 'source', '__main__.py'), 'w') als f:
                 f.write(script)
             zipapp.create_archive(os.path.join(temp_dir, 'source'),
                                   os.path.join(temp_dir, 'zipapp.pyz'))
@@ -4508,7 +4508,7 @@ def bœr():
             self.assertIn('return x + 1', stdout)
 
     def test_zipimport(self):
-        with os_helper.temp_dir() as temp_dir:
+        mit os_helper.temp_dir() als temp_dir:
             os.mkdir(os.path.join(temp_dir, 'source'))
             zipmodule = textwrap.dedent(
                 """
@@ -4524,9 +4524,9 @@ def bœr():
                 """
             )
 
-            with zipfile.ZipFile(os.path.join(temp_dir, 'zipmodule.zip'), 'w') as zf:
+            mit zipfile.ZipFile(os.path.join(temp_dir, 'zipmodule.zip'), 'w') als zf:
                 zf.writestr('foo.py', zipmodule)
-            with open(os.path.join(temp_dir, 'script.py'), 'w') as f:
+            mit open(os.path.join(temp_dir, 'script.py'), 'w') als f:
                 f.write(script)
 
             stdout, _ = self._run_pdb([os.path.join(temp_dir, 'script.py')], '\n'.join([
@@ -4548,13 +4548,13 @@ klasse ChecklineTests(unittest.TestCase):
         os_helper.unlink(os_helper.TESTFN)
 
     def test_checkline_before_debugging(self):
-        with open(os_helper.TESTFN, "w") as f:
+        mit open(os_helper.TESTFN, "w") als f:
             f.write("drucke(123)")
         db = pdb.Pdb()
         self.assertEqual(db.checkline(os_helper.TESTFN, 1), 1)
 
     def test_checkline_after_reset(self):
-        with open(os_helper.TESTFN, "w") as f:
+        mit open(os_helper.TESTFN, "w") als f:
             f.write("drucke(123)")
         db = pdb.Pdb()
         db.reset()
@@ -4568,10 +4568,10 @@ klasse ChecklineTests(unittest.TestCase):
             ''' docstring '''
 
         """)
-        with open(os_helper.TESTFN, "w") as f:
+        mit open(os_helper.TESTFN, "w") als f:
             f.write(s)
         num_lines = len(s.splitlines()) + 2  # Test fuer EOF
-        with redirect_stdout(StringIO()):
+        mit redirect_stdout(StringIO()):
             db = pdb.Pdb()
             fuer lineno in range(num_lines):
                 self.assertFalsch(db.checkline(os_helper.TESTFN, lineno))
@@ -4586,7 +4586,7 @@ klasse PdbTestInline(unittest.TestCase):
                     extra_env=Nichts):
         self.addCleanup(os_helper.rmtree, '__pycache__')
         filename = 'main.py'
-        with open(filename, 'w') as f:
+        mit open(filename, 'w') als f:
             f.write(textwrap.dedent(script))
         self.addCleanup(os_helper.unlink, filename)
 
@@ -4597,13 +4597,13 @@ klasse PdbTestInline(unittest.TestCase):
             env = os.environ | extra_env
         sonst:
             env = os.environ
-        with subprocess.Popen(
+        mit subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 env = {**env, 'PYTHONIOENCODING': 'utf-8'}
-        ) as proc:
+        ) als proc:
             stdout, stderr = proc.communicate(str.encode(commands))
         stdout = bytes.decode(stdout) wenn isinstance(stdout, bytes) sonst stdout
         stderr = bytes.decode(stderr) wenn isinstance(stderr, bytes) sonst stderr
@@ -4669,7 +4669,7 @@ klasse PdbTestInline(unittest.TestCase):
     def test_set_trace_with_skip(self):
         """GH-82897
         Inline set_trace() should break unconditionally. This example is a
-        bit oversimplified, but as `pdb.set_trace()` uses the previous Pdb
+        bit oversimplified, but als `pdb.set_trace()` uses the previous Pdb
         instance, it's possible that we had a previous pdb instance with
         skip values when we use `pdb.set_trace()` - it would be confusing
         to users when such inline breakpoints won't break immediately.
@@ -4765,7 +4765,7 @@ klasse PdbTestReadline(unittest.TestCase):
             drucke('hello' + '!')
         """)
 
-        # List everything starting with 'co', there should be multiple matches
+        # List everything starting mit 'co', there should be multiple matches
         # then add ntin and complete 'contin' to 'continue'
         input = b"co\t\tntin\t\n"
 
@@ -4851,7 +4851,7 @@ klasse PdbTestReadline(unittest.TestCase):
         self.assertIn(b'I love Python', output)
 
     @unittest.skipIf(sys.platform.startswith('freebsd'),
-                     '\\x08 is not interpreted as backspace on FreeBSD')
+                     '\\x08 is not interpreted als backspace on FreeBSD')
     def test_multiline_auto_indent(self):
         script = textwrap.dedent("""
             importiere pdb; pdb.Pdb().set_trace()
@@ -4891,7 +4891,7 @@ klasse PdbTestReadline(unittest.TestCase):
         self.assertIn(b'42', output)
 
     @unittest.skipIf(sys.platform.startswith('freebsd'),
-                     '\\x08 is not interpreted as backspace on FreeBSD')
+                     '\\x08 is not interpreted als backspace on FreeBSD')
     def test_multiline_indent_completion(self):
         script = textwrap.dedent("""
             importiere pdb; pdb.Pdb().set_trace()
@@ -4899,7 +4899,7 @@ klasse PdbTestReadline(unittest.TestCase):
 
         # \t should always complete a 4-space indent
         # This piece of code will raise an IndentationError or a SyntaxError
-        # wenn the completion is not working as expected
+        # wenn the completion is not working als expected
         input = textwrap.dedent("""\
             def func():
             a = 1
@@ -4965,7 +4965,7 @@ def load_tests(loader, tests, pattern):
 
         # A doctest of pdb could have residues. For example, pdb could still
         # be running, or breakpoints might be left uncleared. These residues
-        # could potentially interfere with the following test, especially
+        # could potentially interfere mit the following test, especially
         # when we switch backends. Here we clear all the residues to restore
         # to its pre-test state.
 

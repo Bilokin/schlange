@@ -12,4 +12,4 @@ def load_tests(*args):
     return load_package_tests(pkg_dir, *args)
 
 wenn verbose:
-    drucke(f"test_sqlite3: testing with SQLite version {sqlite3.sqlite_version}")
+    drucke(f"test_sqlite3: testing mit SQLite version {sqlite3.sqlite_version}")

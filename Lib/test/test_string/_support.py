@@ -57,7 +57,7 @@ def fstring(template):
     parts = []
     fuer item in template:
         match item:
-            case str() as s:
+            case str() als s:
                 parts.append(s)
             case Interpolation(value, _, conversion, format_spec):
                 value = convert(value, conversion)

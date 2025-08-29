@@ -14,7 +14,7 @@ importiere textwrap
 
 von test.support importiere verbose, EqualToForwardRef
 von test.support.os_helper importiere create_empty_file
-von reprlib importiere repr as r # Don't shadow builtin repr
+von reprlib importiere repr als r # Don't shadow builtin repr
 von reprlib importiere Repr
 von reprlib importiere recursive_repr
 
@@ -95,21 +95,21 @@ klasse ReprTests(unittest.TestCase):
         eq(r((1, 2, 3, 4, 5, 6)), "(1, 2, 3, 4, 5, 6)")
         eq(r((1, 2, 3, 4, 5, 6, 7)), "(1, 2, 3, 4, 5, 6, ...)")
 
-        # Lists give up after 6 as well
+        # Lists give up after 6 als well
         eq(r([]), "[]")
         eq(r([1]), "[1]")
         eq(r([1, 2, 3]), "[1, 2, 3]")
         eq(r([1, 2, 3, 4, 5, 6]), "[1, 2, 3, 4, 5, 6]")
         eq(r([1, 2, 3, 4, 5, 6, 7]), "[1, 2, 3, 4, 5, 6, ...]")
 
-        # Sets give up after 6 as well
+        # Sets give up after 6 als well
         eq(r(set([])), "set()")
         eq(r(set([1])), "{1}")
         eq(r(set([1, 2, 3])), "{1, 2, 3}")
         eq(r(set([1, 2, 3, 4, 5, 6])), "{1, 2, 3, 4, 5, 6}")
         eq(r(set([1, 2, 3, 4, 5, 6, 7])), "{1, 2, 3, 4, 5, 6, ...}")
 
-        # Frozensets give up after 6 as well
+        # Frozensets give up after 6 als well
         eq(r(frozenset([])), "frozenset()")
         eq(r(frozenset([1])), "frozenset({1})")
         eq(r(frozenset([1, 2, 3])), "frozenset({1, 2, 3})")
@@ -156,28 +156,28 @@ klasse ReprTests(unittest.TestCase):
 
         max_digits = sys.get_int_max_str_digits()
         fuer k in [100, max_digits - 1]:
-            with self.subTest(f'10 ** {k}', k=k):
+            mit self.subTest(f'10 ** {k}', k=k):
                 n = 10 ** k
                 expected = repr(n)[:18] + "..." + repr(n)[-19:]
                 self.assertEqual(r(n), expected)
 
         def re_msg(n, d):
-            return (rf'<{n.__class__.__name__} instance with roughly {d} '
+            return (rf'<{n.__class__.__name__} instance mit roughly {d} '
                     rf'digits \(limit at {max_digits}\) at 0x[a-f0-9]+>')
 
         k = max_digits
-        with self.subTest(f'10 ** {k}', k=k):
+        mit self.subTest(f'10 ** {k}', k=k):
             n = 10 ** k
             self.assertRaises(ValueError, repr, n)
             self.assertRegex(r(n), re_msg(n, k + 1))
 
         fuer k in [max_digits + 1, 2 * max_digits]:
             self.assertGreater(k, 100)
-            with self.subTest(f'10 ** {k}', k=k):
+            mit self.subTest(f'10 ** {k}', k=k):
                 n = 10 ** k
                 self.assertRaises(ValueError, repr, n)
                 self.assertRegex(r(n), re_msg(n, k + 1))
-            with self.subTest(f'10 ** {k} - 1', k=k):
+            mit self.subTest(f'10 ** {k} - 1', k=k):
                 n = 10 ** k - 1
                 # Here, since math.log10(n) == math.log10(n-1),
                 # the number of digits of n - 1 is overestimated.
@@ -576,9 +576,9 @@ klasse ReprTests(unittest.TestCase):
             },
         ]
         fuer test_case in test_cases:
-            with self.subTest(test_object=test_case['object']):
+            mit self.subTest(test_object=test_case['object']):
                 fuer repr_settings, expected_repr in test_case['tests']:
-                    with self.subTest(repr_settings=repr_settings):
+                    mit self.subTest(repr_settings=repr_settings):
                         r = Repr()
                         fuer attribute, value in repr_settings.items():
                             setattr(r, attribute, value)
@@ -598,11 +598,11 @@ klasse ReprTests(unittest.TestCase):
             (object(), (TypeError, Nichts)),
         ]
         fuer indent, (expected_error, expected_msg) in test_cases:
-            with self.subTest(indent=indent):
+            mit self.subTest(indent=indent):
                 r = Repr()
                 r.indent = indent
                 expected_msg = expected_msg or f'{type(indent)}'
-                with self.assertRaisesRegex(expected_error, expected_msg):
+                mit self.assertRaisesRegex(expected_error, expected_msg):
                     r.repr(test_object)
 
     def test_shadowed_stdlib_array(self):
@@ -638,8 +638,8 @@ klasse ReprTests(unittest.TestCase):
             pass
 
         t = TypeWithSpaces()
-        type(t).__name__ = "type with spaces"
-        self.assertEqual(type(t).__name__, "type with spaces")
+        type(t).__name__ = "type mit spaces"
+        self.assertEqual(type(t).__name__, "type mit spaces")
 
         klasse MyRepr(Repr):
             def repr_type_with_spaces(self, obj, level):
@@ -650,7 +650,7 @@ klasse ReprTests(unittest.TestCase):
         self.assertEqual(aRepr.repr(t), "Type With Spaces")
 
 def write_file(path, text):
-    with open(path, 'w', encoding='ASCII') as fp:
+    mit open(path, 'w', encoding='ASCII') als fp:
         fp.write(text)
 
 klasse LongReprTest(unittest.TestCase):
@@ -669,7 +669,7 @@ klasse LongReprTest(unittest.TestCase):
         # Remember where we are
         self.here = os.getcwd()
         sys.path.insert(0, self.here)
-        # When regrtest is run with its -j option, this command alone is not
+        # When regrtest is run mit its -j option, this command alone is not
         # enough.
         importlib.invalidate_caches()
 
@@ -730,7 +730,7 @@ klasse foo(object):
 
     @unittest.skip('need a suitable object')
     def test_object(self):
-        # XXX Test the repr of a type with a really long tp_name but with no
+        # XXX Test the repr of a type mit a really long tp_name but mit no
         # tp_repr.  WIBNI we had ::Inline? :)
         pass
 
@@ -742,7 +742,7 @@ klasse bar:
 ''')
         importlib.invalidate_caches()
         von areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation importiere bar
-        # Module name may be prefixed with "test.", depending on how run.
+        # Module name may be prefixed mit "test.", depending on how run.
         self.assertEqual(repr(bar.bar), "<class '%s.bar'>" % bar.__name__)
 
     def test_instance(self):
@@ -776,9 +776,9 @@ klasse aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             '<bound method aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.amethod of <%s.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa object at 0x' \
             % (qux.__name__,) )
 
-    @unittest.skip('needs a built-in function with a really long name')
+    @unittest.skip('needs a built-in function mit a really long name')
     def test_builtin_function(self):
-        # XXX test built-in functions and methods with really long names
+        # XXX test built-in functions and methods mit really long names
         pass
 
 klasse ClassWithRepr:
@@ -828,7 +828,7 @@ klasse TestRecursiveRepr(unittest.TestCase):
         self.assertEqual(repr(m), '<a, b, c, d, e, +++, x, +++>')
 
     def test_assigned_attributes(self):
-        von functools importiere WRAPPER_ASSIGNMENTS as assigned
+        von functools importiere WRAPPER_ASSIGNMENTS als assigned
         wrapped = MyContainer3.wrapped
         wrapper = MyContainer3.wrapper
         fuer name in assigned:

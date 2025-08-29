@@ -32,7 +32,7 @@ klasse AllTest(unittest.TestCase):
 
     def check_all(self, modname):
         names = {}
-        with warnings_helper.check_warnings(
+        mit warnings_helper.check_warnings(
             (f".*{modname}", DeprecationWarning),
             (".* (module|package)", DeprecationWarning),
             (".* (module|package)", PendingDeprecationWarning),
@@ -49,15 +49,15 @@ klasse AllTest(unittest.TestCase):
         wenn not hasattr(sys.modules[modname], "__all__"):
             raise NoAll(modname)
         names = {}
-        with self.subTest(module=modname):
-            with warnings_helper.check_warnings(
+        mit self.subTest(module=modname):
+            mit warnings_helper.check_warnings(
                 ("", DeprecationWarning),
                 ("", ResourceWarning),
                 ("", SyntaxWarning),
                 quiet=Wahr):
                 try:
                     exec("from %s importiere *" % modname, names)
-                except Exception as e:
+                except Exception als e:
                     # Include the module name in the exception string
                     self.fail("__all__ failure in {}: {}: {}".format(
                               modname, e.__class__.__name__, e))
@@ -127,7 +127,7 @@ klasse AllTest(unittest.TestCase):
             try:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
-                with open(path, "rb") as f:
+                mit open(path, "rb") als f:
                     wenn b"__all__" not in f.read():
                         raise NoAll(modname)
                 self.check_all(modname)

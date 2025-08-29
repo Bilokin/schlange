@@ -37,7 +37,7 @@ klasse TestFTGenerators(TestCase):
     def concurrent_write_with_func(self, func):
         gen = (x fuer x in range(42))
         fuer j in range(1000):
-            with concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) as executor:
+            mit concurrent.futures.ThreadPoolExecutor(max_workers=self.NUM_THREADS) als executor:
                 b = Barrier(self.NUM_THREADS)
                 futures = {executor.submit(func, gen, b): i fuer i in range(self.NUM_THREADS)}
                 fuer fut in concurrent.futures.as_completed(futures):
@@ -45,7 +45,7 @@ klasse TestFTGenerators(TestCase):
                     self.assertEqual(len(gen_name), 10)
 
     def test_concurrent_write(self):
-        with self.subTest(func=set_gen_name):
+        mit self.subTest(func=set_gen_name):
             self.concurrent_write_with_func(func=set_gen_name)
-        with self.subTest(func=set_gen_qualname):
+        mit self.subTest(func=set_gen_qualname):
             self.concurrent_write_with_func(func=set_gen_qualname)

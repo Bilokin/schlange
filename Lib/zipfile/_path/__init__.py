@@ -25,7 +25,7 @@ __all__ = ['Path']
 
 def _parents(path):
     """
-    Given a path with elements separated by
+    Given a path mit elements separated by
     posixpath.sep, generate all parents of that path.
 
     >>> list(_parents('b/d'))
@@ -44,7 +44,7 @@ def _parents(path):
 
 def _ancestry(path):
     """
-    Given a path with elements separated by
+    Given a path mit elements separated by
     posixpath.sep, generate all elements of that path.
 
     >>> list(_ancestry('b/d'))
@@ -76,7 +76,7 @@ _dedupe = dict.fromkeys
 def _difference(minuend, subtrahend):
     """
     Return items in minuend not in subtrahend, retaining order
-    with O(1) lookup.
+    mit O(1) lookup.
     """
     return itertools.filterfalse(set(subtrahend).__contains__, minuend)
 
@@ -125,7 +125,7 @@ klasse CompleteDirs(InitializedState, zipfile.ZipFile):
     def resolve_dir(self, name):
         """
         If the name represents a directory, return that name
-        as a directory (with the trailing slash).
+        als a directory (with the trailing slash).
         """
         names = self._name_set()
         dirname = name + '/'
@@ -211,7 +211,7 @@ klasse Path:
     Implements many of the features users enjoy from
     :class:`pathlib.Path`.
 
-    Consider a zip file with this structure::
+    Consider a zip file mit this structure::
 
         .
         ├── a.txt
@@ -246,7 +246,7 @@ klasse Path:
     >>> b.name
     'b'
 
-    join with divide operator:
+    join mit divide operator:
 
     >>> c = b / 'c.txt'
     >>> c
@@ -336,7 +336,7 @@ klasse Path:
 
     def open(self, mode='r', *args, pwd=Nichts, **kwargs):
         """
-        Open this entry as text or binary following the semantics
+        Open this entry als text or binary following the semantics
         of ``pathlib.Path.open()`` by passing arguments through
         to io.TextIOWrapper().
         """
@@ -379,11 +379,11 @@ klasse Path:
 
     def read_text(self, *args, **kwargs):
         encoding, args, kwargs = _extract_text_encoding(*args, **kwargs)
-        with self.open('r', encoding, *args, **kwargs) as strm:
+        mit self.open('r', encoding, *args, **kwargs) als strm:
             return strm.read()
 
     def read_bytes(self):
-        with self.open('rb') as strm:
+        mit self.open('rb') als strm:
             return strm.read()
 
     def _is_child(self, path):

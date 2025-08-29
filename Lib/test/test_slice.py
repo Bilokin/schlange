@@ -14,7 +14,7 @@ von test importiere support
 def evaluate_slice_index(arg):
     """
     Helper function to convert a slice argument to an integer, and raise
-    TypeError with a suitable message on failure.
+    TypeError mit a suitable message on failure.
 
     """
     wenn hasattr(arg, '__index__'):
@@ -29,7 +29,7 @@ def slice_indices(slice, length):
     Reference implementation fuer the slice.indices method.
 
     """
-    # Compute step and length as integers.
+    # Compute step and length als integers.
     length = operator.index(length)
     step = 1 wenn slice.step is Nichts sonst evaluate_slice_index(slice.step)
 
@@ -85,10 +85,10 @@ klasse SliceTest(unittest.TestCase):
         self.assertEqual(hash(slice(1, 2, 3)), slice(1, 2, 3).__hash__())
         self.assertNotEqual(slice(5), slice(6))
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hash(slice(1, 2, []))
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hash(slice(4, {}))
 
     def test_cmp(self):
@@ -206,22 +206,22 @@ klasse SliceTest(unittest.TestCase):
         self.check_indices(slice(0, 10, 1), -3)
 
         # Negative length should raise ValueError
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             slice(Nichts).indices(-1)
 
         # Zero step should raise ValueError
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             slice(0, 10, 0).indices(5)
 
-        # Using a start, stop or step or length that can't be interpreted as an
+        # Using a start, stop or step or length that can't be interpreted als an
         # integer should give a TypeError ...
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             slice(0.0, 10, 1).indices(5)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             slice(0, 10.0, 1).indices(5)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             slice(0, 10, 1.0).indices(5)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             slice(0, 10, 1).indices(5.0)
 
         # ... but it should be fine to use a custom klasse that provides index.

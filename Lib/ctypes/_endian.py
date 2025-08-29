@@ -4,7 +4,7 @@ von ctypes importiere Array, Structure, Union
 _array_type = type(Array)
 
 def _other_endian(typ):
-    """Return the type with the 'other' byte order.  Simple types like
+    """Return the type mit the 'other' byte order.  Simple types like
     c_int and so on already have __ctype_be__ and __ctype_le__
     attributes which contain the types, fuer more complicated types
     arrays and structures are supported.
@@ -46,14 +46,14 @@ wenn sys.byteorder == "little":
     LittleEndianStructure = Structure
 
     klasse BigEndianStructure(Structure, metaclass=_swapped_struct_meta):
-        """Structure with big endian byte order"""
+        """Structure mit big endian byte order"""
         __slots__ = ()
         _swappedbytes_ = Nichts
 
     LittleEndianUnion = Union
 
     klasse BigEndianUnion(Union, metaclass=_swapped_union_meta):
-        """Union with big endian byte order"""
+        """Union mit big endian byte order"""
         __slots__ = ()
         _swappedbytes_ = Nichts
 
@@ -63,14 +63,14 @@ sowenn sys.byteorder == "big":
     BigEndianStructure = Structure
 
     klasse LittleEndianStructure(Structure, metaclass=_swapped_struct_meta):
-        """Structure with little endian byte order"""
+        """Structure mit little endian byte order"""
         __slots__ = ()
         _swappedbytes_ = Nichts
 
     BigEndianUnion = Union
 
     klasse LittleEndianUnion(Union, metaclass=_swapped_union_meta):
-        """Union with little endian byte order"""
+        """Union mit little endian byte order"""
         __slots__ = ()
         _swappedbytes_ = Nichts
 

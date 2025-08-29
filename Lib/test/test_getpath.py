@@ -213,7 +213,7 @@ klasse MockGetPathTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_buildtree_pythonhome_win32(self):
-        "Test an out-of-build-tree layout on Windows with PYTHONHOME override."
+        "Test an out-of-build-tree layout on Windows mit PYTHONHOME override."
         ns = MockNTNamespace(
             argv0=r"C:\Out\python.exe",
             real_executable=r"C:\Out\python.exe",
@@ -243,7 +243,7 @@ klasse MockGetPathTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_no_dlls_win32(self):
-        "Test a layout on Windows with no DLLs directory."
+        "Test a layout on Windows mit no DLLs directory."
         ns = MockNTNamespace(
             argv0=r"C:\Python\python.exe",
             real_executable=r"C:\Python\python.exe",
@@ -533,7 +533,7 @@ klasse MockGetPathTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_custom_platlibdir_posix(self):
-        "Test an install with custom platlibdir on *nix"
+        "Test an install mit custom platlibdir on *nix"
         ns = MockPosixNamespace(
             PREFIX="/usr",
             argv0="/linkfrom/python",
@@ -599,7 +599,7 @@ klasse MockGetPathTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_alt_framework_macos(self):
-        """ Test framework layout on macOS with alternate framework name
+        """ Test framework layout on macOS mit alternate framework name
 
         ``--with-framework-name=DebugPython``
 

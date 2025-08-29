@@ -3,7 +3,7 @@
 The user of the file doesn't have to worry about the compression,
 but random access is not allowed."""
 
-# based on Andrew Kuchling's minigzip.py distributed with the zlib module
+# based on Andrew Kuchling's minigzip.py distributed mit the zlib module
 
 importiere builtins
 importiere io
@@ -46,7 +46,7 @@ def open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_TRADEOFF,
     and newline arguments must not be provided.
 
     For text mode, a GzipFile object is created, and wrapped in an
-    io.TextIOWrapper instance with the specified encoding, error handling
+    io.TextIOWrapper instance mit the specified encoding, error handling
     behavior, and line ending(s).
 
     """
@@ -82,7 +82,7 @@ def write32u(output, value):
 
 klasse _PaddedFile:
     """Minimal read-only file object that prepends a string to the contents
-    of an actual file. Shouldn't be used outside of gzip.py, as it lacks
+    of an actual file. Shouldn't be used outside of gzip.py, als it lacks
     essential functionality."""
 
     def __init__(self, f, prepend=b''):
@@ -153,7 +153,7 @@ klasse GzipFile(_streams.BaseStream):
 
     """
 
-    # Overridden with internal file object to be closed, wenn only a filename
+    # Overridden mit internal file object to be closed, wenn only a filename
     # is passed in
     myfileobj = Nichts
 
@@ -605,7 +605,7 @@ klasse _GzipReader(_streams.DecompressReader):
         sowenn isize != (self._stream_size & 0xffffffff):
             raise BadGzipFile("Incorrect length of data produced")
 
-        # Gzip files can be padded with zeroes and still have archives.
+        # Gzip files can be padded mit zeroes and still have archives.
         # Consume all zero bytes and set the file position to the first
         # non-zero byte. See http://www.gzip.org/#faq8
         c = b"\x00"

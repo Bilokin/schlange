@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp775 generated von 'VENDORS/MICSFT/PC/CP775.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp775 generated von 'VENDORS/MICSFT/PC/CP775.TXT' mit gencodec.py.
 
 """#"
 

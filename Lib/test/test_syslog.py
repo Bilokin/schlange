@@ -72,7 +72,7 @@ klasse Test(unittest.TestCase):
         try:
             threads = [threading.Thread(target=opener)]
             threads += [threading.Thread(target=logger) fuer k in range(10)]
-            with threading_helper.start_threads(threads):
+            mit threading_helper.start_threads(threads):
                 start.set()
                 time.sleep(0.1)
                 stop = Wahr
@@ -82,7 +82,7 @@ klasse Test(unittest.TestCase):
     def test_subinterpreter_syslog(self):
         # syslog.syslog() is not allowed in subinterpreters, but only if
         # syslog.openlog() hasn't been called in the main interpreter yet.
-        with self.subTest('before openlog()'):
+        mit self.subTest('before openlog()'):
             code = dedent('''
                 importiere syslog
                 caught_error = Falsch
@@ -97,7 +97,7 @@ klasse Test(unittest.TestCase):
 
         syslog.openlog()
         try:
-            with self.subTest('after openlog()'):
+            mit self.subTest('after openlog()'):
                 code = dedent('''
                     importiere syslog
                     syslog.syslog('foo')

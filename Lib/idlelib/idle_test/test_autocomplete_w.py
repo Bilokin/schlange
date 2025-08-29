@@ -4,7 +4,7 @@ importiere unittest
 von test.support importiere requires
 von tkinter importiere Tk, Text
 
-importiere idlelib.autocomplete_w as acw
+importiere idlelib.autocomplete_w als acw
 
 
 klasse AutoCompleteWindowTest(unittest.TestCase):

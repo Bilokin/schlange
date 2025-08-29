@@ -20,13 +20,13 @@ klasse AuditTest(unittest.TestCase):
 
     @support.requires_subprocess()
     def run_test_in_subprocess(self, *args):
-        with subprocess.Popen(
+        mit subprocess.Popen(
             [sys.executable, "-X utf8", AUDIT_TESTS_PY, *args],
             encoding="utf-8",
             errors="backslashreplace",
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-        ) as p:
+        ) als p:
             p.wait()
             return p, p.stdout.read(), p.stderr.read()
 

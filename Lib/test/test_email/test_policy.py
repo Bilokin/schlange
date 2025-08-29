@@ -67,7 +67,7 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_defaults(self):
         fuer policy, expected in self.policies.items():
             fuer attr, value in expected.items():
-                with self.subTest(policy=policy, attr=attr):
+                mit self.subTest(policy=policy, attr=attr):
                     self.assertEqual(getattr(policy, attr), value,
                                     ("change {} docs/docstrings wenn defaults have "
                                     "changed").format(policy))
@@ -75,7 +75,7 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_all_attributes_covered(self):
         fuer policy, expected in self.policies.items():
             fuer attr in dir(policy):
-                with self.subTest(policy=policy, attr=attr):
+                mit self.subTest(policy=policy, attr=attr):
                     wenn (attr.startswith('_') or
                             isinstance(getattr(email.policy.EmailPolicy, attr),
                                   types.FunctionType)):
@@ -85,7 +85,7 @@ klasse PolicyAPITests(unittest.TestCase):
                                       "{} is not fully tested".format(attr))
 
     def test_abc(self):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             email.policy.Policy()
         msg = str(cm.exception)
         abstract_methods = ('fold',
@@ -99,9 +99,9 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_policy_is_immutable(self):
         fuer policy, defaults in self.policies.items():
             fuer attr in defaults:
-                with self.assertRaisesRegex(AttributeError, attr+".*read-only"):
+                mit self.assertRaisesRegex(AttributeError, attr+".*read-only"):
                     setattr(policy, attr, Nichts)
-            with self.assertRaisesRegex(AttributeError, 'no attribute.*foo'):
+            mit self.assertRaisesRegex(AttributeError, 'no attribute.*foo'):
                 policy.foo = Nichts
 
     def test_set_policy_attrs_when_cloned(self):
@@ -115,9 +115,9 @@ klasse PolicyAPITests(unittest.TestCase):
 
     def test_reject_non_policy_keyword_when_called(self):
         fuer policyclass in self.policies:
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 policyclass(this_keyword_should_not_be_valid=Nichts)
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 policyclass(newtline=Nichts)
 
     def test_policy_addition(self):
@@ -188,7 +188,7 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_handle_defect_raises_on_strict(self):
         foo = self.MyObj()
         defect = self.MyDefect("the telly is broken")
-        with self.assertRaisesRegex(self.MyDefect, "the telly is broken"):
+        mit self.assertRaisesRegex(self.MyDefect, "the telly is broken"):
             email.policy.strict.handle_defect(foo, defect)
 
     def test_handle_defect_registers_defect(self):
@@ -210,7 +210,7 @@ klasse PolicyAPITests(unittest.TestCase):
     def test_overridden_register_defect_still_raises(self):
         foo = self.MyObj()
         defect = self.MyDefect("the telly is broken")
-        with self.assertRaisesRegex(self.MyDefect, "the telly is broken"):
+        mit self.assertRaisesRegex(self.MyDefect, "the telly is broken"):
             self.MyPolicy(raise_on_defect=Wahr).handle_defect(foo, defect)
 
     def test_overridden_register_defect_works(self):
@@ -287,12 +287,12 @@ klasse PolicyAPITests(unittest.TestCase):
         # max_line_length, it is broken down into encoded words to fit
         # max_line_length. If the max_line_length isn't large enough to even
         # contain the RFC 2047 chrome (`?=<charset>?q??=`), we fail.
-        subject = "Melt away the pounds with this one simple trick! 1234567890"
+        subject = "Melt away the pounds mit this one simple trick! 1234567890"
 
         fuer maxlen in [3, 7, 9]:
-            with self.subTest(maxlen=maxlen):
+            mit self.subTest(maxlen=maxlen):
                 policy = email.policy.default.clone(max_line_length=maxlen)
-                with self.assertRaises(email.errors.HeaderParseError):
+                mit self.assertRaises(email.errors.HeaderParseError):
                     policy.fold("Subject", subject)
 
     def test_verify_generated_headers(self):
@@ -302,7 +302,7 @@ klasse PolicyAPITests(unittest.TestCase):
             'Header: Value\r\nBad: Injection\r\n',
             'Header: NoNewLine'
         ):
-            with self.subTest(text=text):
+            mit self.subTest(text=text):
                 message = email.message_from_string(
                     "Header: Value\r\n\r\nBody",
                     policy=policy,
@@ -340,35 +340,35 @@ klasse TestPolicyPropagation(unittest.TestCase):
         header_source_parse = header_store_parse = badmethod
 
     def test_message_from_string(self):
-        with self.assertRaisesRegex(TestException, "^test$"):
+        mit self.assertRaisesRegex(TestException, "^test$"):
             email.message_from_string("Subject: test\n\n",
                                       policy=self.MyPolicy)
 
     def test_message_from_bytes(self):
-        with self.assertRaisesRegex(TestException, "^test$"):
+        mit self.assertRaisesRegex(TestException, "^test$"):
             email.message_from_bytes(b"Subject: test\n\n",
                                      policy=self.MyPolicy)
 
     def test_message_from_file(self):
         f = io.StringIO('Subject: test\n\n')
-        with self.assertRaisesRegex(TestException, "^test$"):
+        mit self.assertRaisesRegex(TestException, "^test$"):
             email.message_from_file(f, policy=self.MyPolicy)
 
     def test_message_from_binary_file(self):
         f = io.BytesIO(b'Subject: test\n\n')
-        with self.assertRaisesRegex(TestException, "^test$"):
+        mit self.assertRaisesRegex(TestException, "^test$"):
             email.message_from_binary_file(f, policy=self.MyPolicy)
 
     # These are redundant, but we need them fuer black-box completeness.
 
     def test_parser(self):
         p = email.parser.Parser(policy=self.MyPolicy)
-        with self.assertRaisesRegex(TestException, "^test$"):
+        mit self.assertRaisesRegex(TestException, "^test$"):
             p.parsestr('Subject: test\n\n')
 
     def test_bytes_parser(self):
         p = email.parser.BytesParser(policy=self.MyPolicy)
-        with self.assertRaisesRegex(TestException, "^test$"):
+        mit self.assertRaisesRegex(TestException, "^test$"):
             p.parsebytes(b'Subject: test\n\n')
 
     # Now that we've established that all the parse methods get the

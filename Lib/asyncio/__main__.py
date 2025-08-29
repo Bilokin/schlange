@@ -44,15 +44,15 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
             func = types.FunctionType(code, self.locals)
             try:
                 coro = func()
-            except SystemExit as se:
+            except SystemExit als se:
                 return_code = se.code
                 self.loop.stop()
                 return
-            except KeyboardInterrupt as ex:
+            except KeyboardInterrupt als ex:
                 keyboard_interrupted = Wahr
                 future.set_exception(ex)
                 return
-            except BaseException as ex:
+            except BaseException als ex:
                 future.set_exception(ex)
                 return
 
@@ -63,14 +63,14 @@ klasse AsyncIOInteractiveConsole(InteractiveColoredConsole):
             try:
                 repl_future = self.loop.create_task(coro, context=self.context)
                 futures._chain_future(repl_future, future)
-            except BaseException as exc:
+            except BaseException als exc:
                 future.set_exception(exc)
 
         self.loop.call_soon_threadsafe(callback, context=self.context)
 
         try:
             return future.result()
-        except SystemExit as se:
+        except SystemExit als se:
             return_code = se.code
             self.loop.stop()
             return
@@ -100,7 +100,7 @@ klasse REPLThread(threading.Thread):
                 sys.audit("cpython.run_startup", startup_path)
 
                 importiere tokenize
-                with tokenize.open(startup_path) as f:
+                mit tokenize.open(startup_path) als f:
                     startup_code = compile(f.read(), startup_path, "exec")
                     exec(startup_code, console.locals)
 
@@ -175,7 +175,7 @@ wenn __name__ == '__main__':
         case Nichts:
             pass  # continue to the interactive shell
         case _:
-            # shouldn't happen as an invalid command-line wouldn't parse
+            # shouldn't happen als an invalid command-line wouldn't parse
             # but let's keep it fuer the next person adding a command
             drucke(f"error: unhandled command {args.command}", file=sys.stderr)
             parser.print_usage(file=sys.stderr)

@@ -156,7 +156,7 @@ klasse IsolatedCodeGenTests(CodegenTestCase):
 
     def test_syntax_error__return_not_in_function(self):
         snippet = "return 42"
-        with self.assertRaisesRegex(SyntaxError, "'return' outside function") as cm:
+        mit self.assertRaisesRegex(SyntaxError, "'return' outside function") als cm:
             self.codegen_test(snippet, Nichts)
         self.assertIsNichts(cm.exception.text)
         self.assertEqual(cm.exception.offset, 1)

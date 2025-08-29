@@ -58,7 +58,7 @@ def _resolve_filename(filename, alt=Nichts):
 def opened(source, filename=Nichts):
     source, filename = resolve(source, filename)
     wenn isinstance(source, str):
-        with open(source) as srcfile:
+        mit open(source) als srcfile:
             yield srcfile, filename
     sonst:
         yield source, filename

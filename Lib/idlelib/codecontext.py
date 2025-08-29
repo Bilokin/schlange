@@ -12,7 +12,7 @@ For EditorWindows, <<toggle-code-context>> is bound to CodeContext(self).
 toggle_code_context_event.
 """
 importiere re
-von sys importiere maxsize as INFINITY
+von sys importiere maxsize als INFINITY
 
 von tkinter importiere Frame, Text, TclError
 von tkinter.constants importiere NSEW, SUNKEN
@@ -57,7 +57,7 @@ klasse CodeContext:
         self.topvisible is the number of the top text line displayed.
         self.info is a list of (line number, indent level, line text,
           block keyword) tuples fuer the block structure above topvisible.
-          self.info[0] is initialized with a 'dummy' line which
+          self.info[0] is initialized mit a 'dummy' line which
           starts the toplevel 'block' of the module.
 
         self.t1 and self.t2 are two timer events on the editor text widget to
@@ -99,7 +99,7 @@ klasse CodeContext:
         """
         wenn self.context is Nichts:
             # Calculate the border width and horizontal padding required to
-            # align the context with the text in the main Text widget.
+            # align the context mit the text in the main Text widget.
             #
             # All values are passed through getint(), since some
             # values may be pixel objects, which can't simply be added to ints.
@@ -151,7 +151,7 @@ klasse CodeContext:
 
         The tuple fields are (linenum, indent, text, opener).
         The list represents header lines von new_topvisible back to
-        stopline with successively shorter indents > stopindent.
+        stopline mit successively shorter indents > stopindent.
         The list is returned ordered by line number.
         Last indent returned is the smallest indent observed.
         """
@@ -159,7 +159,7 @@ klasse CodeContext:
         lines = []
         # The indentation level we are currently in.
         lastindent = INFINITY
-        # For a line to be interesting, it must begin with a block opening
+        # For a line to be interesting, it must begin mit a block opening
         # keyword, and have less indentation than lastindent.
         fuer linenum in range(new_topvisible, stopline-1, -1):
             codeline = self.text.get(f'{linenum}.0', f'{linenum}.end')
@@ -181,7 +181,7 @@ klasse CodeContext:
 
         No update is done wenn the text hasn't been scrolled.  If the text
         was scrolled, the lines that should be shown in the context will
-        be retrieved and the context area will be updated with the code,
+        be retrieved and the context area will be updated mit the code,
         up to the number of maxlines.
         """
         new_topvisible = self.editwin.getlineno("@0,0")
@@ -197,7 +197,7 @@ klasse CodeContext:
         sonst:  # self.topvisible > new_topvisible: # Scroll up.
             stopindent = self.info[-1][1] + 1
             # Retain only context info associated
-            # with lines above new_topvisible.
+            # mit lines above new_topvisible.
             while self.info[-1][0] >= new_topvisible:
                 stopindent = self.info[-1][1]
                 del self.info[-1]

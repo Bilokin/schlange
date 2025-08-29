@@ -112,7 +112,7 @@ def _init_regex():
 
 def split_quoted (s):
     """Split a string up according to Unix shell-like rules fuer quotes and
-    backslashes.  In short: words are delimited by spaces, as long as those
+    backslashes.  In short: words are delimited by spaces, als long als those
     spaces are not escaped by a backslash, or inside a quoted string.
     Single and double quotes are equivalent, and the quote characters can
     be backslash-escaped.  The backslash is stripped von any two-character

@@ -30,7 +30,7 @@
 # other?
 
 # executive, temporary decision: [tab] and [C-i] are distinct, but
-# [meta-key] is identified with [esc key].  We demand that any console
+# [meta-key] is identified mit [esc key].  We demand that any console
 # klasse does quite a lot towards emulating a unix terminal.
 
 von __future__ importiere annotations

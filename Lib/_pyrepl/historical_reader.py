@@ -290,7 +290,7 @@ klasse HistoricalReader(Reader):
 
     @contextmanager
     def suspend(self) -> SimpleContextManager:
-        with super().suspend(), self.suspend_history():
+        mit super().suspend(), self.suspend_history():
             yield
 
     @contextmanager

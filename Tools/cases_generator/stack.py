@@ -35,7 +35,7 @@ def var_size(var: StackItem) -> str:
 klasse PointerOffset:
     """The offset of a pointer von the reference pointer
         The 'reference pointer' is the address of the physical stack pointer
-        at the start of the code section, as wenn each code section started with
+        at the start of the code section, als wenn each code section started with
         `const PyStackRef *reference = stack_pointer`
     """
     numeric: int
@@ -521,7 +521,7 @@ klasse Storage:
 
     def reload(self, out: CWriter) -> Nichts:
         wenn self.spilled == 0:
-            raise StackError("Cannot reload stack as it hasn't been saved")
+            raise StackError("Cannot reload stack als it hasn't been saved")
         assert self.spilled > 0
         self.spilled -= 1
         wenn self.spilled == 0:
@@ -683,11 +683,11 @@ klasse Storage:
         fuer var in self.outputs:
             wenn var.is_array():
                 wenn len(self.inputs) > 1:
-                    raise StackError("Cannot call DECREF_INPUTS with array output and more than one input")
+                    raise StackError("Cannot call DECREF_INPUTS mit array output and more than one input")
                 output = var
             sowenn var.in_local:
                 wenn output is not Nichts:
-                    raise StackError("Cannot call DECREF_INPUTS with more than one live output")
+                    raise StackError("Cannot call DECREF_INPUTS mit more than one live output")
                 output = var
         wenn output is not Nichts:
             wenn output.is_array():
@@ -700,7 +700,7 @@ klasse Storage:
                 self.inputs = []
                 return
             wenn var_size(lowest.item) != var_size(output.item):
-                raise StackError("Cannot call DECREF_INPUTS with live output not matching first input size")
+                raise StackError("Cannot call DECREF_INPUTS mit live output not matching first input size")
             self.stack.flush(out)
             lowest.in_local = Wahr
             close_variable(lowest, output.name)

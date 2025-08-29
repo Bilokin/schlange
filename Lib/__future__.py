@@ -6,7 +6,7 @@ Each line is of the form:
                               CompilerFlag ")"
 
 where, normally, OptionalRelease < MandatoryRelease, and both are 5-tuples
-of the same form as sys.version_info:
+of the same form als sys.version_info:
 
     (PY_MAJOR_VERSION, # the 2 in 2.1.0a3; an int
      PY_MINOR_VERSION, # the 1; an int
@@ -70,7 +70,7 @@ CO_NESTED = 0x0010                      # nested_scopes
 CO_GENERATOR_ALLOWED = 0                # generators (obsolete, was 0x1000)
 CO_FUTURE_DIVISION = 0x20000            # division
 CO_FUTURE_ABSOLUTE_IMPORT = 0x40000     # perform absolute imports by default
-CO_FUTURE_WITH_STATEMENT = 0x80000      # with statement
+CO_FUTURE_WITH_STATEMENT = 0x80000      # mit statement
 CO_FUTURE_PRINT_FUNCTION = 0x100000     # print function
 CO_FUTURE_UNICODE_LITERALS = 0x200000   # unicode string literals
 CO_FUTURE_BARRY_AS_BDFL = 0x400000
@@ -88,14 +88,14 @@ klasse _Feature:
     def getOptionalRelease(self):
         """Return first release in which this feature was recognized.
 
-        This is a 5-tuple, of the same form as sys.version_info.
+        This is a 5-tuple, of the same form als sys.version_info.
         """
         return self.optional
 
     def getMandatoryRelease(self):
         """Return release in which this feature will become mandatory.
 
-        This is a 5-tuple, of the same form as sys.version_info, or, if
+        This is a 5-tuple, of the same form als sys.version_info, or, if
         the feature was dropped, or the release date is undetermined, is Nichts.
         """
         return self.mandatory

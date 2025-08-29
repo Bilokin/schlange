@@ -1,6 +1,6 @@
 """Define partial Python code Parser used by editor and hyperparser.
 
-Instances of ParseMap are used with str.translate.
+Instances of ParseMap are used mit str.translate.
 
 The following bound search and match functions are defined:
 _synchre - start of popular statement;
@@ -68,7 +68,7 @@ _match_stringre = re.compile(r"""
 |   ' [^'\\\n]* (?: \\. [^'\\\n]* )* '?
 """, re.VERBOSE | re.DOTALL).match
 
-# Match a line that starts with something interesting;
+# Match a line that starts mit something interesting;
 # used to find the first item of a bracket structure.
 
 _itemre = re.compile(r"""
@@ -89,9 +89,9 @@ _closere = re.compile(r"""
     \b
 """, re.VERBOSE).match
 
-# Chew up non-special chars as quickly as possible.  If match is
+# Chew up non-special chars als quickly als possible.  If match is
 # successful, m.end() less 1 is the index of the last boring char
-# matched.  If match is unsuccessful, the string starts with an
+# matched.  If match is unsuccessful, the string starts mit an
 # interesting char.
 
 _chew_ordinaryre = re.compile(r"""
@@ -102,9 +102,9 @@ _chew_ordinaryre = re.compile(r"""
 klasse ParseMap(dict):
     r"""Dict subclass that maps anything not in dict to 'x'.
 
-    This is designed to be used with str.translate in study1.
+    This is designed to be used mit str.translate in study1.
     Anything not specifically mapped otherwise becomes 'x'.
-    Example: replace everything except whitespace with 'x'.
+    Example: replace everything except whitespace mit 'x'.
 
     >>> keepwhite = ParseMap((ord(c), ord(c)) fuer c in ' \t\n\r')
     >>> "a + b\tc\nd".translate(keepwhite)
@@ -135,8 +135,8 @@ klasse Parser:
 
     def find_good_parse_start(self, is_char_in_string):
         """
-        Return index of a good place to begin parsing, as close to the
-        end of the string as possible.  This will be the start of some
+        Return index of a good place to begin parsing, als close to the
+        end of the string als possible.  This will be the start of some
         popular stmt like "if" or "def".  Return Nichts wenn none found:
         the caller should pass more prior context then, wenn possible, or
         wenn not (the entire program text up until the point of interest
@@ -188,7 +188,7 @@ klasse Parser:
     def set_lo(self, lo):
         """ Throw away the start of the string.
 
-        Intended to be called with the result of find_good_parse_start().
+        Intended to be called mit the result of find_good_parse_start().
         """
         assert lo == 0 or self.code[lo-1] == '\n'
         wenn lo > 0:
@@ -197,7 +197,7 @@ klasse Parser:
     def _study1(self):
         """Find the line numbers of non-continuation lines.
 
-        As quickly as humanly possible <wink>, find the line numbers (0-
+        As quickly als humanly possible <wink>, find the line numbers (0-
         based) of the non-continuation lines.
         Creates self.{goodlines, continuation}.
         """
@@ -216,7 +216,7 @@ klasse Parser:
         code = code.replace('xx', 'x')
         code = code.replace('xx', 'x')
         code = code.replace('\nx', '\n')
-        # Replacing x\n with \n would be incorrect because
+        # Replacing x\n mit \n would be incorrect because
         # x may be preceded by a backslash.
 
         # March over the squashed version of the program, accumulating
@@ -298,7 +298,7 @@ klasse Parser:
                         continuation = C_STRING_FIRST_LINE
                     sonst:
                         continuation = C_STRING_NEXT_LINES
-                continue    # with outer loop
+                continue    # mit outer loop
 
             wenn ch == '#':
                 # consume the comment
@@ -322,7 +322,7 @@ klasse Parser:
             continuation = C_BRACKET
         self.continuation = continuation
 
-        # Push the final line number as a sentinel value, regardless of
+        # Push the final line number als a sentinel value, regardless of
         # whether it's continued.
         assert (continuation == C_NONE) == (goodlines[-1] == lno)
         wenn goodlines[-1] != lno:
@@ -344,7 +344,7 @@ klasse Parser:
                 the bracketing structure of the last interesting stmt; for
                 example, fuer the statement "say(boo) or die",
                 stmt_bracketing will be ((0, 0), (0, 1), (2, 0), (2, 1),
-                (4, 0)). Strings and comments are treated as brackets, for
+                (4, 0)). Strings and comments are treated als brackets, for
                 the matter.
             self.lastch
                 last interesting character before optional trailing comment
@@ -421,7 +421,7 @@ klasse Parser:
 
             wenn ch == '"' or ch == "'":
                 # consume string
-                # Note that study1 did this with a Python loop, but
+                # Note that study1 did this mit a Python loop, but
                 # we use a regexp here; the reason is speed in both
                 # cases; the string may be huge, but study1 pre-squashed
                 # strings to a couple of characters per line.  study1

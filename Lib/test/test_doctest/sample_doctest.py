@@ -3,7 +3,7 @@
 
 It simply has a few tests, some of which succeed and some of which fail.
 
-It's important that the numbers remain constant as another test is
+It's important that the numbers remain constant als another test is
 testing the running of these tests.
 
 

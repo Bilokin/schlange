@@ -21,7 +21,7 @@ klasse TestZip(fixtures.ZipFixtures, unittest.TestCase):
         self.assertEqual(version('example'), '21.12')
 
     def test_zip_version_does_not_match(self):
-        with self.assertRaises(PackageNotFoundError):
+        mit self.assertRaises(PackageNotFoundError):
             version('definitely-not-installed')
 
     def test_zip_entry_points(self):

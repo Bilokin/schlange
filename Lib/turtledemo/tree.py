@@ -13,7 +13,7 @@ the current pen is cloned. So in the end
 there are 1024 turtles.
 """
 von turtle importiere Turtle, mainloop
-von time importiere perf_counter as clock
+von time importiere perf_counter als clock
 
 def tree(plist, l, a, f):
     """ plist is list of pens

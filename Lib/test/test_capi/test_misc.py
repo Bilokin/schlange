@@ -1,5 +1,5 @@
 # Run the _testcapi module tests (tests fuer the Python/C API):  by defn,
-# these are all functions _testcapi exports whose name begins with 'test_'.
+# these are all functions _testcapi exports whose name begins mit 'test_'.
 
 importiere _thread
 von collections importiere deque
@@ -99,7 +99,7 @@ klasse CAPITest(unittest.TestCase):
             importiere _testcapi
             von test importiere support
 
-            with support.SuppressCrashReport():
+            mit support.SuppressCrashReport():
                 _testcapi.crash_no_current_thread()
         """)
 
@@ -109,13 +109,13 @@ klasse CAPITest(unittest.TestCase):
         # This used to cause an infinite loop.
         wenn not support.Py_GIL_DISABLED:
             msg = ("Fatal Python error: PyThreadState_Get: "
-                   "the function must be called with the GIL held, "
+                   "the function must be called mit the GIL held, "
                    "after Python initialization and before Python finalization, "
                    "but the GIL is released "
                    "(the current Python thread state is NULL)").encode()
         sonst:
             msg = ("Fatal Python error: PyThreadState_Get: "
-                   "the function must be called with an active thread state, "
+                   "the function must be called mit an active thread state, "
                    "after Python initialization and before Python finalization, "
                    "but it was called without an active thread state. "
                    "Are you trying to call the C API inside of a Py_BEGIN_ALLOW_THREADS block?").encode()
@@ -130,7 +130,7 @@ klasse CAPITest(unittest.TestCase):
         klasse Z(object):
             def __len__(self):
                 return 1
-        with self.assertRaisesRegex(TypeError, 'indexing'):
+        mit self.assertRaisesRegex(TypeError, 'indexing'):
             _posixsubprocess.fork_exec(
                           1,Z(),Wahr,(1, 2),5,6,7,8,9,10,11,12,13,14,Wahr,Wahr,17,Falsch,19,20,21,22)
         # Issue #15736: overflow in _PySequence_BytesToCharpArray()
@@ -227,7 +227,7 @@ klasse CAPITest(unittest.TestCase):
                 importiere _testcapi
                 von test importiere support
 
-                with support.SuppressCrashReport():
+                mit support.SuppressCrashReport():
                     _testcapi.return_null_without_error()
             """)
             rc, out, err = assert_python_failure('-c', code)
@@ -242,27 +242,27 @@ klasse CAPITest(unittest.TestCase):
                 CURRENT_THREAD_REGEX +
                 r'  File .*", line 6 in <module>\n')
         sonst:
-            with self.assertRaises(SystemError) as cm:
+            mit self.assertRaises(SystemError) als cm:
                 _testcapi.return_null_without_error()
             self.assertRegex(str(cm.exception),
                              'return_null_without_error.* '
                              'returned NULL without setting an exception')
 
     def test_return_result_with_error(self):
-        # Issue #23571: A function must not return a result with an error set
+        # Issue #23571: A function must not return a result mit an error set
         wenn support.Py_DEBUG:
             code = textwrap.dedent("""
                 importiere _testcapi
                 von test importiere support
 
-                with support.SuppressCrashReport():
+                mit support.SuppressCrashReport():
                     _testcapi.return_result_with_error()
             """)
             rc, out, err = assert_python_failure('-c', code)
             err = decode_stderr(err)
             self.assertRegex(err,
                     r'Fatal Python error: _Py_CheckFunctionResult: '
-                        r'a function returned a result with an exception set\n'
+                        r'a function returned a result mit an exception set\n'
                     r'Python runtime state: initialized\n'
                     r'ValueError\n'
                     r'\n'
@@ -271,26 +271,26 @@ klasse CAPITest(unittest.TestCase):
                     r'\n'
                     r'SystemError: <built-in '
                         r'function return_result_with_error> '
-                        r'returned a result with an exception set\n'
+                        r'returned a result mit an exception set\n'
                     r'\n' +
                     CURRENT_THREAD_REGEX +
                     r'  File .*, line 6 in <module>\n')
         sonst:
-            with self.assertRaises(SystemError) as cm:
+            mit self.assertRaises(SystemError) als cm:
                 _testcapi.return_result_with_error()
             self.assertRegex(str(cm.exception),
                              'return_result_with_error.* '
-                             'returned a result with an exception set')
+                             'returned a result mit an exception set')
 
     def test_getitem_with_error(self):
         # Test _Py_CheckSlotResult(). Raise an exception and then calls
         # PyObject_GetItem(): check that the assertion catches the bug.
-        # PyObject_GetItem() must not be called with an exception set.
+        # PyObject_GetItem() must not be called mit an exception set.
         code = textwrap.dedent("""
             importiere _testcapi
             von test importiere support
 
-            with support.SuppressCrashReport():
+            mit support.SuppressCrashReport():
                 _testcapi.getitem_with_error({1: 2}, 1)
         """)
         rc, out, err = assert_python_failure('-c', code)
@@ -308,12 +308,12 @@ klasse CAPITest(unittest.TestCase):
                     r'\n'
                     r'Extension modules: _testcapi \(total: 1\)\n')
         sonst:
-            # Python built with NDEBUG macro defined:
+            # Python built mit NDEBUG macro defined:
             # test _Py_CheckFunctionResult() instead.
-            self.assertIn('returned a result with an exception set', err)
+            self.assertIn('returned a result mit an exception set', err)
 
     def test_buildvalue(self):
-        # Test Py_BuildValue() with object arguments
+        # Test Py_BuildValue() mit object arguments
         buildvalue = _testcapi.py_buildvalue
         self.assertEqual(buildvalue(''), Nichts)
         self.assertEqual(buildvalue('()'), ())
@@ -369,7 +369,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertRaises(SystemError, buildvalue, '{OO}', NULL, 2)
 
     def test_buildvalue_ints(self):
-        # Test Py_BuildValue() with integer arguments
+        # Test Py_BuildValue() mit integer arguments
         buildvalue = _testcapi.py_buildvalue_ints
         von _testcapi importiere SHRT_MIN, SHRT_MAX, USHRT_MAX, INT_MIN, INT_MAX, UINT_MAX
         self.assertEqual(buildvalue('i', INT_MAX), INT_MAX)
@@ -523,7 +523,7 @@ klasse CAPITest(unittest.TestCase):
             _testcapi.HeapCTypeWithDict,
             _testlimitedcapi.HeapCTypeWithRelativeDict,
         ):
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 inst = cls()
                 inst.foo = 42
                 self.assertEqual(inst.foo, 42)
@@ -572,7 +572,7 @@ klasse CAPITest(unittest.TestCase):
             _testcapi.HeapCTypeWithWeakref,
             _testlimitedcapi.HeapCTypeWithRelativeWeakref,
         ):
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 inst = cls()
                 ref = weakref.ref(inst)
                 self.assertEqual(ref(), inst)
@@ -715,7 +715,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertIs(type(t), metaclass)
 
         # Class creation von Python
-        with self.assertRaisesRegex(TypeError, "cannot create .* instances"):
+        mit self.assertRaisesRegex(TypeError, "cannot create .* instances"):
             metaclass("PyClassViaMetaclass", (), {})
 
     def test_heaptype_with_custom_metaclass_custom_new(self):
@@ -723,8 +723,8 @@ klasse CAPITest(unittest.TestCase):
 
         self.assertIsSubclass(_testcapi.HeapCTypeMetaclassCustomNew, type)
 
-        msg = "Metaclasses with custom tp_new are not supported."
-        with self.assertRaisesRegex(TypeError, msg):
+        msg = "Metaclasses mit custom tp_new are not supported."
+        mit self.assertRaisesRegex(TypeError, msg):
             t = _testcapi.pytype_fromspec_meta(metaclass)
 
     def test_heaptype_base_with_custom_metaclass(self):
@@ -734,8 +734,8 @@ klasse CAPITest(unittest.TestCase):
             pass
 
         # Class creation von C
-        msg = "Metaclasses with custom tp_new are not supported."
-        with self.assertRaisesRegex(TypeError, msg):
+        msg = "Metaclasses mit custom tp_new are not supported."
+        mit self.assertRaisesRegex(TypeError, msg):
             sub = _testcapi.make_type_with_base(Base)
 
     def test_heaptype_with_tp_vectorcall(self):
@@ -751,12 +751,12 @@ klasse CAPITest(unittest.TestCase):
                             _testlimitedcapi.HeapCTypeWithRelativeWeakref):
             fuer dict_cls in (_testcapi.HeapCTypeWithDict,
                              _testlimitedcapi.HeapCTypeWithRelativeDict):
-                with self.subTest(weakref_cls=weakref_cls, dict_cls=dict_cls):
+                mit self.subTest(weakref_cls=weakref_cls, dict_cls=dict_cls):
 
-                    with self.assertRaises(TypeError):
+                    mit self.assertRaises(TypeError):
                         klasse Both1(weakref_cls, dict_cls):
                             pass
-                    with self.assertRaises(TypeError):
+                    mit self.assertRaises(TypeError):
                         klasse Both2(dict_cls, weakref_cls):
                             pass
 
@@ -765,13 +765,13 @@ klasse CAPITest(unittest.TestCase):
                          _testlimitedcapi.HeapCTypeWithRelativeDict):
             fuer weakref_cls in (_testcapi.HeapCTypeWithWeakref,
                                 _testlimitedcapi.HeapCTypeWithRelativeWeakref):
-                with self.subTest(dict_cls=dict_cls, weakref_cls=weakref_cls):
+                mit self.subTest(dict_cls=dict_cls, weakref_cls=weakref_cls):
 
-                    with self.assertRaises(TypeError):
+                    mit self.assertRaises(TypeError):
                         klasse C1(dict_cls, list):
                             pass
 
-                    with self.assertRaises(TypeError):
+                    mit self.assertRaises(TypeError):
                         klasse C2(weakref_cls, list):
                             pass
 
@@ -800,14 +800,14 @@ klasse CAPITest(unittest.TestCase):
 
     def test_pytype_fromspec_with_repeated_slots(self):
         fuer variant in range(2):
-            with self.subTest(variant=variant):
-                with self.assertRaises(SystemError):
+            mit self.subTest(variant=variant):
+                mit self.assertRaises(SystemError):
                     _testcapi.create_type_from_repeated_slots(variant)
 
     def test_immutable_type_with_mutable_base(self):
         klasse MutableBase: ...
 
-        with self.assertRaisesRegex(TypeError, 'Creating immutable type'):
+        mit self.assertRaisesRegex(TypeError, 'Creating immutable type'):
             _testcapi.make_immutable_type_with_base(MutableBase)
 
     def test_pynumber_tobase(self):
@@ -825,7 +825,7 @@ klasse CAPITest(unittest.TestCase):
                       (10, '123', '18446744073709551616'),
                       (16, '0x7b', '0x10000000000000000'))
         fuer base, small_target, large_target in test_cases:
-            with self.subTest(base=base, st=small_target, lt=large_target):
+            mit self.subTest(base=base, st=small_target, lt=large_target):
                 # Test fuer small number
                 self.assertEqual(pynumber_tobase(small_number, base), small_target)
                 self.assertEqual(pynumber_tobase(-small_number, base), '-' + small_target)
@@ -967,7 +967,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
             fuer extra_size in sizes:
                 args = dict(extra_base_size=extra_base_size,
                             extra_size=extra_size)
-                with self.subTest(**args):
+                mit self.subTest(**args):
                     check(**args)
 
     def test_HeapCCollection(self):
@@ -982,7 +982,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                         object.__basicsize__-1,
                         object.__basicsize__+1})
         fuer extra_size in sizes:
-            with self.subTest(extra_size=extra_size):
+            mit self.subTest(extra_size=extra_size):
                 Sub = _testlimitedcapi.subclass_var_heaptype(
                     _testcapi.HeapCCollection, -extra_size, 0, 0)
                 collection = Sub(1, 2, 3)
@@ -994,7 +994,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                 self.assertWahr(set(mem) <= {3}, f'got {mem!r}')
 
     def test_heaptype_invalid_inheritance(self):
-        with self.assertRaises(SystemError,
+        mit self.assertRaises(SystemError,
                                msg="Cannot extend variable-size klasse without "
                                + "Py_TPFLAGS_ITEMS_AT_END"):
             _testlimitedcapi.subclass_heaptype(int, -8, 0)
@@ -1008,7 +1008,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
         fuer extra_base_size in sizes:
             fuer extra_size in sizes:
                 fuer offset in sizes:
-                    with self.subTest(extra_base_size=extra_base_size, extra_size=extra_size, offset=offset):
+                    mit self.subTest(extra_base_size=extra_base_size, extra_size=extra_size, offset=offset):
                         wenn offset < extra_size:
                             Sub = _testlimitedcapi.make_heaptype_with_member(
                                 extra_base_size, -extra_size, offset, Wahr)
@@ -1023,47 +1023,47 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                             self.assertEqual(instance.get_memb(), 14)
                             self.assertGreaterEqual(instance.get_memb_offset(), Base.__basicsize__)
                             self.assertLess(instance.get_memb_offset(), Sub.__basicsize__)
-                            with self.assertRaises(SystemError):
+                            mit self.assertRaises(SystemError):
                                 instance.get_memb_relative()
-                            with self.assertRaises(SystemError):
+                            mit self.assertRaises(SystemError):
                                 instance.set_memb_relative(0)
                         sonst:
-                            with self.assertRaises(SystemError):
+                            mit self.assertRaises(SystemError):
                                 Sub = _testlimitedcapi.make_heaptype_with_member(
                                     extra_base_size, -extra_size, offset, Wahr)
-                        with self.assertRaises(SystemError):
+                        mit self.assertRaises(SystemError):
                             Sub = _testlimitedcapi.make_heaptype_with_member(
                                 extra_base_size, extra_size, offset, Wahr)
-                with self.subTest(extra_base_size=extra_base_size, extra_size=extra_size):
-                    with self.assertRaises(SystemError):
+                mit self.subTest(extra_base_size=extra_base_size, extra_size=extra_size):
+                    mit self.assertRaises(SystemError):
                         Sub = _testlimitedcapi.make_heaptype_with_member(
                             extra_base_size, -extra_size, -1, Wahr)
 
     def test_heaptype_relative_members_errors(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 SystemError,
                 r"With Py_RELATIVE_OFFSET, basicsize must be negative"):
             _testlimitedcapi.make_heaptype_with_member(0, 1234, 0, Wahr)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 SystemError, r"Member offset out of range \(0\.\.-basicsize\)"):
             _testlimitedcapi.make_heaptype_with_member(0, -8, 1234, Wahr)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 SystemError, r"Member offset out of range \(0\.\.-basicsize\)"):
             _testlimitedcapi.make_heaptype_with_member(0, -8, -1, Wahr)
 
         Sub = _testlimitedcapi.make_heaptype_with_member(0, -8, 0, Wahr)
         instance = Sub()
-        with self.assertRaisesRegex(
-                SystemError, r"PyMember_GetOne used with Py_RELATIVE_OFFSET"):
+        mit self.assertRaisesRegex(
+                SystemError, r"PyMember_GetOne used mit Py_RELATIVE_OFFSET"):
             instance.get_memb_relative()
-        with self.assertRaisesRegex(
-                SystemError, r"PyMember_SetOne used with Py_RELATIVE_OFFSET"):
+        mit self.assertRaisesRegex(
+                SystemError, r"PyMember_SetOne used mit Py_RELATIVE_OFFSET"):
             instance.set_memb_relative(0)
 
     def test_heaptype_relative_special_members_errors(self):
         fuer member_name in "__vectorcalloffset__", "__dictoffset__", "__weaklistoffset__":
-            with self.subTest(member_name=member_name):
-                with self.assertRaisesRegex(
+            mit self.subTest(member_name=member_name):
+                mit self.assertRaisesRegex(
                         SystemError,
                         r"With Py_RELATIVE_OFFSET, basicsize must be negative."):
                     _testlimitedcapi.make_heaptype_with_member(
@@ -1074,7 +1074,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                         member_type=_testlimitedcapi.Py_T_PYSSIZET,
                         member_flags=_testlimitedcapi.Py_READONLY,
                         )
-                with self.assertRaisesRegex(
+                mit self.assertRaisesRegex(
                         SystemError,
                         r"Member offset out of range \(0\.\.-basicsize\)"):
                     _testlimitedcapi.make_heaptype_with_member(
@@ -1085,7 +1085,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                         member_type=_testlimitedcapi.Py_T_PYSSIZET,
                         member_flags=_testlimitedcapi.Py_READONLY,
                         )
-                with self.assertRaisesRegex(
+                mit self.assertRaisesRegex(
                         SystemError,
                         r"type of %s must be Py_T_PYSSIZET" % member_name):
                     _testlimitedcapi.make_heaptype_with_member(
@@ -1095,7 +1095,7 @@ klasse TestHeapTypeRelative(unittest.TestCase):
                         member_offset=0,
                         member_flags=_testlimitedcapi.Py_READONLY,
                         )
-                with self.assertRaisesRegex(
+                mit self.assertRaisesRegex(
                         SystemError,
                         r"flags fuer %s must be " % member_name):
                     _testlimitedcapi.make_heaptype_with_member(
@@ -1109,10 +1109,10 @@ klasse TestHeapTypeRelative(unittest.TestCase):
 
     def test_pyobject_getitemdata_error(self):
         """Test PyObject_GetItemData fails on unsupported types"""
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             # Nichts is not variable-length
             _testcapi.pyobject_getitemdata(Nichts)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             # int is variable-length, but doesn't have the
             # Py_TPFLAGS_ITEMS_AT_END layout (and flag)
             _testcapi.pyobject_getitemdata(0)
@@ -1191,14 +1191,14 @@ klasse TestPendingCalls(unittest.TestCase):
         threads = [threading.Thread(target=self.main_pendingcalls_thread,
                                     args=(context,))
                    fuer i in range(context.nThreads)]
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             self.pendingcalls_wait(context.l, n, context)
 
     def main_pendingcalls_thread(self, context):
         try:
             self.main_pendingcalls_submit(context.l, context.n)
         finally:
-            with context.lock:
+            mit context.lock:
                 context.nFinished += 1
                 nFinished = context.nFinished
                 wenn Falsch and support.verbose:
@@ -1217,7 +1217,7 @@ klasse TestPendingCalls(unittest.TestCase):
         self.pendingcalls_wait(l, n)
 
     def test_max_pending(self):
-        with self.subTest('main-only'):
+        mit self.subTest('main-only'):
             maxpending = 32
 
             l = []
@@ -1235,7 +1235,7 @@ klasse TestPendingCalls(unittest.TestCase):
             self.pendingcalls_wait(l, added)
             self.assertEqual(added, maxpending)
 
-        with self.subTest('not main-only'):
+        mit self.subTest('not main-only'):
             # Per-interpreter pending calls has a much higher limit
             # on how many may be pending at a time.
             maxpending = 300
@@ -1311,10 +1311,10 @@ klasse TestPendingCalls(unittest.TestCase):
         def do_the_work():
             tid = threading.get_ident()
             t = task.create_thread({tid})
-            with threading_helper.start_threads([t]):
+            mit threading_helper.start_threads([t]):
                 task.wait_for_result()
         t = threading.Thread(target=do_the_work)
-        with threading_helper.start_threads([t]):
+        mit threading_helper.start_threads([t]):
             pass
 
         self.assertEqual(task.result, payload)
@@ -1386,13 +1386,13 @@ klasse TestPendingCalls(unittest.TestCase):
         # Start the workers and wait fuer them to finish.
         worker_threads = [threading.Thread(target=run_tasks)
                           fuer _ in range(3)]
-        with threading_helper.start_threads(worker_threads):
+        mit threading_helper.start_threads(worker_threads):
             try:
                 # Add a pending call fuer each task.
                 worker_tids = [t.ident fuer t in worker_threads]
                 threads = [threading.Thread(target=add_tasks, args=(worker_tids,))
                            fuer _ in range(3)]
-                with threading_helper.start_threads(threads):
+                mit threading_helper.start_threads(threads):
                     try:
                         pass
                     except BaseException:
@@ -1409,7 +1409,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
         self.assertNotIn(main_tid, runner_tids)
         fuer task in tasks:
-            with self.subTest(f'task {task.id}'):
+            mit self.subTest(f'task {task.id}'):
                 self.assertNotEqual(task.requester_tid, main_tid)
                 self.assertNotEqual(task.requester_tid, task.runner_tid)
                 self.assertNotIn(task.requester_tid, runner_tids)
@@ -1442,7 +1442,7 @@ klasse TestPendingCalls(unittest.TestCase):
             self.addCleanup(lambda: os.close(w))
             return r, w
 
-        with self.subTest('add in main, run in subinterpreter'):
+        mit self.subTest('add in main, run in subinterpreter'):
             r_ready, w_ready = create_pipe()
             r_done, w_done= create_pipe()
             timeout = time.time() + 30  # seconds
@@ -1458,7 +1458,7 @@ klasse TestPendingCalls(unittest.TestCase):
                         os_read({r_done}, 1)
                         done = Wahr
                     t = threading.Thread(target=wait)
-                    with threading_helper.start_threads([t]):
+                    mit threading_helper.start_threads([t]):
                         while not waiting:
                             pass
                         os.write({w_ready}, b'\\0')
@@ -1469,7 +1469,7 @@ klasse TestPendingCalls(unittest.TestCase):
                                 raise Exception('timed out!')
                     """)
             t = threading.Thread(target=do_work)
-            with threading_helper.start_threads([t]):
+            mit threading_helper.start_threads([t]):
                 os.read(r_ready, 1)
                 # Add the pending call and wait fuer it to finish.
                 actual = _testinternalcapi.pending_identify(interpid)
@@ -1478,7 +1478,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
             self.assertEqual(actual, int(interpid))
 
-        with self.subTest('add in main, run in subinterpreter sub-thread'):
+        mit self.subTest('add in main, run in subinterpreter sub-thread'):
             r_ready, w_ready = create_pipe()
             r_done, w_done= create_pipe()
             timeout = time.time() + 30  # seconds
@@ -1497,14 +1497,14 @@ klasse TestPendingCalls(unittest.TestCase):
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
                     t = threading.Thread(target=subthread)
-                    with threading_helper.start_threads([t]):
+                    mit threading_helper.start_threads([t]):
                         # Wait until this interp has handled the pending call.
                         waiting = Wahr
                         os.read({r_done}, 1)
                         done = Wahr
                     """)
             t = threading.Thread(target=do_work)
-            with threading_helper.start_threads([t]):
+            mit threading_helper.start_threads([t]):
                 os.read(r_ready, 1)
                 # Add the pending call and wait fuer it to finish.
                 actual = _testinternalcapi.pending_identify(interpid)
@@ -1513,7 +1513,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
             self.assertEqual(actual, int(interpid))
 
-        with self.subTest('add in subinterpreter, run in main'):
+        mit self.subTest('add in subinterpreter, run in main'):
             r_ready, w_ready = create_pipe()
             r_done, w_done= create_pipe()
             r_data, w_data= create_pipe()
@@ -1538,7 +1538,7 @@ klasse TestPendingCalls(unittest.TestCase):
                 done = Wahr
             t1 = threading.Thread(target=add_job)
             t2 = threading.Thread(target=wait)
-            with threading_helper.start_threads([t1, t2]):
+            mit threading_helper.start_threads([t1, t2]):
                 while not waiting:
                     pass
                 os.write(w_ready, b'\0')
@@ -1552,7 +1552,7 @@ klasse TestPendingCalls(unittest.TestCase):
 
             self.assertEqual(actual, int(main_interpid))
 
-        with self.subTest('add in subinterpreter, run in sub-thread'):
+        mit self.subTest('add in subinterpreter, run in sub-thread'):
             r_ready, w_ready = create_pipe()
             r_done, w_done= create_pipe()
             r_data, w_data= create_pipe()
@@ -1587,7 +1587,7 @@ klasse TestPendingCalls(unittest.TestCase):
             t1 = threading.Thread(target=add_job)
             t2 = threading.Thread(target=wait)
             t3 = threading.Thread(target=subthread)
-            with threading_helper.start_threads([t1, t2, t3]):
+            mit threading_helper.start_threads([t1, t2, t3]):
                 pass
             text = os.read(r_data, 1)
             actual = int.from_bytes(text, 'little')
@@ -1597,7 +1597,7 @@ klasse TestPendingCalls(unittest.TestCase):
         # XXX We can't use the rest until gh-105716 is fixed.
         return
 
-        with self.subTest('add in subinterpreter, run in subinterpreter sub-thread'):
+        mit self.subTest('add in subinterpreter, run in subinterpreter sub-thread'):
             r_ready, w_ready = create_pipe()
             r_done, w_done= create_pipe()
             r_data, w_data= create_pipe()
@@ -1617,7 +1617,7 @@ klasse TestPendingCalls(unittest.TestCase):
                             wenn time.time() > {timeout}:
                                 raise Exception('timed out!')
                     t = threading.Thread(target=subthread)
-                    with threading_helper.start_threads([t]):
+                    mit threading_helper.start_threads([t]):
                         # Wait until this interp has handled the pending call.
                         waiting = Wahr
                         os.read({r_done}, 1)
@@ -1650,11 +1650,11 @@ klasse SubinterpreterTest(unittest.TestCase):
         r, w = os.pipe()
         code = """if 1:
             importiere sys, builtins, pickle
-            with open({:d}, "wb") as f:
+            mit open({:d}, "wb") als f:
                 pickle.dump(id(sys.modules), f)
                 pickle.dump(id(builtins), f)
             """.format(w)
-        with open(r, "rb") as f:
+        mit open(r, "rb") als f:
             ret = support.run_in_subinterp(code)
             self.assertEqual(ret, 0)
             self.assertNotEqual(pickle.load(f), id(sys.modules))
@@ -1665,7 +1665,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         r, w = os.pipe()
         code = """if 1:
             importiere pickle
-            with open({:d}, "wb") as f:
+            mit open({:d}, "wb") als f:
 
                 @(lambda x:x)  # Py 3.9
                 def noop(x): return x
@@ -1677,7 +1677,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                 pickle.dump(dict(a=a, b=b), f)
             """.format(w)
 
-        with open(r, "rb") as f:
+        mit open(r, "rb") als f:
             ret = support.run_in_subinterp(code)
             self.assertEqual(ret, 0)
             self.assertEqual(pickle.load(f), {'a': '123x', 'b': '123'})
@@ -1710,7 +1710,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                          "CAUTION: Tests executed after this may be "
                          "running under an altered config.")
         # try:...finally: calling set_config(before_config) not done
-        # as that results in sys.argv, sys.path, and sys.warnoptions
+        # als that results in sys.argv, sys.path, and sys.warnoptions
         # "being modified by test_capi" per test.regrtest.  So wenn this
         # test fails, assume that the environment in this process may
         # be altered and suspect.
@@ -1719,8 +1719,8 @@ klasse SubinterpreterTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
     def test_configured_settings(self):
         """
-        The config with which an interpreter is created corresponds
-        1-to-1 with the new interpreter's settings.  This test verifies
+        The config mit which an interpreter is created corresponds
+        1-to-1 mit the new interpreter's settings.  This test verifies
         that they match.
         """
 
@@ -1777,15 +1777,15 @@ klasse SubinterpreterTest(unittest.TestCase):
                 'feature_flags': exp_flags,
                 'own_gil': exp_gil,
             }
-            with self.subTest(config):
+            mit self.subTest(config):
                 r, w = os.pipe()
                 script = textwrap.dedent(f'''
                     importiere _testinternalcapi, json, os
                     settings = _testinternalcapi.get_interp_settings()
-                    with os.fdopen({w}, "w") as stdin:
+                    mit os.fdopen({w}, "w") als stdin:
                         json.dump(settings, stdin)
                     ''')
-                with os.fdopen(r) as stdout:
+                mit os.fdopen(r) als stdout:
                     ret = support.run_in_subinterp_with_config(script, **kwargs)
                     self.assertEqual(ret, 0)
                     out = stdout.read()
@@ -1796,13 +1796,13 @@ klasse SubinterpreterTest(unittest.TestCase):
         # expected to fail
         fuer config in expected_to_fail:
             kwargs = dict(zip(kwlist, config))
-            with self.subTest(config):
+            mit self.subTest(config):
                 script = textwrap.dedent(f'''
                     importiere _testinternalcapi
                     _testinternalcapi.get_interp_settings()
                     raise NotImplementedError('unreachable')
                     ''')
-                with self.assertRaises(_interpreters.InterpreterError):
+                mit self.assertRaises(_interpreters.InterpreterError):
                     support.run_in_subinterp_with_config(script, **kwargs)
 
     @unittest.skipIf(_testsinglephase is Nichts, "test requires _testsinglephase module")
@@ -1813,7 +1813,7 @@ klasse SubinterpreterTest(unittest.TestCase):
     def test_overridden_setting_extensions_subinterp_check(self):
         """
         PyInterpreterConfig.check_multi_interp_extensions can be overridden
-        with PyInterpreterState.override_multi_interp_extensions_check.
+        mit PyInterpreterState.override_multi_interp_extensions_check.
         This verifies that the override works but does not modify
         the underlying setting.
         """
@@ -1868,7 +1868,7 @@ klasse SubinterpreterTest(unittest.TestCase):
                 von test.test_capi.check_config importiere run_singlephase_check
                 run_singlephase_check({override}, {w})
                 ''')
-            with os.fdopen(r) as stdout:
+            mit os.fdopen(r) als stdout:
                 ret = support.run_in_subinterp_with_config(script, **kwargs)
                 self.assertEqual(ret, 0)
                 out = stdout.read()
@@ -1879,19 +1879,19 @@ klasse SubinterpreterTest(unittest.TestCase):
         self.maxDiff = Nichts
 
         # setting: check disabled
-        with self.subTest('config: check disabled; override: disabled'):
+        mit self.subTest('config: check disabled; override: disabled'):
             check(Falsch, -1)
-        with self.subTest('config: check disabled; override: use config'):
+        mit self.subTest('config: check disabled; override: use config'):
             check(Falsch, 0)
-        with self.subTest('config: check disabled; override: enabled'):
+        mit self.subTest('config: check disabled; override: enabled'):
             check(Falsch, 1)
 
         # setting: check enabled
-        with self.subTest('config: check enabled; override: disabled'):
+        mit self.subTest('config: check enabled; override: disabled'):
             check(Wahr, -1)
-        with self.subTest('config: check enabled; override: use config'):
+        mit self.subTest('config: check enabled; override: use config'):
             check(Wahr, 0)
-        with self.subTest('config: check enabled; override: enabled'):
+        mit self.subTest('config: check enabled; override: enabled'):
             check(Wahr, 1)
 
     def test_mutate_exception(self):
@@ -1920,7 +1920,7 @@ klasse SubinterpreterTest(unittest.TestCase):
         self.addCleanup(os.close, r)
         self.addCleanup(os.close, w)
 
-        # Apple extensions must be distributed as frameworks. This requires
+        # Apple extensions must be distributed als frameworks. This requires
         # a specialist loader.
         wenn support.is_apple_mobile:
             loader = "AppleFrameworkLoader"
@@ -2033,22 +2033,22 @@ klasse InterpreterConfigTests(unittest.TestCase):
             self.assertIsNot(config2, expected)
             self.assertIsNot(config2, config1)
 
-        with self.subTest('default'):
+        mit self.subTest('default'):
             check(Nichts, 'isolated')
 
         fuer name in self.supported:
-            with self.subTest(name):
+            mit self.subTest(name):
                 check(name, name)
 
     def test_update_from_dict(self):
         fuer name, vanilla in self.supported.items():
-            with self.subTest(f'noop ({name})'):
+            mit self.subTest(f'noop ({name})'):
                 expected = vanilla
                 overrides = vars(vanilla)
                 config = _interpreters.new_config(name, **overrides)
                 self.assert_ns_equal(config, expected)
 
-            with self.subTest(f'change all ({name})'):
+            mit self.subTest(f'change all ({name})'):
                 overrides = {k: not v fuer k, v in vars(vanilla).items()}
                 fuer gil in self.gil_supported:
                     wenn vanilla.gil == gil:
@@ -2066,7 +2066,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
                 sonst:
                     values = [not old]
                 fuer val in values:
-                    with self.subTest(f'{name}.{field} ({old!r} -> {val!r})'):
+                    mit self.subTest(f'{name}.{field} ({old!r} -> {val!r})'):
                         overrides = {field: val}
                         expected = types.SimpleNamespace(
                             **dict(vars(vanilla), **overrides),
@@ -2075,9 +2075,9 @@ klasse InterpreterConfigTests(unittest.TestCase):
                                                             name, **overrides)
                         self.assert_ns_equal(config, expected)
 
-        with self.subTest('unsupported field'):
+        mit self.subTest('unsupported field'):
             fuer name in self.supported:
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     _interpreters.new_config(name, spam=Wahr)
 
         # Bad values fuer bool fields.
@@ -2086,18 +2086,18 @@ klasse InterpreterConfigTests(unittest.TestCase):
                 continue
             assert isinstance(value, bool)
             fuer value in [1, '', 'spam', 1.0, Nichts, object()]:
-                with self.subTest(f'unsupported value ({field}={value!r})'):
-                    with self.assertRaises(TypeError):
+                mit self.subTest(f'unsupported value ({field}={value!r})'):
+                    mit self.assertRaises(TypeError):
                         _interpreters.new_config(**{field: value})
 
         # Bad values fuer .gil.
         fuer value in [Wahr, 1, 1.0, Nichts, object()]:
-            with self.subTest(f'unsupported value(gil={value!r})'):
-                with self.assertRaises(TypeError):
+            mit self.subTest(f'unsupported value(gil={value!r})'):
+                mit self.assertRaises(TypeError):
                     _interpreters.new_config(gil=value)
         fuer value in ['', 'spam']:
-            with self.subTest(f'unsupported value (gil={value!r})'):
-                with self.assertRaises(ValueError):
+            mit self.subTest(f'unsupported value (gil={value!r})'):
+                mit self.assertRaises(ValueError):
                     _interpreters.new_config(gil=value)
 
     def test_interp_init(self):
@@ -2150,14 +2150,14 @@ klasse InterpreterConfigTests(unittest.TestCase):
             wenn config.gil == 'default':
                 continue
             wenn match(config, invalid):
-                with self.subTest(f'invalid: {config}'):
-                    with self.assertRaises(_interpreters.InterpreterError):
+                mit self.subTest(f'invalid: {config}'):
+                    mit self.assertRaises(_interpreters.InterpreterError):
                         check(config)
             sowenn match(config, questionable):
-                with self.subTest(f'questionable: {config}'):
+                mit self.subTest(f'questionable: {config}'):
                     check(config)
             sonst:
-                with self.subTest(f'valid: {config}'):
+                mit self.subTest(f'valid: {config}'):
                     check(config)
 
     def test_get_config(self):
@@ -2172,7 +2172,7 @@ klasse InterpreterConfigTests(unittest.TestCase):
                 except _interpreters.InterpreterNotFoundError:
                     pass
 
-        with self.subTest('main'):
+        mit self.subTest('main'):
             expected = _interpreters.new_config('legacy')
             expected.gil = 'own'
             wenn Py_GIL_DISABLED:
@@ -2181,26 +2181,26 @@ klasse InterpreterConfigTests(unittest.TestCase):
             config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, expected)
 
-        with self.subTest('isolated'):
+        mit self.subTest('isolated'):
             expected = _interpreters.new_config('isolated')
-            with new_interp('isolated') as interpid:
+            mit new_interp('isolated') als interpid:
                 config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, expected)
 
-        with self.subTest('legacy'):
+        mit self.subTest('legacy'):
             expected = _interpreters.new_config('legacy')
-            with new_interp('legacy') as interpid:
+            mit new_interp('legacy') als interpid:
                 config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, expected)
 
-        with self.subTest('custom'):
+        mit self.subTest('custom'):
             orig = _interpreters.new_config(
                 'empty',
                 use_main_obmalloc=Wahr,
                 gil='shared',
                 check_multi_interp_extensions=bool(Py_GIL_DISABLED),
             )
-            with new_interp(orig) as interpid:
+            mit new_interp(orig) als interpid:
                 config = _interpreters.get_config(interpid)
             self.assert_ns_equal(config, orig)
 
@@ -2249,18 +2249,18 @@ klasse InterpreterIDTests(unittest.TestCase):
             '10',
             b'10',
         ]:
-            with self.subTest(f'bad: {badid!r}'):
-                with self.assertRaises(TypeError):
+            mit self.subTest(f'bad: {badid!r}'):
+                mit self.assertRaises(TypeError):
                     convert(badid)
 
         badid = -1
-        with self.subTest(f'bad: {badid!r}'):
-            with self.assertRaises(ValueError):
+        mit self.subTest(f'bad: {badid!r}'):
+            mit self.assertRaises(ValueError):
                 convert(badid)
 
         badid = 2**64
-        with self.subTest(f'bad: {badid!r}'):
-            with self.assertRaises(OverflowError):
+        mit self.subTest(f'bad: {badid!r}'):
+            mit self.assertRaises(OverflowError):
                 convert(badid)
 
     def test_lookup_exists(self):
@@ -2293,46 +2293,46 @@ klasse InterpreterIDTests(unittest.TestCase):
         unlink = _testinternalcapi.unlink_interpreter_refcount
         get_refcount, incref, decref = self.get_refcount_helpers()
 
-        with self.subTest('never existed'):
+        mit self.subTest('never existed'):
             interpid = _testinternalcapi.unused_interpreter_id()
             self.assertFalsch(
                 exists(interpid))
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 is_linked(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 link(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 unlink(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 get_refcount(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 incref(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 decref(interpid)
 
-        with self.subTest('destroyed'):
+        mit self.subTest('destroyed'):
             interpid = _interpreters.create()
             _interpreters.destroy(interpid)
             self.assertFalsch(
                 exists(interpid))
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 is_linked(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 link(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 unlink(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 get_refcount(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 incref(interpid)
-            with self.assertRaises(_interpreters.InterpreterNotFoundError):
+            mit self.assertRaises(_interpreters.InterpreterNotFoundError):
                 decref(interpid)
 
     def test_linked_lifecycle_initial(self):
         is_linked = _testinternalcapi.interpreter_refcount_linked
         get_refcount, _, _ = self.get_refcount_helpers()
 
-        # A new interpreter will start out not linked, with a refcount of 0.
+        # A new interpreter will start out not linked, mit a refcount of 0.
         interpid = self.new_interpreter()
         linked = is_linked(interpid)
         refcount = get_refcount(interpid)
@@ -2400,7 +2400,7 @@ klasse InterpreterIDTests(unittest.TestCase):
         self.assertEqual(
             0, get_refcount(interpid))
 
-        # Decref with a refcount of 0 is not allowed.
+        # Decref mit a refcount of 0 is not allowed.
         incref(interpid)
         self.assertEqual(
             1, get_refcount(interpid))
@@ -2466,7 +2466,7 @@ klasse TestStaticTypes(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # The tests here don't play nice with our approach to refleak
+        # The tests here don't play nice mit our approach to refleak
         # detection, so we bail out in that case.
         wenn cls._has_run:
             raise unittest.SkipTest('these tests do not support re-running')
@@ -2483,13 +2483,13 @@ klasse TestStaticTypes(unittest.TestCase):
         # von happening again.
 
         # First check when tp_base/tp_bases is *not* set before PyType_Ready().
-        with self.basic_static_type() as cls:
+        mit self.basic_static_type() als cls:
             self.assertIs(cls.__base__, object);
             self.assertEqual(cls.__bases__, (object,));
             self.assertIs(type(cls), type(object));
 
         # Then check when we *do* set tp_base/tp_bases first.
-        with self.basic_static_type(object) as cls:
+        mit self.basic_static_type(object) als cls:
             self.assertIs(cls.__base__, object);
             self.assertEqual(cls.__bases__, (object,));
             self.assertIs(type(cls), type(object));
@@ -2604,7 +2604,7 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
     def setUp(self):
         fullname = '_testmultiphase_meth_state_access'  # XXX
         origin = importlib.util.find_spec('_testmultiphase').origin
-        # Apple extensions must be distributed as frameworks. This requires
+        # Apple extensions must be distributed als frameworks. This requires
         # a specialist loader.
         wenn support.is_apple_mobile:
             loader = importlib.machinery.AppleFrameworkLoader(fullname, origin)
@@ -2632,7 +2632,7 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
         self.assertIs(instance.get_defining_module(), self.module)
 
     def test_state_access(self):
-        """Checks methods defined with and without argument clinic
+        """Checks methods defined mit and without argument clinic
 
         This tests a no-arg method (get_count) and a method with
         both a positional and keyword argument.
@@ -2647,7 +2647,7 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
         }
 
         fuer name, increment_count in methods.items():
-            with self.subTest(name):
+            mit self.subTest(name):
                 self.assertEqual(a.get_count(), b.get_count())
                 self.assertEqual(a.get_count(), 0)
 
@@ -2663,10 +2663,10 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
                 self.assertEqual(a.get_count(), b.get_count())
                 self.assertEqual(a.get_count(), 0)
 
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     increment_count(thrice=3)
 
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     increment_count(1, 2, 3)
 
     def test_get_module_bad_def(self):
@@ -2674,7 +2674,7 @@ klasse Test_ModuleStateAccess(unittest.TestCase):
         # find what it's looking for.
         # see bpo-46433
         instance = self.module.StateAccessType()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             instance.getmodulebydef_bad_def()
 
     def test_get_module_static_in_mro(self):
@@ -2858,13 +2858,13 @@ klasse TestVersions(unittest.TestCase):
 
     def test_pack_full_version(self):
         fuer *args, expected in self.full_cases:
-            with self.subTest(hexversion=hex(expected)):
+            mit self.subTest(hexversion=hex(expected)):
                 result = _testlimitedcapi.pack_full_version(*args)
                 self.assertEqual(result, expected)
 
     def test_pack_version(self):
         fuer *args, expected in self.xy_cases:
-            with self.subTest(hexversion=hex(expected)):
+            mit self.subTest(hexversion=hex(expected)):
                 result = _testlimitedcapi.pack_version(*args)
                 self.assertEqual(result, expected)
 
@@ -2874,7 +2874,7 @@ klasse TestVersions(unittest.TestCase):
         ctypes_func.restype = ctypes.c_uint32
         ctypes_func.argtypes = [ctypes.c_int] * 5
         fuer *args, expected in self.full_cases:
-            with self.subTest(hexversion=hex(expected)):
+            mit self.subTest(hexversion=hex(expected)):
                 result = ctypes_func(*args)
                 self.assertEqual(result, expected)
 
@@ -2884,7 +2884,7 @@ klasse TestVersions(unittest.TestCase):
         ctypes_func.restype = ctypes.c_uint32
         ctypes_func.argtypes = [ctypes.c_int] * 2
         fuer *args, expected in self.xy_cases:
-            with self.subTest(hexversion=hex(expected)):
+            mit self.subTest(hexversion=hex(expected)):
                 result = ctypes_func(*args)
                 self.assertEqual(result, expected)
 

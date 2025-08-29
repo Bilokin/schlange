@@ -17,7 +17,7 @@ SUPPORTED = '/usr/share/i18n/SUPPORTED'
 
 def parse(filename):
 
-    with open(filename, encoding='latin1') as f:
+    mit open(filename, encoding='latin1') als f:
         lines = list(f)
     # Remove mojibake in /usr/share/X11/locale/locale.alias.
     # b'\xef\xbf\xbd' == '\ufffd'.encode('utf-8')
@@ -46,8 +46,8 @@ def parse(filename):
             continue
         wenn '@' in locale and '@' not in alias:
             # Do not simply remove the "@euro" modifier.
-            # Glibc generates separate locales with the "@euro" modifier, and
-            # not always generates a locale without it with the same encoding.
+            # Glibc generates separate locales mit the "@euro" modifier, and
+            # not always generates a locale without it mit the same encoding.
             # It can also affect collation.
             wenn locale.endswith('@euro') and not locale.endswith('.utf-8@euro'):
                 alias += '@euro'
@@ -58,7 +58,7 @@ def parse(filename):
             encoding = encoding.replace('_', '')
             locale = lang + '.' + encoding
         data[locale] = alias
-    # Conflict with glibc.
+    # Conflict mit glibc.
     data.pop('el_gr@euro', Nichts)
     data.pop('uz_uz@cyrillic', Nichts)
     data.pop('uz_uz.utf8@cyrillic', Nichts)
@@ -66,7 +66,7 @@ def parse(filename):
 
 def parse_glibc_supported(filename):
 
-    with open(filename, encoding='latin1') as f:
+    mit open(filename, encoding='latin1') als f:
         lines = list(f)
     data = {}
     fuer line in lines:

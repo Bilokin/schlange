@@ -124,7 +124,7 @@ def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
     drucke("creating cert fuer " + hostname)
     tempnames = []
     fuer i in range(3):
-        with tempfile.NamedTemporaryFile(delete=Falsch) as f:
+        mit tempfile.NamedTemporaryFile(delete=Falsch) als f:
             tempnames.append(f.name)
     req_file, cert_file, key_file = tempnames
     try:
@@ -135,13 +135,13 @@ def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
             enddate=cmdlineargs.enddate,
             days=cmdlineargs.days
         )
-        with open(req_file, 'w') as f:
+        mit open(req_file, 'w') als f:
             f.write(req)
         args = ['req', '-new', '-nodes', '-days', cmdlineargs.days,
                 '-newkey', key, '-keyout', key_file,
                 '-config', req_file]
         wenn sign:
-            with tempfile.NamedTemporaryFile(delete=Falsch) as f:
+            mit tempfile.NamedTemporaryFile(delete=Falsch) als f:
                 tempnames.append(f.name)
                 reqfile = f.name
             args += ['-out', reqfile ]
@@ -163,9 +163,9 @@ def make_cert_key(cmdlineargs, hostname, sign=Falsch, extra_san='',
             check_call(['openssl'] + args)
 
 
-        with open(cert_file, 'r') as f:
+        mit open(cert_file, 'r') als f:
             cert = f.read()
-        with open(key_file, 'r') as f:
+        mit open(key_file, 'r') als f:
             key = f.read()
         return cert, key
     finally:
@@ -179,17 +179,17 @@ def unmake_ca():
 
 def make_ca(cmdlineargs):
     os.mkdir(TMP_CADIR)
-    with open(os.path.join('cadir','index.txt'),'a+') as f:
+    mit open(os.path.join('cadir','index.txt'),'a+') als f:
         pass # empty file
-    with open(os.path.join('cadir','crl.txt'),'a+') as f:
+    mit open(os.path.join('cadir','crl.txt'),'a+') als f:
         f.write("00")
-    with open(os.path.join('cadir','index.txt.attr'),'w+') as f:
+    mit open(os.path.join('cadir','index.txt.attr'),'w+') als f:
         f.write('unique_subject = no')
     # random start value fuer serial numbers
-    with open(os.path.join('cadir','serial'), 'w') as f:
+    mit open(os.path.join('cadir','serial'), 'w') als f:
         f.write('CB2D80995A69525B\n')
 
-    with tempfile.NamedTemporaryFile("w") as t:
+    mit tempfile.NamedTemporaryFile("w") als t:
         req = req_template.format(
             hostname='our-ca-server',
             extra_san='',
@@ -199,7 +199,7 @@ def make_ca(cmdlineargs):
         )
         t.write(req)
         t.flush()
-        with tempfile.NamedTemporaryFile() as f:
+        mit tempfile.NamedTemporaryFile() als f:
             args = ['req', '-config', t.name, '-new',
                     '-nodes',
                     '-newkey', 'rsa:3072',
@@ -226,7 +226,7 @@ def write_cert_reference(path):
     importiere _ssl
     refdata = pprint.pformat(_ssl._test_decode_cert(path))
     drucke(refdata)
-    with open(path + '.reference', 'w') as f:
+    mit open(path + '.reference', 'w') als f:
         drucke(refdata, file=f)
 
 
@@ -238,44 +238,44 @@ wenn __name__ == '__main__':
 
     os.chdir(here)
     cert, key = make_cert_key(cmdlineargs, 'localhost', ext='req_x509_extensions_simple')
-    with open('ssl_cert.pem', 'w') as f:
+    mit open('ssl_cert.pem', 'w') als f:
         f.write(cert)
-    with open('ssl_key.pem', 'w') as f:
+    mit open('ssl_key.pem', 'w') als f:
         f.write(key)
     drucke("password protecting ssl_key.pem in ssl_key.passwd.pem")
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.passwd.pem','-aes256','-passout','pass:somepass'])
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.passwd.pem','-aes256','-passout','pass:somepass'])
 
-    with open('keycert.pem', 'w') as f:
+    mit open('keycert.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 
-    with open('keycert.passwd.pem', 'a+') as f:
+    mit open('keycert.passwd.pem', 'a+') als f:
         f.write(cert)
 
     # For certificate matching tests
     make_ca(cmdlineargs)
     cert, key = make_cert_key(cmdlineargs, 'fakehostname', ext='req_x509_extensions_simple')
-    with open('keycert2.pem', 'w') as f:
+    mit open('keycert2.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key(cmdlineargs, 'localhost', sign=Wahr)
-    with open('keycert3.pem', 'w') as f:
+    mit open('keycert3.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 
     check_call(['openssl', 'x509', '-outform', 'pem', '-in', 'keycert3.pem', '-out', 'cert3.pem'])
 
     cert, key = make_cert_key(cmdlineargs, 'fakehostname', sign=Wahr)
-    with open('keycert4.pem', 'w') as f:
+    mit open('keycert4.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key(
         cmdlineargs, 'localhost-ecc', sign=Wahr, key='param:secp384r1.pem'
     )
-    with open('keycertecc.pem', 'w') as f:
+    mit open('keycertecc.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 
@@ -294,7 +294,7 @@ wenn __name__ == '__main__':
     ]
 
     cert, key = make_cert_key(cmdlineargs, 'allsans', sign=Wahr, extra_san='\n'.join(extra_san))
-    with open('allsans.pem', 'w') as f:
+    mit open('allsans.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 
@@ -311,12 +311,12 @@ wenn __name__ == '__main__':
 
     # IDN SANS, signed
     cert, key = make_cert_key(cmdlineargs, 'idnsans', sign=Wahr, extra_san='\n'.join(extra_san))
-    with open('idnsans.pem', 'w') as f:
+    mit open('idnsans.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key(cmdlineargs, 'nosan', sign=Wahr, ext='req_x509_extensions_nosan')
-    with open('nosan.pem', 'w') as f:
+    mit open('nosan.pem', 'w') als f:
         f.write(key)
         f.write(cert)
 

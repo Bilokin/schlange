@@ -17,15 +17,15 @@ klasse ReturnValue:
 
     def test_return_from_import(self):
         # [import return]
-        with util.mock_spec('pkg.__init__', 'pkg.module') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('pkg.__init__', 'pkg.module') als importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.module')
                 self.assertEqual(module.__name__, 'pkg')
 
     def test_return_from_from_import(self):
         # [from return]
-        with util.mock_spec('pkg.__init__', 'pkg.module')as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('pkg.__init__', 'pkg.module')as importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.module', fromlist=['attr'])
                 self.assertEqual(module.__name__, 'pkg.module')
 
@@ -44,39 +44,39 @@ klasse HandlingFromlist:
     [object case]. This is even true wenn the object does not exist [bad object].
 
     If a package is being imported, then what is listed in fromlist may be
-    treated as a module to be imported [module]. And this extends to what is
+    treated als a module to be imported [module]. And this extends to what is
     contained in __all__ when '*' is imported [using *]. And '*' does not need
-    to be the only name in the fromlist [using * with others].
+    to be the only name in the fromlist [using * mit others].
 
     """
 
     def test_object(self):
         # [object case]
-        with util.mock_spec('module') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('module') als importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('module', fromlist=['attr'])
                 self.assertEqual(module.__name__, 'module')
 
     def test_nonexistent_object(self):
         # [bad object]
-        with util.mock_spec('module') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('module') als importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('module', fromlist=['non_existent'])
                 self.assertEqual(module.__name__, 'module')
                 self.assertNotHasAttr(module, 'non_existent')
 
     def test_module_from_package(self):
         # [module]
-        with util.mock_spec('pkg.__init__', 'pkg.module') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('pkg.__init__', 'pkg.module') als importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg', fromlist=['module'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertHasAttr(module, 'module')
                 self.assertEqual(module.module.__name__, 'pkg.module')
 
     def test_nonexistent_from_package(self):
-        with util.mock_spec('pkg.__init__') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('pkg.__init__') als importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg', fromlist=['non_existent'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertNotHasAttr(module, 'non_existent')
@@ -87,23 +87,23 @@ klasse HandlingFromlist:
         # ModuleNotFoundError propagate.
         def module_code():
             importiere i_do_not_exist
-        with util.mock_spec('pkg.__init__', 'pkg.mod',
-                               module_code={'pkg.mod': module_code}) as importer:
-            with util.import_state(meta_path=[importer]):
-                with self.assertRaises(ModuleNotFoundError) as exc:
+        mit util.mock_spec('pkg.__init__', 'pkg.mod',
+                               module_code={'pkg.mod': module_code}) als importer:
+            mit util.import_state(meta_path=[importer]):
+                mit self.assertRaises(ModuleNotFoundError) als exc:
                     self.__import__('pkg', fromlist=['mod'])
                 self.assertEqual('i_do_not_exist', exc.exception.name)
 
     def test_empty_string(self):
-        with util.mock_spec('pkg.__init__', 'pkg.mod') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('pkg.__init__', 'pkg.mod') als importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.mod', fromlist=[''])
                 self.assertEqual(module.__name__, 'pkg.mod')
 
     def basic_star_test(self, fromlist=['*']):
         # [using *]
-        with util.mock_spec('pkg.__init__', 'pkg.module') as mock:
-            with util.import_state(meta_path=[mock]):
+        mit util.mock_spec('pkg.__init__', 'pkg.module') als mock:
+            mit util.import_state(meta_path=[mock]):
                 mock['pkg'].__all__ = ['module']
                 module = self.__import__('pkg', fromlist=fromlist)
                 self.assertEqual(module.__name__, 'pkg')
@@ -118,10 +118,10 @@ klasse HandlingFromlist:
         self.basic_star_test(('*',))
 
     def test_star_with_others(self):
-        # [using * with others]
+        # [using * mit others]
         context = util.mock_spec('pkg.__init__', 'pkg.module1', 'pkg.module2')
-        with context as mock:
-            with util.import_state(meta_path=[mock]):
+        mit context als mock:
+            mit util.import_state(meta_path=[mock]):
                 mock['pkg'].__all__ = ['module1']
                 module = self.__import__('pkg', fromlist=['module2', '*'])
                 self.assertEqual(module.__name__, 'pkg')
@@ -131,38 +131,38 @@ klasse HandlingFromlist:
                 self.assertEqual(module.module2.__name__, 'pkg.module2')
 
     def test_nonexistent_in_all(self):
-        with util.mock_spec('pkg.__init__') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('pkg.__init__') als importer:
+            mit util.import_state(meta_path=[importer]):
                 importer['pkg'].__all__ = ['non_existent']
                 module = self.__import__('pkg', fromlist=['*'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertNotHasAttr(module, 'non_existent')
 
     def test_star_in_all(self):
-        with util.mock_spec('pkg.__init__') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit util.mock_spec('pkg.__init__') als importer:
+            mit util.import_state(meta_path=[importer]):
                 importer['pkg'].__all__ = ['*']
                 module = self.__import__('pkg', fromlist=['*'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertNotHasAttr(module, '*')
 
     def test_invalid_type(self):
-        with util.mock_spec('pkg.__init__') as importer:
-            with util.import_state(meta_path=[importer]), \
+        mit util.mock_spec('pkg.__init__') als importer:
+            mit util.import_state(meta_path=[importer]), \
                  warnings.catch_warnings():
                 warnings.simplefilter('error', BytesWarning)
-                with self.assertRaisesRegex(TypeError, r'\bfrom\b'):
+                mit self.assertRaisesRegex(TypeError, r'\bfrom\b'):
                     self.__import__('pkg', fromlist=[b'attr'])
-                with self.assertRaisesRegex(TypeError, r'\bfrom\b'):
+                mit self.assertRaisesRegex(TypeError, r'\bfrom\b'):
                     self.__import__('pkg', fromlist=iter([b'attr']))
 
     def test_invalid_type_in_all(self):
-        with util.mock_spec('pkg.__init__') as importer:
-            with util.import_state(meta_path=[importer]), \
+        mit util.mock_spec('pkg.__init__') als importer:
+            mit util.import_state(meta_path=[importer]), \
                  warnings.catch_warnings():
                 warnings.simplefilter('error', BytesWarning)
                 importer['pkg'].__all__ = [b'attr']
-                with self.assertRaisesRegex(TypeError, r'\bpkg\.__all__\b'):
+                mit self.assertRaisesRegex(TypeError, r'\bpkg\.__all__\b'):
                     self.__import__('pkg', fromlist=['*'])
 
 

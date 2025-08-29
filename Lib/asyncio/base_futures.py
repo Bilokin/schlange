@@ -14,7 +14,7 @@ def isfuture(obj):
     """Check fuer a Future.
 
     This returns Wahr when obj is a Future instance or is advertising
-    itself as duck-type compatible by setting _asyncio_future_blocking.
+    itself als duck-type compatible by setting _asyncio_future_blocking.
     See comment in Future fuer more details.
     """
     return (hasattr(obj.__class__, '_asyncio_future_blocking') and

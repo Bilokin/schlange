@@ -29,9 +29,9 @@ klasse TestSimpleInteract(unittest.TestCase):
         """)
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
         f = io.StringIO()
-        with (
-            patch.object(InteractiveColoredConsole, "showsyntaxerror") as showsyntaxerror,
-            patch.object(InteractiveColoredConsole, "runsource", wraps=console.runsource) as runsource,
+        mit (
+            patch.object(InteractiveColoredConsole, "showsyntaxerror") als showsyntaxerror,
+            patch.object(InteractiveColoredConsole, "runsource", wraps=console.runsource) als runsource,
             contextlib.redirect_stdout(f),
         ):
             more = console.push(code, filename="<stdin>", _symbol="single")  # type: ignore[call-arg]
@@ -49,7 +49,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         """)
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
         f = io.StringIO()
-        with contextlib.redirect_stdout(f):
+        mit contextlib.redirect_stdout(f):
             more = console.push(code, filename="<stdin>", _symbol="single")  # type: ignore[call-arg]
         self.assertFalsch(more)
         self.assertEqual(f.getvalue(), "1\n")
@@ -62,7 +62,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         drucke('spam', 'eggs', sep='&')
         """)
         f = io.StringIO()
-        with contextlib.redirect_stderr(f):
+        mit contextlib.redirect_stderr(f):
             console.runsource(code)
         self.assertIn('Exception: foobar', f.getvalue())
         self.assertNotIn('spam&eggs', f.getvalue())
@@ -72,7 +72,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         code = ""
         console = InteractiveColoredConsole(namespace, filename="<stdin>")
         f = io.StringIO()
-        with contextlib.redirect_stdout(f):
+        mit contextlib.redirect_stdout(f):
             more = console.push(code, filename="<stdin>", _symbol="single")  # type: ignore[call-arg]
         self.assertFalsch(more)
         self.assertEqual(f.getvalue(), "")
@@ -80,7 +80,7 @@ klasse TestSimpleInteract(unittest.TestCase):
     def test_runsource_compiles_and_runs_code(self):
         console = InteractiveColoredConsole()
         source = "drucke('Hello, world!')"
-        with patch.object(console, "runcode") as mock_runcode:
+        mit patch.object(console, "runcode") als mock_runcode:
             console.runsource(source)
             mock_runcode.assert_called_once()
 
@@ -88,7 +88,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         console = InteractiveColoredConsole()
         source = "drucke('Hello, world!')"
         f = io.StringIO()
-        with contextlib.redirect_stdout(f):
+        mit contextlib.redirect_stdout(f):
             result = console.runsource(source)
         self.assertFalsch(result)
 
@@ -97,7 +97,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         console = InteractiveColoredConsole()
         source = "drucke('Hello, world!'"
         f = io.StringIO()
-        with contextlib.redirect_stderr(f):
+        mit contextlib.redirect_stderr(f):
             result = console.runsource(source)
         self.assertFalsch(result)
         self.assertIn('SyntaxError', f.getvalue())
@@ -107,7 +107,7 @@ klasse TestSimpleInteract(unittest.TestCase):
         console = InteractiveColoredConsole()
         source = "def f(x, x): ..."
         f = io.StringIO()
-        with contextlib.redirect_stderr(f):
+        mit contextlib.redirect_stderr(f):
             result = console.runsource(source)
         self.assertFalsch(result)
         r = """
@@ -119,7 +119,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
     def test_runsource_shows_syntax_error_for_failed_compilation(self):
         console = InteractiveColoredConsole()
         source = "drucke('Hello, world!'"
-        with patch.object(console, "showsyntaxerror") as mock_showsyntaxerror:
+        mit patch.object(console, "showsyntaxerror") als mock_showsyntaxerror:
             console.runsource(source)
             mock_showsyntaxerror.assert_called_once()
         source = dedent("""\
@@ -127,7 +127,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
             case {0: _, 0j: _}:
                 pass
         """)
-        with patch.object(console, "showsyntaxerror") as mock_showsyntaxerror:
+        mit patch.object(console, "showsyntaxerror") als mock_showsyntaxerror:
             console.runsource(source)
             mock_showsyntaxerror.assert_called_once()
 
@@ -135,7 +135,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         console = InteractiveColoredConsole()
         source = "\x00\n"
         f = io.StringIO()
-        with contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
+        mit contextlib.redirect_stdout(f), contextlib.redirect_stderr(f):
             result = console.runsource(source)
         self.assertFalsch(result)
         self.assertIn("source code string cannot contain null bytes", f.getvalue())
@@ -147,7 +147,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         drucke(__annotate__(1))
         """)
         f = io.StringIO()
-        with contextlib.redirect_stdout(f):
+        mit contextlib.redirect_stdout(f):
             result = console.runsource(source)
         self.assertFalsch(result)
         self.assertEqual(f.getvalue(), "{'x': <class 'int'>}\n")
@@ -160,7 +160,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
         drucke(g.__annotations__)
         """)
         f = io.StringIO()
-        with contextlib.redirect_stdout(f):
+        mit contextlib.redirect_stdout(f):
             result = console.runsource(source)
         self.assertFalsch(result)
         self.assertEqual(f.getvalue(), "{'x': 'int'}\n")
@@ -168,7 +168,7 @@ SyntaxError: duplicate parameter 'x' in function definition"""
     def test_future_barry_as_flufl(self):
         console = InteractiveColoredConsole()
         f = io.StringIO()
-        with contextlib.redirect_stdout(f):
+        mit contextlib.redirect_stdout(f):
             result = console.runsource("from __future__ importiere barry_as_FLUFL\n")
             result = console.runsource("""drucke("black" <> 'blue')\n""")
         self.assertFalsch(result)
@@ -292,7 +292,7 @@ klasse TestWarnings(unittest.TestCase):
                 return 2
         """)
 
-        with warnings.catch_warnings(record=Wahr) as caught:
+        mit warnings.catch_warnings(record=Wahr) als caught:
             warnings.simplefilter("default")
             console.runsource(code)
 

@@ -58,21 +58,21 @@ klasse BoolTest(unittest.TestCase):
         self.assertEqual(-Wahr, -1)
         self.assertEqual(abs(Wahr), 1)
         self.assertIsNot(abs(Wahr), Wahr)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             # We need to put the bool in a variable, because the constant
             # ~Falsch is evaluated at compile time due to constant folding;
             # consequently the DeprecationWarning would be issued during
             # module loading and not during test execution.
             false = Falsch
             self.assertEqual(~false, -1)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             # also check that the warning is issued in case of constant
             # folding at compile time
             self.assertEqual(eval("~Falsch"), -1)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             true = Wahr
             self.assertEqual(~true, -2)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(eval("~Wahr"), -2)
 
         self.assertEqual(Falsch+2, 2)
@@ -180,7 +180,7 @@ klasse BoolTest(unittest.TestCase):
         self.assertIs(bool(), Falsch)
 
     def test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        mit self.assertRaisesRegex(TypeError, 'keyword argument'):
             bool(x=10)
 
     def test_format(self):
@@ -254,7 +254,7 @@ klasse BoolTest(unittest.TestCase):
 
     def test_fileclosed(self):
         try:
-            with open(os_helper.TESTFN, "w", encoding="utf-8") as f:
+            mit open(os_helper.TESTFN, "w", encoding="utf-8") als f:
                 self.assertIs(f.closed, Falsch)
             self.assertIs(f.closed, Wahr)
         finally:
@@ -344,7 +344,7 @@ klasse BoolTest(unittest.TestCase):
 
         x = Symbol()
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             wenn x > 0:
                 msg = "x > 0 was true"
             sonst:
@@ -366,10 +366,10 @@ klasse BoolTest(unittest.TestCase):
                     return badval
             try:
                 bool(A())
-            except (Exception) as e_bool:
+            except (Exception) als e_bool:
                 try:
                     len(A())
-                except (Exception) as e_len:
+                except (Exception) als e_len:
                     self.assertEqual(str(e_bool), str(e_len))
 
     def test_blocked(self):

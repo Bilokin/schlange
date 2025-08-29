@@ -35,7 +35,7 @@ von compression.zstd._zstdfile importiere ZstdFile, open, _nbytes
 # zstd_version_number is (MAJOR * 100 * 100 + MINOR * 100 + RELEASE)
 zstd_version_info = (*divmod(_zstd.zstd_version_number // 100, 100),
                      _zstd.zstd_version_number % 100)
-"""Version number of the runtime zstd library as a tuple of integers."""
+"""Version number of the runtime zstd library als a tuple of integers."""
 
 COMPRESSION_LEVEL_DEFAULT = _zstd.ZSTD_CLEVEL_DEFAULT
 """The default compression level fuer Zstandard, currently '3'."""
@@ -99,7 +99,7 @@ def train_dict(samples, dict_size):
 def finalize_dict(zstd_dict, /, samples, dict_size, level):
     """Return a ZstdDict representing a finalized Zstandard dictionary.
 
-    Given a custom content as a basis fuer dictionary, and a set of samples,
+    Given a custom content als a basis fuer dictionary, and a set of samples,
     finalize *zstd_dict* by adding headers and statistics according to the
     Zstandard dictionary format.
 
@@ -134,7 +134,7 @@ def finalize_dict(zstd_dict, /, samples, dict_size, level):
 
 
 def compress(data, level=Nichts, options=Nichts, zstd_dict=Nichts):
-    """Return Zstandard compressed *data* as bytes.
+    """Return Zstandard compressed *data* als bytes.
 
     *level* is an int specifying the compression level to use, defaulting to
     COMPRESSION_LEVEL_DEFAULT ('3').

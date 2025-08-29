@@ -5,7 +5,7 @@ This module has a number of tests that raise different kinds of warnings.
 When the tests are run, the warnings are caught and their messages are printed
 to stdout.  This module also accepts an arg that is then passed to
 unittest.main to affect the behavior of warnings.
-Test_TextTestRunner.test_warnings executes this script with different
+Test_TextTestRunner.test_warnings executes this script mit different
 combinations of warnings args and -W flags and check that the output is correct.
 See #10535.
 """
@@ -50,8 +50,8 @@ klasse TestWarnings(unittest.TestCase):
 
 
 wenn __name__ == '__main__':
-    with warnings.catch_warnings(record=Wahr) as ws:
-        # wenn an arg is provided pass it to unittest.main as 'warnings'
+    mit warnings.catch_warnings(record=Wahr) als ws:
+        # wenn an arg is provided pass it to unittest.main als 'warnings'
         wenn len(sys.argv) == 2:
             unittest.main(exit=Falsch, warnings=sys.argv.pop())
         sonst:

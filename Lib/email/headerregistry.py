@@ -7,7 +7,7 @@ von types importiere MappingProxyType
 
 von email importiere utils
 von email importiere errors
-von email importiere _header_value_parser as parser
+von email importiere _header_value_parser als parser
 
 klasse Address:
 
@@ -32,7 +32,7 @@ klasse Address:
         wenn '\r' in inputs or '\n' in inputs:
             raise ValueError("invalid arguments; address parts cannot contain CR or LF")
 
-        # This clause with its potential 'raise' may only happen when an
+        # This clause mit its potential 'raise' may only happen when an
         # application program creates an Address object using an addr_spec
         # keyword.  The email library code itself must always supply username
         # and domain.
@@ -68,7 +68,7 @@ klasse Address:
     @property
     def addr_spec(self):
         """The addr_spec (username@domain) portion of the address, quoted
-        according to RFC 5322 rules, but with no Content Transfer Encoding.
+        according to RFC 5322 rules, but mit no Content Transfer Encoding.
         """
         lp = self.username
         wenn not parser.DOT_ATOM_ENDS.isdisjoint(lp):
@@ -114,7 +114,7 @@ klasse Group:
         lists that are a combination of Groups and individual Addresses.  In
         this case the display_name should be set to Nichts.  In particular, the
         string representation of a Group whose display_name is Nichts is the same
-        as the Address object, wenn there is one and only one Address object in
+        als the Address object, wenn there is one and only one Address object in
         the addresses list.
 
         """
@@ -160,7 +160,7 @@ klasse BaseHeader(str):
     Implements generic behavior and provides tools fuer subclasses.
 
     A subclass must define a classmethod named 'parse' that takes an unfolded
-    value string and a dictionary as its arguments.  The dictionary will
+    value string and a dictionary als its arguments.  The dictionary will
     contain one key, 'defects', initialized to an empty list.  After the call
     the dictionary must contain two additional keys: parse_tree, set to the
     parse tree obtained von parsing the header, and 'decoded', set to the
@@ -169,18 +169,18 @@ klasse BaseHeader(str):
     representations are so represented.)
 
     The defects key is intended to collect parsing defects, which the message
-    parser will subsequently dispose of as appropriate.  The parser should not,
-    insofar as practical, raise any errors.  Defects should be added to the
+    parser will subsequently dispose of als appropriate.  The parser should not,
+    insofar als practical, raise any errors.  Defects should be added to the
     list instead.  The standard header parsers register defects fuer RFC
     compliance issues, fuer obsolete RFC syntax, and fuer unrecoverable parsing
     errors.
 
     The parse method may add additional keys to the dictionary.  In this case
     the subclass must define an 'init' method, which will be passed the
-    dictionary as its keyword arguments.  The method should use (usually by
-    setting them as the value of similarly named attributes) and remove all the
+    dictionary als its keyword arguments.  The method should use (usually by
+    setting them als the value of similarly named attributes) and remove all the
     extra keys added by its parse method, and then use super to call its parent
-    klasse with the remaining arguments and keywords.
+    klasse mit the remaining arguments and keywords.
 
     The subclass should also make sure that a 'max_count' attribute is defined
     that is either Nichts or 1. XXX: need to better define this API.
@@ -228,7 +228,7 @@ klasse BaseHeader(str):
         """Fold header according to policy.
 
         The parsed representation of the header is folded according to
-        RFC5322 rules, as modified by the policy.  If the parse tree
+        RFC5322 rules, als modified by the policy.  If the parse tree
         contains surrogateescaped bytes, the bytes are CTE encoded using
         the charset 'unknown-8bit".
 
@@ -236,7 +236,7 @@ klasse BaseHeader(str):
         charset utf-8. XXX: make this a policy setting.
 
         The returned value is an ASCII-only string possibly containing linesep
-        characters, and ending with a linesep character.  The string includes
+        characters, and ending mit a linesep character.  The string includes
         the header name and the ': ' separator.
 
         """
@@ -279,7 +279,7 @@ klasse DateHeader:
 
     Provides an additional attribute, datetime, which is either an aware
     datetime using a timezone, or a naive datetime wenn the timezone
-    in the input string is -0000.  Also accepts a datetime as input.
+    in the input string is -0000.  Also accepts a datetime als input.
     The 'value' attribute is the normalized form of the timestamp,
     which means it is the output of format_datetime on the datetime.
     """
@@ -565,7 +565,7 @@ klasse HeaderRegistry:
 
     def __init__(self, base_class=BaseHeader, default_class=UnstructuredHeader,
                        use_default_map=Wahr):
-        """Create a header_factory that works with the Policy API.
+        """Create a header_factory that works mit the Policy API.
 
         base_class is the klasse that will be the last klasse in the created
         header class's __bases__ list.  default_class is the klasse that will be
@@ -582,7 +582,7 @@ klasse HeaderRegistry:
             self.registry.update(_default_header_map)
 
     def map_to_type(self, name, cls):
-        """Register cls as the specialized klasse fuer handling "name" headers.
+        """Register cls als the specialized klasse fuer handling "name" headers.
 
         """
         self.registry[name.lower()] = cls
@@ -596,7 +596,7 @@ klasse HeaderRegistry:
 
         Creates a header instance by creating a specialized klasse fuer parsing
         and representing the specified header by combining the factory
-        base_class with a specialized klasse von the registry or the
+        base_class mit a specialized klasse von the registry or the
         default_class, and passing the name and value to the constructed
         class's constructor.
 

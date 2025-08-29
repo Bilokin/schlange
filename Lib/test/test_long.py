@@ -55,8 +55,8 @@ def int_to_float(n):
         return -int_to_float(-n)
 
     # Convert n to a 'floating-point' number q * 2**shift, where q is an
-    # integer with 'PRECISION' significant bits.  When shifting n to create q,
-    # the least significant bit of q is treated as 'sticky'.  That is, the
+    # integer mit 'PRECISION' significant bits.  When shifting n to create q,
+    # the least significant bit of q is treated als 'sticky'.  That is, the
     # least significant bit of q is set wenn either the corresponding bit of n
     # was already set, or any one of the bits of n lost in the shift was set.
     shift = n.bit_length() - PRECISION
@@ -76,7 +76,7 @@ def int_to_float(n):
 
     # Some circularity here, since float(q) is doing an int-to-float
     # conversion.  But here q is of bounded size, and is exactly representable
-    # as a float.  In a low-level C-like language, this operation would be a
+    # als a float.  In a low-level C-like language, this operation would be a
     # simple cast (e.g., von unsigned long long to double).
     return math.ldexp(float(q), shift)
 
@@ -91,7 +91,7 @@ def truediv(a, b):
     wenn not b:
         raise ZeroDivisionError("division by zero")
     wenn a >= DBL_MIN_OVERFLOW * b:
-        raise OverflowError("int/int too large to represent as a float")
+        raise OverflowError("int/int too large to represent als a float")
 
    # find integer d satisfying 2**(d - 1) <= a/b < 2**d
     d = a.bit_length() - b.bit_length()
@@ -154,7 +154,7 @@ klasse LongTest(unittest.TestCase):
 
     def check_division(self, x, y):
         eq = self.assertEqual
-        with self.subTest(x=x, y=y):
+        mit self.subTest(x=x, y=y):
             q, r = divmod(x, y)
             q2, r2 = x//y, x%y
             pab, pba = x*y, y*x
@@ -220,7 +220,7 @@ klasse LongTest(unittest.TestCase):
             fuer bbits in bits:
                 wenn bbits < abits:
                     continue
-                with self.subTest(abits=abits, bbits=bbits):
+                mit self.subTest(abits=abits, bbits=bbits):
                     b = (1 << bbits) - 1
                     x = a * b
                     y = ((1 << (abits + bbits)) -
@@ -231,7 +231,7 @@ klasse LongTest(unittest.TestCase):
 
     def check_bitop_identities_1(self, x):
         eq = self.assertEqual
-        with self.subTest(x=x):
+        mit self.subTest(x=x):
             eq(x & 0, 0)
             eq(x | 0, x)
             eq(x ^ 0, x)
@@ -249,7 +249,7 @@ klasse LongTest(unittest.TestCase):
             eq(-x, ~(x-1))
         fuer n in range(2*SHIFT):
             p2 = 2 ** n
-            with self.subTest(x=x, n=n, p2=p2):
+            mit self.subTest(x=x, n=n, p2=p2):
                 eq(x << n >> n, x)
                 eq(x // p2, x >> n)
                 eq(x * p2, x << n)
@@ -258,7 +258,7 @@ klasse LongTest(unittest.TestCase):
 
     def check_bitop_identities_2(self, x, y):
         eq = self.assertEqual
-        with self.subTest(x=x, y=y):
+        mit self.subTest(x=x, y=y):
             eq(x & y, y & x)
             eq(x | y, y | x)
             eq(x ^ y, y ^ x)
@@ -271,7 +271,7 @@ klasse LongTest(unittest.TestCase):
 
     def check_bitop_identities_3(self, x, y, z):
         eq = self.assertEqual
-        with self.subTest(x=x, y=y, z=z):
+        mit self.subTest(x=x, y=y, z=z):
             eq((x & y) & z, x & (y & z))
             eq((x | y) | z, x | (y | z))
             eq((x ^ y) ^ z, x ^ (y ^ z))
@@ -307,10 +307,10 @@ klasse LongTest(unittest.TestCase):
     def check_format_1(self, x):
         fuer base, mapper in (2, bin), (8, oct), (10, str), (10, repr), (16, hex):
             got = mapper(x)
-            with self.subTest(x=x, mapper=mapper.__name__):
+            mit self.subTest(x=x, mapper=mapper.__name__):
                 expected = self.slow_format(x, base)
                 self.assertEqual(got, expected)
-            with self.subTest(got=got):
+            mit self.subTest(got=got):
                 self.assertEqual(int(got, 0), x)
 
     def test_format(self):
@@ -349,7 +349,7 @@ klasse LongTest(unittest.TestCase):
         # ... but it's just a normal digit wenn base >= 22
         self.assertEqual(int('1L', 22), 43)
 
-        # tests with base 0
+        # tests mit base 0
         self.assertEqual(int('000', 0), 0)
         self.assertEqual(int('0o123', 0), 83)
         self.assertEqual(int('0x123', 0), 291)
@@ -457,7 +457,7 @@ klasse LongTest(unittest.TestCase):
             y = 2**p * 2**53
             self.assertEqual(int(float(x)), y)
 
-        # Compare builtin float conversion with pure Python int_to_float
+        # Compare builtin float conversion mit pure Python int_to_float
         # function above.
         test_values = [
             int_dbl_max-1, int_dbl_max, int_dbl_max+1,
@@ -531,7 +531,7 @@ klasse LongTest(unittest.TestCase):
     def test_mixed_compares(self):
         eq = self.assertEqual
 
-        # We're mostly concerned with that mixing floats and ints does the
+        # We're mostly concerned mit that mixing floats and ints does the
         # right stuff, even when ints are too large to fit in a float.
         # The safest way to check the results is to use an entirely different
         # method, which we do here via a skeletal rational klasse (which
@@ -575,7 +575,7 @@ klasse LongTest(unittest.TestCase):
                     self.d = d
                     assert float(n) / float(d) == value
                 sonst:
-                    raise TypeError("can't deal with %r" % value)
+                    raise TypeError("can't deal mit %r" % value)
 
             def _cmp__(self, other):
                 wenn not isinstance(other, Rat):
@@ -601,7 +601,7 @@ klasse LongTest(unittest.TestCase):
                           int(t-1), int(t), int(t+1)])
         cases.extend([0, 1, 2, sys.maxsize, float(sys.maxsize)])
         # 1 << 20000 should exceed all double formats.  int(1e200) is to
-        # check that we get equality with 1e200 above.
+        # check that we get equality mit 1e200 above.
         t = int(1e200)
         cases.extend([0, 1, 2, 1 << 20000, t-1, t, t+1])
         cases.extend([-x fuer x in cases])
@@ -610,7 +610,7 @@ klasse LongTest(unittest.TestCase):
             fuer y in cases:
                 Ry = Rat(y)
                 Rcmp = (Rx > Ry) - (Rx < Ry)
-                with self.subTest(x=x, y=y, Rcmp=Rcmp):
+                mit self.subTest(x=x, y=y, Rcmp=Rcmp):
                     xycmp = (x > y) - (x < y)
                     eq(Rcmp, xycmp)
                     eq(x == y, Rcmp == 0)
@@ -740,15 +740,15 @@ klasse LongTest(unittest.TestCase):
         self.assertRaises(ValueError, format, 3, "_c")   # underscore,
         self.assertRaises(ValueError, format, 3, ",c")   # comma, and
         self.assertRaises(ValueError, format, 3, "+c")   # sign not allowed
-                                                         # with 'c'
+                                                         # mit 'c'
 
         self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, '_,')
         self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, ',_')
         self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, '_,d')
         self.assertRaisesRegex(ValueError, 'Cannot specify both', format, 3, ',_d')
 
-        self.assertRaisesRegex(ValueError, "Cannot specify ',' with 's'", format, 3, ',s')
-        self.assertRaisesRegex(ValueError, "Cannot specify '_' with 's'", format, 3, '_s')
+        self.assertRaisesRegex(ValueError, "Cannot specify ',' mit 's'", format, 3, ',s')
+        self.assertRaisesRegex(ValueError, "Cannot specify '_' mit 's'", format, 3, '_s')
 
         # ensure that only int and float type specifiers work
         fuer format_spec in ([chr(x) fuer x in range(ord('a'), ord('z')+1)] +
@@ -773,7 +773,7 @@ klasse LongTest(unittest.TestCase):
         self.assertRaises(ValueError, int, float('nan'))
 
     def test_mod_division(self):
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             _ = 1 % 0
 
         self.assertEqual(13 % 10, 3)
@@ -821,7 +821,7 @@ klasse LongTest(unittest.TestCase):
             self.assertRaises(ZeroDivisionError, eval, zero, namespace)
 
     def test_floordiv(self):
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             _ = 1 // 0
 
         self.assertEqual(2 // 3, 0)
@@ -841,7 +841,7 @@ klasse LongTest(unittest.TestCase):
 
     def check_truediv(self, a, b, skip_small=Wahr):
         """Verify that the result of a/b is correctly rounded, by
-        comparing it with a pure Python implementation of correctly
+        comparing it mit a pure Python implementation of correctly
         rounded division.  b should be nonzero."""
 
         # skip check fuer small a and b: in this case, the current
@@ -939,7 +939,7 @@ klasse LongTest(unittest.TestCase):
 
         # largeish random divisions: a/b where |a| <= |b| <=
         # 2*|a|; |ans| is between 0.5 and 1.0, so error should
-        # always be bounded by 2**-54 with equality possible only
+        # always be bounded by 2**-54 mit equality possible only
         # wenn the least significant bit of q=ans*2**53 is zero.
         fuer M in [10**10, 10**100, 10**1000]:
             fuer i in range(1000):
@@ -962,22 +962,22 @@ klasse LongTest(unittest.TestCase):
             self.check_truediv(-x, -y)
 
     def test_negative_shift_count(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             42 << -3
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             42 << -(1 << 1000)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             42 >> -3
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             42 >> -(1 << 1000)
 
     def test_lshift_of_zero(self):
         self.assertEqual(0 << 0, 0)
         self.assertEqual(0 << 10, 0)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             0 << -1
         self.assertEqual(0 << (1 << 1000), 0)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             0 << -(1 << 1000)
 
     @support.cpython_only
@@ -1144,9 +1144,9 @@ klasse LongTest(unittest.TestCase):
         tiny = 1e-10
         fuer x in range(-65000, 65000):
             k = x.bit_length()
-            # Check equivalence with Python version
+            # Check equivalence mit Python version
             self.assertEqual(k, len(bin(x).lstrip('-0b')))
-            # Behaviour as specified in the docs
+            # Behaviour als specified in the docs
             wenn x != 0:
                 self.assertWahr(2**(k-1) <= abs(x) < 2**k)
             sonst:
@@ -1273,18 +1273,18 @@ klasse LongTest(unittest.TestCase):
                     self.assertEqual(
                         test.to_bytes(len(expected), byteorder, signed=signed),
                         expected)
-                except Exception as err:
+                except Exception als err:
                     raise AssertionError(
-                        "failed to convert {} with byteorder={} and signed={}"
+                        "failed to convert {} mit byteorder={} and signed={}"
                         .format(test, byteorder, signed)) von err
 
                 # Test fuer all default arguments.
                 wenn len(expected) == 1 and byteorder == 'big' and not signed:
                     try:
                         self.assertEqual(test.to_bytes(), expected)
-                    except Exception as err:
+                    except Exception als err:
                         raise AssertionError(
-                            "failed to convert {} with default arguments"
+                            "failed to convert {} mit default arguments"
                             .format(test)) von err
 
                 try:
@@ -1293,10 +1293,10 @@ klasse LongTest(unittest.TestCase):
                             test, len(expected), byteorder, signed=signed),
                         expected
                     )
-                except Exception as err:
+                except Exception als err:
                     raise AssertionError(
                         "Code equivalent von docs is not equivalent fuer "
-                        "conversion of {0} with byteorder byteorder={1} and "
+                        "conversion of {0} mit byteorder byteorder={1} and "
                         "signed={2}".format(test, byteorder, signed)) von err
 
         # Convert integers to signed big-endian byte arrays.
@@ -1411,9 +1411,9 @@ klasse LongTest(unittest.TestCase):
                     self.assertEqual(
                         int.from_bytes(test, byteorder, signed=signed),
                         expected)
-                except Exception as err:
+                except Exception als err:
                     raise AssertionError(
-                        "failed to convert {} with byteorder={!r} and signed={}"
+                        "failed to convert {} mit byteorder={!r} and signed={}"
                         .format(test, byteorder, signed)) von err
 
                 # Test fuer all default arguments.
@@ -1422,9 +1422,9 @@ klasse LongTest(unittest.TestCase):
                         self.assertEqual(
                             int.from_bytes(test),
                             expected)
-                    except Exception as err:
+                    except Exception als err:
                         raise AssertionError(
-                            "failed to convert {} with default arguments"
+                            "failed to convert {} mit default arguments"
                             .format(test)) von err
 
                 try:
@@ -1432,10 +1432,10 @@ klasse LongTest(unittest.TestCase):
                         equivalent_python(test, byteorder, signed=signed),
                         expected
                     )
-                except Exception as err:
+                except Exception als err:
                     raise AssertionError(
                         "Code equivalent von docs is not equivalent fuer "
-                        "conversion of {0} with byteorder={1!r} and signed={2}"
+                        "conversion of {0} mit byteorder={1!r} and signed={2}"
                         .format(test, byteorder, signed)) von err
 
         # Convert signed big-endian byte arrays to integers.
@@ -1612,7 +1612,7 @@ klasse LongTest(unittest.TestCase):
     def test_access_to_nonexistent_digit_0(self):
         # http://bugs.python.org/issue14630: A bug in _PyLong_Copy meant that
         # ob_digit[0] was being incorrectly accessed fuer instances of a
-        # subclass of int, with value 0.
+        # subclass of int, mit value 0.
         klasse Integer(int):
             def __new__(cls, value=0):
                 self = int.__new__(cls, value)
@@ -1644,10 +1644,10 @@ klasse LongTest(unittest.TestCase):
         # Multiplication makes a special case of multiplying an int with
         # itself, using a special, faster algorithm. This test is mostly
         # to ensure that no asserts in the implementation trigger, in
-        # cases with a maximal amount of carries.
+        # cases mit a maximal amount of carries.
         fuer bitlen in range(1, 400):
             n = (1 << bitlen) - 1 # solid string of 1 bits
-            with self.subTest(bitlen=bitlen, n=n):
+            mit self.subTest(bitlen=bitlen, n=n):
                 # (2**i - 1)**2 = 2**(2*i) - 2*2**i + 1
                 self.assertEqual(n**2,
                     (1 << (2 * bitlen)) - (1 << (bitlen + 1)) + 1)
@@ -1671,7 +1671,7 @@ klasse LongTest(unittest.TestCase):
         ]
 
         fuer value, ndigits in test_values:
-            with self.subTest(value):
+            mit self.subTest(value):
                 self.assertEqual(
                     value.__sizeof__(),
                     int.__basicsize__ + int.__itemsize__ * ndigits
@@ -1684,7 +1684,7 @@ klasse LongTest(unittest.TestCase):
         self.assertEqual(MyInt.__itemsize__, sys.int_info.sizeof_digit)
 
         fuer value, ndigits in test_values:
-            with self.subTest(value):
+            mit self.subTest(value):
                 self.assertEqual(
                     MyInt(value).__sizeof__(),
                     MyInt.__basicsize__ + MyInt.__itemsize__ * ndigits

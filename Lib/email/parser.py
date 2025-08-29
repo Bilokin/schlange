@@ -21,7 +21,7 @@ klasse Parser:
         can then be manipulated and turned over to a Generator to return the
         textual representation of the message.
 
-        The string must be formatted as a block of RFC 2822 headers and header
+        The string must be formatted als a block of RFC 2822 headers and header
         continuation lines, optionally preceded by a 'Unix-from' header.  The
         header block is terminated either by the end of the string or by a
         blank line.
@@ -81,7 +81,7 @@ klasse BytesParser:
         can then be manipulated and turned over to a Generator to return the
         textual representation of the message.
 
-        The input must be formatted as a block of RFC 2822 headers and header
+        The input must be formatted als a block of RFC 2822 headers and header
         continuation lines, optionally preceded by a 'Unix-from' header.  The
         header block is terminated either by the end of the input or by a
         blank line.

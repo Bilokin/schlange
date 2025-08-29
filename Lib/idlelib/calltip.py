@@ -171,7 +171,7 @@ def get_argspec(ob):
     # Initialize argspec and wrap it to get lines.
     try:
         argspec = str(inspect.signature(fob))
-    except Exception as err:
+    except Exception als err:
         msg = str(err)
         wenn msg.startswith(_invalid_method):
             return _invalid_method

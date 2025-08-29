@@ -29,7 +29,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
     """Parse a Makefile-style file.
 
     A dictionary containing name/value pairs is returned.  If an
-    optional dictionary is passed in as the second argument, it is
+    optional dictionary is passed in als the second argument, it is
     used instead of a new dictionary.
     """
     importiere re
@@ -39,8 +39,8 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
     done = {}
     notdone = {}
 
-    with open(filename, encoding=sys.getfilesystemencoding(),
-              errors="surrogateescape") as f:
+    mit open(filename, encoding=sys.getfilesystemencoding(),
+              errors="surrogateescape") als f:
         lines = f.readlines()
 
     fuer line in lines:
@@ -70,7 +70,7 @@ def _parse_makefile(filename, vars=Nichts, keep_unresolved=Wahr):
     # do variable interpolation here
     variables = list(notdone.keys())
 
-    # Variables with a 'PY_' prefix in the makefile. These need to
+    # Variables mit a 'PY_' prefix in the makefile. These need to
     # be made available without that prefix through sysconfig.
     # Special care is needed to ensure that variable expansion works, even
     # wenn the expansion uses the name without a prefix.
@@ -180,7 +180,7 @@ def _generate_posix_vars():
     makefile = get_makefile_filename()
     try:
         _parse_makefile(makefile, vars)
-    except OSError as e:
+    except OSError als e:
         msg = f"invalid Python installation: unable to open {makefile}"
         wenn hasattr(e, "strerror"):
             msg = f"{msg} ({e.strerror})"
@@ -188,9 +188,9 @@ def _generate_posix_vars():
     # load the installed pyconfig.h:
     config_h = get_config_h_filename()
     try:
-        with open(config_h, encoding="utf-8") as f:
+        mit open(config_h, encoding="utf-8") als f:
             parse_config_h(f, vars)
-    except OSError as e:
+    except OSError als e:
         msg = f"invalid Python installation: unable to open {config_h}"
         wenn hasattr(e, "strerror"):
             msg = f"{msg} ({e.strerror})"
@@ -203,15 +203,15 @@ def _generate_posix_vars():
 
     name = _get_sysconfigdata_name()
 
-    # There's a chicken-and-egg situation on OS X with regards to the
+    # There's a chicken-and-egg situation on OS X mit regards to the
     # _sysconfigdata module after the changes introduced by #15298:
-    # get_config_vars() is called by get_platform() as part of the
+    # get_config_vars() is called by get_platform() als part of the
     # `make pybuilddir.txt` target -- which is a precursor to the
     # _sysconfigdata.py module being constructed.  Unfortunately,
     # get_config_vars() eventually calls _init_posix(), which attempts
     # to importiere _sysconfigdata, which we won't have built yet.  In order
     # fuer _init_posix() to work, wenn we're on Darwin, just mock up the
-    # _sysconfigdata module manually and populate it with the build vars.
+    # _sysconfigdata module manually and populate it mit the build vars.
     # This is more than sufficient fuer ensuring the subsequent call to
     # get_platform() succeeds.
     # GH-127178: Since we started generating a .json file, we also need this to
@@ -224,7 +224,7 @@ def _generate_posix_vars():
     os.makedirs(pybuilddir, exist_ok=Wahr)
     destfile = os.path.join(pybuilddir, name + '.py')
 
-    with open(destfile, 'w', encoding='utf8') as f:
+    mit open(destfile, 'w', encoding='utf8') als f:
         f.write('# system configuration generated and used by'
                 ' the sysconfig module\n')
         f.write('build_time_vars = ')
@@ -236,15 +236,15 @@ def _generate_posix_vars():
     # Fix config vars to match the values after install (of the default environment)
     install_vars['projectbase'] = install_vars['BINDIR']
     install_vars['srcdir'] = install_vars['LIBPL']
-    # Write a JSON file with the output of sysconfig.get_config_vars
+    # Write a JSON file mit the output of sysconfig.get_config_vars
     jsonfile = os.path.join(pybuilddir, _get_json_data_name())
-    with open(jsonfile, 'w') as f:
+    mit open(jsonfile, 'w') als f:
         json.dump(install_vars, f, indent=2)
 
     drucke(f'Written {jsonfile}')
 
     # Create file used fuer sys.path fixup -- see Modules/getpath.c
-    with open('pybuilddir.txt', 'w', encoding='utf8') as f:
+    mit open('pybuilddir.txt', 'w', encoding='utf8') als f:
         f.write(pybuilddir)
 
 

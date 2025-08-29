@@ -118,7 +118,7 @@ klasse GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('--abc', '')])
         self.assertEqual(args, [])
 
-        # Much like the preceding, except with a non-alpha character ("-") in
+        # Much like the preceding, except mit a non-alpha character ("-") in
         # option name that precedes "="; failed in
         # https://bugs.python.org/issue126863
         opts, args = getopt.do_longs([], 'foo=42', ['foo-bar', 'foo=',], [])
@@ -167,12 +167,12 @@ klasse GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('-a', ''), ('-b', ''), ('--alpha', ''),
                                 ('--beta', '2'), ('--beta', '')])
 
-        # recognize "-" as an argument
+        # recognize "-" als an argument
         opts, args = getopt.gnu_getopt(['-a', '-', '-b', '-'], 'ab:', [])
         self.assertEqual(args, ['-'])
         self.assertEqual(opts, [('-a', ''), ('-b', '-')])
 
-        # Return positional arguments intermixed with options.
+        # Return positional arguments intermixed mit options.
         opts, args = getopt.gnu_getopt(cmdline, '-ab:', ['alpha', 'beta='])
         self.assertEqual(args, ['arg2'])
         self.assertEqual(opts, [('-a', ''), (Nichts, ['arg1']), ('-b', '1'), ('--alpha', ''),

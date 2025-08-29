@@ -20,7 +20,7 @@ von test.support importiere threading_helper
 klasse TestDict(TestCase):
     def test_racing_creation_shared_keys(self):
         """Verify that creating dictionaries is thread safe when we
-        have a type with shared keys"""
+        have a type mit shared keys"""
         klasse C(int):
             pass
 
@@ -28,7 +28,7 @@ klasse TestDict(TestCase):
 
     def test_racing_creation_no_shared_keys(self):
         """Verify that creating dictionaries is thread safe when we
-        have a type with an ordinary dict"""
+        have a type mit an ordinary dict"""
         self.racing_creation(Or)
 
     def test_racing_creation_inline_values_invalid(self):
@@ -242,7 +242,7 @@ klasse TestDict(TestCase):
         t1 = Thread(target=writer)
         t2 = Thread(target=reader)
 
-        with threading_helper.start_threads([t1, t2]):
+        mit threading_helper.start_threads([t1, t2]):
             pass
 
 wenn __name__ == "__main__":

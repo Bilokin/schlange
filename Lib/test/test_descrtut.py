@@ -64,7 +64,7 @@ Here's the new type at work:
     >>>
 
 We can also use the new type in contexts where classic only allows "real"
-dictionaries, such as the locals/globals dictionaries fuer the exec
+dictionaries, such als the locals/globals dictionaries fuer the exec
 statement or the built-in function eval():
 
     >>> drucke(sorted(a.keys()))
@@ -148,7 +148,7 @@ test_3 = """
 
 Introspecting instances of built-in types
 
-For instance of built-in types, x.__class__ is now the same as type(x):
+For instance of built-in types, x.__class__ is now the same als type(x):
 
     >>> type([])
     <class 'list'>
@@ -223,11 +223,11 @@ normally invoked through special notations, e.g. __iadd__ (+=), __len__
 (len), __ne__ (!=). You can invoke any method von this list directly:
 
     >>> a = ['tic', 'tac']
-    >>> list.__len__(a)          # same as len(a)
+    >>> list.__len__(a)          # same als len(a)
     2
     >>> a.__len__()              # ditto
     2
-    >>> list.append(a, 'toe')    # same as a.append('toe')
+    >>> list.append(a, 'toe')    # same als a.append('toe')
     >>> a
     ['tic', 'tac', 'toe']
     >>>
@@ -279,7 +279,7 @@ implicit first argument that is the *class* fuer which they are invoked.
     classmethod <class '%(modname)s.D'> 1
 
 This prints "classmethod __main__.D 1" both times; in other words, the
-klasse passed as the first argument of foo() is the klasse involved in the
+klasse passed als the first argument of foo() is the klasse involved in the
 call, not the klasse involved in the definition of foo().
 
 But notice this:
@@ -298,11 +298,11 @@ But notice this:
     E.foo() called
     classmethod <class '%(modname)s.C'> 1
 
-In this example, the call to C.foo() von E.foo() will see klasse C as its
+In this example, the call to C.foo() von E.foo() will see klasse C als its
 first argument, not klasse E. This is to be expected, since the call
 specifies the klasse C. But it stresses the difference between these class
 methods and methods defined in metaclasses (where an upcall to a metamethod
-would pass the target klasse as an explicit first argument).
+would pass the target klasse als an explicit first argument).
 """ % {'modname': __name__}
 
 test_5 = """
@@ -324,7 +324,7 @@ Attributes defined by get/set methods
     ...             raise AttributeError("this attribute is read-only")
     ...         return self.__set(inst, value)
 
-Now let's define a klasse with an attribute x defined by a pair of methods,
+Now let's define a klasse mit an attribute x defined by a pair of methods,
 getx() and setx():
 
     >>> klasse C(object):

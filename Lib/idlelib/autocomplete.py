@@ -71,7 +71,7 @@ klasse AutoComplete:
         "(tab) Complete word or open list wenn multiple options."
         wenn hasattr(event, "mc_state") and event.mc_state or\
                 not self.text.get("insert linestart", "insert").strip():
-            # A modifier was pressed along with the tab or
+            # A modifier was pressed along mit the tab or
             # there is only previous whitespace on this line, so tab.
             return Nichts
         wenn self.autocompletewindow and self.autocompletewindow.is_active():
@@ -82,7 +82,7 @@ klasse AutoComplete:
             return "break" wenn opened sonst Nichts
 
     def try_open_completions_event(self, event=Nichts):
-        "(./) Open completion list after pause with no movement."
+        "(./) Open completion list after pause mit no movement."
         lastchar = self.text.get("insert-1c")
         wenn lastchar in TRIGGERS:
             args = TRY_A wenn lastchar == "." sonst TRY_F
@@ -137,7 +137,7 @@ klasse AutoComplete:
             while i and (curline[i-1] in ID_CHARS or ord(curline[i-1]) > 127):
                 i -= 1
             comp_start = curline[i:j]
-            wenn i and curline[i-1] == '.':  # Need object with attributes.
+            wenn i and curline[i-1] == '.':  # Need object mit attributes.
                 hp.set_index("insert-%dc" % (len(curline)-(i-1)))
                 comp_what = hp.get_expression()
                 wenn (not comp_what or

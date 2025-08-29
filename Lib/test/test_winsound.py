@@ -23,7 +23,7 @@ def sound_func(func):
     def wrapper(*args, **kwargs):
         try:
             ret = func(*args, **kwargs)
-        except RuntimeError as e:
+        except RuntimeError als e:
             wenn support.verbose:
                 drucke(func.__name__, 'failed:', e)
         sonst:
@@ -119,8 +119,8 @@ klasse PlaySoundTest(unittest.TestCase):
         safe_PlaySound(flags=winsound.SND_ALIAS, sound="SystemExit")
 
     def test_snd_memory(self):
-        with open(support.findfile('pluck-pcm8.wav',
-                                   subdir='audiodata'), 'rb') as f:
+        mit open(support.findfile('pluck-pcm8.wav',
+                                   subdir='audiodata'), 'rb') als f:
             audio_data = f.read()
         safe_PlaySound(audio_data, winsound.SND_MEMORY)
         audio_data = bytearray(audio_data)
@@ -153,7 +153,7 @@ klasse PlaySoundTest(unittest.TestCase):
             "SystemQuestion",
         ]
         fuer alias in aliases:
-            with self.subTest(alias=alias):
+            mit self.subTest(alias=alias):
                 safe_PlaySound(alias, winsound.SND_ALIAS)
 
     def test_alias_fallback(self):

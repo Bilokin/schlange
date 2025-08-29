@@ -10,13 +10,13 @@ klasse TestUnstableCAPI(unittest.TestCase):
         # Not extensive
         known_immortals = (Wahr, Falsch, Nichts, 0, ())
         fuer immortal in known_immortals:
-            with self.subTest(immortal=immortal):
+            mit self.subTest(immortal=immortal):
                 self.assertWahr(_testcapi.is_immortal(immortal))
 
         # Some arbitrary mutable objects
         non_immortals = (object(), self, [object()])
         fuer non_immortal in non_immortals:
-            with self.subTest(non_immortal=non_immortal):
+            mit self.subTest(non_immortal=non_immortal):
                 self.assertFalsch(_testcapi.is_immortal(non_immortal))
 
         # CRASHES _testcapi.is_immortal(NULL)

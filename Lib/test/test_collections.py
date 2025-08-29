@@ -185,7 +185,7 @@ klasse TestChainMap(unittest.TestCase):
         self.assertEqual(d.pop('a', 1001), 1, d)
         self.assertEqual(d.pop('a', 1002), 1002)                       # check pop() w/missing
         self.assertEqual(d.popitem(), ('b', 2))                        # check popitem() w/missing
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d.popitem()
 
     def test_order_preservation(self):
@@ -281,7 +281,7 @@ klasse TestChainMap(unittest.TestCase):
         self.assertEqual(tmp, cm2)
 
         # testing behavior between chainmap and iterable key-value pairs
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             cm3 | pairs
         tmp = cm3.copy()
         cm3 |= pairs
@@ -327,12 +327,12 @@ klasse TestNamedTuple(unittest.TestCase):
 
         self.assertRaises(ValueError, namedtuple, 'abc%', 'efg ghi')       # type has non-alpha char
         self.assertRaises(ValueError, namedtuple, 'class', 'efg ghi')      # type has keyword
-        self.assertRaises(ValueError, namedtuple, '9abc', 'efg ghi')       # type starts with digit
+        self.assertRaises(ValueError, namedtuple, '9abc', 'efg ghi')       # type starts mit digit
 
-        self.assertRaises(ValueError, namedtuple, 'abc', 'efg g%hi')       # field with non-alpha char
+        self.assertRaises(ValueError, namedtuple, 'abc', 'efg g%hi')       # field mit non-alpha char
         self.assertRaises(ValueError, namedtuple, 'abc', 'abc class')      # field has keyword
-        self.assertRaises(ValueError, namedtuple, 'abc', '8efg 9ghi')      # field starts with digit
-        self.assertRaises(ValueError, namedtuple, 'abc', '_efg ghi')       # field with leading underscore
+        self.assertRaises(ValueError, namedtuple, 'abc', '8efg 9ghi')      # field starts mit digit
+        self.assertRaises(ValueError, namedtuple, 'abc', '_efg ghi')       # field mit leading underscore
         self.assertRaises(ValueError, namedtuple, 'abc', 'efg efg ghi')    # duplicate field
 
         namedtuple('Point0', 'x1 y2')   # Verify that numbers are allowed in names
@@ -361,25 +361,25 @@ klasse TestNamedTuple(unittest.TestCase):
         Point = namedtuple('Point', 'x y', defaults=())                     # 0 defaults
         self.assertEqual(Point._field_defaults, {})
         self.assertEqual(Point(1, 2), (1, 2))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Point(1)
 
-        with self.assertRaises(TypeError):                                  # catch too few args
+        mit self.assertRaises(TypeError):                                  # catch too few args
             Point()
-        with self.assertRaises(TypeError):                                  # catch too many args
+        mit self.assertRaises(TypeError):                                  # catch too many args
             Point(1, 2, 3)
-        with self.assertRaises(TypeError):                                  # too many defaults
+        mit self.assertRaises(TypeError):                                  # too many defaults
             Point = namedtuple('Point', 'x y', defaults=(10, 20, 30))
-        with self.assertRaises(TypeError):                                  # non-iterable defaults
+        mit self.assertRaises(TypeError):                                  # non-iterable defaults
             Point = namedtuple('Point', 'x y', defaults=10)
-        with self.assertRaises(TypeError):                                  # another non-iterable default
+        mit self.assertRaises(TypeError):                                  # another non-iterable default
             Point = namedtuple('Point', 'x y', defaults=Falsch)
 
         Point = namedtuple('Point', 'x y', defaults=Nichts)                   # default is Nichts
         self.assertEqual(Point._field_defaults, {})
         self.assertIsNichts(Point.__new__.__defaults__, Nichts)
         self.assertEqual(Point(10, 20), (10, 20))
-        with self.assertRaises(TypeError):                                  # catch too few args
+        mit self.assertRaises(TypeError):                                  # catch too few args
             Point(10)
 
         Point = namedtuple('Point', 'x y', defaults=[10, 20])               # allow non-tuple iterable
@@ -399,19 +399,19 @@ klasse TestNamedTuple(unittest.TestCase):
     def test_readonly(self):
         Point = namedtuple('Point', 'x y')
         p = Point(11, 22)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             p.x = 33
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del p.x
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             p[0] = 33
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del p[0]
         self.assertEqual(p.x, 11)
         self.assertEqual(p[0], 11)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_factory_doc_attr(self):
         Point = namedtuple('Point', 'x y')
         self.assertEqual(Point.__doc__, 'Point(x, y)')
@@ -419,7 +419,7 @@ klasse TestNamedTuple(unittest.TestCase):
         self.assertEqual(Point.__doc__, '2D point')
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_field_doc(self):
         Point = namedtuple('Point', 'x y')
         self.assertEqual(Point.x.__doc__, 'Alias fuer field number 0')
@@ -434,7 +434,7 @@ klasse TestNamedTuple(unittest.TestCase):
 
     @support.cpython_only
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_field_doc_reuse(self):
         P = namedtuple('P', ['m', 'n'])
         Q = namedtuple('Q', ['o', 'p'])
@@ -455,10 +455,10 @@ klasse TestNamedTuple(unittest.TestCase):
 
     def test_name_fixer(self):
         fuer spec, renamed in [
-            [('efg', 'g%hi'),  ('efg', '_1')],                              # field with non-alpha char
+            [('efg', 'g%hi'),  ('efg', '_1')],                              # field mit non-alpha char
             [('abc', 'class'), ('abc', '_1')],                              # field has keyword
-            [('8efg', '9ghi'), ('_0', '_1')],                               # field starts with digit
-            [('abc', '_efg'), ('abc', '_1')],                               # field with leading underscore
+            [('8efg', '9ghi'), ('_0', '_1')],                               # field starts mit digit
+            [('abc', '_efg'), ('abc', '_1')],                               # field mit leading underscore
             [('abc', 'efg', 'efg', 'ghi'), ('abc', 'efg', '_2', 'ghi')],    # duplicate field
             [('abc', '', 'x'), ('abc', '_1', 'x')],                         # fieldname is a space
         ]:
@@ -478,9 +478,9 @@ klasse TestNamedTuple(unittest.TestCase):
         self.assertEqual(p, Point(**dict(x=11, y=22)))
         self.assertRaises(TypeError, Point, 1)          # too few args
         self.assertRaises(TypeError, Point, 1, 2, 3)    # too many args
-        with self.assertRaises(TypeError):              # wrong keyword argument
+        mit self.assertRaises(TypeError):              # wrong keyword argument
             Point(XXX=1, y=2)
-        with self.assertRaises(TypeError):              # missing keyword argument
+        mit self.assertRaises(TypeError):              # missing keyword argument
             Point(x=1)
         self.assertEqual(repr(p), 'Point(x=11, y=22)')
         self.assertNotIn('__weakref__', dir(p))
@@ -489,7 +489,7 @@ klasse TestNamedTuple(unittest.TestCase):
         self.assertEqual(p._replace(x=1), (1, 22))      # test _replace method
         self.assertEqual(p._asdict(), dict(x=11, y=22)) # test _asdict method
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             p._replace(x=1, error=2)
 
         # verify that field string can have commas
@@ -515,14 +515,14 @@ klasse TestNamedTuple(unittest.TestCase):
         x, y = p
         self.assertEqual(p, (x, y))                                         # unpacks like a tuple
         self.assertEqual((p[0], p[1]), (11, 22))                            # indexable like a tuple
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             p[3]
         self.assertEqual(p[-1], 22)
         self.assertEqual(hash(p), hash((11, 22)))
 
         self.assertEqual(p.x, x)
         self.assertEqual(p.y, y)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             p.z
 
     def test_odd_sizes(self):
@@ -585,7 +585,7 @@ klasse TestNamedTuple(unittest.TestCase):
 
     def test_name_conflicts(self):
         # Some names like "self", "cls", "tuple", "itemgetter", and "property"
-        # failed when used as field names.  Test to make sure these now work.
+        # failed when used als field names.  Test to make sure these now work.
         T = namedtuple('T', 'itemgetter property self cls tuple')
         t = T(1, 2, 3, 4, 5)
         self.assertEqual(t, (1,2,3,4,5))
@@ -657,12 +657,12 @@ klasse TestNamedTuple(unittest.TestCase):
 
     def test_keyword_only_arguments(self):
         # See issue 25628
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             NT = namedtuple('NT', ['x', 'y'], Wahr)
 
         NT = namedtuple('NT', ['abc', 'def'], rename=Wahr)
         self.assertEqual(NT._fields, ('abc', '_1'))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             NT = namedtuple('NT', ['abc', 'def'], Falsch, Wahr)
 
     def test_namedtuple_subclass_issue_24931(self):
@@ -685,7 +685,7 @@ klasse TestNamedTuple(unittest.TestCase):
         self.assertRaises(AttributeError, Point.x.__delete__, p)
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 klasse NewPoint(tuple):
                     x = pickle.loads(pickle.dumps(Point.x, proto))
                     y = pickle.loads(pickle.dumps(Point.y, proto))
@@ -822,7 +822,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             self.assertIsSubclass(type(x), Awaitable)
 
         c = coro()
-        # Iterable coroutines (generators with CO_ITERABLE_COROUTINE
+        # Iterable coroutines (generators mit CO_ITERABLE_COROUTINE
         # flag don't have '__await__' method, hence can't be instances
         # of Awaitable. Use inspect.isawaitable to detect them.
         self.assertNotIsInstance(c, Awaitable)
@@ -874,7 +874,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             self.assertIsSubclass(type(x), Awaitable)
 
         c = coro()
-        # Iterable coroutines (generators with CO_ITERABLE_COROUTINE
+        # Iterable coroutines (generators mit CO_ITERABLE_COROUTINE
         # flag don't have '__await__' method, hence can't be instances
         # of Coroutine. Use inspect.isawaitable to detect them.
         self.assertNotIsInstance(c, Coroutine)
@@ -1292,7 +1292,7 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
             while Wahr:
                 try:
                     coro.send(Nichts)
-                except StopIteration as ex:
+                except StopIteration als ex:
                     result = ex.args[0] wenn ex.args sonst Nichts
                     break
             return result
@@ -1303,21 +1303,21 @@ klasse TestOneTrickPonyABCs(ABCTestCase):
         self.assertIs(run_async(mgen.asend(Nichts)), run_async(mgen.__anext__()))
         self.assertEqual(2, run_async(mgen.asend(2)))
         self.assertIsNichts(run_async(mgen.aclose()))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             run_async(mgen.athrow(ValueError))
 
         klasse FailOnClose(AsyncGenerator):
             async def asend(self, value): return value
             async def athrow(self, *args): raise ValueError
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             run_async(FailOnClose().aclose())
 
         klasse IgnoreGeneratorExit(AsyncGenerator):
             async def asend(self, value): return value
             async def athrow(self, *args): pass
 
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             run_async(IgnoreGeneratorExit().aclose())
 
     def test_Sized(self):
@@ -1415,7 +1415,7 @@ klasse TestCollectionABCs(ABCTestCase):
 
     # XXX For now, we only test some virtual inheritance properties.
     # We should also test the proper behavior of the collection ABCs
-    # as real base classes or mix-in classes.
+    # als real base classes or mix-in classes.
 
     def test_Set(self):
         fuer sample in [set, frozenset]:
@@ -1668,7 +1668,7 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertEqual('from_iterable', actual.created_by)
         self.assertEqual({1, 2, 4}, actual)
 
-        # NOTE: ixor'ing with a list is important here: internally, __ixor__
+        # NOTE: ixor'ing mit a list is important here: internally, __ixor__
         # only calls _from_iterable wenn the other value isn't already a Set.
         impl ^= [3, 4]
         self.assertIsInstance(impl, SetUsingInstanceFromIterable)
@@ -1747,11 +1747,11 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertWahr(r1 < r3)
         self.assertFalsch(r1 < r1)
         self.assertFalsch(r1 < r2)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 < l3
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 < l1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 < l2
 
         # any subset
@@ -1764,11 +1764,11 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertWahr(r1 <= r3)
         self.assertWahr(r1 <= r1)
         self.assertFalsch(r1 <= r2)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 <= l3
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 <= l1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 <= l2
 
         # proper superset
@@ -1781,11 +1781,11 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertWahr(r3 > r1)
         self.assertFalsch(r1 > r1)
         self.assertFalsch(r2 > r1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 > l3
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 > l1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 > l2
 
         # any superset
@@ -1798,11 +1798,11 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertWahr(r3 >= r1)
         self.assertWahr(r1 >= r1)
         self.assertFalsch(r2 >= r1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 >= l3
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 >=l1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             f1 >= l2
 
         # equality
@@ -1915,7 +1915,7 @@ klasse TestCollectionABCs(ABCTestCase):
             try:
                 expected = seq1.index(*index_args)
             except ValueError:
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     seq2.index(*index_args)
             sonst:
                 actual = seq2.index(*index_args)
@@ -2006,7 +2006,7 @@ klasse TestCollectionABCs(ABCTestCase):
         self.assertEqual(list(mss), list(mss2))
 
     def test_illegal_patma_flags(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse Both(Collection):
                 __abc_tpflags__ = (Sequence.__flags__ | Mapping.__flags__)
 
@@ -2086,7 +2086,7 @@ klasse TestCounter(unittest.TestCase):
         c.update(dict(a=5, b=3))
         c.update(c=1)
         c.update(Counter('a' * 50 + 'b' * 30))
-        c.update()          # test case with no args
+        c.update()          # test case mit no args
         c.__init__('a' * 500 + 'b' * 300)
         c.__init__('cdc')
         c.__init__()
@@ -2112,7 +2112,7 @@ klasse TestCounter(unittest.TestCase):
         # Input order dictates items() order
         self.assertEqual(list(Counter('abracadabra').items()),
                [('a', 5), ('b', 2), ('r', 2), ('c', 1), ('d', 1)])
-        # letters with same count:   ^----------^         ^---------^
+        # letters mit same count:   ^----------^         ^---------^
 
         # Verify retention of order even when all counts are equal
         self.assertEqual(list(Counter('xyzpdqqdpzyx').items()),
@@ -2191,7 +2191,7 @@ klasse TestCounter(unittest.TestCase):
         check(copy.copy(words))
         check(copy.deepcopy(words))
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 check(pickle.loads(pickle.dumps(words, proto)))
         check(eval(repr(words)))
         update_test = Counter()
@@ -2249,7 +2249,7 @@ klasse TestCounter(unittest.TestCase):
 
         elements = 'abcdef'
         fuer i in range(100):
-            # verify that random multisets with no repeats are exactly like sets
+            # verify that random multisets mit no repeats are exactly like sets
             p = Counter(dict((elem, randrange(0, 2)) fuer elem in elements))
             q = Counter(dict((elem, randrange(0, 2)) fuer elem in elements))
             fuer counterop, setop in [

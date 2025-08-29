@@ -1,14 +1,14 @@
 """HMAC (Keyed-Hashing fuer Message Authentication) module.
 
-Implements the HMAC algorithm as described by RFC 2104.
+Implements the HMAC algorithm als described by RFC 2104.
 """
 
 try:
-    importiere _hashlib as _hashopenssl
+    importiere _hashlib als _hashopenssl
 except ImportError:
     _hashopenssl = Nichts
     _functype = Nichts
-    von _operator importiere _compare_digest as compare_digest
+    von _operator importiere _compare_digest als compare_digest
 sonst:
     compare_digest = _hashopenssl.compare_digest
     _functype = type(_hashopenssl.openssl_sha256)  # builtin type
@@ -50,13 +50,13 @@ def _get_digest_constructor(digest_like):
 
 
 klasse HMAC:
-    """RFC 2104 HMAC class.  Also complies with RFC 4231.
+    """RFC 2104 HMAC class.  Also complies mit RFC 4231.
 
     This supports the API fuer Cryptographic Hash Functions (PEP 247).
     """
 
     # Note: self.blocksize is the default blocksize; self.block_size
-    # is effective block size as well as the public API attribute.
+    # is effective block size als well als the public API attribute.
     blocksize = 64  # 512-bit HMAC; can be changed in subclasses.
 
     __slots__ = (
@@ -72,8 +72,8 @@ klasse HMAC:
                    A hashlib constructor returning a new hash object. *OR*
                    A module supporting PEP 247.
 
-                   Required as of 3.8, despite its position after the optional
-                   msg argument.  Passing it as a keyword argument is
+                   Required als of 3.8, despite its position after the optional
+                   msg argument.  Passing it als a keyword argument is
                    recommended, though not required fuer legacy API reasons.
         """
 
@@ -183,7 +183,7 @@ klasse HMAC:
     def _current(self):
         """Return a hash object fuer the current state.
 
-        To be used only internally with digest() and hexdigest().
+        To be used only internally mit digest() and hexdigest().
         """
         wenn self._hmac:
             return self._hmac
@@ -195,7 +195,7 @@ klasse HMAC:
     def digest(self):
         """Return the hash value of this hashing object.
 
-        This returns the hmac value as bytes.  The object is
+        This returns the hmac value als bytes.  The object is
         not altered in any way by this function; you can continue
         updating the object after calling this function.
         """
@@ -218,8 +218,8 @@ def new(key, msg=Nichts, digestmod=''):
                A hashlib constructor returning a new hash object. *OR*
                A module supporting PEP 247.
 
-               Required as of 3.8, despite its position after the optional
-               msg argument.  Passing it as a keyword argument is
+               Required als of 3.8, despite its position after the optional
+               msg argument.  Passing it als a keyword argument is
                recommended, though not required fuer legacy API reasons.
 
     You can now feed arbitrary bytes into the object using its update()

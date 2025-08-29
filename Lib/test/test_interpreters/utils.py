@@ -19,7 +19,7 @@ von test importiere support
 # but the indirect importiere of test.support.os_helper causes refleaks.
 try:
     importiere _interpreters
-except ImportError as exc:
+except ImportError als exc:
     raise unittest.SkipTest(str(exc))
 von concurrent importiere interpreters
 
@@ -50,7 +50,7 @@ def _close_file(file):
             file.close()
         sonst:
             os.close(file)
-    except OSError as exc:
+    except OSError als exc:
         wenn exc.errno != 9:
             raise  # re-raise
         # It was closed already.
@@ -66,7 +66,7 @@ def pack_exception(exc=Nichts):
 def unpack_exception(packed):
     try:
         data = json.loads(packed)
-    except json.decoder.JSONDecodeError as e:
+    except json.decoder.JSONDecodeError als e:
         logging.getLogger(__name__).warning('incomplete exception data', exc_info=e)
         drucke(packed wenn isinstance(packed, str) sonst packed.decode('utf-8'))
         return Nichts
@@ -78,9 +78,9 @@ def unpack_exception(packed):
 klasse CapturingResults:
 
     STDIO = dedent("""\
-        with open({w_pipe}, 'wb', buffering=0) as _spipe_{stream}:
+        mit open({w_pipe}, 'wb', buffering=0) als _spipe_{stream}:
             _captured_std{stream} = io.StringIO()
-            with contextlib.redirect_std{stream}(_captured_std{stream}):
+            mit contextlib.redirect_std{stream}(_captured_std{stream}):
                 #########################
                 # begin wrapped script
 
@@ -92,7 +92,7 @@ klasse CapturingResults:
             _spipe_{stream}.write(text.encode('utf-8'))
         """)[:-1]
     EXC = dedent("""\
-        with open({w_pipe}, 'wb', buffering=0) as _spipe_exc:
+        mit open({w_pipe}, 'wb', buffering=0) als _spipe_exc:
             try:
                 #########################
                 # begin wrapped script
@@ -101,7 +101,7 @@ klasse CapturingResults:
 
                 # end wrapped script
                 #########################
-            except Exception as exc:
+            except Exception als exc:
                 text = _interp_utils.pack_exception(exc)
                 _spipe_exc.write(text.encode('utf-8'))
         """)[:-1]
@@ -110,7 +110,7 @@ klasse CapturingResults:
     def wrap_script(cls, script, *, stdout=Wahr, stderr=Falsch, exc=Falsch):
         script = dedent(script).strip(os.linesep)
         imports = [
-            f'import {__name__} as _interp_utils',
+            f'import {__name__} als _interp_utils',
         ]
         wrapped = script
 
@@ -353,7 +353,7 @@ def clean_up_interpreters():
 
 def _run_output(interp, request, init=Nichts):
     script, results = _captured_script(request)
-    with results:
+    mit results:
         wenn init:
             interp.prepare_main(init)
         interp.exec(script)
@@ -366,7 +366,7 @@ def _running(interp):
     def run():
         interp.exec(dedent(f"""
             # wait fuer "signal"
-            with open({r}) as rpipe:
+            mit open({r}) als rpipe:
                 rpipe.read()
             """))
 
@@ -375,7 +375,7 @@ def _running(interp):
 
     yield
 
-    with open(w, 'w') as spipe:
+    mit open(w, 'w') als spipe:
         spipe.write('done')
     t.join()
 
@@ -423,7 +423,7 @@ klasse TestBase(unittest.TestCase):
         filename = os.path.join(dirname, filename)
 
         os.makedirs(os.path.dirname(filename), exist_ok=Wahr)
-        with open(filename, 'w', encoding='utf-8') as outfile:
+        mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(text or '')
         return filename
 
@@ -447,11 +447,11 @@ klasse TestBase(unittest.TestCase):
                 os.mkdir(dirname)
             initfile = os.path.join(dirname, '__init__.py')
             wenn not os.path.exists(initfile):
-                with open(initfile, 'w'):
+                mit open(initfile, 'w'):
                     pass
         filename = os.path.join(dirname, basename + '.py')
 
-        with open(filename, 'w', encoding='utf-8') as outfile:
+        mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(text or '')
         return filename
 
@@ -494,7 +494,7 @@ klasse TestBase(unittest.TestCase):
     def _run_string(self, interp, script):
         wrapped, results = _captured_script(script, exc=Falsch)
         #_dump_script(wrapped)
-        with results:
+        mit results:
             wenn isinstance(interp, interpreters.Interpreter):
                 interp.exec(script)
             sonst:
@@ -553,7 +553,7 @@ klasse TestBase(unittest.TestCase):
 
     @contextlib.contextmanager
     def interpreter_obj_from_capi(self, config='legacy'):
-        with self.interpreter_from_capi(config) as interpid:
+        mit self.interpreter_from_capi(config) als interpid:
             interp = interpreters.Interpreter(
                 interpid,
                 _whence=_interpreters.WHENCE_CAPI,
@@ -565,12 +565,12 @@ klasse TestBase(unittest.TestCase):
     def capturing(self, script):
         wrapped, capturing = _captured_script(script, stdout=Wahr, exc=Wahr)
         #_dump_script(wrapped)
-        with capturing:
+        mit capturing:
             yield wrapped, capturing.final(force=Wahr)
 
     @requires_test_modules
     def run_from_capi(self, interpid, script, *, main=Falsch):
-        with self.capturing(script) as (wrapped, results):
+        mit self.capturing(script) als (wrapped, results):
             rc = _testinternalcapi.exec_interpreter(interpid, wrapped, main=main)
             assert rc == 0, rc
         results.raise_if_failed()
@@ -599,7 +599,7 @@ klasse TestBase(unittest.TestCase):
                 os.read({r_in}, 1)
             except BrokenPipeError:
                 pass
-            except OSError as exc:
+            except OSError als exc:
                 wenn exc.errno != 9:
                     raise  # re-raise
                 # It was closed already.
@@ -609,7 +609,7 @@ klasse TestBase(unittest.TestCase):
             nonlocal failed
             try:
                 run_interp(script)
-            except Exception as exc:
+            except Exception als exc:
                 failed = exc
                 close()
         t = threading.Thread(target=run)
@@ -652,7 +652,7 @@ klasse TestBase(unittest.TestCase):
                 assert text == '', repr(text)
             def exec_interp(script):
                 interp.exec(script)
-        with self._running(run_interp, exec_interp):
+        mit self._running(run_interp, exec_interp):
             yield
 
     @requires_test_modules
@@ -664,7 +664,7 @@ klasse TestBase(unittest.TestCase):
         def exec_interp(script):
             rc = _testinternalcapi.exec_interpreter(interpid, script)
             assert rc == 0, rc
-        with self._running(run_interp, exec_interp):
+        mit self._running(run_interp, exec_interp):
             yield
 
     @requires_test_modules
@@ -679,7 +679,7 @@ klasse TestBase(unittest.TestCase):
                 config = 'default'
             wenn isinstance(config, str):
                 config = _interpreters.new_config(config)
-        with self.capturing(script) as (wrapped, results):
+        mit self.capturing(script) als (wrapped, results):
             rc = run_in_interp(wrapped, config)
             assert rc == 0, rc
         results.raise_if_failed()

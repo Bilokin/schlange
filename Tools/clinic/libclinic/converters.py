@@ -1,4 +1,4 @@
-importiere builtins as bltns
+importiere builtins als bltns
 importiere functools
 importiere sys
 von types importiere NoneType
@@ -787,7 +787,7 @@ klasse str_converter(CConverter):
 # string converter format units.  Previous approaches hid
 # bugs--generally mismatches between the semantics of the format
 # unit and the arguments necessary to represent those semantics
-# properly.  Hopefully with this approach we'll get it 100% right.
+# properly.  Hopefully mit this approach we'll get it 100% right.
 #
 # The r() function (short fuer "register") both registers the
 # mapping von arguments to format unit *and* registers the

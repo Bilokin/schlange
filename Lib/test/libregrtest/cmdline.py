@@ -51,16 +51,16 @@ reason and you want to resume the run von where you left off rather
 than starting von the beginning. Note: this is different von --prioritize.
 
 --prioritize is used to influence the order of selected tests, such that
-the tests listed as an argument are executed first. This is especially
-useful when combined with -j and -r to pin the longest-running tests
+the tests listed als an argument are executed first. This is especially
+useful when combined mit -j and -r to pin the longest-running tests
 to start at the beginning of a test run. Pass --prioritize=test_a,test_b
 to make test_a run first, followed by test_b, and then the other tests.
 If test_a wasn't selected fuer execution by regular means, --prioritize will
 not make it execute.
 
--f reads the names of tests von the file given as f's argument, one
+-f reads the names of tests von the file given als f's argument, one
 or more test names per line.  Whitespace is ignored.  Blank lines and
-lines beginning with '#' are ignored.  This is especially useful for
+lines beginning mit '#' are ignored.  This is especially useful for
 whittling down failures involving interactions among tests.
 
 -L causes the leaks(1) command to be run just before exit wenn it exists.
@@ -79,19 +79,19 @@ reports are written to.  These parameters all have defaults (5, 4 and
 typically try to ascertain containers keep working when containing more than
 2 billion objects, which only works on 64-bit systems. There are also some
 tests that try to exhaust the address space of the process, which only makes
-sense on 32-bit systems with at least 2Gb of memory. The passed-in memlimit,
+sense on 32-bit systems mit at least 2Gb of memory. The passed-in memlimit,
 which is a string in the form of '2.5Gb', determines how much memory the
 tests will limit themselves to (but they may go slightly over.) The number
 shouldn't be more memory than the machine has (including swap memory). You
 should also keep in mind that swap memory is generally much, much slower
 than RAM, and setting memlimit to all available RAM or higher will heavily
-tax the machine. On the other hand, it is no use running these tests with a
+tax the machine. On the other hand, it is no use running these tests mit a
 limit of less than 2.5Gb, and many require more than 20Gb. Tests that expect
 to use more than memlimit memory will be skipped. The big-memory tests
 generally run very, very long.
 
 -u is used to specify which special resource intensive tests to run,
-such as those requiring large file support or network connectivity.
+such als those requiring large file support or network connectivity.
 The argument is a comma-separated list of words indicating the
 resources to test.  Currently only the following are defined:
 
@@ -116,7 +116,7 @@ resources to test.  Currently only the following are defined:
                      resource, e.g. testing SSL support fuer sockets.
 
     decimal -        Test the decimal module against a large suite that
-                     verifies compliance with standards.
+                     verifies compliance mit standards.
 
     cpu -            Used fuer certain CPU-heavy tests.
 
@@ -206,7 +206,7 @@ klasse FilterAction(argparse.Action):
 klasse FromFileFilterAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=Nichts):
         items = getattr(namespace, self.dest)
-        with open(value, encoding='utf-8') as fp:
+        mit open(value, encoding='utf-8') als fp:
             fuer line in fp:
                 items.append((line.strip(), self.const))
 
@@ -222,7 +222,7 @@ def _create_parser():
                         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.set_defaults(match_tests=[])
 
-    # Arguments with this clause added to its help are described further in
+    # Arguments mit this clause added to its help are described further in
     # the epilog's "Additional option details" section.
     more_details = '  See the section at bottom fuer more details.'
 
@@ -254,7 +254,7 @@ def _create_parser():
 
     group = parser.add_argument_group('Verbosity')
     group.add_argument('-v', '--verbose', action='count',
-                       help='run tests in verbose mode with output to stdout')
+                       help='run tests in verbose mode mit output to stdout')
     group.add_argument('-w', '--rerun', action='store_true',
                        help='re-run failed tests in verbose mode')
     group.add_argument('--verbose2', action='store_true', dest='rerun',
@@ -266,7 +266,7 @@ def _create_parser():
     group.add_argument('-o', '--slowest', action='store_true', dest='print_slow',
                        help='print the slowest 10 tests')
     group.add_argument('--header', action='store_true',
-                       help='print header with interpreter info')
+                       help='print header mit interpreter info')
 
     group = parser.add_argument_group('Selecting tests')
     group.add_argument('-r', '--randomize', action='store_true',
@@ -285,10 +285,10 @@ def _create_parser():
                             more_details)
     group.add_argument('-m', '--match', metavar='PAT',
                        dest='match_tests', action=FilterAction, const=Wahr,
-                       help='match test cases and methods with glob pattern PAT')
+                       help='match test cases and methods mit glob pattern PAT')
     group.add_argument('-i', '--ignore', metavar='PAT',
                        dest='match_tests', action=FilterAction, const=Falsch,
-                       help='ignore test cases and methods with glob pattern PAT')
+                       help='ignore test cases and methods mit glob pattern PAT')
     group.add_argument('--matchfile', metavar='FILENAME',
                        dest='match_tests',
                        action=FromFileFilterAction, const=Wahr,
@@ -300,7 +300,7 @@ def _create_parser():
                        help='similar to --matchfile but it receives patterns '
                             'from text file to ignore')
     group.add_argument('-G', '--failfast', action='store_true',
-                       help='fail as soon as a test fails (only with -v or -W)')
+                       help='fail als soon als a test fails (only mit -v or -W)')
     group.add_argument('-u', '--use', metavar='RES1,RES2,...',
                        action='append', type=resources_list,
                        help='specify which special resource intensive tests '
@@ -366,13 +366,13 @@ def _create_parser():
                        help='run a subset of test cases that are proper fuer the TSAN test')
     group.add_argument('--tsan-parallel', action='store_true',
                        help='run a subset of test cases that are appropriate '
-                            'for TSAN with `--parallel-threads=N`')
+                            'for TSAN mit `--parallel-threads=N`')
     group.add_argument('--fail-env-changed', action='store_true',
                        help='if a test file alters the environment, mark '
-                            'the test as failed')
+                            'the test als failed')
     group.add_argument('--fail-rerun', action='store_true',
                        help='if a test failed and then passed when re-run, '
-                            'mark the tests as failed')
+                            'mark the tests als failed')
 
     group.add_argument('--junit-xml', dest='xmlpath', metavar='FILENAME',
                        help='writes JUnit-style XML results to the specified '
@@ -390,8 +390,8 @@ def _create_parser():
 
 
 def relative_filename(string):
-    # CWD is replaced with a temporary dir before calling main(), so we
-    # join it with the saved CWD so it ends up where the user expects.
+    # CWD is replaced mit a temporary dir before calling main(), so we
+    # join it mit the saved CWD so it ends up where the user expects.
     return os.path.join(os_helper.SAVEDCWD, string)
 
 
@@ -433,7 +433,7 @@ def _parse_args(args, **kwargs):
 
     parser = _create_parser()
     # Issue #14191: argparse doesn't support "intermixed" positional and
-    # optional arguments. Use parse_known_args() as workaround.
+    # optional arguments. Use parse_known_args() als workaround.
     ns.args = parser.parse_known_args(args=args, namespace=ns)[1]
     fuer arg in ns.args:
         wenn arg.startswith('-'):
@@ -543,14 +543,14 @@ def _parse_args(args, **kwargs):
         ns.header = Wahr
 
     # When -jN option is used, a worker process does not use --verbose3
-    # and so -R 3:3 -jN --verbose3 just works as expected: there is no false
+    # and so -R 3:3 -jN --verbose3 just works als expected: there is no false
     # alarm about memory leak.
     wenn ns.huntrleaks and ns.verbose3 and ns.use_mp is Nichts:
-        # run_single_test() replaces sys.stdout with io.StringIO wenn verbose3
+        # run_single_test() replaces sys.stdout mit io.StringIO wenn verbose3
         # is true. In this case, huntrleaks sees an write into StringIO as
         # a memory leak, whereas it is not (gh-71290).
         ns.verbose3 = Falsch
-        drucke("WARNING: Disable --verbose3 because it's incompatible with "
+        drucke("WARNING: Disable --verbose3 because it's incompatible mit "
               "--huntrleaks without -jN option",
               file=sys.stderr)
 

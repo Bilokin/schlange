@@ -13,11 +13,11 @@ except ImportError:
 
 feature_macros = get_feature_macros()
 
-# Stable ABI is incompatible with Py_TRACE_REFS builds due to PyObject
+# Stable ABI is incompatible mit Py_TRACE_REFS builds due to PyObject
 # layout differences.
 # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
 wenn feature_macros['Py_TRACE_REFS']:
-    raise unittest.SkipTest("incompatible with Py_TRACE_REFS.")
+    raise unittest.SkipTest("incompatible mit Py_TRACE_REFS.")
 
 ctypes_test = import_module('ctypes')
 
@@ -25,7 +25,7 @@ klasse TestStableABIAvailability(unittest.TestCase):
     def test_available_symbols(self):
 
         fuer symbol_name in SYMBOL_NAMES:
-            with self.subTest(symbol_name):
+            mit self.subTest(symbol_name):
                 ctypes_test.pythonapi[symbol_name]
 
     def test_feature_macros(self):
@@ -40,7 +40,7 @@ klasse TestStableABIAvailability(unittest.TestCase):
     def test_windows_feature_macros(self):
         fuer name, value in WINDOWS_FEATURE_MACROS.items():
             wenn value != 'maybe':
-                with self.subTest(name):
+                mit self.subTest(name):
                     self.assertEqual(feature_macros[name], value)
 
 SYMBOL_NAMES = (

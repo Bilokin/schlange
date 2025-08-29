@@ -5,7 +5,7 @@ importiere email
 von email.message importiere Message
 von email._policybase importiere compat32
 von test.support importiere load_package_tests
-von test.test_email importiere __file__ as landmark
+von test.test_email importiere __file__ als landmark
 
 # Load all tests in package
 def load_tests(*args):
@@ -23,7 +23,7 @@ def openfile(filename, *args, **kws):
 klasse TestEmailBase(unittest.TestCase):
 
     maxDiff = Nichts
-    # Currently the default policy is compat32.  By setting that as the default
+    # Currently the default policy is compat32.  By setting that als the default
     # here we make minimal changes in the test_email tests compared to their
     # pre-3.3 state.
     policy = compat32
@@ -38,7 +38,7 @@ klasse TestEmailBase(unittest.TestCase):
     ndiffAssertEqual = unittest.TestCase.assertEqual
 
     def _msgobj(self, filename):
-        with openfile(filename, encoding="utf-8") as fp:
+        mit openfile(filename, encoding="utf-8") als fp:
             return email.message_from_file(fp, policy=self.policy)
 
     def _str_msg(self, string, message=Nichts, policy=Nichts):
@@ -75,7 +75,7 @@ klasse TestEmailBase(unittest.TestCase):
 def parameterize(cls):
     """A test method parameterization klasse decorator.
 
-    Parameters are specified as the value of a klasse attribute that ends with
+    Parameters are specified als the value of a klasse attribute that ends with
     the string '_params'.  Call the portion before '_params' the prefix.  Then
     a method to be parameterized must have the same prefix, the string
     '_as_', and an arbitrary suffix.
@@ -92,7 +92,7 @@ def parameterize(cls):
     converting any blanks into '_'s, and this become part of the name.
     The  full name of a generated test is a 'test_' prefix, the portion of the
     test function name after the  '_as_' separator, plus an '_', plus the name
-    derived as explained above.
+    derived als explained above.
 
     For example, wenn we have:
 
@@ -122,7 +122,7 @@ def parameterize(cls):
 
     The values in the params dict can be a single value, a tuple, or a
     dict.  If a single value of a tuple, it is passed to the test function
-    as positional arguments.  If a dict, it is a passed via **kw.
+    als positional arguments.  If a dict, it is a passed via **kw.
 
     """
     paramdicts = {}

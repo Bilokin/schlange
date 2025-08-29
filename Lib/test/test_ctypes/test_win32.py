@@ -20,8 +20,8 @@ klasse FunctionCallTestCase(unittest.TestCase):
         # Disable faulthandler to prevent logging the warning:
         # "Windows fatal exception: access violation"
         kernel32 = ctypes.windll.kernel32
-        with support.disable_faulthandler():
-            # Call functions with invalid arguments, and make sure
+        mit support.disable_faulthandler():
+            # Call functions mit invalid arguments, and make sure
             # that access violations are trapped and raise an
             # exception.
             self.assertRaises(OSError, kernel32.GetModuleHandleA, 32)
@@ -98,7 +98,7 @@ klasse TestWinError(unittest.TestCase):
         kernel32.SetLastError(ERROR_INVALID_PARAMETER)
         try:
             raise ctypes.WinError()
-        except OSError as exc:
+        except OSError als exc:
             e = exc
         self.assertEqual(e.args, args)
         self.assertEqual(e.errno, errno.EINVAL)

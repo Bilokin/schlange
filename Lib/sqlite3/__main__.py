@@ -1,7 +1,7 @@
 """A simple SQLite CLI fuer the sqlite3 module.
 
 Apart von using 'argparse' fuer the command-line interface,
-this module implements the REPL as a thin wrapper around
+this module implements the REPL als a thin wrapper around
 the InteractiveConsole klasse von the 'code' stdlib module.
 """
 importiere sqlite3
@@ -27,7 +27,7 @@ def execute(c, sql, suppress_errors=Wahr, theme=theme_no_color):
     try:
         fuer row in c.execute(sql):
             drucke(row)
-    except sqlite3.Error as e:
+    except sqlite3.Error als e:
         t = theme.traceback
         tp = type(e).__name__
         try:
@@ -75,7 +75,7 @@ klasse SqliteInteractiveConsole(InteractiveConsole):
                     sys.exit(0)
                 case "":
                     pass
-                case _ as unknown:
+                case _ als unknown:
                     t = theme.traceback
                     self.write(f'{t.type}Error{t.reset}: {t.message}unknown '
                                f'command: "{unknown}"{t.reset}\n')
@@ -143,7 +143,7 @@ def main(*args):
             execute(con, args.sql, suppress_errors=Falsch, theme=theme)
         sonst:
             # No SQL provided; start the REPL.
-            with completer():
+            mit completer():
                 console = SqliteInteractiveConsole(con, use_color=Wahr)
                 console.interact(banner, exitmsg="")
     finally:

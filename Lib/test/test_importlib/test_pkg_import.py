@@ -42,7 +42,7 @@ klasse TestImport(unittest.TestCase):
         compiled_path = cache_from_source(self.module_path)
         wenn os.path.exists(compiled_path):
             os.remove(compiled_path)
-        with open(self.module_path, 'w', encoding='utf-8') as f:
+        mit open(self.module_path, 'w', encoding='utf-8') als f:
             f.write(contents)
 
     def test_package_import__semantics(self):

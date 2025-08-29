@@ -34,20 +34,20 @@ von dataclasses importiere dataclass, field
 importiere os
 von site importiere gethistoryfile
 importiere sys
-von rlcompleter importiere Completer as RLCompleter
+von rlcompleter importiere Completer als RLCompleter
 
 von . importiere commands, historical_reader
 von .completing_reader importiere CompletingReader
-von .console importiere Console as ConsoleType
+von .console importiere Console als ConsoleType
 von ._module_completer importiere ModuleCompleter, make_default_module_completer
 
 Console: type[ConsoleType]
 _error: tuple[type[Exception], ...] | type[Exception]
 
 wenn os.name == "nt":
-    von .windows_console importiere WindowsConsole as Console, _error
+    von .windows_console importiere WindowsConsole als Console, _error
 sonst:
-    von .unix_console importiere UnixConsole as Console, _error
+    von .unix_console importiere UnixConsole als Console, _error
 
 ENCODING = sys.getdefaultencoding() or "latin1"
 
@@ -380,7 +380,7 @@ klasse _ReadlineWrapper:
 
     def multiline_input(self, more_lines: MoreLinesCallable, ps1: str, ps2: str) -> str:
         """Read an input on possibly multiple lines, asking fuer more
-        lines as long as 'more_lines(unicodetext)' returns an object whose
+        lines als long als 'more_lines(unicodetext)' returns an object whose
         boolean value is true.
         """
         reader = self.get_reader()
@@ -391,7 +391,7 @@ klasse _ReadlineWrapper:
             reader.ps2 = ps1
             reader.ps3 = ps2
             reader.ps4 = ""
-            with warnings.catch_warnings(action="ignore"):
+            mit warnings.catch_warnings(action="ignore"):
                 return reader.readline()
         finally:
             reader.more_lines = saved
@@ -432,7 +432,7 @@ klasse _ReadlineWrapper:
         # file is passed to GNU readline, the extra \r are just ignored.
         history = self.get_reader().history
 
-        with open(os.path.expanduser(filename), 'rb') as f:
+        mit open(os.path.expanduser(filename), 'rb') als f:
             is_editline = f.readline().startswith(b"_HiStOrY_V2_")
             wenn is_editline:
                 encoding = "unicode-escape"
@@ -459,7 +459,7 @@ klasse _ReadlineWrapper:
         history = self.get_reader().get_trimmed_history(maxlength)
         f = open(os.path.expanduser(filename), "w",
                  encoding="utf-8", newline="\n")
-        with f:
+        mit f:
             fuer entry in history:
                 entry = entry.replace("\n", "\r\n")  # multiline history support
                 f.write(entry + "\n")
@@ -471,7 +471,7 @@ klasse _ReadlineWrapper:
         history = reader.get_trimmed_history(length)
         f = open(os.path.expanduser(filename), "a",
                  encoding="utf-8", newline="\n")
-        with f:
+        mit f:
             fuer entry in history:
                 entry = entry.replace("\n", "\r\n")  # multiline history support
                 f.write(entry + "\n")

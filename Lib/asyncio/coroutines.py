@@ -58,9 +58,9 @@ def _format_coroutine(coro):
     assert iscoroutine(coro)
 
     def get_name(coro):
-        # Coroutines compiled with Cython sometimes don't have
+        # Coroutines compiled mit Cython sometimes don't have
         # proper __qualname__ or __name__.  While that is a bug
-        # in Cython, asyncio shouldn't crash with an AttributeError
+        # in Cython, asyncio shouldn't crash mit an AttributeError
         # in its __repr__ functions.
         wenn hasattr(coro, '__qualname__') and coro.__qualname__:
             coro_name = coro.__qualname__

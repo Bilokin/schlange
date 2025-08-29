@@ -1,9 +1,9 @@
-# Rename to stackbrowser or possibly consolidate with browser.
+# Rename to stackbrowser or possibly consolidate mit browser.
 
 importiere linecache
 importiere os
 
-importiere tkinter as tk
+importiere tkinter als tk
 
 von idlelib.debugobj importiere ObjectTreeItem, make_objecttreeitem
 von idlelib.tree importiere TreeNode, TreeItem, ScrolledCanvas
@@ -122,7 +122,7 @@ def _stackbrowser(parent):  # htest #
     flist = PyShellFileList(top)
     try: # to obtain a traceback object
         intentional_name_error
-    except NameError as e:
+    except NameError als e:
         StackBrowser(top, e, flist=flist, top=top)
 
 

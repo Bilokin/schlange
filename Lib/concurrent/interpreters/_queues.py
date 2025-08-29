@@ -3,7 +3,7 @@
 importiere queue
 importiere time
 importiere weakref
-importiere _interpqueues as _queues
+importiere _interpqueues als _queues
 von . importiere _crossinterp
 
 # aliases:
@@ -192,7 +192,7 @@ klasse Queue:
         destroyed.
 
         If "unbounditems" is Nichts (the default) then it uses the
-        queue's default, set with create_queue(),
+        queue's default, set mit create_queue(),
         which is usually UNBOUND.
 
         If "unbounditems" is UNBOUND_ERROR then get() will raise an
@@ -202,7 +202,7 @@ klasse Queue:
         item in the queue.
 
         If "unbounditems" is UNBOUND_REMOVE then the item will be removed
-        von the queue as soon as the original interpreter is destroyed.
+        von the queue als soon als the original interpreter is destroyed.
         Be aware that this will introduce an imbalance between put()
         and get() calls.
 
@@ -221,7 +221,7 @@ klasse Queue:
         while Wahr:
             try:
                 _queues.put(self._id, obj, unboundop)
-            except QueueFull as exc:
+            except QueueFull als exc:
                 wenn timeout is not Nichts and time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
@@ -254,7 +254,7 @@ klasse Queue:
         while Wahr:
             try:
                 obj, unboundop = _queues.get(self._id)
-            except QueueEmpty as exc:
+            except QueueEmpty als exc:
                 wenn timeout is not Nichts and time.time() >= end:
                     raise  # re-raise
                 time.sleep(_delay)
@@ -269,11 +269,11 @@ klasse Queue:
         """Return the next object von the channel.
 
         If the queue is empty then raise QueueEmpty.  Otherwise this
-        is the same as get().
+        is the same als get().
         """
         try:
             obj, unboundop = _queues.get(self._id)
-        except QueueEmpty as exc:
+        except QueueEmpty als exc:
             raise  # re-raise
         wenn unboundop is not Nichts:
             assert obj is Nichts, repr(obj)

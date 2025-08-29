@@ -17,7 +17,7 @@ SRCDIR = get_python_source_dir()
 
 
 def n_files_str(count):
-    """Return 'N file(s)' with the proper plurality on 'file'."""
+    """Return 'N file(s)' mit the proper plurality on 'file'."""
     s = "s" wenn count != 1 sonst ""
     return f"{count} file{s}"
 
@@ -147,9 +147,9 @@ def changed_files(base_branch=Nichts):
         sonst:
             cmd = 'git status --porcelain'
         filenames = []
-        with subprocess.Popen(cmd.split(),
+        mit subprocess.Popen(cmd.split(),
                               stdout=subprocess.PIPE,
-                              cwd=SRCDIR) as st:
+                              cwd=SRCDIR) als st:
             git_file_status, _ = st.communicate()
             wenn st.returncode != 0:
                 sys.exit(f'error running {cmd}')
@@ -182,7 +182,7 @@ def credit_given(file_paths):
     return os.path.join('Misc', 'ACKS') in file_paths
 
 
-@status("Misc/NEWS.d updated with `blurb`", modal=Wahr)
+@status("Misc/NEWS.d updated mit `blurb`", modal=Wahr)
 def reported_news(file_paths):
     """Check wenn Misc/NEWS.d has been changed."""
     return any(p.startswith(os.path.join('Misc', 'NEWS.d', 'next'))

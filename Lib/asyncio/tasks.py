@@ -72,7 +72,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
     #
     # * In state 1, one of the callbacks of __fut_waiter must be __wakeup().
     # * The transition von 1 to 2 happens when _fut_waiter becomes done(),
-    #   as it schedules __wakeup() to be called (which calls __step() so
+    #   als it schedules __wakeup() to be called (which calls __step() so
     #   we way that __step() is scheduled).
     # * It transitions von 2 to 3 when __step() is executed, and it clears
     #   _fut_waiter to Nichts.
@@ -196,8 +196,8 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
 
         Immediately after this method is called, Task.cancelled() will
         not return Wahr (unless the task was already cancelled).  A
-        task will be marked as cancelled when the wrapped coroutine
-        terminates with a CancelledError exception (even wenn cancel()
+        task will be marked als cancelled when the wrapped coroutine
+        terminates mit a CancelledError exception (even wenn cancel()
         was not called).
 
         This also increases the task's count of cancellation requests.
@@ -289,21 +289,21 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                 result = coro.send(Nichts)
             sonst:
                 result = coro.throw(exc)
-        except StopIteration as exc:
+        except StopIteration als exc:
             wenn self._must_cancel:
                 # Task is cancelled right before coro stops.
                 self._must_cancel = Falsch
                 super().cancel(msg=self._cancel_message)
             sonst:
                 super().set_result(exc.value)
-        except exceptions.CancelledError as exc:
+        except exceptions.CancelledError als exc:
             # Save the original exception so we can chain it later.
             self._cancelled_exc = exc
             super().cancel()  # I.e., Future.cancel(self).
-        except (KeyboardInterrupt, SystemExit) as exc:
+        except (KeyboardInterrupt, SystemExit) als exc:
             super().set_exception(exc)
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             super().set_exception(exc)
         sonst:
             blocking = getattr(result, '_asyncio_future_blocking', Nichts)
@@ -334,7 +334,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                 sonst:
                     new_exc = RuntimeError(
                         f'yield was used instead of yield von '
-                        f'in task {self!r} with {result!r}')
+                        f'in task {self!r} mit {result!r}')
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
 
@@ -345,7 +345,7 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
                 # Yielding a generator is just wrong.
                 new_exc = RuntimeError(
                     f'yield was used instead of yield von fuer '
-                    f'generator in task {self!r} with {result!r}')
+                    f'generator in task {self!r} mit {result!r}')
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
             sonst:
@@ -360,12 +360,12 @@ klasse Task(futures._PyFuture):  # Inherit Python Task implementation
         futures.future_discard_from_awaited_by(future, self)
         try:
             future.result()
-        except BaseException as exc:
+        except BaseException als exc:
             # This may also be a cancellation.
             self.__step(exc)
         sonst:
             # Don't pass the value of `future.result()` explicitly,
-            # as `Future.__iter__` and `Future.__await__` don't need it.
+            # als `Future.__iter__` and `Future.__await__` don't need it.
             # If we call `__step(value, Nichts)` instead of `__step()`,
             # Python eval loop would use `.send(value)` method call,
             # instead of `__next__()`, which is slower fuer futures
@@ -438,7 +438,7 @@ def _release_waiter(waiter, *args):
 
 
 async def wait_for(fut, timeout):
-    """Wait fuer the single Future or coroutine to complete, with timeout.
+    """Wait fuer the single Future or coroutine to complete, mit timeout.
 
     Coroutine will be wrapped in Task.
 
@@ -481,10 +481,10 @@ async def wait_for(fut, timeout):
         await _cancel_and_wait(fut)
         try:
             return fut.result()
-        except exceptions.CancelledError as exc:
+        except exceptions.CancelledError als exc:
             raise TimeoutError von exc
 
-    async with timeouts.timeout(timeout):
+    async mit timeouts.timeout(timeout):
         return await fut
 
 async def _wait(fs, timeout, return_when, loop):
@@ -554,7 +554,7 @@ async def _cancel_and_wait(fut):
 klasse _AsCompletedIterator:
     """Iterator of awaitables representing tasks of asyncio.as_completed.
 
-    As an asynchronous iterator, iteration yields futures as they finish. As a
+    As an asynchronous iterator, iteration yields futures als they finish. As a
     plain iterator, new coroutines are yielded that will return or raise the
     result of the next underlying future to complete.
     """
@@ -622,12 +622,12 @@ def as_completed(fs, *, timeout=Nichts):
     """Create an iterator of awaitables or their results in completion order.
 
     Run the supplied awaitables concurrently. The returned object can be
-    iterated to obtain the results of the awaitables as they finish.
+    iterated to obtain the results of the awaitables als they finish.
 
-    The object returned can be iterated as an asynchronous iterator or a plain
+    The object returned can be iterated als an asynchronous iterator or a plain
     iterator. When asynchronous iteration is used, the originally-supplied
     awaitables are yielded wenn they are tasks or futures. This makes it easy to
-    correlate previously-scheduled tasks with their results:
+    correlate previously-scheduled tasks mit their results:
 
         ipv4_connect = create_task(open_connection("127.0.0.1", 80))
         ipv6_connect = create_task(open_connection("::1", 80))
@@ -646,9 +646,9 @@ def as_completed(fs, *, timeout=Nichts):
     During asynchronous iteration, implicitly-created tasks will be yielded for
     supplied awaitables that aren't tasks or futures.
 
-    When used as a plain iterator, each iteration yields a new coroutine that
+    When used als a plain iterator, each iteration yields a new coroutine that
     returns the result or raises the exception of the next completed awaitable.
-    This pattern is compatible with Python versions older than 3.13:
+    This pattern is compatible mit Python versions older than 3.13:
 
         ipv4_connect = create_task(open_connection("127.0.0.1", 80))
         ipv6_connect = create_task(open_connection("::1", 80))
@@ -712,7 +712,7 @@ def ensure_future(coro_or_future, *, loop=Nichts):
     wenn futures.isfuture(coro_or_future):
         wenn loop is not Nichts and loop is not futures._get_loop(coro_or_future):
             raise ValueError('The future belongs to a different loop than '
-                            'the one specified as the loop argument')
+                            'the one specified als the loop argument')
         return coro_or_future
     should_close = Wahr
     wenn not coroutines.iscoroutine(coro_or_future):
@@ -776,14 +776,14 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
     done successfully, the returned future's result is the list of
     results (in the order of the original sequence, not necessarily
     the order of results arrival).  If *return_exceptions* is Wahr,
-    exceptions in the tasks are treated the same as successful
+    exceptions in the tasks are treated the same als successful
     results, and gathered in the result list; otherwise, the first
     raised exception will be immediately propagated to the returned
     future.
 
     Cancellation: wenn the outer Future is cancelled, all children (that
     have not completed yet) are also cancelled.  If any child is
-    cancelled, this is treated as wenn it raised CancelledError --
+    cancelled, this is treated als wenn it raised CancelledError --
     the outer Future is *not* cancelled in this case.  (This is to
     prevent the cancellation of one child to cause other children to
     be cancelled.)
@@ -841,7 +841,7 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
 
             fuer fut in children:
                 wenn fut.cancelled():
-                    # Check wenn 'fut' is cancelled first, as 'fut.exception()'
+                    # Check wenn 'fut' is cancelled first, als 'fut.exception()'
                     # will *raise* a CancelledError instead of returning it.
                     # Also, since we're adding the exception return value
                     # to 'results' instead of raising it, don't bother
@@ -901,7 +901,7 @@ def gather(*coros_or_futures, return_exceptions=Falsch):
     # Run done callbacks after GatheringFuture created so any post-processing
     # can be performed at this point
     # optimization: in the special case that *all* futures finished eagerly,
-    # this will effectively complete the gather eagerly, with the last
+    # this will effectively complete the gather eagerly, mit the last
     # callback setting the result (or exception) on outer before returning it
     fuer fut in done_futs:
         _done_callback(fut)
@@ -947,7 +947,7 @@ def shield(arg):
     this will still cancel shield().
 
     If you want to completely ignore cancellation (not recommended)
-    you can combine shield() with a try/except clause, as follows:
+    you can combine shield() mit a try/except clause, als follows:
 
         task = asyncio.create_task(something())
         try:
@@ -1018,7 +1018,7 @@ def run_coroutine_threadsafe(coro, loop):
             futures._chain_future(ensure_future(coro, loop=loop), future)
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             wenn future.set_running_or_notify_cancel():
                 future.set_exception(exc)
             raise
@@ -1028,7 +1028,7 @@ def run_coroutine_threadsafe(coro, loop):
 
 
 def create_eager_task_factory(custom_task_constructor):
-    """Create a function suitable fuer use as a task factory on an event-loop.
+    """Create a function suitable fuer use als a task factory on an event-loop.
 
         Example usage:
 
@@ -1038,7 +1038,7 @@ def create_eager_task_factory(custom_task_constructor):
         Now, tasks created will be started immediately (rather than being first
         scheduled to an event loop). The constructor argument can be any callable
         that returns a Task-compatible object and has a signature compatible
-        with `Task.__init__`; it must have the `eager_start` keyword argument.
+        mit `Task.__init__`; it must have the `eager_start` keyword argument.
 
         Most applications will use `Task` fuer `custom_task_constructor` and in
         this case there's no need to call `create_eager_task_factory()`
@@ -1057,7 +1057,7 @@ eager_task_factory = create_eager_task_factory(Task)
 
 
 # Collectively these two sets hold references to the complete set of active
-# tasks. Eagerly executed tasks use a faster regular set as an optimization
+# tasks. Eagerly executed tasks use a faster regular set als an optimization
 # but may graduate to a WeakSet wenn the task blocks on IO.
 _scheduled_tasks = weakref.WeakSet()
 _eager_tasks = set()

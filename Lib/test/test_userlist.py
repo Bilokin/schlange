@@ -66,7 +66,7 @@ klasse UserListTest(list_tests.CommonTest):
         self.assertEqual(u, v)
         self.assertEqual(type(u), type(v))
 
-    # Decorate existing test with recursion limit, because
+    # Decorate existing test mit recursion limit, because
     # the test is fuer C structure, but `UserList` is a Python structure.
     test_repr_deep = list_tests.CommonTest.test_repr_deep
 

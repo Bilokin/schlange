@@ -12,7 +12,7 @@ parallel.
 Followed by a complete undo().
 """
 von turtle importiere Screen, Turtle, mainloop
-von time importiere perf_counter as clock, sleep
+von time importiere perf_counter als clock, sleep
 
 def mn_eck(p, ne,sz):
     turtlelist = [p]

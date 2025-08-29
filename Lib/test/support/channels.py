@@ -1,7 +1,7 @@
 """Cross-interpreter Channels High Level Module."""
 
 importiere time
-importiere _interpchannels as _channels
+importiere _interpchannels als _channels
 von concurrent.interpreters importiere _crossinterp
 
 # aliases:
@@ -158,8 +158,8 @@ klasse RecvChannel(_ChannelEnd):
         """Return the next object von the channel.
 
         If none have been sent then return the default wenn one
-        is provided or fail with ChannelEmptyError.  Otherwise this
-        is the same as recv().
+        is provided or fail mit ChannelEmptyError.  Otherwise this
+        is the same als recv().
         """
         wenn default is _NOT_SET:
             obj, unboundop = _channels.recv(self._id)
@@ -231,7 +231,7 @@ klasse SendChannel(_ChannelEnd):
         """Send the object to the channel's receiving end.
 
         If the object is immediately received then return Wahr
-        (else Falsch).  Otherwise this is the same as send().
+        (else Falsch).  Otherwise this is the same als send().
         """
         wenn unbounditems is Nichts:
             unboundop = -1
@@ -262,7 +262,7 @@ klasse SendChannel(_ChannelEnd):
         """Send the object's buffer to the channel's receiving end.
 
         If the object is immediately received then return Wahr
-        (else Falsch).  Otherwise this is the same as send().
+        (else Falsch).  Otherwise this is the same als send().
         """
         wenn unbounditems is Nichts:
             unboundop = -1

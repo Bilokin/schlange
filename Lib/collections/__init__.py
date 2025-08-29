@@ -2,8 +2,8 @@
 alternatives to Python's general purpose built-in containers, dict,
 list, set, and tuple.
 
-* namedtuple   factory function fuer creating tuple subclasses with named fields
-* deque        list-like container with fast appends and pops on either end
+* namedtuple   factory function fuer creating tuple subclasses mit named fields
+* deque        list-like container mit fast appends and pops on either end
 * ChainMap     dict-like klasse fuer creating a single view of multiple mappings
 * Counter      dict subclass fuer counting hashable objects
 * OrderedDict  dict subclass that remembers the order entries were added
@@ -27,19 +27,19 @@ __all__ = [
 ]
 
 importiere _collections_abc
-importiere sys as _sys
+importiere sys als _sys
 
 _sys.modules['collections.abc'] = _collections_abc
 abc = _collections_abc
 
-von itertools importiere chain as _chain
-von itertools importiere repeat as _repeat
-von itertools importiere starmap as _starmap
-von keyword importiere iskeyword as _iskeyword
-von operator importiere eq as _eq
-von operator importiere itemgetter as _itemgetter
-von reprlib importiere recursive_repr as _recursive_repr
-von _weakref importiere proxy as _proxy
+von itertools importiere chain als _chain
+von itertools importiere repeat als _repeat
+von itertools importiere starmap als _starmap
+von keyword importiere iskeyword als _iskeyword
+von operator importiere eq als _eq
+von operator importiere itemgetter als _itemgetter
+von reprlib importiere recursive_repr als _recursive_repr
+von _weakref importiere proxy als _proxy
 
 try:
     von _collections importiere deque
@@ -91,12 +91,12 @@ klasse OrderedDict(dict):
     # An inherited dict maps keys to values.
     # The inherited dict provides __getitem__, __len__, __contains__, and get.
     # The remaining methods are order-aware.
-    # Big-O running times fuer all methods are the same as regular dictionaries.
+    # Big-O running times fuer all methods are the same als regular dictionaries.
 
     # The internal self.__map dict maps keys to links in a doubly linked list.
-    # The circular doubly linked list starts and ends with a sentinel element.
+    # The circular doubly linked list starts and ends mit a sentinel element.
     # The sentinel element never gets deleted (this simplifies the algorithm).
-    # The sentinel is in self.__hardroot with a weakref proxy in self.__root.
+    # The sentinel is in self.__hardroot mit a weakref proxy in self.__root.
     # The prev links are weakref proxies (to prevent circular references).
     # Individual links are kept alive by the hard reference in self.__map.
     # Those hard references disappear when a key is deleted von an OrderedDict.
@@ -120,7 +120,7 @@ klasse OrderedDict(dict):
                     dict_setitem=dict.__setitem__, proxy=_proxy, Link=_Link):
         'od.__setitem__(i, y) <==> od[i]=y'
         # Setting a new item creates a new link at the end of the linked list,
-        # and the inherited dictionary is updated with the new key/value pair.
+        # and the inherited dictionary is updated mit the new key/value pair.
         wenn key not in self:
             self.__map[key] = link = Link()
             root = self.__root
@@ -252,7 +252,7 @@ klasse OrderedDict(dict):
         marker = self.__marker
         result = dict.pop(self, key, marker)
         wenn result is not marker:
-            # The same as in __delitem__().
+            # The same als in __delitem__().
             link = self.__map.pop(key)
             link_prev = link.prev
             link_next = link.next
@@ -266,7 +266,7 @@ klasse OrderedDict(dict):
         return default
 
     def setdefault(self, key, default=Nichts):
-        '''Insert key with a value of default wenn key is not in the dictionary.
+        '''Insert key mit a value of default wenn key is not in the dictionary.
 
         Return the value fuer key wenn key is in the dictionary, sonst default.
         '''
@@ -307,7 +307,7 @@ klasse OrderedDict(dict):
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts):
-        '''Create a new ordered dictionary with keys von iterable and values set to value.
+        '''Create a new ordered dictionary mit keys von iterable and values set to value.
         '''
         self = cls()
         fuer key in iterable:
@@ -359,12 +359,12 @@ except ImportError:
     _tuplegetter = lambda index, doc: property(_itemgetter(index), doc=doc)
 
 def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=Nichts):
-    """Returns a new subclass of tuple with named fields.
+    """Returns a new subclass of tuple mit named fields.
 
     >>> Point = namedtuple('Point', ['x', 'y'])
     >>> Point.__doc__                   # docstring fuer the new class
     'Point(x, y)'
-    >>> p = Point(11, y=22)             # instantiate with positional args or keywords
+    >>> p = Point(11, y=22)             # instantiate mit positional args or keywords
     >>> p[0] + p[1]                     # indexable like a plain tuple
     33
     >>> x, y = p                        # unpack like a regular tuple
@@ -383,7 +383,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     """
 
     # Validate the field names.  At the user's option, either generate an error
-    # message or automatically replace the field name with a valid name.
+    # message or automatically replace the field name mit a valid name.
     wenn isinstance(field_names, str):
         field_names = field_names.replace(',', ' ').split()
     field_names = list(map(str, field_names))
@@ -412,7 +412,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
     seen = set()
     fuer name in field_names:
         wenn name.startswith('_') and not rename:
-            raise ValueError('Field names cannot start with an underscore: '
+            raise ValueError('Field names cannot start mit an underscore: '
                              f'{name!r}')
         wenn name in seen:
             raise ValueError(f'Encountered duplicate field name: {name!r}')
@@ -467,7 +467,7 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         return result
 
     _replace.__doc__ = (f'Return a new {typename} object replacing specified '
-                        'fields with new values')
+                        'fields mit new values')
 
     def __repr__(self):
         'Return a nicely formatted representation string'
@@ -478,10 +478,10 @@ def namedtuple(typename, field_names, *, rename=Falsch, defaults=Nichts, module=
         return _dict(_zip(self._fields, self))
 
     def __getnewargs__(self):
-        'Return self as a plain tuple.  Used by copy and pickle.'
+        'Return self als a plain tuple.  Used by copy and pickle.'
         return _tuple(self)
 
-    # Modify function metadata to help with introspection and debugging
+    # Modify function metadata to help mit introspection and debugging
     fuer method in (
         __new__,
         _make.__func__,
@@ -550,8 +550,8 @@ except ImportError:
 
 klasse Counter(dict):
     '''Dict subclass fuer counting hashable items.  Sometimes called a bag
-    or multiset.  Elements are stored as dictionary keys and their counts
-    are stored as dictionary values.
+    or multiset.  Elements are stored als dictionary keys and their counts
+    are stored als dictionary values.
 
     >>> c = Counter('abcdeabcdabcaba')  # count elements von a string
 
@@ -559,7 +559,7 @@ klasse Counter(dict):
     [('a', 5), ('b', 4), ('c', 3)]
     >>> sorted(c)                       # list all unique elements
     ['a', 'b', 'c', 'd', 'e']
-    >>> ''.join(sorted(c.elements()))   # list elements with repetitions
+    >>> ''.join(sorted(c.elements()))   # list elements mit repetitions
     'aaaaabbbbcccdde'
     >>> sum(c.values())                 # total of all counts
     15
@@ -642,7 +642,7 @@ klasse Counter(dict):
         return heapq.nlargest(n, self.items(), key=_itemgetter(1))
 
     def elements(self):
-        '''Iterator over elements repeating each as many times as its count.
+        '''Iterator over elements repeating each als many times als its count.
 
         >>> c = Counter('ABCABC')
         >>> sorted(c.elements())
@@ -667,10 +667,10 @@ klasse Counter(dict):
     @classmethod
     def fromkeys(cls, iterable, v=Nichts):
         # There is no equivalent method fuer counters because the semantics
-        # would be ambiguous in cases such as Counter.fromkeys('aaabbc', v=2).
+        # would be ambiguous in cases such als Counter.fromkeys('aaabbc', v=2).
         # Initializing counters to zero values isn't necessary because zero
         # is already the default value fuer counter lookups.  Initializing
-        # to one is easily accomplished with Counter(set(iterable)).  For
+        # to one is easily accomplished mit Counter(set(iterable)).  For
         # more exotic cases, create a dictionary first using a dictionary
         # comprehension or dict.fromkeys().
         raise NotImplementedError(
@@ -691,7 +691,7 @@ klasse Counter(dict):
         '''
         # The regular dict.update() operation makes no sense here because the
         # replace behavior results in some of the original untouched counts
-        # being mixed-in with all of the other counts fuer a mismash that
+        # being mixed-in mit all of the other counts fuer a mismash that
         # doesn't have a straight-forward interpretation in most counting
         # contexts.  Instead, we implement straight-addition.  Both the inputs
         # and outputs are allowed to contain zero and negative counts.
@@ -798,13 +798,13 @@ klasse Counter(dict):
     #         set(cp & cq) == sp & sq
 
     def __eq__(self, other):
-        'Wahr wenn all counts agree. Missing counts are treated as zero.'
+        'Wahr wenn all counts agree. Missing counts are treated als zero.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return all(self[e] == other[e] fuer c in (self, other) fuer e in c)
 
     def __ne__(self, other):
-        'Wahr wenn any counts disagree. Missing counts are treated as zero.'
+        'Wahr wenn any counts disagree. Missing counts are treated als zero.'
         wenn not isinstance(other, Counter):
             return NotImplemented
         return not self == other
@@ -853,7 +853,7 @@ klasse Counter(dict):
         return result
 
     def __sub__(self, other):
-        ''' Subtract count, but keep only results with positive counts.
+        ''' Subtract count, but keep only results mit positive counts.
 
         >>> Counter('abbbc') - Counter('bccd')
         Counter({'b': 2, 'a': 1})
@@ -928,7 +928,7 @@ klasse Counter(dict):
         return result
 
     def _keep_positive(self):
-        '''Internal method to strip elements with a negative or zero count'''
+        '''Internal method to strip elements mit a negative or zero count'''
         nonpositive = [elem fuer elem, count in self.items() wenn not count > 0]
         fuer elem in nonpositive:
             del self[elem]
@@ -948,7 +948,7 @@ klasse Counter(dict):
         return self._keep_positive()
 
     def __isub__(self, other):
-        '''Inplace subtract counter, but keep only results with positive counts.
+        '''Inplace subtract counter, but keep only results mit positive counts.
 
         >>> c = Counter('abbbc')
         >>> c -= Counter('bccd')
@@ -1022,7 +1022,7 @@ klasse ChainMap(_collections_abc.MutableMapping):
     def __getitem__(self, key):
         fuer mapping in self.maps:
             try:
-                return mapping[key]             # can't use 'key in mapping' with defaultdict
+                return mapping[key]             # can't use 'key in mapping' mit defaultdict
             except KeyError:
                 pass
         return self.__missing__(key)            # support subclasses that define __missing__
@@ -1054,17 +1054,17 @@ klasse ChainMap(_collections_abc.MutableMapping):
 
     @classmethod
     def fromkeys(cls, iterable, value=Nichts, /):
-        'Create a new ChainMap with keys von iterable and values set to value.'
+        'Create a new ChainMap mit keys von iterable and values set to value.'
         return cls(dict.fromkeys(iterable, value))
 
     def copy(self):
-        'New ChainMap or subclass with a new copy of maps[0] and refs to maps[1:]'
+        'New ChainMap or subclass mit a new copy of maps[0] and refs to maps[1:]'
         return self.__class__(self.maps[0].copy(), *self.maps[1:])
 
     __copy__ = copy
 
     def new_child(self, m=Nichts, **kwargs):      # like Django's Context.push()
-        '''New ChainMap with a new map followed by all previous maps.
+        '''New ChainMap mit a new map followed by all previous maps.
         If no map is provided, an empty dict is used.
         Keyword arguments update the map or new empty dict.
         '''

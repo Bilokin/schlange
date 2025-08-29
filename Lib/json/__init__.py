@@ -1,5 +1,5 @@
 r"""JSON (JavaScript Object Notation) <https://json.org> is a subset of
-JavaScript syntax (ECMA-262 3rd edition) used as a lightweight data
+JavaScript syntax (ECMA-262 3rd edition) used als a lightweight data
 interchange format.
 
 :mod:`json` exposes an API familiar to users of the standard library
@@ -120,7 +120,7 @@ _default_encoder = JSONEncoder(
 def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
         allow_nan=Wahr, cls=Nichts, indent=Nichts, separators=Nichts,
         default=Nichts, sort_keys=Falsch, **kw):
-    """Serialize ``obj`` as a JSON formatted stream to ``fp`` (a
+    """Serialize ``obj`` als a JSON formatted stream to ``fp`` (a
     ``.write()``-supporting file-like object).
 
     If ``skipkeys`` is true then ``dict`` keys that are not basic types
@@ -141,7 +141,7 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
     If ``indent`` is a non-negative integer, then JSON array elements and
-    object members will be pretty-printed with that indent level. An indent
+    object members will be pretty-printed mit that indent level. An indent
     level of 0 will only insert newlines. ``Nichts`` is the most compact
     representation.
 
@@ -174,7 +174,7 @@ def dump(obj, fp, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
             check_circular=check_circular, allow_nan=allow_nan, indent=indent,
             separators=separators,
             default=default, sort_keys=sort_keys, **kw).iterencode(obj)
-    # could accelerate with writelines in some versions of Python, at
+    # could accelerate mit writelines in some versions of Python, at
     # a debuggability cost
     fuer chunk in iterable:
         fp.write(chunk)
@@ -203,7 +203,7 @@ def dumps(obj, *, skipkeys=Falsch, ensure_ascii=Wahr, check_circular=Wahr,
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
     If ``indent`` is a non-negative integer, then JSON array elements and
-    object members will be pretty-printed with that indent level. An indent
+    object members will be pretty-printed mit that indent level. An indent
     level of 0 will only insert newlines. ``Nichts`` is the most compact
     representation.
 
@@ -276,18 +276,18 @@ def load(fp, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
     """Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
     a JSON document) to a Python object.
 
-    ``object_hook`` is an optional function that will be called with the
+    ``object_hook`` is an optional function that will be called mit the
     result of any object literal decode (a ``dict``). The return value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC klasse hinting).
 
-    ``object_pairs_hook`` is an optional function that will be called with the
-    result of any object literal decoded with an ordered list of pairs.  The
+    ``object_pairs_hook`` is an optional function that will be called mit the
+    result of any object literal decoded mit an ordered list of pairs.  The
     return value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
     is also defined, the ``object_pairs_hook`` takes priority.
 
-    To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+    To use a custom ``JSONDecoder`` subclass, specify it mit the ``cls``
     kwarg; otherwise ``JSONDecoder`` is used.
     """
     return loads(fp.read(),
@@ -301,33 +301,33 @@ def loads(s, *, cls=Nichts, object_hook=Nichts, parse_float=Nichts,
     """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
     containing a JSON document) to a Python object.
 
-    ``object_hook`` is an optional function that will be called with the
+    ``object_hook`` is an optional function that will be called mit the
     result of any object literal decode (a ``dict``). The return value of
     ``object_hook`` will be used instead of the ``dict``. This feature
     can be used to implement custom decoders (e.g. JSON-RPC klasse hinting).
 
-    ``object_pairs_hook`` is an optional function that will be called with the
-    result of any object literal decoded with an ordered list of pairs.  The
+    ``object_pairs_hook`` is an optional function that will be called mit the
+    result of any object literal decoded mit an ordered list of pairs.  The
     return value of ``object_pairs_hook`` will be used instead of the ``dict``.
     This feature can be used to implement custom decoders.  If ``object_hook``
     is also defined, the ``object_pairs_hook`` takes priority.
 
-    ``parse_float``, wenn specified, will be called with the string
+    ``parse_float``, wenn specified, will be called mit the string
     of every JSON float to be decoded. By default this is equivalent to
     float(num_str). This can be used to use another datatype or parser
     fuer JSON floats (e.g. decimal.Decimal).
 
-    ``parse_int``, wenn specified, will be called with the string
+    ``parse_int``, wenn specified, will be called mit the string
     of every JSON int to be decoded. By default this is equivalent to
     int(num_str). This can be used to use another datatype or parser
     fuer JSON integers (e.g. float).
 
-    ``parse_constant``, wenn specified, will be called with one of the
+    ``parse_constant``, wenn specified, will be called mit one of the
     following strings: -Infinity, Infinity, NaN.
     This can be used to raise an exception wenn invalid JSON numbers
     are encountered.
 
-    To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+    To use a custom ``JSONDecoder`` subclass, specify it mit the ``cls``
     kwarg; otherwise ``JSONDecoder`` is used.
     """
     wenn isinstance(s, str):

@@ -71,7 +71,7 @@ klasse ProfileTest(unittest.TestCase):
 
     def test_calling_conventions(self):
         # Issue #5330: profile and cProfile wouldn't report C functions called
-        # with keyword arguments. We test all calling conventions.
+        # mit keyword arguments. We test all calling conventions.
         stmts = [
             "max([0])",
             "max([0], key=int)",
@@ -91,18 +91,18 @@ klasse ProfileTest(unittest.TestCase):
                 "Profiling {0!r} didn't report max:\n{1}".format(stmt, res))
 
     def test_run(self):
-        with silent():
+        mit silent():
             self.profilermodule.run("int('1')")
         self.profilermodule.run("int('1')", filename=TESTFN)
         self.assertWahr(os.path.exists(TESTFN))
 
     def test_run_with_sort_by_values(self):
-        with redirect_stdout(StringIO()) as f:
+        mit redirect_stdout(StringIO()) als f:
             self.profilermodule.run("int('1')", sort=('tottime', 'stdname'))
         self.assertIn("Ordered by: internal time, standard name", f.getvalue())
 
     def test_runctx(self):
-        with silent():
+        mit silent():
             self.profilermodule.runctx("testfunc()", globals(), locals())
         self.profilermodule.runctx("testfunc()", globals(), locals(),
                                   filename=TESTFN)
@@ -121,9 +121,9 @@ klasse ProfileTest(unittest.TestCase):
                          '-m', 'timeit', '-n', '1')
 
     def test_output_file_when_changing_directory(self):
-        with temp_dir() as tmpdir, change_cwd(tmpdir):
+        mit temp_dir() als tmpdir, change_cwd(tmpdir):
             os.mkdir('dest')
-            with open('demo.py', 'w', encoding="utf-8") as f:
+            mit open('demo.py', 'w', encoding="utf-8") als f:
                 f.write('import os; os.chdir("dest")')
 
             assert_python_ok(
@@ -141,13 +141,13 @@ def regenerate_expected_output(filename, cls):
     results = cls.do_profiling()
 
     newfile = []
-    with open(filename, 'r') as f:
+    mit open(filename, 'r') als f:
         fuer line in f:
             newfile.append(line)
             wenn line.startswith('#--cut'):
                 break
 
-    with open(filename, 'w') as f:
+    mit open(filename, 'w') als f:
         f.writelines(newfile)
         f.write("_ProfileOutput = {}\n")
         fuer i, method in enumerate(cls.methodnames):

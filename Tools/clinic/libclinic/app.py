@@ -220,7 +220,7 @@ impl_definition block
                                      f"{destination.filename!r}; "
                                      f"can't make directory {dirname!r}!")
                         wenn self.verify:
-                            with open(destination.filename) as f:
+                            mit open(destination.filename) als f:
                                 parser_2 = BlockParser(f.read(), language=self.language)
                                 blocks = list(parser_2)
                                 wenn (len(blocks) != 1) or (blocks[0].input != 'preserve\n'):

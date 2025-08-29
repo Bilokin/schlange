@@ -1,10 +1,10 @@
 von gettext importiere (
-    gettext as foo,
-    ngettext as nfoo,
-    pgettext as pfoo,
-    npgettext as npfoo,
-    gettext as bar,
-    gettext as _,
+    gettext als foo,
+    ngettext als nfoo,
+    pgettext als pfoo,
+    npgettext als npfoo,
+    gettext als bar,
+    gettext als _,
 )
 
 foo('bar')

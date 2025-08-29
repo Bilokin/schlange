@@ -185,7 +185,7 @@ klasse EmbeddingTestsMixin:
             self.assertWahr(interp.modules)
             current_run.append(interp)
 
-            # The last line in the loop should be the same as the first.
+            # The last line in the loop should be the same als the first.
             wenn len(current_run) == 5:
                 main = current_run[0]
                 self.assertEqual(interp, main)
@@ -216,16 +216,16 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
 
             wenn '0x0' in main:
                 # XXX Fix on Windows (and other platforms): something
-                # is going on with the pointers in Programs/_testembed.c.
+                # is going on mit the pointers in Programs/_testembed.c.
                 # interp.interp is 0x0 and interp.modules is the same
                 # between interpreters.
-                raise unittest.SkipTest('platform prints pointers as 0x0')
+                raise unittest.SkipTest('platform prints pointers als 0x0')
 
             fuer sub in subs:
                 # A new subinterpreter may have the same
-                # PyInterpreterState pointer as a previous one if
+                # PyInterpreterState pointer als a previous one if
                 # the earlier one has already been destroyed.  So
-                # we compare with the main interpreter.  The same
+                # we compare mit the main interpreter.  The same
                 # applies to tstate.
                 self.assertNotEqual(sub.interp, main.interp)
                 self.assertNotEqual(sub.tstate, main.tstate)
@@ -368,7 +368,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         # drucke() calls type->tp_repr(instance) and so checks that the types
         # are still working properly.
         script = support.findfile('_test_embed_structseq.py')
-        with open(script, encoding="utf-8") as fp:
+        mit open(script, encoding="utf-8") als fp:
             code = fp.read()
         out, err = self.run_embedded_interpreter("test_repeated_init_exec", code)
         self.assertEqual(out, 'Tests passed\n' * INIT_LOOPS)
@@ -484,7 +484,7 @@ klasse EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 ('embedded', embedded_results),
                 ('reinit', reinit_results),
             ]:
-                with self.subTest(src, cls=cls, slotattr=attr):
+                mit self.subTest(src, cls=cls, slotattr=attr):
                     actual = results.pop(key)
                     self.assertEqual(actual, expected)
         self.maxDiff = Nichts
@@ -1343,7 +1343,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                ignore_stderr=Wahr)
 
     def test_init_setpath_config(self):
-        # Test Py_SetPath() with PyConfig
+        # Test Py_SetPath() mit PyConfig
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
 
@@ -1388,8 +1388,8 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     @contextlib.contextmanager
     def tmpdir_with_python(self, subdir=Nichts):
-        # Temporary directory with a copy of the Python program
-        with tempfile.TemporaryDirectory() as tmpdir:
+        # Temporary directory mit a copy of the Python program
+        mit tempfile.TemporaryDirectory() als tmpdir:
             # bpo-38234: On macOS and FreeBSD, the temporary directory
             # can be symbolic link. For example, /tmp can be a symbolic link
             # to /var/tmp. Call realpath() to resolve all symbolic links.
@@ -1415,7 +1415,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             yield tmpdir
 
     def test_init_setpythonhome(self):
-        # Test Py_SetPythonHome(home) with PYTHONPATH env var
+        # Test Py_SetPythonHome(home) mit PYTHONPATH env var
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
         paths_str = os.path.pathsep.join(paths)
@@ -1502,7 +1502,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         env['NEGATIVE_ISPYTHONBUILD'] = '0'
         config['_is_python_build'] = 1
         exedir = os.path.dirname(sys.executable)
-        with open(os.path.join(exedir, 'pybuilddir.txt'), encoding='utf8') as f:
+        mit open(os.path.join(exedir, 'pybuilddir.txt'), encoding='utf8') als f:
             expected_paths[1 wenn MS_WINDOWS sonst 2] = os.path.normpath(
                 os.path.join(exedir, f'{f.read()}\n$'.splitlines()[0]))
         wenn not MS_WINDOWS:
@@ -1525,9 +1525,9 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     @unittest.skipIf(MS_WINDOWS, 'See test_init_pybuilddir_win32')
     def test_init_pybuilddir(self):
-        # Test path configuration with pybuilddir.txt configuration file
+        # Test path configuration mit pybuilddir.txt configuration file
 
-        with self.tmpdir_with_python() as tmpdir:
+        mit self.tmpdir_with_python() als tmpdir:
             # pybuilddir.txt is a sub-directory relative to the current
             # directory (tmpdir)
             vpath = sysconfig.get_config_var("VPATH") or ''
@@ -1538,7 +1538,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             os.mkdir(libdir)
 
             filename = os.path.join(tmpdir, 'pybuilddir.txt')
-            with open(filename, "w", encoding="utf8") as fp:
+            mit open(filename, "w", encoding="utf8") als fp:
                 fp.write(subdir)
 
             module_search_paths = self.module_search_paths()
@@ -1561,21 +1561,21 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
     @unittest.skipUnless(MS_WINDOWS, 'See test_init_pybuilddir')
     def test_init_pybuilddir_win32(self):
-        # Test path configuration with pybuilddir.txt configuration file
+        # Test path configuration mit pybuilddir.txt configuration file
 
         vpath = sysconfig.get_config_var("VPATH")
         subdir = r'PCbuild\arch'
         wenn os.path.normpath(vpath).count(os.sep) == 2:
             subdir = os.path.join(subdir, 'instrumented')
 
-        with self.tmpdir_with_python(subdir) as tmpdir:
+        mit self.tmpdir_with_python(subdir) als tmpdir:
             # The prefix is dirname(executable) + VPATH
             prefix = os.path.normpath(os.path.join(tmpdir, vpath))
             # The stdlib dir is dirname(executable) + VPATH + 'Lib'
             stdlibdir = os.path.normpath(os.path.join(tmpdir, vpath, 'Lib'))
 
             filename = os.path.join(tmpdir, 'pybuilddir.txt')
-            with open(filename, "w", encoding="utf8") as fp:
+            mit open(filename, "w", encoding="utf8") als fp:
                 fp.write(tmpdir)
 
             module_search_paths = self.module_search_paths()
@@ -1600,10 +1600,10 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                    ignore_stderr=Falsch, cwd=tmpdir)
 
     def test_init_pyvenv_cfg(self):
-        # Test path configuration with pyvenv.cfg configuration file
+        # Test path configuration mit pyvenv.cfg configuration file
 
-        with self.tmpdir_with_python() as tmpdir, \
-             tempfile.TemporaryDirectory() as pyvenv_home:
+        mit self.tmpdir_with_python() als tmpdir, \
+             tempfile.TemporaryDirectory() als pyvenv_home:
 
             ver = sys.version_info
             base_prefix = sysconfig.get_config_var("prefix")
@@ -1621,14 +1621,14 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             sonst:
                 lib_folder = os.path.join(pyvenv_home, 'Lib')
                 os.makedirs(lib_folder)
-                # getpath.py uses Lib\os.py as the LANDMARK
+                # getpath.py uses Lib\os.py als the LANDMARK
                 shutil.copyfile(
                     os.path.join(support.STDLIB_DIR, 'os.py'),
                     os.path.join(lib_folder, 'os.py'),
                 )
 
             filename = os.path.join(tmpdir, 'pyvenv.cfg')
-            with open(filename, "w", encoding="utf8") as fp:
+            mit open(filename, "w", encoding="utf8") als fp:
                 drucke("home = %s" % pyvenv_home, file=fp)
                 drucke("include-system-site-packages = false", file=fp)
 
@@ -1816,7 +1816,7 @@ klasse InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 'use_frozen_modules': expected,
             }
             env = {'TESTFROZEN': raw[1:]} wenn raw sonst Nichts
-            with self.subTest(repr(raw)):
+            mit self.subTest(repr(raw)):
                 self.check_all_configs("test_init_use_frozen_modules", config,
                                        api=API_PYTHON, env=env)
 
@@ -1877,7 +1877,7 @@ klasse AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def test_audit_run_interactivehook(self):
         startup = os.path.join(self.oldcwd, os_helper.TESTFN) + ".py"
-        with open(startup, "w", encoding="utf-8") as f:
+        mit open(startup, "w", encoding="utf-8") als f:
             drucke("import sys", file=f)
             drucke("sys.__interactivehook__ = lambda: Nichts", file=f)
         try:
@@ -1890,7 +1890,7 @@ klasse AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
 
     def test_audit_run_startup(self):
         startup = os.path.join(self.oldcwd, os_helper.TESTFN) + ".py"
-        with open(startup, "w", encoding="utf-8") as f:
+        mit open(startup, "w", encoding="utf-8") als f:
             drucke("pass", file=f)
         try:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
@@ -1963,7 +1963,7 @@ klasse MiscTests(EmbeddingTestsMixin, unittest.TestCase):
                 self.fail(f"unexpected output: {out!a}")
             refs = int(match.group(1))
             blocks = int(match.group(2))
-            with self.subTest(frozen_modules=flag, stmt=stmt):
+            mit self.subTest(frozen_modules=flag, stmt=stmt):
                 self.assertEqual(refs, 0, out)
                 self.assertEqual(blocks, 0, out)
 

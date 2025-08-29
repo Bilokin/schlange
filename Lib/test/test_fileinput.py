@@ -26,7 +26,7 @@ von fileinput importiere FileInput, hook_encoded
 
 von test.support importiere verbose
 von test.support.os_helper importiere TESTFN, FakePath
-von test.support.os_helper importiere unlink as safe_unlink
+von test.support.os_helper importiere unlink als safe_unlink
 von test.support importiere os_helper
 von test importiere support
 von unittest importiere mock
@@ -43,7 +43,7 @@ klasse BaseTests:
         fd, name = tempfile.mkstemp()
         self.addCleanup(os_helper.unlink, name)
         encoding = Nichts wenn "b" in mode sonst "utf-8"
-        with open(fd, mode, encoding=encoding) as f:
+        mit open(fd, mode, encoding=encoding) als f:
             f.write(content)
         return name
 
@@ -230,12 +230,12 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_invalid_opening_mode(self):
         fuer mode in ('w', 'rU', 'U'):
-            with self.subTest(mode=mode):
-                with self.assertRaises(ValueError):
+            mit self.subTest(mode=mode):
+                mit self.assertRaises(ValueError):
                     FileInput(mode=mode)
 
     def test_stdin_binary_mode(self):
-        with mock.patch('sys.stdin') as m_stdin:
+        mit mock.patch('sys.stdin') als m_stdin:
             m_stdin.buffer = BytesIO(b'spam, bacon, sausage, and spam')
             fi = FileInput(files=['-'], mode='rb')
             lines = list(fi)
@@ -275,12 +275,12 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
         t = self.writeTmp("\n")
         custom_open_hook = CustomOpenHook()
-        with FileInput([t], openhook=custom_open_hook) as fi:
+        mit FileInput([t], openhook=custom_open_hook) als fi:
             fi.readline()
         self.assertWahr(custom_open_hook.invoked, "openhook not invoked")
 
     def test_readline(self):
-        with open(TESTFN, 'wb') as f:
+        mit open(TESTFN, 'wb') als f:
             f.write(b'A\nB\r\nC\r')
             # Fill TextIOWrapper buffer.
             f.write(b'123456789\n' * 1000)
@@ -288,26 +288,26 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
             f.write(b'\x80')
         self.addCleanup(safe_unlink, TESTFN)
 
-        with FileInput(files=TESTFN,
-                       openhook=hook_encoded('ascii')) as fi:
+        mit FileInput(files=TESTFN,
+                       openhook=hook_encoded('ascii')) als fi:
             try:
                 self.assertEqual(fi.readline(), 'A\n')
                 self.assertEqual(fi.readline(), 'B\n')
                 self.assertEqual(fi.readline(), 'C\n')
             except UnicodeDecodeError:
                 self.fail('Read to end of file')
-            with self.assertRaises(UnicodeDecodeError):
+            mit self.assertRaises(UnicodeDecodeError):
                 # Read to the end of file.
                 list(fi)
             self.assertEqual(fi.readline(), '')
             self.assertEqual(fi.readline(), '')
 
     def test_readline_binary_mode(self):
-        with open(TESTFN, 'wb') as f:
+        mit open(TESTFN, 'wb') als f:
             f.write(b'A\nB\r\nC\rD')
         self.addCleanup(safe_unlink, TESTFN)
 
-        with FileInput(files=TESTFN, mode='rb') as fi:
+        mit FileInput(files=TESTFN, mode='rb') als fi:
             self.assertEqual(fi.readline(), b'A\n')
             self.assertEqual(fi.readline(), b'B\r\n')
             self.assertEqual(fi.readline(), b'C\rD')
@@ -317,36 +317,36 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_inplace_binary_write_mode(self):
         temp_file = self.writeTmp(b'Initial text.', mode='wb')
-        with FileInput(temp_file, mode='rb', inplace=Wahr) as fobj:
+        mit FileInput(temp_file, mode='rb', inplace=Wahr) als fobj:
             line = fobj.readline()
             self.assertEqual(line, b'Initial text.')
-            # drucke() cannot be used with files opened in binary mode.
+            # drucke() cannot be used mit files opened in binary mode.
             sys.stdout.write(b'New line.')
-        with open(temp_file, 'rb') as f:
+        mit open(temp_file, 'rb') als f:
             self.assertEqual(f.read(), b'New line.')
 
     def test_inplace_encoding_errors(self):
         temp_file = self.writeTmp(b'Initial text \x88', mode='wb')
-        with FileInput(temp_file, inplace=Wahr,
-                       encoding="ascii", errors="replace") as fobj:
+        mit FileInput(temp_file, inplace=Wahr,
+                       encoding="ascii", errors="replace") als fobj:
             line = fobj.readline()
             self.assertEqual(line, 'Initial text \ufffd')
             drucke("New line \x88")
-        with open(temp_file, 'rb') as f:
+        mit open(temp_file, 'rb') als f:
             self.assertEqual(f.read().rstrip(b'\r\n'), b'New line ?')
 
     def test_file_hook_backward_compatibility(self):
         def old_hook(filename, mode):
             return io.StringIO("I used to receive only filename and mode")
         t = self.writeTmp("\n")
-        with FileInput([t], openhook=old_hook) as fi:
+        mit FileInput([t], openhook=old_hook) als fi:
             result = fi.readline()
         self.assertEqual(result, "I used to receive only filename and mode")
 
     def test_context_manager(self):
         t1 = self.writeTmp("A\nB\nC")
         t2 = self.writeTmp("D\nE\nF")
-        with FileInput(files=(t1, t2), encoding="utf-8") as fi:
+        mit FileInput(files=(t1, t2), encoding="utf-8") als fi:
             lines = list(fi)
         self.assertEqual(lines, ["A\n", "B\n", "C", "D\n", "E\n", "F"])
         self.assertEqual(fi.filelineno(), 3)
@@ -356,13 +356,13 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
     def test_close_on_exception(self):
         t1 = self.writeTmp("")
         try:
-            with FileInput(files=t1, encoding="utf-8") as fi:
+            mit FileInput(files=t1, encoding="utf-8") als fi:
                 raise OSError
         except OSError:
             self.assertEqual(fi._files, ())
 
     def test_empty_files_list_specified_to_constructor(self):
-        with FileInput(files=[], encoding="utf-8") as fi:
+        mit FileInput(files=[], encoding="utf-8") als fi:
             self.assertEqual(fi._files, ('-',))
 
     def test_nextfile_oserror_deleting_backup(self):
@@ -375,7 +375,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         try:
             t = self.writeTmp("\n")
             self.addCleanup(safe_unlink, t + '.bak')
-            with FileInput(files=[t], inplace=Wahr, encoding="utf-8") as fi:
+            mit FileInput(files=[t], inplace=Wahr, encoding="utf-8") als fi:
                 next(fi) # make sure the file is opened
                 os.unlink = os_unlink_replacement
                 fi.nextfile()
@@ -394,7 +394,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         os_fstat_replacement = UnconditionallyRaise(OSError)
         try:
             t = self.writeTmp("\n")
-            with FileInput(files=[t], inplace=Wahr, encoding="utf-8") as fi:
+            mit FileInput(files=[t], inplace=Wahr, encoding="utf-8") als fi:
                 os.fstat = os_fstat_replacement
                 fi.readline()
         finally:
@@ -412,7 +412,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
         os_chmod_replacement = UnconditionallyRaise(OSError)
         try:
             t = self.writeTmp("\n")
-            with FileInput(files=[t], inplace=Wahr, encoding="utf-8") as fi:
+            mit FileInput(files=[t], inplace=Wahr, encoding="utf-8") als fi:
                 os.chmod = os_chmod_replacement
                 fi.readline()
         finally:
@@ -431,7 +431,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
         unconditionally_raise_ValueError = FilenoRaisesValueError()
         t = self.writeTmp("\n")
-        with FileInput(files=[t], encoding="utf-8") as fi:
+        mit FileInput(files=[t], encoding="utf-8") als fi:
             file_backup = fi._file
             try:
                 fi._file = unconditionally_raise_ValueError
@@ -447,8 +447,8 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_readline_buffering(self):
         src = LineReader()
-        with FileInput(files=['line1\nline2', 'line3\n'],
-                       openhook=src.openhook) as fi:
+        mit FileInput(files=['line1\nline2', 'line3\n'],
+                       openhook=src.openhook) als fi:
             self.assertEqual(src.linesread, [])
             self.assertEqual(fi.readline(), 'line1\n')
             self.assertEqual(src.linesread, ['line1\n'])
@@ -463,8 +463,8 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_iteration_buffering(self):
         src = LineReader()
-        with FileInput(files=['line1\nline2', 'line3\n'],
-                       openhook=src.openhook) as fi:
+        mit FileInput(files=['line1\nline2', 'line3\n'],
+                       openhook=src.openhook) als fi:
             self.assertEqual(src.linesread, [])
             self.assertEqual(next(fi), 'line1\n')
             self.assertEqual(src.linesread, ['line1\n'])
@@ -479,7 +479,7 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_pathlike_file(self):
         t1 = FakePath(self.writeTmp("Path-like file."))
-        with FileInput(t1, encoding="utf-8") as fi:
+        mit FileInput(t1, encoding="utf-8") als fi:
             line = fi.readline()
             self.assertEqual(line, 'Path-like file.')
             self.assertEqual(fi.lineno(), 1)
@@ -488,11 +488,11 @@ klasse FileInputTests(BaseTests, unittest.TestCase):
 
     def test_pathlike_file_inplace(self):
         t1 = FakePath(self.writeTmp('Path-like file.'))
-        with FileInput(t1, inplace=Wahr, encoding="utf-8") as fi:
+        mit FileInput(t1, inplace=Wahr, encoding="utf-8") als fi:
             line = fi.readline()
             self.assertEqual(line, 'Path-like file.')
             drucke('Modified %s' % line)
-        with open(t1, encoding="utf-8") as f:
+        mit open(t1, encoding="utf-8") als f:
             self.assertEqual(f.read(), 'Modified Path-like file.\n')
 
 
@@ -557,7 +557,7 @@ klasse BaseFileInputGlobalMethodsTest(unittest.TestCase):
         fileinput._state = self._orig_state
 
     def assertExactlyOneInvocation(self, mock_file_input, method_name):
-        # assert that the method with the given name was invoked once
+        # assert that the method mit the given name was invoked once
         actual_count = mock_file_input.invocation_counts[method_name]
         self.assertEqual(actual_count, 1, method_name)
         # assert that no other unexpected methods were invoked
@@ -570,12 +570,12 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
     def test_state_is_not_Nichts_and_state_file_is_not_Nichts(self):
         """Tests invoking fileinput.input() when fileinput._state is not Nichts
            and its _file attribute is also not Nichts.  Expect RuntimeError to
-           be raised with a meaningful error message and fuer fileinput._state
+           be raised mit a meaningful error message and fuer fileinput._state
            to *not* be modified."""
         instance = MockFileInput()
         instance._file = object()
         fileinput._state = instance
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.input()
         self.assertEqual(("input() already active",), cm.exception.args)
         self.assertIs(instance, fileinput._state, "fileinput._state")
@@ -583,7 +583,7 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
     def test_state_is_not_Nichts_and_state_file_is_Nichts(self):
         """Tests invoking fileinput.input() when fileinput._state is not Nichts
            but its _file attribute *is* Nichts.  Expect it to create and return
-           a new fileinput.FileInput object with all method parameters passed
+           a new fileinput.FileInput object mit all method parameters passed
            explicitly to the __init__() method; also ensure that
            fileinput._state is set to the returned instance."""
         instance = MockFileInput()
@@ -594,7 +594,7 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
     def test_state_is_Nichts(self):
         """Tests invoking fileinput.input() when fileinput._state is Nichts
            Expect it to create and return a new fileinput.FileInput object
-           with all method parameters passed explicitly to the __init__()
+           mit all method parameters passed explicitly to the __init__()
            method; also ensure that fileinput._state is set to the returned
            instance."""
         fileinput._state = Nichts
@@ -612,7 +612,7 @@ klasse Test_fileinput_input(BaseFileInputGlobalMethodsTest):
         openhook = object()
         encoding = object()
 
-        # call fileinput.input() with different values fuer each argument
+        # call fileinput.input() mit different values fuer each argument
         result = fileinput.input(files=files, inplace=inplace, backup=backup,
             mode=mode, openhook=openhook, encoding=encoding)
 
@@ -651,10 +651,10 @@ klasse Test_fileinput_nextfile(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests fileinput.nextfile() when fileinput._state is Nichts.
-           Ensure that it raises RuntimeError with a meaningful error message
+           Ensure that it raises RuntimeError mit a meaningful error message
            and does not modify fileinput._state"""
         fileinput._state = Nichts
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.nextfile()
         self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsNichts(fileinput._state)
@@ -678,10 +678,10 @@ klasse Test_fileinput_filename(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests fileinput.filename() when fileinput._state is Nichts.
-           Ensure that it raises RuntimeError with a meaningful error message
+           Ensure that it raises RuntimeError mit a meaningful error message
            and does not modify fileinput._state"""
         fileinput._state = Nichts
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.filename()
         self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsNichts(fileinput._state)
@@ -705,10 +705,10 @@ klasse Test_fileinput_lineno(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests fileinput.lineno() when fileinput._state is Nichts.
-           Ensure that it raises RuntimeError with a meaningful error message
+           Ensure that it raises RuntimeError mit a meaningful error message
            and does not modify fileinput._state"""
         fileinput._state = Nichts
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.lineno()
         self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsNichts(fileinput._state)
@@ -732,10 +732,10 @@ klasse Test_fileinput_filelineno(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests fileinput.filelineno() when fileinput._state is Nichts.
-           Ensure that it raises RuntimeError with a meaningful error message
+           Ensure that it raises RuntimeError mit a meaningful error message
            and does not modify fileinput._state"""
         fileinput._state = Nichts
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.filelineno()
         self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsNichts(fileinput._state)
@@ -759,10 +759,10 @@ klasse Test_fileinput_fileno(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests fileinput.fileno() when fileinput._state is Nichts.
-           Ensure that it raises RuntimeError with a meaningful error message
+           Ensure that it raises RuntimeError mit a meaningful error message
            and does not modify fileinput._state"""
         fileinput._state = Nichts
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.fileno()
         self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsNichts(fileinput._state)
@@ -787,10 +787,10 @@ klasse Test_fileinput_isfirstline(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests fileinput.isfirstline() when fileinput._state is Nichts.
-           Ensure that it raises RuntimeError with a meaningful error message
+           Ensure that it raises RuntimeError mit a meaningful error message
            and does not modify fileinput._state"""
         fileinput._state = Nichts
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.isfirstline()
         self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsNichts(fileinput._state)
@@ -814,10 +814,10 @@ klasse Test_fileinput_isstdin(BaseFileInputGlobalMethodsTest):
 
     def test_state_is_Nichts(self):
         """Tests fileinput.isstdin() when fileinput._state is Nichts.
-           Ensure that it raises RuntimeError with a meaningful error message
+           Ensure that it raises RuntimeError mit a meaningful error message
            and does not modify fileinput._state"""
         fileinput._state = Nichts
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             fileinput.isstdin()
         self.assertEqual(("no active input()",), cm.exception.args)
         self.assertIsNichts(fileinput._state)
@@ -964,36 +964,36 @@ klasse Test_hook_encoded(unittest.TestCase):
         self.assertFalsch(kwargs)
 
     def test_errors(self):
-        with open(TESTFN, 'wb') as f:
+        mit open(TESTFN, 'wb') als f:
             f.write(b'\x80abc')
         self.addCleanup(safe_unlink, TESTFN)
 
         def check(errors, expected_lines):
-            with FileInput(files=TESTFN, mode='r',
-                           openhook=hook_encoded('utf-8', errors=errors)) as fi:
+            mit FileInput(files=TESTFN, mode='r',
+                           openhook=hook_encoded('utf-8', errors=errors)) als fi:
                 lines = list(fi)
             self.assertEqual(lines, expected_lines)
 
         check('ignore', ['abc'])
-        with self.assertRaises(UnicodeDecodeError):
+        mit self.assertRaises(UnicodeDecodeError):
             check('strict', ['abc'])
         check('replace', ['\ufffdabc'])
         check('backslashreplace', ['\\x80abc'])
 
     def test_modes(self):
-        with open(TESTFN, 'wb') as f:
+        mit open(TESTFN, 'wb') als f:
             # UTF-7 is a convenient, seldom used encoding
             f.write(b'A\nB\r\nC\rD+IKw-')
         self.addCleanup(safe_unlink, TESTFN)
 
         def check(mode, expected_lines):
-            with FileInput(files=TESTFN, mode=mode,
-                           openhook=hook_encoded('utf-7')) as fi:
+            mit FileInput(files=TESTFN, mode=mode,
+                           openhook=hook_encoded('utf-7')) als fi:
                 lines = list(fi)
             self.assertEqual(lines, expected_lines)
 
         check('r', ['A\n', 'B\n', 'C\n', 'D\u20ac'])
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             check('rb', ['A\n', 'B\r\n', 'C\r', 'D\u20ac'])
 
 

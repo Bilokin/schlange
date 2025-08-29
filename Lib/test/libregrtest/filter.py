@@ -19,7 +19,7 @@ def match_test(test):
 
 def _is_full_match_test(pattern):
     # If a pattern contains at least one dot, it's considered
-    # as a full test identifier.
+    # als a full test identifier.
     # Example: 'test.test_os.FileTests.test_access'.
     #
     # ignore patterns which contain fnmatch patterns: '*', '?', '[...]'

@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp737 generated von 'VENDORS/MICSFT/PC/CP737.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp737 generated von 'VENDORS/MICSFT/PC/CP737.TXT' mit gencodec.py.
 
 """#"
 

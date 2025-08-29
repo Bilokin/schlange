@@ -1,20 +1,20 @@
 """create and manipulate C data types in Python"""
 
-importiere os as _os, sys as _sys
-importiere types as _types
+importiere os als _os, sys als _sys
+importiere types als _types
 
 __version__ = "1.1.0"
 
 von _ctypes importiere Union, Structure, Array
 von _ctypes importiere _Pointer
-von _ctypes importiere CFuncPtr as _CFuncPtr
-von _ctypes importiere __version__ as _ctypes_version
+von _ctypes importiere CFuncPtr als _CFuncPtr
+von _ctypes importiere __version__ als _ctypes_version
 von _ctypes importiere RTLD_LOCAL, RTLD_GLOBAL
 von _ctypes importiere ArgumentError
 von _ctypes importiere SIZEOF_TIME_T
 von _ctypes importiere CField
 
-von struct importiere calcsize as _calcsize
+von struct importiere calcsize als _calcsize
 
 wenn __version__ != _ctypes_version:
     raise Exception("Version number mismatch", __version__, _ctypes_version)
@@ -24,7 +24,7 @@ wenn _os.name == "nt":
 
 DEFAULT_MODE = RTLD_LOCAL
 wenn _os.name == "posix" and _sys.platform == "darwin":
-    # On OS X 10.3, we use RTLD_GLOBAL as default mode
+    # On OS X 10.3, we use RTLD_GLOBAL als default mode
     # because RTLD_LOCAL does not work at least on some
     # libraries.  OS X 10.3 is Darwin 7, so we check for
     # that.
@@ -32,10 +32,10 @@ wenn _os.name == "posix" and _sys.platform == "darwin":
     wenn int(_os.uname().release.split('.')[0]) < 8:
         DEFAULT_MODE = RTLD_GLOBAL
 
-von _ctypes importiere FUNCFLAG_CDECL as _FUNCFLAG_CDECL, \
-     FUNCFLAG_PYTHONAPI as _FUNCFLAG_PYTHONAPI, \
-     FUNCFLAG_USE_ERRNO as _FUNCFLAG_USE_ERRNO, \
-     FUNCFLAG_USE_LASTERROR as _FUNCFLAG_USE_LASTERROR
+von _ctypes importiere FUNCFLAG_CDECL als _FUNCFLAG_CDECL, \
+     FUNCFLAG_PYTHONAPI als _FUNCFLAG_PYTHONAPI, \
+     FUNCFLAG_USE_ERRNO als _FUNCFLAG_USE_ERRNO, \
+     FUNCFLAG_USE_LASTERROR als _FUNCFLAG_USE_LASTERROR
 
 # WINOLEAPI -> HRESULT
 # WINOLEAPI_(type)
@@ -108,8 +108,8 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     return CFunctionType
 
 wenn _os.name == "nt":
-    von _ctypes importiere LoadLibrary as _dlopen
-    von _ctypes importiere FUNCFLAG_STDCALL as _FUNCFLAG_STDCALL
+    von _ctypes importiere LoadLibrary als _dlopen
+    von _ctypes importiere FUNCFLAG_STDCALL als _FUNCFLAG_STDCALL
 
     _win_functype_cache = {}
     def WINFUNCTYPE(restype, *argtypes, **kw):
@@ -137,7 +137,7 @@ wenn _os.name == "nt":
         WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE", "WINFUNCTYPE")
 
 sowenn _os.name == "posix":
-    von _ctypes importiere dlopen as _dlopen
+    von _ctypes importiere dlopen als _dlopen
 
 von _ctypes importiere sizeof, byref, addressof, alignment, resize
 von _ctypes importiere get_errno, set_errno
@@ -148,7 +148,7 @@ def _check_size(typ, typecode=Nichts):
     # should protect somewhat against a misconfigured libffi.
     von struct importiere calcsize
     wenn typecode is Nichts:
-        # Most _type_ codes are the same as used in struct
+        # Most _type_ codes are the same als used in struct
         typecode = typ._type_
     actual, required = sizeof(typ), calcsize(typecode)
     wenn actual != required:
@@ -281,7 +281,7 @@ def POINTER(cls):
     wenn isinstance(cls, str):
         # handle old-style incomplete types (see test_ctypes.test_incomplete)
         importiere warnings
-        warnings._deprecated("ctypes.POINTER with string", remove=(3, 19))
+        warnings._deprecated("ctypes.POINTER mit string", remove=(3, 19))
         try:
             return _pointer_type_cache_fallback[cls]
         except KeyError:
@@ -390,8 +390,8 @@ klasse CDLL(object):
     library, exporting functions using the standard C calling
     convention (named 'cdecl' on Windows).
 
-    The exported functions can be accessed as attributes, or by
-    indexing with the function name.  Examples:
+    The exported functions can be accessed als attributes, or by
+    indexing mit the function name.  Examples:
 
     <obj>.qsort -> callable object
     <obj>['qsort'] -> callable object
@@ -417,7 +417,7 @@ klasse CDLL(object):
             # .fwork file, dereference the location to the true origin of the
             # binary.
             wenn name.endswith(".fwork"):
-                with open(name) as f:
+                mit open(name) als f:
                     name = _os.path.join(
                         _os.path.dirname(_sys.executable),
                         f.read().strip()
@@ -430,10 +430,10 @@ klasse CDLL(object):
         wenn use_last_error:
             flags |= _FUNCFLAG_USE_LASTERROR
         wenn _sys.platform.startswith("aix"):
-            """When the name contains ".a(" and ends with ")",
+            """When the name contains ".a(" and ends mit ")",
                e.g., "libFOO.a(libFOO.so)" - this is taken to be an
                archive(member) syntax fuer dlopen(), and the mode is adjusted.
-               Otherwise, name is presented to dlopen() as a file argument.
+               Otherwise, name is presented to dlopen() als a file argument.
             """
             wenn name and name.endswith(")") and ".a(" in name:
                 mode |= ( _os.RTLD_MEMBER | _os.RTLD_NOW )
@@ -491,13 +491,13 @@ wenn _os.name == "nt":
         """
         _func_flags_ = _FUNCFLAG_STDCALL
 
-    # XXX Hm, what about HRESULT as normal parameter?
+    # XXX Hm, what about HRESULT als normal parameter?
     # Mustn't it derive von c_long then?
     von _ctypes importiere _check_HRESULT, _SimpleCData
     klasse HRESULT(_SimpleCData):
         _type_ = "l"
-        # _check_retval_ is called with the function's result when it
-        # is used as restype.  It checks fuer the FAILED bit, and
+        # _check_retval_ is called mit the function's result when it
+        # is used als restype.  It checks fuer the FAILED bit, and
         # raises an OSError wenn it is set.
         #
         # The _check_retval_ method is implemented in C, so that the
@@ -510,7 +510,7 @@ wenn _os.name == "nt":
     klasse OleDLL(CDLL):
         """This klasse represents a dll exporting functions using the
         Windows stdcall calling convention, and returning HRESULT.
-        HRESULT error values are automatically raised as OSError
+        HRESULT error values are automatically raised als OSError
         exceptions.
         """
         _func_flags_ = _FUNCFLAG_STDCALL

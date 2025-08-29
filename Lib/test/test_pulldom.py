@@ -28,16 +28,16 @@ klasse PullDOMTestCase(unittest.TestCase):
         """Minimal test of DOMEventStream.parse()"""
 
         # This just tests that parsing von a stream works. Actual parser
-        # semantics are tested using parseString with a more focused XML
+        # semantics are tested using parseString mit a more focused XML
         # fragment.
 
-        # Test with a filename:
+        # Test mit a filename:
         handler = pulldom.parse(tstfile)
         self.addCleanup(handler.stream.close)
         list(handler)
 
-        # Test with a file object:
-        with open(tstfile, "rb") as fin:
+        # Test mit a file object:
+        mit open(tstfile, "rb") als fin:
             list(pulldom.parse(fin))
 
     def test_parse_semantics(self):
@@ -103,7 +103,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         #self.assertEqual(pulldom.END_DOCUMENT, evt)
 
     def test_expandItem(self):
-        """Ensure expandItem works as expected."""
+        """Ensure expandItem works als expected."""
         items = pulldom.parseString(SMALL_SAMPLE)
         # Loop through the nodes until we get to a "title" start tag:
         fuer evt, item in items:
@@ -128,7 +128,7 @@ klasse PullDOMTestCase(unittest.TestCase):
         next(items) # Skip character data
         evt, node = next(items)
         self.assertEqual(node.tagName, "html")
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(items)
         items.clear()
         self.assertIsNichts(items.parser)
@@ -267,7 +267,7 @@ klasse SAXExerciser(object):
 
 
 klasse SAX2DOMExerciser(SAXExerciser):
-    """The same as SAXExerciser, but without the processing instruction and
+    """The same als SAXExerciser, but without the processing instruction and
     comment before the root element, because S2D can"t handle it"""
 
     def parse(self, _):
@@ -300,18 +300,18 @@ klasse SAX2DOMTestCase(unittest.TestCase):
 
     def test_basic(self):
         """Ensure SAX2DOM can parse von a stream."""
-        with io.StringIO(SMALL_SAMPLE) as fin:
+        mit io.StringIO(SMALL_SAMPLE) als fin:
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))
             fuer evt, node in sd:
                 wenn evt == pulldom.START_ELEMENT and node.tagName == "html":
                     break
-            # Because the buffer is the same length as the XML, all the
+            # Because the buffer is the same length als the XML, all the
             # nodes should have been parsed and added:
             self.assertGreater(len(node.childNodes), 0)
 
     def testSAX2DOM(self):
-        """Ensure SAX2DOM expands nodes as expected."""
+        """Ensure SAX2DOM expands nodes als expected."""
         sax2dom = pulldom.SAX2DOM()
         sax2dom.startDocument()
         sax2dom.startElement("doc", {})

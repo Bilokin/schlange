@@ -85,7 +85,7 @@ klasse Headers:
         These will be sorted in the order they appeared in the original header
         list or were added to this instance, and may contain duplicates.  Any
         fields deleted and re-inserted are always appended to the header list.
-        If no fields exist with the given name, returns an empty list.
+        If no fields exist mit the given name, returns an empty list.
         """
         name = self._convert_string_type(name.lower())
         return [kv[1] fuer kv in self._headers wenn kv[0].lower()==name]
@@ -134,7 +134,7 @@ klasse Headers:
         return "%s(%r)" % (self.__class__.__name__, self._headers)
 
     def __str__(self):
-        """str() returns the formatted headers, complete with end line,
+        """str() returns the formatted headers, complete mit end line,
         suitable fuer direct HTTP transmission."""
         return '\r\n'.join(["%s: %s" % kv fuer kv in self._headers]+['',''])
 
@@ -144,7 +144,7 @@ klasse Headers:
     def setdefault(self,name,value):
         """Return first matching header value fuer 'name', or 'value'
 
-        If there is no header named 'name', add a new header with name 'name'
+        If there is no header named 'name', add a new header mit name 'name'
         and value 'value'."""
         result = self.get(name)
         wenn result is Nichts:
@@ -158,8 +158,8 @@ klasse Headers:
         """Extended header setting.
 
         _name is the header field to add.  keyword arguments can be used to set
-        additional parameters fuer the header field, with underscores converted
-        to dashes.  Normally the parameter will be added as key="value" unless
+        additional parameters fuer the header field, mit underscores converted
+        to dashes.  Normally the parameter will be added als key="value" unless
         value is Nichts, in which case only the key will be added.
 
         Example:

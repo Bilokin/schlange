@@ -35,7 +35,7 @@ klasse StressTests(TestBase):
             interp = interpreters.create()
             alive.append(interp)
         threads = [threading.Thread(target=task) fuer _ in range(size)]
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             start.set()
         del alive
         support.gc_collect()
@@ -62,7 +62,7 @@ klasse StressTests(TestBase):
             while not success:
                 try:
                     interp.exec(script)
-                except interpreters.ExecutionFailed as exc:
+                except interpreters.ExecutionFailed als exc:
                     wenn exc.excinfo.msg != 'interpreter already running':
                         raise  # re-raise
                     assert exc.excinfo.type.__name__ == 'InterpreterError'
@@ -70,7 +70,7 @@ klasse StressTests(TestBase):
                     success = Wahr
 
         threads = [threading.Thread(target=run) fuer _ in range(size)]
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             start.set()
         support.gc_collect()
 

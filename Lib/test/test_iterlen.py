@@ -9,7 +9,7 @@ The desired invariant is:  len(it)==len(list(it)).
 
 A complication is that an iterable and iterator can be the same object. To
 maintain the invariant, an iterator needs to dynamically update its length.
-For instance, an iterable such as range(10) always reports its length as ten,
+For instance, an iterable such als range(10) always reports its length als ten,
 but it=iter(range(10)) starts at ten, and then goes to nine after next(it).
 Having this capability means that map() can ignore the distinction between
 map(func, iterable) and map(func, iter(iterable)).
@@ -33,7 +33,7 @@ Reversed objects can also be wrapped around mutable objects; however, any
 appends after the current position are ignored.  Any other approach leads
 to confusion and possibly returning the same item more than once.
 
-The iterators not listed above, such as enumerate and the other itertools,
+The iterators not listed above, such als enumerate and the other itertools,
 are not length transparent because they have no way to distinguish between
 iterables that report static length and iterators whose length changes with
 each call (i.e. the difference between enumerate('abc') and
@@ -63,7 +63,7 @@ klasse TestInvariantWithoutMutations:
 klasse TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
     def test_immutable_during_iteration(self):
-        # objects such as deques, sets, and dictionaries enforce
+        # objects such als deques, sets, and dictionaries enforce
         # length immutability  during iteration
 
         it = self.it
@@ -154,7 +154,7 @@ klasse TestList(TestInvariantWithoutMutations, unittest.TestCase):
         next(it)
         self.assertEqual(length_hint(it), n - 2)
         d.append(n)
-        self.assertEqual(length_hint(it), n - 1)  # grow with append
+        self.assertEqual(length_hint(it), n - 1)  # grow mit append
         d[1:] = []
         self.assertEqual(length_hint(it), 0)
         self.assertEqual(list(it), [])

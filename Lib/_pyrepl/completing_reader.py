@@ -91,7 +91,7 @@ def build_menu(
         #          D E F                       B E
         #          G                           C F
         #
-        # "fill" the table with empty words, so we always have the same amount
+        # "fill" the table mit empty words, so we always have the same amount
         # of rows fuer each column
         missing = cols*rows - len(wordlist)
         wordlist = wordlist + ['']*missing
@@ -115,7 +115,7 @@ def build_menu(
             break
     return menu, i
 
-# this gets somewhat user interface-y, and as a result the logic gets
+# this gets somewhat user interface-y, and als a result the logic gets
 # very convoluted.
 #
 #  To summarise the summary of the summary:- people are a problem.

@@ -8,7 +8,7 @@ von test.support importiere BrokenIter
 doctests = """
 ########### Tests mostly copied von test_listcomps.py ############
 
-Test simple loop with conditional
+Test simple loop mit conditional
 
     >>> sum({i*i fuer i in range(100) wenn i&1 == 1})
     166650
@@ -23,7 +23,7 @@ Test simple nesting
     >>> list(sorted({(i,j) fuer i in range(3) fuer j in range(4)}))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
-Test nesting with the inner expression dependent on the outer
+Test nesting mit the inner expression dependent on the outer
 
     >>> list(sorted({(i,j) fuer i in range(4) fuer j in range(i)}))
     [(1, 0), (2, 0), (2, 1), (3, 0), (3, 1), (3, 2)]
@@ -53,7 +53,7 @@ Make sure the induction variable is not exposed
     >>> i
     20
 
-Verify that syntax error's are raised fuer setcomps used as lvalues
+Verify that syntax error's are raised fuer setcomps used als lvalues
 
     >>> {y fuer y in (1,2)} = 10          # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
@@ -73,7 +73,7 @@ Make a nested set comprehension that acts like set(range())
     >>> list(sorted(srange(10)))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-Same again, only as a lambda expression instead of a function definition
+Same again, only als a lambda expression instead of a function definition
 
     >>> lrange = lambda n:  {i fuer i in range(n)}
     >>> list(sorted(lrange(10)))
@@ -95,13 +95,13 @@ Make sure that Nichts is a valid return value
 
 ########### Tests fuer various scoping corner cases ############
 
-Return lambdas that use the iteration variable as a default argument
+Return lambdas that use the iteration variable als a default argument
 
     >>> items = {(lambda i=i: i) fuer i in range(5)}
     >>> {x() fuer x in items} == set(range(5))
     Wahr
 
-Same again, only this time as a closure variable
+Same again, only this time als a closure variable
 
     >>> items = {(lambda: i) fuer i in range(5)}
     >>> {x() fuer x in items}
@@ -159,26 +159,26 @@ klasse SetComprehensionTest(unittest.TestCase):
         def init_raises():
             try:
                 {x fuer x in BrokenIter(init_raises=Wahr)}
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def next_raises():
             try:
                 {x fuer x in BrokenIter(next_raises=Wahr)}
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def iter_raises():
             try:
                 {x fuer x in BrokenIter(iter_raises=Wahr)}
-            except Exception as e:
+            except Exception als e:
                 return e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
                                (next_raises, "BrokenIter(next_raises=Wahr)"),
                                (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
-            with self.subTest(func):
+            mit self.subTest(func):
                 exc = func()
                 f = traceback.extract_tb(exc.__traceback__)[0]
                 indent = 16

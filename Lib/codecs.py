@@ -14,7 +14,7 @@ importiere sys
 
 try:
     von _codecs importiere *
-except ImportError as why:
+except ImportError als why:
     raise SystemError('Failed to load the builtin codecs: %s' % why)
 
 __all__ = ["register", "lookup", "open", "EncodedFile", "BOM", "BOM_BE",
@@ -123,16 +123,16 @@ klasse Codec:
         string values are predefined:
 
          'strict' - raise a ValueError error (or a subclass)
-         'ignore' - ignore the character and continue with the next
-         'replace' - replace with a suitable replacement character;
+         'ignore' - ignore the character and continue mit the next
+         'replace' - replace mit a suitable replacement character;
                     Python will use the official U+FFFD REPLACEMENT
                     CHARACTER fuer the builtin Unicode codecs on
                     decoding and '?' on encoding.
-         'surrogateescape' - replace with private code points U+DCnn.
-         'xmlcharrefreplace' - Replace with the appropriate XML
+         'surrogateescape' - replace mit private code points U+DCnn.
+         'xmlcharrefreplace' - Replace mit the appropriate XML
                                character reference (only fuer encoding).
-         'backslashreplace'  - Replace with backslashed escape sequences.
-         'namereplace'       - Replace with \\N{...} escape sequences
+         'backslashreplace'  - Replace mit backslashed escape sequences.
+         'namereplace'       - Replace mit \\N{...} escape sequences
                                (only fuer encoding).
 
         The set of allowed values can be extended via register_error.
@@ -222,7 +222,7 @@ klasse IncrementalEncoder(object):
 
 klasse BufferedIncrementalEncoder(IncrementalEncoder):
     """
-    This subclass of IncrementalEncoder can be used as the baseclass fuer an
+    This subclass of IncrementalEncoder can be used als the baseclass fuer an
     incremental encoder wenn the encoder must keep some of the output in a
     buffer between calls to encode().
     """
@@ -305,7 +305,7 @@ klasse IncrementalDecoder(object):
 
 klasse BufferedIncrementalDecoder(IncrementalDecoder):
     """
-    This subclass of IncrementalDecoder can be used as the baseclass fuer an
+    This subclass of IncrementalDecoder can be used als the baseclass fuer an
     incremental decoder wenn the decoder must be able to handle incomplete
     byte sequences.
     """
@@ -359,13 +359,13 @@ klasse StreamWriter(Codec):
             parameters are predefined:
 
              'strict' - raise a ValueError (or a subclass)
-             'ignore' - ignore the character and continue with the next
-             'replace'- replace with a suitable replacement character
-             'xmlcharrefreplace' - Replace with the appropriate XML
+             'ignore' - ignore the character and continue mit the next
+             'replace'- replace mit a suitable replacement character
+             'xmlcharrefreplace' - Replace mit the appropriate XML
                                    character reference.
-             'backslashreplace'  - Replace with backslashed escape
+             'backslashreplace'  - Replace mit backslashed escape
                                    sequences.
-             'namereplace'       - Replace with \\N{...} escape sequences.
+             'namereplace'       - Replace mit \\N{...} escape sequences.
 
             The set of allowed parameter values can be extended via
             register_error.
@@ -437,9 +437,9 @@ klasse StreamReader(Codec):
             parameters are predefined:
 
              'strict' - raise a ValueError (or a subclass)
-             'ignore' - ignore the character and continue with the next
-             'replace'- replace with a suitable replacement character
-             'backslashreplace' - Replace with backslashed escape sequences;
+             'ignore' - ignore the character and continue mit the next
+             'replace'- replace mit a suitable replacement character
+             'backslashreplace' - Replace mit backslashed escape sequences;
 
             The set of allowed parameter values can be extended via
             register_error.
@@ -465,8 +465,8 @@ klasse StreamReader(Codec):
 
             size indicates the approximate maximum number of decoded
             bytes or code points to read fuer decoding. The decoder
-            can modify this setting as appropriate. The default value
-            -1 indicates to read and decode as much as possible.  size
+            can modify this setting als appropriate. The default value
+            -1 indicates to read and decode als much als possible.  size
             is intended to prevent having to decode huge files in one
             step.
 
@@ -476,7 +476,7 @@ klasse StreamReader(Codec):
             next call to read().
 
             The method should use a greedy read strategy, meaning that
-            it should read as much data as is allowed within the
+            it should read als much data als is allowed within the
             definition of the encoding and the given size, e.g.  if
             optional encoding endings or state markers are available
             on the stream, these should be read too.
@@ -487,7 +487,7 @@ klasse StreamReader(Codec):
             self.linebuffer = Nichts
 
         wenn chars < 0:
-            # For compatibility with other read() methods that take a
+            # For compatibility mit other read() methods that take a
             # single argument
             chars = size
 
@@ -508,7 +508,7 @@ klasse StreamReader(Codec):
                 break
             try:
                 newchars, decodedbytes = self.decode(data, self.errors)
-            except UnicodeDecodeError as exc:
+            except UnicodeDecodeError als exc:
                 wenn firstline:
                     newchars, decodedbytes = \
                         self.decode(data[:exc.start], self.errors)
@@ -539,7 +539,7 @@ klasse StreamReader(Codec):
         """ Read one line von the input stream and return the
             decoded data.
 
-            size, wenn given, is passed as size argument to the
+            size, wenn given, is passed als size argument to the
             read() method.
 
         """
@@ -612,7 +612,7 @@ klasse StreamReader(Codec):
     def readlines(self, sizehint=Nichts, keepends=Wahr):
 
         """ Read all lines available on the input stream
-            and return them as a list.
+            and return them als a list.
 
             Line breaks are implemented using the codec's decoder
             method and are included in the list entries.
@@ -696,7 +696,7 @@ klasse StreamReaderWriter:
             Reader, Writer must be factory functions or classes
             providing the StreamReader, StreamWriter interface resp.
 
-            Error handling is done in the same way as defined fuer the
+            Error handling is done in the same way als defined fuer the
             StreamWriter/Readers.
 
         """
@@ -801,7 +801,7 @@ klasse StreamRecoder:
             Writer must be factory functions or classes providing the
             StreamReader and StreamWriter interfaces resp.
 
-            Error handling is done in the same way as defined fuer the
+            Error handling is done in the same way als defined fuer the
             StreamWriter/Readers.
 
         """
@@ -861,7 +861,7 @@ klasse StreamRecoder:
 
     def seek(self, offset, whence=0):
         # Seeks must be propagated to both the readers and writers
-        # as they might need to reset their internal buffers.
+        # als they might need to reset their internal buffers.
         self.reader.seek(offset, whence)
         self.writer.seek(offset, whence)
 
@@ -890,7 +890,7 @@ def open(filename, mode='r', encoding=Nichts, errors='strict', buffering=-1):
         Note: The wrapped version will only accept the object format
         defined by the codecs, i.e. Unicode objects fuer most builtin
         codecs. Output is also codec dependent and will usually be
-        Unicode as well.
+        Unicode als well.
 
         If encoding is not Nichts, then the
         underlying encoded files are always opened in binary mode.
@@ -903,7 +903,7 @@ def open(filename, mode='r', encoding=Nichts, errors='strict', buffering=-1):
         to 'strict' which causes ValueErrors to be raised in case an
         encoding error occurs.
 
-        buffering has the same meaning as fuer the builtin open() API.
+        buffering has the same meaning als fuer the builtin open() API.
         It defaults to -1 which means that the default buffer size will
         be used.
 

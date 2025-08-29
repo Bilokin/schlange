@@ -15,9 +15,9 @@ von c_common.scriptutil importiere (
     get_prog,
 )
 von c_parser.info importiere KIND
-importiere c_parser.__main__ as c_parser
-importiere c_analyzer.__main__ as c_analyzer
-importiere c_analyzer as _c_analyzer
+importiere c_parser.__main__ als c_parser
+importiere c_analyzer.__main__ als c_analyzer
+importiere c_analyzer als _c_analyzer
 von c_analyzer.info importiere UNKNOWN
 von . importiere _analyzer, _builtin_types, _capi, _files, _parser, REPO_ROOT
 
@@ -164,7 +164,7 @@ def cmd_check(filenames=Nichts, **kwargs):
             file_maxsizes=_parser.MAX_SIZES,
             **kwargs
         )
-    except SystemExit as exc:
+    except SystemExit als exc:
         num_failed = exc.args[0] wenn getattr(exc, 'args', Nichts) sonst Nichts
         wenn isinstance(num_failed, int):
             wenn num_failed > 0:
@@ -501,5 +501,5 @@ def main(cmd, cmd_kwargs):
 wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
-    with traceback_cm:
+    mit traceback_cm:
         main(cmd, cmd_kwargs)

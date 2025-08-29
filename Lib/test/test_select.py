@@ -30,12 +30,12 @@ klasse SelectTestCase(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('freebsd'),
                      'skip because of a FreeBSD bug: kern/155606')
     def test_errno(self):
-        with open(__file__, 'rb') as fp:
+        mit open(__file__, 'rb') als fp:
             fd = fp.fileno()
             fp.close()
             try:
                 select.select([fd], [], [], 0)
-            except OSError as err:
+            except OSError als err:
                 self.assertEqual(err.errno, errno.EBADF)
             sonst:
                 self.fail("exception not raised")
@@ -56,7 +56,7 @@ klasse SelectTestCase(unittest.TestCase):
                 time.sleep(0.050)
         ''')
         cmd = [sys.executable, '-I', '-c', code]
-        with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+        mit subprocess.Popen(cmd, stdout=subprocess.PIPE) als proc:
             pipe = proc.stdout
             fuer timeout in (0, 1, 2, 4, 8, 16) + (Nichts,)*10:
                 wenn support.verbose:

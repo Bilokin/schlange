@@ -16,8 +16,8 @@ __all__ = ["InteractiveInterpreter", "InteractiveConsole", "interact",
 klasse InteractiveInterpreter:
     """Base klasse fuer InteractiveConsole.
 
-    This klasse deals with parsing and interpreter state (the user's
-    namespace); it doesn't deal with input buffering or prompting or
+    This klasse deals mit parsing and interpreter state (the user's
+    namespace); it doesn't deal mit input buffering or prompting or
     input file naming (the filename is always passed in explicitly).
 
     """
@@ -25,9 +25,9 @@ klasse InteractiveInterpreter:
     def __init__(self, locals=Nichts):
         """Constructor.
 
-        The optional 'locals' argument specifies a mapping to use as the
+        The optional 'locals' argument specifies a mapping to use als the
         namespace in which code will be executed; it defaults to a newly
-        created dictionary with key "__name__" set to "__console__" and
+        created dictionary mit key "__name__" set to "__console__" and
         key "__doc__" set to Nichts.
 
         """
@@ -39,7 +39,7 @@ klasse InteractiveInterpreter:
     def runsource(self, source, filename="<input>", symbol="single"):
         """Compile and run some source in the interpreter.
 
-        Arguments are as fuer compile_command().
+        Arguments are als fuer compile_command().
 
         One of several things can happen:
 
@@ -84,7 +84,7 @@ klasse InteractiveInterpreter:
 
         A note about KeyboardInterrupt: this exception may occur
         elsewhere in this code, and may not always be caught.  The
-        caller should be prepared to deal with it.
+        caller should be prepared to deal mit it.
 
         """
         try:
@@ -149,7 +149,7 @@ klasse InteractiveInterpreter:
                 sys.excepthook(typ, value, tb)
             except SystemExit:
                 raise
-            except BaseException as e:
+            except BaseException als e:
                 e.__context__ = Nichts
                 e = e.with_traceback(e.__traceback__.tb_next)
                 drucke('Error in sys.excepthook:', file=sys.stderr)
@@ -168,7 +168,7 @@ klasse InteractiveInterpreter:
         """Write a string.
 
         The base implementation writes to sys.stderr; a subclass may
-        replace this with a different implementation.
+        replace this mit a different implementation.
 
         """
         sys.stderr.write(data)
@@ -207,8 +207,8 @@ klasse InteractiveConsole(InteractiveInterpreter):
         The optional banner argument specifies the banner to print
         before the first interaction; by default it prints a banner
         similar to the one printed by the real Python interpreter,
-        followed by the current klasse name in parentheses (so as not
-        to confuse this with the real interpreter -- since it's so
+        followed by the current klasse name in parentheses (so als not
+        to confuse this mit the real interpreter -- since it's so
         close!).
 
         The optional exitmsg argument specifies the exit message
@@ -278,7 +278,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
                     self.write("\nKeyboardInterrupt\n")
                     self.resetbuffer()
                     more = 0
-                except SystemExit as e:
+                except SystemExit als e:
                     wenn self.local_exit:
                         self.write("\n")
                         break
@@ -308,13 +308,13 @@ klasse InteractiveConsole(InteractiveInterpreter):
 
         The line should not have a trailing newline; it may have
         internal newlines.  The line is appended to a buffer and the
-        interpreter's runsource() method is called with the
-        concatenated contents of the buffer as source.  If this
+        interpreter's runsource() method is called mit the
+        concatenated contents of the buffer als source.  If this
         indicates that the command was executed or invalid, the buffer
         is reset; otherwise, the command is incomplete, and the buffer
-        is left as it was after the line was appended.  The return
+        is left als it was after the line was appended.  The return
         value is 1 wenn more input is required, 0 wenn the line was dealt
-        with in some way (this is the same as runsource()).
+        mit in some way (this is the same als runsource()).
 
         """
         self.buffer.append(line)
@@ -333,7 +333,7 @@ klasse InteractiveConsole(InteractiveInterpreter):
         When the user enters the EOF key sequence, EOFError is raised.
 
         The base implementation uses the built-in function
-        input(); a subclass may replace this with a different
+        input(); a subclass may replace this mit a different
         implementation.
 
         """

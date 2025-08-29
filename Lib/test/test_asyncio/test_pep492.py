@@ -7,7 +7,7 @@ importiere unittest
 von unittest importiere mock
 
 importiere asyncio
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 
 
 def tearDownModule():
@@ -53,7 +53,7 @@ klasse LockTests(BaseTest):
         async def test(lock):
             await asyncio.sleep(0.01)
             self.assertFalsch(lock.locked())
-            async with lock as _lock:
+            async mit lock als _lock:
                 self.assertIs(_lock, Nichts)
                 self.assertWahr(lock.locked())
                 await asyncio.sleep(0.01)
@@ -75,11 +75,11 @@ klasse LockTests(BaseTest):
         async def test(lock):
             await asyncio.sleep(0.01)
             self.assertFalsch(lock.locked())
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                 TypeError,
                 "can't be awaited"
             ):
-                with await lock:
+                mit await lock:
                     pass
 
         fuer primitive in primitives:
@@ -126,7 +126,7 @@ klasse CoroutineTests(BaseTest):
 
     def test_iscoroutinefunction(self):
         async def foo(): pass
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertWahr(asyncio.iscoroutinefunction(foo))
 
     def test_async_def_coroutines(self):
@@ -201,7 +201,7 @@ klasse CoroutineTests(BaseTest):
                 t.cancel()
 
         self.loop.set_debug(Wahr)
-        with self.assertRaises(
+        mit self.assertRaises(
                 RuntimeError,
                 msg='coroutine is being awaited already'):
 

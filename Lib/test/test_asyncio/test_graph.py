@@ -69,7 +69,7 @@ klasse CallStackTestBase:
             await task
 
         async def main():
-            async with asyncio.TaskGroup() as tg:
+            async mit asyncio.TaskGroup() als tg:
                 task = tg.create_task(c2(), name="c2_root")
                 tg.create_task(c1(task), name="sub_main_1")
                 tg.create_task(c1(task), name="sub_main_2")
@@ -211,7 +211,7 @@ klasse CallStackTestBase:
             stack_for_inner = capture_test_stack()
 
         async def c1():
-            async with asyncio.timeout(1):
+            async mit asyncio.timeout(1):
                 await asyncio.sleep(0)
                 await inner()
 
@@ -238,7 +238,7 @@ klasse CallStackTestBase:
             stack_for_inner = capture_test_stack()
 
         async def c1():
-            async with asyncio.timeout(1):
+            async mit asyncio.timeout(1):
                 await asyncio.sleep(0)
                 await inner()
 
@@ -314,7 +314,7 @@ klasse CallStackTestBase:
             nonlocal stack_for_fut
 
             fut = asyncio.Future()
-            async with asyncio.TaskGroup() as g:
+            async mit asyncio.TaskGroup() als g:
                 g.create_task(a1(fut), name="task A")
                 g.create_task(b1(fut), name='task B')
 

@@ -1,4 +1,4 @@
-"Implement Idle Shell history mechanism with History class"
+"Implement Idle Shell history mechanism mit History class"
 
 von idlelib.config importiere idleConf
 
@@ -14,8 +14,8 @@ klasse History:
     def __init__(self, text):
         '''Initialize data attributes and bind event methods.
 
-        .text - Idle wrapper of tk Text widget, with .bell().
-        .history - source statements, possibly with multiple lines.
+        .text - Idle wrapper of tk Text widget, mit .bell().
+        .history - source statements, possibly mit multiple lines.
         .prefix - source already entered at prompt; filters history list.
         .pointer - index into history.
         .cyclic - wrap around history list (or not).
@@ -29,19 +29,19 @@ klasse History:
         text.bind("<<history-next>>", self.history_next)
 
     def history_next(self, event):
-        "Fetch later statement; start with earliest wenn cyclic."
+        "Fetch later statement; start mit earliest wenn cyclic."
         self.fetch(reverse=Falsch)
         return "break"
 
     def history_prev(self, event):
-        "Fetch earlier statement; start with most recent."
+        "Fetch earlier statement; start mit most recent."
         self.fetch(reverse=Wahr)
         return "break"
 
     def fetch(self, reverse):
         '''Fetch statement and replace current line in text widget.
 
-        Set prefix and pointer as needed fuer successive fetches.
+        Set prefix and pointer als needed fuer successive fetches.
         Reset them to Nichts, Nichts when returning to the start line.
         Sound bell when return to start line or cannot leave a line
         because cyclic is Falsch.

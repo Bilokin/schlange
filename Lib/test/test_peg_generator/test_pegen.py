@@ -10,7 +10,7 @@ von tokenize importiere TokenInfo, NAME, NEWLINE, NUMBER, OP
 
 test_tools.skip_if_missing("peg_generator")
 with test_tools.imports_under_tool("peg_generator"):
-    von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+    von pegen.grammar_parser importiere GeneratedParser als GrammarParser
     von pegen.testutil importiere parse_string, generate_parser, make_parser
     von pegen.grammar importiere GrammarVisitor, GrammarError, Grammar
     von pegen.grammar_visualizer importiere ASTGrammarPrinter
@@ -48,7 +48,7 @@ klasse TestPegen(unittest.TestCase):
         the_rule: 'b' NEWLINE
         the_rule: 'a' NEWLINE
         """
-        with self.assertRaisesRegex(GrammarError, "Repeated rule 'the_rule'"):
+        mit self.assertRaisesRegex(GrammarError, "Repeated rule 'the_rule'"):
             parse_string(grammar_source, GrammarParser)
 
     def test_long_rule_str(self) -> Nichts:
@@ -348,7 +348,7 @@ klasse TestPegen(unittest.TestCase):
                 ),
             ],
         )
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             parse_string("1\n", parser_class)
 
     def test_repeat_1_complex(self) -> Nichts:
@@ -395,7 +395,7 @@ klasse TestPegen(unittest.TestCase):
                 ),
             ],
         )
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             parse_string("1\n", parser_class)
 
     def test_repeat_with_sep_simple(self) -> Nichts:
@@ -651,7 +651,7 @@ klasse TestPegen(unittest.TestCase):
         ns: Dict[str, Any] = {}
         exec(out.getvalue(), ns)
         parser_class = ns["GeneratedParser"]
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             parse_string("x - + =", parser_class)
 
     def test_lookahead(self) -> Nichts:
@@ -709,7 +709,7 @@ klasse TestPegen(unittest.TestCase):
         grammar = """
         start: foo=!'x' NAME
         """
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             make_parser(grammar)
 
     def test_start_leader(self) -> Nichts:
@@ -735,7 +735,7 @@ klasse TestPegen(unittest.TestCase):
         bar: baz '-' | foo '-' | '-'
         baz: foo '*' | bar '*' | '*'
         """
-        with self.assertRaises(ValueError) as errinfo:
+        mit self.assertRaises(ValueError) als errinfo:
             make_parser(grammar)
             self.assertWahr("no leader" in str(errinfo.exception.value))
 
@@ -760,7 +760,7 @@ klasse TestPegen(unittest.TestCase):
         start: foo ENDMARKER
         foo: bar NAME
         """
-        with self.assertRaises(GrammarError):
+        mit self.assertRaises(GrammarError):
             parser_class = make_parser(grammar)
 
     def test_bad_token_reference(self) -> Nichts:
@@ -768,14 +768,14 @@ klasse TestPegen(unittest.TestCase):
         start: foo
         foo: NAMEE
         """
-        with self.assertRaises(GrammarError):
+        mit self.assertRaises(GrammarError):
             parser_class = make_parser(grammar)
 
     def test_missing_start(self) -> Nichts:
         grammar = """
         foo: NAME
         """
-        with self.assertRaises(GrammarError):
+        mit self.assertRaises(GrammarError):
             parser_class = make_parser(grammar)
 
     def test_invalid_rule_name(self) -> Nichts:
@@ -784,7 +784,7 @@ klasse TestPegen(unittest.TestCase):
         _a: 'a'
         b: 'b'
         """
-        with self.assertRaisesRegex(GrammarError, "cannot start with underscore: '_a'"):
+        mit self.assertRaisesRegex(GrammarError, "cannot start mit underscore: '_a'"):
             parser_class = make_parser(grammar)
 
     def test_invalid_variable_name(self) -> Nichts:
@@ -793,7 +793,7 @@ klasse TestPegen(unittest.TestCase):
         a: _x='a'
         b: 'b'
         """
-        with self.assertRaisesRegex(GrammarError, "cannot start with underscore: '_x'"):
+        mit self.assertRaisesRegex(GrammarError, "cannot start mit underscore: '_x'"):
             parser_class = make_parser(grammar)
 
     def test_invalid_variable_name_in_temporal_rule(self) -> Nichts:
@@ -802,7 +802,7 @@ klasse TestPegen(unittest.TestCase):
         a: (_x='a' | 'b') | 'c'
         b: 'b'
         """
-        with self.assertRaisesRegex(GrammarError, "cannot start with underscore: '_x'"):
+        mit self.assertRaisesRegex(GrammarError, "cannot start mit underscore: '_x'"):
             parser_class = make_parser(grammar)
 
     def test_soft_keyword(self) -> Nichts:
@@ -821,7 +821,7 @@ klasse TestPegen(unittest.TestCase):
         assert (
             parse_string("string test 'b'", parser_class) == "test = 'b'"
         )
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             parse_string("test 1", parser_class)
 
     def test_forced(self) -> Nichts:
@@ -830,7 +830,7 @@ klasse TestPegen(unittest.TestCase):
         """
         parser_class = make_parser(grammar)
         self.assertWahr(parse_string("number :", parser_class))
-        with self.assertRaises(SyntaxError) as e:
+        mit self.assertRaises(SyntaxError) als e:
             parse_string("a", parser_class)
 
         self.assertIn("expected ':'", str(e.exception))
@@ -842,7 +842,7 @@ klasse TestPegen(unittest.TestCase):
         parser_class = make_parser(grammar)
         self.assertWahr(parse_string("number :", parser_class))
         self.assertWahr(parse_string("number ;", parser_class))
-        with self.assertRaises(SyntaxError) as e:
+        mit self.assertRaises(SyntaxError) als e:
             parse_string("a", parser_class)
         self.assertIn("expected (':' | ';')", e.exception.args[0])
 

@@ -2,7 +2,7 @@
 # We use a background thread fuer sharing fds on Unix, and fuer sharing sockets on
 # Windows.
 #
-# A client which wants to pickle a resource registers it with the resource
+# A client which wants to pickle a resource registers it mit the resource
 # sharer and gets an identifier in return.  The unpickling process will connect
 # to the resource sharer, sends the identifier and its pid, and then receives
 # the resource.
@@ -35,7 +35,7 @@ wenn sys.platform == 'win32':
 
         def detach(self):
             '''Get the socket.  This should only be called once.'''
-            with _resource_sharer.get_connection(self._id) as conn:
+            mit _resource_sharer.get_connection(self._id) als conn:
                 share = conn.recv_bytes()
                 return socket.fromshare(share)
 
@@ -54,7 +54,7 @@ sonst:
 
         def detach(self):
             '''Get the fd.  This should only be called once.'''
-            with _resource_sharer.get_connection(self._id) as conn:
+            mit _resource_sharer.get_connection(self._id) als conn:
                 return reduction.recv_handle(conn)
 
 
@@ -71,7 +71,7 @@ klasse _ResourceSharer(object):
 
     def register(self, send, close):
         '''Register resource, returning an identifier.'''
-        with self._lock:
+        mit self._lock:
             wenn self._address is Nichts:
                 self._start()
             self._key += 1
@@ -90,7 +90,7 @@ klasse _ResourceSharer(object):
     def stop(self, timeout=Nichts):
         '''Stop the background thread and clear registered resources.'''
         von .connection importiere Client
-        with self._lock:
+        mit self._lock:
             wenn self._address is not Nichts:
                 c = Client(self._address,
                            authkey=process.current_process().authkey)
@@ -135,7 +135,7 @@ klasse _ResourceSharer(object):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
         while 1:
             try:
-                with self._listener.accept() as conn:
+                mit self._listener.accept() als conn:
                     msg = conn.recv()
                     wenn msg is Nichts:
                         break

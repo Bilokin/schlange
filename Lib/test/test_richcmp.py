@@ -104,7 +104,7 @@ klasse VectorTest(unittest.TestCase):
 
     def test_mixed(self):
         # check that comparisons involving Vector objects
-        # which return rich results (i.e. Vectors with itemwise
+        # which return rich results (i.e. Vectors mit itemwise
         # comparison results) work
         a = Vector(range(2))
         b = Vector(range(3))
@@ -114,7 +114,7 @@ klasse VectorTest(unittest.TestCase):
 
         a = list(range(5))
         b = 5 * [2]
-        # try mixed arguments (but not (a, b) as that won't return a bool vector)
+        # try mixed arguments (but not (a, b) als that won't return a bool vector)
         args = [(a, Vector(b)), (Vector(a), b), (Vector(a), Vector(b))]
         fuer (a, b) in args:
             self.checkequal("lt", a, b, [Wahr,  Wahr,  Falsch, Falsch, Falsch])
@@ -133,7 +133,7 @@ klasse NumberTest(unittest.TestCase):
 
     def test_basic(self):
         # Check that comparisons involving Number objects
-        # give the same results give as comparing the
+        # give the same results give als comparing the
         # corresponding ints
         fuer a in range(3):
             fuer b in range(3):
@@ -268,8 +268,8 @@ klasse MiscTest(unittest.TestCase):
             (lambda: Spam() <= Spam(), r"'<=' .* of 'Spam' and 'Spam'"),
         ]
         fuer i, test in enumerate(tests):
-            with self.subTest(test=i):
-                with self.assertRaisesRegex(TypeError, test[1]):
+            mit self.subTest(test=i):
+                mit self.assertRaisesRegex(TypeError, test[1]):
                     test[0]()
 
 

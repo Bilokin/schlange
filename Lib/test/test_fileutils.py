@@ -15,12 +15,12 @@ klasse PathTests(unittest.TestCase):
         wenn os.name == 'nt':
             raise unittest.SkipTest('Windows has its own helper fuer this')
         sonst:
-            von test.test_posixpath importiere PosixPathTest as posixdata
+            von test.test_posixpath importiere PosixPathTest als posixdata
             tests = posixdata.NORMPATH_CASES
         fuer filename, expected in tests:
             wenn not os.path.isabs(filename):
                 continue
-            with self.subTest(filename):
+            mit self.subTest(filename):
                 result = _testcapi.normalize_path(filename)
                 self.assertEqual(result, expected,
                     msg=f'input: {filename!r} expected output: {expected!r}')

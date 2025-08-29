@@ -8,7 +8,7 @@ importiere time
 
 resource = import_helper.import_module('resource')
 
-# This test is checking a few specific problem spots with the resource module.
+# This test is checking a few specific problem spots mit the resource module.
 
 klasse ResourceTest(unittest.TestCase):
 
@@ -36,7 +36,7 @@ klasse ResourceTest(unittest.TestCase):
     def test_fsize_ismax(self):
         (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
         # RLIMIT_FSIZE should be RLIM_INFINITY, which will be a really big
-        # number on a platform with large file support.  On these platforms,
+        # number on a platform mit large file support.  On these platforms,
         # we need to test that the get/setrlimit functions properly convert
         # the number to a C long long and that the conversion doesn't raise
         # an error.
@@ -158,15 +158,15 @@ klasse ResourceTest(unittest.TestCase):
         self.assertGreater(resource.RLIM_INFINITY, 0)
         (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
         fuer value in -5, -2**31, -2**32-5, -2**63, -2**64-5, -2**1000:
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 self.assertRaises(ValueError, resource.setrlimit, resource.RLIMIT_FSIZE, (value, max))
                 self.assertRaises(ValueError, resource.setrlimit, resource.RLIMIT_FSIZE, (cur, value))
 
         wenn resource.RLIM_INFINITY in (2**32-3, 2**32-1, 2**64-3, 2**64-1):
             value = (resource.RLIM_INFINITY & 0xffff) - 0x10000
-            with self.assertWarnsRegex(DeprecationWarning, "RLIM_INFINITY"):
+            mit self.assertWarnsRegex(DeprecationWarning, "RLIM_INFINITY"):
                 resource.setrlimit(resource.RLIMIT_FSIZE, (value, max))
-            with self.assertWarnsRegex(DeprecationWarning, "RLIM_INFINITY"):
+            mit self.assertWarnsRegex(DeprecationWarning, "RLIM_INFINITY"):
                 resource.setrlimit(resource.RLIMIT_FSIZE, (cur, value))
 
 
@@ -219,12 +219,12 @@ klasse ResourceTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform in ('linux', 'android'), 'Linux only')
     def test_linux_constants(self):
         fuer attr in ['MSGQUEUE', 'NICE', 'RTPRIO', 'RTTIME', 'SIGPENDING']:
-            with contextlib.suppress(AttributeError):
+            mit contextlib.suppress(AttributeError):
                 self.assertIsInstance(getattr(resource, 'RLIMIT_' + attr), int)
 
     def test_freebsd_contants(self):
         fuer attr in ['SWAP', 'SBSIZE', 'NPTS', 'UMTXP', 'VMEM', 'PIPEBUF']:
-            with contextlib.suppress(AttributeError):
+            mit contextlib.suppress(AttributeError):
                 self.assertIsInstance(getattr(resource, 'RLIMIT_' + attr), int)
 
     @unittest.skipUnless(hasattr(resource, 'prlimit'), 'no prlimit')

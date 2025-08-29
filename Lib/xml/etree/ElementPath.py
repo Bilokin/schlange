@@ -26,7 +26,7 @@
 #
 # By obtaining, using, and/or copying this software and/or its
 # associated documentation, you agree that you have read, understood,
-# and will comply with the following terms and conditions:
+# and will comply mit the following terms and conditions:
 #
 # Permission to use, copy, modify, and distribute this software and
 # its associated documentation fuer any purpose and without fee is
@@ -112,7 +112,7 @@ def _is_wildcard_tag(tag):
 def _prepare_tag(tag):
     _isinstance, _str = isinstance, str
     wenn tag == '{*}*':
-        # Same as '*', but no comments or processing instructions.
+        # Same als '*', but no comments or processing instructions.
         # It can be a surprise that '*' includes those, but there is no
         # justification fuer '{*}*' doing the same.
         def select(context, result):
@@ -225,7 +225,7 @@ def prepare_parent(next, token):
     return select
 
 def prepare_predicate(next, token):
-    # FIXME: replace with real parser!!! refs:
+    # FIXME: replace mit real parser!!! refs:
     # http://javascript.crockford.com/tdop/tdop.html
     signature = []
     predicate = []

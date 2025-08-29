@@ -1,4 +1,4 @@
-von test.test_importlib importiere util as test_util
+von test.test_importlib importiere util als test_util
 
 init = test_util.import_importlib('importlib')
 util = test_util.import_importlib('importlib.util')
@@ -20,18 +20,18 @@ klasse ImportModuleTests:
 
     def test_module_import(self):
         # Test importing a top-level module.
-        with test_util.mock_spec('top_level') as mock:
-            with test_util.import_state(meta_path=[mock]):
+        mit test_util.mock_spec('top_level') als mock:
+            mit test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module('top_level')
                 self.assertEqual(module.__name__, 'top_level')
 
     def test_absolute_package_import(self):
-        # Test importing a module von a package with an absolute name.
+        # Test importing a module von a package mit an absolute name.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         name = '{0}.mod'.format(pkg_name)
-        with test_util.mock_spec(pkg_long_name, name) as mock:
-            with test_util.import_state(meta_path=[mock]):
+        mit test_util.mock_spec(pkg_long_name, name) als mock:
+            mit test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module(name)
                 self.assertEqual(module.__name__, name)
 
@@ -42,29 +42,29 @@ klasse ImportModuleTests:
         module_name = 'mod'
         absolute_name = '{0}.{1}'.format(pkg_name, module_name)
         relative_name = '.{0}'.format(module_name)
-        with test_util.mock_spec(pkg_long_name, absolute_name) as mock:
-            with test_util.import_state(meta_path=[mock]):
+        mit test_util.mock_spec(pkg_long_name, absolute_name) als mock:
+            mit test_util.import_state(meta_path=[mock]):
                 self.init.import_module(pkg_name)
                 module = self.init.import_module(relative_name, pkg_name)
                 self.assertEqual(module.__name__, absolute_name)
 
     def test_deep_relative_package_import(self):
         modules = ['a.__init__', 'a.b.__init__', 'a.c']
-        with test_util.mock_spec(*modules) as mock:
-            with test_util.import_state(meta_path=[mock]):
+        mit test_util.mock_spec(*modules) als mock:
+            mit test_util.import_state(meta_path=[mock]):
                 self.init.import_module('a')
                 self.init.import_module('a.b')
                 module = self.init.import_module('..c', 'a.b')
                 self.assertEqual(module.__name__, 'a.c')
 
     def test_absolute_import_with_package(self):
-        # Test importing a module von a package with an absolute name with
+        # Test importing a module von a package mit an absolute name with
         # the 'package' argument given.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
         name = '{0}.mod'.format(pkg_name)
-        with test_util.mock_spec(pkg_long_name, name) as mock:
-            with test_util.import_state(meta_path=[mock]):
+        mit test_util.mock_spec(pkg_long_name, name) als mock:
+            mit test_util.import_state(meta_path=[mock]):
                 self.init.import_module(pkg_name)
                 module = self.init.import_module(name, pkg_name)
                 self.assertEqual(module.__name__, name)
@@ -72,7 +72,7 @@ klasse ImportModuleTests:
     def test_relative_import_wo_package(self):
         # Relative imports cannot happen without the 'package' argument being
         # set.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.init.import_module('.support')
 
 
@@ -88,8 +88,8 @@ klasse ImportModuleTests:
             b_load_count += 1
         code = {'a': load_a, 'a.b': load_b}
         modules = ['a.__init__', 'a.b']
-        with test_util.mock_spec(*modules, module_code=code) as mock:
-            with test_util.import_state(meta_path=[mock]):
+        mit test_util.mock_spec(*modules, module_code=code) als mock:
+            mit test_util.import_state(meta_path=[mock]):
                 self.init.import_module('a.b')
         self.assertEqual(b_load_count, 1)
 
@@ -105,9 +105,9 @@ klasse FindLoaderTests:
     FakeMetaFinder = Nichts
 
     def test_sys_modules(self):
-        # If a module with __spec__.loader is in sys.modules, then return it.
+        # If a module mit __spec__.loader is in sys.modules, then return it.
         name = 'some_mod'
-        with test_util.uncache(name):
+        mit test_util.uncache(name):
             module = types.ModuleType(name)
             loader = 'a loader!'
             module.__spec__ = self.machinery.ModuleSpec(name, loader)
@@ -119,32 +119,32 @@ klasse FindLoaderTests:
     def test_sys_modules_loader_is_Nichts(self):
         # If sys.modules[name].__spec__.loader is Nichts, raise ValueError.
         name = 'some_mod'
-        with test_util.uncache(name):
+        mit test_util.uncache(name):
             module = types.ModuleType(name)
             module.__loader__ = Nichts
             sys.modules[name] = module
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self.util.find_spec(name)
 
     def test_sys_modules_loader_is_not_set(self):
         # Should raise ValueError
         # Issue #17099
         name = 'some_mod'
-        with test_util.uncache(name):
+        mit test_util.uncache(name):
             module = types.ModuleType(name)
             try:
                 del module.__spec__.loader
             except AttributeError:
                 pass
             sys.modules[name] = module
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self.util.find_spec(name)
 
     def test_success(self):
         # Return the loader found on sys.meta_path.
         name = 'some_mod'
-        with test_util.uncache(name):
-            with test_util.import_state(meta_path=[self.FakeMetaFinder]):
+        mit test_util.uncache(name):
+            mit test_util.import_state(meta_path=[self.FakeMetaFinder]):
                 spec = self.util.find_spec(name)
                 self.assertEqual((name, (name, Nichts)), (spec.name, spec.loader))
 
@@ -152,8 +152,8 @@ klasse FindLoaderTests:
         # Searching on a path should work.
         name = 'some_mod'
         path = 'path to some place'
-        with test_util.uncache(name):
-            with test_util.import_state(meta_path=[self.FakeMetaFinder]):
+        mit test_util.uncache(name):
+            mit test_util.import_state(meta_path=[self.FakeMetaFinder]):
                 spec = self.util.find_spec(name, path)
                 self.assertEqual(name, spec.name)
 
@@ -180,8 +180,8 @@ klasse ReloadTests:
 
     def test_reload_modules(self):
         fuer mod in ('tokenize', 'time', 'marshal'):
-            with self.subTest(module=mod):
-                with import_helper.CleanImport(mod):
+            mit self.subTest(module=mod):
+                mit import_helper.CleanImport(mod):
                     module = self.init.import_module(mod)
                     self.init.reload(module)
 
@@ -193,8 +193,8 @@ klasse ReloadTests:
             sys.modules['top_level'] = module
         mock = test_util.mock_spec('top_level',
                                    module_code={'top_level': code})
-        with mock:
-            with test_util.import_state(meta_path=[mock]):
+        mit mock:
+            mit test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module('top_level')
                 reloaded = self.init.reload(module)
                 actual = sys.modules['top_level']
@@ -202,7 +202,7 @@ klasse ReloadTests:
                 self.assertEqual(reloaded.spam, 3)
 
     def test_reload_missing_loader(self):
-        with import_helper.CleanImport('types'):
+        mit import_helper.CleanImport('types'):
             importiere types
             loader = types.__loader__
             del types.__loader__
@@ -213,7 +213,7 @@ klasse ReloadTests:
             self.assertEqual(reloaded.__loader__.path, loader.path)
 
     def test_reload_loader_replaced(self):
-        with import_helper.CleanImport('types'):
+        mit import_helper.CleanImport('types'):
             importiere types
             types.__loader__ = Nichts
             self.init.invalidate_caches()
@@ -225,10 +225,10 @@ klasse ReloadTests:
 
     def test_reload_location_changed(self):
         name = 'spam'
-        with os_helper.temp_cwd(Nichts) as cwd:
-            with test_util.uncache('spam'):
-                with import_helper.DirsOnSysPath(cwd):
-                    # Start as a plain module.
+        mit os_helper.temp_cwd(Nichts) als cwd:
+            mit test_util.uncache('spam'):
+                mit import_helper.DirsOnSysPath(cwd):
+                    # Start als a plain module.
                     self.init.invalidate_caches()
                     path = os.path.join(cwd, name + '.py')
                     cached = self.util.cache_from_source(path)
@@ -276,11 +276,11 @@ klasse ReloadTests:
 
     def test_reload_namespace_changed(self):
         name = 'spam'
-        with os_helper.temp_cwd(Nichts) as cwd:
-            with test_util.uncache('spam'):
-                with test_util.import_state(path=[cwd]):
+        mit os_helper.temp_cwd(Nichts) als cwd:
+            mit test_util.uncache('spam'):
+                mit test_util.import_state(path=[cwd]):
                     self.init._bootstrap_external._install(self.init._bootstrap)
-                    # Start as a namespace package.
+                    # Start als a namespace package.
                     self.init.invalidate_caches()
                     bad_path = os.path.join(cwd, name, '__init.py')
                     cached = self.util.cache_from_source(bad_path)
@@ -290,7 +290,7 @@ klasse ReloadTests:
                                 '__file__': Nichts,
                                 }
                     os.mkdir(name)
-                    with open(bad_path, 'w', encoding='utf-8') as init_file:
+                    mit open(bad_path, 'w', encoding='utf-8') als init_file:
                         init_file.write('eggs = Nichts')
                     module = self.init.import_module(name)
                     ns = vars(module).copy()
@@ -304,7 +304,7 @@ klasse ReloadTests:
                     self.assertEqual(spec.loader, loader)
                     self.assertEqual(set(path),
                                      set([os.path.dirname(bad_path)]))
-                    with self.assertRaises(AttributeError):
+                    mit self.assertRaises(AttributeError):
                         # a NamespaceLoader
                         loader.path
                     self.assertEqual(ns, expected)
@@ -337,7 +337,7 @@ klasse ReloadTests:
         # See #19851.
         name = 'spam'
         subname = 'ham'
-        with test_util.temp_module(name, pkg=Wahr) as pkg_dir:
+        mit test_util.temp_module(name, pkg=Wahr) als pkg_dir:
             fullname, _ = test_util.submodule(name, subname, pkg_dir)
             ham = self.init.import_module(fullname)
             reloaded = self.init.reload(ham)
@@ -347,20 +347,20 @@ klasse ReloadTests:
         #Test that reload() throws ModuleNotFounderror when reloading
         # a module whose missing a spec. (bpo-29851)
         name = 'spam'
-        with test_util.uncache(name):
+        mit test_util.uncache(name):
             module = sys.modules[name] = types.ModuleType(name)
             # Sanity check by attempting an import.
             module = self.init.import_module(name)
             self.assertIsNichts(module.__spec__)
-            with self.assertRaises(ModuleNotFoundError):
+            mit self.assertRaises(ModuleNotFoundError):
                 self.init.reload(module)
 
     def test_reload_traceback_with_non_str(self):
         # gh-125519
-        with support.captured_stdout() as stdout:
+        mit support.captured_stdout() als stdout:
             try:
                 self.init.reload("typing")
-            except TypeError as exc:
+            except TypeError als exc:
                 traceback.print_exception(exc, file=stdout)
             sonst:
                 self.fail("Expected TypeError to be raised")
@@ -429,7 +429,7 @@ klasse StartupTests:
         # Issue #17098: all modules should have __loader__ defined.
         fuer name, module in sys.modules.items():
             wenn isinstance(module, types.ModuleType):
-                with self.subTest(name=name):
+                mit self.subTest(name=name):
                     self.assertHasAttr(module, '__loader__')
                     wenn self.machinery.BuiltinImporter.find_spec(name):
                         self.assertIsNot(module.__loader__, Nichts)
@@ -439,7 +439,7 @@ klasse StartupTests:
     def test_everyone_has___spec__(self):
         fuer name, module in sys.modules.items():
             wenn isinstance(module, types.ModuleType):
-                with self.subTest(name=name):
+                mit self.subTest(name=name):
                     self.assertHasAttr(module, '__spec__')
                     wenn self.machinery.BuiltinImporter.find_spec(name):
                         self.assertIsNot(module.__spec__, Nichts)
@@ -499,8 +499,8 @@ klasse TestDeprecations(unittest.TestCase):
             'OPTIMIZED_BYTECODE_SUFFIXES',
         )
         fuer attr in attributes:
-            with self.subTest(attr=attr):
-                with self.assertWarns(DeprecationWarning):
+            mit self.subTest(attr=attr):
+                mit self.assertWarns(DeprecationWarning):
                     getattr(machinery, attr)
 
 

@@ -1,7 +1,7 @@
 """Basic test of the frozen module (source is in Python/frozen.c)."""
 
 # The Python/frozen.c source code contains a marshalled Python module
-# and therefore depends on the marshal format as well as the bytecode
+# and therefore depends on the marshal format als well als the bytecode
 # format.  If those formats have been changed then frozen.c needs to be
 # updated.
 #
@@ -21,18 +21,18 @@ klasse TestFrozen(unittest.TestCase):
         name = '__hello__'
         wenn name in sys.modules:
             del sys.modules[name]
-        with import_helper.frozen_modules():
+        mit import_helper.frozen_modules():
             importiere __hello__
-        with captured_stdout() as out:
+        mit captured_stdout() als out:
             __hello__.main()
         self.assertEqual(out.getvalue(), 'Hello world!\n')
 
     def test_frozen_submodule_in_unfrozen_package(self):
-        with import_helper.CleanImport('__phello__', '__phello__.spam'):
-            with import_helper.frozen_modules(enabled=Falsch):
+        mit import_helper.CleanImport('__phello__', '__phello__.spam'):
+            mit import_helper.frozen_modules(enabled=Falsch):
                 importiere __phello__
-            with import_helper.frozen_modules(enabled=Wahr):
-                importiere __phello__.spam as spam
+            mit import_helper.frozen_modules(enabled=Wahr):
+                importiere __phello__.spam als spam
         self.assertIs(spam, __phello__.spam)
         self.assertIsNot(__phello__.__spec__.loader,
                          importlib.machinery.FrozenImporter)
@@ -40,11 +40,11 @@ klasse TestFrozen(unittest.TestCase):
                       importlib.machinery.FrozenImporter)
 
     def test_unfrozen_submodule_in_frozen_package(self):
-        with import_helper.CleanImport('__phello__', '__phello__.spam'):
-            with import_helper.frozen_modules(enabled=Wahr):
+        mit import_helper.CleanImport('__phello__', '__phello__.spam'):
+            mit import_helper.frozen_modules(enabled=Wahr):
                 importiere __phello__
-            with import_helper.frozen_modules(enabled=Falsch):
-                importiere __phello__.spam as spam
+            mit import_helper.frozen_modules(enabled=Falsch):
+                importiere __phello__.spam als spam
         self.assertIs(spam, __phello__.spam)
         self.assertIs(__phello__.__spec__.loader,
                       importlib.machinery.FrozenImporter)

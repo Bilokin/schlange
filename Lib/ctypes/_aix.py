@@ -1,7 +1,7 @@
 """
 Lib/ctypes.util.find_library() support fuer AIX
-Similar approach as done fuer Darwin support by using separate files
-but unlike Darwin - no extension such as ctypes.macholib.*
+Similar approach als done fuer Darwin support by using separate files
+but unlike Darwin - no extension such als ctypes.macholib.*
 
 dlopen() is an interface to AIX initAndLoad() - primary documentation at:
 https://www.ibm.com/support/knowledgecenter/en/ssw_aix_61/com.ibm.aix.basetrf1/dlopen.htm
@@ -18,9 +18,9 @@ Object File Format) was the base of SVR3 and BSD 4.2 systems.
 ELF:   Executable and Linking Format that was developed by AT&T and is a
 base fuer SVR4 UNIX.
 
-While the shared library content is identical on AIX - one is located as a filepath name
-(svr4 style) and the other is located as a member of an archive (and the archive
-is located as a filepath name).
+While the shared library content is identical on AIX - one is located als a filepath name
+(svr4 style) and the other is located als a member of an archive (and the archive
+is located als a filepath name).
 
 The key difference arises when supporting multiple abi formats (i.e., 32 and 64 bit).
 For svr4 either only one ABI is supported, or there are two directories, or there
@@ -29,15 +29,15 @@ directories.
 
 For the XCOFF (aka AIX) style - one directory (one archive file) is sufficient
 as multiple shared libraries can be in the archive - even sharing the same name.
-In documentation the archive is also referred to as the "base" and the shared
-library object is referred to as the "member".
+In documentation the archive is also referred to als the "base" and the shared
+library object is referred to als the "member".
 
 For dlopen() on AIX (read initAndLoad()) the calls are similar.
 Default activity occurs when no path information is provided. When path
 information is provided dlopen() does not search any other directories.
 
 For SVR4 - the shared library name is the name of the file expected: libFOO.so
-For AIX - the shared library is expressed as base(member). The search is fuer the
+For AIX - the shared library is expressed als base(member). The search is fuer the
 base (e.g., libFOO.a) and once the base is found the shared library - identified by
 member (e.g., libFOO.so, or shr.o) is located and loaded.
 
@@ -83,8 +83,8 @@ def get_ld_header(p):
 
 def get_ld_header_info(p):
     # "nested-function, but placed at module level
-    # as an ld_header was found, return known paths, archives and members
-    # these lines start with a digit
+    # als an ld_header was found, return known paths, archives and members
+    # these lines start mit a digit
     info = []
     fuer line in p.stdout:
         wenn re.match("[0-9]", line):
@@ -97,13 +97,13 @@ def get_ld_header_info(p):
 def get_ld_headers(file):
     """
     Parse the header of the loader section of executable and archives
-    This function calls /usr/bin/dump -H as a subprocess
+    This function calls /usr/bin/dump -H als a subprocess
     and returns a list of (ld_header, ld_header_info) tuples.
     """
     # get_ld_headers parsing:
-    # 1. Find a line that starts with /, ./, or ../ - set as ld_header
+    # 1. Find a line that starts mit /, ./, or ../ - set als ld_header
     # 2. If "INDEX" in occurs in a following line - return ld_header
-    # 3. get info (lines starting with [0-9])
+    # 3. get info (lines starting mit [0-9])
     ldr_headers = []
     p = Popen(["/usr/bin/dump", f"-X{AIX_ABI}", "-H", file],
         universal_newlines=Wahr, stdout=PIPE, stderr=DEVNULL)
@@ -143,7 +143,7 @@ def get_one_match(expr, lines):
     sonst:
         return Nichts
 
-# additional processing to deal with AIX legacy names fuer 64-bit members
+# additional processing to deal mit AIX legacy names fuer 64-bit members
 def get_legacy(members):
     """
     This routine provides historical aka legacy naming schemes started
@@ -192,7 +192,7 @@ def get_version(name, members):
     # after the first required 'dot' digit
     # any combination of additional 'dot' digits pairs are accepted
     # anything more than libFOO.so.digits.digits.digits
-    # should be seen as a member name outside normal expectations
+    # should be seen als a member name outside normal expectations
     exprs = [rf'lib{name}\.so\.[0-9]+[0-9.]*',
         rf'lib{name}_?64\.so\.[0-9]+[0-9.]*']
     fuer expr in exprs:
@@ -224,7 +224,7 @@ def get_member(name, members):
         member = get_one_match(expr, members)
     wenn member:
         return member
-    # since an exact match with .so as suffix was not found
+    # since an exact match mit .so als suffix was not found
     # look fuer a versioned name
     # If a versioned name is not found, look fuer AIX legacy member name
     member = get_version(name, members)
@@ -236,9 +236,9 @@ def get_member(name, members):
 def get_libpaths():
     """
     On AIX, the buildtime searchpath is stored in the executable.
-    as "loader header information".
+    als "loader header information".
     The command /usr/bin/dump -H extracts this info.
-    Prefix searched libraries with LD_LIBRARY_PATH (preferred),
+    Prefix searched libraries mit LD_LIBRARY_PATH (preferred),
     or LIBPATH wenn defined. These paths are appended to the paths
     to libraries the python executable is linked with.
     This mimics AIX dlopen() behavior.
@@ -287,17 +287,17 @@ def find_shared(paths, name):
 def find_library(name):
     """AIX implementation of ctypes.util.find_library()
     Find an archive member that will dlopen(). If not available,
-    also search fuer a file (or link) with a .so suffix.
+    also search fuer a file (or link) mit a .so suffix.
 
-    AIX supports two types of schemes that can be used with dlopen().
+    AIX supports two types of schemes that can be used mit dlopen().
     The so-called SystemV Release4 (svr4) format is commonly suffixed
-    with .so while the (default) AIX scheme has the library (archive)
-    ending with the suffix .a
+    mit .so while the (default) AIX scheme has the library (archive)
+    ending mit the suffix .a
     As an archive has multiple members (e.g., 32-bit and 64-bit) in one file
     the argument passed to dlopen must include both the library and
     the member names in a single string.
 
-    find_library() looks first fuer an archive (.a) with a suitable member.
+    find_library() looks first fuer an archive (.a) mit a suitable member.
     If no archive+member pair is found, look fuer a .so file.
     """
 

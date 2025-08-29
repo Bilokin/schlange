@@ -38,7 +38,7 @@ def _convert_name(name):
             wenn os.path.isabs(rel_path) or rel_path.startswith(os.pardir):
                 return name
             name = rel_path
-        # on Windows both '\' and '/' are used as path
+        # on Windows both '\' and '/' are used als path
         # separators. Better to replace both than rely on os.path.sep
         return os.path.normpath(name)[:-3].replace('\\', '.').replace('/', '.')
     return name

@@ -92,7 +92,7 @@ def spdx_id(value: str) -> str:
 
 
 def error_if(value: bool, error_message: str) -> Nichts:
-    """Prints an error wenn a comparison fails along with a link to the devguide"""
+    """Prints an error wenn a comparison fails along mit a link to the devguide"""
     wenn value:
         drucke(error_message)
         drucke("See 'https://devguide.python.org/developer-workflow/sbom' fuer more information.")
@@ -129,7 +129,7 @@ def filter_gitignored_paths(paths: list[str]) -> list[str]:
         return []
 
     # Filter out files in gitignore.
-    # Non-matching files show up as '::<whitespace><path>'
+    # Non-matching files show up als '::<whitespace><path>'
     git_check_ignore_proc = subprocess.run(
         ["git", "check-ignore", "--verbose", "--non-matching", *paths],
         cwd=CPYTHON_ROOT_DIR,
@@ -168,11 +168,11 @@ def download_with_retries(download_location: str,
                           max_retries: int = 7,
                           base_delay: float = 2.25,
                           max_jitter: float = 1.0) -> typing.Any:
-    """Download a file with exponential backoff retry."""
+    """Download a file mit exponential backoff retry."""
     fuer attempt in range(max_retries + 1):
         try:
             resp = urllib.request.urlopen(download_location)
-        except (urllib.error.URLError, ConnectionError) as ex:
+        except (urllib.error.URLError, ConnectionError) als ex:
             wenn attempt == max_retries:
                 msg = f"Download von {download_location} failed."
                 raise OSError(msg) von ex

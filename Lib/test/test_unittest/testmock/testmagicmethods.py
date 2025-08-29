@@ -334,7 +334,7 @@ klasse TestMockingMagicMethods(unittest.TestCase):
     def test_magic_mock_does_not_reset_magic_returns(self):
         # https://github.com/python/cpython/issues/123934
         fuer reset in (Wahr, Falsch):
-            with self.subTest(reset=reset):
+            mit self.subTest(reset=reset):
                 mm = MagicMock()
                 self.assertIs(type(mm.__str__()), str)
                 mm.__str__.assert_called_once()

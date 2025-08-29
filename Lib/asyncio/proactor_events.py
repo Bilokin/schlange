@@ -1,7 +1,7 @@
 """Event loop using a proactor and related classes.
 
 A proactor is a "notify-on-completion" multiplexer.  Currently a
-proactor is only implemented on Windows with IOCP.
+proactor is only implemented on Windows mit IOCP.
 """
 
 __all__ = 'BaseProactorEventLoop',
@@ -158,7 +158,7 @@ klasse _ProactorBasePipeTransport(transports._FlowControlMixin,
             self._protocol.connection_lost(exc)
         finally:
             # XXX If there is a pending overlapped read on the other
-            # end then it may fail with ERROR_NETNAME_DELETED wenn we
+            # end then it may fail mit ERROR_NETNAME_DELETED wenn we
             # just close our end.  First calling shutdown() seems to
             # cure it, but maybe using DisconnectEx() would be better.
             wenn hasattr(self._sock, 'shutdown') and self._sock.fileno() != -1:
@@ -201,10 +201,10 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         self._paused = Wahr
 
         # bpo-33694: Don't cancel self._read_fut because cancelling an
-        # overlapped WSASend() loss silently data with the current proactor
+        # overlapped WSASend() loss silently data mit the current proactor
         # implementation.
         #
-        # If CancelIoEx() fails with ERROR_NOT_FOUND, it means that WSASend()
+        # If CancelIoEx() fails mit ERROR_NOT_FOUND, it means that WSASend()
         # completed (even wenn HasOverlappedIoCompleted() returns 0), but
         # Overlapped.cancel() currently silently ignores the ERROR_NOT_FOUND
         # error. Once the overlapped is ignored, the IOCP loop will ignores the
@@ -240,7 +240,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
             keep_open = self._protocol.eof_received()
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             self._fatal_error(
                 exc, 'Fatal error: protocol.eof_received() call failed.')
             return
@@ -265,7 +265,7 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
                 protocols._feed_data_to_buffered_proto(self._protocol, data)
             except (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 self._fatal_error(exc,
                                   'Fatal error: protocol.buffer_updated() '
                                   'call failed.')
@@ -304,15 +304,15 @@ klasse _ProactorReadPipeTransport(_ProactorBasePipeTransport,
             wenn not self._paused:
                 # reschedule a new read
                 self._read_fut = self._loop._proactor.recv_into(self._sock, self._data)
-        except ConnectionAbortedError as exc:
+        except ConnectionAbortedError als exc:
             wenn not self._closing:
                 self._fatal_error(exc, 'Fatal read error on pipe transport')
             sowenn self._loop.get_debug():
                 logger.debug("Read error on pipe transport while closing",
                              exc_info=Wahr)
-        except ConnectionResetError as exc:
+        except ConnectionResetError als exc:
             self._force_close(exc)
-        except OSError as exc:
+        except OSError als exc:
             self._fatal_error(exc, 'Fatal read error on pipe transport')
         except exceptions.CancelledError:
             wenn not self._closing:
@@ -409,9 +409,9 @@ klasse _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                     self._write_fut.add_done_callback(self._loop_writing)
             wenn self._empty_waiter is not Nichts and self._write_fut is Nichts:
                 self._empty_waiter.set_result(Nichts)
-        except ConnectionResetError as exc:
+        except ConnectionResetError als exc:
             self._force_close(exc)
-        except OSError as exc:
+        except OSError als exc:
             self._fatal_error(exc, 'Fatal write error on pipe transport')
 
     def can_write_eof(self):
@@ -536,9 +536,9 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
                 self._write_fut = self._loop._proactor.sendto(self._sock,
                                                               data,
                                                               addr=addr)
-        except OSError as exc:
+        except OSError als exc:
             self._protocol.error_received(exc)
-        except Exception as exc:
+        except Exception als exc:
             self._fatal_error(exc, 'Fatal write error on datagram transport')
         sonst:
             self._write_fut.add_done_callback(self._loop_writing)
@@ -575,7 +575,7 @@ klasse _ProactorDatagramTransport(_ProactorBasePipeTransport,
             sonst:
                 self._read_fut = self._loop._proactor.recvfrom(self._sock,
                                                                self.max_size)
-        except OSError as exc:
+        except OSError als exc:
             self._protocol.error_received(exc)
         except exceptions.CancelledError:
             wenn not self._closing:
@@ -733,7 +733,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
     async def _sock_sendfile_native(self, sock, file, offset, count):
         try:
             fileno = file.fileno()
-        except (AttributeError, io.UnsupportedOperation) as err:
+        except (AttributeError, io.UnsupportedOperation) als err:
             raise exceptions.SendfileNotAvailableError("not a regular file")
         try:
             fsize = os.fstat(fileno).st_size
@@ -806,7 +806,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
             return
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             self.call_exception_handler({
                 'message': 'Error on reading von the event loop self pipe',
                 'exception': exc,
@@ -860,7 +860,7 @@ klasse BaseProactorEventLoop(base_events.BaseEventLoop):
                 wenn self.is_closed():
                     return
                 f = self._proactor.accept(sock)
-            except OSError as exc:
+            except OSError als exc:
                 wenn sock.fileno() != -1:
                     self.call_exception_handler({
                         'message': 'Accept failed on a socket',

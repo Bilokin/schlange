@@ -1,3 +1,3 @@
-"""Provide the _dbm module as a dbm submodule."""
+"""Provide the _dbm module als a dbm submodule."""
 
 von _dbm importiere *

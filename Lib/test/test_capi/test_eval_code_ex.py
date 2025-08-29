@@ -37,7 +37,7 @@ klasse PyEval_EvalCodeExTests(unittest.TestCase):
             nonlocal code
             code = func.__code__
 
-        with swap_attr(builtins, '__build_class__', build_class):
+        mit swap_attr(builtins, '__build_class__', build_class):
             klasse A:
                 # Uses LOAD_NAME fuer a
                 r[:] = [a]

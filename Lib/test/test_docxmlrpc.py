@@ -44,8 +44,8 @@ def make_server():
 
         def add(x, y):
             """Add two instances together. This follows PEP008, but has nothing
-            to do with RFC1952. Case should matter: pEp008 and rFC1952.  Things
-            that start with http and ftp should be auto-linked, too:
+            to do mit RFC1952. Case should matter: pEp008 and rFC1952.  Things
+            that start mit http and ftp should be auto-linked, too:
             http://google.com.
             """
             return x + y
@@ -132,10 +132,10 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_autolinking(self):
         """Test that the server correctly automatically wraps references to
-        PEPS and RFCs with links, and that it linkifies text starting with
+        PEPS and RFCs mit links, and that it linkifies text starting with
         http or ftp protocol prefixes.
 
         The documentation fuer the "add" method contains the test material.
@@ -156,7 +156,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'http://google.com</a>.</tt></dd></dl>'), response)
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_system_methods(self):
         """Test the presence of three consecutive system.* methods.
 
@@ -194,7 +194,7 @@ klasse DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     def test_annotations(self):
-        """ Test that annotations works as expected """
+        """ Test that annotations works als expected """
         self.client.request("GET", "/")
         response = self.client.getresponse()
         docstring = (b'' wenn sys.flags.optimize >= 2 sonst

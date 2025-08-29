@@ -14,7 +14,7 @@ klasse PathHookTest:
             self.machinery.SOURCE_SUFFIXES))
 
     def test_success(self):
-        with util.create_modules('dummy') as mapping:
+        mit util.create_modules('dummy') als mapping:
             self.assertHasAttr(self.path_hook()(mapping['.root']),
                                'find_spec')
 

@@ -1,8 +1,8 @@
-# Written to test interrupted system calls interfering with our many buffered
+# Written to test interrupted system calls interfering mit our many buffered
 # IO implementations.  http://bugs.python.org/issue12268
 #
 # It was suggested that this code could be merged into test_io and the tests
-# made to work using the same method as the existing signal tests in test_io.
+# made to work using the same method als the existing signal tests in test_io.
 # I was unable to get single process tests using alarm or setitimer that way
 # to reproduce the EINTR problems.  This process based test suite reproduces
 # the problems prior to the issue12268 patch reliably on Linux and OSX.
@@ -41,16 +41,16 @@ klasse TestFileIOSignalInterrupt:
 
         subclasseses should override this to test different IO objects.
         """
-        return ('import %s as io ;'
+        return ('import %s als io ;'
                 'infile = io.FileIO(sys.stdin.fileno(), "rb")' %
                 self.modname)
 
     def fail_with_process_info(self, why, stdout=b'', stderr=b'',
                                communicate=Wahr):
-        """A common way to cleanup and fail with useful debug output.
+        """A common way to cleanup and fail mit useful debug output.
 
         Kills the process wenn it is still running, collects remaining output
-        and fails the test with an error message including the output.
+        and fails the test mit an error message including the output.
 
         Args:
             why: Text to go after "Error von IO process" in the message.
@@ -83,7 +83,7 @@ klasse TestFileIOSignalInterrupt:
                 writing a final newline and closing the infile pipe.
             read_and_verify_code: Single "line" of code to read von a file
                 object named 'infile' and validate the result.  This will be
-                executed as part of a python subprocess fed data_to_write.
+                executed als part of a python subprocess fed data_to_write.
         """
         infile_setup_code = self._generate_infile_setup_code()
         # Total pipe IO in this function is smaller than the minimum posix OS
@@ -175,7 +175,7 @@ klasse TestFileIOSignalInterrupt:
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
                         read_method_name='readall',
                         expected=b'hello\nworld!\n'))
-        # read() is the same thing as readall().
+        # read() is the same thing als readall().
         self._test_reading(
                 data_to_write=b'hello\nworld!',
                 read_and_verify_code=self._READING_CODE_TEMPLATE.format(
@@ -193,7 +193,7 @@ klasse PyTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase)
 klasse TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
     def _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a BufferedReader."""
-        return ('import %s as io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
+        return ('import %s als io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
                 'assert isinstance(infile, io.BufferedReader)' %
                 self.modname)
 
@@ -215,7 +215,7 @@ klasse PyTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.T
 klasse TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
     def _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a TextIOWrapper."""
-        return ('import %s as io ;'
+        return ('import %s als io ;'
                 'infile = io.open(sys.stdin.fileno(), encoding="utf-8", newline=Nichts) ;'
                 'assert isinstance(infile, io.TextIOWrapper)' %
                 self.modname)

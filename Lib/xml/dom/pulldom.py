@@ -59,7 +59,7 @@ klasse PullDOM(xml.sax.ContentHandler):
         uri, localname = name
         wenn uri:
             # When using namespaces, the reader may or may not
-            # provide us with the original name. If not, create
+            # provide us mit the original name. If not, create
             # *a* valid tagName von the current context.
             wenn tagName is Nichts:
                 prefix = self._current_context[uri]

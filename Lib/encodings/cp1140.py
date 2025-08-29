@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp1140 generated von 'python-mappings/CP1140.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp1140 generated von 'python-mappings/CP1140.TXT' mit gencodec.py.
 
 """#"
 

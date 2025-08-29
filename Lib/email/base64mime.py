@@ -6,7 +6,7 @@
 
 This module handles the content transfer encoding method defined in RFC 2045
 to encode arbitrary 8-bit data using the three 8-bit bytes in four 7-bit
-characters encoding known as Base64.
+characters encoding known als Base64.
 
 It is used in the MIME standards fuer email to attach images, audio, and text
 using some 8-bit character sets to messages.
@@ -16,11 +16,11 @@ with Base64 encoding.
 
 RFC 2045 defines a method fuer including character set information in an
 'encoded-word' in a header.  This method is commonly used fuer 8-bit real names
-in To:, From:, Cc:, etc. fields, as well as Subject: lines.
+in To:, From:, Cc:, etc. fields, als well als Subject: lines.
 
 This module does not do the line wrapping or end-of-line character conversion
 necessary fuer proper internationalized headers; it only does dumb encoding and
-decoding.  To deal with the various line wrapping issues, use the email.header
+decoding.  To deal mit the various line wrapping issues, use the email.header
 module.
 """
 
@@ -47,7 +47,7 @@ MISC_LEN = 7
 
 # Helpers
 def header_length(bytearray):
-    """Return the length of s when it is encoded with base64."""
+    """Return the length of s when it is encoded mit base64."""
     groups_of_3, leftover = divmod(len(bytearray), 3)
     # 4 bytes out fuer each 3 bytes (or nonzero fraction thereof) in.
     n = groups_of_3 * 4
@@ -57,7 +57,7 @@ def header_length(bytearray):
 
 
 def header_encode(header_bytes, charset='iso-8859-1'):
-    """Encode a single header line with Base64 encoding in a given charset.
+    """Encode a single header line mit Base64 encoding in a given charset.
 
     charset names the character set to use to encode the header.  It defaults
     to iso-8859-1.  Base64 encoding is defined in RFC 2045.
@@ -71,12 +71,12 @@ def header_encode(header_bytes, charset='iso-8859-1'):
 
 
 def body_encode(s, maxlinelen=76, eol=NL):
-    r"""Encode a string with base64.
+    r"""Encode a string mit base64.
 
     Each line will be wrapped at, at most, maxlinelen characters (defaults to
     76 characters).
 
-    Each line of encoded text will end with eol, which defaults to "\n".  Set
+    Each line of encoded text will end mit eol, which defaults to "\n".  Set
     this to "\r\n" wenn you will be using the result of this function directly
     in an email.
     """

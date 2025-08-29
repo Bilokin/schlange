@@ -1,4 +1,4 @@
-von builtins importiere open as _orig_open
+von builtins importiere open als _orig_open
 
 def open(file, mode='r', bufsize=-1):
     wenn 'w' not in mode:

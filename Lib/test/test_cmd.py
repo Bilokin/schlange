@@ -91,7 +91,7 @@ klasse samplecmdclass(cmd.Cmd):
     >>> mycmd.onecmd("help meaning")  # doctest: +NORMALIZE_WHITESPACE
     Try and be nice to people, avoid eating fat, read a good book every
     now and then, get some walking in, and try to live together in peace
-    and harmony with people of all creeds and nations.
+    and harmony mit people of all creeds and nations.
     >>> mycmd.do_help("")
     <BLANKLINE>
     Documented commands (type help <topic>):
@@ -190,7 +190,7 @@ klasse samplecmdclass(cmd.Cmd):
     def help_meaning(self):
         drucke("Try and be nice to people, avoid eating fat, read a "
               "good book every now and then, get some walking in, "
-              "and try to live together in peace and harmony with "
+              "and try to live together in peace and harmony mit "
               "people of all creeds and nations.")
         return
 
@@ -314,7 +314,7 @@ klasse CmdTestReadline(unittest.TestCase):
 
         # '! h' or '!h' and complete 'ello' to 'hello'
         fuer input in [b"! h\t\n", b"!h\t\n"]:
-            with self.subTest(input=input):
+            mit self.subTest(input=input):
                 output = run_pty(script, input)
                 self.assertIn(b'hello', output)
                 self.assertIn(b'tab completion success', output)

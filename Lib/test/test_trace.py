@@ -282,9 +282,9 @@ klasse TestFuncs(unittest.TestCase):
     def test_arg_errors(self):
         res = self.tracer.runfunc(traced_capturer, 1, 2, self=3, func=4)
         self.assertEqual(res, ((1, 2), {'self': 3, 'func': 4}))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.tracer.runfunc(func=traced_capturer, arg=1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.tracer.runfunc()
 
     def test_loop_caller_importing(self):
@@ -376,7 +376,7 @@ klasse TestCoverage(unittest.TestCase):
     @requires_resource('cpu')
     def test_coverage(self):
         tracer = trace.Trace(trace=0, count=1)
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             self._coverage(tracer)
         stdout = stdout.getvalue()
         self.assertIn("pprint.py", stdout)
@@ -391,7 +391,7 @@ klasse TestCoverage(unittest.TestCase):
         # sys.prefix does not work when running von a checkout
         tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,
                              libpath] + sys.path, trace=0, count=1)
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             self._coverage(tracer)
         wenn os.path.exists(TESTFN):
             files = os.listdir(TESTFN)
@@ -403,9 +403,9 @@ klasse TestCoverage(unittest.TestCase):
         # Ensure that the module is executed in import
         wenn modname in sys.modules:
             del sys.modules[modname]
-        cmd = ("import test.tracedmodules.testmod as t;"
+        cmd = ("import test.tracedmodules.testmod als t;"
                "t.func(0); t.func2();")
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             self._coverage(tracer, cmd)
         stdout.seek(0)
         stdout.readline()
@@ -413,23 +413,23 @@ klasse TestCoverage(unittest.TestCase):
         fuer line in stdout:
             lines, cov, module = line.split()[:3]
             coverage[module] = (float(lines), float(cov[:-1]))
-        # XXX This is needed to run regrtest.py as a script
+        # XXX This is needed to run regrtest.py als a script
         modname = trace._fullmodname(sys.modules[modname].__file__)
         self.assertIn(modname, coverage)
         self.assertEqual(coverage[modname], (5, 100))
 
     def test_coverageresults_update(self):
-        # Update empty CoverageResults with a non-empty infile.
+        # Update empty CoverageResults mit a non-empty infile.
         infile = TESTFN + '-infile'
-        with open(infile, 'wb') as f:
+        mit open(infile, 'wb') als f:
             dump(({}, {}, {'caller': 1}), f, protocol=1)
         self.addCleanup(unlink, infile)
         results = trace.CoverageResults({}, {}, infile, {})
         self.assertEqual(results.callers, {'caller': 1})
 
-### Tests that don't mess with sys.settrace and can be traced
-### themselves TODO: Skip tests that do mess with sys.settrace when
-### regrtest is invoked with -T option.
+### Tests that don't mess mit sys.settrace and can be traced
+### themselves TODO: Skip tests that do mess mit sys.settrace when
+### regrtest is invoked mit -T option.
 klasse Test_Ignore(unittest.TestCase):
     def test_ignored(self):
         jn = os.path.join
@@ -449,7 +449,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
     coverfile = 'tmp.cover'
 
     def setUp(self):
-        with open(self.codefile, 'w', encoding='iso-8859-15') as f:
+        mit open(self.codefile, 'w', encoding='iso-8859-15') als f:
             f.write(textwrap.dedent('''\
                 # coding: iso-8859-15
                 x = 'spœm'
@@ -473,7 +473,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
         self.assertEqual(stderr, b'')
         self.assertFalsch(os.path.exists(tracecoverpath))
         self.assertWahr(os.path.exists(self.coverfile))
-        with open(self.coverfile, encoding='iso-8859-15') as f:
+        mit open(self.coverfile, encoding='iso-8859-15') als f:
             self.assertEqual(f.read(),
                 "       # coding: iso-8859-15\n"
                 "    1: x = 'spœm'\n"
@@ -485,7 +485,7 @@ klasse TestCoverageCommandLineOutput(unittest.TestCase):
         argv = '-m trace --count --missing'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
         self.assertWahr(os.path.exists(self.coverfile))
-        with open(self.coverfile, encoding='iso-8859-15') as f:
+        mit open(self.coverfile, encoding='iso-8859-15') als f:
             self.assertEqual(f.read(), textwrap.dedent('''\
                        # coding: iso-8859-15
                     1: x = 'spœm'
@@ -497,12 +497,12 @@ klasse TestCommandLine(unittest.TestCase):
 
     def test_failures(self):
         _errors = (
-            (b'progname is missing: required with the main options', '-l', '-T'),
+            (b'progname is missing: required mit the main options', '-l', '-T'),
             (b'cannot specify both --listfuncs and (--trace or --count)', '-lc'),
-            (b'argument -R/--no-report: not allowed with argument -r/--report', '-rR'),
+            (b'argument -R/--no-report: not allowed mit argument -r/--report', '-rR'),
             (b'must specify one of --trace, --count, --report, --listfuncs, or --trackcalls', '-g'),
             (b'-r/--report requires -f/--file', '-r'),
-            (b'--summary can only be used with --count or --report', '-sT'),
+            (b'--summary can only be used mit --count or --report', '-sT'),
             (b'unrecognized arguments: -y', '-y'))
         fuer message, *args in _errors:
             *_, stderr = assert_python_failure('-m', 'trace', *args)
@@ -511,7 +511,7 @@ klasse TestCommandLine(unittest.TestCase):
     def test_listfuncs_flag_success(self):
         filename = TESTFN + '.py'
         modulename = os.path.basename(TESTFN)
-        with open(filename, 'w', encoding='utf-8') as fd:
+        mit open(filename, 'w', encoding='utf-8') als fd:
             self.addCleanup(unlink, filename)
             fd.write("a = 1\n")
             status, stdout, stderr = assert_python_ok('-m', 'trace', '-l', filename,
@@ -521,7 +521,7 @@ klasse TestCommandLine(unittest.TestCase):
             self.assertIn(expected.encode(), stdout)
 
     def test_sys_argv_list(self):
-        with open(TESTFN, 'w', encoding='utf-8') as fd:
+        mit open(TESTFN, 'w', encoding='utf-8') als fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("import sys\n")
             fd.write("drucke(type(sys.argv))\n")
@@ -535,7 +535,7 @@ klasse TestCommandLine(unittest.TestCase):
         filename = f'{TESTFN}.py'
         coverfilename = f'{TESTFN}.cover'
         modulename = os.path.basename(TESTFN)
-        with open(filename, 'w', encoding='utf-8') as fd:
+        mit open(filename, 'w', encoding='utf-8') als fd:
             self.addCleanup(unlink, filename)
             self.addCleanup(unlink, coverfilename)
             fd.write(textwrap.dedent("""\
@@ -572,7 +572,7 @@ klasse TestTrace(unittest.TestCase):
         co = co.replace(co_filename=filename)
         f = FunctionType(co, globals())
 
-        with captured_stdout() as out:
+        mit captured_stdout() als out:
             self.tracer.runfunc(f, 2, 3)
 
         out = out.getvalue().splitlines()

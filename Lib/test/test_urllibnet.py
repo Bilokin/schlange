@@ -30,7 +30,7 @@ klasse URLTimeoutTest(unittest.TestCase):
         self.addCleanup(urllib.request.urlcleanup)
 
         domain = urllib.parse.urlparse(support.TEST_HTTP_URL).netloc
-        with socket_helper.transient_internet(domain):
+        mit socket_helper.transient_internet(domain):
             f = urllib.request.urlopen(support.TEST_HTTP_URL)
             f.read()
 
@@ -59,7 +59,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
     @contextlib.contextmanager
     def urlopen(self, *args, **kwargs):
         resource = args[0]
-        with socket_helper.transient_internet(resource):
+        mit socket_helper.transient_internet(resource):
             r = urllib.request.urlopen(*args, **kwargs)
             try:
                 yield r
@@ -68,7 +68,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
 
     def test_basic(self):
         # Simple test expected to pass.
-        with self.urlopen(self.url) as open_url:
+        mit self.urlopen(self.url) als open_url:
             fuer attr in ("read", "readline", "readlines", "fileno", "close",
                          "info", "geturl"):
                 self.assertHasAttr(open_url, attr)
@@ -76,7 +76,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
 
     def test_readlines(self):
         # Test both readline and readlines.
-        with self.urlopen(self.url) as open_url:
+        mit self.urlopen(self.url) als open_url:
             self.assertIsInstance(open_url.readline(), bytes,
                                   "readline did not return a string")
             self.assertIsInstance(open_url.readlines(), list,
@@ -84,7 +84,7 @@ klasse urlopenNetworkTests(unittest.TestCase):
 
     def test_info(self):
         # Test 'info'.
-        with self.urlopen(self.url) as open_url:
+        mit self.urlopen(self.url) als open_url:
             info_obj = open_url.info()
             self.assertIsInstance(info_obj, email.message.Message,
                                   "object returned by 'info' is not an "
@@ -92,17 +92,17 @@ klasse urlopenNetworkTests(unittest.TestCase):
             self.assertEqual(info_obj.get_content_subtype(), "html")
 
     def test_geturl(self):
-        # Make sure same URL as opened is returned by geturl.
-        with self.urlopen(self.url) as open_url:
+        # Make sure same URL als opened is returned by geturl.
+        mit self.urlopen(self.url) als open_url:
             gotten_url = open_url.geturl()
             self.assertEqual(gotten_url, self.url)
 
     def test_getcode(self):
-        # test getcode() with the fancy opener to get 404 error codes
+        # test getcode() mit the fancy opener to get 404 error codes
         URL = self.url + "XXXinvalidXXX"
-        with socket_helper.transient_internet(URL):
-            with self.assertRaises(urllib.error.URLError) as e:
-                with urllib.request.urlopen(URL):
+        mit socket_helper.transient_internet(URL):
+            mit self.assertRaises(urllib.error.URLError) als e:
+                mit urllib.request.urlopen(URL):
                     pass
             self.assertEqual(e.exception.code, 404)
             e.exception.close()
@@ -128,22 +128,22 @@ klasse urlopenNetworkTests(unittest.TestCase):
         # However, none of this will prevent the test from
         # failing wenn the ISP hijacks all invalid domain
         # requests.  The real solution would be to be able to
-        # parameterize the framework with a mock resolver.
+        # parameterize the framework mit a mock resolver.
         bogus_domain = "sadflkjsasf.i.nvali.d."
         try:
             socket.gethostbyname(bogus_domain)
         except OSError:
             # socket.gaierror is too narrow, since getaddrinfo() may also
-            # fail with EAI_SYSTEM and ETIMEDOUT (seen on Ubuntu 13.04),
+            # fail mit EAI_SYSTEM and ETIMEDOUT (seen on Ubuntu 13.04),
             # i.e. Python's TimeoutError.
             pass
         sonst:
-            # This happens with some overzealous DNS providers such as OpenDNS
+            # This happens mit some overzealous DNS providers such als OpenDNS
             self.skipTest("%r should not resolve fuer test to work" % bogus_domain)
         failure_explanation = ('opening an invalid URL did not raise OSError; '
                                'can be caused by a broken DNS server '
                                '(e.g. returns 404 or hijacks page)')
-        with self.assertRaises(OSError, msg=failure_explanation):
+        mit self.assertRaises(OSError, msg=failure_explanation):
             urllib.request.urlopen("http://{}/".format(bogus_domain))
 
 
@@ -157,7 +157,7 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
     @contextlib.contextmanager
     def urlretrieve(self, *args, **kwargs):
         resource = args[0]
-        with socket_helper.transient_internet(resource):
+        mit socket_helper.transient_internet(resource):
             file_location, info = urllib.request.urlretrieve(*args, **kwargs)
             try:
                 yield file_location, info
@@ -166,25 +166,25 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
 
     def test_basic(self):
         # Test basic functionality.
-        with self.urlretrieve(self.logo) as (file_location, info):
+        mit self.urlretrieve(self.logo) als (file_location, info):
             self.assertWahr(os.path.exists(file_location), "file location returned by"
                             " urlretrieve is not a valid path")
-            with open(file_location, 'rb') as f:
+            mit open(file_location, 'rb') als f:
                 self.assertWahr(f.read(), "reading von the file location returned"
                                 " by urlretrieve failed")
 
     def test_specified_path(self):
         # Make sure that specifying the location of the file to write to works.
-        with self.urlretrieve(self.logo,
-                              os_helper.TESTFN) as (file_location, info):
+        mit self.urlretrieve(self.logo,
+                              os_helper.TESTFN) als (file_location, info):
             self.assertEqual(file_location, os_helper.TESTFN)
             self.assertWahr(os.path.exists(file_location))
-            with open(file_location, 'rb') as f:
+            mit open(file_location, 'rb') als f:
                 self.assertWahr(f.read(), "reading von temporary file failed")
 
     def test_header(self):
-        # Make sure header returned as 2nd value von urlretrieve is good.
-        with self.urlretrieve(self.logo) as (file_location, info):
+        # Make sure header returned als 2nd value von urlretrieve is good.
+        mit self.urlretrieve(self.logo) als (file_location, info):
             self.assertIsInstance(info, email.message.Message,
                                   "info is not an instance of email.message.Message")
 
@@ -192,7 +192,7 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
 
     @support.requires_resource('walltime')
     def test_data_header(self):
-        with self.urlretrieve(self.logo) as (file_location, fileheaders):
+        mit self.urlretrieve(self.logo) als (file_location, fileheaders):
             datevalue = fileheaders.get('Date')
             dateformat = '%a, %d %b %Y %H:%M:%S GMT'
             try:
@@ -206,7 +206,7 @@ klasse urlretrieveNetworkTests(unittest.TestCase):
         def recording_reporthook(blocks, block_size, total_size):
             records.append((blocks, block_size, total_size))
 
-        with self.urlretrieve(self.logo, reporthook=recording_reporthook) as (
+        mit self.urlretrieve(self.logo, reporthook=recording_reporthook) als (
                 file_location, fileheaders):
             expected_size = int(fileheaders['Content-Length'])
 

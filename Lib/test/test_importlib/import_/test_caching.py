@@ -15,7 +15,7 @@ klasse UseCache:
     found, then the proper steps are taken to perform the import, but
     sys.modules is still used to return the imported module (e.g., not what a
     loader returns) [from cache on return]. This also applies to imports of
-    things contained within a package and thus get assigned as an attribute
+    things contained within a package and thus get assigned als an attribute
     [from cache to attribute] or pulled in thanks to a fromlist import
     [from cache fuer fromlist]. But wenn sys.modules contains Nichts then
     ImportError is raised [Nichts in cache].
@@ -25,7 +25,7 @@ klasse UseCache:
     def test_using_cache(self):
         # [use cache]
         module_to_use = "some module found!"
-        with util.uncache('some_module'):
+        mit util.uncache('some_module'):
             sys.modules['some_module'] = module_to_use
             module = self.__import__('some_module')
             self.assertEqual(id(module_to_use), id(module))
@@ -33,9 +33,9 @@ klasse UseCache:
     def test_Nichts_in_cache(self):
         #[Nichts in cache]
         name = 'using_Nichts'
-        with util.uncache(name):
+        mit util.uncache(name):
             sys.modules[name] = Nichts
-            with self.assertRaises(ImportError) as cm:
+            mit self.assertRaises(ImportError) als cm:
                 self.__import__(name)
             self.assertEqual(cm.exception.name, name)
 
@@ -63,20 +63,20 @@ klasse ImportlibUseCache(UseCache, unittest.TestCase):
     #   to when to use the module in sys.modules and when not to.
     def test_using_cache_after_loader(self):
         # [from cache on return]
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
-            with self.create_mock('module') as mock:
-                with util.import_state(meta_path=[mock]):
+            mit self.create_mock('module') als mock:
+                mit util.import_state(meta_path=[mock]):
                     module = self.__import__('module')
                     self.assertEqual(id(module), id(sys.modules['module']))
 
     # See test_using_cache_after_loader() fuer reasoning.
     def test_using_cache_for_assigning_to_attribute(self):
         # [from cache to attribute]
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
-            with self.create_mock('pkg.__init__', 'pkg.module') as importer:
-                with util.import_state(meta_path=[importer]):
+            mit self.create_mock('pkg.__init__', 'pkg.module') als importer:
+                mit util.import_state(meta_path=[importer]):
                     module = self.__import__('pkg.module')
                     self.assertHasAttr(module, 'module')
                     self.assertEqual(id(module.module),
@@ -85,8 +85,8 @@ klasse ImportlibUseCache(UseCache, unittest.TestCase):
     # See test_using_cache_after_loader() fuer reasoning.
     def test_using_cache_for_fromlist(self):
         # [from cache fuer fromlist]
-        with self.create_mock('pkg.__init__', 'pkg.module') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit self.create_mock('pkg.__init__', 'pkg.module') als importer:
+            mit util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg', fromlist=['module'])
                 self.assertHasAttr(module, 'module')
                 self.assertEqual(id(module.module),

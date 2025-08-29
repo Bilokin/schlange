@@ -59,23 +59,23 @@ sowenn sys.platform == "vxworks":
 # * Any Linux distro where POSIX isn't a simple alias fuer the C locale
 # * Any Linux distro where the default locale is something other than "C"
 #
-# Options fuer dealing with this:
+# Options fuer dealing mit this:
 # * Don't set the PY_COERCE_C_LOCALE preprocessor definition on
 #   such platforms (e.g. it isn't set on Windows)
 # * Fix the test expectations to match the actual platform behaviour
 
-# In order to get the warning messages to match up as expected, the candidate
+# In order to get the warning messages to match up als expected, the candidate
 # order here must much the target locale order in Python/pylifecycle.c
 _C_UTF8_LOCALES = ("C.UTF-8", "C.utf8", "UTF-8")
 
 # There's no reliable cross-platform way of checking locale alias
 # lists, so the only way of knowing which of these locales will work
-# is to try them with locale.setlocale(). We do that in a subprocess
+# is to try them mit locale.setlocale(). We do that in a subprocess
 # in setUpModule() below to avoid altering the locale of the test runner.
 #
 # If the relevant locale module attributes exist, and we're not on a platform
 # where we expect it to always succeed, we also check that
-# `locale.nl_langinfo(locale.CODESET)` works, as wenn it fails, the interpreter
+# `locale.nl_langinfo(locale.CODESET)` works, als wenn it fails, the interpreter
 # will skip locale coercion fuer that particular target locale
 _check_nl_langinfo_CODESET = bool(
     sys.platform not in ("darwin", "linux") and
@@ -159,9 +159,9 @@ klasse EncodingDetails(_EncodingDetails):
 
 # Details of the shared library warning emitted at runtime
 LEGACY_LOCALE_WARNING = (
-    "Python runtime initialized with LC_CTYPE=C (a locale with default ASCII "
+    "Python runtime initialized mit LC_CTYPE=C (a locale mit default ASCII "
     "encoding), which may cause Unicode compatibility problems. Using C.UTF-8, "
-    "C.utf8, or UTF-8 (if available) as alternative Unicode-compatible "
+    "C.utf8, or UTF-8 (if available) als alternative Unicode-compatible "
     "locales is recommended."
 )
 
@@ -272,7 +272,7 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
                 wenn env_var == "LANG" and locale_to_set == "UTF-8":
                     continue
 
-                with self.subTest(env_var=env_var,
+                mit self.subTest(env_var=env_var,
                                   configured_locale=locale_to_set):
                     var_dict = base_var_dict.copy()
                     var_dict[env_var] = locale_to_set
@@ -306,7 +306,7 @@ klasse LocaleConfigurationTests(_LocaleHandlingTestCase):
                 wenn env_var == "LANG" and locale_to_set == "UTF-8":
                     continue
 
-                with self.subTest(env_var=env_var,
+                mit self.subTest(env_var=env_var,
                                   configured_locale=locale_to_set):
                     var_dict = base_var_dict.copy()
                     var_dict[env_var] = locale_to_set
@@ -362,7 +362,7 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
             base_var_dict["PYTHONCOERCECLOCALE"] = coerce_c_locale
 
         # Check behaviour fuer the default locale
-        with self.subTest(default_locale=Wahr,
+        mit self.subTest(default_locale=Wahr,
                           PYTHONCOERCECLOCALE=coerce_c_locale):
             wenn EXPECT_COERCION_IN_DEFAULT_LOCALE:
                 _expected_warnings = expected_warnings
@@ -372,7 +372,7 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
                 _coercion_expected = Falsch
             # On Android CLI_COERCION_WARNING is not printed when all the
             # locale environment variables are undefined or empty. When
-            # this code path is run with environ['LC_ALL'] == 'C', then
+            # this code path is run mit environ['LC_ALL'] == 'C', then
             # LEGACY_LOCALE_WARNING is printed.
             wenn (support.is_android and
                     _expected_warnings == [CLI_COERCION_WARNING]):
@@ -387,7 +387,7 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
         # Check behaviour fuer explicitly configured locales
         fuer locale_to_set in EXPECTED_C_LOCALE_EQUIVALENTS:
             fuer env_var in ("LANG", "LC_CTYPE"):
-                with self.subTest(env_var=env_var,
+                mit self.subTest(env_var=env_var,
                                   nominal_locale=locale_to_set,
                                   PYTHONCOERCECLOCALE=coerce_c_locale,
                                   PYTHONIOENCODING=""):
@@ -452,7 +452,7 @@ klasse LocaleCoercionTests(_LocaleHandlingTestCase):
         self.addCleanup(locale.setlocale, locale.LC_CTYPE, old_loc)
         try:
             loc = locale.setlocale(locale.LC_CTYPE, "")
-        except locale.Error as e:
+        except locale.Error als e:
             self.skipTest(str(e))
         wenn loc == "C":
             self.skipTest("test requires LC_CTYPE locale different than C")

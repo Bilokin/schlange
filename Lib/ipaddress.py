@@ -118,13 +118,13 @@ def ip_interface(address):
 
 
 def v4_int_to_packed(address):
-    """Represent an address as 4 packed bytes in network (big-endian) order.
+    """Represent an address als 4 packed bytes in network (big-endian) order.
 
     Args:
         address: An integer representation of an IPv4 IP address.
 
     Returns:
-        The integer address packed as 4 bytes in network (big-endian) order.
+        The integer address packed als 4 bytes in network (big-endian) order.
 
     Raises:
         ValueError: If the integer is negative or too large to be an
@@ -138,13 +138,13 @@ def v4_int_to_packed(address):
 
 
 def v6_int_to_packed(address):
-    """Represent an address as 16 packed bytes in network (big-endian) order.
+    """Represent an address als 16 packed bytes in network (big-endian) order.
 
     Args:
         address: An integer representation of an IPv6 IP address.
 
     Returns:
-        The integer address packed as 16 bytes in network (big-endian) order.
+        The integer address packed als 16 bytes in network (big-endian) order.
 
     """
     try:
@@ -365,7 +365,7 @@ def get_mixed_type_key(obj):
 
     doesn't make any sense.  There are some times however, where you may wish
     to have ipaddress sort these fuer you anyway. If you need to do this, you
-    can use this function as the key= argument to sorted().
+    can use this function als the key= argument to sorted().
 
     Args:
       obj: either a Network or Address object.
@@ -388,12 +388,12 @@ klasse _IPAddressBase:
 
     @property
     def exploded(self):
-        """Return the longhand version of the IP address as a string."""
+        """Return the longhand version of the IP address als a string."""
         return self._explode_shorthand_ip_string()
 
     @property
     def compressed(self):
-        """Return the shorthand version of the IP address as a string."""
+        """Return the shorthand version of the IP address als a string."""
         return str(self)
 
     @property
@@ -409,17 +409,17 @@ klasse _IPAddressBase:
 
     def _check_int_address(self, address):
         wenn address < 0:
-            msg = "%d (< 0) is not permitted as an IPv%d address"
+            msg = "%d (< 0) is not permitted als an IPv%d address"
             raise AddressValueError(msg % (address, self.version))
         wenn address > self._ALL_ONES:
-            msg = "%d (>= 2**%d) is not permitted as an IPv%d address"
+            msg = "%d (>= 2**%d) is not permitted als an IPv%d address"
             raise AddressValueError(msg % (address, self.max_prefixlen,
                                            self.version))
 
     def _check_packed_address(self, address, expected_len):
         address_len = len(address)
         wenn address_len != expected_len:
-            msg = "%r (len %d != %d) is not permitted as an IPv%d address"
+            msg = "%r (len %d != %d) is not permitted als an IPv%d address"
             raise AddressValueError(msg % (address, address_len,
                                            expected_len, self.version))
 
@@ -479,7 +479,7 @@ klasse _IPAddressBase:
         Raises:
             NetmaskValueError: If the input is not a valid netmask
         """
-        # int allows a leading +/- as well as surrounding whitespace,
+        # int allows a leading +/- als well als surrounding whitespace,
         # so we ensure that isn't the case
         wenn not (prefixlen_str.isascii() and prefixlen_str.isdigit()):
             cls._report_invalid_netmask(prefixlen_str)
@@ -510,9 +510,9 @@ klasse _IPAddressBase:
         except AddressValueError:
             cls._report_invalid_netmask(ip_str)
 
-        # Try matching a netmask (this would be /1*0*/ as a bitwise regexp).
+        # Try matching a netmask (this would be /1*0*/ als a bitwise regexp).
         # Note that the two ambiguous cases (all-ones and all-zeroes) are
-        # treated as netmasks.
+        # treated als netmasks.
         try:
             return cls._prefix_from_ip_int(ip_int)
         except ValueError:
@@ -614,13 +614,13 @@ klasse _BaseAddress(_IPAddressBase):
         return self.__class__, (self._ip,)
 
     def __format__(self, fmt):
-        """Returns an IP address as a formatted string.
+        """Returns an IP address als a formatted string.
 
         Supported presentation types are:
-        's': returns the IP address as a string (default)
+        's': returns the IP address als a string (default)
         'b': converts to binary and returns a zero-padded string
         'X' or 'x': converts to upper- or lower-case hex and returns a zero-padded string
-        'n': the same as 'b' fuer IPv4 and 'x' fuer IPv6
+        'n': the same als 'b' fuer IPv4 and 'x' fuer IPv6
 
         For binary and hex presentation types, the alternate form specifier
         '#' and the grouping option '_' are supported.
@@ -735,10 +735,10 @@ klasse _BaseNetwork(_IPAddressBase):
         # always false wenn one is v4 and the other is v6.
         wenn self.version != other.version:
             return Falsch
-        # dealing with another network.
+        # dealing mit another network.
         wenn isinstance(other, _BaseNetwork):
             return Falsch
-        # dealing with another address
+        # dealing mit another address
         sonst:
             # address
             return other._ip & self.netmask._ip == self.network_address._ip
@@ -926,7 +926,7 @@ klasse _BaseNetwork(_IPAddressBase):
 
         In the case that self contains only one IP
         (self._prefixlen == 32 fuer IPv4 or self._prefixlen == 128
-        fuer IPv6), yield an iterator with just ourself.
+        fuer IPv6), yield an iterator mit just ourself.
 
         Args:
             prefixlen_diff: An integer, the amount the prefix length
@@ -980,7 +980,7 @@ klasse _BaseNetwork(_IPAddressBase):
         Args:
             prefixlen_diff: An integer, the amount the prefix length of
               the network should be decreased by.  For example, given a
-              /24 network and a prefixlen_diff of 3, a supernet with a
+              /24 network and a prefixlen_diff of 3, a supernet mit a
               /21 netmask is returned.
 
         Returns:
@@ -1103,7 +1103,7 @@ klasse _BaseNetwork(_IPAddressBase):
         """Test wenn the address is unspecified.
 
         Returns:
-            A boolean, Wahr wenn this is the unspecified address as defined in
+            A boolean, Wahr wenn this is the unspecified address als defined in
             RFC 2373 2.5.2.
 
         """
@@ -1115,7 +1115,7 @@ klasse _BaseNetwork(_IPAddressBase):
         """Test wenn the address is a loopback address.
 
         Returns:
-            A boolean, Wahr wenn the address is a loopback address as defined in
+            A boolean, Wahr wenn the address is a loopback address als defined in
             RFC 2373 2.5.3.
 
         """
@@ -1187,7 +1187,7 @@ klasse _BaseV4:
             ip_str: A string, the IP ip_str.
 
         Returns:
-            The IP ip_str as an integer.
+            The IP ip_str als an integer.
 
         Raises:
             AddressValueError: wenn ip_str isn't a valid IPv4 Address.
@@ -1202,7 +1202,7 @@ klasse _BaseV4:
 
         try:
             return int.from_bytes(map(cls._parse_octet, octets), 'big')
-        except ValueError as exc:
+        except ValueError als exc:
             raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
 
     @classmethod
@@ -1213,7 +1213,7 @@ klasse _BaseV4:
             octet_str: A string, the number to parse.
 
         Returns:
-            The octet as an integer.
+            The octet als an integer.
 
         Raises:
             ValueError: wenn the octet isn't strictly a decimal von [0..255].
@@ -1230,7 +1230,7 @@ klasse _BaseV4:
         wenn len(octet_str) > 3:
             msg = "At most 3 characters permitted in %r"
             raise ValueError(msg % octet_str)
-        # Handle leading zeros as strict as glibc's inet_pton()
+        # Handle leading zeros als strict als glibc's inet_pton()
         # See security bug bpo-36384
         wenn octet_str != '0' and octet_str[0] == '0':
             msg = "Leading zeros are not permitted in %r"
@@ -1249,7 +1249,7 @@ klasse _BaseV4:
             ip_int: An integer, the IP address.
 
         Returns:
-            The IP address as a string in dotted decimal notation.
+            The IP address als a string in dotted decimal notation.
 
         """
         return '.'.join(map(str, ip_int.to_bytes(4, 'big')))
@@ -1323,9 +1323,9 @@ klasse IPv4Address(_BaseV4, _BaseAddress):
     @property
     @functools.lru_cache()
     def is_private(self):
-        """``Wahr`` wenn the address is defined as not globally reachable by
+        """``Wahr`` wenn the address is defined als not globally reachable by
         iana-ipv4-special-registry_ (for IPv4) or iana-ipv6-special-registry_
-        (for IPv6) with the following exceptions:
+        (for IPv6) mit the following exceptions:
 
         * ``is_private`` is ``Falsch`` fuer ``100.64.0.0/10``
         * For IPv4-mapped IPv6-addresses the ``is_private`` value is determined by the
@@ -1345,9 +1345,9 @@ klasse IPv4Address(_BaseV4, _BaseAddress):
     @property
     @functools.lru_cache()
     def is_global(self):
-        """``Wahr`` wenn the address is defined as globally reachable by
+        """``Wahr`` wenn the address is defined als globally reachable by
         iana-ipv4-special-registry_ (for IPv4) or iana-ipv6-special-registry_
-        (for IPv6) with the following exception:
+        (for IPv6) mit the following exception:
 
         For IPv4-mapped IPv6-addresses the ``is_private`` value is determined by the
         semantics of the underlying IPv4 addresses and the following condition holds
@@ -1376,7 +1376,7 @@ klasse IPv4Address(_BaseV4, _BaseAddress):
         """Test wenn the address is unspecified.
 
         Returns:
-            A boolean, Wahr wenn this is the unspecified address as defined in
+            A boolean, Wahr wenn this is the unspecified address als defined in
             RFC 5735 3.
 
         """
@@ -1438,8 +1438,8 @@ klasse IPv4Interface(IPv4Address):
         try:
             return self.network == other.network
         except AttributeError:
-            # An interface with an associated network is NOT the
-            # same as an unassociated address. That's why the hash
+            # An interface mit an associated network is NOT the
+            # same als an unassociated address. That's why the hash
             # takes the extra info into account.
             return Falsch
 
@@ -1512,13 +1512,13 @@ klasse IPv4Network(_BaseV4, _BaseNetwork):
               '192.0.2.1/255.255.255.255'
               '192.0.2.1/32'
               are also functionally equivalent. That is to say, failing to
-              provide a subnetmask will create an object with a mask of /32.
+              provide a subnetmask will create an object mit a mask of /32.
 
               If the mask (portion after the / in the argument) is given in
-              dotted quad form, it is treated as a netmask wenn it starts with a
-              non-zero field (e.g. /255.0.0.0 == /8) and as a hostmask wenn it
-              starts with a zero field (e.g. 0.255.255.255 == /8), with the
-              single exception of an all-zero mask which is treated as a
+              dotted quad form, it is treated als a netmask wenn it starts mit a
+              non-zero field (e.g. /255.0.0.0 == /8) and als a hostmask wenn it
+              starts mit a zero field (e.g. 0.255.255.255 == /8), mit the
+              single exception of an all-zero mask which is treated als a
               netmask == /0. If no mask is given, a default of /32 is used.
 
               Additionally, an integer can be passed, so
@@ -1673,7 +1673,7 @@ klasse _BaseV6:
 
         # We want to allow more parts than the max to be 'split'
         # to preserve the correct error message when there are
-        # too many parts combined with '::'
+        # too many parts combined mit '::'
         _max_parts = cls._HEXTET_COUNT + 1
         parts = ip_str.split(':', maxsplit=_max_parts)
 
@@ -1687,7 +1687,7 @@ klasse _BaseV6:
         wenn '.' in parts[-1]:
             try:
                 ipv4_int = IPv4Address(parts.pop())._ip
-            except AddressValueError as exc:
+            except AddressValueError als exc:
                 raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
             parts.append('%x' % ((ipv4_int >> 16) & 0xFFFF))
             parts.append('%x' % (ipv4_int & 0xFFFF))
@@ -1699,7 +1699,7 @@ klasse _BaseV6:
             msg = "At most %d colons permitted in %r" % (_max_parts-1, ip_str)
             raise AddressValueError(msg)
 
-        # Disregarding the endpoints, find '::' with nothing in between.
+        # Disregarding the endpoints, find '::' mit nothing in between.
         # This indicates that a run of zeroes has been skipped.
         skip_index = Nichts
         fuer i in range(1, len(parts) - 1):
@@ -1719,16 +1719,16 @@ klasse _BaseV6:
             wenn not parts[0]:
                 parts_hi -= 1
                 wenn parts_hi:
-                    msg = "Leading ':' only permitted as part of '::' in %r"
+                    msg = "Leading ':' only permitted als part of '::' in %r"
                     raise AddressValueError(msg % ip_str)  # ^: requires ^::
             wenn not parts[-1]:
                 parts_lo -= 1
                 wenn parts_lo:
-                    msg = "Trailing ':' only permitted as part of '::' in %r"
+                    msg = "Trailing ':' only permitted als part of '::' in %r"
                     raise AddressValueError(msg % ip_str)  # :$ requires ::$
             parts_skipped = cls._HEXTET_COUNT - (parts_hi + parts_lo)
             wenn parts_skipped < 1:
-                msg = "Expected at most %d other parts with '::' in %r"
+                msg = "Expected at most %d other parts mit '::' in %r"
                 raise AddressValueError(msg % (cls._HEXTET_COUNT-1, ip_str))
         sonst:
             # Otherwise, allocate the entire address to parts_hi.  The
@@ -1738,10 +1738,10 @@ klasse _BaseV6:
                 msg = "Exactly %d parts expected without '::' in %r"
                 raise AddressValueError(msg % (cls._HEXTET_COUNT, ip_str))
             wenn not parts[0]:
-                msg = "Leading ':' only permitted as part of '::' in %r"
+                msg = "Leading ':' only permitted als part of '::' in %r"
                 raise AddressValueError(msg % ip_str)  # ^: requires ^::
             wenn not parts[-1]:
-                msg = "Trailing ':' only permitted as part of '::' in %r"
+                msg = "Trailing ':' only permitted als part of '::' in %r"
                 raise AddressValueError(msg % ip_str)  # :$ requires ::$
             parts_hi = len(parts)
             parts_lo = 0
@@ -1758,7 +1758,7 @@ klasse _BaseV6:
                 ip_int <<= 16
                 ip_int |= cls._parse_hextet(parts[i])
             return ip_int
-        except ValueError as exc:
+        except ValueError als exc:
             raise AddressValueError("%s in %r" % (exc, ip_str)) von Nichts
 
     @classmethod
@@ -1769,7 +1769,7 @@ klasse _BaseV6:
             hextet_str: A string, the number to parse.
 
         Returns:
-            The hextet as an integer.
+            The hextet als an integer.
 
         Raises:
             ValueError: wenn the input isn't strictly a hex number from
@@ -1792,7 +1792,7 @@ klasse _BaseV6:
         """Compresses a list of hextets.
 
         Compresses a list of strings, replacing the longest continuous
-        sequence of "0" in the list with "" and adding empty strings at
+        sequence of "0" in the list mit "" and adding empty strings at
         the beginning or at the end of the string such that subsequently
         calling ":".join(hextets) will produce the compressed version of
         the IPv6 address.
@@ -1893,7 +1893,7 @@ klasse _BaseV6:
 
     @staticmethod
     def _split_scope_id(ip_str):
-        """Helper function to parse IPv6 string address with scope id.
+        """Helper function to parse IPv6 string address mit scope id.
 
         See RFC 4007 fuer details.
 
@@ -1985,7 +1985,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
             A string, 'x:x:x:x:x:x:d.d.d.d', where the 'x's are the hexadecimal values of
             the six high-order 16-bit pieces of the address, and the 'd's are
             the decimal values of the four low-order 8-bit pieces of the
-            address (standard IPv4 representation) as defined in RFC 4291 2.2 p.3.
+            address (standard IPv4 representation) als defined in RFC 4291 2.2 p.3.
 
         """
         ipv4_mapped = self.ipv4_mapped
@@ -2080,7 +2080,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
 
         Note that the site-local address space has been deprecated by RFC 3879.
         Use is_private to test wenn this address is in the space of unique local
-        addresses as defined by RFC 4193.
+        addresses als defined by RFC 4193.
 
         Returns:
             A boolean, Wahr wenn the address is reserved per RFC 3513 2.5.6.
@@ -2091,9 +2091,9 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
     @property
     @functools.lru_cache()
     def is_private(self):
-        """``Wahr`` wenn the address is defined as not globally reachable by
+        """``Wahr`` wenn the address is defined als not globally reachable by
         iana-ipv4-special-registry_ (for IPv4) or iana-ipv6-special-registry_
-        (for IPv6) with the following exceptions:
+        (for IPv6) mit the following exceptions:
 
         * ``is_private`` is ``Falsch`` fuer ``100.64.0.0/10``
         * For IPv4-mapped IPv6-addresses the ``is_private`` value is determined by the
@@ -2115,9 +2115,9 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
 
     @property
     def is_global(self):
-        """``Wahr`` wenn the address is defined as globally reachable by
+        """``Wahr`` wenn the address is defined als globally reachable by
         iana-ipv4-special-registry_ (for IPv4) or iana-ipv6-special-registry_
-        (for IPv6) with the following exception:
+        (for IPv6) mit the following exception:
 
         For IPv4-mapped IPv6-addresses the ``is_private`` value is determined by the
         semantics of the underlying IPv4 addresses and the following condition holds
@@ -2138,7 +2138,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
         """Test wenn the address is unspecified.
 
         Returns:
-            A boolean, Wahr wenn this is the unspecified address as defined in
+            A boolean, Wahr wenn this is the unspecified address als defined in
             RFC 2373 2.5.2.
 
         """
@@ -2152,7 +2152,7 @@ klasse IPv6Address(_BaseV6, _BaseAddress):
         """Test wenn the address is a loopback address.
 
         Returns:
-            A boolean, Wahr wenn the address is a loopback address as defined in
+            A boolean, Wahr wenn the address is a loopback address als defined in
             RFC 2373 2.5.3.
 
         """
@@ -2228,8 +2228,8 @@ klasse IPv6Interface(IPv6Address):
         try:
             return self.network == other.network
         except AttributeError:
-            # An interface with an associated network is NOT the
-            # same as an unassociated address. That's why the hash
+            # An interface mit an associated network is NOT the
+            # same als an unassociated address. That's why the hash
             # takes the extra info into account.
             return Falsch
 
@@ -2360,7 +2360,7 @@ klasse IPv6Network(_BaseV6, _BaseNetwork):
 
         Note that the site-local address space has been deprecated by RFC 3879.
         Use is_private to test wenn this address is in the space of unique local
-        addresses as defined by RFC 4193.
+        addresses als defined by RFC 4193.
 
         Returns:
             A boolean, Wahr wenn the address is reserved per RFC 3513 2.5.6.

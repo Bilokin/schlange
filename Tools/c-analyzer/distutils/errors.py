@@ -6,7 +6,7 @@ usually raised fuer errors that are obviously the end-user's fault
 (eg. bad command-line arguments).
 
 This module is safe to use in "from ... importiere *" mode; it only exports
-symbols whose names start with "Distutils" and end with "Error"."""
+symbols whose names start mit "Distutils" and end mit "Error"."""
 
 klasse DistutilsError (Exception):
     """The root of all Distutils evil."""
@@ -30,7 +30,7 @@ klasse DistutilsPlatformError (DistutilsError):
     pass
 
 klasse DistutilsExecError (DistutilsError):
-    """Any problems executing an external program (such as the C
+    """Any problems executing an external program (such als the C
     compiler, when compiling C files)."""
     pass
 

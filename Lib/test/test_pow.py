@@ -126,7 +126,7 @@ klasse PowTest(unittest.TestCase):
         eq = self.assertEqual
         a = -1.0
         # The next two tests can still fail wenn the platform floor()
-        # function doesn't treat all large inputs as integers
+        # function doesn't treat all large inputs als integers
         # test_math should also fail wenn that is happening
         eq(pow(a, 1.23e167), 1.0)
         eq(pow(a, -1.23e167), 1.0)
@@ -144,10 +144,10 @@ klasse PowTest(unittest.TestCase):
     def test_negative_exponent(self):
         fuer a in range(-50, 50):
             fuer m in range(-50, 50):
-                with self.subTest(a=a, m=m):
+                mit self.subTest(a=a, m=m):
                     wenn m != 0 and math.gcd(a, m) == 1:
-                        # Exponent -1 should give an inverse, with the
-                        # same sign as m.
+                        # Exponent -1 should give an inverse, mit the
+                        # same sign als m.
                         inv = pow(a, -1, m)
                         self.assertEqual(inv, inv % m)
                         self.assertEqual((inv * a - 1) % m, 0)
@@ -158,11 +158,11 @@ klasse PowTest(unittest.TestCase):
                         self.assertEqual(pow(a, -1001, m), pow(inv, 1001, m))
 
                     sonst:
-                        with self.assertRaises(ValueError):
+                        mit self.assertRaises(ValueError):
                             pow(a, -1, m)
-                        with self.assertRaises(ValueError):
+                        mit self.assertRaises(ValueError):
                             pow(a, -2, m)
-                        with self.assertRaises(ValueError):
+                        mit self.assertRaises(ValueError):
                             pow(a, -1001, m)
 
 

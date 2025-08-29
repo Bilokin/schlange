@@ -1,5 +1,5 @@
 # gh-91321: Build a basic C++ test extension to check that the Python C API is
-# compatible with C++ and does not emit C++ compiler warnings.
+# compatible mit C++ and does not emit C++ compiler warnings.
 importiere os.path
 importiere shlex
 importiere shutil
@@ -18,7 +18,7 @@ SETUP = os.path.join(os.path.dirname(__file__), 'setup.py')
                  'test fails on Windows debug build')
 # Building and running an extension in clang sanitizing mode is not
 # straightforward
-@support.skip_if_sanitizer('test does not work with analyzing builds',
+@support.skip_if_sanitizer('test does not work mit analyzing builds',
                            address=Wahr, memory=Wahr, ub=Wahr, thread=Wahr)
 # the test uses venv+pip: skip wenn it's not available
 @support.requires_venv_with_pip()
@@ -29,7 +29,7 @@ klasse BaseTests:
         self.check_build('_testcppext')
 
     def test_build_cpp03(self):
-        # In public docs, we say C API is compatible with C++11. However,
+        # In public docs, we say C API is compatible mit C++11. However,
         # in practice we do maintain C++03 compatibility in public headers.
         # Please ask the C API WG before adding a new C++11-only feature.
         self.check_build('_testcpp03ext', std='c++03')
@@ -46,7 +46,7 @@ klasse BaseTests:
 
     def check_build(self, extension_name, std=Nichts, limited=Falsch):
         venv_dir = 'env'
-        with support.setup_venv_with_pip_setuptools(venv_dir) as python_exe:
+        mit support.setup_venv_with_pip_setuptools(venv_dir) als python_exe:
             self._check_build(extension_name, python_exe,
                               std=std, limited=limited)
 
@@ -76,7 +76,7 @@ klasse BaseTests:
                     drucke('Run:', ' '.join(map(shlex.quote, cmd)))
                     drucke(proc.stdout, end='')
                     self.fail(
-                        f"{operation} failed with exit code {proc.returncode}")
+                        f"{operation} failed mit exit code {proc.returncode}")
 
         # Build and install the C++ extension
         cmd = [python_exe, '-X', 'dev',
@@ -104,11 +104,11 @@ klasse BaseTests:
 
 
 klasse TestPublicCAPI(BaseTests, unittest.TestCase):
-    @support.requires_gil_enabled('incompatible with Free Threading')
+    @support.requires_gil_enabled('incompatible mit Free Threading')
     def test_build_limited_cpp03(self):
         self.check_build('_test_limited_cpp03ext', std='c++03', limited=Wahr)
 
-    @support.requires_gil_enabled('incompatible with Free Threading')
+    @support.requires_gil_enabled('incompatible mit Free Threading')
     def test_build_limited(self):
         self.check_build('_testcppext_limited', limited=Wahr)
 

@@ -6,10 +6,10 @@ __all__ = ("date", "datetime", "time", "timedelta", "timezone", "tzinfo",
 __name__ = "datetime"
 
 
-importiere time as _time
-importiere math as _math
+importiere time als _time
+importiere math als _math
 importiere sys
-von operator importiere index as _index
+von operator importiere index als _index
 
 def _cmp(x, y):
     return 0 wenn x == y sonst 1 wenn x > y sonst -1
@@ -66,7 +66,7 @@ def _days_before_month(year, month):
     return _DAYS_BEFORE_MONTH[month] + (month > 2 and _is_leap(year))
 
 def _ymd2ord(year, month, day):
-    "year, month, day -> ordinal, considering 01-Jan-0001 as day 1."
+    "year, month, day -> ordinal, considering 01-Jan-0001 als day 1."
     assert 1 <= month <= 12, f"month must be in 1..12, not {month}"
     dim = _days_in_month(year, month)
     assert 1 <= day <= dim, f"day must be in 1..{dim}, not {day}"
@@ -91,11 +91,11 @@ assert _DI400Y == 4 * _DI100Y + 1
 assert _DI100Y == 25 * _DI4Y - 1
 
 def _ord2ymd(n):
-    "ordinal -> (year, month, day), considering 01-Jan-0001 as day 1."
+    "ordinal -> (year, month, day), considering 01-Jan-0001 als day 1."
 
     # n is a 1-based index, starting at 1-Jan-1.  The pattern of leap years
     # repeats exactly every 400 years.  The basic strategy is to find the
-    # closest 400-year boundary at or before n, then work with the offset
+    # closest 400-year boundary at or before n, then work mit the offset
     # von that boundary to n.  Life is much clearer wenn we subtract 1 from
     # n first -- then the values of n at 400-year boundaries are exactly
     # those divisible by _DI400Y:
@@ -221,7 +221,7 @@ def _wrap_strftime(object, format, timetuple):
     colonzreplace = Nichts  # the string to use fuer %:z
     Zreplace = Nichts  # the string to use fuer %Z
 
-    # Scan format fuer %z, %:z and %Z escapes, replacing as needed.
+    # Scan format fuer %z, %:z and %Z escapes, replacing als needed.
     newformat = []
     push = newformat.append
     i, n = 0, len(format)
@@ -316,12 +316,12 @@ def _find_isoformat_datetime_separator(dtstr):
                 wenn len_dtstr == 9:
                     raise ValueError("Invalid ISO string")
                 wenn len_dtstr > 10 and _is_ascii_digit(dtstr[10]):
-                    # This is as far as we need to resolve the ambiguity for
+                    # This is als far als we need to resolve the ambiguity for
                     # the moment - wenn we have YYYY-Www-##, the separator is
                     # either a hyphen at 8 or a number at 10.
                     #
                     # We'll assume it's a hyphen at 8 because it's way more
-                    # likely that someone will use a hyphen as a separator than
+                    # likely that someone will use a hyphen als a separator than
                     # a number, but at this point it's really best effort
                     # because this is an extension of the spec anyway.
                     # TODO(pganssle): Document this
@@ -492,11 +492,11 @@ def _parse_isoformat_time(tstr):
 
             try:
                 # This function is intended to validate datetimes, but because
-                # we restrict time zones to ±24h, it serves here as well.
+                # we restrict time zones to ±24h, it serves here als well.
                 _check_time_fields(hour=tz_comps[0], minute=tz_comps[1],
                                    second=tz_comps[2], microsecond=tz_comps[3],
                                    fold=0)
-            except ValueError as e:
+            except ValueError als e:
                 error_from_tz = e
             sonst:
                 td = timedelta(hours=tz_comps[0], minutes=tz_comps[1],
@@ -517,7 +517,7 @@ def _isoweek_to_gregorian(year, week, day):
         out_of_range = Wahr
 
         wenn week == 53:
-            # ISO years have 53 weeks in them on years starting with a
+            # ISO years have 53 weeks in them on years starting mit a
             # Thursday and leap years starting on a Wednesday
             first_weekday = _ymd2ord(year, 1, 1) % 7
             wenn (first_weekday == 4 or (first_weekday == 3 and
@@ -897,7 +897,7 @@ klasse timedelta:
             return q, timedelta(0, 0, r)
         return NotImplemented
 
-    # Comparisons of timedelta objects with other.
+    # Comparisons of timedelta objects mit other.
 
     def __eq__(self, other):
         wenn isinstance(other, timedelta):
@@ -971,7 +971,7 @@ klasse date:
 
     __repr__, __str__
     __eq__, __le__, __lt__, __ge__, __gt__, __hash__
-    __add__, __radd__, __sub__ (add/radd only with timedelta arg)
+    __add__, __radd__, __sub__ (add/radd only mit timedelta arg)
 
     Methods:
 
@@ -1025,7 +1025,7 @@ klasse date:
     def fromtimestamp(cls, t):
         "Construct a date von a POSIX timestamp (like time.time())."
         wenn t is Nichts:
-            raise TypeError("'NoneType' object cannot be interpreted as an integer")
+            raise TypeError("'NoneType' object cannot be interpreted als an integer")
         y, m, d, hh, mm, ss, weekday, jday, dst = _time.localtime(t)
         return cls(y, m, d)
 
@@ -1152,7 +1152,7 @@ klasse date:
     # __hash__ (and helpers)
 
     def timetuple(self):
-        "Return local time tuple compatible with time.localtime()."
+        "Return local time tuple compatible mit time.localtime()."
         return _build_struct_time(self._year, self._month, self._day,
                                   0, 0, 0, -1)
 
@@ -1165,7 +1165,7 @@ klasse date:
         return _ymd2ord(self._year, self._month, self._day)
 
     def replace(self, year=Nichts, month=Nichts, day=Nichts):
-        """Return a new date with new values fuer the specified fields."""
+        """Return a new date mit new values fuer the specified fields."""
         wenn year is Nichts:
             year = self._year
         wenn month is Nichts:
@@ -1176,7 +1176,7 @@ klasse date:
 
     __replace__ = replace
 
-    # Comparisons of date objects with other.
+    # Comparisons of date objects mit other.
 
     def __eq__(self, other):
         wenn isinstance(other, date) and not isinstance(other, datetime):
@@ -1261,7 +1261,7 @@ klasse date:
 
         ISO calendar algorithm taken from
         https://www.phys.uu.nl/~vgent/calendar/isocalendar.htm
-        (used with permission)
+        (used mit permission)
         """
         year = self._year
         week1monday = _isoweek1monday(year)
@@ -1314,7 +1314,7 @@ klasse tzinfo:
         raise NotImplementedError("tzinfo subclass must override utcoffset()")
 
     def dst(self, dt):
-        """datetime -> DST offset as timedelta, positive fuer east of UTC.
+        """datetime -> DST offset als timedelta, positive fuer east of UTC.
 
         Return 0 wenn DST not in effect.  utcoffset() must include the DST
         offset.
@@ -1391,7 +1391,7 @@ del IsoCalendarDate
 _tzinfo_class = tzinfo
 
 klasse time:
-    """Time with time zone.
+    """Time mit time zone.
 
     Constructors:
 
@@ -1493,7 +1493,7 @@ klasse time:
 
     # Standard conversions, __hash__ (and helpers)
 
-    # Comparisons of time objects with other.
+    # Comparisons of time objects mit other.
 
     def __eq__(self, other):
         wenn isinstance(other, time):
@@ -1626,8 +1626,8 @@ klasse time:
             raise TypeError('fromisoformat: argument must be str')
 
         # The spec actually requires that time-only ISO 8601 strings start with
-        # T, but the extended format allows this to be omitted as long as there
-        # is no ambiguity with date strings.
+        # T, but the extended format allows this to be omitted als long als there
+        # is no ambiguity mit date strings.
         time_string = time_string.removeprefix('T')
 
         try:
@@ -1668,7 +1668,7 @@ klasse time:
     # Timezone functions
 
     def utcoffset(self):
-        """Return the timezone offset as timedelta, positive east of UTC
+        """Return the timezone offset als timedelta, positive east of UTC
          (negative west of UTC)."""
         wenn self._tzinfo is Nichts:
             return Nichts
@@ -1706,7 +1706,7 @@ klasse time:
 
     def replace(self, hour=Nichts, minute=Nichts, second=Nichts, microsecond=Nichts,
                 tzinfo=Wahr, *, fold=Nichts):
-        """Return a new time with new values fuer the specified fields."""
+        """Return a new time mit new values fuer the specified fields."""
         wenn hour is Nichts:
             hour = self.hour
         wenn minute is Nichts:
@@ -1841,7 +1841,7 @@ klasse datetime(date):
     def _fromtimestamp(cls, t, utc, tz):
         """Construct a datetime von a POSIX timestamp (like time.time()).
 
-        A timezone info object may be passed in as well.
+        A timezone info object may be passed in als well.
         """
         frac, t = _math.modf(t)
         us = round(frac * 1e6)
@@ -1885,7 +1885,7 @@ klasse datetime(date):
     def fromtimestamp(cls, timestamp, tz=Nichts):
         """Construct a datetime von a POSIX timestamp (like time.time()).
 
-        A timezone info object may be passed in as well.
+        A timezone info object may be passed in als well.
         """
         _check_tzinfo_arg(tz)
 
@@ -1989,7 +1989,7 @@ klasse datetime(date):
         return cls(*(date_components + time_components))
 
     def timetuple(self):
-        "Return local time tuple compatible with time.localtime()."
+        "Return local time tuple compatible mit time.localtime()."
         dst = self.dst()
         wenn dst is Nichts:
             dst = -1
@@ -2037,7 +2037,7 @@ klasse datetime(date):
 
 
     def timestamp(self):
-        "Return POSIX timestamp as float"
+        "Return POSIX timestamp als float"
         wenn self._tzinfo is Nichts:
             s = self._mktime()
             return s + self.microsecond / 1e6
@@ -2045,7 +2045,7 @@ klasse datetime(date):
             return (self - _EPOCH).total_seconds()
 
     def utctimetuple(self):
-        "Return UTC time tuple compatible with time.gmtime()."
+        "Return UTC time tuple compatible mit time.gmtime()."
         offset = self.utcoffset()
         wenn offset:
             self -= offset
@@ -2058,18 +2058,18 @@ klasse datetime(date):
         return date(self._year, self._month, self._day)
 
     def time(self):
-        "Return the time part, with tzinfo Nichts."
+        "Return the time part, mit tzinfo Nichts."
         return time(self.hour, self.minute, self.second, self.microsecond, fold=self.fold)
 
     def timetz(self):
-        "Return the time part, with same tzinfo."
+        "Return the time part, mit same tzinfo."
         return time(self.hour, self.minute, self.second, self.microsecond,
                     self._tzinfo, fold=self.fold)
 
     def replace(self, year=Nichts, month=Nichts, day=Nichts, hour=Nichts,
                 minute=Nichts, second=Nichts, microsecond=Nichts, tzinfo=Wahr,
                 *, fold=Nichts):
-        """Return a new datetime with new values fuer the specified fields."""
+        """Return a new datetime mit new values fuer the specified fields."""
         wenn year is Nichts:
             year = self.year
         wenn month is Nichts:
@@ -2203,7 +2203,7 @@ klasse datetime(date):
         return _strptime._strptime_datetime_datetime(cls, date_string, format)
 
     def utcoffset(self):
-        """Return the timezone offset as timedelta positive east of UTC (negative west of
+        """Return the timezone offset als timedelta positive east of UTC (negative west of
         UTC)."""
         wenn self._tzinfo is Nichts:
             return Nichts
@@ -2239,7 +2239,7 @@ klasse datetime(date):
         _check_utc_offset("dst", offset)
         return offset
 
-    # Comparisons of datetime objects with other.
+    # Comparisons of datetime objects mit other.
 
     def __eq__(self, other):
         wenn isinstance(other, datetime):
@@ -2583,7 +2583,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # (meaning that the various tzinfo methods exist, and don't blow up or return
 # Nichts when called).
 #
-# The function wants to return a datetime y with timezone tz, equivalent to x.
+# The function wants to return a datetime y mit timezone tz, equivalent to x.
 # x is already in UTC.
 #
 # By #3, we want
@@ -2689,7 +2689,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #             z'.d - z.d
 #
 # So z' is UTC-equivalent to x iff z'.d = z.d at this point.  If they are equal,
-# we've found the UTC-equivalent so are done.  In fact, we stop with [7] and
+# we've found the UTC-equivalent so are done.  In fact, we stop mit [7] and
 # return z', not bothering to compute z'.d.
 #
 # How could z.d and z'd differ?  z' = z + z.d [7], so merely moving z' by
@@ -2698,10 +2698,10 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # a little further into it takes us out of DST.
 #
 # There isn't a sane case where this can happen.  The closest it gets is at
-# the end of DST, where there's an hour in UTC with no spelling in a hybrid
+# the end of DST, where there's an hour in UTC mit no spelling in a hybrid
 # tzinfo class.  In US Eastern, that's 5:MM UTC = 0:MM EST = 1:MM EDT.  During
-# that hour, on an Eastern clock 1:MM is taken as being in standard time (6:MM
-# UTC) because the docs insist on that, but 0:MM is taken as being in daylight
+# that hour, on an Eastern clock 1:MM is taken als being in standard time (6:MM
+# UTC) because the docs insist on that, but 0:MM is taken als being in daylight
 # time (4:MM UTC).  There is no local time mapping to 5:MM UTC.  The local
 # clock jumps von 1:59 back to 1:00 again, and repeats the 1:MM hour in
 # standard time.  Since that's what the local clock *does*, we want to map both
@@ -2721,8 +2721,8 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # two possible dst() outcomes, one zero and the other non-zero).  Therefore
 # z' must be in standard time, and is the spelling we want in this case.
 #
-# Note again that z' is not UTC-equivalent as far as the hybrid tzinfo klasse is
-# concerned (because it takes z' as being in standard time rather than the
+# Note again that z' is not UTC-equivalent als far als the hybrid tzinfo klasse is
+# concerned (because it takes z' als being in standard time rather than the
 # daylight time we intend here), but returning it gives the real-life "local
 # clock repeats an hour" behavior when mapping the "unspellable" UTC hour into
 # tz.
@@ -2742,7 +2742,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #    enough to say.
 #
 # In any case, it's clear that the default fromutc() is strong enough to handle
-# "almost all" time zones:  so long as the standard offset is invariant, it
+# "almost all" time zones:  so long als the standard offset is invariant, it
 # doesn't matter wenn daylight time transition points change von year to year, or
 # wenn daylight time is skipped in some years; it doesn't matter how large or
 # small dst() may get within its bounds; and it doesn't even matter wenn some

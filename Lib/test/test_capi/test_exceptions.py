@@ -29,7 +29,7 @@ klasse Test_Exceptions(unittest.TestCase):
         new_exc = TypeError("TEST")
         try:
             raise raised_exception
-        except ValueError as e:
+        except ValueError als e:
             orig_sys_exception = sys.exception()
             orig_exception = _testcapi.set_exception(new_exc)
             new_sys_exception = sys.exception()
@@ -51,7 +51,7 @@ klasse Test_Exceptions(unittest.TestCase):
         new_exc = TypeError("TEST")
         try:
             raise raised_exception
-        except ValueError as e:
+        except ValueError als e:
             tb = e.__traceback__
             orig_sys_exc_info = sys.exc_info()
             orig_exc_info = _testcapi.set_exc_info(new_exc.__class__, new_exc, Nichts)
@@ -112,7 +112,7 @@ klasse Test_Exceptions(unittest.TestCase):
 klasse Test_FatalError(unittest.TestCase):
 
     def check_fatal_error(self, code, expected, not_expected=()):
-        with support.SuppressCrashReport():
+        mit support.SuppressCrashReport():
             rc, out, err = assert_python_failure('-sSI', '-c', code)
 
         err = decode_stderr(err)
@@ -141,7 +141,7 @@ klasse Test_FatalError(unittest.TestCase):
         code = 'import _testcapi, sys; _testcapi.fatal_error(b"MESSAGE")'
         self.check_fatal_error(code, expected, not_expected)
 
-        # Mark _testcapi as stdlib module, but not sys
+        # Mark _testcapi als stdlib module, but not sys
         expected = ('sys',)
         not_expected = ('_testcapi',)
         code = """if Wahr:
@@ -155,57 +155,57 @@ klasse Test_FatalError(unittest.TestCase):
 klasse Test_ErrSetAndRestore(unittest.TestCase):
 
     def test_err_set_raised(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _testcapi.err_set_raised(ValueError())
         v = ValueError()
         try:
             _testcapi.err_set_raised(v)
-        except ValueError as ex:
+        except ValueError als ex:
             self.assertIs(v, ex)
 
     def test_err_restore(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, 1)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, 1, Nichts)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, ValueError())
         try:
             _testcapi.err_restore(KeyError, "hi")
-        except KeyError as k:
+        except KeyError als k:
             self.assertEqual("hi", k.args[0])
         try:
             1/0
-        except Exception as e:
+        except Exception als e:
             tb = e.__traceback__
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _testcapi.err_restore(ValueError, 1, tb)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _testcapi.err_restore(ValueError, 1, 0)
         try:
             _testcapi.err_restore(ValueError, 1, tb)
-        except ValueError as v:
+        except ValueError als v:
             self.assertEqual(1, v.args[0])
             self.assertIs(tb, v.__traceback__.tb_next)
 
     def test_set_object(self):
 
-        # new exception as obj is not an exception
-        with self.assertRaises(ValueError) as e:
+        # new exception als obj is not an exception
+        mit self.assertRaises(ValueError) als e:
             _testcapi.exc_set_object(ValueError, 42)
         self.assertEqual(e.exception.args, (42,))
 
         # wraps the exception because unrelated types
-        with self.assertRaises(ValueError) as e:
+        mit self.assertRaises(ValueError) als e:
             _testcapi.exc_set_object(ValueError, TypeError(1,2,3))
         wrapped = e.exception.args[0]
         self.assertIsInstance(wrapped, TypeError)
         self.assertEqual(wrapped.args, (1, 2, 3))
 
         # is superclass, so does not wrap
-        with self.assertRaises(PermissionError) as e:
+        mit self.assertRaises(PermissionError) als e:
             _testcapi.exc_set_object(OSError, PermissionError(24))
         self.assertEqual(e.exception.args, (24,))
 
@@ -216,7 +216,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         klasse Broken(Exception, metaclass=Meta):
             pass
 
-        with self.assertRaises(ZeroDivisionError) as e:
+        mit self.assertRaises(ZeroDivisionError) als e:
             _testcapi.exc_set_object(Broken, Broken())
 
     def test_set_object_and_fetch(self):
@@ -241,14 +241,14 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
     def test_set_string(self):
         """Test PyErr_SetString()"""
         setstring = _testcapi.err_setstring
-        with self.assertRaises(ZeroDivisionError) as e:
+        mit self.assertRaises(ZeroDivisionError) als e:
             setstring(ZeroDivisionError, b'error')
         self.assertEqual(e.exception.args, ('error',))
-        with self.assertRaises(ZeroDivisionError) as e:
+        mit self.assertRaises(ZeroDivisionError) als e:
             setstring(ZeroDivisionError, 'помилка'.encode())
         self.assertEqual(e.exception.args, ('помилка',))
 
-        with self.assertRaises(UnicodeDecodeError):
+        mit self.assertRaises(UnicodeDecodeError):
             setstring(ZeroDivisionError, b'\xff')
         self.assertRaises(SystemError, setstring, list, b'error')
         # CRASHES setstring(ZeroDivisionError, NULL)
@@ -262,16 +262,16 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         PyErr_Format = getattr(pythonapi, name)
         PyErr_Format.argtypes = (py_object, c_char_p,)
         PyErr_Format.restype = py_object
-        with self.assertRaises(ZeroDivisionError) as e:
+        mit self.assertRaises(ZeroDivisionError) als e:
             PyErr_Format(ZeroDivisionError, b'%s %d', b'error', c_int(42))
         self.assertEqual(e.exception.args, ('error 42',))
-        with self.assertRaises(ZeroDivisionError) as e:
+        mit self.assertRaises(ZeroDivisionError) als e:
             PyErr_Format(ZeroDivisionError, b'%s', 'помилка'.encode())
         self.assertEqual(e.exception.args, ('помилка',))
 
-        with self.assertRaisesRegex(OverflowError, 'not in range'):
+        mit self.assertRaisesRegex(OverflowError, 'not in range'):
             PyErr_Format(ZeroDivisionError, b'%c', c_int(-1))
-        with self.assertRaisesRegex(ValueError, 'format string'):
+        mit self.assertRaisesRegex(ValueError, 'format string'):
             PyErr_Format(ZeroDivisionError, b'\xff')
         self.assertRaises(SystemError, PyErr_Format, list, b'error')
         # CRASHES PyErr_Format(ZeroDivisionError, NULL)
@@ -281,34 +281,34 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         """Test PyErr_SetFromErrnoWithFilename()"""
         setfromerrnowithfilename = _testcapi.err_setfromerrnowithfilename
         ENOENT = errno.ENOENT
-        with self.assertRaises(FileNotFoundError) as e:
+        mit self.assertRaises(FileNotFoundError) als e:
             setfromerrnowithfilename(ENOENT, OSError, b'file')
         self.assertEqual(e.exception.args,
                          (ENOENT, 'No such file or directory'))
         self.assertEqual(e.exception.errno, ENOENT)
         self.assertEqual(e.exception.filename, 'file')
 
-        with self.assertRaises(FileNotFoundError) as e:
+        mit self.assertRaises(FileNotFoundError) als e:
             setfromerrnowithfilename(ENOENT, OSError, os.fsencode(TESTFN))
         self.assertEqual(e.exception.filename, TESTFN)
 
         wenn TESTFN_UNDECODABLE:
-            with self.assertRaises(FileNotFoundError) as e:
+            mit self.assertRaises(FileNotFoundError) als e:
                 setfromerrnowithfilename(ENOENT, OSError, TESTFN_UNDECODABLE)
             self.assertEqual(e.exception.filename,
                              os.fsdecode(TESTFN_UNDECODABLE))
 
-        with self.assertRaises(FileNotFoundError) as e:
+        mit self.assertRaises(FileNotFoundError) als e:
             setfromerrnowithfilename(ENOENT, OSError, NULL)
         self.assertIsNichts(e.exception.filename)
 
-        with self.assertRaises(OSError) as e:
+        mit self.assertRaises(OSError) als e:
             setfromerrnowithfilename(0, OSError, b'file')
         self.assertEqual(e.exception.args, (0, 'Error'))
         self.assertEqual(e.exception.errno, 0)
         self.assertEqual(e.exception.filename, 'file')
 
-        with self.assertRaises(ZeroDivisionError) as e:
+        mit self.assertRaises(ZeroDivisionError) als e:
             setfromerrnowithfilename(ENOENT, ZeroDivisionError, b'file')
         self.assertEqual(e.exception.args,
                          (ENOENT, 'No such file or directory', 'file'))
@@ -319,7 +319,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         writeunraisable = _testcapi.err_writeunraisable
         firstline = self.test_err_writeunraisable.__code__.co_firstlineno
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             writeunraisable(CustomError('oops!'), hex)
             self.assertEqual(cm.unraisable.exc_type, CustomError)
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
@@ -328,7 +328,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertIsNichts(cm.unraisable.err_msg)
             self.assertEqual(cm.unraisable.object, hex)
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             writeunraisable(CustomError('oops!'), NULL)
             self.assertEqual(cm.unraisable.exc_type, CustomError)
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
@@ -341,16 +341,16 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
     def test_err_writeunraisable_lines(self):
         writeunraisable = _testcapi.err_writeunraisable
 
-        with (support.swap_attr(sys, 'unraisablehook', Nichts),
-              support.captured_stderr() as stderr):
+        mit (support.swap_attr(sys, 'unraisablehook', Nichts),
+              support.captured_stderr() als stderr):
             writeunraisable(CustomError('oops!'), hex)
         lines = stderr.getvalue().splitlines()
         self.assertEqual(lines[0], f'Exception ignored in: {hex!r}')
         self.assertEqual(lines[1], 'Traceback (most recent call last):')
         self.assertEqual(lines[-1], f'{__name__}.CustomError: oops!')
 
-        with (support.swap_attr(sys, 'unraisablehook', Nichts),
-              support.captured_stderr() as stderr):
+        mit (support.swap_attr(sys, 'unraisablehook', Nichts),
+              support.captured_stderr() als stderr):
             writeunraisable(CustomError('oops!'), NULL)
         lines = stderr.getvalue().splitlines()
         self.assertEqual(lines[0], 'Traceback (most recent call last):')
@@ -364,7 +364,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
         formatunraisable = _testcapi.err_formatunraisable
         firstline = self.test_err_formatunraisable.__code__.co_firstlineno
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             formatunraisable(CustomError('oops!'), b'Error in %R', [])
             self.assertEqual(cm.unraisable.exc_type, CustomError)
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
@@ -373,7 +373,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertEqual(cm.unraisable.err_msg, 'Error in []')
             self.assertIsNichts(cm.unraisable.object)
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             formatunraisable(CustomError('oops!'), b'undecodable \xff')
             self.assertEqual(cm.unraisable.exc_type, CustomError)
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
@@ -382,7 +382,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
             self.assertIsNichts(cm.unraisable.err_msg)
             self.assertIsNichts(cm.unraisable.object)
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             formatunraisable(CustomError('oops!'), NULL)
             self.assertEqual(cm.unraisable.exc_type, CustomError)
             self.assertEqual(str(cm.unraisable.exc_value), 'oops!')
@@ -395,23 +395,23 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
     def test_err_formatunraisable_lines(self):
         formatunraisable = _testcapi.err_formatunraisable
 
-        with (support.swap_attr(sys, 'unraisablehook', Nichts),
-              support.captured_stderr() as stderr):
+        mit (support.swap_attr(sys, 'unraisablehook', Nichts),
+              support.captured_stderr() als stderr):
             formatunraisable(CustomError('oops!'), b'Error in %R', [])
         lines = stderr.getvalue().splitlines()
         self.assertEqual(lines[0], f'Error in []:')
         self.assertEqual(lines[1], 'Traceback (most recent call last):')
         self.assertEqual(lines[-1], f'{__name__}.CustomError: oops!')
 
-        with (support.swap_attr(sys, 'unraisablehook', Nichts),
-              support.captured_stderr() as stderr):
+        mit (support.swap_attr(sys, 'unraisablehook', Nichts),
+              support.captured_stderr() als stderr):
             formatunraisable(CustomError('oops!'), b'undecodable \xff')
         lines = stderr.getvalue().splitlines()
         self.assertEqual(lines[0], 'Traceback (most recent call last):')
         self.assertEqual(lines[-1], f'{__name__}.CustomError: oops!')
 
-        with (support.swap_attr(sys, 'unraisablehook', Nichts),
-              support.captured_stderr() as stderr):
+        mit (support.swap_attr(sys, 'unraisablehook', Nichts),
+              support.captured_stderr() als stderr):
             formatunraisable(CustomError('oops!'), NULL)
         lines = stderr.getvalue().splitlines()
         self.assertEqual(lines[0], 'Traceback (most recent call last):')
@@ -424,7 +424,7 @@ klasse Test_ErrSetAndRestore(unittest.TestCase):
 klasse TestUnicodeTranslateError(UnicodeTranslateError):
     # UnicodeTranslateError takes 4 arguments instead of 5,
     # so we just make a UnicodeTranslateError klasse that is
-    # compatible with the UnicodeError.__init__.
+    # compatible mit the UnicodeError.__init__.
     def __init__(self, encoding, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -466,7 +466,7 @@ klasse TestUnicodeError(unittest.TestCase):
             (2, -2, 0),
         ]:
             obj = literal * obj_len
-            with self.subTest(obj, exc_type=exc_type, start=start):
+            mit self.subTest(obj, exc_type=exc_type, start=start):
                 exc = exc_type('utf-8', obj, start, obj_len, 'reason')
                 self.assertEqual(get_start(exc), c_start)
                 self._check_no_crash(exc)
@@ -487,14 +487,14 @@ klasse TestUnicodeError(unittest.TestCase):
         obj_len = 5
         obj = literal * obj_len
         fuer new_start in range(-2 * obj_len, 2 * obj_len):
-            with self.subTest('C-API', obj=obj, exc_type=exc_type, new_start=new_start):
+            mit self.subTest('C-API', obj=obj, exc_type=exc_type, new_start=new_start):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
                 # arbitrary value is allowed in the C API setter
                 set_start(exc, new_start)
                 self.assertEqual(exc.start, new_start)
                 self._check_no_crash(exc)
 
-            with self.subTest('Py-API', obj=obj, exc_type=exc_type, new_start=new_start):
+            mit self.subTest('Py-API', obj=obj, exc_type=exc_type, new_start=new_start):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
                 # arbitrary value is allowed in the attribute setter
                 exc.start = new_start
@@ -535,7 +535,7 @@ klasse TestUnicodeError(unittest.TestCase):
             (2, -2, 1),
         ]:
             obj = literal * obj_len
-            with self.subTest(obj, exc_type=exc_type, end=end):
+            mit self.subTest(obj, exc_type=exc_type, end=end):
                 exc = exc_type('utf-8', obj, 0, end, 'reason')
                 self.assertEqual(get_end(exc), c_end)
                 self._check_no_crash(exc)
@@ -556,14 +556,14 @@ klasse TestUnicodeError(unittest.TestCase):
         obj_len = 5
         obj = literal * obj_len
         fuer new_end in range(-2 * obj_len, 2 * obj_len):
-            with self.subTest('C-API', obj=obj, exc_type=exc_type, new_end=new_end):
+            mit self.subTest('C-API', obj=obj, exc_type=exc_type, new_end=new_end):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
                 # arbitrary value is allowed in the C API setter
                 set_end(exc, new_end)
                 self.assertEqual(exc.end, new_end)
                 self._check_no_crash(exc)
 
-            with self.subTest('Py-API', obj=obj, exc_type=exc_type, new_end=new_end):
+            mit self.subTest('Py-API', obj=obj, exc_type=exc_type, new_end=new_end):
                 exc = exc_type('utf-8', obj, 0, obj_len, 'reason')
                 # arbitrary value is allowed in the attribute setter
                 exc.end = new_end
@@ -577,23 +577,23 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
         super().setUp()
         try:
             raise ExceptionGroup("eg", [TypeError('bad type'), ValueError(42)])
-        except ExceptionGroup as e:
+        except ExceptionGroup als e:
             self.orig = e
 
     def test_invalid_args(self):
-        with self.assertRaisesRegex(TypeError, "orig must be an exception"):
+        mit self.assertRaisesRegex(TypeError, "orig must be an exception"):
             _testcapi.unstable_exc_prep_reraise_star(42, [Nichts])
 
-        with self.assertRaisesRegex(TypeError, "excs must be a list"):
+        mit self.assertRaisesRegex(TypeError, "excs must be a list"):
             _testcapi.unstable_exc_prep_reraise_star(self.orig, 42)
 
-        with self.assertRaisesRegex(TypeError, "not an exception"):
+        mit self.assertRaisesRegex(TypeError, "not an exception"):
             _testcapi.unstable_exc_prep_reraise_star(self.orig, [TypeError(42), 42])
 
-        with self.assertRaisesRegex(ValueError, "orig must be a raised exception"):
+        mit self.assertRaisesRegex(ValueError, "orig must be a raised exception"):
             _testcapi.unstable_exc_prep_reraise_star(ValueError(42), [TypeError(42)])
 
-        with self.assertRaisesRegex(ValueError, "orig must be a raised exception"):
+        mit self.assertRaisesRegex(ValueError, "orig must be a raised exception"):
             _testcapi.unstable_exc_prep_reraise_star(ExceptionGroup("eg", [ValueError(42)]),
                                                      [TypeError(42)])
 
@@ -604,7 +604,7 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
 
         try:
             raise ValueError(42)
-        except ValueError as e:
+        except ValueError als e:
             orig = e
         self.assertEqual(
             _testcapi.unstable_exc_prep_reraise_star(orig, [Nichts]), Nichts)
@@ -627,7 +627,7 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
         ]
 
         fuer input, expected in test_cases:
-            with self.subTest(input=input):
+            mit self.subTest(input=input):
                 res = _testcapi.unstable_exc_prep_reraise_star(orig, input)
                 self.assertExceptionIsLike(res, expected)
 
@@ -658,7 +658,7 @@ klasse Test_PyUnstable_Exc_PrepReraiseStar(ExceptionIsLikeMixin, unittest.TestCa
         ]
 
         fuer (input, expected) in test_cases:
-            with self.subTest(input=input):
+            mit self.subTest(input=input):
                 res = _testcapi.unstable_exc_prep_reraise_star(orig, input)
                 self.assertExceptionIsLike(res, expected)
 

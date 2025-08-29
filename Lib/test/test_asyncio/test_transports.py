@@ -8,7 +8,7 @@ von asyncio importiere transports
 
 
 def tearDownModule():
-    # not needed fuer the test file but added fuer uniformness with all other
+    # not needed fuer the test file but added fuer uniformness mit all other
     # asyncio test files fuer the sake of unified cleanup
     asyncio.events._set_event_loop_policy(Nichts)
 
@@ -87,7 +87,7 @@ klasse TransportTests(unittest.TestCase):
 
         self.assertFalsch(transport._protocol_paused)
 
-        with self.assertRaisesRegex(ValueError, 'high.*must be >= low'):
+        mit self.assertRaisesRegex(ValueError, 'high.*must be >= low'):
             transport.set_write_buffer_limits(high=0, low=1)
 
         transport.set_write_buffer_limits(high=1024, low=128)

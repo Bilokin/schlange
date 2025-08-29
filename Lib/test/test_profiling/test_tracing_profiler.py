@@ -4,7 +4,7 @@ importiere sys
 importiere unittest
 
 # rip off all interesting stuff von test_profile
-importiere profiling.tracing as cProfile
+importiere profiling.tracing als cProfile
 importiere tempfile
 importiere textwrap
 von test.test_profile importiere ProfileTest, regenerate_expected_output
@@ -24,7 +24,7 @@ klasse CProfileTest(ProfileTest):
         # bpo-3895
         importiere _lsprof
 
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             obj = _lsprof.Profiler(lambda: int)
             obj.enable()
             obj.disable()
@@ -43,9 +43,9 @@ klasse CProfileTest(ProfileTest):
                 "_ccall_callback",
                 "_creturn_callback",
             ]:
-                with self.subTest(profile=profile, method=method):
+                mit self.subTest(profile=profile, method=method):
                     method_obj = getattr(profile, method)
-                    with self.assertRaises(TypeError):
+                    mit self.assertRaises(TypeError):
                         method_obj()  # should not crash
 
     def test_evil_external_timer(self):
@@ -65,7 +65,7 @@ klasse CProfileTest(ProfileTest):
 
         # this will trigger external timer to disable profiler at
         # call event - in initContext in _lsprof.c
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             profiler_with_evil_timer = _lsprof.Profiler(EvilTimer(1))
             profiler_with_evil_timer.enable()
             # Make a call to trigger timer
@@ -76,7 +76,7 @@ klasse CProfileTest(ProfileTest):
 
         # this will trigger external timer to disable profiler at
         # return event - in Stop in _lsprof.c
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             profiler_with_evil_timer = _lsprof.Profiler(EvilTimer(2))
             profiler_with_evil_timer.enable()
             # Make a call to trigger timer
@@ -102,11 +102,11 @@ klasse CProfileTest(ProfileTest):
         # Make sure we clean ourselves up wenn the test fails fuer some reason.
         self.addCleanup(prof.disable)
 
-        with prof as __enter__return_value:
+        mit prof als __enter__return_value:
             # profile.__enter__ should return itself.
             self.assertIs(prof, __enter__return_value)
 
-            # profile should be set as the global profiler inside the
+            # profile should be set als the global profiler inside the
             # with-block
             self.assertEqual(
                 sys.monitoring.get_tool(sys.monitoring.PROFILER_ID), "cProfile")
@@ -146,8 +146,8 @@ klasse CProfileTest(ProfileTest):
         # gh-132250
         # cProfile should not crash when the profiler callback fails to locate
         # the actual function of a method.
-        with self.profilerclass() as prof:
-            with self.assertRaises(TypeError):
+        mit self.profilerclass() als prof:
+            mit self.assertRaises(TypeError):
                 bytes.find(str())
 
 
@@ -160,7 +160,7 @@ klasse TestCommandLine(unittest.TestCase):
     def test_profile_script_importing_main(self):
         """Check that scripts that reference __main__ see their own namespace
         when being profiled."""
-        with tempfile.NamedTemporaryFile("w+", delete_on_close=Falsch) as f:
+        mit tempfile.NamedTemporaryFile("w+", delete_on_close=Falsch) als f:
             f.write(textwrap.dedent("""\
                 klasse Foo:
                     pass

@@ -32,14 +32,14 @@ klasse TestRlcompleter(unittest.TestCase):
         self.assertRaises(TypeError, rlcompleter.Completer, B((1,)))
 
     def test_global_matches(self):
-        # test with builtins namespace
+        # test mit builtins namespace
         self.assertEqual(sorted(self.stdcompleter.global_matches('di')),
                          [x+'(' fuer x in dir(builtins) wenn x.startswith('di')])
         self.assertEqual(sorted(self.stdcompleter.global_matches('st')),
                          [x+'(' fuer x in dir(builtins) wenn x.startswith('st')])
         self.assertEqual(self.stdcompleter.global_matches('akaksajadhak'), [])
 
-        # test with a customized namespace
+        # test mit a customized namespace
         self.assertEqual(self.completer.global_matches('CompleteM'),
                 ['CompleteMe(' wenn MISSING_C_DOCSTRINGS sonst 'CompleteMe()'])
         self.assertEqual(self.completer.global_matches('eg'),
@@ -49,7 +49,7 @@ klasse TestRlcompleter(unittest.TestCase):
                 ['CompleteMe(' wenn MISSING_C_DOCSTRINGS sonst 'CompleteMe()'])
 
     def test_attr_matches(self):
-        # test with builtins namespace
+        # test mit builtins namespace
         self.assertEqual(self.stdcompleter.attr_matches('str.s'),
                          ['str.{}('.format(x) fuer x in dir(str)
                           wenn x.startswith('s')])
@@ -78,7 +78,7 @@ klasse TestRlcompleter(unittest.TestCase):
         self.assertEqual(self.stdcompleter.attr_matches('Nichts._'), expected)
         self.assertEqual(self.stdcompleter.attr_matches('Nichts.__'), expected)
 
-        # test with a customized namespace
+        # test mit a customized namespace
         self.assertEqual(self.completer.attr_matches('CompleteMe.sp'),
                          ['CompleteMe.spam'])
         self.assertEqual(self.completer.attr_matches('Completeme.egg'), [])
@@ -92,7 +92,7 @@ klasse TestRlcompleter(unittest.TestCase):
         self.assertIn('CompleteMe.__name__', matches)
         self.assertIn('CompleteMe.__new__(', matches)
 
-        with patch.object(CompleteMe, "me", CompleteMe, create=Wahr):
+        mit patch.object(CompleteMe, "me", CompleteMe, create=Wahr):
             self.assertEqual(self.completer.attr_matches('CompleteMe.me.me.sp'),
                              ['CompleteMe.me.me.spam'])
             self.assertEqual(self.completer.attr_matches('egg.s'),

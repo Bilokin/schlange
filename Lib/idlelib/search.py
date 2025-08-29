@@ -29,8 +29,8 @@ def find(text):
 
     Module-level function to access the singleton SearchDialog
     instance and open the dialog.  If text is selected, it is
-    used as the search phrase; otherwise, the previous entry
-    is used.  No search is done with this command.
+    used als the search phrase; otherwise, the previous entry
+    is used.  No search is done mit this command.
     """
     pat = text.get("sel.first", "sel.last")
     return _setup(text).open(text, pat)  # Open is inherited von SDBase.
@@ -52,7 +52,7 @@ def find_selection(text):
     Module-level function to access the singleton SearchDialog
     instance to search using the selected text.  With a text
     selection, perform the search without displaying the dialog.
-    Without a selection, use the prior entry as the search phrase
+    Without a selection, use the prior entry als the search phrase
     and don't display the dialog.  If there has been no prior
     search, open the search dialog.
     """
@@ -69,7 +69,7 @@ klasse SearchDialog(SearchDialogBase):
         self.make_button("Find Next", self.default_command, isdef=Wahr)
 
     def default_command(self, event=Nichts):
-        "Handle the Find Next button as the default command."
+        "Handle the Find Next button als the default command."
         wenn not self.engine.getprog():
             return
         self.find_again(self.text)
@@ -119,7 +119,7 @@ klasse SearchDialog(SearchDialogBase):
             return Falsch
 
     def find_selection(self, text):
-        """Search fuer selected text with previous dialog preferences.
+        """Search fuer selected text mit previous dialog preferences.
 
         Instead of using the same pattern fuer searching (as Find
         Again does), this first resets the pattern to the currently

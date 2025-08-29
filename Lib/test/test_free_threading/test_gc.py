@@ -31,7 +31,7 @@ klasse TestGC(TestCase):
 
         gcs = [Thread(target=gc_thread)]
         mutators = [Thread(target=mutator_thread) fuer _ in range(4)]
-        with threading_helper.start_threads(gcs + mutators):
+        mit threading_helper.start_threads(gcs + mutators):
             pass
 
     def test_get_referrers(self):
@@ -59,7 +59,7 @@ klasse TestGC(TestCase):
 
         gcs = [Thread(target=gc_thread) fuer _ in range(NUM_GC)]
         mutators = [Thread(target=mutator_thread) fuer _ in range(NUM_MUTATORS)]
-        with threading_helper.start_threads(gcs + mutators):
+        mit threading_helper.start_threads(gcs + mutators):
             pass
 
 

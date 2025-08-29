@@ -40,7 +40,7 @@ klasse FunctionalAPIBase(util.DiskSetup):
             ('subdirectory/subsubdir/resource.txt',),
             ('subdirectory/subsubdir', 'resource.txt'),
         ):
-            with self.subTest(path_parts=path_parts):
+            mit self.subTest(path_parts=path_parts):
                 yield path_parts
 
     def test_read_text(self):
@@ -68,12 +68,12 @@ klasse FunctionalAPIBase(util.DiskSetup):
                 'a resource',
             )
         # Use generic OSError, since e.g. attempting to read a directory can
-        # fail with PermissionError rather than IsADirectoryError
-        with self.assertRaises(OSError):
+        # fail mit PermissionError rather than IsADirectoryError
+        mit self.assertRaises(OSError):
             resources.read_text(self.anchor01)
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             resources.read_text(self.anchor01, 'no-such-file')
-        with self.assertRaises(UnicodeDecodeError):
+        mit self.assertRaises(UnicodeDecodeError):
             resources.read_text(self.anchor01, 'utf-16.file')
         self.assertEqual(
             resources.read_text(
@@ -106,35 +106,35 @@ klasse FunctionalAPIBase(util.DiskSetup):
             )
 
     def test_open_text(self):
-        with resources.open_text(self.anchor01, 'utf-8.file') as f:
+        mit resources.open_text(self.anchor01, 'utf-8.file') als f:
             self.assertEqual(f.read(), 'Hello, UTF-8 world!\n')
         fuer path_parts in self._gen_resourcetxt_path_parts():
-            with resources.open_text(
+            mit resources.open_text(
                 self.anchor02,
                 *path_parts,
                 encoding='utf-8',
-            ) as f:
+            ) als f:
                 self.assertEqual(f.read(), 'a resource')
         # Use generic OSError, since e.g. attempting to read a directory can
-        # fail with PermissionError rather than IsADirectoryError
-        with self.assertRaises(OSError):
+        # fail mit PermissionError rather than IsADirectoryError
+        mit self.assertRaises(OSError):
             resources.open_text(self.anchor01)
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             resources.open_text(self.anchor01, 'no-such-file')
-        with resources.open_text(self.anchor01, 'utf-16.file') as f:
-            with self.assertRaises(UnicodeDecodeError):
+        mit resources.open_text(self.anchor01, 'utf-16.file') als f:
+            mit self.assertRaises(UnicodeDecodeError):
                 f.read()
-        with resources.open_text(
+        mit resources.open_text(
             self.anchor01,
             'binary.file',
             encoding='latin1',
-        ) as f:
+        ) als f:
             self.assertEqual(f.read(), '\x00\x01\x02\x03')
-        with resources.open_text(
+        mit resources.open_text(
             self.anchor01,
             'utf-16.file',
             errors='backslashreplace',
-        ) as f:
+        ) als f:
             self.assertEndsWith(  # ignore the BOM
                 f.read(),
                 'Hello, UTF-16 world!\n'.encode('utf-16-le').decode(
@@ -143,21 +143,21 @@ klasse FunctionalAPIBase(util.DiskSetup):
             )
 
     def test_open_binary(self):
-        with resources.open_binary(self.anchor01, 'utf-8.file') as f:
+        mit resources.open_binary(self.anchor01, 'utf-8.file') als f:
             self.assertEqual(f.read(), b'Hello, UTF-8 world!\n')
         fuer path_parts in self._gen_resourcetxt_path_parts():
-            with resources.open_binary(
+            mit resources.open_binary(
                 self.anchor02,
                 *path_parts,
-            ) as f:
+            ) als f:
                 self.assertEqual(f.read(), b'a resource')
 
     def test_path(self):
-        with resources.path(self.anchor01, 'utf-8.file') as path:
-            with open(str(path), encoding='utf-8') as f:
+        mit resources.path(self.anchor01, 'utf-8.file') als path:
+            mit open(str(path), encoding='utf-8') als f:
                 self.assertEqual(f.read(), 'Hello, UTF-8 world!\n')
-        with resources.path(self.anchor01) as path:
-            with open(os.path.join(path, 'utf-8.file'), encoding='utf-8') as f:
+        mit resources.path(self.anchor01) als path:
+            mit open(os.path.join(path, 'utf-8.file'), encoding='utf-8') als f:
                 self.assertEqual(f.read(), 'Hello, UTF-8 world!\n')
 
     def test_is_resource(self):
@@ -170,25 +170,25 @@ klasse FunctionalAPIBase(util.DiskSetup):
             self.assertWahr(is_resource(self.anchor02, *path_parts))
 
     def test_contents(self):
-        with warnings_helper.check_warnings((".*contents.*", DeprecationWarning)):
+        mit warnings_helper.check_warnings((".*contents.*", DeprecationWarning)):
             c = resources.contents(self.anchor01)
         self.assertGreaterEqual(
             set(c),
             {'utf-8.file', 'utf-16.file', 'binary.file', 'subdirectory'},
         )
-        with self.assertRaises(OSError), warnings_helper.check_warnings((
+        mit self.assertRaises(OSError), warnings_helper.check_warnings((
             ".*contents.*",
             DeprecationWarning,
         )):
             list(resources.contents(self.anchor01, 'utf-8.file'))
 
         fuer path_parts in self._gen_resourcetxt_path_parts():
-            with self.assertRaises(OSError), warnings_helper.check_warnings((
+            mit self.assertRaises(OSError), warnings_helper.check_warnings((
                 ".*contents.*",
                 DeprecationWarning,
             )):
                 list(resources.contents(self.anchor01, *path_parts))
-        with warnings_helper.check_warnings((".*contents.*", DeprecationWarning)):
+        mit warnings_helper.check_warnings((".*contents.*", DeprecationWarning)):
             c = resources.contents(self.anchor01, 'subdirectory')
         self.assertGreaterEqual(
             set(c),
@@ -206,15 +206,15 @@ klasse FunctionalAPIBase(util.DiskSetup):
             resources.is_resource,
             resources.contents,
         ):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 # Rejecting Nichts anchor
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     func(Nichts)
                 # Rejecting invalid anchor type
-                with self.assertRaises((TypeError, AttributeError)):
+                mit self.assertRaises((TypeError, AttributeError)):
                     func(1234)
                 # Unknown module
-                with self.assertRaises(ModuleNotFoundError):
+                mit self.assertRaises(ModuleNotFoundError):
                     func('$missing module$')
 
     def test_text_errors(self):
@@ -222,9 +222,9 @@ klasse FunctionalAPIBase(util.DiskSetup):
             resources.read_text,
             resources.open_text,
         ):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 # Multiple path arguments need explicit encoding argument.
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     func(
                         self.anchor02,
                         'subdirectory',

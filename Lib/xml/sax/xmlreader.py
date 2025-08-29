@@ -96,7 +96,7 @@ klasse IncrementalParser(XMLReader):
 
     When the parser is instantiated it is ready to begin accepting
     data von the feed method immediately. After parsing has been
-    finished with a call to close the reset method must be called to
+    finished mit a call to close the reset method must be called to
     make the parser ready to accept new data, either von feed or
     using the parse method.
 
@@ -105,7 +105,7 @@ klasse IncrementalParser(XMLReader):
 
     By default, the klasse also implements the parse method of the XMLReader
     interface using the feed, close and reset methods of the
-    IncrementalParser interface as a convenience to SAX 2.0 driver
+    IncrementalParser interface als a convenience to SAX 2.0 driver
     writers."""
 
     def __init__(self, bufsize=2**16):
@@ -161,7 +161,7 @@ klasse IncrementalParser(XMLReader):
 # ===== LOCATOR =====
 
 klasse Locator:
-    """Interface fuer associating a SAX event with a document
+    """Interface fuer associating a SAX event mit a document
     location. A locator object will return valid results only during
     calls to DocumentHandler methods; at any other time, the
     results are unpredictable."""
@@ -189,7 +189,7 @@ klasse InputSource:
     read entities.
 
     This klasse may include information about the public identifier,
-    system identifier, byte stream (possibly with character encoding
+    system identifier, byte stream (possibly mit character encoding
     information) and/or the character stream of an entity.
 
     Applications will create objects of this klasse fuer use in the
@@ -247,7 +247,7 @@ klasse InputSource:
         to opening a URI connection itself.
 
         If the application knows the character encoding of the byte
-        stream, it should set it with the setEncoding method."""
+        stream, it should set it mit the setEncoding method."""
         self.__bytefile = bytefile
 
     def getByteStream(self):

@@ -73,10 +73,10 @@ def create_https_server(
 
 klasse TestSSLDisabled(unittest.TestCase):
     def test_https_server_raises_runtime_error(self):
-        with import_helper.isolated_modules():
+        mit import_helper.isolated_modules():
             sys.modules['ssl'] = Nichts
             certfile = certdata_file("keycert.pem")
-            with self.assertRaises(RuntimeError):
+            mit self.assertRaises(RuntimeError):
                 create_https_server(certfile)
 
 
@@ -402,7 +402,7 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
             (self.ONLYCERT, self.ONLYKEY_PROTECTED, self.KEY_PASSWORD),
         ]
         fuer certfile, keyfile, password in valid_certdata:
-            with self.subTest(
+            mit self.subTest(
                 certfile=certfile, keyfile=keyfile, password=password
             ):
                 server = create_https_server(certfile, keyfile, password)
@@ -423,10 +423,10 @@ klasse BaseHTTPSServerTestCase(BaseTestCase):
             # see issue #132102
         ]
         fuer certfile, keyfile, password in invalid_certdata:
-            with self.subTest(
+            mit self.subTest(
                 certfile=certfile, keyfile=keyfile, password=password
             ):
-                with self.assertRaises(ssl.SSLError):
+                mit self.assertRaises(ssl.SSLError):
                     create_https_server(certfile, keyfile, password)
 
 
@@ -446,7 +446,7 @@ klasse RequestHandlerLoggingTestCase(BaseTestCase):
         self.con = http.client.HTTPConnection(self.HOST, self.PORT)
         self.con.connect()
 
-        with support.captured_stderr() as err:
+        mit support.captured_stderr() als err:
             self.con.request('GET', '/')
             self.con.getresponse()
 
@@ -456,7 +456,7 @@ klasse RequestHandlerLoggingTestCase(BaseTestCase):
         self.con = http.client.HTTPConnection(self.HOST, self.PORT)
         self.con.connect()
 
-        with support.captured_stderr() as err:
+        mit support.captured_stderr() als err:
             self.con.request('ERROR', '/')
             self.con.getresponse()
 
@@ -479,7 +479,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.tempdir_name = os.path.basename(self.tempdir)
         self.base_url = '/' + self.tempdir_name
         tempname = os.path.join(self.tempdir, 'test')
-        with open(tempname, 'wb') as temp:
+        mit open(tempname, 'wb') als temp:
             temp.write(self.data)
             temp.flush()
         mtime = os.stat(tempname).st_mtime
@@ -547,7 +547,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         fullpath = os.path.join(self.tempdir, filename)
         content = ascii(fullpath).encode() + (os_helper.TESTFN_UNDECODABLE or b'\xff')
         try:
-            with open(fullpath, 'wb') as f:
+            mit open(fullpath, 'wb') als f:
                 f.write(content)
         except OSError:
             self.skipTest(f'Can not create file {filename!a} '
@@ -617,7 +617,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         # Characters that need special treating in URL or HTML.
         fuer name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
                      '%A4', '%E2%82%AC'):
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 dirname = name + '.dir'
                 self.check_list_dir_dirname(dirname,
                         quotedname=urllib.parse.quote(dirname, safe='&<>\'"'))
@@ -626,7 +626,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         # Characters that need special treating in URL or HTML.
         fuer name in ('q?', 'f#', '&amp;', '&amp', '<i>', '"dq"', "'sq'",
                      '%A4', '%E2%82%AC'):
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 filename = name + '.txt'
                 self.check_list_dir_filename(filename)
                 os_helper.unlink(os.path.join(self.tempdir, filename))
@@ -666,8 +666,8 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         location = response.getheader('Location')
         self.assertNotStartsWith(location, '//')
         self.assertEqual(location, expected_location,
-                msg='Expected Location header to start with a single / and '
-                'end with a / as this is a directory redirect.')
+                msg='Expected Location header to start mit a single / and '
+                'end mit a / als this is a directory redirect.')
 
         # ///python.org... triple-slash prefix, no trailing slash
         attack3_url = f'//{url}'
@@ -676,8 +676,8 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.assertEqual(response.getheader('Location'), expected_location)
 
         # If the second word in the http request (Request-URI fuer the http
-        # method) is a full URI, we don't worry about it, as that'll be parsed
-        # and reassembled as a full URI within BaseHTTPRequestHandler.send_head
+        # method) is a full URI, we don't worry about it, als that'll be parsed
+        # and reassembled als a full URI within BaseHTTPRequestHandler.send_head
         # so no errant scheme-less //netloc//evil.co/ domain mixup can happen.
         attack_scheme_netloc_2slash_url = f'https://pypi.org/{url}'
         expected_scheme_netloc_location = f'{attack_scheme_netloc_2slash_url}/'
@@ -725,12 +725,12 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.OK)
 
         data = b"Dummy index file\r\n"
-        with open(os.path.join(self.tempdir_name, 'index.html'), 'wb') as f:
+        mit open(os.path.join(self.tempdir_name, 'index.html'), 'wb') als f:
             f.write(data)
         response = self.request(self.base_url + '/')
         self.check_status_and_reason(response, HTTPStatus.OK, data)
 
-        # chmod() doesn't work as expected on Windows, and filesystem
+        # chmod() doesn't work als expected on Windows, and filesystem
         # permissions are ignored by root on Unix.
         wenn os.name == 'posix' and os.geteuid() != 0:
             os.chmod(self.tempdir, 0)
@@ -750,7 +750,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
                          'application/octet-stream')
 
     def test_browser_cache(self):
-        """Check that when a request to /test is sent with the request header
+        """Check that when a request to /test is sent mit the request header
         If-Modified-Since set to date of last modification, the server returns
         status code 304, not 200
         """
@@ -768,7 +768,7 @@ klasse SimpleHTTPServerTestCase(BaseTestCase):
         self.check_status_and_reason(response, HTTPStatus.NOT_MODIFIED)
 
     def test_browser_cache_file_changed(self):
-        # with If-Modified-Since earlier than Last-Modified, must return 200
+        # mit If-Modified-Since earlier than Last-Modified, must return 200
         dt = self.last_modif_datetime
         # build datetime object : 365 days before last modification
         old_dt = dt - datetime.timedelta(days=365)
@@ -898,11 +898,11 @@ klasse BaseHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertIsNotNichts(match)
 
     def test_unprintable_not_logged(self):
-        # We call the method von the klasse directly as our Socketless
+        # We call the method von the klasse directly als our Socketless
         # Handler subclass overrode it... nice fuer everything BUT this test.
         self.handler.client_address = ('127.0.0.1', 1337)
         log_message = BaseHTTPRequestHandler.log_message
-        with mock.patch.object(sys, 'stderr', StringIO()) as fake_stderr:
+        mit mock.patch.object(sys, 'stderr', StringIO()) als fake_stderr:
             log_message(self.handler, '/foo')
             log_message(self.handler, '/\033bar\000\033')
             log_message(self.handler, '/spam %s.', 'a')
@@ -1170,7 +1170,7 @@ klasse SimpleHTTPRequestHandlerTestCase(unittest.TestCase):
         self.assertEqual(path, self.translated_3)
 
     def test_windows_colon(self):
-        with support.swap_attr(server.os, 'path', ntpath):
+        mit support.swap_attr(server.os, 'path', ntpath):
             path = self.handler_1.translate_path('c:c:c:foo/filename')
             path = path.replace(ntpath.sep, os.sep)
             self.assertEqual(path, self.translated_1)
@@ -1311,14 +1311,14 @@ klasse CommandLineTestCase(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.tls_password_file = tempfile.mktemp()
-        with open(self.tls_password_file, 'wb') as f:
+        mit open(self.tls_password_file, 'wb') als f:
             f.write(self.tls_password.encode())
         self.addCleanup(os_helper.unlink, self.tls_password_file)
 
     def invoke_httpd(self, *args, stdout=Nichts, stderr=Nichts):
         stdout = StringIO() wenn stdout is Nichts sonst stdout
         stderr = StringIO() wenn stderr is Nichts sonst stderr
-        with contextlib.redirect_stdout(stdout), \
+        mit contextlib.redirect_stdout(stdout), \
             contextlib.redirect_stderr(stderr):
             server._main(args)
         return stdout.getvalue(), stderr.getvalue()
@@ -1327,7 +1327,7 @@ klasse CommandLineTestCase(unittest.TestCase):
     def test_port_flag(self, mock_func):
         ports = [8000, 65535]
         fuer port in ports:
-            with self.subTest(port=port):
+            mit self.subTest(port=port):
                 self.invoke_httpd(str(port))
                 call_args = self.args | dict(port=port)
                 mock_func.assert_called_once_with(**call_args)
@@ -1341,7 +1341,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                        '/home/user', './foo/foo2', 'D:\\foo\\bar']
         fuer flag in options:
             fuer directory in directories:
-                with self.subTest(flag=flag, directory=directory):
+                mit self.subTest(flag=flag, directory=directory):
                     self.invoke_httpd(flag, directory)
                     mock_func.assert_called_once_with(**self.args)
                     mock_func.reset_mock()
@@ -1353,7 +1353,7 @@ klasse CommandLineTestCase(unittest.TestCase):
                           '0.0.0.0', '8.8.8.8']
         fuer flag in options:
             fuer bind_address in bind_addresses:
-                with self.subTest(flag=flag, bind_address=bind_address):
+                mit self.subTest(flag=flag, bind_address=bind_address):
                     self.invoke_httpd(flag, bind_address)
                     call_args = self.args | dict(bind=bind_address)
                     mock_func.assert_called_once_with(**call_args)
@@ -1365,7 +1365,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         protocols = ['HTTP/1.0', 'HTTP/1.1', 'HTTP/2.0', 'HTTP/3.0']
         fuer flag in options:
             fuer protocol in protocols:
-                with self.subTest(flag=flag, protocol=protocol):
+                mit self.subTest(flag=flag, protocol=protocol):
                     self.invoke_httpd(flag, protocol)
                     call_args = self.args | dict(protocol=protocol)
                     mock_func.assert_called_once_with(**call_args)
@@ -1409,12 +1409,12 @@ klasse CommandLineTestCase(unittest.TestCase):
     @mock.patch('http.server.test')
     def test_missing_tls_cert_flag(self, mock_func):
         fuer tls_key_option in self.tls_key_options:
-            with self.assertRaises(SystemExit):
+            mit self.assertRaises(SystemExit):
                 self.invoke_httpd(tls_key_option, self.tls_key)
             mock_func.reset_mock()
 
         fuer tls_password_option in self.tls_password_options:
-            with self.assertRaises(SystemExit):
+            mit self.assertRaises(SystemExit):
                 self.invoke_httpd(tls_password_option, self.tls_password)
             mock_func.reset_mock()
 
@@ -1424,7 +1424,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         non_existent_file = 'non_existent_file'
         fuer tls_password_option in self.tls_password_options:
             fuer tls_cert_option in self.tls_cert_options:
-                with self.assertRaises(SystemExit):
+                mit self.assertRaises(SystemExit):
                     self.invoke_httpd(tls_cert_option,
                                       self.tls_cert,
                                       tls_password_option,
@@ -1441,7 +1441,7 @@ klasse CommandLineTestCase(unittest.TestCase):
         options = ['-h', '--help']
         fuer option in options:
             stdout, stderr = StringIO(), StringIO()
-            with self.assertRaises(SystemExit):
+            mit self.assertRaises(SystemExit):
                 self.invoke_httpd(option, stdout=stdout, stderr=stderr)
             self.assertIn('usage', stdout.getvalue())
             self.assertEqual(stderr.getvalue(), '')
@@ -1449,7 +1449,7 @@ klasse CommandLineTestCase(unittest.TestCase):
     @mock.patch('http.server.test')
     def test_unknown_flag(self, _):
         stdout, stderr = StringIO(), StringIO()
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             self.invoke_httpd('--unknown-flag', stdout=stdout, stderr=stderr)
         self.assertEqual(stdout.getvalue(), '')
         self.assertIn('error', stderr.getvalue())
@@ -1467,14 +1467,14 @@ klasse CommandLineRunTimeTestCase(unittest.TestCase):
         super().setUp()
         server_dir_context = os_helper.temp_cwd()
         server_dir = self.enterContext(server_dir_context)
-        with open(self.served_filename, 'wb') as f:
+        mit open(self.served_filename, 'wb') als f:
             f.write(self.served_data)
-        with open(self.tls_password_file, 'wb') as f:
+        mit open(self.tls_password_file, 'wb') als f:
             f.write(self.tls_password)
 
     def fetch_file(self, path, context=Nichts):
         req = urllib.request.Request(path, method='GET')
-        with urllib.request.urlopen(req, context=context) as res:
+        mit urllib.request.urlopen(req, context=context) als res:
             return res.read()
 
     def parse_cli_output(self, output):

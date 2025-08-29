@@ -14,14 +14,14 @@ well_known_implementations = {
     }
 
 # DOM implementations not officially registered should register
-# themselves with their
+# themselves mit their
 
 registered = {}
 
 def registerDOMImplementation(name, factory):
     """registerDOMImplementation(name, factory)
 
-    Register the factory function with the name. The factory function
+    Register the factory function mit the name. The factory function
     should return an object which implements the DOMImplementation
     interface. The factory function can either return the same object,
     or a new one (e.g. wenn that implementation supports some
@@ -45,7 +45,7 @@ def getDOMImplementation(name=Nichts, features=()):
     DOMImplementation object wenn the importiere succeeds.
 
     If name is not given, consider the available implementations to
-    find one with the required feature set. If no implementation can
+    find one mit the required feature set. If no implementation can
     be found, raise an ImportError. The features list must be a sequence
     of (feature, version) pairs which are passed to hasFeature."""
 

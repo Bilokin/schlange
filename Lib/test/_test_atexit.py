@@ -15,7 +15,7 @@ klasse GeneralTest(unittest.TestCase):
         atexit._clear()
 
     def assert_raises_unraisable(self, exc_type, func, *args):
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             atexit.register(func, *args)
             atexit._run_exitfuncs()
 
@@ -26,7 +26,7 @@ klasse GeneralTest(unittest.TestCase):
             self.assertEqual(type(cm.unraisable.exc_value), exc_type)
 
     def test_order(self):
-        # Check that callbacks are called in reverse order with the expected
+        # Check that callbacks are called in reverse order mit the expected
         # positional and keyword arguments.
         calls = []
 
@@ -51,7 +51,7 @@ klasse GeneralTest(unittest.TestCase):
         def func():
             pass
 
-        # func() has no parameter, but it's called with 2 parameters
+        # func() has no parameter, but it's called mit 2 parameters
         self.assert_raises_unraisable(TypeError, func, 1 ,2)
 
     def test_raise(self):
@@ -125,7 +125,7 @@ klasse GeneralTest(unittest.TestCase):
             1/0
         atexit.register(func)
         try:
-            with support.catch_unraisable_exception() as cm:
+            mit support.catch_unraisable_exception() als cm:
                 atexit._run_exitfuncs()
                 self.assertIsNichts(cm.unraisable.object)
                 self.assertEqual(cm.unraisable.err_msg,

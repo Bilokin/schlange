@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec generated von 'VENDORS/APPLE/ARABIC.TXT' with gencodec.py.
+""" Python Character Mapping Codec generated von 'VENDORS/APPLE/ARABIC.TXT' mit gencodec.py.
 
 """#"
 
@@ -222,20 +222,20 @@ decoding_table = (
     ')'        #  0x0029 -> RIGHT PARENTHESIS, left-right
     '*'        #  0x002a -> ASTERISK, left-right
     '+'        #  0x002b -> PLUS SIGN, left-right
-    ','        #  0x002c -> COMMA, left-right; in Arabic-script context, displayed as 0x066C ARABIC THOUSANDS SEPARATOR
+    ','        #  0x002c -> COMMA, left-right; in Arabic-script context, displayed als 0x066C ARABIC THOUSANDS SEPARATOR
     '-'        #  0x002d -> HYPHEN-MINUS, left-right
-    '.'        #  0x002e -> FULL STOP, left-right; in Arabic-script context, displayed as 0x066B ARABIC DECIMAL SEPARATOR
+    '.'        #  0x002e -> FULL STOP, left-right; in Arabic-script context, displayed als 0x066B ARABIC DECIMAL SEPARATOR
     '/'        #  0x002f -> SOLIDUS, left-right
-    '0'        #  0x0030 -> DIGIT ZERO;  in Arabic-script context, displayed as 0x0660 ARABIC-INDIC DIGIT ZERO
-    '1'        #  0x0031 -> DIGIT ONE;   in Arabic-script context, displayed as 0x0661 ARABIC-INDIC DIGIT ONE
-    '2'        #  0x0032 -> DIGIT TWO;   in Arabic-script context, displayed as 0x0662 ARABIC-INDIC DIGIT TWO
-    '3'        #  0x0033 -> DIGIT THREE; in Arabic-script context, displayed as 0x0663 ARABIC-INDIC DIGIT THREE
-    '4'        #  0x0034 -> DIGIT FOUR;  in Arabic-script context, displayed as 0x0664 ARABIC-INDIC DIGIT FOUR
-    '5'        #  0x0035 -> DIGIT FIVE;  in Arabic-script context, displayed as 0x0665 ARABIC-INDIC DIGIT FIVE
-    '6'        #  0x0036 -> DIGIT SIX;   in Arabic-script context, displayed as 0x0666 ARABIC-INDIC DIGIT SIX
-    '7'        #  0x0037 -> DIGIT SEVEN; in Arabic-script context, displayed as 0x0667 ARABIC-INDIC DIGIT SEVEN
-    '8'        #  0x0038 -> DIGIT EIGHT; in Arabic-script context, displayed as 0x0668 ARABIC-INDIC DIGIT EIGHT
-    '9'        #  0x0039 -> DIGIT NINE;  in Arabic-script context, displayed as 0x0669 ARABIC-INDIC DIGIT NINE
+    '0'        #  0x0030 -> DIGIT ZERO;  in Arabic-script context, displayed als 0x0660 ARABIC-INDIC DIGIT ZERO
+    '1'        #  0x0031 -> DIGIT ONE;   in Arabic-script context, displayed als 0x0661 ARABIC-INDIC DIGIT ONE
+    '2'        #  0x0032 -> DIGIT TWO;   in Arabic-script context, displayed als 0x0662 ARABIC-INDIC DIGIT TWO
+    '3'        #  0x0033 -> DIGIT THREE; in Arabic-script context, displayed als 0x0663 ARABIC-INDIC DIGIT THREE
+    '4'        #  0x0034 -> DIGIT FOUR;  in Arabic-script context, displayed als 0x0664 ARABIC-INDIC DIGIT FOUR
+    '5'        #  0x0035 -> DIGIT FIVE;  in Arabic-script context, displayed als 0x0665 ARABIC-INDIC DIGIT FIVE
+    '6'        #  0x0036 -> DIGIT SIX;   in Arabic-script context, displayed als 0x0666 ARABIC-INDIC DIGIT SIX
+    '7'        #  0x0037 -> DIGIT SEVEN; in Arabic-script context, displayed als 0x0667 ARABIC-INDIC DIGIT SEVEN
+    '8'        #  0x0038 -> DIGIT EIGHT; in Arabic-script context, displayed als 0x0668 ARABIC-INDIC DIGIT EIGHT
+    '9'        #  0x0039 -> DIGIT NINE;  in Arabic-script context, displayed als 0x0669 ARABIC-INDIC DIGIT NINE
     ':'        #  0x003a -> COLON, left-right
     ';'        #  0x003b -> SEMICOLON, left-right
     '<'        #  0x003c -> LESS-THAN SIGN, left-right
@@ -494,23 +494,23 @@ encoding_map = {
     0x002a: 0x00aa,     #  ASTERISK, right-left
     0x002b: 0x002b,     #  PLUS SIGN, left-right
     0x002b: 0x00ab,     #  PLUS SIGN, right-left
-    0x002c: 0x002c,     #  COMMA, left-right; in Arabic-script context, displayed as 0x066C ARABIC THOUSANDS SEPARATOR
+    0x002c: 0x002c,     #  COMMA, left-right; in Arabic-script context, displayed als 0x066C ARABIC THOUSANDS SEPARATOR
     0x002d: 0x002d,     #  HYPHEN-MINUS, left-right
     0x002d: 0x00ad,     #  HYPHEN-MINUS, right-left
-    0x002e: 0x002e,     #  FULL STOP, left-right; in Arabic-script context, displayed as 0x066B ARABIC DECIMAL SEPARATOR
+    0x002e: 0x002e,     #  FULL STOP, left-right; in Arabic-script context, displayed als 0x066B ARABIC DECIMAL SEPARATOR
     0x002e: 0x00ae,     #  FULL STOP, right-left
     0x002f: 0x002f,     #  SOLIDUS, left-right
     0x002f: 0x00af,     #  SOLIDUS, right-left
-    0x0030: 0x0030,     #  DIGIT ZERO;  in Arabic-script context, displayed as 0x0660 ARABIC-INDIC DIGIT ZERO
-    0x0031: 0x0031,     #  DIGIT ONE;   in Arabic-script context, displayed as 0x0661 ARABIC-INDIC DIGIT ONE
-    0x0032: 0x0032,     #  DIGIT TWO;   in Arabic-script context, displayed as 0x0662 ARABIC-INDIC DIGIT TWO
-    0x0033: 0x0033,     #  DIGIT THREE; in Arabic-script context, displayed as 0x0663 ARABIC-INDIC DIGIT THREE
-    0x0034: 0x0034,     #  DIGIT FOUR;  in Arabic-script context, displayed as 0x0664 ARABIC-INDIC DIGIT FOUR
-    0x0035: 0x0035,     #  DIGIT FIVE;  in Arabic-script context, displayed as 0x0665 ARABIC-INDIC DIGIT FIVE
-    0x0036: 0x0036,     #  DIGIT SIX;   in Arabic-script context, displayed as 0x0666 ARABIC-INDIC DIGIT SIX
-    0x0037: 0x0037,     #  DIGIT SEVEN; in Arabic-script context, displayed as 0x0667 ARABIC-INDIC DIGIT SEVEN
-    0x0038: 0x0038,     #  DIGIT EIGHT; in Arabic-script context, displayed as 0x0668 ARABIC-INDIC DIGIT EIGHT
-    0x0039: 0x0039,     #  DIGIT NINE;  in Arabic-script context, displayed as 0x0669 ARABIC-INDIC DIGIT NINE
+    0x0030: 0x0030,     #  DIGIT ZERO;  in Arabic-script context, displayed als 0x0660 ARABIC-INDIC DIGIT ZERO
+    0x0031: 0x0031,     #  DIGIT ONE;   in Arabic-script context, displayed als 0x0661 ARABIC-INDIC DIGIT ONE
+    0x0032: 0x0032,     #  DIGIT TWO;   in Arabic-script context, displayed als 0x0662 ARABIC-INDIC DIGIT TWO
+    0x0033: 0x0033,     #  DIGIT THREE; in Arabic-script context, displayed als 0x0663 ARABIC-INDIC DIGIT THREE
+    0x0034: 0x0034,     #  DIGIT FOUR;  in Arabic-script context, displayed als 0x0664 ARABIC-INDIC DIGIT FOUR
+    0x0035: 0x0035,     #  DIGIT FIVE;  in Arabic-script context, displayed als 0x0665 ARABIC-INDIC DIGIT FIVE
+    0x0036: 0x0036,     #  DIGIT SIX;   in Arabic-script context, displayed als 0x0666 ARABIC-INDIC DIGIT SIX
+    0x0037: 0x0037,     #  DIGIT SEVEN; in Arabic-script context, displayed als 0x0667 ARABIC-INDIC DIGIT SEVEN
+    0x0038: 0x0038,     #  DIGIT EIGHT; in Arabic-script context, displayed als 0x0668 ARABIC-INDIC DIGIT EIGHT
+    0x0039: 0x0039,     #  DIGIT NINE;  in Arabic-script context, displayed als 0x0669 ARABIC-INDIC DIGIT NINE
     0x003a: 0x003a,     #  COLON, left-right
     0x003a: 0x00ba,     #  COLON, right-left
     0x003b: 0x003b,     #  SEMICOLON, left-right

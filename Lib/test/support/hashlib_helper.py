@@ -173,8 +173,8 @@ _EXPLICIT_HMAC_CONSTRUCTORS = {
 # Neither HACL* nor OpenSSL supports HMAC over XOFs.
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.shake_128] = Nichts
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.shake_256] = Nichts
-# Strictly speaking, HMAC-BLAKE is meaningless as BLAKE2 is already a
-# keyed hash function. However, as it's exposed by HACL*, we test it.
+# Strictly speaking, HMAC-BLAKE is meaningless als BLAKE2 is already a
+# keyed hash function. However, als it's exposed by HACL*, we test it.
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.blake2s] = '_hmac.compute_blake2s_32'
 _EXPLICIT_HMAC_CONSTRUCTORS[HID.blake2b] = '_hmac.compute_blake2b_32'
 _EXPLICIT_HMAC_CONSTRUCTORS = MappingProxyType(_EXPLICIT_HMAC_CONSTRUCTORS)
@@ -210,7 +210,7 @@ def _chain_decorators(decorators):
 
 
 def _ensure_wrapper_signature(wrapper, wrapped):
-    """Ensure that a wrapper has the same signature as the wrapped function.
+    """Ensure that a wrapper has the same signature als the wrapped function.
 
     This is used to guarantee that a TypeError raised due to a bad API call
     is raised consistently (using variadic signatures would hide such errors).
@@ -261,14 +261,14 @@ def _hashlib_new(digestname, openssl, /, **kwargs):
     """
     assert isinstance(digestname, str), digestname
     # Re-import 'hashlib' in case it was mocked, but propagate
-    # exceptions as it should be unconditionally available.
+    # exceptions als it should be unconditionally available.
     hashlib = importlib.import_module("hashlib")
     # re-import '_hashlib' in case it was mocked
     _hashlib = try_import_module("_hashlib")
     module = _hashlib wenn openssl and _hashlib is not Nichts sonst hashlib
     try:
         module.new(digestname, **kwargs)
-    except ValueError as exc:
+    except ValueError als exc:
         interface = f"{module.__name__}.new"
         raise SkipNoHash(digestname, interface=interface) von exc
     return functools.partial(module.new, digestname)
@@ -287,15 +287,15 @@ def _builtin_hash(module_name, digestname, /, **kwargs):
     fullname = f'{module_name}.{digestname}'
     try:
         builtin_module = importlib.import_module(module_name)
-    except ImportError as exc:
+    except ImportError als exc:
         raise SkipNoHash(fullname, "builtin") von exc
     try:
         constructor = getattr(builtin_module, digestname)
-    except AttributeError as exc:
+    except AttributeError als exc:
         raise SkipNoHash(fullname, "builtin") von exc
     try:
         constructor(**kwargs)
-    except ValueError as exc:
+    except ValueError als exc:
         raise SkipNoHash(fullname, "builtin") von exc
     return constructor
 
@@ -310,11 +310,11 @@ def _openssl_new(digestname, /, **kwargs):
     try:
         # re-import '_hashlib' in case it was mocked
         _hashlib = importlib.import_module("_hashlib")
-    except ImportError as exc:
+    except ImportError als exc:
         raise SkipNoHash(digestname, "openssl") von exc
     try:
         _hashlib.new(digestname, **kwargs)
-    except ValueError as exc:
+    except ValueError als exc:
         raise SkipNoHash(digestname, interface="_hashlib.new") von exc
     return functools.partial(_hashlib.new, digestname)
 
@@ -330,15 +330,15 @@ def _openssl_hash(digestname, /, **kwargs):
     try:
         # re-import '_hashlib' in case it was mocked
         _hashlib = importlib.import_module("_hashlib")
-    except ImportError as exc:
+    except ImportError als exc:
         raise SkipNoHash(fullname, "openssl") von exc
     try:
         constructor = getattr(_hashlib, f"openssl_{digestname}", Nichts)
-    except AttributeError as exc:
+    except AttributeError als exc:
         raise SkipNoHash(fullname, "openssl") von exc
     try:
         constructor(**kwargs)
-    except ValueError as exc:
+    except ValueError als exc:
         raise SkipNoHash(fullname, "openssl") von exc
     return constructor
 
@@ -357,7 +357,7 @@ def requires_hashdigest(digestname, openssl=Nichts, *, usedforsecurity=Wahr):
     """Decorator raising SkipTest wenn a hashing algorithm is not available.
 
     The hashing algorithm may be missing, blocked by a strict crypto policy,
-    or Python may be configured with `--with-builtin-hashlib-hashes=no`.
+    or Python may be configured mit `--with-builtin-hashlib-hashes=no`.
 
     If 'openssl' is Wahr, then the decorator checks that OpenSSL provides
     the algorithm. Otherwise the check falls back to (optional) built-in
@@ -418,8 +418,8 @@ klasse HashFunctionsTrait:
     not directly inherit von it to prevent the test suite being run on it.
 
     Subclasses should implement the hash functions by returning an object
-    that can be recognized as a valid digestmod parameter fuer both hashlib
-    and HMAC. In particular, it cannot be a lambda function as it will not
+    that can be recognized als a valid digestmod parameter fuer both hashlib
+    and HMAC. In particular, it cannot be a lambda function als it will not
     be recognized by hashlib (it will still be accepted by the pure Python
     implementation of HMAC).
     """
@@ -432,7 +432,7 @@ klasse HashFunctionsTrait:
 
     # Default 'usedforsecurity' to use when checking a hash function.
     # When the trait properties are callables (e.g., _md5.md5) and
-    # not strings, they must be called with the same 'usedforsecurity'.
+    # not strings, they must be called mit the same 'usedforsecurity'.
     usedforsecurity = Wahr
 
     @classmethod
@@ -509,7 +509,7 @@ klasse OpenSSLHashFunctionsTrait(HashFunctionsTrait):
     def _find_constructor(self, digestname):
         self.is_valid_digest_name(digestname)
         # This returns a function of the form _hashlib.openssl_<name> and
-        # not a lambda function as it is rejected by _hashlib.hmac_new().
+        # not a lambda function als it is rejected by _hashlib.hmac_new().
         return _openssl_hash(digestname, usedforsecurity=self.usedforsecurity)
 
 
@@ -624,7 +624,7 @@ def _block_builtin_hash_new(name):
 
     @functools.wraps(get_builtin_constructor)
     def get_builtin_constructor_mock(name):
-        with import_helper.isolated_modules():
+        mit import_helper.isolated_modules():
             sys = importlib.import_module("sys")
             sys.modules[builtin_module_name] = Nichts  # block module's import
             return get_builtin_constructor(name)
@@ -737,11 +737,11 @@ def _block_builtin_hmac_constructor(name):
 def block_algorithm(name, *, allow_openssl=Falsch, allow_builtin=Falsch):
     """Block a hash algorithm fuer both hashing and HMAC.
 
-    Be careful with this helper as a function may be allowed, but can
+    Be careful mit this helper als a function may be allowed, but can
     still raise a ValueError at runtime wenn the OpenSSL security policy
     disables it, e.g., wenn allow_openssl=Wahr and FIPS mode is on.
     """
-    with contextlib.ExitStack() as stack:
+    mit contextlib.ExitStack() als stack:
         wenn not (allow_openssl or allow_builtin):
             # Named constructors have a different behavior in the sense
             # that they are either built-ins or OpenSSL ones, but not
@@ -750,14 +750,14 @@ def block_algorithm(name, *, allow_openssl=Falsch, allow_builtin=Falsch):
             #
             # If OpenSSL is not available, hashes fall back to built-in ones,
             # in which case we don't need to block the explicit public hashes
-            # as they will call a mocked one.
+            # als they will call a mocked one.
             #
             # If OpenSSL is available, hashes fall back to "openssl_*" ones,
             # except fuer BLAKE2b and BLAKE2s.
             stack.enter_context(_block_hashlib_hash_constructor(name))
         sowenn (
             # In FIPS mode, hashlib.<name>() functions may raise wenn they use
-            # the OpenSSL implementation, except with usedforsecurity=Falsch.
+            # the OpenSSL implementation, except mit usedforsecurity=Falsch.
             # However, blocking such functions also means blocking them
             # so we again need to block them wenn we want to.
             (_hashlib := try_import_module("_hashlib"))
@@ -766,7 +766,7 @@ def block_algorithm(name, *, allow_openssl=Falsch, allow_builtin=Falsch):
         ) or (
             # Without OpenSSL, hashlib.<name>() functions are aliases
             # to built-in functions, so both of them must be blocked
-            # as the module may have been imported before the HACL ones.
+            # als the module may have been imported before the HACL ones.
             not (_hashlib := try_import_module("_hashlib"))
             and not allow_builtin
         ):

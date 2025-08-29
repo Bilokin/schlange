@@ -1,6 +1,6 @@
 """Test tooltip, coverage 100%.
 
-Coverage is 100% after excluding 6 lines with "# pragma: no cover".
+Coverage is 100% after excluding 6 lines mit "# pragma: no cover".
 They involve TclErrors that either should or should not happen in a
 particular situation, and which are 'pass'ed wenn they do.
 """
@@ -60,7 +60,7 @@ klasse ToolTipBaseTest(unittest.TestCase):
         button.pack()
         self.addCleanup(button.destroy)
 
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             tooltip = TooltipBase(button)
             tooltip.showtip()
 
@@ -111,7 +111,7 @@ klasse HovertipTest(unittest.TestCase):
     def test_hover_with_delay(self):
         # Run multiple tests requiring an actual delay simultaneously.
 
-        # Test #1: A hover tip with a non-zero delay appears after the delay.
+        # Test #1: A hover tip mit a non-zero delay appears after the delay.
         tooltip1 = Hovertip(self.button, 'ToolTip text', hover_delay=100)
         self.addCleanup(tooltip1.hidetip)
         tooltip1.showtip = add_call_counting(tooltip1.showtip)
@@ -121,7 +121,7 @@ klasse HovertipTest(unittest.TestCase):
         root.update()
         self.assertFalsch(self.is_tipwindow_shown(tooltip1))
 
-        # Test #2: A hover tip with a non-zero delay doesn't appear when
+        # Test #2: A hover tip mit a non-zero delay doesn't appear when
         # the mouse stops hovering over the base widget before the delay
         # expires.
         tooltip2 = Hovertip(self.button, 'ToolTip text', hover_delay=100)

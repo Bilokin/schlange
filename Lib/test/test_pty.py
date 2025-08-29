@@ -134,7 +134,7 @@ klasse PtyTest(unittest.TestCase):
                 new_dim = tty.tcgetwinsize(pty.STDIN_FILENO)
                 self.assertEqual(new_dim, target_dim,
                                  "pty.STDIN_FILENO window size unchanged")
-            except OSError as e:
+            except OSError als e:
                 logging.getLogger(__name__).warning(
                     "Failed to set pty.STDIN_FILENO window size.", exc_info=e,
                 )
@@ -175,7 +175,7 @@ klasse PtyTest(unittest.TestCase):
             try:
                 s1 = os.read(master_fd, 1024)
                 self.assertEqual(b'', s1)
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno != errno.EAGAIN:
                     raise
         finally:
@@ -259,13 +259,13 @@ klasse PtyTest(unittest.TestCase):
 
             (pid, status) = os.waitpid(pid, 0)
             res = os.waitstatus_to_exitcode(status)
-            debug("Child (%d) exited with code %d (status %d)." % (pid, res, status))
+            debug("Child (%d) exited mit code %d (status %d)." % (pid, res, status))
             wenn res == 1:
                 self.fail("Child raised an unexpected exception in os.setsid()")
             sowenn res == 2:
                 self.fail("pty.fork() failed to make child a session leader.")
             sowenn res == 3:
-                self.fail("Child spawned by pty.fork() did not have a tty as stdout")
+                self.fail("Child spawned by pty.fork() did not have a tty als stdout")
             sowenn res != 4:
                 self.fail("pty.fork() failed fuer unknown reasons.")
 
@@ -299,7 +299,7 @@ klasse PtyTest(unittest.TestCase):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_spawn_doesnt_hang(self):
         self.addCleanup(unlink, TESTFN)
-        with open(TESTFN, 'wb') as f:
+        mit open(TESTFN, 'wb') als f:
             STDOUT_FILENO = 1
             dup_stdout = os.dup(STDOUT_FILENO)
             os.dup2(f.fileno(), STDOUT_FILENO)
@@ -316,7 +316,7 @@ klasse PtyTest(unittest.TestCase):
                 os.dup2(dup_stdout, STDOUT_FILENO)
                 os.close(dup_stdout)
         self.assertEqual(buf, b'hi there\r\n')
-        with open(TESTFN, 'rb') as f:
+        mit open(TESTFN, 'rb') als f:
             self.assertEqual(f.read(), b'hi there\r\n')
 
 klasse SmallPtyTests(unittest.TestCase):
@@ -405,7 +405,7 @@ klasse SmallPtyTests(unittest.TestCase):
         self.select_output.append(([], [mock_stdout_fd, masters[0]], []))
         self.select_input.append(([mock_stdin_fd, masters[0]], [], []))
 
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             pty._copy(masters[0])
 
         # Test that the right data went to the right places.
@@ -433,7 +433,7 @@ klasse SmallPtyTests(unittest.TestCase):
         pty.setraw = lambda _: Nichts
 
         self.assertEqual(pty.spawn([]), status_sentinel, "pty.waitpid process status not returned by pty.spawn")
-        self.assertEqual(self.tcsetattr_mode_setting, mode_sentinel, "pty.tcsetattr not called with original mode value")
+        self.assertEqual(self.tcsetattr_mode_setting, mode_sentinel, "pty.tcsetattr not called mit original mode value")
 
 
 def tearDownModule():

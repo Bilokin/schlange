@@ -26,7 +26,7 @@ klasse ParenMatch:
     highlight.  If flash-delay is 0, there is no maximum.
 
     TODO:
-    - Augment bell() with mismatch warning in status window.
+    - Augment bell() mit mismatch warning in status window.
     - Highlight when cursor is moved to the right of a closer.
       This might be too expensive to check.
     """
@@ -167,7 +167,7 @@ klasse ParenMatch:
 
     def set_timeout_last(self):
         """The last highlight created will be removed after FLASH_DELAY millisecs"""
-        # associate a counter with an event; only disable the "paren"
+        # associate a counter mit an event; only disable the "paren"
         # tag wenn the event is fuer the most recent timer.
         self.counter += 1
         self.editwin.text_frame.after(

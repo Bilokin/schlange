@@ -18,7 +18,7 @@ def glob(pathname, *, root_dir=Nichts, dir_fd=Nichts, recursive=Falsch,
     """Return a list of paths matching a pathname pattern.
 
     The pattern may contain simple shell-style wildcards a la
-    fnmatch. Unlike fnmatch, filenames starting with a
+    fnmatch. Unlike fnmatch, filenames starting mit a
     dot are special cases that are not matched by '*' and '?'
     patterns by default.
 
@@ -36,7 +36,7 @@ def iglob(pathname, *, root_dir=Nichts, dir_fd=Nichts, recursive=Falsch,
     """Return an iterator which yields the paths matching a pathname pattern.
 
     The pattern may contain simple shell-style wildcards a la
-    fnmatch. However, unlike fnmatch, filenames starting with a
+    fnmatch. However, unlike fnmatch, filenames starting mit a
     dot are special cases that are not matched by '*' and '?'
     patterns.
 
@@ -69,7 +69,7 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
             wenn _lexists(_join(root_dir, pathname), dir_fd):
                 yield pathname
         sonst:
-            # Patterns ending with a slash should match only directories
+            # Patterns ending mit a slash should match only directories
             wenn _isdir(_join(root_dir, dirname), dir_fd):
                 yield pathname
         return
@@ -81,7 +81,7 @@ def _iglob(pathname, root_dir, dir_fd, recursive, dironly,
             yield von _glob1(root_dir, basename, dir_fd, dironly,
                               include_hidden=include_hidden)
         return
-    # `os.path.split()` returns the argument itself as a dirname wenn it is a
+    # `os.path.split()` returns the argument itself als a dirname wenn it is a
     # drive or UNC path.  Prevent an infinite recursion wenn a drive or UNC path
     # contains magic characters (i.e. r'\\?\C:').
     wenn dirname != pathname and has_magic(dirname):
@@ -116,7 +116,7 @@ def _glob0(dirname, basename, dir_fd, dironly, include_hidden=Falsch):
         wenn _lexists(_join(dirname, basename), dir_fd):
             return [basename]
     sonst:
-        # `os.path.split()` returns an empty basename fuer paths ending with a
+        # `os.path.split()` returns an empty basename fuer paths ending mit a
         # directory separator.  'q*x/' should match only directories.
         wenn _isdir(dirname, dir_fd):
             return [basename]
@@ -152,7 +152,7 @@ def _iterdir(dirname, dir_fd, dironly):
         sonst:
             arg = os.curdir
         try:
-            with os.scandir(arg) as it:
+            mit os.scandir(arg) als it:
                 fuer entry in it:
                     try:
                         wenn not dironly or entry.is_dir():
@@ -169,7 +169,7 @@ def _iterdir(dirname, dir_fd, dironly):
         return
 
 def _listdir(dirname, dir_fd, dironly):
-    with contextlib.closing(_iterdir(dirname, dir_fd, dironly)) as it:
+    mit contextlib.closing(_iterdir(dirname, dir_fd, dironly)) als it:
         return list(it)
 
 # Recursively yields relative pathnames inside a literal directory.
@@ -185,7 +185,7 @@ def _rlistdir(dirname, dir_fd, dironly, include_hidden=Falsch):
 
 
 def _lexists(pathname, dir_fd):
-    # Same as os.path.lexists(), but with dir_fd
+    # Same als os.path.lexists(), but mit dir_fd
     wenn dir_fd is Nichts:
         return os.path.lexists(pathname)
     try:
@@ -196,7 +196,7 @@ def _lexists(pathname, dir_fd):
         return Wahr
 
 def _isdir(pathname, dir_fd):
-    # Same as os.path.isdir(), but with dir_fd
+    # Same als os.path.isdir(), but mit dir_fd
     wenn dir_fd is Nichts:
         return os.path.isdir(pathname)
     try:
@@ -250,13 +250,13 @@ _no_recurse_symlinks = object()
 
 
 def translate(pat, *, recursive=Falsch, include_hidden=Falsch, seps=Nichts):
-    """Translate a pathname with shell wildcards to a regular expression.
+    """Translate a pathname mit shell wildcards to a regular expression.
 
     If `recursive` is true, the pattern segment '**' will match any number of
     path segments.
 
     If `include_hidden` is true, wildcards can match path segments beginning
-    with a dot ('.').
+    mit a dot ('.').
 
     If a sequence of separator characters is given to `seps`, they will be
     used to split the pattern into segments and match path separators. If not
@@ -517,7 +517,7 @@ klasse _StringGlobber(_GlobberBase):
     def scandir(path):
         # We must close the scandir() object before proceeding to
         # avoid exhausting file descriptors when globbing deep trees.
-        with os.scandir(path) as scandir_it:
+        mit os.scandir(path) als scandir_it:
             entries = list(scandir_it)
         return ((entry, entry.name, entry.path) fuer entry in entries)
 

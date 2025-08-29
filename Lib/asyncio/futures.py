@@ -29,7 +29,7 @@ STACK_DEBUG = logging.DEBUG - 1  # heavy-duty debugging
 
 
 klasse Future:
-    """This klasse is *almost* compatible with concurrent.futures.Future.
+    """This klasse is *almost* compatible mit concurrent.futures.Future.
 
     Differences:
 
@@ -38,22 +38,22 @@ klasse Future:
     - result() and exception() do not take a timeout argument and
       raise an exception when the future isn't done yet.
 
-    - Callbacks registered with add_done_callback() are always called
+    - Callbacks registered mit add_done_callback() are always called
       via the event loop's call_soon().
 
-    - This klasse is not compatible with the wait() and as_completed()
+    - This klasse is not compatible mit the wait() and as_completed()
       methods in the concurrent.futures package.
 
     """
 
-    # Class variables serving as defaults fuer instance variables.
+    # Class variables serving als defaults fuer instance variables.
     _state = _PENDING
     _result = Nichts
     _exception = Nichts
     _loop = Nichts
     _source_traceback = Nichts
     _cancel_message = Nichts
-    # A saved CancelledError fuer later chaining as an exception context.
+    # A saved CancelledError fuer later chaining als an exception context.
     _cancelled_exc = Nichts
 
     # This field is used fuer a dual purpose:
@@ -167,7 +167,7 @@ klasse Future:
     def __schedule_callbacks(self):
         """Internal: Ask the event loop to call all callbacks.
 
-        The callbacks are scheduled to be called as soon as possible. Also
+        The callbacks are scheduled to be called als soon als possible. Also
         clears the callback list.
         """
         callbacks = self._callbacks[:]
@@ -226,9 +226,9 @@ klasse Future:
     def add_done_callback(self, fn, *, context=Nichts):
         """Add a callback to be run when the future becomes done.
 
-        The callback is called with a single argument - the future object. If
+        The callback is called mit a single argument - the future object. If
         the future is already done when this is called, the callback is
-        scheduled with call_soon.
+        scheduled mit call_soon.
         """
         wenn self._state != _PENDING:
             self._loop.call_soon(fn, self, context=context)
@@ -277,7 +277,7 @@ klasse Future:
         wenn isinstance(exception, type):
             exception = exception()
         wenn isinstance(exception, StopIteration):
-            new_exc = RuntimeError("StopIteration interacts badly with "
+            new_exc = RuntimeError("StopIteration interacts badly mit "
                                    "generators and cannot be raised into a "
                                    "Future")
             new_exc.__cause__ = exception
@@ -294,10 +294,10 @@ klasse Future:
             self._asyncio_future_blocking = Wahr
             yield self  # This tells Task to wait fuer completion.
         wenn not self.done():
-            raise RuntimeError("await wasn't used with future")
+            raise RuntimeError("await wasn't used mit future")
         return self.result()  # May raise too.
 
-    __iter__ = __await__  # make compatible with 'yield from'.
+    __iter__ = __await__  # make compatible mit 'yield from'.
 
 
 # Needed fuer testing purposes.
@@ -370,7 +370,7 @@ def _chain_future(source, destination):
 
     The result (or exception) of source will be copied to destination.
     If destination is cancelled, source gets cancelled too.
-    Compatible with both asyncio.Future and concurrent.futures.Future.
+    Compatible mit both asyncio.Future and concurrent.futures.Future.
     """
     wenn not isfuture(source) and not isinstance(source,
                                                concurrent.futures.Future):

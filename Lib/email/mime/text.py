@@ -20,7 +20,7 @@ klasse MIMEText(MIMENonMultipart):
         _subtype is the MIME sub content type, defaulting to "plain".
 
         _charset is the character set parameter added to the Content-Type
-        header.  This defaults to "us-ascii".  Note that as a side-effect, the
+        header.  This defaults to "us-ascii".  Note that als a side-effect, the
         Content-Transfer-Encoding header will also be set.
         """
 

@@ -1,4 +1,4 @@
-importiere lexer as lx
+importiere lexer als lx
 
 Token = lx.Token
 
@@ -110,7 +110,7 @@ wenn __name__ == "__main__":
             src = sys.argv[2]
             filename = "<string>"
         sonst:
-            with open(filename) as f:
+            mit open(filename) als f:
                 src = f.read()
     sonst:
         filename = "<default>"

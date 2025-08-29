@@ -25,7 +25,7 @@ INF = float("inf")
 NAN = float("nan")
 
 
-#locate file with float format test values
+#locate file mit float format test values
 test_dir = os.path.dirname(__file__) or os.curdir
 format_testfile = os.path.join(test_dir, 'mathdata', 'formatfloat_testcases.txt')
 
@@ -103,7 +103,7 @@ klasse GeneralFloatCases(unittest.TestCase):
                 continue
             wenn not any(ch in lit fuer ch in 'jJxXoObB'):
                 self.assertRaises(ValueError, float, lit)
-        # Additional test cases; nan and inf are never valid as literals,
+        # Additional test cases; nan and inf are never valid als literals,
         # only in the float() constructor, but we don't allow underscores
         # in or around them.
         self.assertRaises(ValueError, float, '_NaN')
@@ -138,9 +138,9 @@ klasse GeneralFloatCases(unittest.TestCase):
 
         fuer f in factories:
             x = f(b" 3.14  ")
-            with self.subTest(type(x)):
+            mit self.subTest(type(x)):
                 self.assertEqual(float(x), 3.14)
-                with self.assertRaisesRegex(ValueError, "could not convert"):
+                mit self.assertRaisesRegex(ValueError, "could not convert"):
                     float(f(b'A' * 0x10))
 
     def test_float_memoryview(self):
@@ -152,7 +152,7 @@ klasse GeneralFloatCases(unittest.TestCase):
 
     def test_error_message(self):
         def check(s):
-            with self.assertRaises(ValueError, msg='float(%r)' % (s,)) as cm:
+            mit self.assertRaises(ValueError, msg='float(%r)' % (s,)) als cm:
                 float(s)
             self.assertEqual(str(cm.exception),
                 'could not convert string to float: %r' % (s,))
@@ -172,7 +172,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         check('123\x00')
         check('123\x00 245')
         check('123\x00245')
-        # byte string with embedded NUL
+        # byte string mit embedded NUL
         check(b'123\x00')
         # non-UTF-8 byte string
         check(b'123\xa0')
@@ -229,7 +229,7 @@ klasse GeneralFloatCases(unittest.TestCase):
 
         self.assertEqual(float(FloatLike(42.)), 42.)
         self.assertEqual(float(Foo2()), 42.)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(float(Foo3(21)), 42.)
         self.assertRaises(TypeError, float, Foo4(42))
         self.assertEqual(float(FooStr('8')), 9.)
@@ -238,13 +238,13 @@ klasse GeneralFloatCases(unittest.TestCase):
 
         # Issue #24731
         f = FloatLike(OtherFloatSubclass(42.))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(float(f), 42.)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIs(type(float(f)), float)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(FloatSubclass(f), 42.)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIs(type(FloatSubclass(f)), FloatSubclass)
 
         self.assertEqual(float(MyIndex(42)), 42.0)
@@ -252,7 +252,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         self.assertRaises(TypeError, float, MyInt(42))
 
     def test_keyword_args(self):
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        mit self.assertRaisesRegex(TypeError, 'keyword argument'):
             float(x='3.14')
 
     def test_keywords_in_subclass(self):
@@ -261,7 +261,7 @@ klasse GeneralFloatCases(unittest.TestCase):
         u = subclass(2.5)
         self.assertIs(type(u), subclass)
         self.assertEqual(float(u), 2.5)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             subclass(x=0)
 
         klasse subclass_with_init(float):
@@ -599,7 +599,7 @@ klasse GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(2.0, 2.0), 4.0)
 
             # 1 ** large and -1 ** large; some libms apparently
-            # have problems with these
+            # have problems mit these
             self.assertEqualAndEqualSign(pow_op(1.0, -1e100), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, 1e100), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, -1e100), 1.0)
@@ -716,7 +716,7 @@ klasse FormatTestCase(unittest.TestCase):
         self.assertEqual(format(0.01, ''), '0.01')
         self.assertEqual(format(0.01, 'g'), '0.01')
 
-        # empty presentation type should format in the same way as str
+        # empty presentation type should format in the same way als str
         # (issue 5920)
         x = 100/7.
         self.assertEqual(format(x, ''), str(x))
@@ -739,7 +739,7 @@ klasse FormatTestCase(unittest.TestCase):
         # conversion to string should fail
         self.assertRaises(ValueError, format, 3.0, "s")
 
-        # confirm format options expected to fail on floats, such as integer
+        # confirm format options expected to fail on floats, such als integer
         # presentation types
         fuer format_spec in 'sbcdoxX':
             self.assertRaises(ValueError, format, 0.0, format_spec)
@@ -798,7 +798,7 @@ klasse FormatTestCase(unittest.TestCase):
     @unittest.skipUnless(sys.float_repr_style == 'short',
                          "applies only when using short float repr style")
     def test_format_testfile(self):
-        with open(format_testfile, encoding="utf-8") as testfile:
+        mit open(format_testfile, encoding="utf-8") als testfile:
             fuer line in testfile:
                 wenn line.startswith('--'):
                     continue
@@ -842,9 +842,9 @@ klasse FormatTestCase(unittest.TestCase):
 
 klasse ReprTestCase(unittest.TestCase):
     def test_repr(self):
-        with open(os.path.join(os.path.split(__file__)[0],
+        mit open(os.path.join(os.path.split(__file__)[0],
                   'mathdata',
-                  'floating_points.txt'), encoding="utf-8") as floats_file:
+                  'floating_points.txt'), encoding="utf-8") als floats_file:
             fuer line in floats_file:
                 line = line.strip()
                 wenn not line or line.startswith('#'):
@@ -965,7 +965,7 @@ klasse RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
     def test_matches_float_format(self):
-        # round should give the same results as float formatting
+        # round should give the same results als float formatting
         fuer i in range(500):
             x = i/1000.
             self.assertEqual(float(format(x, '.0f')), round(x, 0))
@@ -991,7 +991,7 @@ klasse RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         # Test formatting of nans and infs.
 
         def test(fmt, value, expected):
-            # Test with both % and format().
+            # Test mit both % and format().
             self.assertEqual(fmt % value, expected, fmt)
             fmt = fmt[1:] # strip off the %
             self.assertEqual(format(value, fmt), expected, fmt)
@@ -1033,7 +1033,7 @@ klasse RoundTestCase(unittest.TestCase, FloatsAreIdenticalMixin):
             self.assertEqual(val, 1)
             self.assertIs(type(val), int)
 
-# Beginning with Python 2.6 float has cross platform compatible
+# Beginning mit Python 2.6 float has cross platform compatible
 # ways to create and represent inf and nan
 klasse InfNanTest(unittest.TestCase):
     def test_inf_from_str(self):
@@ -1247,7 +1247,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
         TINY = self.TINY
         EPS = self.EPS
 
-        # two spellings of infinity, with optional signs; case-insensitive
+        # two spellings of infinity, mit optional signs; case-insensitive
         self.identical(fromHex('inf'), INF)
         self.identical(fromHex('+Inf'), INF)
         self.identical(fromHex('-INF'), -INF)
@@ -1257,7 +1257,7 @@ klasse HexFloatTestCase(FloatsAreIdenticalMixin, unittest.TestCase):
         self.identical(fromHex('-infinity'), -INF)
         self.identical(fromHex('-iNFiNitY'), -INF)
 
-        # nans with optional sign; case insensitive
+        # nans mit optional sign; case insensitive
         self.identical(fromHex('nan'), NAN)
         self.identical(fromHex('+NaN'), NAN)
         self.identical(fromHex('-NaN'), NAN)

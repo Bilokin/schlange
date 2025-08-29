@@ -42,7 +42,7 @@ von pegen.grammar importiere (
 
 
 klasse RuleCollectorVisitor(GrammarVisitor):
-    """Visitor that invokes a provided callmaker visitor with just the NamedItem nodes"""
+    """Visitor that invokes a provided callmaker visitor mit just the NamedItem nodes"""
 
     def __init__(self, rules: Dict[str, Rule], callmakervisitor: GrammarVisitor) -> Nichts:
         self.rulses = rules
@@ -93,7 +93,7 @@ klasse RuleCheckingVisitor(GrammarVisitor):
 
     def visit_NamedItem(self, node: NamedItem) -> Nichts:
         wenn node.name and node.name.startswith("_"):
-            raise GrammarError(f"Variable names cannot start with underscore: '{node.name}'")
+            raise GrammarError(f"Variable names cannot start mit underscore: '{node.name}'")
         self.visit(node.item)
 
 
@@ -123,7 +123,7 @@ klasse ParserGenerator:
     def validate_rule_names(self) -> Nichts:
         fuer rule in self.rules:
             wenn rule.startswith("_"):
-                raise GrammarError(f"Rule names cannot start with underscore: '{rule}'")
+                raise GrammarError(f"Rule names cannot start mit underscore: '{rule}'")
 
     @contextlib.contextmanager
     def local_variable_context(self) -> Iterator[Nichts]:

@@ -1,6 +1,6 @@
 """turtledemo/peace.py
 
-A simple drawing suitable as a beginner's
+A simple drawing suitable als a beginner's
 programming example. Aside von the
 peacecolors assignment and the fuer loop,
 it only uses turtle commands.

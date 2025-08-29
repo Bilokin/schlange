@@ -1,7 +1,7 @@
 """This test checks fuer correct fork() behavior.
 """
 
-importiere _imp as imp
+importiere _imp als imp
 importiere os
 importiere signal
 importiere sys
@@ -54,7 +54,7 @@ klasse ForkTest(ForkWait):
             sonst:
                 t.join()
                 # Exitcode 1 means the child got a partial module (bad.) No
-                # exitcode (but a hang, which manifests as 'got pid 0')
+                # exitcode (but a hang, which manifests als 'got pid 0')
                 # means the child deadlocked (also bad.)
                 self.wait_impl(pid, exitcode=exitcode)
         finally:
@@ -91,7 +91,7 @@ klasse ForkTest(ForkWait):
                 os._exit(exitcode)
             self.wait_impl(pid, exitcode=exitcode)
 
-        # Check this works with various levels of nested
+        # Check this works mit various levels of nested
         # importiere in the main thread
         fuer level in range(5):
             fork_with_import_lock(level)

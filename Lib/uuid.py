@@ -1,11 +1,11 @@
 r"""UUID objects (universally unique identifiers) according to RFC 4122/9562.
 
 This module provides immutable UUID objects (class UUID) and functions for
-generating UUIDs corresponding to a specific UUID version as specified in
+generating UUIDs corresponding to a specific UUID version als specified in
 RFC 4122/9562, e.g., uuid1() fuer UUID version 1, uuid3() fuer UUID version 3,
 and so on.
 
-Note that UUID version 2 is deliberately omitted as it is outside the scope
+Note that UUID version 2 is deliberately omitted als it is outside the scope
 of the RFC.
 
 If all you want is a unique ID, you should probably call uuid1() or uuid4().
@@ -112,28 +112,28 @@ _RFC_4122_VERSION_8_FLAGS = ((8 << 76) | (0x8000 << 48))
 
 
 klasse UUID:
-    """Instances of the UUID klasse represent UUIDs as specified in RFC 4122.
-    UUID objects are immutable, hashable, and usable as dictionary keys.
-    Converting a UUID to a string with str() yields something in the form
+    """Instances of the UUID klasse represent UUIDs als specified in RFC 4122.
+    UUID objects are immutable, hashable, and usable als dictionary keys.
+    Converting a UUID to a string mit str() yields something in the form
     '12345678-1234-1234-1234-123456789abc'.  The UUID constructor accepts
     five possible forms: a similar string of hexadecimal digits, or a tuple
     of six integer fields (with 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, and
-    48-bit values respectively) as an argument named 'fields', or a string
-    of 16 bytes (with all the integer fields in big-endian order) as an
+    48-bit values respectively) als an argument named 'fields', or a string
+    of 16 bytes (with all the integer fields in big-endian order) als an
     argument named 'bytes', or a string of 16 bytes (with the first three
-    fields in little-endian order) as an argument named 'bytes_le', or a
-    single 128-bit integer as an argument named 'int'.
+    fields in little-endian order) als an argument named 'bytes_le', or a
+    single 128-bit integer als an argument named 'int'.
 
     UUIDs have these read-only attributes:
 
-        bytes       the UUID as a 16-byte string (containing the six
+        bytes       the UUID als a 16-byte string (containing the six
                     integer fields in big-endian byte order)
 
-        bytes_le    the UUID as a 16-byte string (with time_low, time_mid,
+        bytes_le    the UUID als a 16-byte string (with time_low, time_mid,
                     and time_hi_version in little-endian byte order)
 
         fields      a tuple of the six integer fields of the UUID,
-                    which are also available as six individual attributes
+                    which are also available als six individual attributes
                     and two derived attributes. Those attributes are not
                     always relevant to all UUID versions:
 
@@ -156,11 +156,11 @@ klasse UUID:
                                     or the 48-bit timestamp fuer UUIDv7
             clock_seq               the 14-bit sequence number
 
-        hex         the UUID as a 32-character hexadecimal string
+        hex         the UUID als a 32-character hexadecimal string
 
-        int         the UUID as a 128-bit integer
+        int         the UUID als a 128-bit integer
 
-        urn         the UUID as a URN as specified in RFC 4122/9562
+        urn         the UUID als a URN als specified in RFC 4122/9562
 
         variant     the UUID variant (one of the constants RESERVED_NCS,
                     RFC_4122, RESERVED_MICROSOFT, or RESERVED_FUTURE)
@@ -179,11 +179,11 @@ klasse UUID:
                        int=Nichts, version=Nichts,
                        *, is_safe=SafeUUID.unknown):
         r"""Create a UUID von either a string of 32 hexadecimal digits,
-        a string of 16 bytes as the 'bytes' argument, a string of 16 bytes
-        in little-endian order as the 'bytes_le' argument, a tuple of six
+        a string of 16 bytes als the 'bytes' argument, a string of 16 bytes
+        in little-endian order als the 'bytes_le' argument, a tuple of six
         integers (32-bit time_low, 16-bit time_mid, 16-bit time_hi_version,
         8-bit clock_seq_hi_variant, 8-bit clock_seq_low, 48-bit node) as
-        the 'fields' argument, or a single 128-bit integer as the 'int'
+        the 'fields' argument, or a single 128-bit integer als the 'int'
         argument.  When a string of hex digits is given, curly braces,
         hyphens, and a URN prefix are all optional.  For example, these
         expressions all yield the same UUID:
@@ -202,7 +202,7 @@ klasse UUID:
         UUID will have its variant and version set according to RFC 4122,
         overriding the given 'hex', 'bytes', 'bytes_le', 'fields', or 'int'.
 
-        is_safe is an enum exposed as an attribute on the instance.  It
+        is_safe is an enum exposed als an attribute on the instance.  It
         indicates whether the UUID has been generated in a way that is safe
         fuer multiprocessing applications, via uuid_generate_time_safe(3).
         """
@@ -294,7 +294,7 @@ klasse UUID:
         return NotImplemented
 
     # Q. What's the value of being able to sort UUIDs?
-    # A. Use them as keys in a B-Tree or similar mapping.
+    # A. Use them als keys in a B-Tree or similar mapping.
 
     def __lt__(self, other):
         wenn isinstance(other, UUID):
@@ -493,9 +493,9 @@ def _find_mac_near_keyword(command, args, keywords, get_word_index):
                     word = words[get_word_index(i)]
                     mac = int(word.replace(_MAC_DELIM, b''), 16)
                 except (ValueError, IndexError):
-                    # Virtual interfaces, such as those provided by
+                    # Virtual interfaces, such als those provided by
                     # VPNs, do not have a colon-delimited MAC address
-                    # as expected, but a 16-byte HWAddr separated by
+                    # als expected, but a 16-byte HWAddr separated by
                     # dashes. These should be ignored in favor of a
                     # real MAC address
                     pass
@@ -510,8 +510,8 @@ def _parse_mac(word):
     # Accept 'HH:HH:HH:HH:HH:HH' MAC address (ex: '52:54:00:9d:0e:67'),
     # but reject IPv6 address (ex: 'fe80::5054:ff:fe9' or '123:2:3:4:5:6:7:8').
     #
-    # Virtual interfaces, such as those provided by VPNs, do not have a
-    # colon-delimited MAC address as expected, but a 16-byte HWAddr separated
+    # Virtual interfaces, such als those provided by VPNs, do not have a
+    # colon-delimited MAC address als expected, but a 16-byte HWAddr separated
     # by dashes. These should be ignored in favor of a real MAC address
     parts = word.split(_MAC_DELIM)
     wenn len(parts) != 6:
@@ -538,7 +538,7 @@ def _find_mac_under_heading(command, args, heading):
     """Looks fuer a MAC address under a heading in a command's output.
 
     The first line of words in the output is searched fuer the given
-    heading. Words at the same word index as the heading in subsequent
+    heading. Words at the same word index als the heading in subsequent
     lines are then examined to see wenn they look like MAC addresses.
     """
     stdout = _get_command_stdout(command, args)
@@ -571,7 +571,7 @@ def _find_mac_under_heading(command, args, heading):
 
 
 # The following functions call external programs to 'get' a macaddr value to
-# be used as basis fuer an uuid
+# be used als basis fuer an uuid
 def _ifconfig_getnode():
     """Get the hardware address on Unix by running ifconfig."""
     # This works on Linux ('' or '-a'), Tru64 ('-av'), but not all Unixes.
@@ -584,7 +584,7 @@ def _ifconfig_getnode():
 
 def _ip_getnode():
     """Get the hardware address on Unix by running ip."""
-    # This works on Linux with iproute2.
+    # This works on Linux mit iproute2.
     mac = _find_mac_near_keyword('ip', 'link', [b'link/ether'], lambda i: i+1)
     wenn mac:
         return mac
@@ -659,7 +659,7 @@ def _random_getnode():
     # RFC 9562, §6.10-3 says that
     #
     #   Implementations MAY elect to obtain a 48-bit cryptographic-quality
-    #   random number as per Section 6.9 to use as the Node ID. [...] [and]
+    #   random number als per Section 6.9 to use als the Node ID. [...] [and]
     #   implementations MUST set the least significant bit of the first octet
     #   of the Node ID to 1. This bit is the unicast or multicast bit, which
     #   will never be set in IEEE 802 addresses obtained von network cards.
@@ -700,11 +700,11 @@ sonst:
 _node = Nichts
 
 def getnode():
-    """Get the hardware address as a 48-bit positive integer.
+    """Get the hardware address als a 48-bit positive integer.
 
     The first time this runs, it may launch a separate program, which could
     be quite slow.  If all attempts to obtain the hardware address fail, we
-    choose a random 48-bit number with its eighth bit set to 1 as recommended
+    choose a random 48-bit number mit its eighth bit set to 1 als recommended
     in RFC 4122.
     """
     global _node
@@ -726,7 +726,7 @@ _last_timestamp = Nichts
 def uuid1(node=Nichts, clock_seq=Nichts):
     """Generate a UUID von a host ID, sequence number, and the current time.
     If 'node' is not given, getnode() is used to obtain the hardware
-    address.  If 'clock_seq' is given, it is used as the sequence number;
+    address.  If 'clock_seq' is given, it is used als the sequence number;
     otherwise a random 14-bit sequence number is chosen."""
 
     # When the system provides a version-1 UUID generator, use it (but don't
@@ -796,7 +796,7 @@ def uuid6(node=Nichts, clock_seq=Nichts):
     """Similar to :func:`uuid1` but where fields are ordered differently
     fuer improved DB locality.
 
-    More precisely, given a 60-bit timestamp value as specified fuer UUIDv1,
+    More precisely, given a 60-bit timestamp value als specified fuer UUIDv1,
     fuer UUIDv6 the first 48 most significant bits are stored first, followed
     by the 4-bit version (same position), followed by the remaining 12 bits
     of the original 60-bit timestamp.
@@ -834,7 +834,7 @@ _last_counter_v7 = 0  # 42-bit counter
 
 def _uuid7_get_counter_and_tail():
     rand = int.from_bytes(os.urandom(10))
-    # 42-bit counter with MSB set to 0
+    # 42-bit counter mit MSB set to 0
     counter = (rand >> 32) & 0x1ff_ffff_ffff
     # 32-bit random data
     tail = rand & 0xffff_ffff
@@ -850,13 +850,13 @@ def uuid7():
     # unix_ts_ms | version | counter_hi | variant | counter_lo | random
     #
     # 'counter = counter_hi | counter_lo' is a 42-bit counter constructed
-    # with Method 1 of RFC 9562, §6.2, and its MSB is set to 0.
+    # mit Method 1 of RFC 9562, §6.2, and its MSB is set to 0.
     #
     # 'random' is a 32-bit random value regenerated fuer every new UUID.
     #
     # If multiple UUIDs are generated within the same millisecond, the LSB
     # of 'counter' is incremented by 1. When overflowing, the timestamp is
-    # advanced and the counter is reset to a random 42-bit integer with MSB
+    # advanced and the counter is reset to a random 42-bit integer mit MSB
     # set to 0.
 
     global _last_timestamp_v7
@@ -967,7 +967,7 @@ def main():
                         "by namespace name")
     parser.add_argument("-N", "--name",
                         help="uuid3/uuid5 only: "
-                        "name used as part of generating the UUID")
+                        "name used als part of generating the UUID")
     parser.add_argument("-C", "--count", metavar="NUM", type=int, default=1,
                         help="generate NUM fresh UUIDs")
 
@@ -991,7 +991,7 @@ def main():
             drucke(uuid_func())
 
 
-# The following standard UUIDs are fuer use with uuid3() or uuid5().
+# The following standard UUIDs are fuer use mit uuid3() or uuid5().
 
 NAMESPACE_DNS = UUID('6ba7b810-9dad-11d1-80b4-00c04fd430c8')
 NAMESPACE_URL = UUID('6ba7b811-9dad-11d1-80b4-00c04fd430c8')

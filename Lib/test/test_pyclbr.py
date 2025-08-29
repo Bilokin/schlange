@@ -9,8 +9,8 @@ von contextlib importiere contextmanager
 von textwrap importiere dedent
 von types importiere FunctionType, MethodType, BuiltinFunctionType
 importiere pyclbr
-von unittest importiere TestCase, main as unittest_main
-von test.test_importlib importiere util as test_importlib_util
+von unittest importiere TestCase, main als unittest_main
+von test.test_importlib importiere util als test_importlib_util
 
 
 StaticMethodType = type(staticmethod(lambda: Nichts))
@@ -19,8 +19,8 @@ ClassMethodType = type(classmethod(lambda c: Nichts))
 # Here we test the python klasse browser code.
 #
 # The main function in this suite, 'testModule', compares the output
-# of pyclbr with the introspected members of a module.  Because pyclbr
-# is imperfect (as designed), testModule is called with a set of
+# of pyclbr mit the introspected members of a module.  Because pyclbr
+# is imperfect (as designed), testModule is called mit a set of
 # members to ignore.
 
 
@@ -71,7 +71,7 @@ klasse PyclbrTest(TestCase):
         ''' succeed iff pyclbr.readmodule_ex(modulename) corresponds
             to the actual module object, module.  Any identifiers in
             ignore are ignored.   If no module is provided, the appropriate
-            module is loaded with __import__.'''
+            module is loaded mit __import__.'''
 
         ignore = set(ignore) | set(['object'])
 
@@ -169,7 +169,7 @@ klasse PyclbrTest(TestCase):
         self.checkModule('pyclbr')
         # XXX: Metaclasses are not supported
         # self.checkModule('ast')
-        with temporary_main_spec():
+        mit temporary_main_spec():
             self.checkModule('doctest', ignore=("TestResults", "_SpoofOut",
                                                 "DocTestCase", '_DocTestSuite'))
         self.checkModule('difflib', ignore=("Match",))
@@ -217,7 +217,7 @@ klasse PyclbrTest(TestCase):
             """Return equality of tree pairs.
 
             Each parent,children pair define a tree.  The parents are
-            assumed equal.  Comparing the children dictionaries as such
+            assumed equal.  Comparing the children dictionaries als such
             does not work due to comparison by identity and double
             linkage.  We separate comparing string and number attributes
             von comparing the children of input children.
@@ -234,7 +234,7 @@ klasse PyclbrTest(TestCase):
                 self.assertEqual(t1, t2)
                 wenn type(o1) is mb.Class:
                     self.assertEqual(o1.methods, o2.methods)
-                # Skip superclasses fuer now as not part of example
+                # Skip superclasses fuer now als not part of example
                 compare(o1, o1.children, o2, o2.children)
 
         compare(Nichts, actual, Nichts, expected)
@@ -243,9 +243,9 @@ klasse PyclbrTest(TestCase):
         cm = self.checkModule
 
         # These were once some of the longest modules.
-        cm('random', ignore=('Random',))  # von _random importiere Random as CoreGenerator
+        cm('random', ignore=('Random',))  # von _random importiere Random als CoreGenerator
         cm('pickle', ignore=('partial', 'PickleBuffer'))
-        with temporary_main_spec():
+        mit temporary_main_spec():
             cm(
                 'pdb',
                 # pyclbr does not handle elegantly `typing` or properties
@@ -278,8 +278,8 @@ klasse ReadmoduleTests(TestCase):
     def test_module_has_no_spec(self):
         module_name = "doesnotexist"
         assert module_name not in pyclbr._modules
-        with test_importlib_util.uncache(module_name):
-            with self.assertRaises(ModuleNotFoundError):
+        mit test_importlib_util.uncache(module_name):
+            mit self.assertRaises(ModuleNotFoundError):
                 pyclbr.readmodule_ex(module_name)
 
 

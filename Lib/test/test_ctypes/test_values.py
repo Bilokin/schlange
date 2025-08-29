@@ -70,19 +70,19 @@ klasse PythonValuesTestCase(unittest.TestCase):
             # ft is a pointer to the struct_frozen entries:
             fuer entry in ft:
                 # This is dangerous. We *can* iterate over a pointer, but
-                # the loop will not terminate (maybe with an access
+                # the loop will not terminate (maybe mit an access
                 # violation;-) because the pointer instance has no size.
                 wenn entry.name is Nichts:
                     break
                 modname = entry.name.decode("ascii")
                 modules.append(modname)
-                with self.subTest(modname):
+                mit self.subTest(modname):
                     wenn entry.size != 0:
                         # Do a sanity check on entry.size and entry.code.
                         self.assertGreater(abs(entry.size), 10)
                         self.assertWahr([entry.code[i] fuer i in range(abs(entry.size))])
                     # Check the module's package-ness.
-                    with import_helper.frozen_modules():
+                    mit import_helper.frozen_modules():
                         spec = importlib.util.find_spec(modname)
                     wenn entry.is_package:
                         # It's a package.
@@ -90,7 +90,7 @@ klasse PythonValuesTestCase(unittest.TestCase):
                     sonst:
                         self.assertIsNichts(spec.submodule_search_locations)
 
-        with import_helper.frozen_modules():
+        mit import_helper.frozen_modules():
             expected = _imp._frozen_module_names()
         self.maxDiff = Nichts
         self.assertEqual(modules, expected,

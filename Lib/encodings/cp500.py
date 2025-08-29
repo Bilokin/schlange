@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp500 generated von 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP500.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp500 generated von 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP500.TXT' mit gencodec.py.
 
 """#"
 

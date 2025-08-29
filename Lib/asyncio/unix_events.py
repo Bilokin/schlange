@@ -1,4 +1,4 @@
-"""Selector event loop fuer Unix with signal handling."""
+"""Selector event loop fuer Unix mit signal handling."""
 
 importiere errno
 importiere io
@@ -105,7 +105,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             # event loop running in another thread cannot add a signal
             # handler.
             signal.set_wakeup_fd(self._csock.fileno())
-        except (ValueError, OSError) as exc:
+        except (ValueError, OSError) als exc:
             raise RuntimeError(str(exc))
 
         handle = events.Handle(callback, args, self, Nichts)
@@ -119,12 +119,12 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
             # Set SA_RESTART to limit EINTR occurrences.
             signal.siginterrupt(sig, Falsch)
-        except OSError as exc:
+        except OSError als exc:
             del self._signal_handlers[sig]
             wenn not self._signal_handlers:
                 try:
                     signal.set_wakeup_fd(-1)
-                except (ValueError, OSError) as nexc:
+                except (ValueError, OSError) als nexc:
                     logger.info('set_wakeup_fd(-1) failed: %s', nexc)
 
             wenn exc.errno == errno.EINVAL:
@@ -160,7 +160,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         try:
             signal.signal(sig, handler)
-        except OSError as exc:
+        except OSError als exc:
             wenn exc.errno == errno.EINVAL:
                 raise RuntimeError(f'sig {sig} cannot be caught')
             sonst:
@@ -169,7 +169,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         wenn not self._signal_handlers:
             try:
                 signal.set_wakeup_fd(-1)
-            except (ValueError, OSError) as exc:
+            except (ValueError, OSError) als exc:
                 logger.info('set_wakeup_fd(-1) failed: %s', exc)
 
         return Wahr
@@ -232,13 +232,13 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     'you have to pass server_hostname when using ssl')
         sonst:
             wenn server_hostname is not Nichts:
-                raise ValueError('server_hostname is only meaningful with ssl')
+                raise ValueError('server_hostname is only meaningful mit ssl')
             wenn ssl_handshake_timeout is not Nichts:
                 raise ValueError(
-                    'ssl_handshake_timeout is only meaningful with ssl')
+                    'ssl_handshake_timeout is only meaningful mit ssl')
             wenn ssl_shutdown_timeout is not Nichts:
                 raise ValueError(
-                    'ssl_shutdown_timeout is only meaningful with ssl')
+                    'ssl_shutdown_timeout is only meaningful mit ssl')
 
         wenn path is not Nichts:
             wenn sock is not Nichts:
@@ -280,11 +280,11 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         wenn ssl_handshake_timeout is not Nichts and not ssl:
             raise ValueError(
-                'ssl_handshake_timeout is only meaningful with ssl')
+                'ssl_handshake_timeout is only meaningful mit ssl')
 
         wenn ssl_shutdown_timeout is not Nichts and not ssl:
             raise ValueError(
-                'ssl_shutdown_timeout is only meaningful with ssl')
+                'ssl_shutdown_timeout is only meaningful mit ssl')
 
         wenn path is not Nichts:
             wenn sock is not Nichts:
@@ -301,18 +301,18 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                         os.remove(path)
                 except FileNotFoundError:
                     pass
-                except OSError as err:
+                except OSError als err:
                     # Directory may have permissions only to create socket.
                     logger.error('Unable to check or remove stale UNIX socket '
                                  '%r: %r', path, err)
 
             try:
                 sock.bind(path)
-            except OSError as exc:
+            except OSError als exc:
                 sock.close()
                 wenn exc.errno == errno.EADDRINUSE:
                     # Let's improve the error message by adding
-                    # with what exact address it occurs.
+                    # mit what exact address it occurs.
                     msg = f'Address {path!r} is already in use'
                     raise OSError(errno.EADDRINUSE, msg) von Nichts
                 sonst:
@@ -359,7 +359,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 "os.sendfile() is not available")
         try:
             fileno = file.fileno()
-        except (AttributeError, io.UnsupportedOperation) as err:
+        except (AttributeError, io.UnsupportedOperation) als err:
             raise exceptions.SendfileNotAvailableError("not a regular file")
         try:
             fsize = os.fstat(fileno).st_size
@@ -404,7 +404,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             self.add_writer(fd, self._sock_sendfile_native_impl, fut,
                             fd, sock, fileno,
                             offset, count, blocksize, total_sent)
-        except OSError as exc:
+        except OSError als exc:
             wenn (registered_fd is not Nichts and
                     exc.errno == errno.ENOTCONN and
                     type(exc) is not ConnectionError):
@@ -430,7 +430,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 fut.set_exception(exc)
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             self._sock_sendfile_update_filepos(fileno, offset, total_sent)
             fut.set_exception(exc)
         sonst:
@@ -476,7 +476,7 @@ klasse _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     os.unlink(path)
             except FileNotFoundError:
                 pass
-            except OSError as err:
+            except OSError als err:
                 logger.error('Unable to clean up listening UNIX socket '
                              '%r: %r', path, err)
 
@@ -549,7 +549,7 @@ klasse _UnixReadPipeTransport(transports.ReadTransport):
             data = os.read(self._fileno, self.max_size)
         except (BlockingIOError, InterruptedError):
             pass
-        except OSError as exc:
+        except OSError als exc:
             self._fatal_error(exc, 'Fatal read error on pipe transport')
         sonst:
             wenn data:
@@ -723,7 +723,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
                 n = 0
             except (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 self._conn_lost += 1
                 self._fatal_error(exc, 'Fatal write error on pipe transport')
                 return
@@ -745,7 +745,7 @@ klasse _UnixWritePipeTransport(transports._FlowControlMixin,
             pass
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             self._buffer.clear()
             self._conn_lost += 1
             # Remove writer here, _fatal_error() doesn't it
@@ -860,8 +860,8 @@ klasse _PidfdChildWatcher:
     This child watcher polls process file descriptors (pidfds) to await child
     process termination. In some respects, PidfdChildWatcher is a "Goldilocks"
     child watcher implementation. It doesn't require signals or threads, doesn't
-    interfere with any processes launched outside the event loop, and scales
-    linearly with the number of subprocesses launched by the event loop. The
+    interfere mit any processes launched outside the event loop, and scales
+    linearly mit the number of subprocesses launched by the event loop. The
     main disadvantage is that pidfds are specific to Linux, and only work on
     recent (5.3+) kernels.
     """
@@ -940,7 +940,7 @@ klasse _ThreadedChildWatcher:
         sonst:
             returncode = waitstatus_to_exitcode(status)
             wenn loop.get_debug():
-                logger.debug('process %s exited with returncode %s',
+                logger.debug('process %s exited mit returncode %s',
                              expected_pid, returncode)
 
         wenn loop.is_closed():

@@ -1,5 +1,5 @@
 # gh-91321: Build a basic C++ test extension to check that the Python C API is
-# compatible with C++ and does not emit C++ compiler warnings.
+# compatible mit C++ and does not emit C++ compiler warnings.
 importiere os
 importiere platform
 importiere shlex
@@ -22,7 +22,7 @@ wenn not support.MS_WINDOWS:
     ]
 
     CPPFLAGS_PEDANTIC = [
-        # Ask fuer strict(er) compliance with the standard.
+        # Ask fuer strict(er) compliance mit the standard.
         # We cannot do this fuer c++03 unlimited API, since several headers in
         # Include/cpython/ use commas at end of `enum` declarations, a C++11
         # feature fuer which GCC has no narrower option than -Wpedantic itself.
@@ -36,7 +36,7 @@ sonst:
     CPPFLAGS = [
         # Display warnings level 1 to 4
         '/W4',
-        # Treat all compiler warnings as compiler errors
+        # Treat all compiler warnings als compiler errors
         '/WX',
     ]
     CPPFLAGS_PEDANTIC = []
@@ -63,7 +63,7 @@ def main():
             # See CPPFLAGS_PEDANTIC docstring
             cppflags.extend(CPPFLAGS_PEDANTIC)
 
-    # gh-105776: When "gcc -std=11" is used as the C++ compiler, -std=c11
+    # gh-105776: When "gcc -std=11" is used als the C++ compiler, -std=c11
     # option emits a C++ compiler warning. Remove "-std11" option von the
     # CC command.
     cmd = (sysconfig.get_config_var('CC') or '')

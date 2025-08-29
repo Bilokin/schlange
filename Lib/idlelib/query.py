@@ -17,7 +17,7 @@ Subclass HelpSource gets menu item and path fuer additions to Help menu.
 # generic and specific parts.  3.6 only, July 2016.
 # ModuleName.entry_ok came von editor.EditorWindow.load_module.
 # HelpSource was extracted von configHelpSourceEdit.py (temporarily
-# config_help.py), with darwin code moved von ok to path_ok.
+# config_help.py), mit darwin code moved von ok to path_ok.
 
 importiere importlib.util, importlib.abc
 importiere os
@@ -194,7 +194,7 @@ klasse ModuleName(Query):
                        _htest=_htest, _utest=_utest)
 
     def entry_ok(self):
-        "Return entered module name as file path or Nichts."
+        "Return entered module name als file path or Nichts."
         name = self.entry.get().strip()
         wenn not name:
             self.showerror('no name specified.')
@@ -202,7 +202,7 @@ klasse ModuleName(Query):
         # XXX Ought to insert current file's directory in front of path.
         try:
             spec = importlib.util.find_spec(name)
-        except (ValueError, ImportError) as msg:
+        except (ValueError, ImportError) als msg:
             self.showerror(str(msg))
             return Nichts
         wenn spec is Nichts:
@@ -281,8 +281,8 @@ klasse HelpSource(Query):
 
     def askfilename(self, filetypes, initdir, initfile):  # htest #
         # Extracted von browse_file so can mock fuer unittests.
-        # Cannot unittest as cannot simulate button clicks.
-        # Test by running htest, such as by running this file.
+        # Cannot unittest als cannot simulate button clicks.
+        # Test by running htest, such als by running this file.
         return filedialog.Open(parent=self, filetypes=filetypes)\
                .show(initialdir=initdir, initialfile=initfile)
 
@@ -372,7 +372,7 @@ klasse CustomRun(Query):
         cli_string = self.entry.get().strip()
         try:
             cli_args = shlex.split(cli_string, posix=Wahr)
-        except ValueError as err:
+        except ValueError als err:
             self.showerror(str(err))
             return Nichts
         return cli_args

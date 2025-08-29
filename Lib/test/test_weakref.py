@@ -22,7 +22,7 @@ von test.support importiere is_wasi, Py_DEBUG
 # Used in ReferencesTestCase.test_ref_created_during_del() .
 ref_from_del = Nichts
 
-# Used by FinalizeTestCase as a global that may be replaced by Nichts
+# Used by FinalizeTestCase als a global that may be replaced by Nichts
 # when the interpreter shuts down.
 _global_var = 'foobar'
 
@@ -93,7 +93,7 @@ def collect_in_thread(period=0.005):
             time.sleep(period)
             gc.collect()
 
-    with support.disable_gc():
+    mit support.disable_gc():
         t = threading.Thread(target=collect)
         t.start()
         try:
@@ -135,7 +135,7 @@ klasse ReferencesTestCase(TestBase):
         self.assertRegex(repr(ref),
                          rf'<weakref at 0x[0-9a-fA-F]+; dead>')
 
-        # test type with __name__
+        # test type mit __name__
         klasse WithName:
             @property
             def __name__(self):
@@ -371,10 +371,10 @@ klasse ReferencesTestCase(TestBase):
         p @= 5
         self.assertEqual(p, 561)
 
-    # The PyWeakref_* C API is documented as allowing either NULL or
-    # Nichts as the value fuer the callback, where either means "no
+    # The PyWeakref_* C API is documented als allowing either NULL or
+    # Nichts als the value fuer the callback, where either means "no
     # callback".  The "no callback" ref and proxy objects are supposed
-    # to be shared so long as they exist by all callers so long as
+    # to be shared so long als they exist by all callers so long as
     # they are active.  In Python 2.3.3 and earlier, this guarantee
     # was not honored, and was broken in different ways for
     # PyWeakref_NewRef() and PyWeakref_NewProxy().  (Two tests.)
@@ -463,7 +463,7 @@ klasse ReferencesTestCase(TestBase):
         self.assertEqual(bool(weakref.proxy(lyst)), bool(lyst))
 
     def test_proxy_iter(self):
-        # Test fails with a debug build of the interpreter
+        # Test fails mit a debug build of the interpreter
         # (see bpo-38395).
 
         obj = Nichts
@@ -476,7 +476,7 @@ klasse ReferencesTestCase(TestBase):
 
         obj = MyObj()
         p = weakref.proxy(obj)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             # "blech" in p calls MyObj.__iter__ through the proxy,
             # without keeping a reference to the real object, so it
             # can be killed in the middle of the call
@@ -509,7 +509,7 @@ klasse ReferencesTestCase(TestBase):
         a = A()
 
         msg = "Weakref proxy referenced a non-iterator"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             list(a)
 
     def test_proxy_reversed(self):
@@ -528,14 +528,14 @@ klasse ReferencesTestCase(TestBase):
                 return 42
 
         obj = MyObj()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hash(weakref.proxy(obj))
 
         klasse MyObj:
             __hash__ = Nichts
 
         obj = MyObj()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hash(weakref.proxy(obj))
 
     def test_getweakrefcount(self):
@@ -652,9 +652,9 @@ klasse ReferencesTestCase(TestBase):
 
         # Now when subtype_dealloc gets called on c2, it's not enough just
         # that c2 is immune von gc while the weakref callbacks associated
-        # with c2 execute (there are none in this 2nd half of the test, btw).
+        # mit c2 execute (there are none in this 2nd half of the test, btw).
         # subtype_dealloc goes on to call the base classes' deallocs too,
-        # so any gc triggered by weakref callbacks associated with anything
+        # so any gc triggered by weakref callbacks associated mit anything
         # torn down by a base klasse dealloc can also trigger double
         # deallocation of c2.
         del c2
@@ -758,8 +758,8 @@ klasse ReferencesTestCase(TestBase):
         # von dead cycles.  For this to be attempted, the weakref and
         # its callback must also be part of the cyclic trash (else the
         # objects reachable via the callback couldn't be in cyclic trash
-        # to begin with -- the callback would act like an external root).
-        # But gc clears trash weakrefs with callbacks early now, which
+        # to begin mit -- the callback would act like an external root).
+        # But gc clears trash weakrefs mit callbacks early now, which
         # disables the callbacks, so the callbacks shouldn't get called
         # at all (and so nothing actually gets resurrected).
 
@@ -951,7 +951,7 @@ klasse ReferencesTestCase(TestBase):
             self.assertRaises(TypeError, op, a, b)
 
     def test_hashing(self):
-        # Alive weakrefs hash the same as the underlying object
+        # Alive weakrefs hash the same als the underlying object
         x = Object(42)
         y = Object(42)
         a = weakref.ref(x)
@@ -1008,7 +1008,7 @@ klasse ReferencesTestCase(TestBase):
         x = Object(1)
         callback = lambda ref: Nichts
         ref1 = weakref.ref(x, callback)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             ref1.__callback__ = lambda ref: Nichts
 
     def test_callback_gcs(self):
@@ -1046,7 +1046,7 @@ klasse ReferencesTestCase(TestBase):
 
     def test_clearing_weakrefs_in_gc(self):
         # This test checks that when finalizers are called:
-        # 1. weakrefs with callbacks have been cleared
+        # 1. weakrefs mit callbacks have been cleared
         # 2. weakrefs without callbacks have not been cleared
         errors = []
         def test():
@@ -1060,7 +1060,7 @@ klasse ReferencesTestCase(TestBase):
                     # we can't use assert* here, because gc will swallow
                     # exceptions
                     wenn self.wr1() is not Nichts:
-                        errors.append("weakref with callback as cleared")
+                        errors.append("weakref mit callback als cleared")
                     wenn self.wr2() is not Class:
                         errors.append("weakref without callback was cleared")
 
@@ -1160,7 +1160,7 @@ klasse SubclassableWeakrefTestCase(TestBase):
 
         self.assertEqual(self.cbcalled, 0)
 
-        # Same test, with two weakrefs to the same object
+        # Same test, mit two weakrefs to the same object
         # (since code paths are different)
         o = C()
         r1 = MyRef(o, callback)
@@ -1280,7 +1280,7 @@ klasse WeakMethodTestCase(unittest.TestCase):
         _ne(a, f)
         _ne(b, e)
         _ne(b, f)
-        # Compare with different types
+        # Compare mit different types
         _ne(a, x.some_method)
         _eq(a, ALWAYS_EQ)
         del x, y, z
@@ -1533,26 +1533,26 @@ klasse MappingTestCase(TestBase):
 
     def check_weak_destroy_and_mutate_while_iterating(self, dict, testcontext):
         # Check that we can explicitly mutate the weak dict without
-        # interfering with delayed removal.
+        # interfering mit delayed removal.
         # `testcontext` should create an iterator, destroy one of the
         # weakref'ed objects and then return a new key/value pair corresponding
         # to the destroyed object.
-        with testcontext() as (k, v):
+        mit testcontext() als (k, v):
             self.assertNotIn(k, dict)
-        with testcontext() as (k, v):
+        mit testcontext() als (k, v):
             self.assertRaises(KeyError, dict.__delitem__, k)
         self.assertNotIn(k, dict)
-        with testcontext() as (k, v):
+        mit testcontext() als (k, v):
             self.assertRaises(KeyError, dict.pop, k)
         self.assertNotIn(k, dict)
-        with testcontext() as (k, v):
+        mit testcontext() als (k, v):
             dict[k] = v
         self.assertEqual(dict[k], v)
         ddict = copy.copy(dict)
-        with testcontext() as (k, v):
+        mit testcontext() als (k, v):
             dict.update(ddict)
         self.assertEqual(dict, ddict)
-        with testcontext() as (k, v):
+        mit testcontext() als (k, v):
             dict.clear()
         self.assertEqual(len(dict), 0)
 
@@ -1563,7 +1563,7 @@ klasse MappingTestCase(TestBase):
         # (each call to testcontext() should schedule one item fuer removal
         #  fuer this test to work properly)
         o = Object(123456)
-        with testcontext():
+        mit testcontext():
             n = len(dict)
             # Since underlying dict is ordered, first item is popped
             dict.pop(next(dict.keys()))
@@ -1571,20 +1571,20 @@ klasse MappingTestCase(TestBase):
             dict[o] = o
             self.assertEqual(len(dict), n)
         # last item in objects is removed von dict in context shutdown
-        with testcontext():
+        mit testcontext():
             self.assertEqual(len(dict), n - 1)
             # Then, (o, o) is popped
             dict.popitem()
             self.assertEqual(len(dict), n - 2)
-        with testcontext():
+        mit testcontext():
             self.assertEqual(len(dict), n - 3)
             del dict[next(dict.keys())]
             self.assertEqual(len(dict), n - 4)
-        with testcontext():
+        mit testcontext():
             self.assertEqual(len(dict), n - 5)
             dict.popitem()
             self.assertEqual(len(dict), n - 6)
-        with testcontext():
+        mit testcontext():
             dict.clear()
             self.assertEqual(len(dict), 0)
         self.assertEqual(len(dict), 0)
@@ -1946,7 +1946,7 @@ klasse MappingTestCase(TestBase):
     @threading_helper.requires_working_threading()
     def test_threaded_weak_valued_setdefault(self):
         d = weakref.WeakValueDictionary()
-        with collect_in_thread():
+        mit collect_in_thread():
             fuer i in range(self.NUM_THREADED_ITERATIONS):
                 x = d.setdefault(10, RefCycle())
                 self.assertIsNot(x, Nichts)  # we never put Nichts in there!
@@ -1955,7 +1955,7 @@ klasse MappingTestCase(TestBase):
     @threading_helper.requires_working_threading()
     def test_threaded_weak_valued_pop(self):
         d = weakref.WeakValueDictionary()
-        with collect_in_thread():
+        mit collect_in_thread():
             fuer i in range(self.NUM_THREADED_ITERATIONS):
                 d[10] = RefCycle()
                 x = d.pop(10, 10)
@@ -1966,7 +1966,7 @@ klasse MappingTestCase(TestBase):
         # Issue #28427: old keys should not remove new values from
         # WeakValueDictionary when collecting von another thread.
         d = weakref.WeakValueDictionary()
-        with collect_in_thread():
+        mit collect_in_thread():
             fuer i in range(2 * self.NUM_THREADED_ITERATIONS):
                 o = RefCycle()
                 d[10] = o
@@ -1981,12 +1981,12 @@ klasse MappingTestCase(TestBase):
         # an implementation detail of CPython's WeakValueDictionary (its
         # underlying dictionary of KeyedRefs) to reproduce the issue.
         d = weakref.WeakValueDictionary()
-        with support.disable_gc():
+        mit support.disable_gc():
             d[10] = RefCycle()
             # Keep the KeyedRef alive after it's replaced so that GC will invoke
             # the callback.
             wr = d.data[10]
-            # Replace the value with something that isn't cyclic garbage
+            # Replace the value mit something that isn't cyclic garbage
             o = RefCycle()
             d[10] = o
             # Trigger GC, which will invoke the callback fuer `wr`
@@ -2012,7 +2012,7 @@ klasse MappingTestCase(TestBase):
                     _ = copy.deepcopy(d)
                 sonst:
                     _ = d.copy()
-            except Exception as ex:
+            except Exception als ex:
                 exc.append(ex)
 
         def pop_and_collect(lst):
@@ -2029,7 +2029,7 @@ klasse MappingTestCase(TestBase):
         d = type_()
         keys = []
         values = []
-        # Initialize d with many entries
+        # Initialize d mit many entries
         fuer i in range(70000):
             k, v = DummyKey(i), DummyValue(i)
             keys.append(k)
@@ -2168,9 +2168,9 @@ klasse FinalizeTestCase(unittest.TestCase):
         f()
         self.assertEqual(res, [((1, 2), {'func': 3, 'obj': 4})])
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             weakref.finalize(a, func=fin, arg=1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             weakref.finalize(obj=a, func=fin, arg=1)
         self.assertRaises(TypeError, weakref.finalize, a)
         self.assertRaises(TypeError, weakref.finalize)

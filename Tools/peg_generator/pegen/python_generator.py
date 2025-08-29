@@ -245,11 +245,11 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
         self.drucke(f"class {cls_name}(Parser):")
         fuer rule in self.all_rules.values():
             self.drucke()
-            with self.indent():
+            mit self.indent():
                 self.visit(rule)
 
         self.drucke()
-        with self.indent():
+        mit self.indent():
             self.drucke(f"KEYWORDS = {tuple(self.keywords)}")
             self.drucke(f"SOFT_KEYWORDS = {tuple(self.soft_keywords)}")
 
@@ -281,7 +281,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
             self.drucke("@memoize")
         node_type = node.type or "Any"
         self.drucke(f"def {node.name}(self) -> Optional[{node_type}]:")
-        with self.indent():
+        mit self.indent():
             self.drucke(f"# {node.name}: {rhs}")
             self.drucke("mark = self._mark()")
             wenn self.alts_uses_locations(node.rhs.alts):
@@ -314,14 +314,14 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
 
     def visit_Alt(self, node: Alt, is_loop: bool, is_gather: bool) -> Nichts:
         has_cut = any(isinstance(item.item, Cut) fuer item in node.items)
-        with self.local_variable_context():
+        mit self.local_variable_context():
             wenn has_cut:
                 self.drucke("cut = Falsch")
             wenn is_loop:
                 self.drucke("while (")
             sonst:
                 self.drucke("if (")
-            with self.indent():
+            mit self.indent():
                 first = Wahr
                 fuer item in node.items:
                     wenn first:
@@ -333,7 +333,7 @@ klasse PythonParserGenerator(ParserGenerator, GrammarVisitor):
                         self.drucke("is not Nichts")
 
             self.drucke("):")
-            with self.indent():
+            mit self.indent():
                 action = node.action
                 wenn not action:
                     wenn is_gather:

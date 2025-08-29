@@ -1,5 +1,5 @@
 """
-Tests fuer object finalization semantics, as outlined in PEP 442.
+Tests fuer object finalization semantics, als outlined in PEP 442.
 """
 
 importiere contextlib
@@ -30,7 +30,7 @@ von test importiere support
 
 klasse NonGCSimpleBase:
     """
-    The base klasse fuer all the objects under test, equipped with various
+    The base klasse fuer all the objects under test, equipped mit various
     testing features.
     """
 
@@ -58,7 +58,7 @@ klasse NonGCSimpleBase:
         """
         A context manager to use around all finalization tests.
         """
-        with support.disable_gc():
+        mit support.disable_gc():
             cls.del_calls.clear()
             cls.tp_del_calls.clear()
             NonGCSimpleBase._cleaning = Falsch
@@ -85,7 +85,7 @@ klasse NonGCSimpleBase:
                 self.del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception as e:
+        except Exception als e:
             self.errors.append(e)
 
     def side_effect(self):
@@ -166,7 +166,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
     """
 
     def test_simple(self):
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = Simple()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -180,7 +180,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
             self.assert_survivors([])
 
     def test_simple_resurrect(self):
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = SimpleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -197,7 +197,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
 
     @support.cpython_only
     def test_non_gc(self):
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = NonGC()
             self.assertFalsch(gc.is_tracked(s))
             ids = [id(s)]
@@ -211,7 +211,7 @@ klasse SimpleFinalizationTest(TestBase, unittest.TestCase):
 
     @support.cpython_only
     def test_non_gc_resurrect(self):
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = NonGCResurrector()
             self.assertFalsch(gc.is_tracked(s))
             ids = [id(s)]
@@ -257,7 +257,7 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
     """
 
     def test_simple(self):
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = SimpleSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -272,7 +272,7 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
 
     def test_simple_resurrect(self):
         # Test that __del__ can resurrect the object being finalized.
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = SelfCycleResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -284,7 +284,7 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             # This used to be Nichts because weakrefs were cleared before
             # calling finalizers.  Now they are cleared after.
             self.assertIsNotNichts(wr())
-            # A weakref with a callback is still cleared before calling
+            # A weakref mit a callback is still cleared before calling
             # finalizers.
             self.assertIsNichts(wrc())
             # When trying to destroy the object a second time, __del__
@@ -296,9 +296,9 @@ klasse SelfCycleFinalizationTest(TestBase, unittest.TestCase):
             self.assertIsNichts(wr())
 
     def test_simple_suicide(self):
-        # Test the GC is able to deal with an object that kills its last
+        # Test the GC is able to deal mit an object that kills its last
         # reference during __del__.
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = SuicidalSelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -369,7 +369,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
 
     def check_non_resurrecting_chain(self, classes):
         N = len(classes)
-        with SimpleBase.test():
+        mit SimpleBase.test():
             nodes = self.build_chain(classes)
             ids = [id(s) fuer s in nodes]
             wrs = [weakref.ref(s) fuer s in nodes]
@@ -385,7 +385,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
         N = len(classes)
         def dummy_callback(ref):
             pass
-        with SimpleBase.test():
+        mit SimpleBase.test():
             nodes = self.build_chain(classes)
             N = len(nodes)
             ids = [id(s) fuer s in nodes]
@@ -401,7 +401,7 @@ klasse CycleChainFinalizationTest(TestBase, unittest.TestCase):
                 # before calling finalizers.  Now they are cleared after.
                 self.assertIsNotNichts(wr())
             fuer wr in wrcs:
-                # Weakrefs with callbacks are still cleared before calling
+                # Weakrefs mit callbacks are still cleared before calling
                 # finalizers.
                 self.assertIsNichts(wr())
             self.clear_survivors()
@@ -449,7 +449,7 @@ klasse LegacyBase(SimpleBase):
             wenn not self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
-        except Exception as e:
+        except Exception als e:
             self.errors.append(e)
 
     def __tp_del__(self):
@@ -461,7 +461,7 @@ klasse LegacyBase(SimpleBase):
                 self.tp_del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception as e:
+        except Exception als e:
             self.errors.append(e)
 
 @with_tp_del
@@ -485,7 +485,7 @@ klasse LegacySelfCycle(SelfCycleBase, LegacyBase):
 @support.cpython_only
 klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
     """
-    Test finalization of objects with a tp_del.
+    Test finalization of objects mit a tp_del.
     """
 
     def tearDown(self):
@@ -496,7 +496,7 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
         super().tearDown()
 
     def test_legacy(self):
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = Legacy()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -511,7 +511,7 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
             self.assert_tp_del_calls(ids)
 
     def test_legacy_resurrect(self):
-        with SimpleBase.test():
+        mit SimpleBase.test():
             s = LegacyResurrector()
             ids = [id(s)]
             wr = weakref.ref(s)
@@ -530,8 +530,8 @@ klasse LegacyFinalizationTest(TestBase, unittest.TestCase):
         self.assertIsNichts(wr())
 
     def test_legacy_self_cycle(self):
-        # Self-cycles with legacy finalizers end up in gc.garbage.
-        with SimpleBase.test():
+        # Self-cycles mit legacy finalizers end up in gc.garbage.
+        mit SimpleBase.test():
             s = LegacySelfCycle()
             ids = [id(s)]
             wr = weakref.ref(s)

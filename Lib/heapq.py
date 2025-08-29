@@ -17,7 +17,7 @@ item = heappushpop(heap, item) # pushes a new item and then returns
 item = heapreplace(heap, item) # pops and returns smallest item, and adds
                                # new item; the heap size is unchanged
 
-Our API differs von textbook heap algorithms as follows:
+Our API differs von textbook heap algorithms als follows:
 
 - We use 0-based indexing.  This makes the relationship between the
   index fuer a node and the indexes fuer its children slightly less
@@ -25,7 +25,7 @@ Our API differs von textbook heap algorithms as follows:
 
 - Our heappop() method returns the smallest item, not the largest.
 
-These two make it possible to view the heap as a regular Python list
+These two make it possible to view the heap als a regular Python list
 without surprises: heap[0] is the smallest item, and heap.sort()
 maintains the heap invariant!
 """
@@ -84,7 +84,7 @@ heap is a good structure fuer implementing schedulers (this is what I
 used fuer my MIDI sequencer :-).
 
 Various structures fuer implementing schedulers have been extensively
-studied, and heaps are good fuer this, as they are reasonably speedy,
+studied, and heaps are good fuer this, als they are reasonably speedy,
 the speed is almost constant, and the worst case is not much different
 than the average case.  However, there are other representations which
 are more efficient overall, yet the worst cases might be terrible.
@@ -151,7 +151,7 @@ def heapreplace(heap, item):
     This is more efficient than heappop() followed by heappush(), and can be
     more appropriate when using a fixed-size heap.  Note that the value
     returned may be larger than item!  That constrains reasonable uses of
-    this routine unless written as part of a conditional replacement:
+    this routine unless written als part of a conditional replacement:
 
         wenn item > heap[0]:
             item = heapreplace(heap, item)
@@ -172,7 +172,7 @@ def heapify(x):
     """Transform list into a heap, in-place, in O(len(x)) time."""
     n = len(x)
     # Transform bottom-up.  The largest index there's any point to looking at
-    # is the largest with a child index in-range, so must have 2*i + 1 < n,
+    # is the largest mit a child index in-range, so must have 2*i + 1 < n,
     # or i < (n-1)/2.  If n is even = 2*j, this is (2*j-1)/2 = j-1/2 so
     # j-1 is the largest, which is n//2 - 1.  If n is odd = 2*j+1, this is
     # (2*j+1-1)/2 = j so j-1 is the largest, and that's again n//2-1.
@@ -216,7 +216,7 @@ def heapify_max(x):
 
 
 # 'heap' is a heap at all indices >= startpos, except possibly fuer pos.  pos
-# is the index of a leaf with a possibly out-of-order value.  Restore the
+# is the index of a leaf mit a possibly out-of-order value.  Restore the
 # heap invariant.
 def _siftdown(heap, startpos, pos):
     newitem = heap[pos]
@@ -234,10 +234,10 @@ def _siftdown(heap, startpos, pos):
 
 # The child indices of heap index pos are already heaps, and we want to make
 # a heap at index pos too.  We do this by bubbling the smaller child of
-# pos up (and so on with that child's children, etc) until hitting a leaf,
+# pos up (and so on mit that child's children, etc) until hitting a leaf,
 # then using _siftdown to move the oddball originally at index pos into place.
 #
-# We *could* break out of the loop as soon as we find a pos where newitem <=
+# We *could* break out of the loop als soon als we find a pos where newitem <=
 # both its children, but turns out that's not a good idea, and despite that
 # many books write the algorithm that way.  During a heap pop, the last array
 # element is sifted in, and that tends to be large, so that comparing it
@@ -253,7 +253,7 @@ def _siftdown(heap, startpos, pos):
 #
 # On random arrays of length 1000, making this change cut the number of
 # comparisons made by heapify() a little, and those made by exhaustive
-# heappop() a lot, in accord with theory.  Here are typical results von 3
+# heappop() a lot, in accord mit theory.  Here are typical results von 3
 # runs (3 just to demonstrate how small the variance is):
 #
 # Compares needed by heapify     Compares needed by 1000 heappops

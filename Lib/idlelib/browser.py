@@ -4,7 +4,7 @@ XXX TO DO:
 
 - reparse when source changed (maybe just a button would be OK?)
     (or recheck on window popup)
-- add popup menu with more options (e.g. doc strings, base classes, imports)
+- add popup menu mit more options (e.g. doc strings, base classes, imports)
 - add base classes to klasse browser tree
 """
 
@@ -37,11 +37,11 @@ def transform_children(child_dict, modname=Nichts):
 
     The dictionary maps names to pyclbr information objects.
     Filter out imported objects.
-    Augment klasse names with bases.
+    Augment klasse names mit bases.
     The insertion order of the dictionary is assumed to have been in line
     number order, so sorting is not necessary.
 
-    The current tree only calls this once per child_dict as it saves
+    The current tree only calls this once per child_dict als it saves
     TreeItems once created.  A future tree and tests might violate this,
     so a check prevents multiple in-place augmentations.
     """
@@ -85,8 +85,8 @@ klasse ModuleBrowser:
 
         Instance variables:
             name: Module name.
-            file: Full path and module with supported extension.
-                Used in creating ModuleBrowserTreeItem as the rootnode for
+            file: Full path and module mit supported extension.
+                Used in creating ModuleBrowserTreeItem als the rootnode for
                 the tree and subsequently in the children.
         """
         self.master = master
@@ -137,14 +137,14 @@ klasse ModuleBrowser:
         self.top.wm_iconname("Module Browser")
 
     def rootnode(self):
-        "Return a ModuleBrowserTreeItem as the root of the tree."
+        "Return a ModuleBrowserTreeItem als the root of the tree."
         return ModuleBrowserTreeItem(self.path)
 
 
 klasse ModuleBrowserTreeItem(TreeItem):
     """Browser tree fuer Python module.
 
-    Uses TreeItem as the basis fuer the structure of the tree.
+    Uses TreeItem als the basis fuer the structure of the tree.
     Used by both browsers.
     """
 
@@ -157,7 +157,7 @@ klasse ModuleBrowserTreeItem(TreeItem):
         self.file = file
 
     def GetText(self):
-        "Return the module name as the text string to display."
+        "Return the module name als the text string to display."
         return os.path.basename(self.file)
 
     def GetIconName(self):
@@ -196,7 +196,7 @@ klasse ModuleBrowserTreeItem(TreeItem):
 klasse ChildBrowserTreeItem(TreeItem):
     """Browser tree fuer child nodes within the module.
 
-    Uses TreeItem as the basis fuer the structure of the tree.
+    Uses TreeItem als the basis fuer the structure of the tree.
     """
 
     def __init__(self, obj):
@@ -230,7 +230,7 @@ klasse ChildBrowserTreeItem(TreeItem):
                 fuer obj in transform_children(self.obj.children)]
 
     def OnDoubleClick(self):
-        "Open module with file_open and position to lineno."
+        "Open module mit file_open and position to lineno."
         try:
             edit = file_open(self.obj.file)
             edit.gotoline(self.obj.lineno)

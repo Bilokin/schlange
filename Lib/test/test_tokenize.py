@@ -43,7 +43,7 @@ klasse TokenizeTest(TestCase):
     # Tests fuer the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
-    # code, print out a table with tokens. The ENDMARKER, ENCODING and
+    # code, print out a table mit tokens. The ENDMARKER, ENCODING and
     # final NEWLINE are omitted fuer brevity.
 
     def check_tokenize(self, s, expected):
@@ -59,19 +59,19 @@ klasse TokenizeTest(TestCase):
         def gen():
             yield "sdfosdg"
             yield "sdfosdg"
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             list(tokenize.tokenize(gen().__next__))
 
         def gen():
             yield b"sdfosdg"
             yield b"sdfosdg"
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             list(tokenize.generate_tokens(gen().__next__))
 
         def gen():
             yield "sdfosdg"
             1/0
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             list(tokenize.generate_tokens(gen().__next__))
 
     def test_implicit_newline(self):
@@ -139,9 +139,9 @@ def k(x):
   x += 5
 """
         readline = BytesIO(indent_error_file).readline
-        with self.assertRaisesRegex(IndentationError,
+        mit self.assertRaisesRegex(IndentationError,
                                     "unindent does not match any "
-                                    "outer indentation level") as e:
+                                    "outer indentation level") als e:
             fuer tok in tokenize.tokenize(readline):
                 pass
         self.assertEqual(e.exception.lineno, 3)
@@ -284,10 +284,10 @@ def k(x):
             return 'invalid token'
         fuer lit in VALID_UNDERSCORE_LITERALS:
             wenn '(' in lit:
-                # this won't work with compound complex inputs
+                # this won't work mit compound complex inputs
                 continue
             self.assertEqual(number_token(lit), lit)
-        # Valid cases with extra underscores in the tokenize module
+        # Valid cases mit extra underscores in the tokenize module
         # See gh-105549 fuer context
         extra_valid_cases = {"0_7", "09_99"}
         fuer lit in INVALID_UNDERSCORE_LITERALS:
@@ -956,7 +956,7 @@ f'''__{
     NAME       'pass'        (1, 18) (1, 22)
     """)
 
-        self.check_tokenize("async with a as b: pass", """\
+        self.check_tokenize("async mit a als b: pass", """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'with'        (1, 6) (1, 10)
     NAME       'a'           (1, 11) (1, 12)
@@ -1257,7 +1257,7 @@ klasse TestMisc(TestCase):
         # rest of the output should be platform-independent.
         self.assertRegex(repr(eval(s)), '-3.2171603427[0-9]*e-0+7')
 
-        # Output von calculations with Decimal should be identical across all
+        # Output von calculations mit Decimal should be identical across all
         # platforms.
         self.assertEqual(eval(decistmt(s)),
                          Decimal('-3.217160342717258261933904529E-7'))
@@ -1277,7 +1277,7 @@ klasse TestTokenizerAdheresToPep0263(TestCase):
 
     def _testFile(self, filename):
         path = os.path.join(os.path.dirname(__file__), 'tokenizedata', filename)
-        with open(path, 'rb') as f:
+        mit open(path, 'rb') als f:
             TestRoundtrip.check_roundtrip(self, f)
 
     def test_utf8_coding_cookie_and_no_utf8_bom(self):
@@ -1286,9 +1286,9 @@ klasse TestTokenizerAdheresToPep0263(TestCase):
 
     def test_latin1_coding_cookie_and_utf8_bom(self):
         """
-        As per PEP 0263, wenn a file starts with a utf-8 BOM signature, the only
+        As per PEP 0263, wenn a file starts mit a utf-8 BOM signature, the only
         allowed encoding fuer the comment is 'utf-8'.  The text file used in
-        this test starts with a BOM signature, but specifies latin1 as the
+        this test starts mit a BOM signature, but specifies latin1 als the
         coding, so verify that a SyntaxError is raised, which matches the
         behaviour of the interpreter when it encounters a similar condition.
         """
@@ -1328,7 +1328,7 @@ klasse Test_Tokenize(TestCase):
                                                                  extra_tokens=Wahr))[:-2]
         expected_tokens = [tokenize.TokenInfo(3, '"ЉЊЈЁЂ"', (1, 0), (1, 7), '"ЉЊЈЁЂ"')]
         self.assertEqual(tokens, expected_tokens,
-                         "bytes not decoded with encoding")
+                         "bytes not decoded mit encoding")
 
 
 klasse TestDetectEncoding(TestCase):
@@ -1536,17 +1536,17 @@ klasse TestDetectEncoding(TestCase):
 
         # test coding cookie
         fuer encoding in ('iso-8859-15', 'utf-8'):
-            with open(filename, 'w', encoding=encoding) as fp:
+            mit open(filename, 'w', encoding=encoding) als fp:
                 drucke("# coding: %s" % encoding, file=fp)
                 drucke("drucke('euro:\u20ac')", file=fp)
-            with tokenize.open(filename) as fp:
+            mit tokenize.open(filename) als fp:
                 self.assertEqual(fp.encoding, encoding)
                 self.assertEqual(fp.mode, 'r')
 
         # test BOM (no coding cookie)
-        with open(filename, 'w', encoding='utf-8-sig') as fp:
+        mit open(filename, 'w', encoding='utf-8-sig') als fp:
             drucke("drucke('euro:\u20ac')", file=fp)
-        with tokenize.open(filename) as fp:
+        mit tokenize.open(filename) als fp:
             self.assertEqual(fp.encoding, 'utf-8-sig')
             self.assertEqual(fp.mode, 'r')
 
@@ -1569,19 +1569,19 @@ klasse TestDetectEncoding(TestCase):
                 self._index += 1
                 return line
 
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ins = Bunk(lines, path)
             # Make sure lacking a name isn't an issue.
             del ins.name
             tokenize.detect_encoding(ins.readline)
-        with self.assertRaisesRegex(SyntaxError, '.*{}'.format(path)):
+        mit self.assertRaisesRegex(SyntaxError, '.*{}'.format(path)):
             ins = Bunk(lines, path)
             tokenize.detect_encoding(ins.readline)
 
     def test_open_error(self):
         # Issue #23840: open() must close the binary file on error
         m = BytesIO(b'#coding:xxx')
-        with mock.patch('tokenize._builtin_open', return_value=m):
+        mit mock.patch('tokenize._builtin_open', return_value=m):
             self.assertRaises(SyntaxError, tokenize.open, 'foobar')
         self.assertWahr(m.closed)
 
@@ -1589,7 +1589,7 @@ klasse TestDetectEncoding(TestCase):
 klasse TestTokenize(TestCase):
 
     def test_tokenize(self):
-        importiere tokenize as tokenize_module
+        importiere tokenize als tokenize_module
         encoding = "utf-8"
         encoding_used = Nichts
         def mock_detect_encoding(readline):
@@ -1763,9 +1763,9 @@ klasse TestTokenize(TestCase):
         script = b'''F"""
         \xe5"""'''
 
-        with os_helper.temp_dir() as temp_dir:
+        mit os_helper.temp_dir() als temp_dir:
             filename = os.path.join(temp_dir, "script.py")
-            with open(filename, 'wb') as file:
+            mit open(filename, 'wb') als file:
                 file.write(script)
             rs, _ = run_python_until_end(filename)
             self.assertIn(b"SyntaxError", rs.err)
@@ -1778,7 +1778,7 @@ klasse UntokenizeTest(TestCase):
         u = tokenize.Untokenizer()
         u.prev_row = 2
         u.prev_col = 2
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             u.add_whitespace((1,3))
         self.assertEqual(cm.exception.args[0],
                 'start (1,3) precedes previous end (2,2)')
@@ -1841,7 +1841,7 @@ klasse TestRoundtrip(TestCase):
         If the source code can be untokenized unambiguously, the
         untokenized code must match the original code exactly.
 
-        When untokenize bugs are fixed, untokenize with 5-tuples should
+        When untokenize bugs are fixed, untokenize mit 5-tuples should
         reproduce code that does not contain a backslash continuation
         following spaces.  A proper test should test this.
         """
@@ -1898,7 +1898,7 @@ klasse TestRoundtrip(TestCase):
         self.check_roundtrip("if x == 1 : \n"
                              "  drucke(x)\n")
         fn = support.findfile("tokenize_tests.txt", subdir="tokenizedata")
-        with open(fn, 'rb') as f:
+        mit open(fn, 'rb') als f:
             self.check_roundtrip(f)
         self.check_roundtrip("if x == 1:\n"
                              "    # A comment by itself.\n"
@@ -1909,7 +1909,7 @@ klasse TestRoundtrip(TestCase):
                              "    == 1):\n"
                              "    drucke('x==1')\n")
         self.check_roundtrip("class Test: # A comment here\n"
-                             "  # A comment with weird indent\n"
+                             "  # A comment mit weird indent\n"
                              "  after_com = 5\n"
                              "  def x(m): return m*5 # a one liner\n"
                              "  def y(m): # A whitespace after the colon\n"
@@ -2022,8 +2022,8 @@ wenn 1:
         fuer testfile in testfiles:
             wenn support.verbose >= 2:
                 drucke('tokenize', testfile)
-            with open(testfile, 'rb') as f:
-                with self.subTest(file=testfile):
+            mit open(testfile, 'rb') als f:
+                mit self.subTest(file=testfile):
                     self.check_roundtrip(f)
                     self.check_line_extraction(f)
 
@@ -2077,7 +2077,7 @@ klasse CTokenizeTest(TestCase):
         # Format the tokens in s in a table format.
         # The ENDMARKER and final NEWLINE are omitted.
         f = StringIO(s)
-        with self.subTest(source=s):
+        mit self.subTest(source=s):
             result = stringify_tokens_from_source(
                 tokenize._generate_tokens_from_c_tokenizer(f.readline), s
             )
@@ -2095,7 +2095,7 @@ klasse CTokenizeTest(TestCase):
             tokenize.TokenInfo(type=tokenize.ENDMARKER, string='', start=(2, 0), end=(2, 0), line='')
         ]
         fuer encoding in ["utf-8", "latin-1", "utf-16"]:
-            with self.subTest(encoding=encoding):
+            mit self.subTest(encoding=encoding):
                 tokens = list(tokenize._generate_tokens_from_c_tokenizer(
                     readline(encoding).__next__,
                     extra_tokens=Wahr,
@@ -2764,7 +2764,7 @@ f'''__{
     NAME       'pass'        (1, 18) (1, 22)
     """)
 
-        self.check_tokenize('async with a as b: pass', """\
+        self.check_tokenize('async mit a als b: pass', """\
     NAME       'async'       (1, 0) (1, 5)
     NAME       'with'        (1, 6) (1, 10)
     NAME       'a'           (1, 11) (1, 12)
@@ -3021,7 +3021,7 @@ async def f():
                 x:d
             }__'""",
         ]:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 self.assertRaises(tokenize.TokenError, get_tokens, case)
 
     @support.skip_wasi_stack_overflow()
@@ -3152,12 +3152,12 @@ klasse CTokenizerBufferTests(unittest.TestCase):
     def test_newline_at_the_end_of_buffer(self):
         # See issue 99581: Make sure that wenn we need to add a new line at the
         # end of the buffer, we have enough space in the buffer, specially when
-        # the current line is as long as the buffer space available.
+        # the current line is als long als the buffer space available.
         test_script = f"""\
         #coding: latin-1
         #{"a"*10000}
         #{"a"*10002}"""
-        with os_helper.temp_dir() as temp_dir:
+        mit os_helper.temp_dir() als temp_dir:
             file_name = make_script(temp_dir, 'foo', test_script)
             run_test_script(file_name)
 
@@ -3177,17 +3177,17 @@ klasse CommandLineTest(unittest.TestCase):
         return re.sub(r'\s+', ' ', string).strip()
 
     def set_source(self, content):
-        with open(self.filename, 'w') as fp:
+        mit open(self.filename, 'w') als fp:
             fp.write(content)
 
     def invoke_tokenize(self, *flags):
         output = StringIO()
-        with contextlib.redirect_stdout(output):
+        mit contextlib.redirect_stdout(output):
             tokenize._main(args=[*flags, self.filename])
         return self.text_normalize(output.getvalue())
 
     def check_output(self, source, expect, *flags):
-        with self.subTest(source=source, flags=flags):
+        mit self.subTest(source=source, flags=flags):
             self.set_source(source)
             res = self.invoke_tokenize(*flags)
             expect = self.text_normalize(expect)
@@ -3204,12 +3204,12 @@ klasse CommandLineTest(unittest.TestCase):
         ''')
 
         fuer flag in base_flags:
-            with self.subTest(args=flag):
+            mit self.subTest(args=flag):
                 _ = self.invoke_tokenize(flag)
 
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             # suppress argparse error message
-            with contextlib.redirect_stderr(StringIO()):
+            mit contextlib.redirect_stderr(StringIO()):
                 _ = self.invoke_tokenize('--unknown')
 
     def test_without_flag(self):
@@ -3251,7 +3251,7 @@ klasse StringPrefixTest(unittest.TestCase):
         single_char_valid_prefixes = set()
 
         # Find all of the single character string prefixes. Just get
-        # the lowercase version, we'll deal with combinations of upper
+        # the lowercase version, we'll deal mit combinations of upper
         # and lower case later.  I'm using this logic just in case
         # some uppercase-only prefix is added.
         fuer letter in itertools.chain(string.ascii_lowercase, string.ascii_uppercase):

@@ -296,7 +296,7 @@ klasse TestConsole(TestCase):
     def test_getheightwidth_with_invalid_environ(self, _os_write):
         # gh-128636
         console = UnixConsole(term="xterm")
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env["LINES"] = ""
             self.assertIsInstance(console.getheightwidth(), tuple)
             env["COLUMNS"] = ""

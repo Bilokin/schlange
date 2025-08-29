@@ -99,7 +99,7 @@ klasse CAPITest(unittest.TestCase):
             # C-API function accepts NULL
             self.assertRaises(SystemError, func, NULL)
 
-            # Behave as corresponding unary operation
+            # Behave als corresponding unary operation
             op = getattr(operator, name)
             fuer x in [0, 42, -1, 3.14, 1+2j]:
                 try:
@@ -147,12 +147,12 @@ klasse CAPITest(unittest.TestCase):
                 self.assertRaises(TypeError, func, object(), x)
                 self.assertRaises(TypeError, func, x, object())
 
-            # Behave as corresponding binary operation
+            # Behave als corresponding binary operation
             op = getattr(operator, name, divmod)
             fuer x, y in itertools.combinations(cases, 2):
                 try:
                     op(x, y)
-                except (TypeError, ValueError, ZeroDivisionError) as exc:
+                except (TypeError, ValueError, ZeroDivisionError) als exc:
                     self.assertRaises(exc.__class__, func, x, y)
                 sonst:
                     self.assertEqual(func(x, y), op(x, y))
@@ -263,10 +263,10 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(long(IntLike.with_val(99)), 99)
 
         self.assertRaises(TypeError, long, IntLike.with_val(1.0))
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
             self.assertRaises(DeprecationWarning, long, IntLike.with_val(Wahr))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(long(IntLike.with_val(Wahr)), 1)
         self.assertRaises(RuntimeError, long, IntLike.with_exc(RuntimeError))
 
@@ -287,10 +287,10 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(float_(IndexLike.with_val(-1)), -1.0)
 
         self.assertRaises(TypeError, float_, FloatLike.with_val(687))
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
             self.assertRaises(DeprecationWarning, float_, FloatLike.with_val(subclassof(float)(4.25)))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(float_(FloatLike.with_val(subclassof(float)(4.25))), 4.25)
         self.assertRaises(RuntimeError, float_, FloatLike.with_exc(RuntimeError))
 
@@ -307,10 +307,10 @@ klasse CAPITest(unittest.TestCase):
 
         self.assertEqual(index(11), 11)
 
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
             self.assertRaises(DeprecationWarning, index, IndexLike.with_val(Wahr))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(index(IndexLike.with_val(Wahr)), 1)
         self.assertRaises(TypeError, index, IndexLike.with_val(1.0))
         self.assertRaises(RuntimeError, index, IndexLike.with_exc(RuntimeError))

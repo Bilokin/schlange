@@ -56,11 +56,11 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         b = tkinter.Button(f)
         b.pack()
         f.tk_busy_hold()
-        with self.assertRaisesRegex(TclError, 'unknown option "-spam"'):
+        mit self.assertRaisesRegex(TclError, 'unknown option "-spam"'):
             f.tk_busy_configure(spam='eggs')
-        with self.assertRaisesRegex(TclError, 'unknown option "-spam"'):
+        mit self.assertRaisesRegex(TclError, 'unknown option "-spam"'):
             f.tk_busy_cget('spam')
-        with self.assertRaisesRegex(TclError, 'unknown option "-spam"'):
+        mit self.assertRaisesRegex(TclError, 'unknown option "-spam"'):
             f.tk_busy_configure('spam')
         self.assertIsInstance(f.tk_busy_configure(), dict)
 
@@ -76,9 +76,9 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertFalsch(f.tk_busy_status())
         self.assertFalsch(f.tk_busy_current())
         errmsg = r"can(no|')t find busy window.*"
-        with self.assertRaisesRegex(TclError, errmsg):
+        mit self.assertRaisesRegex(TclError, errmsg):
             f.tk_busy_configure()
-        with self.assertRaisesRegex(TclError, errmsg):
+        mit self.assertRaisesRegex(TclError, errmsg):
             f.tk_busy_forget()
 
     @requires_tk(8, 6, 6)
@@ -98,7 +98,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
 
         f.tk_busy_forget()
         errmsg = r"can(no|')t find busy window.*"
-        with self.assertRaisesRegex(TclError, errmsg):
+        mit self.assertRaisesRegex(TclError, errmsg):
             f.tk_busy_cget('cursor')
 
     def test_tk_setPalette(self):
@@ -139,17 +139,17 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         # Without function, sleeps fuer ms.
         self.assertIsNichts(root.after(1))
 
-        # Set up with callback with no args.
+        # Set up mit callback mit no args.
         count = 0
         timer1 = root.after(0, callback)
         self.assertIn(timer1, root.tk.call('after', 'info'))
         (script, _) = root.tk.splitlist(root.tk.call('after', 'info', timer1))
         root.update()  # Process all pending events.
         self.assertEqual(count, 1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call(script)
 
-        # Set up with callback with args.
+        # Set up mit callback mit args.
         count = 0
         timer1 = root.after(0, callback, 42, 11)
         root.update()  # Process all pending events.
@@ -161,16 +161,16 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         (script, _) = root.tk.splitlist(root.tk.call('after', 'info', timer1))
         root.after_cancel(timer1)  # Cancel this event.
         self.assertEqual(count, 53)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call(script)
 
-        # Call with a callable class
+        # Call mit a callable class
         count = 0
         timer1 = root.after(0, functools.partial(callback, 42, 11))
         root.update()  # Process all pending events.
         self.assertEqual(count, 53)
 
-        # Set up with callback with keyword args.
+        # Set up mit callback mit keyword args.
         count = 0
         timer1 = root.after(0, callback, 42, step=11, end=1)
         root.update()  # Process all pending events.
@@ -183,17 +183,17 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
             nonlocal count
             count = start + step + end
 
-        # Set up with callback with no args.
+        # Set up mit callback mit no args.
         count = 0
         idle1 = root.after_idle(callback)
         self.assertIn(idle1, root.tk.call('after', 'info'))
         (script, _) = root.tk.splitlist(root.tk.call('after', 'info', idle1))
         root.update_idletasks()  # Process all pending events.
         self.assertEqual(count, 1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call(script)
 
-        # Set up with callback with args.
+        # Set up mit callback mit args.
         count = 0
         idle1 = root.after_idle(callback, 42, 11)
         root.update_idletasks()  # Process all pending events.
@@ -205,10 +205,10 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         (script, _) = root.tk.splitlist(root.tk.call('after', 'info', idle1))
         root.after_cancel(idle1)  # Cancel this event.
         self.assertEqual(count, 53)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call(script)
 
-        # Set up with callback with keyword args.
+        # Set up mit callback mit keyword args.
         count = 0
         idle1 = root.after_idle(callback, 42, step=11, end=1)
         root.update()  # Process all pending events.
@@ -225,7 +225,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         idle1 = root.after_idle(callback)
 
         # No value fuer id raises a ValueError.
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             root.after_cancel(Nichts)
 
         # Cancel timer event.
@@ -234,10 +234,10 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         root.tk.call(script)
         self.assertEqual(count, 1)
         root.after_cancel(timer1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call(script)
         self.assertEqual(count, 1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call('after', 'info', timer1)
 
         # Cancel same event - nothing happens.
@@ -249,10 +249,10 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         root.tk.call(script)
         self.assertEqual(count, 1)
         root.after_cancel(idle1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call(script)
         self.assertEqual(count, 1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.tk.call('after', 'info', idle1)
 
     def test_after_info(self):
@@ -283,13 +283,13 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         self.assertEqual(idle1_info[1], 'idle')
 
         root.after_cancel(timer1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.after_info(timer1)
         root.after_cancel(timer2)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.after_info(timer2)
         root.after_cancel(idle1)
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.after_info(idle1)
 
         # No events.
@@ -303,7 +303,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         root.clipboard_append('çōđě')
         self.assertEqual(root.clipboard_get(), 'Ùñîçōđě')
         root.clipboard_clear()
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.clipboard_get()
 
     def test_clipboard_astral(self):
@@ -314,7 +314,7 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         root.clipboard_append('𝔠𝔬𝔡𝔢')
         self.assertEqual(root.clipboard_get(), '𝔘𝔫𝔦𝔠𝔬𝔡𝔢')
         root.clipboard_clear()
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             root.clipboard_get()
 
     def test_winfo_rgb(self):
@@ -338,10 +338,10 @@ klasse MiscTest(AbstractTkTest, unittest.TestCase):
         # #RRRRGGGGBBBB
         assertApprox(rgb('#dede14143939'), (0xdede, 0x1414, 0x3939))
         # Invalid string.
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             rgb('#123456789a')
         # RGB triplet is invalid input.
-        with self.assertRaises(tkinter.TclError):
+        mit self.assertRaises(tkinter.TclError):
             rgb((111, 78, 55))
 
     def test_winfo_pathname(self):

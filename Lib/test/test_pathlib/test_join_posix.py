@@ -21,7 +21,7 @@ klasse JoinTestBase:
         self.assertEqual(pp, P('/c'))
 
     def test_div(self):
-        # Basically the same as joinpath().
+        # Basically the same als joinpath().
         P = self.cls
         p = P('//a')
         pp = p / 'b'

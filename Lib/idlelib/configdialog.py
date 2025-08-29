@@ -2,7 +2,7 @@
 
 Customize font faces, sizes, and colorization attributes.  Set indentation
 defaults.  Customize keybindings.  Colorization and keybindings can be
-saved as user defined sets.  Select startup options including shell/editor
+saved als user defined sets.  Select startup options including shell/editor
 and default window size.  Define additional help sources.
 
 Note that tab width in IDLE is currently fixed at eight due to Tk issues.
@@ -20,7 +20,7 @@ von tkinter.ttk importiere (Frame, LabelFrame, Button, Checkbutton, Entry, Label
                          OptionMenu, Notebook, Radiobutton, Scrollbar, Style,
                          Spinbox, Combobox)
 von tkinter importiere colorchooser
-importiere tkinter.font as tkfont
+importiere tkinter.font als tkfont
 von tkinter importiere messagebox
 
 von idlelib.config importiere idleConf, ConfigChanges
@@ -219,7 +219,7 @@ klasse ConfigDialog(Toplevel):
         """Apply configuration changes to current windows.
 
         Dynamically update the current parent window instances
-        with some of the configuration changes.
+        mit some of the configuration changes.
         """
         fuer instance in self.parent.instance_dict:
             instance.ResetColorizer()
@@ -238,11 +238,11 @@ klasse ConfigDialog(Toplevel):
 #         self.create_page_tab()
 #         self.load_tab_cfg()
 #     def create_page_tab(self):
-#         # Define tk vars and register var and callback with tracers.
+#         # Define tk vars and register var and callback mit tracers.
 #         # Create subframes and widgets.
 #         # Pack widgets.
 #     def load_tab_cfg(self):
-#         # Initialize widgets with data von idleConf.
+#         # Initialize widgets mit data von idleConf.
 #     def var_changed_var_name():
 #         # For each tk var that needs other than default callback.
 #     def other_methods():
@@ -378,7 +378,7 @@ klasse FontPage(Frame):
     def load_font_cfg(self):
         """Load current configuration settings fuer the font options.
 
-        Retrieve current font with idleConf.GetFont and font families
+        Retrieve current font mit idleConf.GetFont and font families
         von tk. Setup fontlist and set font_name.  Setup sizelist,
         which sets font_size.  Set font_bold.  Call set_samples.
         """
@@ -412,7 +412,7 @@ klasse FontPage(Frame):
     def var_changed_font(self, *params):
         """Store changes to font attributes.
 
-        When one font attribute changes, save them all, as they are
+        When one font attribute changes, save them all, als they are
         not independent von each other. In particular, when we are
         overriding the default font, we need to write out everything.
         """
@@ -435,7 +435,7 @@ klasse FontPage(Frame):
         self.font_name.set(font.lower())
 
     def set_samples(self, event=Nichts):
-        """Update both screen samples with the font settings.
+        """Update both screen samples mit the font settings.
 
         Called on font initialization and change events.
         Accesses font_name, font_size, and font_bold Variables.
@@ -464,8 +464,8 @@ klasse HighPage(Frame):
         Enable users to provisionally change foreground and background
         colors applied to textual tags.  Color mappings are stored in
         complete listings called themes.  Built-in themes in
-        idlelib/config-highlight.def are fixed as far as the dialog is
-        concerned. Any theme can be used as the base fuer a new custom
+        idlelib/config-highlight.def are fixed als far als the dialog is
+        concerned. Any theme can be used als the base fuer a new custom
         theme, stored in .idlerc/config-highlight.cfg.
 
         Function load_theme_cfg() initializes tk variables and theme
@@ -512,7 +512,7 @@ klasse HighPage(Frame):
         mock Python code) in which is embedded the defined tags and reflects
         the color attributes of the current theme and changes fuer those tags.
         Mouse button 1 allows fuer selection of a tag and updates
-        highlight_target with that tag value.
+        highlight_target mit that tag value.
 
         Note: The font in highlight_sample is set through the config in
         the fonts tab.
@@ -550,7 +550,7 @@ klasse HighPage(Frame):
             on_new_color_set: Set new color and add option.
             paint_theme_sample: Recolor sample.
             get_new_theme_name: Get von popup.
-            create_new: Combine theme with changes and save.
+            create_new: Combine theme mit changes and save.
             save_as_new_theme: Save [button_save_custom].
             set_theme_type: Command fuer [theme_source].
             delete_custom: Activate default [button_delete_custom].
@@ -672,7 +672,7 @@ klasse HighPage(Frame):
                 text='Background', command=self.set_color_sample_binding)
         self.fg_bg_toggle.set(1)
         self.button_save_custom = Button(
-                frame_custom, text='Save as New Custom Theme',
+                frame_custom, text='Save als New Custom Theme',
                 command=self.save_as_new_theme)
         # frame_theme.
         theme_type_title = Label(frame_theme, text='Select : ')
@@ -725,7 +725,7 @@ klasse HighPage(Frame):
             builtinlist: List of default themes von idleConf.
             customlist: List of custom themes von idleConf.
             custom_theme_on: Disabled wenn there are no custom themes.
-            custom_theme: Message with additional information.
+            custom_theme: Message mit additional information.
             targetlist: Create menu von self.theme_elements.
 
         Methods:
@@ -768,7 +768,7 @@ klasse HighPage(Frame):
         """Process new builtin theme selection.
 
         Add the changed theme's name to the changed_items and recreate
-        the sample with the values von the selected theme.
+        the sample mit the values von the selected theme.
         """
         old_themes = ('IDLE Classic', 'IDLE New')
         value = self.builtin_name.get()
@@ -870,7 +870,7 @@ klasse HighPage(Frame):
         wenn color_string and (color_string != prev_color):
             # User didn't cancel and they chose a new color.
             wenn self.theme_source.get():  # Current theme is a built-in.
-                message = ('Your changes will be saved as a new Custom Theme. '
+                message = ('Your changes will be saved als a new Custom Theme. '
                            'Enter a name fuer your new Custom Theme below.')
                 new_theme = self.get_new_theme_name(message)
                 wenn not new_theme:  # User cancelled custom theme creation.
@@ -912,10 +912,10 @@ klasse HighPage(Frame):
             self.create_new(new_theme_name)
 
     def create_new(self, new_theme_name):
-        """Create a new custom theme with the given name.
+        """Create a new custom theme mit the given name.
 
         Create the new theme based on the previously active theme
-        with the current changes applied.  Once it is saved, then
+        mit the current changes applied.  Once it is saved, then
         activate the new theme.
 
         Attributes accessed:
@@ -1124,7 +1124,7 @@ klasse KeysPage(Frame):
         keybindings (shortcut keys). Except fuer features implemented as
         extensions, keybindings are stored in complete sets called
         keysets. Built-in keysets in idlelib/config-keys.def are fixed
-        as far as the dialog is concerned. Any keyset can be used as the
+        als far als the dialog is concerned. Any keyset can be used als the
         base fuer a new custom keyset, stored in .idlerc/config-keys.cfg.
 
         Function load_key_cfg() initializes tk variables and keyset
@@ -1153,7 +1153,7 @@ klasse KeysPage(Frame):
         button_new_keys, and clicking button_new_keys calls function
         get_new_keys().  Function get_new_keys() gets the key mappings von the
         current keyset fuer the binding event item that was selected.  The
-        function then displays another dialog, GetKeysDialog, with the
+        function then displays another dialog, GetKeysDialog, mit the
         selected binding event and current keys and allows new key sequences
         to be entered fuer that binding event.  If the keys aren't
         changed, nothing happens.  If the keys are changed and the keyset
@@ -1163,8 +1163,8 @@ klasse KeysPage(Frame):
         a custom name is entered in the prompt or wenn the current keyset was
         already custom (and thus didn't require a prompt), then
         idleConf.userCfg['keys'] is updated in function create_new_key_set()
-        with the change to the event binding.  The item listing in bindingslist
-        is updated with the new keys.  Var keybinding is also set which invokes
+        mit the change to the event binding.  The item listing in bindingslist
+        is updated mit the new keys.  Var keybinding is also set which invokes
         the callback function, var_changed_keybinding, to add the change to
         the 'keys' or 'extensions' changes tracker based on the binding type.
 
@@ -1248,7 +1248,7 @@ klasse KeysPage(Frame):
                 frames[1], text='Delete Custom Key Set',
                 command=self.delete_custom_keys)
         self.button_save_custom_keys = Button(
-                frames[1], text='Save as New Custom Key Set',
+                frames[1], text='Save als New Custom Key Set',
                 command=self.save_as_new_key_set)
         self.keys_message = Label(frames[0], borderwidth=2)
 
@@ -1394,7 +1394,7 @@ klasse KeysPage(Frame):
                 current_key_sequences).result
         wenn new_keys:
             wenn self.keyset_source.get():  # Current key set is a built-in.
-                message = ('Your changes will be saved as a new Custom Key Set.'
+                message = ('Your changes will be saved als a new Custom Key Set.'
                            ' Enter a name fuer your new Custom Key Set below.')
                 new_keyset = self.get_new_keys_name(message)
                 wenn not new_keyset:  # User cancelled custom key set creation.
@@ -1431,7 +1431,7 @@ klasse KeysPage(Frame):
         self.button_new_keys.state(('!disabled',))
 
     def create_new_key_set(self, new_key_set_name):
-        """Create a new custom key set with the given name.
+        """Create a new custom key set mit the given name.
 
         Copy the bindings/keys von the previously active keyset
         to the new keyset and activate the new custom keyset.
@@ -1907,9 +1907,9 @@ klasse ExtPage(Frame):
         Some changes may require restarting IDLE.  This depends on each
         extension's implementation.
 
-        All values are treated as text, and it is up to the user to
+        All values are treated als text, and it is up to the user to
         supply reasonable values. The only exception to this are the
-        'enable*' options, which are boolean, and can be toggled with a
+        'enable*' options, which are boolean, and can be toggled mit a
         Wahr/Falsch button.
 
         Methods:
@@ -1954,11 +1954,11 @@ klasse ExtPage(Frame):
 
 
         frame_ext.grid(row=0, column=0, sticky='nsew')
-        Label(self).grid(row=1, column=0)  # Spacer.  Replace with config?
+        Label(self).grid(row=1, column=0)  # Spacer.  Replace mit config?
         self.frame_help.grid(row=2, column=0, sticky='sew')
 
     def load_extensions(self):
-        "Fill self.extensions with data von the default and user configs."
+        "Fill self.extensions mit data von the default and user configs."
         self.extensions = {}
         fuer ext_name in idleConf.GetExtensions(active_only=Falsch):
             # Former built-in extensions are already filtered out.
@@ -2025,7 +2025,7 @@ klasse ExtPage(Frame):
         entry_area = f.interior
         # Create an entry fuer each configuration option.
         fuer row, opt in enumerate(self.extensions[ext_name]):
-            # Create a row with a label and entry/checkbutton.
+            # Create a row mit a label and entry/checkbutton.
             label = Label(entry_area, text=opt['name'])
             label.grid(row=row, column=0, sticky=NW)
             var = opt['var']
@@ -2039,7 +2039,7 @@ klasse ExtPage(Frame):
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
 
             sonst:  # type == 'str'
-                # Limit size to fit non-expanding space with larger font.
+                # Limit size to fit non-expanding space mit larger font.
                 Entry(entry_area, textvariable=var, width=15
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
         return
@@ -2047,7 +2047,7 @@ klasse ExtPage(Frame):
     def set_extension_value(self, section, opt):
         """Return Wahr wenn the configuration was added or changed.
 
-        If the value is the same as the default, then remove it
+        If the value is the same als the default, then remove it
         von user config file.
         """
         name = opt['name']
@@ -2169,7 +2169,7 @@ klasse HelpFrame(LabelFrame):
     def helplist_item_edit(self):
         """Handle edit button fuer the help list.
 
-        Query with existing help source information and update
+        Query mit existing help source information and update
         config wenn the values are changed.
         """
         item_index = self.helplist.index(ANCHOR)
@@ -2240,8 +2240,8 @@ klasse VarTrace:
 
         Args:
             var: Tk variable instance.
-            callback: Either function name to be used as a callback
-                or a tuple with IdleConf config-type, section, and
+            callback: Either function name to be used als a callback
+                or a tuple mit IdleConf config-type, section, and
                 option names used in the default callback.
 
         Return:
@@ -2280,7 +2280,7 @@ tracers = VarTrace()
 help_common = '''\
 When you click either the Apply or Ok buttons, settings in this
 dialog that are different von IDLE's default are saved in
-a .idlerc directory in your home directory. Except as noted,
+a .idlerc directory in your home directory. Except als noted,
 these changes apply to all versions of IDLE installed on this
 machine. [Cancel] only cancels changes made since the last save.
 '''
@@ -2290,13 +2290,13 @@ Font sample: This shows what a selection of Basic Multilingual Plane
 unicode characters look like fuer the current font selection.  If the
 selected font does not define a character, Tk attempts to find another
 font that does.  Substitute glyphs depend on what is available on a
-particular system and will not necessarily have the same size as the
+particular system and will not necessarily have the same size als the
 font selected.  Line contains 20 characters up to Devanagari, 14 for
 Tamil, and 10 fuer East Asia.
 
 Hebrew and Arabic letters should display right to left, starting with
 alef, \u05d0 and \u0627.  Arabic digits display left to right.  The
-Devanagari and Tamil lines start with digits.  The East Asian lines
+Devanagari and Tamil lines start mit digits.  The East Asian lines
 are Chinese digits, Chinese Hanzi, Korean Hangul, and Japanese
 Hiragana and Katakana.
 
@@ -2305,14 +2305,14 @@ You can edit the font sample. Changes remain until IDLE is closed.
     'Highlights': '''
 Highlighting:
 The IDLE Dark color theme is new in October 2015.  It can only
-be used with older IDLE releases wenn it is saved as a custom
-theme, with a different name.
+be used mit older IDLE releases wenn it is saved als a custom
+theme, mit a different name.
 ''',
     'Keys': '''
 Keys:
 The IDLE Modern Unix key set is new in June 2016.  It can only
-be used with older IDLE releases wenn it is saved as a custom
-key set, with a different name.
+be used mit older IDLE releases wenn it is saved als a custom
+key set, mit a different name.
 ''',
      'General': '''
 General:
@@ -2322,7 +2322,7 @@ cursor movement, before popping up completion box.  Key char is '.' after
 identifier or a '/' (or '\\' on Windows) within a string.
 
 FormatParagraph: Max-width is max chars in lines after re-formatting.
-Use with paragraphs in both strings and comment blocks.
+Use mit paragraphs in both strings and comment blocks.
 
 ParenMatch: Style indicates what is highlighted when closer is entered:
 'opener' - opener '({[' corresponding to closer; 'parens' - both chars;
@@ -2336,7 +2336,7 @@ Shell Preferences: Auto-Squeeze Min. Lines is the minimum number of lines
 of output to automatically "squeeze".
 ''',
     'Extensions': '''
-ZzDummy: This extension is provided as an example fuer how to create and
+ZzDummy: This extension is provided als an example fuer how to create and
 use an extension.  Enable indicates whether the extension is active or
 not; likewise enable_editor and enable_shell indicate which windows it
 will be active on.  For this extension, z-text is the text that will be
@@ -2379,7 +2379,7 @@ klasse VerticalScrolledFrame(Frame):
         canvas.xview_moveto(0)
         canvas.yview_moveto(0)
 
-        # Create a frame inside the canvas which will be scrolled with it.
+        # Create a frame inside the canvas which will be scrolled mit it.
         self.interior = interior = Frame(canvas)
         interior_id = canvas.create_window(0, 0, window=interior, anchor=NW)
 

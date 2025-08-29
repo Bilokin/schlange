@@ -91,7 +91,7 @@ klasse State:
         wenn name is not Nichts:
             ogid = self.groupdict.get(name, Nichts)
             wenn ogid is not Nichts:
-                raise error("redefinition of group name %r as group %d; "
+                raise error("redefinition of group name %r als group %d; "
                             "was group %d" % (name, gid,  ogid))
             self.groupdict[name] = gid
         return gid
@@ -480,7 +480,7 @@ def _parse_sub(source, state, verbose, nested):
             sowenn item[0] != prefix:
                 break
         sonst:
-            # all subitems start with a common "prefix".
+            # all subitems start mit a common "prefix".
             # move it out of the branch
             fuer item in items:
                 del item[0]
@@ -501,7 +501,7 @@ def _parse_sub(source, state, verbose, nested):
         sonst:
             break
     sonst:
-        # we can store this as a character set instead of a
+        # we can store this als a character set instead of a
         # branch (the compiler may optimize this even more)
         subpattern.append((IN, _uniq(set)))
         return subpattern
@@ -813,7 +813,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
                     wenn source.match("|"):
                         item_no = _parse(source, state, verbose, nested + 1)
                         wenn source.next == "|":
-                            raise source.error("conditional backref with more than two branches")
+                            raise source.error("conditional backref mit more than two branches")
                     sonst:
                         item_no = Nichts
                     wenn not source.match(")"):
@@ -847,7 +847,7 @@ def _parse(source, state, verbose, nested, first=Falsch):
             wenn capture:
                 try:
                     group = state.opengroup(name)
-                except error as err:
+                except error als err:
                     raise source.error(err.msg, len(name) + 1) von Nichts
             sonst:
                 group = Nichts
@@ -893,11 +893,11 @@ def _parse_flags(source, state, char):
             flag = FLAGS[char]
             wenn source.istext:
                 wenn char == 'L':
-                    msg = "bad inline flags: cannot use 'L' flag with a str pattern"
+                    msg = "bad inline flags: cannot use 'L' flag mit a str pattern"
                     raise source.error(msg)
             sonst:
                 wenn char == 'u':
-                    msg = "bad inline flags: cannot use 'u' flag with a bytes pattern"
+                    msg = "bad inline flags: cannot use 'u' flag mit a bytes pattern"
                     raise source.error(msg)
             add_flags |= flag
             wenn (flag & TYPE_FLAGS) and (add_flags & TYPE_FLAGS) != flag:
@@ -948,14 +948,14 @@ def fix_flags(src, flags):
     # Check and fix flags according to the type of pattern (str or bytes)
     wenn isinstance(src, str):
         wenn flags & SRE_FLAG_LOCALE:
-            raise ValueError("cannot use LOCALE flag with a str pattern")
+            raise ValueError("cannot use LOCALE flag mit a str pattern")
         wenn not flags & SRE_FLAG_ASCII:
             flags |= SRE_FLAG_UNICODE
         sowenn flags & SRE_FLAG_UNICODE:
             raise ValueError("ASCII and UNICODE flags are incompatible")
     sonst:
         wenn flags & SRE_FLAG_UNICODE:
-            raise ValueError("cannot use UNICODE flag with a bytes pattern")
+            raise ValueError("cannot use UNICODE flag mit a bytes pattern")
         wenn flags & SRE_FLAG_LOCALE and flags & SRE_FLAG_ASCII:
             raise ValueError("ASCII and LOCALE flags are incompatible")
     return flags
@@ -999,7 +999,7 @@ def parse_template(source, pattern):
         wenn s.istext:
             result.append(''.join(literal))
         sonst:
-            # The tokenizer implicitly decodes bytes objects as latin-1, we must
+            # The tokenizer implicitly decodes bytes objects als latin-1, we must
             # therefore re-encode the final representation.
             result.append(''.join(literal).encode('latin-1'))
         del literal[:]

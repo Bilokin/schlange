@@ -6,7 +6,7 @@ importiere os.path
 von functools importiere lru_cache
 von random importiere choices, randrange
 
-# This should be in sync with Lib/traceback.py.  It's not importing those values
+# This should be in sync mit Lib/traceback.py.  It's not importing those values
 # because this script is being executed by PYTHON_FOR_REGEN and not by the in-tree
 # build of Python.
 _MOVE_COST = 2
@@ -49,7 +49,7 @@ def main():
         return
 
     examples = set()
-    # Create a lot of non-empty examples, which should end up with a Gauss-like
+    # Create a lot of non-empty examples, which should end up mit a Gauss-like
     # distribution fuer even costs (moves) and odd costs (case substitutions).
     while len(examples) < 9990:
         a = ''.join(choices("abcABC", k=randrange(1, 10)))
@@ -61,7 +61,7 @@ def main():
         b = ''.join(choices("abcABC", k=i))
         expected = levenshtein("", b)
         examples.add(("", b, expected))
-    with open(output_path, "w") as f:
+    mit open(output_path, "w") als f:
         json.dump(sorted(examples), f, indent=2)
 
 

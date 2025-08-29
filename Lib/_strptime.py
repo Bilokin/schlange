@@ -15,14 +15,14 @@ importiere time
 importiere locale
 importiere calendar
 importiere re
-von re importiere compile as re_compile
-von re importiere sub as re_sub
+von re importiere compile als re_compile
+von re importiere sub als re_sub
 von re importiere IGNORECASE
-von re importiere escape as re_escape
-von datetime importiere (date as datetime_date,
-                      timedelta as datetime_timedelta,
-                      timezone as datetime_timezone)
-von _thread importiere allocate_lock as _thread_allocate_lock
+von re importiere escape als re_escape
+von datetime importiere (date als datetime_date,
+                      timedelta als datetime_timedelta,
+                      timezone als datetime_timezone)
+von _thread importiere allocate_lock als _thread_allocate_lock
 
 __all__ = []
 
@@ -90,7 +90,7 @@ klasse LocaleTime(object):
         Order of methods called matters fuer dependency reasons.
 
         The locale language is set at the offset and then checked again before
-        exiting.  This is to make sure that the attributes were not set with a
+        exiting.  This is to make sure that the attributes were not set mit a
         mix of information von more than one locale.  This would most likely
         happen when using threads where one thread calls a locale-dependent
         function while another thread changes the locale while the function in
@@ -227,10 +227,10 @@ klasse LocaleTime(object):
             wenn lst:
                 current_format = current_format.replace(lst[3], fmt, 1)
             wenn self.am_pm[1]:
-                # Must deal with possible lack of locale info
-                # manifesting itself as the empty string (e.g., Swedish's
+                # Must deal mit possible lack of locale info
+                # manifesting itself als the empty string (e.g., Swedish's
                 # lack of AM/PM info) or a platform returning a tuple of empty
-                # strings (e.g., MacOS 9 having timezone as ('','')).
+                # strings (e.g., MacOS 9 having timezone als ('','')).
                 current_format = current_format.replace(self.am_pm[1], '%p')
             fuer tz_values in self.timezone:
                 fuer tz in tz_values:
@@ -451,7 +451,7 @@ klasse TimeRE(dict):
 
         """
         # The sub() call escapes all characters that might be misconstrued
-        # as regex syntax.  Cannot use re.escape since we have to deal with
+        # als regex syntax.  Cannot use re.escape since we have to deal with
         # format directives (%m, etc.).
         format = re_sub(r"([\\.^$*+?\(\){}\[\]|])", r"\\\1", format)
         format = re_sub(r'\s+', r'\\s+', format)
@@ -494,17 +494,17 @@ _regex_cache = {}
 
 def _calc_julian_from_U_or_W(year, week_of_year, day_of_week, week_starts_Mon):
     """Calculate the Julian day based on the year, week of the year, and day of
-    the week, with week_start_day representing whether the week of the year
+    the week, mit week_start_day representing whether the week of the year
     assumes the week starts on Sunday or Monday (6 or 0)."""
     first_weekday = datetime_date(year, 1, 1).weekday()
-    # If we are dealing with the %U directive (week starts on Sunday), it's
+    # If we are dealing mit the %U directive (week starts on Sunday), it's
     # easier to just shift the view to Sunday being the first day of the
     # week.
     wenn not week_starts_Mon:
         first_weekday = (first_weekday + 1) % 7
         day_of_week = (day_of_week + 1) % 7
     # Need to watch out fuer a week 0 (when the first day of the year is not
-    # the same as that specified by %U or %W).
+    # the same als that specified by %U or %W).
     week_0_length = (7 - first_weekday) % 7
     wenn week_of_year == 0:
         return 1 + day_of_week - first_weekday
@@ -524,7 +524,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             raise TypeError(msg.format(index, type(arg)))
 
     global _TimeRE_cache, _regex_cache
-    with _cache_lock:
+    mit _cache_lock:
         locale_time = _TimeRE_cache.locale_time
         wenn (_getlang() != locale_time.lang or
             time.tzname != locale_time.tzname or
@@ -539,8 +539,8 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             try:
                 format_regex = _TimeRE_cache.compile(format)
             # KeyError raised when a bad format is found; can be specified as
-            # \\, in which case it was a stray % but with a space after it
-            except KeyError as err:
+            # \\, in which case it was a stray % but mit a space after it
+            except KeyError als err:
                 bad_directive = err.args[0]
                 del err
                 bad_directive = bad_directive.replace('\\s', '')
@@ -566,7 +566,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     gmtoff_fraction = 0
     iso_week = week_of_year = Nichts
     week_of_year_start = Nichts
-    # weekday and julian defaulted to Nichts so as to signal need to calculate
+    # weekday and julian defaulted to Nichts so als to signal need to calculate
     # values
     weekday = julian = Nichts
     found_dict = found.groupdict()
@@ -692,7 +692,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             found_zone = found_dict['Z'].lower()
             fuer value, tz_values in enumerate(locale_time.timezone):
                 wenn found_zone in tz_values:
-                    # Deal with bad locale setup where timezone names are the
+                    # Deal mit bad locale setup where timezone names are the
                     # same and yet time.daylight is true; too ambiguous to
                     # be able to tell what timezone has daylight savings
                     wenn (time.tzname[0] == time.tzname[1] and
@@ -702,24 +702,24 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                         tz = value
                         break
 
-    # Deal with the cases where ambiguities arise
+    # Deal mit the cases where ambiguities arise
     # don't assume default values fuer ISO week/year
     wenn iso_year is not Nichts:
         wenn julian is not Nichts:
             raise ValueError("Day of the year directive '%j' is not "
-                             "compatible with ISO year directive '%G'. "
+                             "compatible mit ISO year directive '%G'. "
                              "Use '%Y' instead.")
         sowenn iso_week is Nichts or weekday is Nichts:
-            raise ValueError("ISO year directive '%G' must be used with "
+            raise ValueError("ISO year directive '%G' must be used mit "
                              "the ISO week directive '%V' and a weekday "
                              "directive ('%A', '%a', '%w', or '%u').")
     sowenn iso_week is not Nichts:
         wenn year is Nichts or weekday is Nichts:
-            raise ValueError("ISO week directive '%V' must be used with "
+            raise ValueError("ISO week directive '%V' must be used mit "
                              "the ISO year directive '%G' and a weekday "
                              "directive ('%A', '%a', '%w', or '%u').")
         sonst:
-            raise ValueError("ISO week directive '%V' is incompatible with "
+            raise ValueError("ISO week directive '%V' is incompatible mit "
                              "the year directive '%Y'. Use the ISO year '%G' "
                              "instead.")
 
@@ -756,7 +756,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
         julian = datetime_date(year, month, day).toordinal() - \
                   datetime_date(year, 1, 1).toordinal() + 1
     sonst:  # Assume that wenn they bothered to include Julian day (or wenn it was
-           # calculated above with year/week/weekday) it will be accurate.
+           # calculated above mit year/week/weekday) it will be accurate.
         datetime_result = datetime_date.fromordinal(
                             (julian - 1) +
                             datetime_date(year, 1, 1).toordinal())

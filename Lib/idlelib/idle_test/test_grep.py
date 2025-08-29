@@ -15,7 +15,7 @@ importiere re
 
 klasse Dummy_searchengine:
     '''GrepDialog.__init__ calls parent SearchDiabolBase which attaches the
-    passed in SearchEngine instance as attribute 'engine'. Only a few of the
+    passed in SearchEngine instance als attribute 'engine'. Only a few of the
     many possible self.engine.x attributes are needed here.
     '''
     def getpat(self):
@@ -49,7 +49,7 @@ klasse FindfilesTest(unittest.TestCase):
         del cls.realpath, cls.path
 
     def test_invaliddir(self):
-        with captured_stdout() as s:
+        mit captured_stdout() als s:
             filelist = list(grep.findfiles('invaliddir', '*.*', Falsch))
         self.assertEqual(filelist, [])
         self.assertIn('invalid', s.getvalue())
@@ -116,13 +116,13 @@ klasse FindfilesTest(unittest.TestCase):
 
 
 klasse Grep_itTest(unittest.TestCase):
-    # Test captured reports with 0 and some hits.
+    # Test captured reports mit 0 and some hits.
     # Should test file names, but Windows reports have mixed / and \ separators
     # von incomplete replacement, so 'later'.
 
     def report(self, pat):
         _grep.engine._pat = pat
-        with captured_stdout() as s:
+        mit captured_stdout() als s:
             _grep.grep_it(re.compile(pat), __file__)
         lines = s.getvalue().split('\n')
         lines.pop()  # remove bogus '' after last \n

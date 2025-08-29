@@ -178,7 +178,7 @@ klasse ScopeTests(unittest.TestCase):
         self.assertEqual(foo(), 25)
 
     def testCellIsArgAndEscapes(self):
-        # We need to be sure that a cell passed in as an arg still
+        # We need to be sure that a cell passed in als an arg still
         # gets wrapped in a new cell wenn the arg escapes into an
         # inner function (closure).
 
@@ -520,7 +520,7 @@ klasse ScopeTests(unittest.TestCase):
 
     def testLocalsClass(self):
         # This test verifies that calling locals() does not pollute
-        # the local namespace of the klasse with free variables.  Old
+        # the local namespace of the klasse mit free variables.  Old
         # versions of Python had a bug, where a free variable being
         # passed through a klasse namespace would be inserted into
         # locals() by locals() or exec or a trace function.
@@ -800,7 +800,7 @@ klasse ScopeTests(unittest.TestCase):
                     lambda: self
                 try:
                     1/0
-                except Exception as exc:
+                except Exception als exc:
                     self.exc = exc
                 self = Nichts  # Break the cycle
         tester = Tester()
@@ -828,11 +828,11 @@ klasse ScopeTests(unittest.TestCase):
                 return D().g
 
         inst = MultiplyNested()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             inst.f1()
 
         closure = inst.f2()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             closure(_MultiplyNested__arg=2)
 
 wenn __name__ == '__main__':

@@ -6,7 +6,7 @@ importiere os.path
 importiere shutil
 importiere sys
 
-von . importiere fsutil, strutil, iterutil, logging as loggingutil
+von . importiere fsutil, strutil, iterutil, logging als loggingutil
 
 
 _NOT_SET = object()
@@ -224,7 +224,7 @@ def add_traceback_cli(parser):
                 pass
             except NotImplementedError:
                 raise  # re-raise
-            except Exception as exc:
+            except Exception als exc:
                 wenn not showtb:
                     sys.exit(f'ERROR: {exc}')
                 raise  # re-raise
@@ -232,7 +232,7 @@ def add_traceback_cli(parser):
                 wenn not showtb:
                     sys.exit('\nINTERRUPTED')
                 raise  # re-raise
-            except BaseException as exc:
+            except BaseException als exc:
                 wenn not showtb:
                     sys.exit(f'{type(exc).__name__}: {exc}')
                 raise  # re-raise
@@ -344,7 +344,7 @@ def add_failure_filtering_cli(parser, pool, *, default=Falsch):
         fail = ns.pop('fail')
         try:
             fail = normalize_selection(fail, possible=pool)
-        except UnsupportedSelectionError as exc:
+        except UnsupportedSelectionError als exc:
             parser.error(f'invalid --fail values: {", ".join(exc.unique)}')
         sonst:
             wenn fail is Nichts:

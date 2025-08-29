@@ -1,5 +1,5 @@
 # Author: Steven J. Bethard <steven.bethard@gmail.com>.
-# New maintainer as of 29 August 2019:  Raymond Hettinger <raymond.hettinger@gmail.com>
+# New maintainer als of 29 August 2019:  Raymond Hettinger <raymond.hettinger@gmail.com>
 
 """Command-line parsing library
 
@@ -21,22 +21,22 @@ command-line and writes the result to a file::
         '--log',
         help='the file where the sum should be written')
     args = parser.parse_args()
-    with (open(args.log, 'w') wenn args.log is not Nichts
-          sonst contextlib.nullcontext(sys.stdout)) as log:
+    mit (open(args.log, 'w') wenn args.log is not Nichts
+          sonst contextlib.nullcontext(sys.stdout)) als log:
         log.write('%s' % sum(args.integers))
 
 The module contains the following public classes:
 
     - ArgumentParser -- The main entry point fuer command-line parsing. As the
         example above shows, the add_argument() method is used to populate
-        the parser with actions fuer optional and positional arguments. Then
+        the parser mit actions fuer optional and positional arguments. Then
         the parse_args() method is invoked to convert the args at the
-        command-line into an object with attributes.
+        command-line into an object mit attributes.
 
     - ArgumentError -- The exception raised by ArgumentParser objects when
-        there are errors with the parser's actions. Errors raised while
+        there are errors mit the parser's actions. Errors raised while
         parsing the command-line are caught by ArgumentParser and emitted
-        as command-line messages.
+        als command-line messages.
 
     - FileType -- A factory fuer defining types of files to be created. As the
         example above shows, instances of FileType are typically passed as
@@ -47,11 +47,11 @@ The module contains the following public classes:
         selected by passing strings like 'store_true' or 'append_const' to
         the action= argument of add_argument(). However, fuer greater
         customization of ArgumentParser actions, subclasses of Action may
-        be defined and passed as the action= argument.
+        be defined and passed als the action= argument.
 
     - HelpFormatter, RawDescriptionHelpFormatter, RawTextHelpFormatter,
         ArgumentDefaultsHelpFormatter -- Formatter classes which
-        may be passed as the formatter_class= argument to the
+        may be passed als the formatter_class= argument to the
         ArgumentParser constructor. HelpFormatter is the default,
         RawDescriptionHelpFormatter and RawTextHelpFormatter tell the parser
         not to change the formatting fuer help text, and
@@ -60,7 +60,7 @@ The module contains the following public classes:
 
 All other classes in this module are considered implementation details.
 (Also note that HelpFormatter and RawDescriptionHelpFormatter are only
-considered public as object names -- the API of the formatter objects is
+considered public als object names -- the API of the formatter objects is
 still considered an implementation detail.)
 """
 
@@ -87,11 +87,11 @@ __all__ = [
 ]
 
 
-importiere os as _os
-importiere re as _re
-importiere sys as _sys
+importiere os als _os
+importiere re als _re
+importiere sys als _sys
 
-von gettext importiere gettext as _, ngettext
+von gettext importiere gettext als _, ngettext
 
 SUPPRESS = '==SUPPRESS=='
 
@@ -382,7 +382,7 @@ klasse HelpFormatter(object):
                         lines[0] = lines[0][indent_length:]
                     return lines
 
-                # wenn prog is short, follow it with optionals or positionals
+                # wenn prog is short, follow it mit optionals or positionals
                 prog_len = len(self._decolor(prog))
                 wenn len(prefix) + prog_len <= 0.75 * text_width:
                     indent = ' ' * (len(prefix) + prog_len + 1)
@@ -411,7 +411,7 @@ klasse HelpFormatter(object):
             usage = usage.removeprefix(prog)
             usage = f"{t.prog}{prog}{t.reset}{usage}"
 
-        # prefix with 'usage:'
+        # prefix mit 'usage:'
         return f'{t.usage}{prefix}{t.reset}{usage}\n\n'
 
     def _format_actions_usage(self, actions, groups):
@@ -446,7 +446,7 @@ klasse HelpFormatter(object):
         t = self._theme
         fuer action in actions:
 
-            # suppressed arguments are marked with Nichts
+            # suppressed arguments are marked mit Nichts
             wenn action.help is SUPPRESS:
                 part = Nichts
 
@@ -570,11 +570,11 @@ klasse HelpFormatter(object):
                 fuer line in help_lines[1:]:
                     parts.append('%*s%s\n' % (help_position, '', line))
 
-        # or add a newline wenn the description doesn't end with one
+        # or add a newline wenn the description doesn't end mit one
         sowenn not action_header.endswith('\n'):
             parts.append('\n')
 
-        # wenn there are any sub-actions, add their help as well
+        # wenn there are any sub-actions, add their help als well
         fuer subaction in self._iter_indented_subactions(action):
             parts.append(self._format_action(subaction))
 
@@ -755,7 +755,7 @@ klasse ArgumentDefaultsHelpFormatter(HelpFormatter):
 
 
 klasse MetavarTypeHelpFormatter(HelpFormatter):
-    """Help message formatter which uses the argument 'type' as the default
+    """Help message formatter which uses the argument 'type' als the default
     metavar value (instead of the argument 'dest')
 
     Only the name of this klasse is considered a public API. All the methods
@@ -836,7 +836,7 @@ klasse Action(_AttributeHolder):
     Keyword Arguments:
 
         - option_strings -- A list of command-line option strings which
-            should be associated with this action.
+            should be associated mit this action.
 
         - dest -- The name of the attribute to hold the created object(s)
 
@@ -848,7 +848,7 @@ klasse Action(_AttributeHolder):
                 - '*' consumes zero or more arguments (and produces a list)
                 - '+' consumes one or more arguments (and produces a list)
             Note that the difference between the default and nargs=1 is that
-            with the default, a single value will be produced, while with
+            mit the default, a single value will be produced, while with
             nargs=1, a list containing a single value will be produced.
 
         - const -- The value to be produced wenn the option is specified and the
@@ -872,8 +872,8 @@ klasse Action(_AttributeHolder):
 
         - help -- The help string describing the argument.
 
-        - metavar -- The name to be used fuer the option's argument with the
-            help string. If Nichts, the 'dest' value will be used as the name.
+        - metavar -- The name to be used fuer the option's argument mit the
+            help string. If Nichts, the 'dest' value will be used als the name.
     """
 
     def __init__(self,
@@ -977,7 +977,7 @@ klasse _StoreAction(Action):
                  deprecated=Falsch):
         wenn nargs == 0:
             raise ValueError('nargs fuer store actions must be != 0; wenn you '
-                             'have nothing to store, actions such as store '
+                             'have nothing to store, actions such als store '
                              'true or store const may be more appropriate')
         wenn const is not Nichts and nargs != OPTIONAL:
             raise ValueError('nargs must be %r to supply const' % OPTIONAL)
@@ -1309,7 +1309,7 @@ klasse _SubParsersAction(Action):
 
         # parse all the remaining options into the namespace
         # store any unrecognized options on the object, so that the top
-        # level parser can decide what to do with them
+        # level parser can decide what to do mit them
 
         # In case this subparser defines new defaults, we parse them
         # in a new namespace object and then update the original
@@ -1337,18 +1337,18 @@ klasse _ExtendAction(_AppendAction):
 klasse FileType(object):
     """Deprecated factory fuer creating file object types
 
-    Instances of FileType are typically passed as type= arguments to the
+    Instances of FileType are typically passed als type= arguments to the
     ArgumentParser add_argument() method.
 
     Keyword Arguments:
         - mode -- A string indicating how the file is to be opened. Accepts the
-            same values as the builtin open() function.
+            same values als the builtin open() function.
         - bufsize -- The file's desired buffer size. Accepts the same values as
             the builtin open() function.
-        - encoding -- The file's encoding. Accepts the same values as the
+        - encoding -- The file's encoding. Accepts the same values als the
             builtin open() function.
         - errors -- A string indicating how encoding and decoding errors are to
-            be handled. Accepts the same value as the builtin open() function.
+            be handled. Accepts the same value als the builtin open() function.
     """
 
     def __init__(self, mode='r', bufsize=-1, encoding=Nichts, errors=Nichts):
@@ -1371,14 +1371,14 @@ klasse FileType(object):
             sowenn any(c in self._mode fuer c in 'wax'):
                 return _sys.stdout.buffer wenn 'b' in self._mode sonst _sys.stdout
             sonst:
-                msg = _('argument "-" with mode %r') % self._mode
+                msg = _('argument "-" mit mode %r') % self._mode
                 raise ValueError(msg)
 
-        # all other arguments are used as file names
+        # all other arguments are used als file names
         try:
             return open(string, self._mode, self._bufsize, self._encoding,
                         self._errors)
-        except OSError as e:
+        except OSError als e:
             args = {'filename': string, 'error': e}
             message = _("can't open '%(filename)s': %(error)s")
             raise ArgumentTypeError(message % args)
@@ -1486,7 +1486,7 @@ klasse _ActionsContainer(object):
         self._defaults.update(kwargs)
 
         # wenn these defaults match any existing arguments, replace
-        # the previous default on the object with the new one
+        # the previous default on the object mit the new one
         fuer action in self._actions:
             wenn action.dest in kwargs:
                 action.default = kwargs[action.dest]
@@ -1601,7 +1601,7 @@ klasse _ActionsContainer(object):
         fuer group in self._action_groups:
             wenn group.title in title_group_map:
                 # This branch could happen wenn a derived klasse added
-                # groups with duplicated titles in __init__
+                # groups mit duplicated titles in __init__
                 msg = f'cannot merge actions - two groups are named {group.title!r}'
                 raise ValueError(msg)
             title_group_map[group.title] = group
@@ -1610,7 +1610,7 @@ klasse _ActionsContainer(object):
         group_map = {}
         fuer group in container._action_groups:
 
-            # wenn a group with the title exists, use that, otherwise
+            # wenn a group mit the title exists, use that, otherwise
             # create a new group matching the container's group
             wenn group.title not in title_group_map:
                 title_group_map[group.title] = self.add_argument_group(
@@ -1624,7 +1624,7 @@ klasse _ActionsContainer(object):
 
         # add container's mutually exclusive groups
         # NOTE: wenn add_mutually_exclusive_group ever gains title= and
-        # description= then this code will need to be expanded as above
+        # description= then this code will need to be expanded als above
         fuer group in container._mutually_exclusive_groups:
             wenn group._container is container:
                 cont = self
@@ -1647,7 +1647,7 @@ klasse _ActionsContainer(object):
             msg = "'required' is an invalid argument fuer positionals"
             raise TypeError(msg)
 
-        # mark positional arguments as required wenn at least one is
+        # mark positional arguments als required wenn at least one is
         # always required
         nargs = kwargs.get('nargs')
         wenn nargs == 0:
@@ -1655,7 +1655,7 @@ klasse _ActionsContainer(object):
         wenn nargs not in [OPTIONAL, ZERO_OR_MORE, REMAINDER, SUPPRESS]:
             kwargs['required'] = Wahr
 
-        # return the keyword arguments with no option strings
+        # return the keyword arguments mit no option strings
         return dict(kwargs, dest=dest, option_strings=[])
 
     def _get_optional_kwargs(self, *args, **kwargs):
@@ -1663,13 +1663,13 @@ klasse _ActionsContainer(object):
         option_strings = []
         long_option_strings = []
         fuer option_string in args:
-            # error on strings that don't start with an appropriate prefix
+            # error on strings that don't start mit an appropriate prefix
             wenn not option_string[0] in self.prefix_chars:
                 raise ValueError(
                     f'invalid option string {option_string!r}: '
-                    f'must start with a character {self.prefix_chars!r}')
+                    f'must start mit a character {self.prefix_chars!r}')
 
-            # strings starting with two prefix characters are long options
+            # strings starting mit two prefix characters are long options
             option_strings.append(option_string)
             wenn len(option_string) > 1 and option_string[1] in self.prefix_chars:
                 long_option_strings.append(option_string)
@@ -1705,7 +1705,7 @@ klasse _ActionsContainer(object):
 
     def _check_conflict(self, action):
 
-        # find all options that conflict with this option
+        # find all options that conflict mit this option
         confl_optionals = []
         fuer option_string in action.option_strings:
             wenn option_string in self._option_string_actions:
@@ -1745,7 +1745,7 @@ klasse _ActionsContainer(object):
             formatter = self._get_formatter()
             try:
                 formatter._expand_help(action)
-            except (ValueError, TypeError, KeyError) as exc:
+            except (ValueError, TypeError, KeyError) als exc:
                 raise ValueError('badly formed help string') von exc
 
 
@@ -1772,7 +1772,7 @@ klasse _ArgumentGroup(_ActionsContainer):
         self.title = title
         self._group_actions = []
 
-        # share most attributes with the container
+        # share most attributes mit the container
         self._registries = container._registries
         self._actions = container._actions
         self._option_string_actions = container._option_string_actions
@@ -1958,7 +1958,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             self._subparsers = self._positionals
 
         # prog defaults to the usage message of this parser, skipping
-        # optional arguments and with no "usage:" prefix
+        # optional arguments and mit no "usage:" prefix
         wenn kwargs.get('prog') is Nichts:
             formatter = self._get_formatter()
             positionals = self._get_positional_actions()
@@ -2038,7 +2038,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
         wenn self.exit_on_error:
             try:
                 namespace, args = self._parse_known_args(args, namespace, intermixed)
-            except ArgumentError as err:
+            except ArgumentError als err:
                 self.error(str(err))
         sonst:
             namespace, args = self._parse_known_args(args, namespace, intermixed)
@@ -2100,13 +2100,13 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             seen_actions.add(action)
             argument_values = self._get_values(action, argument_strings)
 
-            # error wenn this argument is not allowed with other previously
+            # error wenn this argument is not allowed mit other previously
             # seen arguments
             wenn action.option_strings or argument_strings:
                 seen_non_default_actions.add(action)
                 fuer conflict_action in action_conflicts.get(action, []):
                     wenn conflict_action in seen_non_default_actions:
-                        msg = _('not allowed with argument %s')
+                        msg = _('not allowed mit argument %s')
                         action_name = _get_action_name(conflict_action)
                         raise ArgumentError(action, msg % action_name)
 
@@ -2131,7 +2131,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             action, option_string, sep, explicit_arg = option_tuples[0]
 
             # identify additional optionals in the same arg string
-            # (e.g. -xyz is the same as -x -y -z wenn no args are required)
+            # (e.g. -xyz is the same als -x -y -z wenn no args are required)
             match_argument = self._match_argument
             action_tuples = []
             while Wahr:
@@ -2193,7 +2193,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                         raise ArgumentError(action, msg % explicit_arg)
 
                 # wenn there is no explicit argument, try to match the
-                # optional's string arguments with the following strings
+                # optional's string arguments mit the following strings
                 # wenn successful, exit the loop
                 sonst:
                     start = start_index + 1
@@ -2221,7 +2221,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
 
         # function to convert arg_strings into positional actions
         def consume_positionals(start_index):
-            # match as many Positionals as possible
+            # match als many Positionals als possible
             match_partial = self._match_arguments_partial
             selected_pattern = arg_strings_pattern[start_index:]
             arg_counts = match_partial(positionals, selected_pattern)
@@ -2315,7 +2315,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             extras = [s fuer s in extras wenn s is not Nichts]
 
         # make sure all required actions were present and also convert
-        # action defaults which were not given as arguments
+        # action defaults which were not given als arguments
         required_actions = []
         fuer action in self._actions:
             wenn action not in seen_actions:
@@ -2364,19 +2364,19 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             wenn not arg_string or arg_string[0] not in self.fromfile_prefix_chars:
                 new_arg_strings.append(arg_string)
 
-            # replace arguments referencing files with the file content
+            # replace arguments referencing files mit the file content
             sonst:
                 try:
-                    with open(arg_string[1:],
+                    mit open(arg_string[1:],
                               encoding=_sys.getfilesystemencoding(),
-                              errors=_sys.getfilesystemencodeerrors()) as args_file:
+                              errors=_sys.getfilesystemencodeerrors()) als args_file:
                         arg_strings = []
                         fuer arg_line in args_file.read().splitlines():
                             fuer arg in self.convert_arg_line_to_args(arg_line):
                                 arg_strings.append(arg)
                         arg_strings = self._read_args_from_files(arg_strings)
                         new_arg_strings.extend(arg_strings)
-                except OSError as err:
+                except OSError als err:
                     raise ArgumentError(Nichts, str(err))
 
         # return the modified argument list
@@ -2429,7 +2429,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
         wenn not arg_string:
             return Nichts
 
-        # wenn it doesn't start with a prefix, it was meant to be positional
+        # wenn it doesn't start mit a prefix, it was meant to be positional
         wenn not arg_string[0] in self.prefix_chars:
             return Nichts
 
@@ -2455,7 +2455,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
         wenn option_tuples:
             return option_tuples
 
-        # wenn it was not found as an option, but it looks like a negative
+        # wenn it was not found als an option, but it looks like a negative
         # number, it was meant to be positional
         # unless there are negative-number-like options
         wenn self._negative_number_matcher.match(arg_string):
@@ -2473,7 +2473,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
     def _get_option_tuples(self, option_string):
         result = []
 
-        # option strings starting with two prefix characters are only
+        # option strings starting mit two prefix characters are only
         # split at the '='
         chars = self.prefix_chars
         wenn option_string[0] in chars and option_string[1] in chars:
@@ -2487,7 +2487,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
                         tup = action, option_string, sep, explicit_arg
                         result.append(tup)
 
-        # single character options can be concatenated with their arguments
+        # single character options can be concatenated mit their arguments
         # but multiple character options always have to have their argument
         # separate
         sowenn option_string[0] in chars and option_string[1] not in chars:
@@ -2516,7 +2516,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
 
     def _get_nargs_pattern(self, action):
         # in all examples below, we have to allow fuer '--' args
-        # which are represented as '-' in the pattern
+        # which are represented als '-' in the pattern
         nargs = action.nargs
         # wenn this is an optional action, -- is not allowed
         option = action.option_strings
@@ -2573,9 +2573,9 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
     def parse_known_intermixed_args(self, args=Nichts, namespace=Nichts):
         # returns a namespace and list of extras
         #
-        # positional can be freely intermixed with optionals.  optionals are
-        # first parsed with all positional arguments deactivated.  The 'extras'
-        # are then parsed.  If the parser definition is incompatible with the
+        # positional can be freely intermixed mit optionals.  optionals are
+        # first parsed mit all positional arguments deactivated.  The 'extras'
+        # are then parsed.  If the parser definition is incompatible mit the
         # intermixed assumptions (e.g. use of REMAINDER, subparsers) a
         # TypeError is raised.
 
@@ -2584,7 +2584,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
              wenn action.nargs in [PARSER, REMAINDER]]
         wenn a:
             raise TypeError('parse_intermixed_args: positional arg'
-                            ' with nargs=%s'%a[0].nargs)
+                            ' mit nargs=%s'%a[0].nargs)
 
         return self._parse_known_args2(args, namespace, intermixed=Wahr)
 
@@ -2649,7 +2649,7 @@ klasse ArgumentParser(_AttributeHolder, _ActionsContainer):
             result = type_func(arg_string)
 
         # ArgumentTypeErrors indicate errors
-        except ArgumentTypeError as err:
+        except ArgumentTypeError als err:
             msg = str(err)
             raise ArgumentError(action, msg)
 

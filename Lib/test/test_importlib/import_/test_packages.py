@@ -9,15 +9,15 @@ klasse ParentModuleTests:
     """Importing a submodule should importiere the parent modules."""
 
     def test_import_parent(self):
-        with util.mock_spec('pkg.__init__', 'pkg.module') as mock:
-            with util.import_state(meta_path=[mock]):
+        mit util.mock_spec('pkg.__init__', 'pkg.module') als mock:
+            mit util.import_state(meta_path=[mock]):
                 module = self.__import__('pkg.module')
                 self.assertIn('pkg', sys.modules)
 
     def test_bad_parent(self):
-        with util.mock_spec('pkg.module') as mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises(ImportError) as cm:
+        mit util.mock_spec('pkg.module') als mock:
+            mit util.import_state(meta_path=[mock]):
+                mit self.assertRaises(ImportError) als cm:
                     self.__import__('pkg.module')
                 self.assertEqual(cm.exception.name, 'pkg')
 
@@ -27,13 +27,13 @@ klasse ParentModuleTests:
             1/0
         mock = util.mock_spec('pkg.__init__', 'pkg.module',
                                  module_code={'pkg': __init__})
-        with mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises(ZeroDivisionError):
+        mit mock:
+            mit util.import_state(meta_path=[mock]):
+                mit self.assertRaises(ZeroDivisionError):
                     self.__import__('pkg')
                 self.assertNotIn('pkg', sys.modules)
                 self.assertIn('pkg.module', sys.modules)
-                with self.assertRaises(ZeroDivisionError):
+                mit self.assertRaises(ZeroDivisionError):
                     self.__import__('pkg.module')
                 self.assertNotIn('pkg', sys.modules)
                 self.assertIn('pkg.module', sys.modules)
@@ -44,14 +44,14 @@ klasse ParentModuleTests:
             1/0
         mock = util.mock_spec('pkg.__init__', 'pkg.module',
                                  module_code={'pkg': __init__})
-        with mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+        mit mock:
+            mit util.import_state(meta_path=[mock]):
+                mit self.assertRaises((ZeroDivisionError, ImportError)):
                     # This raises ImportError on the "from . importiere module"
                     # line, not sure why.
                     self.__import__('pkg')
                 self.assertNotIn('pkg', sys.modules)
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+                mit self.assertRaises((ZeroDivisionError, ImportError)):
                     self.__import__('pkg.module')
                 self.assertNotIn('pkg', sys.modules)
                 # XXX Falsch
@@ -64,14 +64,14 @@ klasse ParentModuleTests:
         mock = util.mock_spec('pkg.__init__', 'pkg.subpkg.__init__',
                                  'pkg.subpkg.module',
                                  module_code={'pkg.subpkg': __init__})
-        with mock:
-            with util.import_state(meta_path=[mock]):
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+        mit mock:
+            mit util.import_state(meta_path=[mock]):
+                mit self.assertRaises((ZeroDivisionError, ImportError)):
                     # This raises ImportError on the "from ..subpkg importiere module"
                     # line, not sure why.
                     self.__import__('pkg.subpkg')
                 self.assertNotIn('pkg.subpkg', sys.modules)
-                with self.assertRaises((ZeroDivisionError, ImportError)):
+                mit self.assertRaises((ZeroDivisionError, ImportError)):
                     self.__import__('pkg.subpkg.module')
                 self.assertNotIn('pkg.subpkg', sys.modules)
                 # XXX Falsch
@@ -80,12 +80,12 @@ klasse ParentModuleTests:
     def test_module_not_package(self):
         # Try to importiere a submodule von a non-package should raise ImportError.
         assert not hasattr(sys, '__path__')
-        with self.assertRaises(ImportError) as cm:
+        mit self.assertRaises(ImportError) als cm:
             self.__import__('sys.no_submodules_here')
         self.assertEqual(cm.exception.name, 'sys.no_submodules_here')
 
     def test_module_not_package_but_side_effects(self):
-        # If a module injects something into sys.modules as a side-effect, then
+        # If a module injects something into sys.modules als a side-effect, then
         # pick up on that fact.
         name = 'mod'
         subname = name + '.b'
@@ -93,8 +93,8 @@ klasse ParentModuleTests:
             sys.modules[subname] = 'total bunk'
         mock_spec = util.mock_spec('mod',
                                          module_code={'mod': module_injection})
-        with mock_spec as mock:
-            with util.import_state(meta_path=[mock]):
+        mit mock_spec als mock:
+            mit util.import_state(meta_path=[mock]):
                 try:
                     submodule = self.__import__(subname)
                 finally:

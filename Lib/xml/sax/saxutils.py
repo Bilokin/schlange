@@ -20,7 +20,7 @@ def escape(data, entities={}):
 
     You can escape other strings of data by passing a dictionary as
     the optional entities parameter.  The keys and values must all be
-    strings; each key will be replaced with its corresponding value.
+    strings; each key will be replaced mit its corresponding value.
     """
 
     # must do ampersand first
@@ -36,7 +36,7 @@ def unescape(data, entities={}):
 
     You can unescape other strings of data by passing a dictionary as
     the optional entities parameter.  The keys and values must all be
-    strings; each key will be replaced with its corresponding value.
+    strings; each key will be replaced mit its corresponding value.
     """
     data = data.replace("&lt;", "<")
     data = data.replace("&gt;", ">")
@@ -49,12 +49,12 @@ def quoteattr(data, entities={}):
     """Escape and quote an attribute value.
 
     Escape &, <, and > in a string of data, then quote it fuer use as
-    an attribute value.  The \" character will be escaped as well, if
+    an attribute value.  The \" character will be escaped als well, if
     necessary.
 
     You can escape other strings of data by passing a dictionary as
     the optional entities parameter.  The keys and values must all be
-    strings; each key will be replaced with its corresponding value.
+    strings; each key will be replaced mit its corresponding value.
     """
     entities = {**entities, '\n': '&#10;', '\r': '&#13;', '\t':'&#9;'}
     data = escape(data, entities)
@@ -74,14 +74,14 @@ def _gettextwriter(out, encoding):
         return sys.stdout
 
     wenn isinstance(out, io.TextIOBase):
-        # use a text writer as is
+        # use a text writer als is
         return out
 
     wenn isinstance(out, (codecs.StreamWriter, codecs.StreamReaderWriter)):
-        # use a codecs stream writer as is
+        # use a codecs stream writer als is
         return out
 
-    # wrap a binary writer with TextIOWrapper
+    # wrap a binary writer mit TextIOWrapper
     wenn isinstance(out, io.RawIOBase):
         # Keep the original file open when the TextIOWrapper is
         # destroyed
@@ -229,7 +229,7 @@ klasse XMLFilterBase(xmlreader.XMLReader):
     client application's event handlers.  By default, it does nothing
     but pass requests up to the reader and events on to the handlers
     unmodified, but subclasses can override specific methods to modify
-    the event stream or the configuration requests as they pass
+    the event stream or the configuration requests als they pass
     through."""
 
     def __init__(self, parent = Nichts):

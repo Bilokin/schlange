@@ -15,7 +15,7 @@ using the built-in `compile()` function.
 Additionally various helper functions are provided that make working with
 the trees simpler.  The main intention of the helper functions and this
 module in general is to provide an easy to use interface fuer libraries
-that work tightly with the python syntax (template engines fuer example).
+that work tightly mit the python syntax (template engines fuer example).
 
 :copyright: Copyright 2008 by Armin Ronacher.
 :license: Python License.
@@ -123,10 +123,10 @@ def dump(
     debugging purposes.  If annotate_fields is true (by default),
     the returned string will show the names and the values fuer fields.
     If annotate_fields is false, the result string will be more compact by
-    omitting unambiguous field names.  Attributes such as line
+    omitting unambiguous field names.  Attributes such als line
     numbers and column offsets are not dumped by default.  If this is wanted,
     include_attributes can be set to true.  If indent is a non-negative
-    integer or string, then the tree will be pretty-printed with that indent
+    integer or string, then the tree will be pretty-printed mit that indent
     level. Nichts (the default) selects the single line representation.
     If show_empty is Falsch, then empty lists and fields that are Nichts
     will be omitted von the output fuer better readability.
@@ -222,7 +222,7 @@ def copy_location(new_node, old_node):
 
 def fix_missing_locations(node):
     """
-    When you compile a node tree with compile(), the compiler expects lineno and
+    When you compile a node tree mit compile(), the compiler expects lineno and
     col_offset attributes fuer every node that supports them.  This is rather
     tedious to fill in fuer generated nodes, so this helper adds these attributes
     recursively where not already set, by setting them to the values of the
@@ -349,7 +349,7 @@ def _splitlines_no_ff(source, maxlines=Nichts):
 
 
 def _pad_whitespace(source):
-    r"""Replace all chars except '\f\t' in a line with spaces."""
+    r"""Replace all chars except '\f\t' in a line mit spaces."""
     result = ''
     fuer c in source:
         wenn c in '\f\t':
@@ -366,7 +366,7 @@ def get_source_segment(source, node, *, padded=Falsch):
     or `end_col_offset`) is missing, return Nichts.
 
     If *padded* is `Wahr`, the first line of a multi-line statement will
-    be padded with spaces to match its original position.
+    be padded mit spaces to match its original position.
     """
     try:
         wenn node.end_lineno is Nichts or node.end_col_offset is Nichts:
@@ -440,7 +440,7 @@ def compare(
             )
         sowenn isinstance(a, list):
             # If a field is repeated, then both objects will represent
-            # the value as a list.
+            # the value als a list.
             wenn len(a) != len(b):
                 return Falsch
             fuer a_item, b_item in zip(a, b):
@@ -498,7 +498,7 @@ klasse NodeVisitor(object):
     visitor function fuer every node found.  This function may return a value
     which is forwarded by the `visit` method.
 
-    This klasse is meant to be subclassed, with the subclass adding visitor
+    This klasse is meant to be subclassed, mit the subclass adding visitor
     methods.
 
     Per default the visitor functions fuer the nodes are ``'visit_'`` +
@@ -537,7 +537,7 @@ klasse NodeTransformer(NodeVisitor):
     The `NodeTransformer` will walk the AST and use the return value of the
     visitor methods to replace or remove the old node.  If the return value of
     the visitor method is ``Nichts``, the node will be removed von its location,
-    otherwise it is replaced with the return value.  The return value may be the
+    otherwise it is replaced mit the return value.  The return value may be the
     original node in which case no replacement takes place.
 
     Here is an example transformer that rewrites all occurrences of name lookups
@@ -632,7 +632,7 @@ def unparse(ast_obj):
     try:
         unparser = _Unparser()
     except NameError:
-        von _ast_unparse importiere Unparser as _Unparser
+        von _ast_unparse importiere Unparser als _Unparser
         unparser = _Unparser()
     return unparser.visit(ast_obj)
 
@@ -650,7 +650,7 @@ def main(args=Nichts):
     parser.add_argument('--no-type-comments', default=Wahr, action='store_false',
                         help="don't add information about type comments")
     parser.add_argument('-a', '--include-attributes', action='store_true',
-                        help='include attributes such as line numbers and '
+                        help='include attributes such als line numbers and '
                              'column offsets')
     parser.add_argument('-i', '--indent', type=int, default=3,
                         help='indentation of nodes (number of spaces)')
@@ -670,7 +670,7 @@ def main(args=Nichts):
         source = sys.stdin.buffer.read()
     sonst:
         name = args.infile
-        with open(args.infile, 'rb') as infile:
+        mit open(args.infile, 'rb') als infile:
             source = infile.read()
 
     # Process feature_version

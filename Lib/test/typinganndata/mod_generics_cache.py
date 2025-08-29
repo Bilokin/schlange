@@ -18,7 +18,7 @@ klasse B(Generic[T]):
 
     my_inner_a1: 'B.A'
     my_inner_a2: A
-    my_outer_a: 'A'  # unless somebody calls get_type_hints with localns=B.__dict__
+    my_outer_a: 'A'  # unless somebody calls get_type_hints mit localns=B.__dict__
 
 type Alias = int
 OldStyle = TypeAliasType("OldStyle", int)

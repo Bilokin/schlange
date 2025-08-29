@@ -16,14 +16,14 @@ klasse FormatTestsBase:
 
     @property
     def data(self):
-        """Parsed install details file data, as a Python object."""
+        """Parsed install details file data, als a Python object."""
         return json.loads(self.contents)
 
     def key(self, name):
         """Helper to fetch subsection entries.
 
         It takes the entry name, allowing the usage of a dot to separate the
-        different subsection names (eg. specifying 'a.b.c' as the key will
+        different subsection names (eg. specifying 'a.b.c' als the key will
         return the value of self.data['a']['b']['c']).
         """
         value = self.data
@@ -37,7 +37,7 @@ klasse FormatTestsBase:
     def test_top_level_container(self):
         self.assertIsInstance(self.data, dict)
         fuer key, value in self.data.items():
-            with self.subTest(key=key):
+            mit self.subTest(key=key):
                 wenn key in ('schema_version', 'base_prefix', 'base_interpreter', 'platform'):
                     self.assertIsInstance(value, str)
                 sowenn key in ('language', 'implementation', 'abi', 'suffixes', 'libpython', 'c_api', 'arbitrary_data'):
@@ -52,7 +52,7 @@ klasse FormatTestsBase:
         The generic test wants the key to be missing. If your implementation
         provides a value fuer it, you should override this test.
         """
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             self.key('base_interpreter')
 
     def test_platform(self):
@@ -70,12 +70,12 @@ klasse FormatTestsBase:
 
         self.assertEqual(len(value), sys.version_info.n_fields)
         fuer part_name, part_value in value.items():
-            with self.subTest(part=part_name):
+            mit self.subTest(part=part_name):
                 self.assertEqual(part_value, getattr(sys.version_info, part_name))
 
     def test_implementation(self):
         fuer key, value in self.key('implementation').items():
-            with self.subTest(part=key):
+            mit self.subTest(part=key):
                 wenn key == 'version':
                     self.assertEqual(len(value), len(sys.implementation.version))
                     fuer part_name, part_value in value.items():
@@ -99,7 +99,7 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
     def location(self):
         wenn sysconfig.is_python_build():
             projectdir = sysconfig.get_config_var('projectbase')
-            with open(os.path.join(projectdir, 'pybuilddir.txt')) as f:
+            mit open(os.path.join(projectdir, 'pybuilddir.txt')) als f:
                 dirname = os.path.join(projectdir, f.read())
         sonst:
             dirname = sysconfig.get_path('stdlib')
@@ -107,14 +107,14 @@ klasse CPythonBuildDetailsTests(unittest.TestCase, FormatTestsBase):
 
     @property
     def contents(self):
-        with open(self.location, 'r') as f:
+        mit open(self.location, 'r') als f:
             return f.read()
 
     @needs_installed_python
     def test_location(self):
         self.assertWahr(os.path.isfile(self.location))
 
-    # Override generic format tests with tests fuer our specific implemenation.
+    # Override generic format tests mit tests fuer our specific implemenation.
 
     @needs_installed_python
     @unittest.skipIf(

@@ -25,7 +25,7 @@ HAS_PYUP_PYDOWN = gdb_has_frame_select()
 
 
 @unittest.skipIf(python_is_optimized(),
-                 "Python was compiled with optimizations")
+                 "Python was compiled mit optimizations")
 klasse PyListTests(DebuggerTests):
     def assertListing(self, expected, actual):
         self.assertEndsWith(actual, expected)
@@ -46,7 +46,7 @@ klasse PyListTests(DebuggerTests):
                            bt)
 
     def test_one_abs_arg(self):
-        'Verify the "py-list" command with one absolute argument'
+        'Verify the "py-list" command mit one absolute argument'
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
                                   cmds_after_breakpoint=['py-list 9'])
 
@@ -57,7 +57,7 @@ klasse PyListTests(DebuggerTests):
                            bt)
 
     def test_two_abs_args(self):
-        'Verify the "py-list" command with two absolute arguments'
+        'Verify the "py-list" command mit two absolute arguments'
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
                                   cmds_after_breakpoint=['py-list 1,3'])
 
@@ -87,7 +87,7 @@ foo(1, 2, 3)
 klasse StackNavigationTests(DebuggerTests):
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_pyup_command(self):
         'Verify that the "py-up" command works'
         bt = self.get_stack_trace(source=SAMPLE_WITH_C_CALL,
@@ -116,7 +116,7 @@ $''')
 
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_up_then_down(self):
         'Verify "py-up" followed by "py-down"'
         bt = self.get_stack_trace(source=SAMPLE_WITH_C_CALL,
@@ -130,7 +130,7 @@ $''')
 
 klasse PyPrintTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_basic_command(self):
         'Verify that the "py-print" command works'
         bt = self.get_stack_trace(source=SAMPLE_WITH_C_CALL,
@@ -139,7 +139,7 @@ klasse PyPrintTests(DebuggerTests):
                                     r".*\nlocal 'args' = \(1, 2, 3\)\n.*")
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     def test_print_after_up(self):
         bt = self.get_stack_trace(source=SAMPLE_WITH_C_CALL,
@@ -148,7 +148,7 @@ klasse PyPrintTests(DebuggerTests):
                                     r".*\nlocal 'c' = 3\nlocal 'b' = 2\nlocal 'a' = 1\n.*")
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_printing_global(self):
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
                                   cmds_after_breakpoint=['py-up', 'py-print __name__'])
@@ -156,7 +156,7 @@ klasse PyPrintTests(DebuggerTests):
                                     r".*\nglobal '__name__' = '__main__'\n.*")
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_printing_builtin(self):
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
                                   cmds_after_breakpoint=['py-up', 'py-print len'])
@@ -165,7 +165,7 @@ klasse PyPrintTests(DebuggerTests):
 
 klasse PyLocalsTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_basic_command(self):
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
                                   cmds_after_breakpoint=['py-up', 'py-locals'])
@@ -174,7 +174,7 @@ klasse PyLocalsTests(DebuggerTests):
 
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_locals_after_up(self):
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
                                   cmds_after_breakpoint=['py-up', 'py-up', 'py-locals'])

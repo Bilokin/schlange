@@ -76,11 +76,11 @@ klasse DictComprehensionTest(unittest.TestCase):
         self.assertEqual(v, "Local variable")
 
     def test_illegal_assignment(self):
-        with self.assertRaisesRegex(SyntaxError, "cannot assign"):
+        mit self.assertRaisesRegex(SyntaxError, "cannot assign"):
             compile("{x: y fuer y, x in ((1, 2), (3, 4))} = 5", "<test>",
                     "exec")
 
-        with self.assertRaisesRegex(SyntaxError, "illegal expression"):
+        mit self.assertRaisesRegex(SyntaxError, "illegal expression"):
             compile("{x: y fuer y, x in ((1, 2), (3, 4))} += 5", "<test>",
                     "exec")
 
@@ -136,26 +136,26 @@ klasse DictComprehensionTest(unittest.TestCase):
         def init_raises():
             try:
                 {x:x fuer x in BrokenIter(init_raises=Wahr)}
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def next_raises():
             try:
                 {x:x fuer x in BrokenIter(next_raises=Wahr)}
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def iter_raises():
             try:
                 {x:x fuer x in BrokenIter(iter_raises=Wahr)}
-            except Exception as e:
+            except Exception als e:
                 return e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
                                (next_raises, "BrokenIter(next_raises=Wahr)"),
                                (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
-            with self.subTest(func):
+            mit self.subTest(func):
                 exc = func()
                 f = traceback.extract_tb(exc.__traceback__)[0]
                 indent = 16

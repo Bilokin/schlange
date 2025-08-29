@@ -16,14 +16,14 @@ importiere msvcrt
 
 klasse TestFileOperations(unittest.TestCase):
     def test_locking(self):
-        with open(TESTFN, "w") as f:
+        mit open(TESTFN, "w") als f:
             self.addCleanup(os_helper.unlink, TESTFN)
 
             msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
             self.assertRaises(OSError, msvcrt.locking, f.fileno(), msvcrt.LK_NBLCK, 1)
 
     def test_unlockfile(self):
-        with open(TESTFN, "w") as f:
+        mit open(TESTFN, "w") als f:
             self.addCleanup(os_helper.unlink, TESTFN)
 
             msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
@@ -31,7 +31,7 @@ klasse TestFileOperations(unittest.TestCase):
             msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
 
     def test_setmode(self):
-        with open(TESTFN, "w") as f:
+        mit open(TESTFN, "w") als f:
             self.addCleanup(os_helper.unlink, TESTFN)
 
             msvcrt.setmode(f.fileno(), os.O_BINARY)
@@ -50,7 +50,7 @@ klasse TestFileOperations(unittest.TestCase):
                 _winapi.CloseHandle(h)
 
     def test_get_osfhandle(self):
-        with open(TESTFN, "w") as f:
+        mit open(TESTFN, "w") als f:
             self.addCleanup(os_helper.unlink, TESTFN)
 
             msvcrt.get_osfhandle(f.fileno())
@@ -85,7 +85,7 @@ klasse TestConsoleIO(unittest.TestCase):
         code = dedent(f'''
             importiere msvcrt
             von _testconsole importiere write_input
-            with open("CONIN$", "rb", buffering=0) as stdin:
+            mit open("CONIN$", "rb", buffering=0) als stdin:
                 write_input(stdin, {ascii(c_encoded)})
                 assert msvcrt.{funcname}() == "{c}"
         ''')

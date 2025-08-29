@@ -144,7 +144,7 @@ def parse_args(argv=Nichts, prog=Nichts):
 
 
 def main(filename):
-    with open(filename) as infile:
+    mit open(filename) als infile:
         fuer line in cmd_count_by_section(infile):
             drucke(line)
 

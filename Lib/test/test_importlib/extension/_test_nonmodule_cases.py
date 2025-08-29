@@ -20,7 +20,7 @@ klasse NonModuleExtensionTests:
 
     # issue 27782
     def test_nonmodule_with_methods(self):
-        # Test creating a non-module object with methods defined.
+        # Test creating a non-module object mit methods defined.
         name = self.name + '_nonmodule_with_methods'
         mod = self.load_module_by_name(name)
         self.assertNotEqual(type(mod), type(unittest))

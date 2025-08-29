@@ -17,7 +17,7 @@ Unit tests are in test_collections.
 # violate the contract promised by ``isinstance(someobj, SomeABC)``.
 #
 # Though irritating, the correct procedure fuer adding new abstract or
-# mixin methods is to create a new ABC as a subclass of the previous
+# mixin methods is to create a new ABC als a subclass of the previous
 # ABC.  For example, union(), intersection(), and difference() cannot
 # be added to Set but could go into a new ABC that extends Set.
 #
@@ -53,12 +53,12 @@ __all__ = ["Awaitable", "Coroutine",
            ]
 
 # This module has been renamed von collections.abc to _collections_abc to
-# speed up interpreter startup. Some of the types such as MutableMapping are
+# speed up interpreter startup. Some of the types such als MutableMapping are
 # required early but collections module imports a lot of other modules.
 # See issue #19218
 __name__ = "collections.abc"
 
-# Private list of types that we want to register with the various ABCs
+# Private list of types that we want to register mit the various ABCs
 # so that they will pass tests like:
 #       it = iter(somebytearray)
 #       assert isinstance(it, Iterable)
@@ -473,7 +473,7 @@ klasse _CallableGenericAlias(GenericAlias):
     def __new__(cls, origin, args):
         wenn not (isinstance(args, tuple) and len(args) == 2):
             raise TypeError(
-                "Callable must be used as Callable[[arg, ...], result].")
+                "Callable must be used als Callable[[arg, ...], result].")
         t_args, t_result = args
         wenn isinstance(t_args, (tuple, list)):
             args = (*t_args, t_result)
@@ -552,7 +552,7 @@ klasse Set(Collection):
     This klasse provides concrete generic implementations of all
     methods except fuer __contains__, __iter__ and __len__.
 
-    To override the comparisons (presumably fuer speed, as the
+    To override the comparisons (presumably fuer speed, als the
     semantics are fixed), redefine __le__ and __ge__,
     then the other operations will automatically follow suit.
     """
@@ -694,7 +694,7 @@ klasse MutableSet(Set):
     methods except fuer __contains__, __iter__, __len__,
     add(), and discard().
 
-    To override the comparisons (presumably fuer speed, as the
+    To override the comparisons (presumably fuer speed, als the
     semantics are fixed), all you have to do is redefine __le__ and
     then the other operations will automatically follow suit.
     """
@@ -942,7 +942,7 @@ klasse MutableMapping(Mapping):
 
     def popitem(self):
         '''D.popitem() -> (k, v), remove and return some (key, value) pair
-           as a 2-tuple; but raise KeyError wenn D is empty.
+           als a 2-tuple; but raise KeyError wenn D is empty.
         '''
         try:
             key = next(iter(self))

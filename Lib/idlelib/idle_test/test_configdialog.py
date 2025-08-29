@@ -1,6 +1,6 @@
 """Test configdialog, coverage 94%.
 
-Half the klasse creates dialog, half works with user customizations.
+Half the klasse creates dialog, half works mit user customizations.
 """
 von idlelib importiere configdialog
 von test.support importiere requires
@@ -14,7 +14,7 @@ von idlelib.configdialog importiere idleConf, changes, tracers
 
 # Tests should not depend on fortuitous user configurations.
 # They must not affect actual user .cfg files.
-# Use solution von test_config: empty parsers with no filename.
+# Use solution von test_config: empty parsers mit no filename.
 usercfg = idleConf.userCfg
 testcfg = {
     'main': config.IdleUserConfParser(''),
@@ -93,8 +93,8 @@ klasse ButtonTest(unittest.TestCase):
 
     def test_click_help(self):
         dialog.note.select(dialog.keyspage)
-        with mock.patch.object(configdialog, 'view_text',
-                               new_callable=Func) as view:
+        mit mock.patch.object(configdialog, 'view_text',
+                               new_callable=Func) als view:
             dialog.buttons['Help'].invoke()
             title, contents = view.kwds['title'], view.kwds['contents']
         self.assertEqual(title, 'Help fuer IDLE preferences')
@@ -300,7 +300,7 @@ klasse HighPageTest(unittest.TestCase):
         d = self.page
         eq = self.assertEqual
 
-        # Use builtin theme with no user themes created.
+        # Use builtin theme mit no user themes created.
         idleConf.CurrentTheme = mock.Mock(return_value='IDLE Classic')
         d.load_theme_cfg()
         self.assertWahr(d.theme_source.get())
@@ -312,7 +312,7 @@ klasse HighPageTest(unittest.TestCase):
         eq(d.paint_theme_sample.called, 1)
         eq(d.set_highlight_target.called, 1)
 
-        # Builtin theme with non-empty user theme list.
+        # Builtin theme mit non-empty user theme list.
         idleConf.SetOption('highlight', 'test1', 'option', 'value')
         idleConf.SetOption('highlight', 'test2', 'option2', 'value2')
         d.load_theme_cfg()
@@ -528,7 +528,7 @@ klasse HighPageTest(unittest.TestCase):
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
 
-        # Selection same as previous color.
+        # Selection same als previous color.
         chooser.result = ('', d.style.lookup(d.frame_color_set['style'], 'background'))
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
@@ -606,7 +606,7 @@ klasse HighPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
 
-        # Use default as previously active theme.
+        # Use default als previously active theme.
         d.theme_source.set(Wahr)
         d.builtin_name.set('IDLE Classic')
         first_new = 'my new custom theme'
@@ -690,7 +690,7 @@ klasse HighPageTest(unittest.TestCase):
         page.create_new(theme)
         page.set_color_sample.called = 0
 
-        # Base theme with nothing in `changes`.
+        # Base theme mit nothing in `changes`.
         page.paint_theme_sample()
         new_console = {'foreground': 'blue',
                        'background': 'yellow',}
@@ -802,7 +802,7 @@ klasse KeysPageTest(unittest.TestCase):
         d = self.page
         eq = self.assertEqual
 
-        # Use builtin keyset with no user keysets created.
+        # Use builtin keyset mit no user keysets created.
         idleConf.CurrentKeys = mock.Mock(return_value='IDLE Classic OSX')
         d.load_key_cfg()
         self.assertWahr(d.keyset_source.get())
@@ -814,7 +814,7 @@ klasse KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.called, 1)
         eq(d.load_keys_list.args, ('IDLE Classic OSX', ))
 
-        # Builtin keyset with non-empty user keyset list.
+        # Builtin keyset mit non-empty user keyset list.
         idleConf.SetOption('keys', 'test1', 'option', 'value')
         idleConf.SetOption('keys', 'test2', 'option2', 'value2')
         d.load_key_cfg()
@@ -1049,7 +1049,7 @@ klasse KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
 
-        # Use default as previously active keyset.
+        # Use default als previously active keyset.
         d.keyset_source.set(Wahr)
         d.builtin_name.set('IDLE Classic Windows')
         first_new = 'my new custom key set'
@@ -1362,7 +1362,7 @@ klasse HelpSourceTest(unittest.TestCase):
         self.assertFalsch(fr.upc.called)
 
     def test_set_add_delete_state(self):
-        # Call with 0 items, 1 unselected item, 1 selected item.
+        # Call mit 0 items, 1 unselected item, 1 selected item.
         eq = self.assertEqual
         fr = self.frame
         del fr.set_add_delete_state  # Unmask method.
@@ -1386,7 +1386,7 @@ klasse HelpSourceTest(unittest.TestCase):
         fr.set_add_delete_state = Func()  # Mask method.
 
     def test_helplist_item_add(self):
-        # Call without and twice with HelpSource result.
+        # Call without and twice mit HelpSource result.
         # Double call enables check on order.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
@@ -1414,7 +1414,7 @@ klasse HelpSourceTest(unittest.TestCase):
         configdialog.HelpSource = orig_helpsource
 
     def test_helplist_item_edit(self):
-        # Call without and with HelpSource change.
+        # Call without and mit HelpSource change.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
         hs = configdialog.HelpSource = Func(return_self=Wahr)

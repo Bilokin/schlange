@@ -26,9 +26,9 @@ klasse TestJOHABMap(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'johab'
     mapfileurl = 'http://www.pythontest.net/unicode/JOHAB.TXT'
-    # KS X 1001 standard assigned 0x5c as WON SIGN.
+    # KS X 1001 standard assigned 0x5c als WON SIGN.
     # But the early 90s is the only era that used johab widely,
-    # most software implements it as REVERSE SOLIDUS.
+    # most software implements it als REVERSE SOLIDUS.
     # So, we ignore the standard here.
     pass_enctest = [(b'\\', '\u20a9')]
     pass_dectest = [(b'\\', '\u20a9')]

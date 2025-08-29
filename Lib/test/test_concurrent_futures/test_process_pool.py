@@ -33,7 +33,7 @@ FORCE_SHUTDOWN_PARAMS = [
 ]
 
 def _put_wait_put(queue, event):
-    """ Used as part of test_terminate_workers """
+    """ Used als part of test_terminate_workers """
     queue.put('started')
     event.wait()
 
@@ -45,7 +45,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     @unittest.skipUnless(sys.platform=='win32', 'Windows-only process limit')
     def test_max_workers_too_large(self):
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                                     "max_workers must be <= 61"):
             futures.ProcessPoolExecutor(max_workers=62)
 
@@ -59,7 +59,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         p.terminate()
         fuer fut in futures:
             self.assertRaises(BrokenProcessPool, fut.result)
-        # Submitting other jobs fails as well.
+        # Submitting other jobs fails als well.
         self.assertRaises(BrokenProcessPool, self.executor.submit, pow, 2, 8)
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
@@ -88,7 +88,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         # We want ensure that the traceback von the child process is
         # contained in the traceback raised in the main process.
         future = self.executor.submit(self._test_traceback)
-        with self.assertRaises(Exception) as cm:
+        mit self.assertRaises(Exception) als cm:
             future.result()
 
         exc = cm.exception
@@ -98,7 +98,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         self.assertIs(type(cause), futures.process._RemoteTraceback)
         self.assertIn('raise RuntimeError(123) # some comment', cause.tb)
 
-        with support.captured_stderr() as f1:
+        mit support.captured_stderr() als f1:
             try:
                 raise exc
             except RuntimeError:
@@ -144,7 +144,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         executor = self.executor
         assert executor._max_workers >= 4
         wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
-            raise unittest.SkipTest("Incompatible with the fork start method.")
+            raise unittest.SkipTest("Incompatible mit the fork start method.")
         executor.submit(mul, 21, 2).result()
         executor.submit(mul, 6, 7).result()
         executor.submit(mul, 3, 14).result()
@@ -154,7 +154,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         executor = self.executor
         assert executor._max_workers <= 5
         wenn self.get_context().get_start_method(allow_none=Falsch) == "fork":
-            raise unittest.SkipTest("Incompatible with the fork start method.")
+            raise unittest.SkipTest("Incompatible mit the fork start method.")
         executor.submit(mul, 12, 7).result()
         executor.submit(mul, 33, 25)
         executor.submit(mul, 25, 26).result()
@@ -167,23 +167,23 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_max_tasks_per_child(self):
         context = self.get_context()
         wenn context.get_start_method(allow_none=Falsch) == "fork":
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 self.executor_type(1, mp_context=context, max_tasks_per_child=3)
             return
-        # not using self.executor as we need to control construction.
+        # not using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
                 1, mp_context=context, max_tasks_per_child=3)
         f1 = executor.submit(os.getpid)
         original_pid = f1.result()
-        # The worker pid remains the same as the worker could be reused
+        # The worker pid remains the same als the worker could be reused
         f2 = executor.submit(os.getpid)
         self.assertEqual(f2.result(), original_pid)
         self.assertEqual(len(executor._processes), 1)
         f3 = executor.submit(os.getpid)
         self.assertEqual(f3.result(), original_pid)
 
-        # A new worker is spawned, with a statistically different pid,
+        # A new worker is spawned, mit a statistically different pid,
         # while the previous was reaped.
         f4 = executor.submit(os.getpid)
         new_pid = f4.result()
@@ -193,7 +193,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         executor.shutdown()
 
     def test_max_tasks_per_child_defaults_to_spawn_context(self):
-        # not using self.executor as we need to control construction.
+        # not using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(1, max_tasks_per_child=3)
         self.assertEqual(executor._mp_context.get_start_method(), "spawn")
@@ -201,8 +201,8 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     def test_max_tasks_early_shutdown(self):
         context = self.get_context()
         wenn context.get_start_method(allow_none=Falsch) == "fork":
-            raise unittest.SkipTest("Incompatible with the fork start method.")
-        # not using self.executor as we need to control construction.
+            raise unittest.SkipTest("Incompatible mit the fork start method.")
+        # not using self.executor als we need to control construction.
         # arguably this could go in another klasse w/o that mixin.
         executor = self.executor_type(
                 3, mp_context=context, max_tasks_per_child=1)
@@ -234,17 +234,17 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             nthread += 1
             return orig_start_new_thread(func, *args, **kwargs)
 
-        with support.swap_attr(threading, '_start_joinable_thread',
+        mit support.swap_attr(threading, '_start_joinable_thread',
                                mock_start_new_thread):
             executor = self.executor_type(max_workers=2, mp_context=context)
-            with executor:
-                with self.assertRaises(BrokenProcessPool):
+            mit executor:
+                mit self.assertRaises(BrokenProcessPool):
                     list(executor.map(mul, [(2, 3)] * 10))
             executor.shutdown()
 
     def test_terminate_workers(self):
         mock_fn = unittest.mock.Mock()
-        with self.executor_type(max_workers=1) as executor:
+        mit self.executor_type(max_workers=1) als executor:
             executor._force_shutdown = mock_fn
             executor.terminate_workers()
 
@@ -252,14 +252,14 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     def test_kill_workers(self):
         mock_fn = unittest.mock.Mock()
-        with self.executor_type(max_workers=1) as executor:
+        mit self.executor_type(max_workers=1) als executor:
             executor._force_shutdown = mock_fn
             executor.kill_workers()
 
         mock_fn.assert_called_once_with(operation=futures.process._KILL)
 
     def test_force_shutdown_workers_invalid_op(self):
-        with self.executor_type(max_workers=1) as executor:
+        mit self.executor_type(max_workers=1) als executor:
             self.assertRaises(ValueError,
                               executor._force_shutdown,
                               operation='invalid operation'),
@@ -271,7 +271,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
         q = manager.Queue()
         e = manager.Event()
 
-        with self.executor_type(max_workers=1) as executor:
+        mit self.executor_type(max_workers=1) als executor:
             executor.submit(_put_wait_put, q, e)
 
             # We should get started, but not finished since we'll terminate the
@@ -298,7 +298,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     @parameterize(*FORCE_SHUTDOWN_PARAMS)
     def test_force_shutdown_workers_dead_workers(self, function_name):
-        with self.executor_type(max_workers=1) as executor:
+        mit self.executor_type(max_workers=1) als executor:
             future = executor.submit(os._exit, 1)
             self.assertRaises(BrokenProcessPool, future.result)
 
@@ -308,8 +308,8 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
     @parameterize(*FORCE_SHUTDOWN_PARAMS)
     def test_force_shutdown_workers_not_started_yet(self, function_name):
         ctx = self.get_context()
-        with unittest.mock.patch.object(ctx, 'Process') as mock_process:
-            with self.executor_type(max_workers=1, mp_context=ctx) as executor:
+        mit unittest.mock.patch.object(ctx, 'Process') als mock_process:
+            mit self.executor_type(max_workers=1, mp_context=ctx) als executor:
                 # The worker has not been started yet, terminate/kill_workers
                 # should basically no-op
                 getattr(executor, function_name)()
@@ -319,7 +319,7 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
 
     @parameterize(*FORCE_SHUTDOWN_PARAMS)
     def test_force_shutdown_workers_stops_pool(self, function_name):
-        with self.executor_type(max_workers=1) as executor:
+        mit self.executor_type(max_workers=1) als executor:
             task = executor.submit(time.sleep, 0)
             self.assertIsNichts(task.result())
 
@@ -336,10 +336,10 @@ klasse ProcessPoolExecutorTest(ExecutorTest):
             worker_process.join(support.SHORT_TIMEOUT)
 
             # Oddly enough, even though join completes, sometimes it takes a
-            # moment fuer the process to actually be marked as dead.
+            # moment fuer the process to actually be marked als dead.
             # ...  that seems a bit buggy.
             # We need it dead before ending the test to ensure it doesn't
-            # get marked as an ENV CHANGE due to living child process.
+            # get marked als an ENV CHANGE due to living child process.
             fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
                 wenn not worker_process.is_alive():
                     break

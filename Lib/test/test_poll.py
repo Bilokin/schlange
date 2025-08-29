@@ -32,7 +32,7 @@ klasse PollTests(unittest.TestCase):
 
     def test_poll1(self):
         # Basic functional test of poll object
-        # Create a bunch of pipe and test that poll works with them.
+        # Create a bunch of pipe and test that poll works mit them.
 
         p = select.poll()
 
@@ -89,7 +89,7 @@ klasse PollTests(unittest.TestCase):
         r = p.poll()
         self.assertEqual(r[0], (FD, select.POLLNVAL))
 
-        with open(TESTFN, 'w') as f:
+        mit open(TESTFN, 'w') als f:
             fd = f.fileno()
             p = select.poll()
             p.register(f)

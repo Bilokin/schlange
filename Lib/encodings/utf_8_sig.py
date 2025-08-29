@@ -1,7 +1,7 @@
 """ Python 'utf-8-sig' Codec
-This work similar to UTF-8 with the following changes:
+This work similar to UTF-8 mit the following changes:
 
-* On encoding/writing a UTF-8 encoded BOM will be prepended/written as the
+* On encoding/writing a UTF-8 encoded BOM will be prepended/written als the
   first three bytes.
 
 * On decoding/reading wenn the first three bytes are a UTF-8 encoded BOM, these
@@ -74,7 +74,7 @@ klasse IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
     def getstate(self):
         state = codecs.BufferedIncrementalDecoder.getstate(self)
-        # state[1] must be 0 here, as it isn't passed along to the caller
+        # state[1] must be 0 here, als it isn't passed along to the caller
         return (state[0], self.first)
 
     def setstate(self, state):

@@ -9,7 +9,7 @@ importiere warnings
 klasse CallingOrder:
 
     """Calls to the importers on sys.meta_path happen in order that they are
-    specified in the sequence, starting with the first importer
+    specified in the sequence, starting mit the first importer
     [first called], and then continuing on down until one is found that doesn't
     return Nichts [continuing]."""
 
@@ -17,17 +17,17 @@ klasse CallingOrder:
     def test_first_called(self):
         # [first called]
         mod = 'top_level'
-        with util.mock_spec(mod) as first, util.mock_spec(mod) as second:
-            with util.import_state(meta_path=[first, second]):
+        mit util.mock_spec(mod) als first, util.mock_spec(mod) als second:
+            mit util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod), first.modules[mod])
 
     def test_continuing(self):
         # [continuing]
         mod_name = 'for_real'
-        with util.mock_spec('nonexistent') as first, \
-             util.mock_spec(mod_name) as second:
+        mit util.mock_spec('nonexistent') als first, \
+             util.mock_spec(mod_name) als second:
             first.find_spec = lambda self, fullname, path=Nichts, parent=Nichts: Nichts
-            with util.import_state(meta_path=[first, second]):
+            mit util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod_name), second.modules[mod_name])
 
     def test_empty(self):
@@ -37,8 +37,8 @@ klasse CallingOrder:
             del sys.modules[module_name]
         except KeyError:
             pass
-        with util.import_state(meta_path=[]):
-            with warnings.catch_warnings(record=Wahr) as w:
+        mit util.import_state(meta_path=[]):
+            mit warnings.catch_warnings(record=Wahr) als w:
                 warnings.simplefilter('always')
                 self.assertIsNichts(importlib._bootstrap._find_spec('nothing',
                                                                   Nichts))
@@ -69,10 +69,10 @@ klasse CallSignature:
         # [no path]
         mod_name = 'top_level'
         assert '.' not in mod_name
-        with self.mock_modules(mod_name) as importer:
+        mit self.mock_modules(mod_name) als importer:
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))
-            with util.import_state(meta_path=[importer]):
+            mit util.import_state(meta_path=[importer]):
                 self.__import__(mod_name)
                 assert len(log) == 1
                 args = log[0][0]
@@ -86,11 +86,11 @@ klasse CallSignature:
         mod_name = pkg_name + '.module'
         path = [42]
         assert '.' in mod_name
-        with self.mock_modules(pkg_name+'.__init__', mod_name) as importer:
+        mit self.mock_modules(pkg_name+'.__init__', mod_name) als importer:
             importer.modules[pkg_name].__path__ = path
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))
-            with util.import_state(meta_path=[importer]):
+            mit util.import_state(meta_path=[importer]):
                 self.__import__(mod_name)
                 assert len(log) == 2
                 args = log[1][0]
@@ -103,12 +103,12 @@ klasse CallSignature:
 klasse CallSignoreSuppressImportWarning(CallSignature):
 
     def test_no_path(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_no_path()
 
     def test_with_path(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             super().test_no_path()
 

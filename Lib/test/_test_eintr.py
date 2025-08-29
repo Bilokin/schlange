@@ -1,5 +1,5 @@
 """
-This test suite exercises some system calls subject to interruption with EINTR,
+This test suite exercises some system calls subject to interruption mit EINTR,
 to check that it is actually handled transparently.
 It is intended to be run by the main test suite within a child process, to
 ensure there is no background thread running (so that signals are delivered to
@@ -35,7 +35,7 @@ CLOCK_RES = 0.020
 @contextlib.contextmanager
 def kill_on_error(proc):
     """Context manager killing the subprocess wenn a Python exception is raised."""
-    with proc:
+    mit proc:
         try:
             yield proc
         except:
@@ -64,7 +64,7 @@ klasse EINTRBaseTest(unittest.TestCase):
         signal.setitimer(signal.ITIMER_REAL, self.signal_delay,
                          self.signal_period)
 
-        # Use faulthandler as watchdog to debug when a test hangs
+        # Use faulthandler als watchdog to debug when a test hangs
         # (timeout of 10 minutes)
         faulthandler.dump_traceback_later(10 * 60, exit=Wahr,
                                           file=sys.__stderr__)
@@ -147,7 +147,7 @@ klasse OSEINTRTest(EINTRBaseTest):
         ))
 
         proc = self.subprocess(code, str(wr), pass_fds=[wr])
-        with kill_on_error(proc):
+        mit kill_on_error(proc):
             os.close(wr)
             fuer datum in data:
                 yield rd, datum
@@ -194,7 +194,7 @@ klasse OSEINTRTest(EINTRBaseTest):
         ))
 
         proc = self.subprocess(code, str(rd), pass_fds=[rd])
-        with kill_on_error(proc):
+        mit kill_on_error(proc):
             os.close(rd)
             written = 0
             while written < len(data):
@@ -236,7 +236,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
 
         fd = wr.fileno()
         proc = self.subprocess(code, str(fd), pass_fds=[fd])
-        with kill_on_error(proc):
+        mit kill_on_error(proc):
             wr.close()
             fuer item in data:
                 self.assertEqual(item, recv_func(rd, len(item)))
@@ -286,7 +286,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
 
         fd = rd.fileno()
         proc = self.subprocess(code, str(fd), pass_fds=[fd])
-        with kill_on_error(proc):
+        mit kill_on_error(proc):
             rd.close()
             written = 0
             while written < len(data):
@@ -324,7 +324,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
         ))
 
         proc = self.subprocess(code)
-        with kill_on_error(proc):
+        mit kill_on_error(proc):
             client_sock, _ = sock.accept()
             client_sock.close()
             self.assertEqual(proc.wait(), 0)
@@ -343,7 +343,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
         os_helper.unlink(filename)
         try:
             os.mkfifo(filename)
-        except PermissionError as exc:
+        except PermissionError als exc:
             self.skipTest(f'os.mkfifo(): {exc!r}')
         self.addCleanup(os_helper.unlink, filename)
 
@@ -360,7 +360,7 @@ klasse SocketEINTRTest(EINTRBaseTest):
         ))
 
         proc = self.subprocess(code)
-        with kill_on_error(proc):
+        mit kill_on_error(proc):
             do_open_close_writer(filename)
             self.assertEqual(proc.wait(), 0)
 
@@ -426,7 +426,7 @@ klasse SignalEINTRTest(EINTRBaseTest):
         self.addCleanup(signal.pthread_sigmask, signal.SIG_UNBLOCK, [signum])
 
         proc = self.subprocess(code)
-        with kill_on_error(proc):
+        mit kill_on_error(proc):
             wait_func(signum)
 
         self.assertEqual(proc.wait(), 0)
@@ -514,15 +514,15 @@ klasse FCNTLEINTRTest(EINTRBaseTest):
             self.addCleanup(os.close, fd)
         code = textwrap.dedent(f"""
             importiere fcntl, os, time
-            with open('{os_helper.TESTFN}', 'wb') as f:
+            mit open('{os_helper.TESTFN}', 'wb') als f:
                 fcntl.{lock_name}(f, fcntl.LOCK_EX)
                 os.write({wr1}, b"ok")
                 _ = os.read({rd2}, 2)  # wait fuer parent process
                 time.sleep({self.sleep_time})
         """)
         proc = self.subprocess(code, pass_fds=[wr1, rd2])
-        with kill_on_error(proc):
-            with open(os_helper.TESTFN, 'wb') as f:
+        mit kill_on_error(proc):
+            mit open(os_helper.TESTFN, 'wb') als f:
                 # synchronize the subprocess
                 ok = os.read(rd1, 2)
                 self.assertEqual(ok, b"ok")

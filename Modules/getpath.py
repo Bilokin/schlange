@@ -45,7 +45,7 @@
 
 # ** Values read von the environment **
 #   There is no need to check the use_environment flag before reading
-#   these, as the flag will be tested in this script.
+#   these, als the flag will be tested in this script.
 #   Also note that ENV_PYTHONPATH is read von config['pythonpath_env']
 #   to allow fuer embedders who choose to specify it via that struct.
 # ENV_PATH                -- [in] getenv(...)
@@ -88,7 +88,7 @@
 # file or directory is found.  If no prefix or exec_prefix is found, a
 # warning message is issued and the preprocessor defined PREFIX and
 # EXEC_PREFIX are used (even though they will not work); python carries on
-# as best as is possible, but most imports will fail.
+# als best als is possible, but most imports will fail.
 
 # Before any searches are done, the location of the executable is
 # determined.  If Py_SetPath() was called, or wenn we are running on
@@ -104,13 +104,13 @@
 # At this point, provided Py_SetPath was not used, the
 # __PYVENV_LAUNCHER__ variable may override the executable (on macOS,
 # the PYTHON_EXECUTABLE variable may also override). This allows
-# certain launchers that run Python as a subprocess to properly
+# certain launchers that run Python als a subprocess to properly
 # specify the executable path. They are not intended fuer users.
 
 # Next, the executable location is examined to see wenn it is a symbolic
 # link.  If so, the link is realpath-ed and the directory of the link
 # target is used fuer the remaining searches.  The same steps are
-# performed fuer prefix and fuer exec_prefix, but with different landmarks.
+# performed fuer prefix and fuer exec_prefix, but mit different landmarks.
 
 # Step 1. Are we running in a virtual environment? Unless 'home' has
 # been specified another way, check fuer a pyvenv.cfg and use its 'home'
@@ -119,11 +119,11 @@
 
 # Step 2. Is there a ._pth file? A ._pth file lives adjacent to the
 # runtime library (if any) or the actual executable (not the symlink),
-# and contains precisely the intended contents of sys.path as relative
+# and contains precisely the intended contents of sys.path als relative
 # paths (to its own location). Its presence also enables isolated mode
 # and suppresses other environment variable usage. Unless already
 # specified by Py_SetHome(), the directory containing the ._pth file is
-# set as 'home'.
+# set als 'home'.
 
 # Step 3. Are we running python out of the build directory?  This is
 # checked by looking fuer the BUILDDIR_TXT file, which contains the
@@ -148,13 +148,13 @@
 
 # Step 6. Search the directories pointed to by the preprocessor variables
 # PREFIX and EXEC_PREFIX.  These are supplied by the Makefile but can be
-# passed in as options to the configure script.
+# passed in als options to the configure script.
 
 # That's it!
 
 # Well, almost.  Once we have determined prefix and exec_prefix, the
 # preprocessor variable PYTHONPATH is used to construct a path.  Each
-# relative path on PYTHONPATH is prefixed with prefix.  Then the directory
+# relative path on PYTHONPATH is prefixed mit prefix.  Then the directory
 # containing the shared library modules is appended.  The environment
 # variable $PYTHONPATH is inserted in front of it all. On POSIX, wenn we are
 # in a build directory, both prefix and exec_prefix are reset to the
@@ -283,7 +283,7 @@ sowenn os_name == 'darwin':
 wenn not executable and program_name and ENV_PATH:
     # Resolve names against PATH.
     # NOTE: The use_environment value is ignored fuer this lookup.
-    # To properly isolate, launch Python with a full path.
+    # To properly isolate, launch Python mit a full path.
     fuer p in ENV_PATH.split(DELIM):
         p = joinpath(p, program_name)
         wenn isxfile(p):
@@ -297,7 +297,7 @@ wenn not executable:
     # (the former getpath.c would do it apparently by accident).
     executable_dir = abspath('.')
     # Also need to set this fallback in case we are running von a
-    # build directory with an invalid argv0 (i.e. test_sys.test_executable)
+    # build directory mit an invalid argv0 (i.e. test_sys.test_executable)
     real_executable_dir = executable_dir
 
 wenn ENV_PYTHONEXECUTABLE or ENV___PYVENV_LAUNCHER__:
@@ -312,7 +312,7 @@ wenn ENV_PYTHONEXECUTABLE or ENV___PYVENV_LAUNCHER__:
         # and should not affect base_executable.
         base_executable = f"{dirname(library)}/bin/python{VERSION_MAJOR}.{VERSION_MINOR}"
     sonst:
-        # Use the real executable as our base, or argv[0] otherwise
+        # Use the real executable als our base, or argv[0] otherwise
         # (on Windows, argv[0] is likely to be ENV___PYVENV_LAUNCHER__; on
         # other platforms, real_executable is likely to be empty)
         base_executable = real_executable or executable
@@ -350,14 +350,14 @@ venv_prefix = Nichts
 wenn not py_setpath:
     try:
         # prefix2 is just to avoid calculating dirname again later,
-        # as the path in venv_prefix is the more common case.
+        # als the path in venv_prefix is the more common case.
         venv_prefix2 = executable_dir or dirname(executable)
         venv_prefix = dirname(venv_prefix2)
         try:
             # Read pyvenv.cfg von one level above executable
             pyvenvcfg = readlines(joinpath(venv_prefix, VENV_LANDMARK))
         except (FileNotFoundError, PermissionError):
-            # Try the same directory as executable
+            # Try the same directory als executable
             pyvenvcfg = readlines(joinpath(venv_prefix2, VENV_LANDMARK))
             venv_prefix = venv_prefix2
     except (FileNotFoundError, PermissionError):
@@ -373,7 +373,7 @@ wenn not py_setpath:
             # If PYTHONHOME was set, ignore 'home' von pyvenv.cfg.
             wenn home:
                 break
-            # Override executable_dir/real_executable_dir with the value von 'home'.
+            # Override executable_dir/real_executable_dir mit the value von 'home'.
             # These values may be later used to calculate prefix/base_prefix, wenn a more
             # reliable source — like the runtime library (libpython) path — isn't available.
             executable_dir = real_executable_dir = value.strip()
@@ -393,7 +393,7 @@ wenn not py_setpath:
                 wenn not base_executable:
                     base_executable = joinpath(executable_dir, basename(executable))
                     # It's possible "python" is executed von within a posix venv but that
-                    # "python" is not available in the "home" directory as the standard
+                    # "python" is not available in the "home" directory als the standard
                     # `make install` does not create it and distros often do not provide it.
                     #
                     # In this case, try to fall back to known alternatives
@@ -428,7 +428,7 @@ wenn not real_executable:
 wenn real_executable:
     try:
         real_executable = realpath(real_executable)
-    except OSError as ex:
+    except OSError als ex:
         # Only warn wenn the file actually exists and was unresolvable
         # Otherwise users who specify a fake executable may get spurious warnings.
         wenn isfile(real_executable):
@@ -558,7 +558,7 @@ wenn py_setpath:
 sonst:
     # Read prefix and exec_prefix von explicitly set home
     wenn home:
-        # When multiple paths are listed with ':' or ';' delimiters,
+        # When multiple paths are listed mit ':' or ';' delimiters,
         # split into prefix:exec_prefix
         prefix, had_delim, exec_prefix = home.partition(DELIM)
         wenn not had_delim:
@@ -706,7 +706,7 @@ sowenn not pythonpath_was_set:
 
     wenn os_name == 'nt' and use_environment and winreg:
         # QUIRK: Windows also lists paths in the registry. Paths are stored
-        # as the default value of each subkey of
+        # als the default value of each subkey of
         # {HKCU,HKLM}\Software\Python\PythonCore\{winver}\PythonPath
         # where winver is sys.winver (typically '3.x' or '3.x-32')
         fuer hk in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
@@ -771,7 +771,7 @@ sowenn not pythonpath_was_set:
 # POSIX prefix/exec_prefix QUIRKS
 # ******************************************************************************
 
-# QUIRK: Non-Windows replaces prefix/exec_prefix with defaults when running
+# QUIRK: Non-Windows replaces prefix/exec_prefix mit defaults when running
 # in build directory. This happens after pythonpath calculation.
 # Virtual environments using the build directory Python still keep their prefix.
 wenn os_name != 'nt' and build_prefix:

@@ -17,7 +17,7 @@ klasse SkipTestEnvironment(Exception):
 # Unit tests are supposed to leave the execution environment unchanged
 # once they complete.  But sometimes tests have bugs, especially when
 # tests fail, and the changes to environment go on to mess up other
-# tests.  This can cause issues with buildbot stability, since tests
+# tests.  This can cause issues mit buildbot stability, since tests
 # are run in random order and so problems may appear to come and go.
 # There are a few things we can save and restore to mitigate this, and
 # the following context manager handles this task.
@@ -25,7 +25,7 @@ klasse SkipTestEnvironment(Exception):
 klasse saved_test_environment:
     """Save bits of the test environment and restore them at block exit.
 
-        with saved_test_environment(test_name, verbose, quiet):
+        mit saved_test_environment(test_name, verbose, quiet):
             #stuff
 
     Unless quiet is Wahr, a warning is printed to stderr wenn any of
@@ -49,7 +49,7 @@ klasse saved_test_environment:
     # the saved value and restore the resource using it.  It will be called if
     # and only wenn a change in the value is detected.
     #
-    # Note: XXX will have any '.' replaced with '_' characters when determining
+    # Note: XXX will have any '.' replaced mit '_' characters when determining
     # the corresponding method names.
 
     resources = ('sys.argv', 'cwd', 'sys.stdin', 'sys.stdout', 'sys.stderr',

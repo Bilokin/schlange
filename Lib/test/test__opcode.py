@@ -12,7 +12,7 @@ klasse OpListTests(unittest.TestCase):
         fuer op in ops:
             wenn isinstance(op, str):
                 op = dis.opmap[op]
-            with self.subTest(opcode=op, func=func):
+            mit self.subTest(opcode=op, func=func):
                 self.assertIsInstance(func(op), bool)
                 self.assertEqual(func(op), expected)
 
@@ -48,7 +48,7 @@ klasse OpListTests(unittest.TestCase):
     def test_oplists(self):
         def check_function(self, func, expected):
             fuer op in [-10, 520]:
-                with self.subTest(opcode=op, func=func):
+                mit self.subTest(opcode=op, func=func):
                     res = func(op)
                     self.assertIsInstance(res, bool)
                     self.assertEqual(res, op in expected)
@@ -73,12 +73,12 @@ klasse StackEffectTests(unittest.TestCase):
         fuer name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
             wenn code >= opcode.MIN_INSTRUMENTED_OPCODE:
                 continue
-            with self.subTest(opname=name):
+            mit self.subTest(opname=name):
                 stack_effect(code)
                 stack_effect(code, 0)
         # All not defined opcodes
         fuer code in set(range(256)) - set(dis.opmap.values()):
-            with self.subTest(opcode=code):
+            mit self.subTest(opcode=code):
                 self.assertRaises(ValueError, stack_effect, code)
                 self.assertRaises(ValueError, stack_effect, code, 0)
 
@@ -98,7 +98,7 @@ klasse StackEffectTests(unittest.TestCase):
         fuer name, code in filter(lambda item: item[0] not in dis.deoptmap, dis.opmap.items()):
             wenn code >= opcode.MIN_INSTRUMENTED_OPCODE:
                 continue
-            with self.subTest(opname=name):
+            mit self.subTest(opname=name):
                 wenn code not in has_arg:
                     common = stack_effect(code)
                     jump = stack_effect(code, jump=Wahr)

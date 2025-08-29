@@ -207,7 +207,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
             self._pending_calls = Nichts
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        except BaseException als exc:
             wenn waiter is not Nichts and not waiter.cancelled():
                 waiter.set_exception(exc)
         sonst:
@@ -231,7 +231,7 @@ klasse BaseSubprocessTransport(transports.SubprocessTransport):
         assert returncode is not Nichts, returncode
         assert self._returncode is Nichts, self._returncode
         wenn self._loop.get_debug():
-            logger.info('%r exited with return code %r', self, returncode)
+            logger.info('%r exited mit return code %r', self, returncode)
         self._returncode = returncode
         wenn self._proc.returncode is Nichts:
             # asyncio uses a child watcher: copy the status into the Popen

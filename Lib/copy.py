@@ -6,7 +6,7 @@ Interface summary:
 
         x = copy.copy(y)                # make a shallow copy of y
         x = copy.deepcopy(y)            # make a deep copy of y
-        x = copy.replace(y, a=1, b=2)   # new object with fields replaced, as defined by `__replace__`
+        x = copy.replace(y, a=1, b=2)   # new object mit fields replaced, als defined by `__replace__`
 
 For module specific errors, copy.Error is raised.
 
@@ -21,7 +21,7 @@ klasse instances).
 - A deep copy constructs a new compound object and then, recursively,
   inserts *copies* into it of the objects found in the original.
 
-Two problems often exist with deep copy operations that don't exist
+Two problems often exist mit deep copy operations that don't exist
 with shallow copy operations:
 
  a) recursive objects (compound objects that, directly or indirectly,
@@ -74,7 +74,7 @@ def copy(x):
 
 
     wenn issubclass(cls, type):
-        # treat it as a regular class:
+        # treat it als a regular class:
         return x
 
     copier = getattr(cls, "__copy__", Nichts)
@@ -159,7 +159,7 @@ def deepcopy(x, memo=Nichts, _nil=[]):
     # If is its own copy, don't memoize.
     wenn y is not x:
         memo[d] = y
-        _keep_alive(x, memo) # Make sure x lives at least as long as d
+        _keep_alive(x, memo) # Make sure x lives at least als long als d
     return y
 
 _atomic_types =  {types.NoneType, types.EllipsisType, types.NotImplementedType,
@@ -274,7 +274,7 @@ del types, weakref
 
 
 def replace(obj, /, **changes):
-    """Return a new object replacing specified fields with new values.
+    """Return a new object replacing specified fields mit new values.
 
     This is especially useful fuer immutable objects, like named tuples or
     frozen dataclasses.

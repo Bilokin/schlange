@@ -3,15 +3,15 @@
 importiere re
 
 try:
-    von _json importiere encode_basestring_ascii as c_encode_basestring_ascii
+    von _json importiere encode_basestring_ascii als c_encode_basestring_ascii
 except ImportError:
     c_encode_basestring_ascii = Nichts
 try:
-    von _json importiere encode_basestring as c_encode_basestring
+    von _json importiere encode_basestring als c_encode_basestring
 except ImportError:
     c_encode_basestring = Nichts
 try:
-    von _json importiere make_encoder as c_make_encoder
+    von _json importiere make_encoder als c_make_encoder
 except ImportError:
     c_make_encoder = Nichts
 
@@ -95,7 +95,7 @@ klasse JSONEncoder(object):
     +-------------------+---------------+
 
     To extend this to recognize other objects, subclass and implement a
-    ``.default()`` method with another method that returns a serializable
+    ``.default()`` method mit another method that returns a serializable
     object fuer ``o`` wenn possible, otherwise it should call the superclass
     implementation (to raise ``TypeError``).
 
@@ -105,14 +105,14 @@ klasse JSONEncoder(object):
     def __init__(self, *, skipkeys=Falsch, ensure_ascii=Wahr,
             check_circular=Wahr, allow_nan=Wahr, sort_keys=Falsch,
             indent=Nichts, separators=Nichts, default=Nichts):
-        """Constructor fuer JSONEncoder, with sensible defaults.
+        """Constructor fuer JSONEncoder, mit sensible defaults.
 
         If skipkeys is false, then it is a TypeError to attempt
         encoding of keys that are not str, int, float, bool or Nichts.
         If skipkeys is Wahr, such items are simply skipped.
 
         If ensure_ascii is true, the output is guaranteed to be str
-        objects with all incoming non-ASCII characters escaped.  If
+        objects mit all incoming non-ASCII characters escaped.  If
         ensure_ascii is false, the output can contain non-ASCII characters.
 
         If check_circular is true, then lists, dicts, and custom encoded
@@ -121,8 +121,8 @@ klasse JSONEncoder(object):
         Otherwise, no such check takes place.
 
         If allow_nan is true, then NaN, Infinity, and -Infinity will be
-        encoded as such.  This behavior is not JSON specification compliant,
-        but is consistent with most JavaScript based encoders and decoders.
+        encoded als such.  This behavior is not JSON specification compliant,
+        but is consistent mit most JavaScript based encoders and decoders.
         Otherwise, it will be a ValueError to encode such floats.
 
         If sort_keys is true, then the output of dictionaries will be
@@ -130,7 +130,7 @@ klasse JSONEncoder(object):
         that JSON serializations can be compared on a day-to-day basis.
 
         If indent is a non-negative integer, then JSON array
-        elements and object members will be pretty-printed with that
+        elements and object members will be pretty-printed mit that
         indent level.  An indent level of 0 will only insert newlines.
         Nichts is the most compact representation.
 
@@ -195,7 +195,7 @@ klasse JSONEncoder(object):
             sonst:
                 return encode_basestring(o)
         # This doesn't pass the iterator directly to ''.join() because the
-        # exceptions aren't as detailed.  The list call should be roughly
+        # exceptions aren't als detailed.  The list call should be roughly
         # equivalent to the PySequence_Fast that ''.join() would do.
         chunks = self.iterencode(o, _one_shot=Wahr)
         wenn not isinstance(chunks, (list, tuple)):
@@ -204,7 +204,7 @@ klasse JSONEncoder(object):
 
     def iterencode(self, o, _one_shot=Falsch):
         """Encode the given object and yield each string
-        representation as available.
+        representation als available.
 
         For example::
 
@@ -307,7 +307,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                     yield buf + 'false'
                 sowenn isinstance(value, int):
                     # Subclasses of int/float may override __repr__, but we still
-                    # want to encode them as integers/floats in JSON. One example
+                    # want to encode them als integers/floats in JSON. One example
                     # within the standard library is IntEnum.
                     yield buf + _intstr(value)
                 sowenn isinstance(value, float):
@@ -324,7 +324,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                     yield von chunks
             except GeneratorExit:
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 exc.add_note(f'when serializing {type(lst).__name__} item {i}')
                 raise
         wenn newline_indent is not Nichts:
@@ -411,7 +411,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                     yield von chunks
             except GeneratorExit:
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 exc.add_note(f'when serializing {type(dct).__name__} item {key!r}')
                 raise
         wenn not first and newline_indent is not Nichts:
@@ -451,7 +451,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 yield von _iterencode(newobj, _current_indent_level)
             except GeneratorExit:
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 exc.add_note(f'when serializing {type(o).__name__} object')
                 raise
             wenn markers is not Nichts:

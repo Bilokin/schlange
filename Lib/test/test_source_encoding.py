@@ -31,7 +31,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
     def test_issue2301(self):
         try:
             compile(b"# coding: cp932\nprint '\x94\x4e'", "dummy", "exec")
-        except SyntaxError as v:
+        except SyntaxError als v:
             self.assertEqual(v.text.rstrip('\n'), "print '\u5e74'")
         sonst:
             self.fail()
@@ -52,16 +52,16 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
 
     def test_issue7820(self):
         # Ensure that check_bom() restores all bytes in the right order if
-        # check_bom() fails in pydebug mode: a buffer starts with the first
+        # check_bom() fails in pydebug mode: a buffer starts mit the first
         # byte of a valid BOM, but next bytes are different
 
-        # one byte in common with the UTF-16-LE BOM
+        # one byte in common mit the UTF-16-LE BOM
         self.assertRaises(SyntaxError, eval, b'\xff\x20')
 
-        # one byte in common with the UTF-8 BOM
+        # one byte in common mit the UTF-8 BOM
         self.assertRaises(SyntaxError, eval, b'\xef\x20')
 
-        # two bytes in common with the UTF-8 BOM
+        # two bytes in common mit the UTF-8 BOM
         self.assertRaises(SyntaxError, eval, b'\xef\xbb\x20')
 
     @requires_subprocess()
@@ -79,17 +79,17 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
         compile(b'# -*- coding: iso-8859-15 -*-\n', 'dummy', 'exec')
         compile(b'\xef\xbb\xbf\n', 'dummy', 'exec')
         compile(b'\xef\xbb\xbf# -*- coding: utf-8 -*-\n', 'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'fake'):
+        mit self.assertRaisesRegex(SyntaxError, 'fake'):
             compile(b'# -*- coding: fake -*-\n', 'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'iso-8859-15'):
+        mit self.assertRaisesRegex(SyntaxError, 'iso-8859-15'):
             compile(b'\xef\xbb\xbf# -*- coding: iso-8859-15 -*-\n',
                     'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'BOM'):
+        mit self.assertRaisesRegex(SyntaxError, 'BOM'):
             compile(b'\xef\xbb\xbf# -*- coding: iso-8859-15 -*-\n',
                     'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'fake'):
+        mit self.assertRaisesRegex(SyntaxError, 'fake'):
             compile(b'\xef\xbb\xbf# -*- coding: fake -*-\n', 'dummy', 'exec')
-        with self.assertRaisesRegex(SyntaxError, 'BOM'):
+        mit self.assertRaisesRegex(SyntaxError, 'BOM'):
             compile(b'\xef\xbb\xbf# -*- coding: fake -*-\n', 'dummy', 'exec')
 
     def test_bad_coding(self):
@@ -105,7 +105,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
 
         path = os.path.dirname(__file__)
         filename = os.path.join(path, 'tokenizedata', module_name + '.py')
-        with open(filename, "rb") as fp:
+        mit open(filename, "rb") als fp:
             bytes = fp.read()
         self.assertRaises(SyntaxError, compile, bytes, filename, 'exec')
 
@@ -122,7 +122,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
         f = open(filename, "w", encoding="cp1252")
         sys.path.insert(0, os.curdir)
         try:
-            with f:
+            mit f:
                 f.write("# -*- coding: cp1252 -*-\n")
                 f.write("'''A short string\n")
                 f.write("'''\n")
@@ -141,7 +141,7 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
     def test_error_from_string(self):
         # See http://bugs.python.org/issue6289
         input = "# coding: ascii\n\N{SNOWMAN}".encode('utf-8')
-        with self.assertRaises(SyntaxError) as c:
+        mit self.assertRaises(SyntaxError) als c:
             compile(input, "<string>", "exec")
         expected = "'ascii' codec can't decode byte 0xe2 in position 16: " \
                    "ordinal not in range(128)"
@@ -149,20 +149,20 @@ klasse MiscSourceEncodingTest(unittest.TestCase):
 
     def test_file_parse_error_multiline(self):
         # gh96611:
-        with open(TESTFN, "wb") as fd:
+        mit open(TESTFN, "wb") als fd:
             fd.write(b'drucke("""\n\xb1""")\n')
 
         try:
             retcode, stdout, stderr = script_helper.assert_python_failure(TESTFN)
 
             self.assertGreater(retcode, 0)
-            self.assertIn(b"Non-UTF-8 code starting with '\\xb1'", stderr)
+            self.assertIn(b"Non-UTF-8 code starting mit '\\xb1'", stderr)
         finally:
             os.unlink(TESTFN)
 
     def test_tokenizer_fstring_warning_in_first_line(self):
         source = "0b1and 2"
-        with open(TESTFN, "w") as fd:
+        mit open(TESTFN, "w") als fd:
             fd.write("{}".format(source))
         try:
             retcode, stdout, stderr = script_helper.assert_python_ok(TESTFN)
@@ -269,7 +269,7 @@ klasse UTF8ValidatorTest(unittest.TestCase):
         self.addCleanup(unlink, fn)
 
         def check(content):
-            with open(fn, 'wb') as fp:
+            mit open(fn, 'wb') als fp:
                 fp.write(template % content)
             rc, stdout, stderr = script_helper.assert_python_failure(fn)
             # We want to assert that the python subprocess failed gracefully,
@@ -319,7 +319,7 @@ klasse UTF8ValidatorTest(unittest.TestCase):
 klasse BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     def check_script_output(self, src, expected):
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             exec(src)
         out = stdout.getvalue().encode('latin1')
         self.assertEqual(out.rstrip(), expected)
@@ -328,9 +328,9 @@ klasse BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 klasse FileSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     def check_script_output(self, src, expected):
-        with tempfile.TemporaryDirectory() as tmpd:
+        mit tempfile.TemporaryDirectory() als tmpd:
             fn = os.path.join(tmpd, 'test.py')
-            with open(fn, 'wb') as fp:
+            mit open(fn, 'wb') als fp:
                 fp.write(src)
             res = script_helper.assert_python_ok(fn)
         self.assertEqual(res.out.rstrip(), expected)

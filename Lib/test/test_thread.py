@@ -3,7 +3,7 @@ importiere unittest
 importiere random
 von test importiere support
 von test.support importiere threading_helper
-importiere _thread as thread
+importiere _thread als thread
 importiere time
 importiere warnings
 importiere weakref
@@ -20,7 +20,7 @@ _print_mutex = thread.allocate_lock()
 def verbose_drucke(arg):
     """Helper function fuer printing out debugging output."""
     wenn support.verbose:
-        with _print_mutex:
+        mit _print_mutex:
             drucke(arg)
 
 
@@ -42,7 +42,7 @@ klasse BasicThreadTest(unittest.TestCase):
 klasse ThreadRunningTests(BasicThreadTest):
 
     def newtask(self):
-        with self.running_mutex:
+        mit self.running_mutex:
             self.next_ident += 1
             verbose_drucke("creating task %s" % self.next_ident)
             thread.start_new_thread(self.task, (self.next_ident,))
@@ -50,18 +50,18 @@ klasse ThreadRunningTests(BasicThreadTest):
             self.running += 1
 
     def task(self, ident):
-        with self.random_mutex:
+        mit self.random_mutex:
             delay = random.random() / 10000.0
         verbose_drucke("task %s will run fuer %sus" % (ident, round(delay*1e6)))
         time.sleep(delay)
         verbose_drucke("task %s done" % ident)
-        with self.running_mutex:
+        mit self.running_mutex:
             self.running -= 1
             wenn self.created == NUMTASKS and self.running == 0:
                 self.done_mutex.release()
 
     def test_starting_threads(self):
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             # Basic test fuer thread creation.
             fuer i in range(NUMTASKS):
                 self.newtask()
@@ -97,7 +97,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             verbose_drucke("trying stack_size = (%d)" % tss)
             self.next_ident = 0
             self.created = 0
-            with threading_helper.wait_threads_exit():
+            mit threading_helper.wait_threads_exit():
                 fuer i in range(NUMTASKS):
                     self.newtask()
 
@@ -119,7 +119,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             mut.acquire()
             mut.release()
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             thread.start_new_thread(task, ())
             fuer _ in support.sleeping_retry(support.LONG_TIMEOUT):
                 wenn started:
@@ -148,8 +148,8 @@ klasse ThreadRunningTests(BasicThreadTest):
             raise ValueError("task failed")
 
         started = thread.allocate_lock()
-        with support.catch_unraisable_exception() as cm:
-            with threading_helper.wait_threads_exit():
+        mit support.catch_unraisable_exception() als cm:
+            mit threading_helper.wait_threads_exit():
                 started.acquire()
                 thread.start_new_thread(task, ())
                 started.acquire()
@@ -167,7 +167,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             time.sleep(0.05)
             finished.append(thread.get_ident())
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(task)
             handle.join()
             self.assertEqual(len(finished), 1)
@@ -177,7 +177,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         def task():
             pass
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(task)
             time.sleep(0.05)
             handle.join()
@@ -186,7 +186,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         def task():
             pass
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(task)
             handle.join()
             # Subsequent join() calls should succeed
@@ -199,7 +199,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         def task():
             handle_destroyed.acquire()
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(task)
             del handle
             handle_destroyed.release()
@@ -216,12 +216,12 @@ klasse ThreadRunningTests(BasicThreadTest):
             start_joinable_thread_returned.acquire()
             try:
                 handles[0].join()
-            except Exception as e:
+            except Exception als e:
                 errors.append(e)
             finally:
                 task_tried_to_join.release()
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(task)
             handles.append(handle)
             start_joinable_thread_returned.release()
@@ -230,7 +230,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             handle.join()
 
         assert len(errors) == 1
-        with self.assertRaisesRegex(RuntimeError, "Cannot join current thread"):
+        mit self.assertRaisesRegex(RuntimeError, "Cannot join current thread"):
             raise errors[0]
 
     def test_join_then_self_join(self):
@@ -257,7 +257,7 @@ klasse ThreadRunningTests(BasicThreadTest):
 
             try:
                 self_joiner_handle.join()
-            except Exception as e:
+            except Exception als e:
                 error = e
 
         joiner_started = make_lock()
@@ -265,7 +265,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             joiner_started.release()
             self_joiner_handle.join()
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             self_joiner_handle = thread.start_joinable_thread(self_joiner)
             # Wait fuer the self-joining thread to start
             self_joiner_started.acquire()
@@ -286,7 +286,7 @@ klasse ThreadRunningTests(BasicThreadTest):
             self_joiner_handle.join()
             joiner_handle.join()
 
-            with self.assertRaisesRegex(RuntimeError, "Cannot join current thread"):
+            mit self.assertRaisesRegex(RuntimeError, "Cannot join current thread"):
                 raise error
 
     def test_join_with_timeout(self):
@@ -296,7 +296,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         def thr():
             lock.acquire()
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(thr)
             handle.join(0.1)
             self.assertFalsch(handle.is_done())
@@ -306,12 +306,12 @@ klasse ThreadRunningTests(BasicThreadTest):
 
     def test_join_unstarted(self):
         handle = thread._ThreadHandle()
-        with self.assertRaisesRegex(RuntimeError, "thread not started"):
+        mit self.assertRaisesRegex(RuntimeError, "thread not started"):
             handle.join()
 
     def test_set_done_unstarted(self):
         handle = thread._ThreadHandle()
-        with self.assertRaisesRegex(RuntimeError, "thread not started"):
+        mit self.assertRaisesRegex(RuntimeError, "thread not started"):
             handle._set_done()
 
     def test_start_duplicate_handle(self):
@@ -322,9 +322,9 @@ klasse ThreadRunningTests(BasicThreadTest):
             lock.acquire()
 
         handle = thread._ThreadHandle()
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             thread.start_joinable_thread(func, handle=handle)
-            with self.assertRaisesRegex(RuntimeError, "thread already started"):
+            mit self.assertRaisesRegex(RuntimeError, "thread already started"):
                 thread.start_joinable_thread(func, handle=handle)
             lock.release()
             handle.join()
@@ -333,7 +333,7 @@ klasse ThreadRunningTests(BasicThreadTest):
         def func():
             pass
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             handle = thread.start_joinable_thread(func, handle=Nichts)
             handle.join()
 
@@ -366,7 +366,7 @@ klasse Barrier:
 klasse BarrierTest(BasicThreadTest):
 
     def test_barrier(self):
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             self.bar = Barrier(NUMTASKS)
             self.running = NUMTASKS
             fuer i in range(NUMTASKS):
@@ -383,7 +383,7 @@ klasse BarrierTest(BasicThreadTest):
                 # of the current one
                 delay = 0
             sonst:
-                with self.random_mutex:
+                mit self.random_mutex:
                     delay = random.random() / 10000.0
             verbose_drucke("task %s will run fuer %sus" %
                           (ident, round(delay * 1e6)))
@@ -391,10 +391,10 @@ klasse BarrierTest(BasicThreadTest):
             verbose_drucke("task %s entering %s" % (ident, i))
             self.bar.enter()
             verbose_drucke("task %s leaving barrier" % ident)
-        with self.running_mutex:
+        mit self.running_mutex:
             self.running -= 1
             # Must release mutex before releasing done, sonst the main thread can
-            # exit and set mutex to Nichts as part of global teardown; then
+            # exit and set mutex to Nichts als part of global teardown; then
             # mutex.release() raises AttributeError.
             finished = self.running == 0
         wenn finished:
@@ -416,8 +416,8 @@ klasse TestForkInThread(unittest.TestCase):
         def fork_thread(read_fd, write_fd):
             nonlocal pid
 
-            # Ignore the warning about fork with threads.
-            with warnings.catch_warnings(category=DeprecationWarning,
+            # Ignore the warning about fork mit threads.
+            mit warnings.catch_warnings(category=DeprecationWarning,
                                          action="ignore"):
                 # fork in a thread (DANGER, undefined per POSIX)
                 wenn (pid := os.fork()):
@@ -431,7 +431,7 @@ klasse TestForkInThread(unittest.TestCase):
             finally:
                 os._exit(0)
 
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             thread.start_new_thread(fork_thread, (self.read_fd, self.write_fd))
             self.assertEqual(os.read(self.read_fd, 2), b"OK")
             os.close(self.write_fd)

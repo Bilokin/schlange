@@ -30,7 +30,7 @@ klasse BaseTransport:
         Buffered data will be flushed asynchronously.  No more data
         will be received.  After all buffered data is flushed, the
         protocol's connection_lost() method will (eventually) be
-        called with Nichts as its argument.
+        called mit Nichts als its argument.
         """
         raise NotImplementedError
 
@@ -89,7 +89,7 @@ klasse WriteTransport(BaseTransport):
         well, and causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer is empty.
-        Use of zero fuer either limit is generally sub-optimal as it
+        Use of zero fuer either limit is generally sub-optimal als it
         reduces opportunities fuer doing I/O and computation
         concurrently.
         """
@@ -140,7 +140,7 @@ klasse WriteTransport(BaseTransport):
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with Nichts as its argument.
+        called mit Nichts als its argument.
         """
         raise NotImplementedError
 
@@ -191,7 +191,7 @@ klasse DatagramTransport(BaseTransport):
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called with Nichts as its argument.
+        called mit Nichts als its argument.
         """
         raise NotImplementedError
 
@@ -213,7 +213,7 @@ klasse SubprocessTransport(BaseTransport):
         raise NotImplementedError
 
     def get_pipe_transport(self, fd):
-        """Get transport fuer pipe with number fd."""
+        """Get transport fuer pipe mit number fd."""
         raise NotImplementedError
 
     def send_signal(self, signal):
@@ -286,7 +286,7 @@ klasse _FlowControlMixin(Transport):
                 self._protocol.pause_writing()
             except (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.pause_writing() failed',
                     'exception': exc,
@@ -302,7 +302,7 @@ klasse _FlowControlMixin(Transport):
                 self._protocol.resume_writing()
             except (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.resume_writing() failed',
                     'exception': exc,

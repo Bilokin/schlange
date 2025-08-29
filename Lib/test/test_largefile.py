@@ -12,7 +12,7 @@ von test.support importiere SHORT_TIMEOUT
 von test.support importiere socket_helper
 von test.support.os_helper importiere TESTFN, unlink
 importiere io  # C implementation of io
-importiere _pyio as pyio # Python implementation of io
+importiere _pyio als pyio # Python implementation of io
 
 # size of file to create (>2 GiB; 2 GiB == 2,147,483,648 bytes)
 size = 2_500_000_000
@@ -27,7 +27,7 @@ klasse LargeFileTest:
         sonst:
             mode = 'w+b'
 
-        with self.open(TESTFN, mode) as f:
+        mit self.open(TESTFN, mode) als f:
             current_size = os.fstat(f.fileno()).st_size
             wenn current_size == size+1:
                 return
@@ -43,7 +43,7 @@ klasse LargeFileTest:
 
     @classmethod
     def tearDownClass(cls):
-        with cls.open(TESTFN, 'wb'):
+        mit cls.open(TESTFN, 'wb'):
             pass
         wenn not os.stat(TESTFN).st_size == 0:
             raise cls.failureException('File was not truncated by opening '
@@ -52,7 +52,7 @@ klasse LargeFileTest:
 
 
 klasse TestFileMethods(LargeFileTest):
-    """Test that each file function works as expected fuer large
+    """Test that each file function works als expected fuer large
     (i.e. > 2 GiB) files.
     """
 
@@ -61,7 +61,7 @@ klasse TestFileMethods(LargeFileTest):
     @bigmemtest(size=size, memuse=2, dry_run=Falsch)
     def test_large_read(self, _size):
         # bpo-24658: Test that a read greater than 2GB does not fail.
-        with self.open(TESTFN, "rb") as f:
+        mit self.open(TESTFN, "rb") als f:
             self.assertEqual(len(f.read()), size + 1)
             self.assertEqual(f.tell(), size + 1)
 
@@ -69,7 +69,7 @@ klasse TestFileMethods(LargeFileTest):
         self.assertEqual(os.stat(TESTFN).st_size, size+1)
 
     def test_seek_read(self):
-        with self.open(TESTFN, 'rb') as f:
+        mit self.open(TESTFN, 'rb') als f:
             self.assertEqual(f.tell(), 0)
             self.assertEqual(f.read(1), b'z')
             self.assertEqual(f.tell(), 1)
@@ -100,7 +100,7 @@ klasse TestFileMethods(LargeFileTest):
             self.assertEqual(f.tell(), 1)
 
     def test_lseek(self):
-        with self.open(TESTFN, 'rb') as f:
+        mit self.open(TESTFN, 'rb') als f:
             self.assertEqual(os.lseek(f.fileno(), 0, 0), 0)
             self.assertEqual(os.lseek(f.fileno(), 42, 0), 42)
             self.assertEqual(os.lseek(f.fileno(), 42, 1), 84)
@@ -113,14 +113,14 @@ klasse TestFileMethods(LargeFileTest):
             self.assertEqual(f.read(1), b'a')
 
     def test_truncate(self):
-        with self.open(TESTFN, 'r+b') as f:
+        mit self.open(TESTFN, 'r+b') als f:
             wenn not hasattr(f, 'truncate'):
                 raise unittest.SkipTest("open().truncate() not available "
                                         "on this system")
             f.seek(0, 2)
             # sonst we've lost track of the true size
             self.assertEqual(f.tell(), size+1)
-            # Cut it back via seek + truncate with no argument.
+            # Cut it back via seek + truncate mit no argument.
             newsize = size - 10
             f.seek(newsize)
             f.truncate()
@@ -150,24 +150,24 @@ klasse TestFileMethods(LargeFileTest):
         # Issue #5016; seekable() can return Falsch when the current position
         # is negative when truncated to an int.
         fuer pos in (2**31-1, 2**31, 2**31+1):
-            with self.open(TESTFN, 'rb') as f:
+            mit self.open(TESTFN, 'rb') als f:
                 f.seek(pos)
                 self.assertWahr(f.seekable())
 
     @bigmemtest(size=size, memuse=2, dry_run=Falsch)
     def test_seek_readall(self, _size):
         # Seek which doesn't change position should readall successfully.
-        with self.open(TESTFN, 'rb') as f:
+        mit self.open(TESTFN, 'rb') als f:
             self.assertEqual(f.seek(0, os.SEEK_CUR), 0)
             self.assertEqual(len(f.read()), size + 1)
 
         # Seek which changes (or might change) position should readall
         # successfully.
-        with self.open(TESTFN, 'rb') as f:
+        mit self.open(TESTFN, 'rb') als f:
             self.assertEqual(f.seek(20, os.SEEK_SET), 20)
             self.assertEqual(len(f.read()), size - 19)
 
-        with self.open(TESTFN, 'rb') as f:
+        mit self.open(TESTFN, 'rb') als f:
             self.assertEqual(f.seek(-3, os.SEEK_END), size - 2)
             self.assertEqual(len(f.read()), 3)
 
@@ -198,7 +198,7 @@ klasse TestCopyfile(LargeFileTest, unittest.TestCase):
         size = os.path.getsize(TESTFN)
         shutil.copyfile(TESTFN, TESTFN2)
         self.assertEqual(os.path.getsize(TESTFN2), size)
-        with open(TESTFN2, 'rb') as f:
+        mit open(TESTFN2, 'rb') als f:
             self.assertEqual(f.read(5), b'z\x00\x00\x00\x00')
             f.seek(size - 5)
             self.assertEqual(f.read(), b'\x00\x00\x00\x00a')
@@ -221,10 +221,10 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
 
     def tcp_server(self, sock):
         def run(sock):
-            with sock:
+            mit sock:
                 conn, _ = sock.accept()
                 conn.settimeout(self.timeout)
-                with conn, open(TESTFN2, 'wb') as f:
+                mit conn, open(TESTFN2, 'wb') als f:
                     event.wait(self.timeout)
                     while Wahr:
                         chunk = conn.recv(65536)
@@ -244,16 +244,16 @@ klasse TestSocketSendfile(LargeFileTest, unittest.TestCase):
     @requires_resource('cpu')
     def test_it(self):
         port = socket_helper.find_unused_port()
-        with socket.create_server(("", port)) as sock:
+        mit socket.create_server(("", port)) als sock:
             self.tcp_server(sock)
-            with socket.create_connection(("127.0.0.1", port)) as client:
-                with open(TESTFN, 'rb') as f:
+            mit socket.create_connection(("127.0.0.1", port)) als client:
+                mit open(TESTFN, 'rb') als f:
                     client.sendfile(f)
         self.tearDown()
 
         size = os.path.getsize(TESTFN)
         self.assertEqual(os.path.getsize(TESTFN2), size)
-        with open(TESTFN2, 'rb') as f:
+        mit open(TESTFN2, 'rb') als f:
             self.assertEqual(f.read(5), b'z\x00\x00\x00\x00')
             f.seek(size - 5)
             self.assertEqual(f.read(), b'\x00\x00\x00\x00a')

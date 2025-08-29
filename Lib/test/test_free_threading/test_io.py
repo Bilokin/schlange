@@ -1,5 +1,5 @@
 importiere io
-importiere _pyio as pyio
+importiere _pyio als pyio
 importiere threading
 von unittest importiere TestCase
 von test.support importiere threading_helper
@@ -21,7 +21,7 @@ klasse ThreadSafetyMixin:
 
             threads.append(thread)
 
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
 
     @threading_helper.requires_working_threading()

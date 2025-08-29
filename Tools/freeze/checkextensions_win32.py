@@ -1,6 +1,6 @@
 """Extension management fuer Windows.
 
-Under Windows it is unlikely the .obj files are of use, as special compiler options
+Under Windows it is unlikely the .obj files are of use, als special compiler options
 are needed (primarily to toggle the behavior of "public" symbols.
 
 I don't consider it worth parsing the MSVC makefiles fuer compiler options.  Even if
@@ -10,7 +10,7 @@ options anyway (eg, to enable or disable specific functionality)
 So my basic strategy is:
 
 * Have some Windows INI files which "describe" one or more extension modules.
-  (Freeze comes with a default one fuer all known modules - but you can specify
+  (Freeze comes mit a default one fuer all known modules - but you can specify
   your own).
 * This description can include:
   - The MSVC .dsp file fuer the extension.  The .c source file names
@@ -130,9 +130,9 @@ def parse_dsp(dsp):
     ret = []
     dsp_path, dsp_name = os.path.split(dsp)
     try:
-        with open(dsp, "r") as fp:
+        mit open(dsp, "r") als fp:
             lines = fp.readlines()
-    except IOError as msg:
+    except IOError als msg:
         sys.stderr.write("%s: %s\n" % (dsp, msg))
         return Nichts
     fuer line in lines:
@@ -148,7 +148,7 @@ def write_extension_table(fname, modules):
         fp.write (ext_src_header)
         # Write fn protos
         fuer module in modules:
-            # bit of a hack fuer .pyd's as part of packages.
+            # bit of a hack fuer .pyd's als part of packages.
             name = module.name.split('.')[-1]
             fp.write('extern void init%s(void);\n' % (name) )
         # Write the table

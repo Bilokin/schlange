@@ -10,7 +10,7 @@ importiere sys
 von test importiere support
 von test.support importiere warnings_helper
 von test.support importiere skip_if_buggy_ucrt_strfptime, run_with_locales
-von datetime importiere date as datetime_date
+von datetime importiere date als datetime_date
 
 importiere _strptime
 
@@ -42,7 +42,7 @@ klasse LocaleTime_Tests(unittest.TestCase):
     def compare_against_time(self, testing, directive, tuple_position,
                              error_msg):
         """Helper method that tests testing against directive based on the
-        tuple_position of time_tuple.  Uses error_msg as error message.
+        tuple_position of time_tuple.  Uses error_msg als error message.
 
         """
         strftime_output = time.strftime(directive, self.time_tuple).lower()
@@ -55,7 +55,7 @@ klasse LocaleTime_Tests(unittest.TestCase):
 
     def test_weekday(self):
         # Make sure that full and abbreviated weekday names are correct in
-        # both string and position with tuple
+        # both string and position mit tuple
         self.compare_against_time(self.LT_ins.f_weekday, '%A', 6,
                                   "Testing of full weekday name failed")
         self.compare_against_time(self.LT_ins.a_weekday, '%a', 6,
@@ -90,7 +90,7 @@ klasse LocaleTime_Tests(unittest.TestCase):
 
     def test_date_time(self):
         # Check that LC_date_time, LC_date, and LC_time are correct
-        # the magic date is used so as to not have issues with %c when day of
+        # the magic date is used so als to not have issues mit %c when day of
         #  the month is a single digit and has a leading space.  This is not an
         #  issue since strptime still parses it correctly.  The problem is
         #  testing these directives fuer correctness by comparing strftime
@@ -155,7 +155,7 @@ klasse TimeRETests(unittest.TestCase):
         found = compiled.match("%s %s" % (self.locale_time.a_weekday[4],
                                self.locale_time.a_month[4]))
         self.assertWahr(found,
-            "Match failed with '%s' regex and '%s' string" %
+            "Match failed mit '%s' regex and '%s' string" %
              (compiled.pattern, "%s %s" % (self.locale_time.a_weekday[4],
                                            self.locale_time.a_month[4])))
         self.assertWahr(found.group('a') == self.locale_time.a_weekday[4] and
@@ -202,7 +202,7 @@ klasse TimeRETests(unittest.TestCase):
 
     def test_whitespace_substitution(self):
         # When pattern contains whitespace, make sure it is taken into account
-        # so as to not allow subpatterns to end up next to each other and
+        # so als to not allow subpatterns to end up next to each other and
         # "steal" characters von each other.
         pattern = self.time_re.pattern('%j %H')
         self.assertFalsch(re.match(pattern, "180"))
@@ -221,26 +221,26 @@ klasse StrptimeTests(unittest.TestCase):
         self.assertRaises(ValueError, _strptime._strptime_time, data_string="%d",
                           format="%A")
         fuer bad_format in ("%", "% ", "%\n"):
-            with (self.subTest(format=bad_format),
+            mit (self.subTest(format=bad_format),
                   self.assertRaisesRegex(ValueError, "stray % in format ")):
                 _strptime._strptime_time("2005", bad_format)
         fuer bad_format in ("%i", "%Oi", "%O", "%O ", "%Ee", "%E", "%E ",
                            "%.", "%+", "%~", "%\\",
                            "%O.", "%O+", "%O_", "%O~", "%O\\"):
             directive = bad_format[1:].rstrip()
-            with (self.subTest(format=bad_format),
+            mit (self.subTest(format=bad_format),
                   self.assertRaisesRegex(ValueError,
                     f"'{re.escape(directive)}' is a bad directive in format ")):
                 _strptime._strptime_time("2005", bad_format)
 
-        msg_week_no_year_or_weekday = r"ISO week directive '%V' must be used with " \
+        msg_week_no_year_or_weekday = r"ISO week directive '%V' must be used mit " \
             r"the ISO year directive '%G' and a weekday directive " \
             r"\('%A', '%a', '%w', or '%u'\)."
-        msg_week_not_compatible = r"ISO week directive '%V' is incompatible with " \
+        msg_week_not_compatible = r"ISO week directive '%V' is incompatible mit " \
             r"the year directive '%Y'. Use the ISO year '%G' instead."
         msg_julian_not_compatible = r"Day of the year directive '%j' is not " \
-            r"compatible with ISO year directive '%G'. Use '%Y' instead."
-        msg_year_no_week_or_weekday = r"ISO year directive '%G' must be used with " \
+            r"compatible mit ISO year directive '%G'. Use '%Y' instead."
+        msg_year_no_week_or_weekday = r"ISO year directive '%G' must be used mit " \
             r"the ISO week directive '%V' and a weekday directive " \
             r"\('%A', '%a', '%w', or '%u'\)."
 
@@ -248,7 +248,7 @@ klasse StrptimeTests(unittest.TestCase):
 
         # Ambiguous or incomplete cases using ISO year/week/weekday directives
         subtests = [
-            # 1. ISO week (%V) is specified, but the year is specified with %Y
+            # 1. ISO week (%V) is specified, but the year is specified mit %Y
             # instead of %G
             ("1999 50", "%Y %V", msg_week_no_year_or_weekday),
             ("1999 50 5", "%Y %V %u", msg_week_not_compatible),
@@ -263,7 +263,7 @@ klasse StrptimeTests(unittest.TestCase):
             ("1999 5", "%G %u", msg_year_no_week_or_weekday),
             # 4. ISO year is specified alone (e.g. time.strptime('2015', '%G'))
             ("2015", "%G", msg_year_no_week_or_weekday),
-            # 5. Julian/ordinal day (%j) is specified with %G, but not %Y
+            # 5. Julian/ordinal day (%j) is specified mit %G, but not %Y
             ("1999 256", "%G %j", msg_julian_not_compatible),
             ("1999 50 5 256", "%G %V %u %j", msg_julian_not_compatible),
             # ISO week specified alone
@@ -279,17 +279,17 @@ klasse StrptimeTests(unittest.TestCase):
         ]
 
         fuer (data_string, format, message) in subtests:
-            with self.subTest(data_string=data_string, format=format):
-                with self.assertRaisesRegex(ValueError, message):
+            mit self.subTest(data_string=data_string, format=format):
+                mit self.assertRaisesRegex(ValueError, message):
                     _strptime._strptime(data_string, format)
 
     def test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
-        with self.assertRaises(ValueError) as e:
+        mit self.assertRaises(ValueError) als e:
             _strptime._strptime_time('', '%D')
         self.assertWahr(e.exception.__suppress_context__)
         # additional check fuer stray % branch
-        with self.assertRaises(ValueError) as e:
+        mit self.assertRaises(ValueError) als e:
             _strptime._strptime_time('%', '%')
         self.assertWahr(e.exception.__suppress_context__)
 
@@ -354,7 +354,7 @@ klasse StrptimeTests(unittest.TestCase):
         # Test hour directives
         self.roundtrip('%H', 3)
 
-    # NB: Only works on locales with AM/PM
+    # NB: Only works on locales mit AM/PM
     @run_with_locales('LC_TIME', 'C', 'en_US', 'ja_JP')
     def test_hour_locale(self):
         # Test hour directives
@@ -426,23 +426,23 @@ klasse StrptimeTests(unittest.TestCase):
         self.assertEqual(offset_fraction, 0)
 
     def test_bad_offset(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30.", "%z")
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _strptime._strptime("-0130:30", "%z")
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30.1234567", "%z")
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30:123456", "%z")
-        with self.assertRaises(ValueError) as err:
+        mit self.assertRaises(ValueError) als err:
             _strptime._strptime("-01:3030", "%z")
         self.assertEqual("Inconsistent use of : in -01:3030", str(err.exception))
 
     @skip_if_buggy_ucrt_strfptime
     def test_timezone(self):
         # Test timezone directives.
-        # When gmtime() is used with %Z, entire result of strftime() is empty.
-        # Check fuer equal timezone names deals with bad locale info when this
+        # When gmtime() is used mit %Z, entire result of strftime() is empty.
+        # Check fuer equal timezone names deals mit bad locale info when this
         # occurs; first found in FreeBSD 4.4.
         strp_output = _strptime._strptime_time("UTC", "%Z")
         self.assertEqual(strp_output.tm_isdst, 0)
@@ -471,7 +471,7 @@ klasse StrptimeTests(unittest.TestCase):
         wenn tz_name.upper() in ("UTC", "GMT"):
             self.skipTest('need non-UTC/GMT timezone')
 
-        with support.swap_attr(time, 'tzname', (tz_name, tz_name)), \
+        mit support.swap_attr(time, 'tzname', (tz_name, tz_name)), \
              support.swap_attr(time, 'daylight', 1), \
              support.swap_attr(time, 'tzset', lambda: Nichts):
             time.tzname = (tz_name, tz_name)
@@ -689,7 +689,7 @@ klasse CalculationTests(unittest.TestCase):
 
     @skip_if_buggy_ucrt_strfptime
     def test_day_of_week_calculation(self):
-        # Test that the day of the week is calculated as needed
+        # Test that the day of the week is calculated als needed
         format_string = "%Y %m %d %H %S %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
@@ -719,7 +719,7 @@ klasse CalculationTests(unittest.TestCase):
                     return
                 fuer weekday_format in ('%w', '%u', '%a', '%A'):
                     format_string = year_week_format + ' ' + weekday_format
-                    with self.subTest(test_reason,
+                    mit self.subTest(test_reason,
                                       date=ymd_tuple,
                                       format=format_string):
                         dt_date = datetime_date(*ymd_tuple)
@@ -746,10 +746,10 @@ klasse CalculationTests(unittest.TestCase):
         test_helper((2004, 12, 18), "randomly chosen date")
         test_helper((1978, 10, 23), "year starting and ending on Monday while "
                                         "date not on Sunday or Monday")
-        test_helper((1917, 12, 17), "year starting and ending on Monday with "
+        test_helper((1917, 12, 17), "year starting and ending on Monday mit "
                                         "a Monday not at the beginning or end "
                                         "of the year")
-        test_helper((1917, 12, 31), "Dec 31 on Monday with year starting and "
+        test_helper((1917, 12, 31), "Dec 31 on Monday mit year starting and "
                                         "ending on Monday")
         test_helper((2007, 1, 7), "First Sunday of 2007")
         test_helper((2007, 1, 14), "Second Sunday of 2007")
@@ -841,7 +841,7 @@ klasse CacheTests(unittest.TestCase):
 
     def test_TimeRE_recreation_locale(self):
         # The TimeRE instance should be recreated upon changing the locale.
-        with support.run_with_locale('LC_TIME', 'en_US.UTF8'):
+        mit support.run_with_locale('LC_TIME', 'en_US.UTF8'):
             _strptime._strptime_time('10 2004', '%d %Y')
             # Get id of current cache object.
             first_time_re = _strptime._TimeRE_cache
@@ -881,9 +881,9 @@ klasse CacheTests(unittest.TestCase):
         # They should not be equal.
         self.assertIsNot(first_time_re, second_time_re)
         # Make sure old names no longer accepted.
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _strptime._strptime_time(oldtzname[0], '%Z')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             _strptime._strptime_time(oldtzname[1], '%Z')
 
 

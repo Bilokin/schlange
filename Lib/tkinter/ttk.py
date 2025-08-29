@@ -277,11 +277,11 @@ def _list_from_layouttuple(tk, ltuple):
     return res
 
 def _val_or_dict(tk, options, *args):
-    """Format options then call Tk command with args and options and return
+    """Format options then call Tk command mit args and options and return
     the appropriate result.
 
     If no option is specified, a dict is returned. If an option is
-    specified with the Nichts value, the value fuer that option is returned.
+    specified mit the Nichts value, the value fuer that option is returned.
     Otherwise, the function just sets the passed options and the caller
     shouldn't be expecting a return value anyway."""
     options = _format_optdict(options)
@@ -326,7 +326,7 @@ def _tclobj_to_py(val):
     return val
 
 def tclobjs_to_py(adict):
-    """Returns adict with its values converted von Tcl objects to Python
+    """Returns adict mit its values converted von Tcl objects to Python
     objects."""
     fuer opt, val in adict.items():
         adict[opt] = _tclobj_to_py(val)
@@ -483,7 +483,7 @@ klasse Style(object):
 
         Each key in settings is a style and each value may contain the
         keys 'configure', 'map', 'layout' and 'element create' and they
-        are expected to have the same format as specified by the methods
+        are expected to have the same format als specified by the methods
         configure, map, layout and element_create respectively."""
         script = _script_from_settings(settings)
         self.tk.call(self._name, "theme", "settings", themename, script)
@@ -513,7 +513,7 @@ klasse Widget(tkinter.Widget):
     """Base klasse fuer Tk themed widgets."""
 
     def __init__(self, master, widgetname, kw=Nichts):
-        """Constructs a Ttk Widget with the parent master.
+        """Constructs a Ttk Widget mit the parent master.
 
         STANDARD OPTIONS
 
@@ -549,7 +549,7 @@ klasse Widget(tkinter.Widget):
 
         If callback is not specified, returns Wahr wenn the widget state
         matches statespec and Falsch otherwise. If callback is specified,
-        then it will be invoked with *args, **kw wenn the widget state
+        then it will be invoked mit *args, **kw wenn the widget state
         matches statespec. statespec is expected to be a sequence."""
         ret = self.tk.getboolean(
                 self.tk.call(self._w, "instate", ' '.join(statespec)))
@@ -577,7 +577,7 @@ klasse Button(Widget):
     evaluates a command when pressed."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Button widget with the parent master.
+        """Construct a Ttk Button widget mit the parent master.
 
         STANDARD OPTIONS
 
@@ -592,7 +592,7 @@ klasse Button(Widget):
 
 
     def invoke(self):
-        """Invokes the command associated with the button."""
+        """Invokes the command associated mit the button."""
         return self.tk.call(self._w, "invoke")
 
 
@@ -600,7 +600,7 @@ klasse Checkbutton(Widget):
     """Ttk Checkbutton widget which is either in on- or off-state."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Checkbutton widget with the parent master.
+        """Construct a Ttk Checkbutton widget mit the parent master.
 
         STANDARD OPTIONS
 
@@ -630,7 +630,7 @@ klasse Entry(Widget, tkinter.Entry):
     string to be edited by the user."""
 
     def __init__(self, master=Nichts, widget=Nichts, **kw):
-        """Constructs a Ttk Entry widget with the parent master.
+        """Constructs a Ttk Entry widget mit the parent master.
 
         STANDARD OPTIONS
 
@@ -668,11 +668,11 @@ klasse Entry(Widget, tkinter.Entry):
 
 
 klasse Combobox(Entry):
-    """Ttk Combobox widget combines a text field with a pop-down list of
+    """Ttk Combobox widget combines a text field mit a pop-down list of
     values."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Combobox widget with the parent master.
+        """Construct a Ttk Combobox widget mit the parent master.
 
         STANDARD OPTIONS
 
@@ -709,7 +709,7 @@ klasse Frame(Widget):
     together."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Frame with parent master.
+        """Construct a Ttk Frame mit parent master.
 
         STANDARD OPTIONS
 
@@ -726,7 +726,7 @@ klasse Label(Widget):
     """Ttk Label widget displays a textual label and/or image."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Label with parent master.
+        """Construct a Ttk Label mit parent master.
 
         STANDARD OPTIONS
 
@@ -747,7 +747,7 @@ klasse Labelframe(Widget):
     or another widget."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Labelframe with parent master.
+        """Construct a Ttk Labelframe mit parent master.
 
         STANDARD OPTIONS
 
@@ -767,7 +767,7 @@ klasse Menubutton(Widget):
     displays a menu when pressed."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Menubutton with parent master.
+        """Construct a Ttk Menubutton mit parent master.
 
         STANDARD OPTIONS
 
@@ -783,11 +783,11 @@ klasse Menubutton(Widget):
 
 klasse Notebook(Widget):
     """Ttk Notebook widget manages a collection of windows and displays
-    a single one at a time. Each child window is associated with a tab,
+    a single one at a time. Each child window is associated mit a tab,
     which the user may select to change the currently-displayed window."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Notebook with parent master.
+        """Construct a Ttk Notebook mit parent master.
 
         STANDARD OPTIONS
 
@@ -837,7 +837,7 @@ klasse Notebook(Widget):
 
         The tab will not be displayed, but the associated window remains
         managed by the notebook and its configuration remembered. Hidden
-        tabs may be restored with the add command."""
+        tabs may be restored mit the add command."""
         self.tk.call(self._w, "hide", tab_id)
 
 
@@ -893,7 +893,7 @@ klasse Notebook(Widget):
         this notebook.
 
         This will extend the bindings fuer the toplevel window containing
-        this notebook as follows:
+        this notebook als follows:
 
             Control-Tab: selects the tab following the currently selected
                          one
@@ -919,7 +919,7 @@ klasse Panedwindow(Widget, tkinter.PanedWindow):
     either vertically or horizontally."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Panedwindow with parent master.
+        """Construct a Ttk Panedwindow mit parent master.
 
         STANDARD OPTIONS
 
@@ -981,7 +981,7 @@ klasse Progressbar(Widget):
     that something is happening."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Progressbar with parent master.
+        """Construct a Ttk Progressbar mit parent master.
 
         STANDARD OPTIONS
 
@@ -1020,7 +1020,7 @@ klasse Radiobutton(Widget):
     set of mutually-exclusive options."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Radiobutton with parent master.
+        """Construct a Ttk Radiobutton mit parent master.
 
         STANDARD OPTIONS
 
@@ -1048,7 +1048,7 @@ klasse Scale(Widget, tkinter.Scale):
     a linked variable that varies uniformly over some range."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Scale with parent master.
+        """Construct a Ttk Scale mit parent master.
 
         STANDARD OPTIONS
 
@@ -1087,7 +1087,7 @@ klasse Scrollbar(Widget, tkinter.Scrollbar):
     """Ttk Scrollbar controls the viewport of a scrollable widget."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Scrollbar with parent master.
+        """Construct a Ttk Scrollbar mit parent master.
 
         STANDARD OPTIONS
 
@@ -1105,7 +1105,7 @@ klasse Separator(Widget):
     bar."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Separator with parent master.
+        """Construct a Ttk Separator mit parent master.
 
         STANDARD OPTIONS
 
@@ -1123,7 +1123,7 @@ klasse Sizegrip(Widget):
     window by pressing and dragging the grip."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Sizegrip with parent master.
+        """Construct a Ttk Sizegrip mit parent master.
 
         STANDARD OPTIONS
 
@@ -1133,14 +1133,14 @@ klasse Sizegrip(Widget):
 
 
 klasse Spinbox(Entry):
-    """Ttk Spinbox is an Entry with increment and decrement arrows
+    """Ttk Spinbox is an Entry mit increment and decrement arrows
 
     It is commonly used fuer number entry or to select von a list of
     string values.
     """
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Spinbox widget with the parent master.
+        """Construct a Ttk Spinbox widget mit the parent master.
 
         STANDARD OPTIONS
 
@@ -1167,7 +1167,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
     after the tree label."""
 
     def __init__(self, master=Nichts, **kw):
-        """Construct a Ttk Treeview with parent master.
+        """Construct a Ttk Treeview mit parent master.
 
         STANDARD OPTIONS
 
@@ -1208,7 +1208,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 
 
     def set_children(self, item, *newchildren):
-        """Replaces item's child with newchildren.
+        """Replaces item's child mit newchildren.
 
         Children present in item that are not present in newchildren
         are detached von tree. No items in newchildren may be an
@@ -1274,7 +1274,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
                 A callback to be invoked when the heading label is
                 pressed.
 
-        To configure the tree column heading, call this with column = "#0" """
+        To configure the tree column heading, call this mit column = "#0" """
         cmd = kw.get('command')
         wenn cmd and not isinstance(cmd, str):
             # callback not registered yet, do it now
@@ -1340,7 +1340,7 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
         the new item. If index is less than or equal to zero, the new node
         is inserted at the beginning, wenn index is greater than or equal to
         the current number of children, it is inserted at the end. If iid
-        is specified, it is used as the item identifier, iid must not
+        is specified, it is used als the item identifier, iid must not
         already exist in the tree. Otherwise, a new unique identifier
         is generated."""
         opts = _format_optdict(kw)
@@ -1356,10 +1356,10 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
     def item(self, item, option=Nichts, **kw):
         """Query or modify the options fuer the specified item.
 
-        If no options are given, a dict with options/values fuer the item
+        If no options are given, a dict mit options/values fuer the item
         is returned. If option is specified then the value fuer that option
         is returned. Otherwise, sets the options to the corresponding
-        values as given by kw."""
+        values als given by kw."""
         wenn option is not Nichts:
             kw[option] = Nichts
         return _val_or_dict(self.tk, kw, self._w, "item", item)
@@ -1488,15 +1488,15 @@ klasse Treeview(Widget, tkinter.XView, tkinter.YView):
 # Extensions
 
 klasse LabeledScale(Frame):
-    """A Ttk Scale widget with a Ttk Label widget indicating its
+    """A Ttk Scale widget mit a Ttk Label widget indicating its
     current value.
 
     The Ttk Scale can be accessed through instance.scale, and Ttk Label
     can be accessed through instance.label"""
 
     def __init__(self, master=Nichts, variable=Nichts, from_=0, to=10, **kw):
-        """Construct a horizontal LabeledScale with parent master, a
-        variable to be associated with the Ttk Scale widget and its range.
+        """Construct a horizontal LabeledScale mit parent master, a
+        variable to be associated mit the Ttk Scale widget and its range.
         If variable is not specified, a tkinter.IntVar is created.
 
         WIDGET-SPECIFIC OPTIONS
@@ -1526,7 +1526,7 @@ klasse LabeledScale(Frame):
         dummy.lower()
         self.label.place(anchor='n' wenn label_side == 'top' sonst 's')
 
-        # update the label as scale or variable changes
+        # update the label als scale or variable changes
         self.__tracecb = self._variable.trace_add('write', self._adjust)
         self.bind('<Configure>', self._adjust)
         self.bind('<Map>', self._adjust)
@@ -1588,7 +1588,7 @@ klasse OptionMenu(Menubutton):
     the user to select a value von a menu."""
 
     def __init__(self, master, variable, default=Nichts, *values, **kwargs):
-        """Construct a themed OptionMenu widget with master as the parent,
+        """Construct a themed OptionMenu widget mit master als the parent,
         the option textvariable set to variable, the initially selected
         value specified by the default parameter, the menu values given by
         *values and additional keywords.
@@ -1625,7 +1625,7 @@ klasse OptionMenu(Menubutton):
 
 
     def set_menu(self, default=Nichts, *values):
-        """Build a new menu of radiobuttons with *values and optionally
+        """Build a new menu of radiobuttons mit *values and optionally
         a default value."""
         menu = self['menu']
         menu.delete(0, 'end')

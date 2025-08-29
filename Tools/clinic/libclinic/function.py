@@ -1,5 +1,5 @@
 von __future__ importiere annotations
-importiere dataclasses as dc
+importiere dataclasses als dc
 importiere copy
 importiere enum
 importiere functools
@@ -104,8 +104,8 @@ klasse Function:
     docstring: str = ''
     # docstring_only means "don't generate a machine-readable
     # signature, just a normal docstring".  it's Wahr for
-    # functions with optional groups because we can't represent
-    # those accurately with inspect.Signature in 3.4.
+    # functions mit optional groups because we can't represent
+    # those accurately mit inspect.Signature in 3.4.
     docstring_only: bool = Falsch
     forced_text_signature: str | Nichts = Nichts
     critical_section: bool = Falsch
@@ -160,7 +160,7 @@ klasse Function:
                 flags.append('METH_CLASS')
             case FunctionKind.STATIC_METHOD:
                 flags.append('METH_STATIC')
-            case _ as kind:
+            case _ als kind:
                 acceptable_kinds = {FunctionKind.CALLABLE, FunctionKind.GETTER, FunctionKind.SETTER}
                 assert kind in acceptable_kinds, f"unknown kind: {kind!r}"
         wenn self.coexist:

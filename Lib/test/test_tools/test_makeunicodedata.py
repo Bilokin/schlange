@@ -117,6 +117,6 @@ klasse TestDawg(unittest.TestCase):
     )
     def test_dawg(self, data):
         # suppress debug prints
-        with support.captured_stdout() as output:
+        mit support.captured_stdout() als output:
             # it's enough to build it, building will also check the result
             build_compression_dawg(data)

@@ -10,7 +10,7 @@ von _interpreters importiere (
     is_shareable,
 )
 von ._queues importiere (
-    create as create_queue,
+    create als create_queue,
     Queue, QueueEmpty, QueueFull,
 )
 
@@ -192,9 +192,9 @@ klasse Interpreter:
     def exec(self, code, /):
         """Run the given source code in the interpreter.
 
-        This is essentially the same as calling the builtin "exec"
-        with this interpreter, using the __dict__ of its __main__
-        module as both globals and locals.
+        This is essentially the same als calling the builtin "exec"
+        mit this interpreter, using the __dict__ of its __main__
+        module als both globals and locals.
 
         There is no return value.
 
@@ -218,17 +218,17 @@ klasse Interpreter:
         return res
 
     def call(self, callable, /, *args, **kwargs):
-        """Call the object in the interpreter with given args/kwargs.
+        """Call the object in the interpreter mit given args/kwargs.
 
         Nearly all callables, args, kwargs, and return values are
-        supported.  All "shareable" objects are supported, as are
+        supported.  All "shareable" objects are supported, als are
         "stateless" functions (meaning non-closures that do not use
         any globals).  This method will fall back to pickle.
 
         If the callable raises an exception then the error display
         (including full traceback) is sent back between the interpreters
         and an ExecutionFailed exception is raised, much like what
-        happens with Interpreter.exec().
+        happens mit Interpreter.exec().
         """
         return self._call(callable, args, kwargs)
 

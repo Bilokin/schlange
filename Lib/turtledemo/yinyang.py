@@ -1,6 +1,6 @@
 """turtledemo/yinyang.py
 
-Another drawing suitable as a beginner's
+Another drawing suitable als a beginner's
 programming example.
 
 The small circles are drawn by the circle

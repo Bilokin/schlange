@@ -43,7 +43,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
     calls will unblock tasks in FIFO order.
 
     Locks also support the asynchronous context management protocol.
-    'async with lock' statement should be used.
+    'async mit lock' statement should be used.
 
     Usage:
 
@@ -59,7 +59,7 @@ klasse Lock(_ContextManagerMixin, mixins._LoopBoundMixin):
 
         lock = Lock()
         ...
-        async with lock:
+        async mit lock:
              ...
 
     Lock objects can be tested fuer locking state:
@@ -159,7 +159,7 @@ klasse Event(mixins._LoopBoundMixin):
     """Asynchronous equivalent to threading.Event.
 
     Class implementing event objects. An event manages a flag that can be set
-    to true with the set() method and reset to false with the clear() method.
+    to true mit the set() method and reset to false mit the clear() method.
     The wait() method blocks until the flag is true. The flag is initially
     false.
     """
@@ -223,7 +223,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
     allows one or more tasks to wait until they are notified by another
     task.
 
-    A new Lock object is created and used as the underlying lock.
+    A new Lock object is created and used als the underlying lock.
     """
 
     def __init__(self, lock=Nichts):
@@ -277,13 +277,13 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
             finally:
                 # Must re-acquire lock even wenn wait is cancelled.
                 # We only catch CancelledError here, since we don't want any
-                # other (fatal) errors with the future to cause us to spin.
+                # other (fatal) errors mit the future to cause us to spin.
                 err = Nichts
                 while Wahr:
                     try:
                         await self.acquire()
                         break
-                    except exceptions.CancelledError as e:
+                    except exceptions.CancelledError als e:
                         err = e
 
                 wenn err is not Nichts:
@@ -295,7 +295,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
             # Any error raised out of here _may_ have occurred after this Task
             # believed to have been successfully notified.
             # Make sure to notify another Task instead.  This may result
-            # in a "spurious wakeup", which is allowed as part of the
+            # in a "spurious wakeup", which is allowed als part of the
             # Condition Variable protocol.
             self._notify(1)
             raise
@@ -304,7 +304,7 @@ klasse Condition(_ContextManagerMixin, mixins._LoopBoundMixin):
         """Wait until a predicate becomes true.
 
         The predicate should be a callable whose result will be
-        interpreted as a boolean value.  The method will repeatedly
+        interpreted als a boolean value.  The method will repeatedly
         wait() until it evaluates to true.  The final predicate value is
         the return value.
         """
@@ -419,7 +419,7 @@ klasse Semaphore(_ContextManagerMixin, mixins._LoopBoundMixin):
 
         finally:
             # New waiters may have arrived but had to wait due to FIFO.
-            # Wake up as many as are allowed.
+            # Wake up als many als are allowed.
             while self._value > 0:
                 wenn not self._wake_up_next():
                     break  # There was no-one to wake up.
@@ -515,7 +515,7 @@ klasse Barrier(mixins._LoopBoundMixin):
         simultaneously awoken.
         Returns an unique and individual index number von 0 to 'parties-1'.
         """
-        async with self._cond:
+        async mit self._cond:
             await self._block() # Block while the barrier drains or resets.
             try:
                 index = self._count
@@ -580,7 +580,7 @@ klasse Barrier(mixins._LoopBoundMixin):
         Any tasks currently waiting will get the BrokenBarrier exception
         raised.
         """
-        async with self._cond:
+        async mit self._cond:
             wenn self._count > 0:
                 wenn self._state is not _BarrierState.RESETTING:
                     #reset the barrier, waking up tasks
@@ -595,7 +595,7 @@ klasse Barrier(mixins._LoopBoundMixin):
         Useful in case of error.  Any currently waiting tasks and tasks
         attempting to 'wait()' will have BrokenBarrierError raised.
         """
-        async with self._cond:
+        async mit self._cond:
             self._state = _BarrierState.BROKEN
             self._cond.notify_all()
 

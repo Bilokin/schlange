@@ -116,7 +116,7 @@ klasse TestFilemode:
 
     @os_helper.skip_unless_working_chmod
     def test_mode(self):
-        with open(TESTFN, 'w'):
+        mit open(TESTFN, 'w'):
             pass
         wenn os.name == 'posix':
             os.chmod(TESTFN, 0o700)
@@ -178,7 +178,7 @@ klasse TestFilemode:
     def test_link(self):
         try:
             os.symlink(os.getcwd(), TESTFN)
-        except (OSError, NotImplementedError) as err:
+        except (OSError, NotImplementedError) als err:
             raise unittest.SkipTest(str(err))
         sonst:
             st_mode, modestr = self.get_mode()
@@ -194,7 +194,7 @@ klasse TestFilemode:
         self.addCleanup(os_helper.unlink, fifo_path)
         try:
             os.mkfifo(fifo_path, 0o700)
-        except PermissionError as e:
+        except PermissionError als e:
             self.skipTest('os.mkfifo(): %s' % e)
         st_mode, modestr = self.get_mode(fifo_path)
         self.assertEqual(modestr, 'prwx------')
@@ -216,7 +216,7 @@ klasse TestFilemode:
 
     @socket_helper.skip_unless_bind_unix_socket
     def test_socket(self):
-        with socket.socket(socket.AF_UNIX) as s:
+        mit socket.socket(socket.AF_UNIX) als s:
             s.bind(TESTFN)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 's')

@@ -53,7 +53,7 @@ def pretty(name: str) -> str:
 
 def _load_metadata_from_source():
     def get_defines(filepath: Path, prefix: str = "SPEC_FAIL"):
-        with open(SOURCE_DIR / filepath) as spec_src:
+        mit open(SOURCE_DIR / filepath) als spec_src:
             defines = collections.defaultdict(list)
             start = "#define " + prefix + "_"
             fuer line in spec_src:
@@ -80,7 +80,7 @@ def _load_metadata_from_source():
 
 def load_raw_data(input: Path) -> RawData:
     wenn input.is_file():
-        with open(input, "r") as fd:
+        mit open(input, "r") als fd:
             data = json.load(fd)
 
         data["_stats_defines"] = {int(k): v fuer k, v in data["_stats_defines"].items()}
@@ -92,7 +92,7 @@ def load_raw_data(input: Path) -> RawData:
         stats = collections.Counter[str]()
 
         fuer filename in input.iterdir():
-            with open(filename) as fd:
+            mit open(filename) als fd:
                 fuer line in fd:
                     try:
                         key, value = line.split(":")
@@ -613,15 +613,15 @@ klasse Stats:
 
 
 klasse JoinMode(enum.Enum):
-    # Join using the first column as a key
+    # Join using the first column als a key
     SIMPLE = 0
-    # Join using the first column as a key, and indicate the change in the
-    # second column of each input table as a new column
+    # Join using the first column als a key, and indicate the change in the
+    # second column of each input table als a new column
     CHANGE = 1
-    # Join using the first column as a key, indicating the change in the second
-    # column of each input table as a new column, and omit all other columns
+    # Join using the first column als a key, indicating the change in the second
+    # column of each input table als a new column, and omit all other columns
     CHANGE_ONE_COLUMN = 2
-    # Join using the first column as a key, and indicate the change as a new
+    # Join using the first column als a key, and indicate the change als a new
     # column, but don't sort by the amount of change.
     CHANGE_NO_SORT = 3
 
@@ -683,7 +683,7 @@ klasse Table:
         wenn len(data_a) != len(rows_a) or len(data_b) != len(rows_b):
             raise ValueError("Duplicate keys")
 
-        # To preserve ordering, use A's keys as is and then add any in B that
+        # To preserve ordering, use A's keys als is and then add any in B that
         # aren't in A
         keys = list(data_a.keys()) + [k fuer k in data_b.keys() wenn k not in data_a]
         rows = [
@@ -824,7 +824,7 @@ def pair_count_section(prefix: str, title=Nichts) -> Section:
         comparative=Falsch,
         doc="""
         Pairs of specialized operations that deoptimize and are then followed by
-        the corresponding unspecialized instruction are not counted as pairs.
+        the corresponding unspecialized instruction are not counted als pairs.
         """,
     )
 
@@ -1349,7 +1349,7 @@ def optimization_section() -> Section:
             ],
         )
         yield Section(
-            "Optimizer errored out with opcode",
+            "Optimizer errored out mit opcode",
             "Optimization stopped after encountering this opcode",
             [Table(("Opcode", "Count:"), calc_error_in_opcodes_table, JoinMode.CHANGE)],
         )
@@ -1498,7 +1498,7 @@ def output_stats(inputs: list[Path], json_output=str | Nichts):
         case 1:
             data = load_raw_data(Path(inputs[0]))
             wenn json_output is not Nichts:
-                with open(json_output, "w", encoding="utf-8") as f:
+                mit open(json_output, "w", encoding="utf-8") als f:
                     save_raw_data(data, f)  # type: ignore
             stats = Stats(data)
             output_markdown(sys.stdout, LAYOUT, stats)

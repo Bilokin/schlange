@@ -11,7 +11,7 @@ von test.support importiere import_helper
 importiere unittest
 importiere unittest.mock
 importiere test.test_unittest
-von test.test_importlib importiere util as test_util
+von test.test_importlib importiere util als test_util
 
 
 klasse TestableTestProgram(unittest.TestProgram):
@@ -39,7 +39,7 @@ klasse TestDiscovery(unittest.TestCase):
             # asserts are off
             return
 
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             loader._get_name_from_path('/bar/baz.py')
 
     def test_find_tests(self):
@@ -201,7 +201,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.paths,
                          ['a_directory', 'test_directory', 'test_directory2'])
 
-        # load_tests should have been called once with loader, tests and pattern
+        # load_tests should have been called once mit loader, tests and pattern
         # (but there are no tests in our stub module itself, so that is [] at
         # the time of call).
         self.assertEqual(Module.load_tests_args,
@@ -274,7 +274,7 @@ klasse TestDiscovery(unittest.TestCase):
                          ['a_directory', 'test_directory', 'test_directory2'])
 
 
-        # load_tests should have been called once with loader, tests and pattern
+        # load_tests should have been called once mit loader, tests and pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py')])
 
@@ -361,7 +361,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.paths,
                          ['my_package', 'my_package.test_module'])
 
-        # load_tests should have been called twice with loader, tests and pattern
+        # load_tests should have been called twice mit loader, tests and pattern
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py'),
                           (loader, [], 'test*.py')])
@@ -383,7 +383,7 @@ klasse TestDiscovery(unittest.TestCase):
         self.addCleanup(restore_path)
 
         full_path = os.path.abspath(os.path.normpath('/foo'))
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             loader.discover('/foo/bar', top_level_dir='/foo')
 
         self.assertEqual(loader._top_level_dir, full_path)
@@ -443,7 +443,7 @@ klasse TestDiscovery(unittest.TestCase):
 
         # Test data: we expect the following:
         # an isfile to verify the package, then importing and scanning
-        # as per _find_tests' normal behaviour.
+        # als per _find_tests' normal behaviour.
         # We expect to see our load_tests hook called once.
         vfs = {abspath('/toplevel'): ['startdir'],
                abspath('/toplevel/startdir'): ['__init__.py']}
@@ -521,7 +521,7 @@ klasse TestDiscovery(unittest.TestCase):
             'missing error string in %r' % error)
         test = list(list(suite)[0])[0] # extract test von suite
 
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             test.test_this_does_not_exist()
 
     def test_discover_with_init_modules_that_fail_to_import(self):
@@ -546,7 +546,7 @@ klasse TestDiscovery(unittest.TestCase):
             'Failed to importiere test module: my_package' in error,
             'missing error string in %r' % error)
         test = list(list(suite)[0])[0] # extract test von suite
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             test.my_package()
         self.assertEqual(import_calls, ['my_package'])
 
@@ -645,8 +645,8 @@ klasse TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program.testLoader = Nichts
 
-        with support.captured_stderr() as stderr, \
-             self.assertRaises(SystemExit) as cm:
+        mit support.captured_stderr() als stderr, \
+             self.assertRaises(SystemExit) als cm:
             # too many args
             program._do_discovery(['one', 'two', 'three', 'four'])
         self.assertEqual(cm.exception.args, (2,))
@@ -844,7 +844,7 @@ klasse TestDiscovery(unittest.TestCase):
             sys.path[:] = orig_sys_path
         self.addCleanup(restore)
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             loader.discover('sys')
         self.assertEqual(str(cm.exception),
                          'Can not use builtin modules '
@@ -875,11 +875,11 @@ klasse TestDiscovery(unittest.TestCase):
         loader._find_tests = _find_tests
         loader.suiteClass = list
 
-        with unittest.mock.patch('builtins.__import__', _import):
+        mit unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
-            with import_helper.DirsOnSysPath():
+            mit import_helper.DirsOnSysPath():
                 # Make sure to remove 'package' von sys.modules when done.
-                with test_util.uncache('package'):
+                mit test_util.uncache('package'):
                     suite = loader.discover('package')
 
         self.assertEqual(suite, ['/a/tests', '/b/tests'])
@@ -887,7 +887,7 @@ klasse TestDiscovery(unittest.TestCase):
     def test_discovery_start_dir_is_namespace(self):
         """Subdirectory discovery not affected wenn start_dir is a namespace pkg."""
         loader = unittest.TestLoader()
-        with (
+        mit (
             import_helper.DirsOnSysPath(os.path.join(os.path.dirname(__file__))),
             test_util.uncache('namespace_test_pkg')
         ):
@@ -908,12 +908,12 @@ klasse TestDiscovery(unittest.TestCase):
             sys.modules[packagename] = package
             return package
 
-        with unittest.mock.patch('builtins.__import__', _import):
+        mit unittest.mock.patch('builtins.__import__', _import):
             # Since loader.discover() can modify sys.path, restore it when done.
-            with import_helper.DirsOnSysPath():
+            mit import_helper.DirsOnSysPath():
                 # Make sure to remove 'package' von sys.modules when done.
-                with util.uncache('package'):
-                    with self.assertRaises(TypeError) as cm:
+                mit util.uncache('package'):
+                    mit self.assertRaises(TypeError) als cm:
                         loader.discover('package')
                     self.assertEqual(str(cm.exception),
                                      'don\'t know how to discover von {!r}'

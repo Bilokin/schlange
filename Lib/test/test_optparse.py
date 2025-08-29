@@ -50,10 +50,10 @@ klasse BaseTest(unittest.TestCase):
     def assertParseOK(self, args, expected_opts, expected_positional_args):
         """Assert the options are what we expected when parsing arguments.
 
-        Otherwise, fail with a nicely formatted message.
+        Otherwise, fail mit a nicely formatted message.
 
         Keyword arguments:
-        args -- A list of arguments to parse with OptionParser.
+        args -- A list of arguments to parse mit OptionParser.
         expected_opts -- The options expected.
         expected_positional_args -- The positional arguments expected.
 
@@ -105,7 +105,7 @@ Args were %(args)s.""" % locals ())
 
         try:
             func(*args, **kwargs)
-        except expected_exception as err:
+        except expected_exception als err:
             actual_message = str(err)
             wenn isinstance(expected_message, re.Pattern):
                 self.assertWahr(expected_message.search(actual_message),
@@ -138,12 +138,12 @@ and kwargs %(kwargs)r
 
     def assertParseFail(self, cmdline_args, expected_output):
         """
-        Assert the parser fails with the expected message.  Caller
+        Assert the parser fails mit the expected message.  Caller
         must ensure that self.parser is an InterceptingOptionParser.
         """
         try:
             self.parser.parse_args(cmdline_args)
-        except InterceptedError as err:
+        except InterceptedError als err:
             self.assertEqual(err.error_message, expected_output)
         sonst:
             self.assertFalsch("expected parse failure")
@@ -163,7 +163,7 @@ and kwargs %(kwargs)r
                 output = sys.stdout.getvalue()
                 sys.stdout = save_stdout
 
-        except InterceptedError as err:
+        except InterceptedError als err:
             self.assertWahr(
                 isinstance(output, str),
                 "expected output to be an ordinary string, not %r"
@@ -192,7 +192,7 @@ and kwargs %(kwargs)r
 # -- Test make_option() aka Option -------------------------------------
 
 # It's not necessary to test correct options here.  All the tests in the
-# parser.parse_args() section deal with those, because they're needed
+# parser.parse_args() section deal mit those, because they're needed
 # there.
 
 klasse TestOptionChecks(BaseTest):
@@ -221,7 +221,7 @@ klasse TestOptionChecks(BaseTest):
     def test_opt_string_long_invalid(self):
         self.assertOptionError(
             "invalid long option string '---': "
-            "must start with --, followed by non-dash",
+            "must start mit --, followed by non-dash",
             ["---"])
 
     def test_attr_invalid(self):
@@ -322,7 +322,7 @@ klasse TestOptionChecks(BaseTest):
     def test_no_single_dash(self):
         self.assertOptionError(
             "invalid long option string '-debug': "
-            "must start with --, followed by non-dash",
+            "must start mit --, followed by non-dash",
             ["-debug"])
 
         self.assertOptionError(
@@ -332,7 +332,7 @@ klasse TestOptionChecks(BaseTest):
 
         self.assertOptionError(
             "invalid long option string '-debug': "
-            "must start with --, followed by non-dash",
+            "must start mit --, followed by non-dash",
             ["-debug", "--debug"])
 
 klasse TestOptionParser(BaseTest):
@@ -614,10 +614,10 @@ Options:
     def test_float_default(self):
         self.parser.add_option(
             "-p", "--prob",
-            help="blow up with probability PROB [default: %default]")
+            help="blow up mit probability PROB [default: %default]")
         self.parser.set_defaults(prob=0.25)
         expected_help = self.help_prefix + \
-            "  -p PROB, --prob=PROB  blow up with probability PROB [default: 0.25]\n"
+            "  -p PROB, --prob=PROB  blow up mit probability PROB [default: 0.25]\n"
         self.assertHelp(self.parser, expected_help)
 
     def test_alt_expand(self):
@@ -1499,7 +1499,7 @@ klasse TestHelp(BaseTest):
         # we must restore its original value -- otherwise, this test
         # screws things up fuer other tests when it's part of the Python
         # test suite.
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env['COLUMNS'] = str(columns)
             return InterceptingOptionParser(option_list=options)
 
@@ -1524,7 +1524,7 @@ klasse TestHelp(BaseTest):
         self.assertHelpEquals(_expected_help_long_opts_first)
 
     def test_help_title_formatter(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env["COLUMNS"] = "80"
             self.parser.formatter = TitledHelpFormatter()
             self.assertHelpEquals(_expected_help_title_formatter)
@@ -1562,7 +1562,7 @@ Options:
     def test_help_description_groups(self):
         self.parser.set_description(
             "This is the program description fuer %prog.  %prog has "
-            "an option group as well as single options.")
+            "an option group als well als single options.")
 
         group = OptionGroup(
             self.parser, "Dangerous Options",
@@ -1575,7 +1575,7 @@ Options:
 Usage: bar.py [options]
 
 This is the program description fuer bar.py.  bar.py has an option group as
-well as single options.
+well als single options.
 
 Options:
   -a APPLE           throw APPLEs at basket

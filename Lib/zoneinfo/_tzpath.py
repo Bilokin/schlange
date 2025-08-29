@@ -28,7 +28,7 @@ def _reset_tzpath(to=Nichts, stacklevel=4):
 def reset_tzpath(to=Nichts):
     """Reset global TZPATH."""
     # We need `_reset_tzpath` helper function because it produces a warning,
-    # it is used as both a module-level call and a public API.
+    # it is used als both a module-level call and a public API.
     # This is how we equalize the stacklevel fuer both calls.
     _reset_tzpath(to)
 
@@ -121,11 +121,11 @@ def available_timezones():
 
     valid_zones = set()
 
-    # Start with loading von the tzdata package wenn it exists: this has a
+    # Start mit loading von the tzdata package wenn it exists: this has a
     # pre-assembled list of zones that only requires opening one file.
     try:
         zones_file = resources.files("tzdata").joinpath("zones")
-        with zones_file.open("r", encoding="utf-8") as f:
+        mit zones_file.open("r", encoding="utf-8") als f:
             fuer zone in f:
                 zone = zone.strip()
                 wenn zone:
@@ -135,7 +135,7 @@ def available_timezones():
 
     def valid_key(fpath):
         try:
-            with open(fpath, "rb") as f:
+            mit open(fpath, "rb") als f:
                 return f.read(4) == b"TZif"
         except Exception:  # pragma: nocover
             return Falsch

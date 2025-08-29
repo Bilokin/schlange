@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 
 
 # XXX Add aggregate "source" class(es)?
-#  * expose all lines as single text string
-#  * expose all lines as sequence
+#  * expose all lines als single text string
+#  * expose all lines als sequence
 #  * iterate all lines
 
 
@@ -60,7 +60,7 @@ def preprocess(tool, filename, cwd=Nichts, **kwargs):
         raise OSMismatchError(filename, _expected, argv, error, TOOL)
 
     # Run the command.
-    with converted_error(tool, argv, filename):
+    mit converted_error(tool, argv, filename):
         # We use subprocess directly here, instead of calling the
         # distutil compiler object's preprocess() method, since that
         # one writes to stdout/stderr and it's simpler to do it directly
@@ -108,7 +108,7 @@ def _build_argv(
 def converted_error(tool, argv, filename):
     try:
         yield
-    except subprocess.CalledProcessError as exc:
+    except subprocess.CalledProcessError als exc:
         convert_error(
             tool,
             argv,
@@ -132,7 +132,7 @@ def convert_error(tool, argv, filename, stderr, rc):
         logger.info(stderr.strip())
         raise ErrorDirectiveError(filename, argv, error, tool)
     sonst:
-        # Try one more time, with stderr written to the terminal.
+        # Try one more time, mit stderr written to the terminal.
         try:
             output = run_cmd(argv, stderr=Nichts)
         except subprocess.CalledProcessError:

@@ -56,7 +56,7 @@ klasse BaseLocalizedTest(unittest.TestCase):
         self.addCleanup(locale.setlocale, self.locale_type, oldlocale)
         locale.setlocale(self.locale_type, self.enUS_locale)
         wenn verbose:
-            drucke("testing with %r..." % self.enUS_locale, end=' ', flush=Wahr)
+            drucke("testing mit %r..." % self.enUS_locale, end=' ', flush=Wahr)
 
 
 klasse BaseCookedTest(unittest.TestCase):
@@ -120,7 +120,7 @@ klasse EnUSCookedTest(BaseCookedTest):
 
 
 klasse FrFRCookedTest(BaseCookedTest):
-    # A cooked "fr_FR" locale with a space character as decimal separator
+    # A cooked "fr_FR" locale mit a space character als decimal separator
     # and a non-ASCII currency symbol.
 
     cooked_values = {
@@ -250,7 +250,7 @@ klasse TestLocaleFormatString(unittest.TestCase):
 
 
 klasse TestNumberFormatting(BaseLocalizedTest, EnUSNumberFormatting):
-    # Test number formatting with a real English locale.
+    # Test number formatting mit a real English locale.
 
     locale_type = locale.LC_NUMERIC
 
@@ -260,7 +260,7 @@ klasse TestNumberFormatting(BaseLocalizedTest, EnUSNumberFormatting):
 
 
 klasse TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
-    # Test number formatting with a cooked "en_US" locale.
+    # Test number formatting mit a cooked "en_US" locale.
 
     def setUp(self):
         EnUSCookedTest.setUp(self)
@@ -274,7 +274,7 @@ klasse TestEnUSNumberFormatting(EnUSCookedTest, EnUSNumberFormatting):
 
 
 klasse TestCNumberFormatting(CCookedTest, BaseFormattingTest):
-    # Test number formatting with a cooked "C" locale.
+    # Test number formatting mit a cooked "C" locale.
 
     def test_grouping(self):
         self._test_format_string("%.2f", 12345.67, grouping=Wahr, out='12345.67')
@@ -284,7 +284,7 @@ klasse TestCNumberFormatting(CCookedTest, BaseFormattingTest):
 
 
 klasse TestFrFRNumberFormatting(FrFRCookedTest, BaseFormattingTest):
-    # Test number formatting with a cooked "fr_FR" locale.
+    # Test number formatting mit a cooked "fr_FR" locale.
 
     def test_decimal_point(self):
         self._test_format_string("%.2f", 12345.67, out='12345,67')
@@ -343,7 +343,7 @@ klasse TestCollation(unittest.TestCase):
 
 
 klasse TestEnUSCollation(BaseLocalizedTest, TestCollation):
-    # Test string collation functions with a real English locale
+    # Test string collation functions mit a real English locale
 
     locale_type = locale.LC_ALL
 
@@ -379,7 +379,7 @@ klasse NormalizeTest(unittest.TestCase):
 
     def test_locale_alias(self):
         fuer localename, alias in locale.locale_alias.items():
-            with self.subTest(locale=(localename, alias)):
+            mit self.subTest(locale=(localename, alias)):
                 self.check(localename, alias)
 
     def test_empty(self):
@@ -502,11 +502,11 @@ klasse TestRealLocales(unittest.TestCase):
             self.skipTest('test needs Turkish locale')
         loc = locale.getlocale(locale.LC_CTYPE)
         wenn verbose:
-            drucke('testing with %a' % (loc,), end=' ', flush=Wahr)
+            drucke('testing mit %a' % (loc,), end=' ', flush=Wahr)
         try:
             locale.setlocale(locale.LC_CTYPE, loc)
-        except locale.Error as exc:
-            # bpo-37945: setlocale(LC_CTYPE) fails with getlocale(LC_CTYPE)
+        except locale.Error als exc:
+            # bpo-37945: setlocale(LC_CTYPE) fails mit getlocale(LC_CTYPE)
             # and the tr_TR locale on Windows. getlocale() builds a locale
             # which is not recognize by setlocale().
             self.skipTest(f"setlocale(LC_CTYPE, {loc!r}) failed: {exc!r}")
@@ -514,25 +514,25 @@ klasse TestRealLocales(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     def test_setlocale_long_encoding(self):
-        with self.assertRaises(locale.Error):
+        mit self.assertRaises(locale.Error):
             locale.setlocale(locale.LC_CTYPE, 'English.%016d' % 1252)
         locale.setlocale(locale.LC_CTYPE, 'English.%015d' % 1252)
         loc = locale.setlocale(locale.LC_ALL)
         self.assertIn('.1252', loc)
         loc2 = loc.replace('.1252', '.%016d' % 1252, 1)
-        with self.assertRaises(locale.Error):
+        mit self.assertRaises(locale.Error):
             locale.setlocale(locale.LC_ALL, loc2)
         loc2 = loc.replace('.1252', '.%015d' % 1252, 1)
         locale.setlocale(locale.LC_ALL, loc2)
 
         # gh-137273: Debug assertion failure on Windows fuer long encoding.
-        with self.assertRaises(locale.Error):
+        mit self.assertRaises(locale.Error):
             locale.setlocale(locale.LC_CTYPE, 'en_US.' + 'x'*16)
         locale.setlocale(locale.LC_CTYPE, 'en_US.UTF-8')
         loc = locale.setlocale(locale.LC_ALL)
         self.assertIn('.UTF-8', loc)
         loc2 = loc.replace('.UTF-8', '.' + 'x'*16, 1)
-        with self.assertRaises(locale.Error):
+        mit self.assertRaises(locale.Error):
             locale.setlocale(locale.LC_ALL, loc2)
 
     @support.subTests('localename,localetuple', [
@@ -579,7 +579,7 @@ klasse TestRealLocales(unittest.TestCase):
     def test_setlocale_with_modifier(self, localename, localetuple):
         try:
             locale.setlocale(locale.LC_CTYPE, localename)
-        except locale.Error as exc:
+        except locale.Error als exc:
             self.skipTest(str(exc))
         loc = locale.setlocale(locale.LC_CTYPE, localetuple)
         self.assertEqual(loc, localename)
@@ -626,7 +626,7 @@ klasse TestRealLocales(unittest.TestCase):
     def test_getlocale_with_modifier(self, localename, localetuple):
         try:
             locale.setlocale(locale.LC_CTYPE, localename)
-        except locale.Error as exc:
+        except locale.Error als exc:
             self.skipTest(str(exc))
         loctuple = locale.getlocale(locale.LC_CTYPE)
         self.assertEqual(loctuple, localetuple)
@@ -651,11 +651,11 @@ klasse TestMiscellaneous(unittest.TestCase):
             orig_getlocale = Nichts
 
         try:
-            with os_helper.EnvironmentVarGuard() as env:
+            mit os_helper.EnvironmentVarGuard() als env:
                 env.unset('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')
                 env.set('LC_CTYPE', 'UTF-8')
 
-                with check_warnings(('', DeprecationWarning)):
+                mit check_warnings(('', DeprecationWarning)):
                     self.assertEqual(locale.getdefaultlocale(), (Nichts, 'UTF-8'))
         finally:
             wenn orig_getlocale is not Nichts:
@@ -673,7 +673,7 @@ klasse TestMiscellaneous(unittest.TestCase):
         # When _locale.getencoding() is missing, locale.getencoding() uses
         # the Python filesystem
         encoding = 'FALLBACK_ENCODING'
-        with mock.patch.object(sys, 'getfilesystemencoding',
+        mit mock.patch.object(sys, 'getfilesystemencoding',
                                return_value=encoding):
             locale_fallback = import_fresh_module('locale', blocked=['_locale'])
             self.assertEqual(locale_fallback.getencoding(), encoding)
@@ -702,11 +702,11 @@ klasse TestMiscellaneous(unittest.TestCase):
         self.assertRaises(locale.Error, locale.setlocale, 12345)
 
     def test_invalid_locale_format_in_localetuple(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             locale.setlocale(locale.LC_ALL, b'fi_FI')
 
     def test_invalid_iterable_in_localetuple(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             locale.setlocale(locale.LC_ALL, (b'not', b'valid'))
 
 

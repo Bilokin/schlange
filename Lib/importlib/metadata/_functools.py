@@ -42,11 +42,11 @@ def method_cache(method, cache_wrapper=Nichts):
     >>> a.calls
     75
 
-    Note that wenn method had been decorated with ``functools.lru_cache()``,
+    Note that wenn method had been decorated mit ``functools.lru_cache()``,
     a.calls would have been 76 (due to the cached value of 0 having been
     flushed by the 'b' instance).
 
-    Clear the cache with ``.cache_clear()``
+    Clear the cache mit ``.cache_clear()``
 
     >>> a.method.cache_clear()
 
@@ -63,8 +63,8 @@ def method_cache(method, cache_wrapper=Nichts):
     >>> a.method2()
     3
 
-    Caution - do not subsequently wrap the method with another decorator, such
-    as ``@property``, which changes the semantics of the function.
+    Caution - do not subsequently wrap the method mit another decorator, such
+    als ``@property``, which changes the semantics of the function.
 
     See also
     http://code.activestate.com/recipes/577452-a-memoize-decorator-for-instance-methods/
@@ -73,7 +73,7 @@ def method_cache(method, cache_wrapper=Nichts):
     cache_wrapper = cache_wrapper or functools.lru_cache()
 
     def wrapper(self, *args, **kwargs):
-        # it's the first call, replace the method with a cached, bound method
+        # it's the first call, replace the method mit a cached, bound method
         bound_method = types.MethodType(method, self)
         cached_method = cache_wrapper(bound_method)
         setattr(self, method.__name__, cached_method)

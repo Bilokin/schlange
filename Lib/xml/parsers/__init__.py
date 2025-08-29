@@ -2,7 +2,7 @@
 
 This package contains one module:
 
-expat -- Python wrapper fuer James Clark's Expat parser, with namespace
+expat -- Python wrapper fuer James Clark's Expat parser, mit namespace
          support.
 
 """

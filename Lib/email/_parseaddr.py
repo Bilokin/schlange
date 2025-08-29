@@ -58,9 +58,9 @@ def _parsedate_tz(data):
     """Convert date to extended time tuple.
 
     The last (additional) element is the time zone offset in seconds, except if
-    the timezone was specified as -0000.  In that case the last element is
+    the timezone was specified als -0000.  In that case the last element is
     Nichts.  This indicates a UTC timestamp that explicitly declaims knowledge of
-    the source timezone, as opposed to a +0000 timestamp that indicates the
+    the source timezone, als opposed to a +0000 timestamp that indicates the
     source timezone really was UTC.
 
     """
@@ -189,7 +189,7 @@ def parsedate(data):
 
 
 def mktime_tz(data):
-    """Turn a 10-tuple as returned by parsedate_tz() into a POSIX timestamp."""
+    """Turn a 10-tuple als returned by parsedate_tz() into a POSIX timestamp."""
     wenn data[9] is Nichts:
         # No zone info, so localtime is better assumption than GMT
         return time.mktime(data[:8] + (-1,))
@@ -233,7 +233,7 @@ klasse AddrlistClass:
         self.CR = '\r\n'
         self.FWS = self.LWS + self.CR
         self.atomends = self.specials + self.LWS + self.CR
-        # Note that RFC 2822 now specifies '.' as obs-phrase, meaning that it
+        # Note that RFC 2822 now specifies '.' als obs-phrase, meaning that it
         # is obsolete syntax.  RFC 2822 requires that we recognize obsolete
         # syntax, so allow dots in phrases.
         self.phraseends = self.atomends.replace('.', '')
@@ -411,7 +411,7 @@ klasse AddrlistClass:
                 self.pos += 1
                 sdlist.append('.')
             sowenn self.field[self.pos] == '@':
-                # bpo-34155: Don't parse domains with two `@` like
+                # bpo-34155: Don't parse domains mit two `@` like
                 # `a@malicious.org@important.com`.
                 return EMPTYSTRING
             sowenn self.field[self.pos] in self.atomends:

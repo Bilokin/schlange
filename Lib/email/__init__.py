@@ -25,7 +25,7 @@ __all__ = [
     ]
 
 
-# Some convenience routines.  Don't importiere Parser and Message as side-effects
+# Some convenience routines.  Don't importiere Parser and Message als side-effects
 # of importing email since those cascadingly importiere most of the rest of the
 # email package.
 def message_from_string(s, *args, **kws):

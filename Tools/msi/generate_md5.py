@@ -9,7 +9,7 @@ def main():
         wenn not os.path.isfile(file):
             continue
 
-        with open(file, 'rb') as f:
+        mit open(file, 'rb') als f:
             data = f.read()
             md5 = hashlib.md5()
             md5.update(data)

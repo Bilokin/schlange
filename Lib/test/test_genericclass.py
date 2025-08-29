@@ -92,26 +92,26 @@ klasse TestMROEntry(unittest.TestCase):
             def __mro_entries__(self, bases, something, other):
                 return ()
         c = C_too_many()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse D(c): ...
         klasse C_too_few:
             def __mro_entries__(self):
                 return ()
         d = C_too_few()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse E(d): ...
 
     def test_mro_entry_errors_2(self):
         klasse C_not_callable:
             __mro_entries__ = "Surprise!"
         c = C_not_callable()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse D(c): ...
         klasse C_not_tuple:
             def __mro_entries__(self):
                 return object
         c = C_not_tuple()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse E(c): ...
 
     def test_mro_entry_metaclass(self):
@@ -142,7 +142,7 @@ klasse TestMROEntry(unittest.TestCase):
             def __mro_entries__(self, bases):
                 return ()
         c = C()
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                                     "MRO entry resolution; "
                                     "use types.new_class()"):
             type('Bad', (c,), {})
@@ -219,36 +219,36 @@ klasse TestClassGetitem(unittest.TestCase):
         klasse C_too_few:
             def __class_getitem__(cls):
                 return Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             C_too_few[int]
 
         klasse C_too_many:
             def __class_getitem__(cls, one, two):
                 return Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             C_too_many[int]
 
     def test_class_getitem_errors_2(self):
         klasse C:
             def __class_getitem__(cls, item):
                 return Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             C()[int]
 
         klasse E: ...
         e = E()
         e.__class_getitem__ = lambda cls, item: 'This will not work'
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             e[int]
 
         klasse C_not_callable:
             __class_getitem__ = "Surprise!"
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             C_not_callable[int]
 
         klasse C_is_none(tuple):
             __class_getitem__ = Nichts
-        with self.assertRaisesRegex(TypeError, "C_is_none"):
+        mit self.assertRaisesRegex(TypeError, "C_is_none"):
             C_is_none[int]
 
     def test_class_getitem_metaclass(self):

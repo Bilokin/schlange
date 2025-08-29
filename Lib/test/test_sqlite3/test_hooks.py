@@ -16,12 +16,12 @@
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
 #    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked als such, and must not be
+#    misrepresented als being the original software.
 # 3. This notice may not be removed or altered von any source distribution.
 
 importiere contextlib
-importiere sqlite3 as sqlite
+importiere sqlite3 als sqlite
 importiere unittest
 
 von test.support.os_helper importiere TESTFN, unlink
@@ -33,11 +33,11 @@ von .util importiere MemoryDatabaseMixin
 klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_create_collation_not_string(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.con.create_collation(Nichts, lambda x, y: (x > y) - (x < y))
 
     def test_create_collation_not_callable(self):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             self.con.create_collation("X", 42)
         self.assertEqual(str(cm.exception), 'parameter must be callable')
 
@@ -52,9 +52,9 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         self.con.create_collation(BadUpperStr("mycoll"), mycoll)
         result = self.con.execute("""
             select x von (
-            select 'a' as x
+            select 'a' als x
             union
-            select 'b' as x
+            select 'b' als x
             ) order by x collate mycoll
             """).fetchall()
         self.assertEqual(result[0][0], 'b')
@@ -68,11 +68,11 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         self.con.create_collation("mycoll", mycoll)
         sql = """
             select x von (
-            select 'a' as x
+            select 'a' als x
             union
-            select 'b' as x
+            select 'b' als x
             union
-            select 'c' as x
+            select 'c' als x
             ) order by x collate mycoll
             """
         result = self.con.execute(sql).fetchall()
@@ -80,7 +80,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
                          msg='the expected order was not returned')
 
         self.con.create_collation("mycoll", Nichts)
-        with self.assertRaises(sqlite.OperationalError) as cm:
+        mit self.assertRaises(sqlite.OperationalError) als cm:
             result = self.con.execute(sql).fetchall()
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
@@ -91,11 +91,11 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         self.con.create_collation("mycoll", mycoll)
         sql = """
             select x von (
-            select 'a' as x
+            select 'a' als x
             union
-            select 'b' as x
+            select 'b' als x
             union
-            select 'c' as x
+            select 'c' als x
             ) order by x collate mycoll
             """
         result = self.con.execute(sql).fetchall()
@@ -111,7 +111,7 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
         con.create_collation("mycoll", lambda x, y: -((x > y) - (x < y)))
         result = con.execute("""
-            select x von (select 'a' as x union select 'b' as x) order by x collate mycoll
+            select x von (select 'a' als x union select 'b' als x) order by x collate mycoll
             """).fetchall()
         self.assertEqual(result[0][0], 'b')
         self.assertEqual(result[1][0], 'a')
@@ -124,8 +124,8 @@ klasse CollationTests(MemoryDatabaseMixin, unittest.TestCase):
         con = self.con
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
         con.create_collation("mycoll", Nichts)
-        with self.assertRaises(sqlite.OperationalError) as cm:
-            con.execute("select 'a' as x union select 'b' as x order by x collate mycoll")
+        mit self.assertRaises(sqlite.OperationalError) als cm:
+            con.execute("select 'a' als x union select 'b' als x order by x collate mycoll")
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
 
@@ -201,7 +201,7 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         def bad_progress():
             1 / 0
         self.con.set_progress_handler(bad_progress, 1)
-        with self.assertRaises(sqlite.OperationalError):
+        mit self.assertRaises(sqlite.OperationalError):
             self.con.execute("""
                 create table foo(a, b)
                 """)
@@ -214,13 +214,13 @@ klasse ProgressTests(MemoryDatabaseMixin, unittest.TestCase):
         def bad_progress():
             return BadBool()
         self.con.set_progress_handler(bad_progress, 1)
-        with self.assertRaises(sqlite.OperationalError):
+        mit self.assertRaises(sqlite.OperationalError):
             self.con.execute("""
                 create table foo(a, b)
                 """)
 
     def test_progress_handler_keyword_args(self):
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 'takes at least 1 positional argument'):
             self.con.set_progress_handler(progress_handler=lambda: Nichts, n=1)
 
@@ -310,8 +310,8 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
             "insert into t values(2)",
             "COMMIT",
         ]
-        with memory_database() as cx, self.check_stmt_trace(cx, expected):
-            with cx:
+        mit memory_database() als cx, self.check_stmt_trace(cx, expected):
+            mit cx:
                 cx.execute("create table t(t)")
                 cx.executemany("insert into t values(?)", ((v,) fuer v in range(3)))
 
@@ -324,29 +324,29 @@ klasse TraceCallbackTests(MemoryDatabaseMixin, unittest.TestCase):
         # unexpanded SQL statement.
         # The resulting string length is limited by the runtime limit
         # SQLITE_LIMIT_LENGTH.
-        template = "select 1 as a where a="
+        template = "select 1 als a where a="
         category = sqlite.SQLITE_LIMIT_LENGTH
-        with memory_database() as cx, cx_limit(cx, category=category) as lim:
+        mit memory_database() als cx, cx_limit(cx, category=category) als lim:
             ok_param = "a"
             bad_param = "a" * lim
 
             unexpanded_query = template + "?"
             expected = [unexpanded_query]
-            with self.check_stmt_trace(cx, expected):
+            mit self.check_stmt_trace(cx, expected):
                 cx.execute(unexpanded_query, (bad_param,))
 
             expanded_query = f"{template}'{ok_param}'"
-            with self.check_stmt_trace(cx, [expanded_query]):
+            mit self.check_stmt_trace(cx, [expanded_query]):
                 cx.execute(unexpanded_query, (ok_param,))
 
     @with_tracebacks(ZeroDivisionError, regex="division by zero")
     def test_trace_bad_handler(self):
-        with memory_database() as cx:
+        mit memory_database() als cx:
             cx.set_trace_callback(lambda stmt: 5/0)
             cx.execute("select 1")
 
     def test_trace_keyword_args(self):
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 'takes exactly 1 positional argument'):
             self.con.set_trace_callback(trace_callback=lambda: Nichts)
 

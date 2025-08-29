@@ -20,10 +20,10 @@ klasse TestTemplate(unittest.TestCase, TStringBaseCase):
         self.assertEqual(type(i).__module__, 'string.templatelib')
 
     def test_final_types(self):
-        with self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
             klasse Sub(Template): ...
 
-        with self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
             klasse Sub(Interpolation): ...
 
     def test_basic_creation(self):
@@ -115,7 +115,7 @@ world"""
             Template('a', Interpolation('Nikita', 'name', 'r', '')),
         ):
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(proto=proto, template=template):
+                mit self.subTest(proto=proto, template=template):
                     pickled = pickle.dumps(template, protocol=proto)
                     unpickled = pickle.loads(pickled)
 
@@ -129,7 +129,7 @@ world"""
             Interpolation(1/3, 'x', Nichts, '.2f'),
         ):
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(proto=proto, interpolation=interpolation):
+                mit self.subTest(proto=proto, interpolation=interpolation):
                     pickled = pickle.dumps(interpolation, protocol=proto)
                     unpickled = pickle.loads(pickled)
 
@@ -146,7 +146,7 @@ klasse TemplateIterTests(unittest.TestCase):
 
     def test_final(self):
         TemplateIter = type(iter(t''))
-        with self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
+        mit self.assertRaisesRegex(TypeError, 'is not an acceptable base type'):
             klasse Sub(TemplateIter): ...
 
     def test_iter(self):
@@ -174,18 +174,18 @@ klasse TestFunctions(unittest.TestCase):
         von fractions importiere Fraction
 
         fuer obj in ('Café', Nichts, 3.14, Fraction(1, 2)):
-            with self.subTest(f'{obj=}'):
+            mit self.subTest(f'{obj=}'):
                 self.assertEqual(convert(obj, Nichts), obj)
                 self.assertEqual(convert(obj, 's'), str(obj))
                 self.assertEqual(convert(obj, 'r'), repr(obj))
                 self.assertEqual(convert(obj, 'a'), ascii(obj))
 
                 # Invalid conversion specifier
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     convert(obj, 'z')
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     convert(obj, 1)
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     convert(obj, object())
 
 

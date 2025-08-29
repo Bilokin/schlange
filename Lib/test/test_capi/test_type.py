@@ -21,18 +21,18 @@ klasse BuiltinStaticTypesTests(unittest.TestCase):
     ]
 
     def test_tp_bases_is_set(self):
-        # PyTypeObject.tp_bases is documented as public API.
+        # PyTypeObject.tp_bases is documented als public API.
         # See https://github.com/python/cpython/issues/105020.
         fuer typeobj in self.TYPES:
-            with self.subTest(typeobj):
+            mit self.subTest(typeobj):
                 bases = _testcapi.type_get_tp_bases(typeobj)
                 self.assertIsNot(bases, Nichts)
 
     def test_tp_mro_is_set(self):
-        # PyTypeObject.tp_bases is documented as public API.
+        # PyTypeObject.tp_bases is documented als public API.
         # See https://github.com/python/cpython/issues/105020.
         fuer typeobj in self.TYPES:
-            with self.subTest(typeobj):
+            mit self.subTest(typeobj):
                 mro = _testcapi.type_get_tp_mro(typeobj)
                 self.assertIsNot(mro, Nichts)
 
@@ -70,7 +70,7 @@ klasse TypeTests(unittest.TestCase):
              'TypeTests.test_get_type_name.<locals>.MyType',
              'MyType'),
         ):
-            with self.subTest(cls=repr(cls)):
+            mit self.subTest(cls=repr(cls)):
                 self.assertEqual(get_type_fullyqualname(cls), fullname)
                 self.assertEqual(get_type_module_name(cls), modname)
                 self.assertEqual(get_type_qualname(cls), qualname)
@@ -158,12 +158,12 @@ klasse TypeTests(unittest.TestCase):
         self.assertIs(found, A1)
 
         # searching fuer NULL token is an error
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             get_base_by_token(Z, 0)
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             get_base_by_token(STATIC, 0)
 
-        # share the token with A1
+        # share the token mit A1
         C1 = create_type('_testcapi.C1', tokenA1)
         self.assertWahr(get_token(C1) == tokenA1)
 
@@ -175,7 +175,7 @@ klasse TypeTests(unittest.TestCase):
         found = get_base_by_token(Z, get_token(B1))
         self.assertIs(found, Nichts)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _testcapi.pytype_getbasebytoken(
                 'not a type', id(self), Wahr, Falsch)
 
@@ -188,11 +188,11 @@ klasse TypeTests(unittest.TestCase):
         mod = _testcapi.pytype_getmodulebydef(H1)
         self.assertIs(mod, _testcapi)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _testcapi.pytype_getmodulebydef(int)
 
         klasse H2(int): pass
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _testcapi.pytype_getmodulebydef(H2)
 
     def test_freeze(self):
@@ -206,7 +206,7 @@ klasse TypeTests(unittest.TestCase):
 
         type_freeze(MyType)
         err_msg = "cannot set 'attr' attribute of immutable type 'MyType'"
-        with self.assertRaisesRegex(TypeError, err_msg):
+        mit self.assertRaisesRegex(TypeError, err_msg):
             # the klasse is now immutable
             MyType.attr = "immutable"
 
@@ -217,21 +217,21 @@ klasse TypeTests(unittest.TestCase):
         klasse D(A, C): pass
 
         self.assertEqual(D.mro(), [D, A, C, B, object])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             type_freeze(D)
 
         type_freeze(A)
         type_freeze(B)
         type_freeze(C)
         # all parent classes are now immutable, so D can be made immutable
-        # as well
+        # als well
         type_freeze(D)
 
     @unittest.skipIf(
         Py_GIL_DISABLED and refleak_helper.hunting_for_refleaks(),
         "Specialization failure triggers gh-127773")
     def test_freeze_meta(self):
-        """test PyType_Freeze() with overridden MRO"""
+        """test PyType_Freeze() mit overridden MRO"""
         type_freeze = _testcapi.type_freeze
 
         klasse Base:
@@ -246,14 +246,14 @@ klasse TypeTests(unittest.TestCase):
 
         self.assertEqual(FreezeThis.value, 1)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             type_freeze(FreezeThis)
 
         Base.value = 2
         self.assertEqual(FreezeThis.value, 2)
 
         type_freeze(Base)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Base.value = 3
         type_freeze(FreezeThis)
         self.assertEqual(FreezeThis.value, 2)

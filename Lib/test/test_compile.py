@@ -109,7 +109,7 @@ klasse TestSpecifics(unittest.TestCase):
         m = A()
         self.assertRaises(TypeError, exec, 'z = a', g, m)
 
-        # Verify that dict subclasses work as well
+        # Verify that dict subclasses work als well
         klasse D(dict):
             def __getitem__(self, key):
                 wenn key == 'a':
@@ -212,10 +212,10 @@ klasse TestSpecifics(unittest.TestCase):
     def test_int_literals_too_long(self):
         n = 3000
         source = f"a = 1\nb = 2\nc = {'3'*n}\nd = 4"
-        with support.adjust_int_max_str_digits(n):
+        mit support.adjust_int_max_str_digits(n):
             compile(source, "<long_int_pass>", "exec")  # no errors.
-        with support.adjust_int_max_str_digits(n-1):
-            with self.assertRaises(SyntaxError) as err_ctx:
+        mit support.adjust_int_max_str_digits(n-1):
+            mit self.assertRaises(SyntaxError) als err_ctx:
                 compile(source, "<long_int_fail>", "exec")
             exc = err_ctx.exception
             self.assertEqual(exc.lineno, 3)
@@ -257,7 +257,7 @@ klasse TestSpecifics(unittest.TestCase):
                     self.assertIsInstance(variable, int)
 
     def test_sequence_unpacking_error(self):
-        # Verify sequence packing/unpacking with "or".  SF bug #757818
+        # Verify sequence packing/unpacking mit "or".  SF bug #757818
         i,j = (1, -1) or (-1, 1)
         self.assertEqual(i, 1)
         self.assertEqual(j, -1)
@@ -273,9 +273,9 @@ klasse TestSpecifics(unittest.TestCase):
             'for Nichts in range(10): pass',
             'def f(Nichts): pass',
             'import Nichts',
-            'import x as Nichts',
+            'import x als Nichts',
             'from x importiere Nichts',
-            'from x importiere y as Nichts'
+            'from x importiere y als Nichts'
         ]
         fuer stmt in stmts:
             stmt += "\n"
@@ -286,8 +286,8 @@ klasse TestSpecifics(unittest.TestCase):
         succeed = [
             'import sys',
             'import os, sys',
-            'import os as bar',
-            'import os.path as bar',
+            'import os als bar',
+            'import os.path als bar',
             'from __future__ importiere nested_scopes, generators',
             'from __future__ importiere (nested_scopes,\ngenerators)',
             'from __future__ importiere (nested_scopes,\ngenerators,)',
@@ -296,9 +296,9 @@ klasse TestSpecifics(unittest.TestCase):
             'from sys importiere (stdin, stderr,\nstdout,)',
             'from sys importiere (stdin\n, stderr, stdout)',
             'from sys importiere (stdin\n, stderr, stdout,)',
-            'from sys importiere stdin as si, stdout as so, stderr as se',
-            'from sys importiere (stdin as si, stdout as so, stderr as se)',
-            'from sys importiere (stdin as si, stdout as so, stderr as se,)',
+            'from sys importiere stdin als si, stdout als so, stderr als se',
+            'from sys importiere (stdin als si, stdout als so, stderr als se)',
+            'from sys importiere (stdin als si, stdout als so, stderr als se,)',
             ]
         fail = [
             'import (os, sys)',
@@ -471,14 +471,14 @@ klasse TestSpecifics(unittest.TestCase):
             'if 9<9<9and 9or 9or 9or 9or 9:9',
         ]
         fuer expr in exprs:
-            with self.subTest(expr=expr):
-                with self.assertWarns(SyntaxWarning):
+            mit self.subTest(expr=expr):
+                mit self.assertWarns(SyntaxWarning):
                     compile(expr, '<eval>', 'exec')
 
     def test_dead_code_with_except_handler_compiles(self):
         compile(textwrap.dedent("""
                 wenn Nichts:
-                    with CM:
+                    mit CM:
                         x = 1
                 sonst:
                     x = 2
@@ -521,7 +521,7 @@ klasse TestSpecifics(unittest.TestCase):
             type_ignores=[],
         )
 
-        with self.assertRaisesRegex(TypeError, "NamedExpr target must be a Name"):
+        mit self.assertRaisesRegex(TypeError, "NamedExpr target must be a Name"):
             compile(ast.fix_missing_locations(m), "<file>", "exec")
 
     def test_compile_redundant_jumps_and_nops_after_moving_cold_blocks(self):
@@ -580,7 +580,7 @@ klasse TestSpecifics(unittest.TestCase):
         fname = __file__
         wenn fname.lower().endswith('pyc'):
             fname = fname[:-1]
-        with open(fname, encoding='utf-8') as f:
+        mit open(fname, encoding='utf-8') als f:
             fcontents = f.read()
         sample_code = [
             ['<assign>', 'x = 5'],
@@ -599,7 +599,7 @@ klasse TestSpecifics(unittest.TestCase):
             # the code object's filename comes von the second compilation step
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
-        # raise exception when node type doesn't match with compile mode
+        # raise exception when node type doesn't match mit compile mode
         co1 = compile('drucke(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
@@ -628,7 +628,7 @@ klasse TestSpecifics(unittest.TestCase):
             type_ignores=[],
         )
 
-        with self.assertRaisesRegex(TypeError, "TypeAlias with non-Name name"):
+        mit self.assertRaisesRegex(TypeError, "TypeAlias mit non-Name name"):
             compile(ast.fix_missing_locations(m), "<file>", "exec")
 
     def test_dict_evaluation_order(self):
@@ -647,7 +647,7 @@ klasse TestSpecifics(unittest.TestCase):
             code = compile('pass', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
         fuer filename in bytearray(b'file.py'), memoryview(b'file.py'):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 compile('pass', filename, 'exec')
         self.assertRaises(TypeError, compile, 'pass', list(b'file.py'), 'exec')
 
@@ -690,9 +690,9 @@ klasse TestSpecifics(unittest.TestCase):
     def test_particularly_evil_undecodable(self):
         # Issue 24022
         src = b'0000\x00\n00000000000\n\x00\n\x9e\n'
-        with tempfile.TemporaryDirectory() as tmpd:
+        mit tempfile.TemporaryDirectory() als tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            with open(fn, "wb") as fp:
+            mit open(fn, "wb") als fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"source code cannot contain null bytes", res.err)
@@ -700,9 +700,9 @@ klasse TestSpecifics(unittest.TestCase):
     def test_yet_more_evil_still_undecodable(self):
         # Issue #25388
         src = b"#\x00\n#\xfd\n"
-        with tempfile.TemporaryDirectory() as tmpd:
+        mit tempfile.TemporaryDirectory() als tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            with open(fn, "wb") as fp:
+            mit open(fn, "wb") als fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"source code cannot contain null bytes", res.err)
@@ -721,7 +721,7 @@ klasse TestSpecifics(unittest.TestCase):
             compile(expect_ok, '<test>', mode)
             broken = prefix + repeated * crash_depth
             details = f"Compiling ({prefix!r} + {repeated!r} * {crash_depth})"
-            with self.assertRaises(RecursionError, msg=details):
+            mit self.assertRaises(RecursionError, msg=details):
                 compile(broken, '<test>', mode)
 
         check_limit("a", "()")
@@ -735,9 +735,9 @@ klasse TestSpecifics(unittest.TestCase):
     def test_null_terminated(self):
         # The source code is null-terminated internally, but bytes-like
         # objects are accepted, which could be not terminated.
-        with self.assertRaisesRegex(SyntaxError, "cannot contain null"):
+        mit self.assertRaisesRegex(SyntaxError, "cannot contain null"):
             compile("123\x00", "<dummy>", "eval")
-        with self.assertRaisesRegex(SyntaxError, "cannot contain null"):
+        mit self.assertRaisesRegex(SyntaxError, "cannot contain null"):
             compile(memoryview(b"123\x00"), "<dummy>", "eval")
         code = compile(memoryview(b"123\x00")[1:-1], "<dummy>", "eval")
         self.assertEqual(eval(code), 23)
@@ -882,9 +882,9 @@ klasse TestSpecifics(unittest.TestCase):
             return 3
             raise RuntimeError("unreachable")
         # The above function definition will trigger the out of bounds
-        # bug in the peephole optimizer as it scans opcodes past the
+        # bug in the peephole optimizer als it scans opcodes past the
         # RETURN_VALUE opcode.  This does not always crash an interpreter.
-        # When you build with the clang memory sanitizer it reliably aborts.
+        # When you build mit the clang memory sanitizer it reliably aborts.
         self.assertEqual(
             'RETURN_VALUE',
             list(dis.get_instructions(unused_code_at_end))[-1].opname)
@@ -910,7 +910,7 @@ klasse TestSpecifics(unittest.TestCase):
             """)
 
         fuer opt in [0, 1, 2]:
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 code = compile(src, "<test>", "exec", optimize=opt)
                 ns = {}
                 exec(code, ns)
@@ -938,7 +938,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         fuer opt in [0, 1, 2]:
             fuer src in srcs:
-                with self.subTest(opt=opt, src=src):
+                mit self.subTest(opt=opt, src=src):
                     code = compile(textwrap.dedent(src), "<test>", "single", optimize=opt)
                     ns = {}
                     exec(code, ns)
@@ -965,10 +965,10 @@ klasse TestSpecifics(unittest.TestCase):
         """)
         fuer opt in [-1, 0, 1, 2]:
             fuer mode in ["exec", "single"]:
-                with self.subTest(opt=opt, mode=mode):
+                mit self.subTest(opt=opt, mode=mode):
                     code = compile(src, "<test>", mode, optimize=opt)
                     output = io.StringIO()
-                    with contextlib.redirect_stdout(output):
+                    mit contextlib.redirect_stdout(output):
                         dis.dis(code)
                     self.assertNotIn('NOP', output.getvalue())
 
@@ -1089,7 +1089,7 @@ klasse TestSpecifics(unittest.TestCase):
 
         # Check that condition is removed.
         fuer func in funcs:
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 opcodes = list(dis.get_instructions(func))
                 self.assertLessEqual(len(opcodes), 3)
                 self.assertIn('LOAD_', opcodes[-2].opname)
@@ -1103,7 +1103,7 @@ klasse TestSpecifics(unittest.TestCase):
                 return os.uname()
             """,
             """\
-            importiere os as operating_system
+            importiere os als operating_system
             def foo():
                 return operating_system.uname()
             """,
@@ -1113,7 +1113,7 @@ klasse TestSpecifics(unittest.TestCase):
                 return path.join(x)
             """,
             """\
-            von os importiere path as os_path
+            von os importiere path als os_path
             def foo(x):
                 return os_path.join(x)
             """
@@ -1122,7 +1122,7 @@ klasse TestSpecifics(unittest.TestCase):
             namespace = {}
             exec(textwrap.dedent(source), namespace)
             func = namespace['foo']
-            with self.subTest(func=func.__name__):
+            mit self.subTest(func=func.__name__):
                 opcodes = list(dis.get_instructions(func))
                 instructions = [opcode.opname fuer opcode in opcodes]
                 self.assertNotIn('LOAD_METHOD', instructions)
@@ -1164,7 +1164,7 @@ klasse TestSpecifics(unittest.TestCase):
 
     def test_lineno_after_implicit_return(self):
         TRUE = Wahr
-        # Don't use constant Wahr or Falsch, as compiler will remove test
+        # Don't use constant Wahr or Falsch, als compiler will remove test
         def if1(x):
             x()
             wenn TRUE:
@@ -1192,7 +1192,7 @@ klasse TestSpecifics(unittest.TestCase):
             nonlocal frame
             frame = sys._getframe(1)
         fuer func, lastline in zip(funcs, lastlines, strict=Wahr):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 func(save_caller_frame)
                 self.assertEqual(frame.f_lineno-frame.f_code.co_firstlineno, lastline)
 
@@ -1204,7 +1204,7 @@ klasse TestSpecifics(unittest.TestCase):
             a: int
 
         fuer func in (no_code1, no_code2):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 wenn func is no_code1 and no_code1.__doc__ is Nichts:
                     continue
                 code = func.__code__
@@ -1262,7 +1262,7 @@ klasse TestSpecifics(unittest.TestCase):
                  store_attr_lines, aug_store_attr_lines]
 
         fuer func, lines in zip(funcs, func_lines, strict=Wahr):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 code_lines = self.get_code_lines(func.__code__)
                 self.assertEqual(lines, code_lines)
 
@@ -1525,7 +1525,7 @@ klasse TestSpecifics(unittest.TestCase):
                     fuer instruction in dis.get_instructions(code)
                     wenn instruction.opname.startswith(opname_prefix)
                 ]
-                with self.subTest(source):
+                mit self.subTest(source):
                     self.assertEqual(actual_positions, expected_positions)
 
     def test_if_expression_expression_empty_block(self):
@@ -1536,7 +1536,7 @@ klasse TestSpecifics(unittest.TestCase):
             "def f():\n\tif not (Falsch wenn 1 sonst Wahr): return 12",
         ]
         fuer expr in exprs:
-            with self.subTest(expr=expr):
+            mit self.subTest(expr=expr):
                 compile(expr, "<single>", "exec")
 
     def test_multi_line_lambda_as_argument(self):
@@ -1650,14 +1650,14 @@ klasse TestSpecifics(unittest.TestCase):
         # See gh-131927
         # Compile warnings originating von the same file and
         # line are now only emitted once.
-        with warnings.catch_warnings(record=Wahr) as caught:
+        mit warnings.catch_warnings(record=Wahr) als caught:
             warnings.simplefilter("default")
             compile('1 is 1', '<stdin>', 'eval')
             compile('1 is 1', '<stdin>', 'eval')
 
         self.assertEqual(len(caught), 1)
 
-        with warnings.catch_warnings(record=Wahr) as caught:
+        mit warnings.catch_warnings(record=Wahr) als caught:
             warnings.simplefilter("always")
             compile('1 is 1', '<stdin>', 'eval')
             compile('1 is 1', '<stdin>', 'eval')
@@ -1676,13 +1676,13 @@ klasse TestSpecifics(unittest.TestCase):
                 1 is 1
         """)
 
-        with warnings.catch_warnings(record=Wahr) as caught:
+        mit warnings.catch_warnings(record=Wahr) als caught:
             warnings.simplefilter("default")
             compile(source, '<stdin>', 'exec')
 
         self.assertEqual(len(caught), 1)
         self.assertEqual(caught[0].category, SyntaxWarning)
-        self.assertIn("\"is\" with 'int' literal", str(caught[0].message))
+        self.assertIn("\"is\" mit 'int' literal", str(caught[0].message))
 
 klasse TestBooleanExpression(unittest.TestCase):
     klasse Value:
@@ -1732,10 +1732,10 @@ klasse TestBooleanExpression(unittest.TestCase):
         a = Foo()
         b = Foo()
 
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             bool(a)
 
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             c = a or b
 
 @requires_debug_ranges()
@@ -2146,8 +2146,8 @@ klasse TestSourcePositions(unittest.TestCase):
             line=1, end_line=1, column=0, end_column=27, occurrence=5)
 
     def test_multiline_assert_rewritten_as_method_call(self):
-        # GH-94694: Don't crash wenn pytest rewrites a multiline assert as a
-        # method call with the same location information:
+        # GH-94694: Don't crash wenn pytest rewrites a multiline assert als a
+        # method call mit the same location information:
         tree = ast.parse("assert (\n42\n)")
         old_node = tree.body[0]
         new_node = ast.Expr(
@@ -2169,7 +2169,7 @@ klasse TestSourcePositions(unittest.TestCase):
     def test_push_null_load_global_positions(self):
         source_template = """
         importiere abc, dis
-        importiere ast as art
+        importiere ast als art
 
         abc = Nichts
         dix = dis
@@ -2190,10 +2190,10 @@ klasse TestSourcePositions(unittest.TestCase):
             "   [dis]()",
             "   (dix + ...)()",
         ]:
-            with self.subTest(body):
+            mit self.subTest(body):
                 namespace = {}
                 source = textwrap.dedent(source_template.format(body))
-                with warnings.catch_warnings():
+                mit warnings.catch_warnings():
                     warnings.simplefilter('ignore', SyntaxWarning)
                     exec(source, namespace)
                 code = namespace["f"].__code__
@@ -2268,12 +2268,12 @@ klasse TestSourcePositions(unittest.TestCase):
 
     @support.cpython_only
     def test_column_offset_deduplication(self):
-        # GH-95150: Code with different column offsets shouldn't be merged!
+        # GH-95150: Code mit different column offsets shouldn't be merged!
         fuer source in [
             "lambda: a",
             "(a fuer b in c)",
         ]:
-            with self.subTest(source):
+            mit self.subTest(source):
                 code = compile(f"{source}, {source}", "<test>", "eval")
                 self.assertEqual(len(code.co_consts), 2)
                 self.assertIsInstance(code.co_consts[0], types.CodeType)
@@ -2302,12 +2302,12 @@ klasse TestSourcePositions(unittest.TestCase):
             "f = lambda: a + b",
         ]
         fuer snippet in snippets:
-            with self.subTest(snippet=snippet):
+            mit self.subTest(snippet=snippet):
                 lamb = run_code(snippet)["f"]
                 positions = lamb.__code__.co_positions()
                 # assert that all positions are within the lambda
                 fuer i, pos in enumerate(positions):
-                    with self.subTest(i=i, pos=pos):
+                    mit self.subTest(i=i, pos=pos):
                         start_line, end_line, start_col, end_col = pos
                         wenn i == 0 and start_col == end_col == 0:
                             # ignore the RESUME in the beginning
@@ -2324,7 +2324,7 @@ klasse TestSourcePositions(unittest.TestCase):
     def test_return_in_with_positions(self):
         # See gh-98442
         def f():
-            with xyz:
+            mit xyz:
                 1
                 2
                 3
@@ -2503,7 +2503,7 @@ klasse TestStackSizeStability(unittest.TestCase):
             script = """def func():\n""" + i * snippet
             wenn async_:
                 script = "async " + script
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 warnings.simplefilter('ignore', SyntaxWarning)
                 code = compile(script, "<script>", "exec")
             exec(code, ns, ns)
@@ -2514,7 +2514,7 @@ klasse TestStackSizeStability(unittest.TestCase):
             importiere dis, io
             out = io.StringIO()
             dis.dis(compile_snippet(1), file=out)
-            self.fail("stack sizes diverge with # of consecutive snippets: "
+            self.fail("stack sizes diverge mit # of consecutive snippets: "
                       "%s\n%s\n%s" % (sizes, snippet, out.getvalue()))
 
     def test_if(self):
@@ -2561,7 +2561,7 @@ klasse TestStackSizeStability(unittest.TestCase):
         snippet = """
             try:
                 a
-            except ImportError as e:
+            except ImportError als e:
                 b
             except:
                 c
@@ -2585,7 +2585,7 @@ klasse TestStackSizeStability(unittest.TestCase):
         snippet = """
             try:
                 a
-            except* ImportError as e:
+            except* ImportError als e:
                 b
             sonst:
                 c
@@ -2614,7 +2614,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_with(self):
         snippet = """
-            with x as y:
+            mit x als y:
                 a
             """
         self.check_stack_size(snippet)
@@ -2712,7 +2712,7 @@ klasse TestStackSizeStability(unittest.TestCase):
     def test_for_break_continue_inside_with_block(self):
         snippet = """
             fuer x in y:
-                with c:
+                mit c:
                     wenn z:
                         break
                     sowenn u:
@@ -2762,7 +2762,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_return_inside_with_block(self):
         snippet = """
-            with c:
+            mit c:
                 wenn z:
                     return
                 sonst:
@@ -2772,7 +2772,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_async_with(self):
         snippet = """
-            async with x as y:
+            async mit x als y:
                 a
             """
         self.check_stack_size(snippet, async_=Wahr)
@@ -2796,7 +2796,7 @@ klasse TestStackSizeStability(unittest.TestCase):
     def test_for_break_continue_inside_async_with_block(self):
         snippet = """
             fuer x in y:
-                async with c:
+                async mit c:
                     wenn z:
                         break
                     sowenn u:
@@ -2810,7 +2810,7 @@ klasse TestStackSizeStability(unittest.TestCase):
 
     def test_return_inside_async_with_block(self):
         snippet = """
-            async with c:
+            async mit c:
                 wenn z:
                     return
                 sonst:

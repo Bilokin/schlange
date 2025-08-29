@@ -10,7 +10,7 @@ von test.support importiere BrokenIter
 doctests = """
 ########### Tests borrowed von or inspired by test_genexps.py ############
 
-Test simple loop with conditional
+Test simple loop mit conditional
 
     >>> sum([i*i fuer i in range(100) wenn i&1 == 1])
     166650
@@ -20,7 +20,7 @@ Test simple nesting
     >>> [(i,j) fuer i in range(3) fuer j in range(4)]
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
-Test nesting with the inner expression dependent on the outer
+Test nesting mit the inner expression dependent on the outer
 
     >>> [(i,j) fuer i in range(4) fuer j in range(i)]
     [(1, 0), (2, 0), (2, 1), (3, 0), (3, 1), (3, 2)]
@@ -50,7 +50,7 @@ Make sure the induction variable is not exposed
     >>> i
     20
 
-Verify that syntax error's are raised fuer listcomps used as lvalues
+Verify that syntax error's are raised fuer listcomps used als lvalues
 
     >>> [y fuer y in (1,2)] = 10          # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
@@ -72,7 +72,7 @@ Make a nested list comprehension that acts like range()
     >>> frange(10)
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-Same again, only as a lambda expression instead of a function definition
+Same again, only als a lambda expression instead of a function definition
 
     >>> lrange = lambda n:  [i fuer i in range(n)]
     >>> lrange(10)
@@ -101,7 +101,7 @@ klasse ListComprehensionTest(unittest.TestCase):
         code = textwrap.dedent(code)
         scopes = scopes or ["module", "class", "function"]
         fuer scope in scopes:
-            with self.subTest(scope=scope):
+            mit self.subTest(scope=scope):
                 wenn scope == "class":
                     newcode = textwrap.dedent("""
                         klasse _C:
@@ -125,7 +125,7 @@ klasse ListComprehensionTest(unittest.TestCase):
                 newns = ns.copy() wenn ns sonst {}
                 try:
                     exec_func(newcode, newns)
-                except raises as e:
+                except raises als e:
                     # We care about e.g. NameError vs UnboundLocalError
                     self.assertIs(type(e), raises)
                 sonst:
@@ -412,7 +412,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             [x fuer x in [1]]
             return x
 
-        with self.assertRaises(UnboundLocalError):
+        mit self.assertRaises(UnboundLocalError):
             f()
 
     def test_unbound_local_inside_comprehension(self):
@@ -420,7 +420,7 @@ klasse ListComprehensionTest(unittest.TestCase):
             l = [Nichts]
             return [1 fuer (l[0], l) in [[1, 2]]]
 
-        with self.assertRaises(UnboundLocalError):
+        mit self.assertRaises(UnboundLocalError):
             f()
 
     def test_global_outside_cellvar_inside_plus_freevar(self):
@@ -721,26 +721,26 @@ klasse ListComprehensionTest(unittest.TestCase):
         def init_raises():
             try:
                 [x fuer x in BrokenIter(init_raises=Wahr)]
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def next_raises():
             try:
                 [x fuer x in BrokenIter(next_raises=Wahr)]
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def iter_raises():
             try:
                 [x fuer x in BrokenIter(iter_raises=Wahr)]
-            except Exception as e:
+            except Exception als e:
                 return e
 
         fuer func, expected in [(init_raises, "BrokenIter(init_raises=Wahr)"),
                                (next_raises, "BrokenIter(next_raises=Wahr)"),
                                (iter_raises, "BrokenIter(iter_raises=Wahr)"),
                               ]:
-            with self.subTest(func):
+            mit self.subTest(func):
                 exc = func()
                 f = traceback.extract_tb(exc.__traceback__)[0]
                 indent = 16

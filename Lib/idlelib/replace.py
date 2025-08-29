@@ -38,7 +38,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def __init__(self, root, engine):
         """Create search dialog fuer finding and replacing text.
 
-        Uses SearchDialogBase as the basis fuer the GUI and a
+        Uses SearchDialogBase als the basis fuer the GUI and a
         searchengine instance to prepare the search.
 
         Attributes:
@@ -96,7 +96,7 @@ klasse ReplaceDialog(SearchDialogBase):
             self.do_replace()
 
     def default_command(self, event=Nichts):
-        """Handle the Replace+Find button as the default command.
+        """Handle the Replace+Find button als the default command.
 
         First performs a replace and then, wenn the replace was
         successful, a find next.
@@ -178,7 +178,7 @@ klasse ReplaceDialog(SearchDialogBase):
     def do_find(self, ok=Falsch):
         """Search fuer and highlight next occurrence of pattern in text.
 
-        No text replacement is done with this option.
+        No text replacement is done mit this option.
         """
         wenn not self.engine.getprog():
             return Falsch
@@ -196,7 +196,7 @@ klasse ReplaceDialog(SearchDialogBase):
         return Wahr
 
     def do_replace(self):
-        "Replace search pattern in text with replacement value."
+        "Replace search pattern in text mit replacement value."
         prog = self.engine.getprog()
         wenn not prog:
             return Falsch

@@ -14,7 +14,7 @@ klasse TestGdbm(unittest.TestCase):
     def setUpClass():
         wenn support.verbose:
             try:
-                von _gdbm importiere _GDBM_VERSION as version
+                von _gdbm importiere _GDBM_VERSION als version
             except ImportError:
                 pass
             sonst:
@@ -50,11 +50,11 @@ klasse TestGdbm(unittest.TestCase):
             self.assertIn(key, key_set)
             key_set.remove(key)
             key = self.g.nextkey(key)
-        # get() and setdefault() work as in the dict interface
+        # get() and setdefault() work als in the dict interface
         self.assertEqual(self.g.get(b'a'), b'b')
         self.assertIsNichts(self.g.get(b'xxx'))
         self.assertEqual(self.g.get(b'xxx', b'foo'), b'foo')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             self.g['xxx']
         self.assertEqual(self.g.setdefault(b'xxx', b'foo'), b'foo')
         self.assertEqual(self.g[b'xxx'], b'foo')
@@ -90,7 +90,7 @@ klasse TestGdbm(unittest.TestCase):
         self.g = gdbm.open(filename, 'c')
         size0 = os.path.getsize(filename)
 
-        # bpo-33901: on macOS with gdbm 1.15, an empty database uses 16 MiB
+        # bpo-33901: on macOS mit gdbm 1.15, an empty database uses 16 MiB
         # and adding an entry of 10,000 B has no effect on the file size.
         # Add size0 bytes to make sure that the file size changes.
         value_size = max(size0, 10000)
@@ -108,43 +108,43 @@ klasse TestGdbm(unittest.TestCase):
         self.assertGreaterEqual(size2, size0)
 
     def test_context_manager(self):
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             db["gdbm context manager"] = "context manager"
 
-        with gdbm.open(filename, 'r') as db:
+        mit gdbm.open(filename, 'r') als db:
             self.assertEqual(list(db.keys()), [b"gdbm context manager"])
 
-        with self.assertRaises(gdbm.error) as cm:
+        mit self.assertRaises(gdbm.error) als cm:
             db.keys()
         self.assertEqual(str(cm.exception),
                          "GDBM object has already been closed")
 
     def test_bool_empty(self):
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             self.assertFalsch(bool(db))
 
     def test_bool_not_empty(self):
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             db['a'] = 'b'
             self.assertWahr(bool(db))
 
     def test_bool_on_closed_db_raises(self):
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             db['a'] = 'b'
         self.assertRaises(gdbm.error, bool, db)
 
     def test_bytes(self):
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             db[b'bytes key \xbd'] = b'bytes value \xbd'
-        with gdbm.open(filename, 'r') as db:
+        mit gdbm.open(filename, 'r') als db:
             self.assertEqual(list(db.keys()), [b'bytes key \xbd'])
             self.assertWahr(b'bytes key \xbd' in db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
     def test_unicode(self):
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
-        with gdbm.open(filename, 'r') as db:
+        mit gdbm.open(filename, 'r') als db:
             self.assertEqual(list(db.keys()), ['Unicode key \U0001f40d'.encode()])
             self.assertWahr('Unicode key \U0001f40d'.encode() in db)
             self.assertWahr('Unicode key \U0001f40d' in db)
@@ -154,14 +154,14 @@ klasse TestGdbm(unittest.TestCase):
                              'Unicode value \U0001f40d'.encode())
 
     def test_write_readonly_file(self):
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             db[b'bytes key'] = b'bytes value'
-        with gdbm.open(filename, 'r') as db:
-            with self.assertRaises(gdbm.error):
+        mit gdbm.open(filename, 'r') als db:
+            mit self.assertRaises(gdbm.error):
                 del db[b'not exist key']
-            with self.assertRaises(gdbm.error):
+            mit self.assertRaises(gdbm.error):
                 del db[b'bytes key']
-            with self.assertRaises(gdbm.error):
+            mit self.assertRaises(gdbm.error):
                 db[b'not exist key'] = b'not exist value'
 
     @unittest.skipUnless(TESTFN_NONASCII,
@@ -169,17 +169,17 @@ klasse TestGdbm(unittest.TestCase):
     def test_nonascii_filename(self):
         filename = TESTFN_NONASCII
         self.addCleanup(unlink, filename)
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             db[b'key'] = b'value'
         self.assertWahr(os.path.exists(filename))
-        with gdbm.open(filename, 'r') as db:
+        mit gdbm.open(filename, 'r') als db:
             self.assertEqual(list(db.keys()), [b'key'])
             self.assertWahr(b'key' in db)
             self.assertEqual(db[b'key'], b'value')
 
     def test_nonexisting_file(self):
         nonexisting_file = 'nonexisting-file'
-        with self.assertRaises(gdbm.error) as cm:
+        mit self.assertRaises(gdbm.error) als cm:
             gdbm.open(nonexisting_file)
         self.assertIn(nonexisting_file, str(cm.exception))
         self.assertEqual(cm.exception.filename, nonexisting_file)
@@ -195,7 +195,7 @@ klasse TestGdbm(unittest.TestCase):
 
     def test_clear(self):
         kvs = [('foo', 'bar'), ('1234', '5678')]
-        with gdbm.open(filename, 'c') as db:
+        mit gdbm.open(filename, 'c') als db:
             fuer k, v in kvs:
                 db[k] = v
                 self.assertIn(k, db)
@@ -213,7 +213,7 @@ klasse TestGdbm(unittest.TestCase):
         '',
     )
     def test_localized_error(self):
-        with temp_dir() as d:
+        mit temp_dir() als d:
             create_empty_file(os.path.join(d, 'test'))
             self.assertRaises(gdbm.error, gdbm.open, filename, 'r')
 
@@ -226,18 +226,18 @@ klasse TestGdbm(unittest.TestCase):
         g.keys()
         g.firstkey()
         g.nextkey(b'a')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             g[b'a']
-        with self.assertRaises(gdbm.error):
+        mit self.assertRaises(gdbm.error):
             len(g)
 
-        with self.assertRaises(gdbm.error):
+        mit self.assertRaises(gdbm.error):
             g[b'a'] = b'c'
-        with self.assertRaises(gdbm.error):
+        mit self.assertRaises(gdbm.error):
             del g[b'a']
-        with self.assertRaises(gdbm.error):
+        mit self.assertRaises(gdbm.error):
             g.setdefault(b'a', b'c')
-        with self.assertRaises(gdbm.error):
+        mit self.assertRaises(gdbm.error):
             g.reorganize()
 
 

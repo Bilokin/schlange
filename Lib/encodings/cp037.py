@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp037 generated von 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP037.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp037 generated von 'MAPPINGS/VENDORS/MICSFT/EBCDIC/CP037.TXT' mit gencodec.py.
 
 """#"
 

@@ -4,7 +4,7 @@ importiere contextlib
 # von jaraco.context 4.3
 klasse suppress(contextlib.suppress, contextlib.ContextDecorator):
     """
-    A version of contextlib.suppress with decorator support.
+    A version of contextlib.suppress mit decorator support.
 
     >>> @suppress(KeyError)
     ... def key_error():

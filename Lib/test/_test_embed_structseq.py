@@ -32,7 +32,7 @@ klasse TestStructSeq(unittest.TestCase):
             'thread_info',    # ThreadInfoType
             'version_info',   # VersionInfoType
         ):
-            with self.subTest(attr=attr_name):
+            mit self.subTest(attr=attr_name):
                 attr = getattr(sys, attr_name)
                 self.check_structseq(type(attr))
 
@@ -41,7 +41,7 @@ klasse TestStructSeq(unittest.TestCase):
         wenn hasattr(sys, 'getwindowsversion'):
             func_names.append('getwindowsversion')  # WindowsVersionType
         fuer func_name in func_names:
-            with self.subTest(func=func_name):
+            mit self.subTest(func=func_name):
                 func = getattr(sys, func_name)
                 obj = func()
                 self.check_structseq(type(obj))
@@ -56,7 +56,7 @@ try:
             sonst sys.modules['test._test_embed_structseq']
         )
     )
-except SystemExit as exc:
+except SystemExit als exc:
     wenn exc.args[0] != 0:
         raise
 drucke("Tests passed")

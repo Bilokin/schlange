@@ -1,6 +1,6 @@
 """idlelib.idle_test implements test.test_idle, which tests the IDLE
-application as part of the stdlib test suite.
-Run IDLE tests alone with "python -m test.test_idle (-v)".
+application als part of the stdlib test suite.
+Run IDLE tests alone mit "python -m test.test_idle (-v)".
 
 This package and its contained modules are subject to change and
 any direct use is at your own risk.
@@ -9,9 +9,9 @@ von os.path importiere dirname
 
 # test_idle imports load_tests fuer test discovery (default all).
 # To run subsets of idlelib module tests, insert '[<chars>]' after '_'.
-# Example: insert '[ac]' fuer modules beginning with 'a' or 'c'.
-# Additional .discover/.addTest pairs with separate inserts work.
-# Example: pairs with 'c' and 'g' test c* files and grep.
+# Example: insert '[ac]' fuer modules beginning mit 'a' or 'c'.
+# Additional .discover/.addTest pairs mit separate inserts work.
+# Example: pairs mit 'c' and 'g' test c* files and grep.
 
 def load_tests(loader, standard_tests, pattern):
     this_dir = dirname(__file__)

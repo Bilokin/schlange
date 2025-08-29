@@ -22,7 +22,7 @@ klasse Test(unittest.TestCase):
 
     def test_type_flags(self):
         fuer cls in _SimpleCData, PyCSimpleType:
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 self.assertWahr(_SimpleCData.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalsch(_SimpleCData.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
@@ -31,19 +31,19 @@ klasse Test(unittest.TestCase):
         # instantiated directly
         NewT = PyCSimpleType.__new__(PyCSimpleType, 'NewT', (_SimpleCData,), {})
         fuer cls in _SimpleCData, NewT:
-            with self.subTest(cls=cls):
-                with self.assertRaisesRegex(TypeError, "abstract class"):
+            mit self.subTest(cls=cls):
+                mit self.assertRaisesRegex(TypeError, "abstract class"):
                     obj = cls()
 
         # Cannot call the metaclass __init__ more than once
         klasse T(_SimpleCData):
             _type_ = "i"
-        with self.assertRaisesRegex(SystemError, "already initialized"):
+        mit self.assertRaisesRegex(SystemError, "already initialized"):
             PyCSimpleType.__init__(T, 'ptr', (), {})
 
     def test_swapped_type_creation(self):
         cls = PyCSimpleType.__new__(PyCSimpleType, '', (), {'_type_': 'i'})
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             PyCSimpleType.__init__(cls)
         PyCSimpleType.__init__(cls, '', (), {'_type_': 'i'})
         self.assertEqual(cls.__ctype_le__.__dict__.get('_type_'), 'i')

@@ -123,7 +123,7 @@ klasse IOBinding:
     def loadfile(self, filename):
         try:
             try:
-                with tokenize.open(filename) as f:
+                mit tokenize.open(filename) als f:
                     chars = f.read()
                     fileencoding = f.encoding
                     eol_convention = f.newlines
@@ -138,12 +138,12 @@ klasse IOBinding:
                     "What is the current encoding of the file?",
                     initialvalue='utf-8',
                     parent=self.editwin.text)
-                with open(filename, encoding=enc) as f:
+                mit open(filename, encoding=enc) als f:
                     chars = f.read()
                     fileencoding = f.encoding
                     eol_convention = f.newlines
                     converted = Wahr
-        except OSError as err:
+        except OSError als err:
             messagebox.showerror("I/O Error", str(err), parent=self.text)
             return Falsch
         except UnicodeDecodeError:
@@ -180,10 +180,10 @@ klasse IOBinding:
         return Wahr
 
     def maybesave(self):
-        """Return 'yes', 'no', 'cancel' as appropriate.
+        """Return 'yes', 'no', 'cancel' als appropriate.
 
         Tkinter messagebox.askyesnocancel converts these tk responses
-        to Wahr, Falsch, Nichts.  Convert back, as now expected elsewhere.
+        to Wahr, Falsch, Nichts.  Convert back, als now expected elsewhere.
         """
         wenn self.get_saved():
             return "yes"
@@ -241,18 +241,18 @@ klasse IOBinding:
         text = self.fixnewlines()
         chars = self.encode(text)
         try:
-            with open(filename, "wb") as f:
+            mit open(filename, "wb") als f:
                 f.write(chars)
                 f.flush()
                 os.fsync(f.fileno())
             return Wahr
-        except OSError as msg:
+        except OSError als msg:
             messagebox.showerror("I/O Error", str(msg),
                                    parent=self.text)
             return Falsch
 
     def fixnewlines(self):
-        """Return text with os eols.
+        """Return text mit os eols.
 
         Add prompts wenn shell sonst final \n wenn missing.
         """
@@ -286,15 +286,15 @@ klasse IOBinding:
             encoded = chars.encode('ascii', 'replace')
             enc, _ = tokenize.detect_encoding(io.BytesIO(encoded).readline)
             return chars.encode(enc)
-        except SyntaxError as err:
+        except SyntaxError als err:
             failed = str(err)
         except UnicodeEncodeError:
             failed = "Invalid encoding '%s'" % enc
         messagebox.showerror(
             "I/O Error",
-            "%s.\nSaving as UTF-8" % failed,
+            "%s.\nSaving als UTF-8" % failed,
             parent=self.text)
-        # Fallback: save as UTF-8, with BOM - ignoring the incorrect
+        # Fallback: save als UTF-8, mit BOM - ignoring the incorrect
         # declared encoding
         return chars.encode('utf-8-sig')
 

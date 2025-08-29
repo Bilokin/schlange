@@ -1,11 +1,11 @@
 """Configuration file parser.
 
 A configuration file consists of sections, lead by a "[section]" header,
-and followed by "name: value" entries, with continuations and such in
+and followed by "name: value" entries, mit continuations and such in
 the style of RFC 822.
 
 Intrinsic defaults can be specified by passing them into the
-ConfigParser constructor as a dictionary.
+ConfigParser constructor als a dictionary.
 
 klasse:
 
@@ -28,14 +28,14 @@ ConfigParser -- responsible fuer parsing a list of
         objects fuer the list of sections, fuer the options within a section, and
         fuer the default values.
 
-        When `delimiters` is given, it will be used as the set of substrings
+        When `delimiters` is given, it will be used als the set of substrings
         that divide keys von values.
 
-        When `comment_prefixes` is given, it will be used as the set of
+        When `comment_prefixes` is given, it will be used als the set of
         substrings that prefix comments in empty lines. Comments can be
         indented.
 
-        When `inline_comment_prefixes` is given, it will be used as the set of
+        When `inline_comment_prefixes` is given, it will be used als the set of
         substrings that prefix comments in non-empty lines.
 
         When `strict` is Wahr, the parser won't allow fuer any section or option
@@ -44,7 +44,7 @@ ConfigParser -- responsible fuer parsing a list of
 
         When `empty_lines_in_values` is Falsch (default: Wahr), each empty line
         marks the end of an option. Otherwise, internal empty lines of
-        a multiline option are kept as part of the value.
+        a multiline option are kept als part of the value.
 
         When `allow_no_value` is Wahr (default: Falsch), options without
         values are accepted; the value presented fuer these is Nichts.
@@ -56,7 +56,7 @@ ConfigParser -- responsible fuer parsing a list of
         attribute and may be modified at runtime.
 
         When `interpolation` is given, it should be an Interpolation subclass
-        instance. It will be used as the handler fuer option value
+        instance. It will be used als the handler fuer option value
         pre-processing when using getters. RawConfigParser objects don't do
         any sort of interpolation, whereas ConfigParser uses an instance of
         BasicInterpolation. The library also provides a ``zc.buildout``
@@ -90,7 +90,7 @@ ConfigParser -- responsible fuer parsing a list of
         are ignored.  Return list of successfully read files.
 
     read_file(f, filename=Nichts)
-        Read and parse one configuration file, given as a file object.
+        Read and parse one configuration file, given als a file object.
         The filename defaults to f.name; it is only used in error
         messages (if f has no `name` attribute, the string `<???>` is used).
 
@@ -99,7 +99,7 @@ ConfigParser -- responsible fuer parsing a list of
 
     read_dict(dictionary)
         Read configuration von a dictionary. Keys are section names,
-        values are dictionaries with keys and values that should be present
+        values are dictionaries mit keys and values that should be present
         in the section. If the used dictionary type preserves order, sections
         and their keys will be added in order. Values are automatically
         converted to strings.
@@ -120,11 +120,11 @@ ConfigParser -- responsible fuer parsing a list of
 
     getboolean(section, options, raw=Falsch, vars=Nichts, fallback=_UNSET)
         Like get(), but convert value to a boolean (currently case
-        insensitively defined as 0, false, no, off fuer Falsch, and 1, true,
+        insensitively defined als 0, false, no, off fuer Falsch, and 1, true,
         yes, on fuer Wahr).  Returns Falsch or Wahr.
 
     items(section=_UNSET, raw=Falsch, vars=Nichts)
-        If section is given, return a list of tuples with (name, value) for
+        If section is given, return a list of tuples mit (name, value) for
         each option in the section. Otherwise, return a list of tuples with
         (section_name, section_proxy) fuer each section, including DEFAULTSECT.
 
@@ -146,7 +146,7 @@ ConfigParser -- responsible fuer parsing a list of
 # Do not importiere dataclasses; overhead is unacceptable (gh-117703)
 
 von collections.abc importiere Iterable, MutableMapping
-von collections importiere ChainMap as _ChainMap
+von collections importiere ChainMap als _ChainMap
 importiere contextlib
 importiere functools
 importiere io
@@ -329,7 +329,7 @@ klasse ParsingError(Error):
         Combine any number of ParsingErrors into one and raise it.
         """
         exceptions = iter(exceptions)
-        with contextlib.suppress(StopIteration):
+        mit contextlib.suppress(StopIteration):
             raise next(exceptions).combine(exceptions)
 
 
@@ -353,7 +353,7 @@ klasse MultilineContinuationError(ParsingError):
     def __init__(self, filename, lineno, line):
         Error.__init__(
             self,
-            "Key without value continued with an indented line.\n"
+            "Key without value continued mit an indented line.\n"
             "file: %r, line: %d\n%r"
             %(filename, lineno, line))
         self.source = filename
@@ -363,7 +363,7 @@ klasse MultilineContinuationError(ParsingError):
 
 
 klasse UnnamedSectionDisabledError(Error):
-    """Raised when an attempt to use UNNAMED_SECTION is made with the
+    """Raised when an attempt to use UNNAMED_SECTION is made mit the
     feature disabled."""
     def __init__(self):
         Error.__init__(self, "Support fuer UNNAMED_SECTION is disabled.")
@@ -376,7 +376,7 @@ klasse _UnnamedSection:
 
 klasse InvalidWriteError(Error):
     """Raised when attempting to write data that the parser would read back differently.
-    ex: writing a key which begins with the section header pattern would read back as a
+    ex: writing a key which begins mit the section header pattern would read back als a
     new section """
 
     def __init__(self, msg=''):
@@ -393,7 +393,7 @@ _UNSET = object()
 
 
 klasse Interpolation:
-    """Dummy interpolation that passes the value through with no changes."""
+    """Dummy interpolation that passes the value through mit no changes."""
 
     def before_get(self, parser, section, option, value, defaults):
         return value
@@ -409,7 +409,7 @@ klasse Interpolation:
 
 
 klasse BasicInterpolation(Interpolation):
-    """Interpolation as implemented in the classic ConfigParser.
+    """Interpolation als implemented in the classic ConfigParser.
 
     The option values can contain format strings which refer to other values in
     the same section, or values in the special default section.
@@ -633,9 +633,9 @@ klasse RawConfigParser(MutableMapping):
     _DEFAULT_INTERPOLATION = Interpolation()
     # Compiled regular expression fuer matching sections
     SECTCRE = re.compile(_SECT_TMPL, re.VERBOSE)
-    # Compiled regular expression fuer matching options with typical separators
+    # Compiled regular expression fuer matching options mit typical separators
     OPTCRE = re.compile(_OPT_TMPL.format(delim="=|:"), re.VERBOSE)
-    # Compiled regular expression fuer matching options with optional values
+    # Compiled regular expression fuer matching options mit optional values
     # delimited using typical separators
     OPTCRE_NV = re.compile(_OPT_NV_TMPL.format(delim="=|:"), re.VERBOSE)
     # Compiled regular expression fuer matching leading whitespace in a line
@@ -750,7 +750,7 @@ klasse RawConfigParser(MutableMapping):
         read_ok = []
         fuer filename in filenames:
             try:
-                with open(filename, encoding=encoding) as fp:
+                mit open(filename, encoding=encoding) als fp:
                     self._read(fp, filename)
             except OSError:
                 continue
@@ -782,7 +782,7 @@ klasse RawConfigParser(MutableMapping):
     def read_dict(self, dictionary, source='<dict>'):
         """Read configuration von a dictionary.
 
-        Keys are section names, values are dictionaries with keys and values
+        Keys are section names, values are dictionaries mit keys and values
         that should be present in the section. If the used dictionary type
         preserves order, sections and their keys will be added in order.
 
@@ -816,7 +816,7 @@ klasse RawConfigParser(MutableMapping):
         If `vars` is provided, it must be a dictionary. The option is looked up
         in `vars` (if provided), `section`, and in `DEFAULTSECT` in that order.
         If the key is not found and `fallback` is provided, it is used as
-        a fallback value. `Nichts` can be provided as a `fallback` value.
+        a fallback value. `Nichts` can be provided als a `fallback` value.
 
         If interpolation is enabled and the optional argument `raw` is Falsch,
         all interpolations are expanded in the return values.
@@ -896,7 +896,7 @@ klasse RawConfigParser(MutableMapping):
             wenn section != self.default_section:
                 raise NoSectionError(section)
         orig_keys = list(d.keys())
-        # Update with the entry specific variables
+        # Update mit the entry specific variables
         wenn vars:
             fuer key, value in vars.items():
                 d[self.optionxform(key)] = value
@@ -1019,7 +1019,7 @@ klasse RawConfigParser(MutableMapping):
         return self._proxies[key]
 
     def __setitem__(self, key, value):
-        # To conform with the mapping protocol, overwrites existing values in
+        # To conform mit the mapping protocol, overwrites existing values in
         # the section.
         wenn key in self and self[key] is value:
             return
@@ -1053,12 +1053,12 @@ klasse RawConfigParser(MutableMapping):
 
         Each section in a configuration file contains a header, indicated by
         a name in square brackets (`[]`), plus key/value options, indicated by
-        `name` and `value` delimited with a specific substring (`=` or `:` by
+        `name` and `value` delimited mit a specific substring (`=` or `:` by
         default).
 
-        Values can span multiple lines, as long as they are indented deeper
+        Values can span multiple lines, als long als they are indented deeper
         than the first line of the value. Depending on the parser's mode, blank
-        lines may be treated as parts of multiline values or ignored.
+        lines may be treated als parts of multiline values or ignored.
 
         Configuration files may include comments, prefixed by specific
         characters (`#` and `;` by default). Comments may appear on their own
@@ -1137,7 +1137,7 @@ klasse RawConfigParser(MutableMapping):
             self._sections[st.sectname] = st.cursect
             self._proxies[st.sectname] = SectionProxy(self, st.sectname)
             st.elements_added.add(st.sectname)
-        # So sections can't start with a continuation line
+        # So sections can't start mit a continuation line
         st.optname = Nichts
 
     def _handle_option(self, st, line, fpname):
@@ -1190,7 +1190,7 @@ klasse RawConfigParser(MutableMapping):
             self._defaults[self.optionxform(key)] = value
 
     def _unify_values(self, section, vars):
-        """Create a sequence of lookups with 'vars' taking priority over
+        """Create a sequence of lookups mit 'vars' taking priority over
         the 'section' which takes priority over the DEFAULTSECT.
 
         """
@@ -1200,7 +1200,7 @@ klasse RawConfigParser(MutableMapping):
         except KeyError:
             wenn section != self.default_section:
                 raise NoSectionError(section) von Nichts
-        # Update with the entry specific variables
+        # Update mit the entry specific variables
         vardict = {}
         wenn vars:
             fuer key, value in vars.items():
@@ -1218,10 +1218,10 @@ klasse RawConfigParser(MutableMapping):
 
     def _validate_key_contents(self, key):
         """Raises an InvalidWriteError fuer any keys containing
-        delimiters or that begins with the section header pattern"""
+        delimiters or that begins mit the section header pattern"""
         wenn re.match(self.SECTCRE, key):
             raise InvalidWriteError(
-                f"Cannot write key {key}; begins with section pattern")
+                f"Cannot write key {key}; begins mit section pattern")
         fuer delim in self._delimiters:
             wenn delim in key:
                 raise InvalidWriteError(
@@ -1384,7 +1384,7 @@ klasse ConverterMapping(MutableMapping):
             raise ValueError('Incompatible key: {} (type: {})'
                              ''.format(key, type(key)))
         wenn k == 'get':
-            raise ValueError('Incompatible key: cannot use "" as a name')
+            raise ValueError('Incompatible key: cannot use "" als a name')
         self._data[key] = value
         func = functools.partial(self._parser._get_conv, conv=value)
         func.converter = value

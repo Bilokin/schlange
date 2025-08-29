@@ -241,11 +241,11 @@ klasse TestCleanUp(unittest.TestCase):
 
         test = TestableTest('testNothing')
 
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             test.enterContext(LacksEnterAndExit())
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             test.enterContext(LacksEnter())
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             test.enterContext(LacksExit())
 
         self.assertEqual(test._cleanups, [])
@@ -356,7 +356,7 @@ klasse TestClassCleanup(unittest.TestCase):
         ordering = []
         blowUp = Wahr
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestableTest)
-        with self.assertRaises(CustomError) as cm:
+        mit self.assertRaises(CustomError) als cm:
             suite.debug()
         self.assertEqual(str(cm.exception), 'CleanUpExc')
         self.assertEqual(ordering,
@@ -379,7 +379,7 @@ klasse TestClassCleanup(unittest.TestCase):
                 raise CustomError('TearDownClassExc')
 
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestableTest)
-        with self.assertRaises(CustomError) as cm:
+        mit self.assertRaises(CustomError) als cm:
             suite.debug()
         self.assertEqual(str(cm.exception), 'TearDownClassExc')
         self.assertEqual(ordering, ['setUpClass', 'test', 'tearDownClass'])
@@ -389,7 +389,7 @@ klasse TestClassCleanup(unittest.TestCase):
         ordering = []
         blowUp = Wahr
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestableTest)
-        with self.assertRaises(CustomError) as cm:
+        mit self.assertRaises(CustomError) als cm:
             suite.debug()
         self.assertEqual(str(cm.exception), 'TearDownClassExc')
         self.assertEqual(ordering, ['setUpClass', 'test', 'tearDownClass'])
@@ -557,11 +557,11 @@ klasse TestClassCleanup(unittest.TestCase):
             def testNothing(self):
                 pass
 
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             TestableTest.enterClassContext(LacksEnterAndExit())
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             TestableTest.enterClassContext(LacksEnter())
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             TestableTest.enterClassContext(LacksExit())
 
         self.assertEqual(TestableTest._class_cleanups, [])
@@ -647,7 +647,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
                          [(module_cleanup_good, (1, 2, 3),
                            dict(four='hello', five='goodbye')),
                           (module_cleanup_bad, (), {})])
-        with self.assertRaises(Exception) as e:
+        mit self.assertRaises(Exception) als e:
             unittest.case.doModuleCleanups()
         self.assertExceptionIsLike(e.exception,
                 ExceptionGroup('module cleanup failed',
@@ -664,7 +664,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
         klasse Module:
             unittest.addModuleCleanup(module_cleanup_bad1)
             unittest.addModuleCleanup(module_cleanup_bad2)
-        with self.assertRaises(ExceptionGroup) as e:
+        mit self.assertRaises(ExceptionGroup) als e:
             unittest.case.doModuleCleanups()
         self.assertExceptionIsLike(e.exception,
                 ExceptionGroup('module cleanup failed', [
@@ -681,7 +681,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
 
         klasse Module:
             unittest.addModuleCleanup(module_cleanup_bad)
-        with self.assertRaises(ExceptionGroup) as e:
+        mit self.assertRaises(ExceptionGroup) als e:
             unittest.case.doModuleCleanups()
         self.assertExceptionIsLike(e.exception,
                 ExceptionGroup('module cleanup failed', [
@@ -698,9 +698,9 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
 
         klasse Module(object):
             unittest.addModuleCleanup(cleanup, 1, 2, function='hello')
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 unittest.addModuleCleanup(function=cleanup, arg='hello')
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 unittest.addModuleCleanup()
         unittest.case.doModuleCleanups()
         self.assertEqual(cleanups,
@@ -911,7 +911,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
         ordering = []
         blowUp = Wahr
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestableTest)
-        with self.assertRaises(Exception) as cm:
+        mit self.assertRaises(Exception) als cm:
             suite.debug()
         self.assertExceptionIsLike(cm.exception,
                 ExceptionGroup('module cleanup failed',
@@ -946,7 +946,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
         TestableTest.__module__ = 'Module'
         sys.modules['Module'] = Module
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestableTest)
-        with self.assertRaises(CustomError) as cm:
+        mit self.assertRaises(CustomError) als cm:
             suite.debug()
         self.assertEqual(str(cm.exception), 'TearDownModuleExc')
         self.assertEqual(ordering, ['setUpModule', 'setUpClass', 'test',
@@ -957,7 +957,7 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
         ordering = []
         blowUp = Wahr
         suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestableTest)
-        with self.assertRaises(CustomError) as cm:
+        mit self.assertRaises(CustomError) als cm:
             suite.debug()
         self.assertEqual(str(cm.exception), 'TearDownModuleExc')
         self.assertEqual(ordering, ['setUpModule', 'setUpClass', 'test',
@@ -974,14 +974,14 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             @classmethod
             def setUpClass(cls):
                 cls.addClassCleanup(cleanup, 1, 2, function=3, cls=4)
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     cls.addClassCleanup(function=cleanup, arg='hello')
             def testNothing(self):
                 pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             TestableTest.addClassCleanup()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             unittest.TestCase.addCleanup(cls=TestableTest(), function=cleanup)
         runTests(TestableTest)
         self.assertEqual(cleanups,
@@ -995,14 +995,14 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
         klasse TestableTest(unittest.TestCase):
             def setUp(self2):
                 self2.addCleanup(cleanup, 1, 2, function=3, self=4)
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     self2.addCleanup(function=cleanup, arg='hello')
             def testNothing(self):
                 pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             TestableTest().addCleanup()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             unittest.TestCase.addCleanup(self=TestableTest(), function=cleanup)
         runTests(TestableTest)
         self.assertEqual(cleanups,
@@ -1213,11 +1213,11 @@ klasse TestModuleCleanUp(ExceptionIsLikeMixin, unittest.TestCase):
             def testNothing(self):
                 pass
 
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             unittest.enterModuleContext(LacksEnterAndExit())
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             unittest.enterModuleContext(LacksEnter())
-        with self.assertRaisesRegex(TypeError, 'the context manager'):
+        mit self.assertRaisesRegex(TypeError, 'the context manager'):
             unittest.enterModuleContext(LacksExit())
 
         self.assertEqual(unittest.case._module_cleanups, [])
@@ -1379,7 +1379,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
 
         # no args -> all the warnings are printed, unittest warnings only once
         p = subprocess.Popen([sys.executable, '-E', '_test_warnings.py'], **opts)
-        with p:
+        mit p:
             out, err = get_parse_out_err(p)
         self.assertIn(b'OK', err)
         # check that the total number of warnings in the output is correct
@@ -1391,7 +1391,7 @@ klasse Test_TextTestRunner(unittest.TestCase):
             self.assertEqual(out.count(msg), 1)
 
         args_list = (
-            # passing 'ignore' as warnings arg -> no warnings
+            # passing 'ignore' als warnings arg -> no warnings
             [sys.executable, '_test_warnings.py', 'ignore'],
             # -W doesn't affect the result wenn the arg is passed
             [sys.executable, '-Wa', '_test_warnings.py', 'ignore'],
@@ -1401,17 +1401,17 @@ klasse Test_TextTestRunner(unittest.TestCase):
         # in all these cases no warnings are printed
         fuer args in args_list:
             p = subprocess.Popen(args, **opts)
-            with p:
+            mit p:
                 out, err = get_parse_out_err(p)
             self.assertIn(b'OK', err)
             self.assertEqual(len(out), 0)
 
 
-        # passing 'always' as warnings arg -> all the warnings printed,
+        # passing 'always' als warnings arg -> all the warnings printed,
         #                                     unittest warnings only once
         p = subprocess.Popen([sys.executable, '_test_warnings.py', 'always'],
                              **opts)
-        with p:
+        mit p:
             out, err = get_parse_out_err(p)
         self.assertIn(b'OK', err)
         self.assertEqual(len(out), 12)

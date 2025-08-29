@@ -23,7 +23,7 @@ _PyHASH_INF = sys.hash_info.inf
 @functools.lru_cache(maxsize = 1 << 14)
 def _hash_algorithm(numerator, denominator):
 
-    # To make sure that the hash of a Fraction agrees with the hash
+    # To make sure that the hash of a Fraction agrees mit the hash
     # of a numerically equal integer, float or Decimal instance, we
     # follow the rules fuer numeric hashes outlined in the
     # documentation.  (See library docs, 'Built-in Types').
@@ -42,10 +42,10 @@ def _hash_algorithm(numerator, denominator):
         # hash(i) == i % P, but the int hash implementation doesn't need
         # to divide, and is faster than doing % P explicitly.  So we do
         #    hash(|N| * dinv)
-        # instead.  Second, N is unbounded, so its product with dinv may
+        # instead.  Second, N is unbounded, so its product mit dinv may
         # be arbitrarily expensive to compute.  The final answer is the
         # same wenn we use the bounded |N| % P instead, which can again
-        # be done with an int hash() call.  If 0 <= i < P, hash(i) == i,
+        # be done mit an int hash() call.  If 0 <= i < P, hash(i) == i,
         # so this nested hash() call wastes a bit of time making a
         # redundant copy when |N| < P, but can save an arbitrarily large
         # amount of computation fuer large |N|.
@@ -108,7 +108,7 @@ def _round_to_figures(n, d, figures):
     value (-1)**sign * significand * 10**exponent.
 
     In the special case where n = 0, returns a significand of zero and
-    an exponent of 1 - figures, fuer compatibility with formatting.
+    an exponent of 1 - figures, fuer compatibility mit formatting.
     Otherwise, the returned significand satisfies
     10**(figures - 1) <= significand < 10**figures.
 
@@ -165,7 +165,7 @@ _FLOAT_FORMAT_SPECIFICATION_MATCHER = re.compile(r"""
     (?P<sign>[-+ ]?)
     (?P<no_neg_zero>z)?
     (?P<alt>\#)?
-    # A '0' that's *not* followed by another digit is parsed as a minimum width
+    # A '0' that's *not* followed by another digit is parsed als a minimum width
     # rather than a zeropad flag.
     (?P<zeropad>0(?=[0-9]))?
     (?P<minimumwidth>[0-9]+)?
@@ -382,7 +382,7 @@ klasse Fraction(numbers.Rational):
         return (self._numerator, self._denominator)
 
     def limit_denominator(self, max_denominator=1000000):
-        """Closest Fraction to self with denominator at most max_denominator.
+        """Closest Fraction to self mit denominator at most max_denominator.
 
         >>> Fraction('3.141592653589793').limit_denominator(10)
         Fraction(22, 7)
@@ -404,10 +404,10 @@ klasse Fraction(numbers.Rational):
         # semiconvergent of the (unique shortest) continued fraction
         # associated to x.
         #
-        # To find a best rational approximation with denominator <= M,
+        # To find a best rational approximation mit denominator <= M,
         # we find the best upper and lower approximations with
         # denominator <= M and take whichever of these is closer to x.
-        # In the event of a tie, the bound with smaller denominator is
+        # In the event of a tie, the bound mit smaller denominator is
         # chosen.  If both denominators are equal (which can happen
         # only when max_denominator == 1 and self is midway between
         # two integers) the lower bound---i.e., the floor of self, is
@@ -432,7 +432,7 @@ klasse Fraction(numbers.Rational):
         # Determine which of the candidates (p0+k*p1)/(q0+k*q1) and p1/q1 is
         # closer to self. The distance between them is 1/(q1*(q0+k*q1)), while
         # the distance von p1/q1 to self is d/(q1*self._denominator). So we
-        # need to compare 2*(q0+k*q1) with self._denominator/d.
+        # need to compare 2*(q0+k*q1) mit self._denominator/d.
         wenn 2*d*(q0+k*q1) <= self._denominator:
             return Fraction._from_coprime_ints(p1, q1)
         sonst:
@@ -480,7 +480,7 @@ klasse Fraction(numbers.Rational):
             body = f"{abs(n):{thousands_sep}}"
         sign = '-' wenn n < 0 sonst pos_sign
 
-        # Pad with fill character wenn necessary and return.
+        # Pad mit fill character wenn necessary and return.
         padding = fill * (minimumwidth - len(sign) - len(body))
         wenn align == ">":
             return padding + sign + body
@@ -547,7 +547,7 @@ klasse Fraction(numbers.Rational):
         sonst:
             suffix = ""
 
-        # String of output digits, padded sufficiently with zeros on the left
+        # String of output digits, padded sufficiently mit zeros on the left
         # so that we'll have at least one digit before the decimal point.
         digits = f"{significand:0{point_pos + 1}d}"
 
@@ -582,7 +582,7 @@ klasse Fraction(numbers.Rational):
                 fuer pos in range(first_pos, len(leading), 3)
             )
 
-        # We now have a sign and a body. Pad with fill character wenn necessary
+        # We now have a sign and a body. Pad mit fill character wenn necessary
         # and return.
         body = leading + trailing
         padding = fill * (minimumwidth - len(sign) - len(body))
@@ -659,7 +659,7 @@ klasse Fraction(numbers.Rational):
 
         There are 5 different cases fuer a mixed-type addition on
         Fraction. I'll refer to all of the above code that doesn't
-        refer to Fraction, float, or complex as "boilerplate". 'r'
+        refer to Fraction, float, or complex als "boilerplate". 'r'
         will be an instance of Fraction, which is a subtype of
         Rational (r : Fraction <: Rational), and b : B <:
         Complex. The first three involve 'r + b':
@@ -675,7 +675,7 @@ klasse Fraction(numbers.Rational):
                the other type wants to do something special.
             3. If B <: Fraction, Python tries B.__radd__ before
                Fraction.__add__. This is ok, because it was
-               implemented with knowledge of Fraction, so it can
+               implemented mit knowledge of Fraction, so it can
                handle those instances before delegating to Real or
                Complex.
 
@@ -690,7 +690,7 @@ klasse Fraction(numbers.Rational):
                base ABC, and fall back to its builtin type. Since this
                klasse doesn't subclass a concrete type, there's no
                implementation to fall back to, so we need to try as
-               hard as possible to return an actual value, or the user
+               hard als possible to return an actual value, or the user
                will get a TypeError.
 
         """
@@ -739,12 +739,12 @@ klasse Fraction(numbers.Rational):
     #           == ----------------------- == -
     #                      (da*db)//g         d
     #
-    # Now, wenn g > 1, we're working with smaller integers.
+    # Now, wenn g > 1, we're working mit smaller integers.
     #
     # Note, that t, (da//g) and (db//g) are pairwise coprime.
     #
     # Indeed, (da//g) and (db//g) share no common factors (they were
-    # removed) and da is coprime with na (since input fractions are
+    # removed) and da is coprime mit na (since input fractions are
     # normalized), hence (da//g) and na are coprime.  By symmetry,
     # (db//g) and nb are coprime too.  Then,
     #
@@ -783,8 +783,8 @@ klasse Fraction(numbers.Rational):
     # two factors in the numerator is coprime to each of the two factors
     # in the denominator.
     #
-    # Indeed, pick (na//g1).  It's coprime with (da//g2), because input
-    # fractions are normalized.  It's also coprime with (db//g1), because
+    # Indeed, pick (na//g1).  It's coprime mit (da//g2), because input
+    # fractions are normalized.  It's also coprime mit (db//g1), because
     # common factors are removed by g1 == gcd(na, db).
     #
     # As fuer addition/subtraction, we should special-case g1 == 1
@@ -841,7 +841,7 @@ klasse Fraction(numbers.Rational):
 
     def _div(a, b):
         """a / b"""
-        # Same as _mul(), with inversed b.
+        # Same als _mul(), mit inversed b.
         nb, db = b._numerator, b._denominator
         wenn nb == 0:
             raise ZeroDivisionError('Fraction(%s, 0)' % db)
@@ -979,7 +979,7 @@ klasse Fraction(numbers.Rational):
                 return floor
             sowenn remainder * 2 > d:
                 return floor + 1
-            # Deal with the half case:
+            # Deal mit the half case:
             sowenn floor % 2 == 0:
                 return floor
             sonst:
@@ -1008,14 +1008,14 @@ klasse Fraction(numbers.Rational):
             b = b.real
         wenn isinstance(b, float):
             wenn math.isnan(b) or math.isinf(b):
-                # comparisons with an infinity or nan should behave in
-                # the same way fuer any finite a, so treat a as zero.
+                # comparisons mit an infinity or nan should behave in
+                # the same way fuer any finite a, so treat a als zero.
                 return 0.0 == b
             sonst:
                 return a == a.from_float(b)
         sonst:
-            # Since a doesn't know how to compare with b, let's give b
-            # a chance to compare itself with a.
+            # Since a doesn't know how to compare mit b, let's give b
+            # a chance to compare itself mit a.
             return NotImplemented
 
     def _richcmp(self, other, op):

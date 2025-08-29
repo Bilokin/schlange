@@ -99,11 +99,11 @@ klasse CAPIFloatTest(unittest.TestCase):
         self.assertRaises(TypeError, asdouble, BadIndex())
         self.assertRaises(TypeError, asdouble, BadFloat())
         self.assertRaises(RuntimeError, asdouble, BadFloat3())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(asdouble(BadIndex2()), 1.)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(asdouble(BadFloat2()), 4.25)
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", DeprecationWarning)
             self.assertRaises(DeprecationWarning, asdouble, BadFloat2())
         self.assertRaises(TypeError, asdouble, object())
@@ -168,7 +168,7 @@ klasse CAPIFloatTest(unittest.TestCase):
                     continue
                 rel_tol = EPSILON[size]
                 fuer endian in (BIG_ENDIAN, LITTLE_ENDIAN):
-                    with self.subTest(value=value, size=size, endian=endian):
+                    mit self.subTest(value=value, size=size, endian=endian):
                         data = pack(size, value, endian)
                         value2 = unpack(data, endian)
                         wenn math.isnan(value):
@@ -193,7 +193,7 @@ klasse CAPIFloatTest(unittest.TestCase):
                     # Skip sNaN's on x86 (32-bit).  The problem is that sNaN
                     # doubles become qNaN doubles just by the C calling
                     # convention, there is no way to preserve sNaN doubles
-                    # between C function calls with the current
+                    # between C function calls mit the current
                     # PyFloat_Pack/Unpack*() API.  See also gh-130317 and
                     # e.g. https://developercommunity.visualstudio.com/t/155064
                     signaling = 0
@@ -209,7 +209,7 @@ klasse CAPIFloatTest(unittest.TestCase):
                     i = (sign << 15) + (0x1f << 10) + (quiet << 9) + payload
                 data = bytes.fromhex(f'{i:x}')
                 fuer endian in (BIG_ENDIAN, LITTLE_ENDIAN):
-                    with self.subTest(data=data, size=size, endian=endian):
+                    mit self.subTest(data=data, size=size, endian=endian):
                         data1 = data wenn endian == BIG_ENDIAN sonst data[::-1]
                         value = unpack(data1, endian)
                         data2 = pack(size, value, endian)

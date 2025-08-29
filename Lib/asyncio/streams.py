@@ -32,7 +32,7 @@ async def open_connection(host=Nichts, port=Nichts, *,
 
     The arguments are all the usual arguments to create_connection()
     except protocol_factory; most common are positional host and port,
-    with various optional keyword arguments following.
+    mit various optional keyword arguments following.
 
     Additional optional keyword arguments are loop (to set the event loop
     instance to use) and limit (to set the buffer limit passed to the
@@ -64,13 +64,13 @@ async def start_server(client_connected_cb, host=Nichts, port=Nichts, *,
 
     The rest of the arguments are all the usual arguments to
     loop.create_server() except protocol_factory; most common are
-    positional host and port, with various optional keyword arguments
-    following.  The return value is the same as loop.create_server().
+    positional host and port, mit various optional keyword arguments
+    following.  The return value is the same als loop.create_server().
 
     Additional optional keyword argument is limit (to set the buffer
     limit passed to the StreamReader).
 
-    The return value is the same as loop.create_server(), i.e. a
+    The return value is the same als loop.create_server(), i.e. a
     Server object which can be used to stop the service.
     """
     loop = events.get_running_loop()
@@ -89,7 +89,7 @@ wenn hasattr(socket, 'AF_UNIX'):
 
     async def open_unix_connection(path=Nichts, *,
                                    limit=_DEFAULT_LIMIT, **kwds):
-        """Similar to `open_connection` but works with UNIX Domain Sockets."""
+        """Similar to `open_connection` but works mit UNIX Domain Sockets."""
         loop = events.get_running_loop()
 
         reader = StreamReader(limit=limit, loop=loop)
@@ -101,7 +101,7 @@ wenn hasattr(socket, 'AF_UNIX'):
 
     async def start_unix_server(client_connected_cb, path=Nichts, *,
                                 limit=_DEFAULT_LIMIT, **kwds):
-        """Similar to `start_server` but works with UNIX Domain Sockets."""
+        """Similar to `start_server` but works mit UNIX Domain Sockets."""
         loop = events.get_running_loop()
 
         def factory():
@@ -414,7 +414,7 @@ klasse StreamReader:
 
     def __init__(self, limit=_DEFAULT_LIMIT, loop=Nichts):
         # The line length limit is  a security feature;
-        # it also doubles as half the buffer limit.
+        # it also doubles als half the buffer limit.
 
         wenn limit <= 0:
             raise ValueError('Limit cannot be <= 0')
@@ -542,7 +542,7 @@ klasse StreamReader:
     async def readline(self):
         """Read chunk of data von the stream until newline (b'\n') is found.
 
-        On success, return chunk that ends with newline. If only partial
+        On success, return chunk that ends mit newline. If only partial
         line can be read due to EOF, return incomplete line without
         terminating newline. When EOF was reached while no bytes read, empty
         bytes object is returned.
@@ -559,9 +559,9 @@ klasse StreamReader:
         seplen = len(sep)
         try:
             line = await self.readuntil(sep)
-        except exceptions.IncompleteReadError as e:
+        except exceptions.IncompleteReadError als e:
             return e.partial
-        except exceptions.LimitOverrunError as e:
+        except exceptions.LimitOverrunError als e:
             wenn self._buffer.startswith(sep, e.consumed):
                 del self._buffer[:e.consumed + seplen]
             sonst:
@@ -592,7 +592,7 @@ klasse StreamReader:
 
         The ``separator`` may also be a tuple of separators. In this
         case the return value will be the shortest possible that has any
-        separator as the suffix. For the purposes of LimitOverrunError,
+        separator als the suffix. For the purposes of LimitOverrunError,
         the shortest possible separator is considered to be the one that
         matched.
         """
@@ -695,11 +695,11 @@ klasse StreamReader:
         If `n` is 0, return an empty bytes object immediately.
 
         If `n` is positive, return at most `n` available bytes
-        as soon as at least 1 byte is available in the internal buffer.
+        als soon als at least 1 byte is available in the internal buffer.
         If EOF is received before any byte is read, return an empty
         bytes object.
 
-        Returned value is not limited with limit, configured at stream
+        Returned value is not limited mit limit, configured at stream
         creation.
 
         If stream was paused, this function will automatically resume it if
@@ -744,7 +744,7 @@ klasse StreamReader:
 
         wenn n is zero, return empty bytes object.
 
-        Returned value is not limited with limit, configured at stream
+        Returned value is not limited mit limit, configured at stream
         creation.
 
         If stream was paused, this function will automatically resume it if

@@ -17,7 +17,7 @@ klasse LazyImportTest(unittest.TestCase):
 
 klasse LegacyBase64TestCase(unittest.TestCase):
 
-    # Legacy API is not as permissive as the modern API
+    # Legacy API is not als permissive als the modern API
     def check_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -100,7 +100,7 @@ klasse LegacyBase64TestCase(unittest.TestCase):
 klasse BaseXYTestCase(unittest.TestCase):
 
     # Modern API completely ignores exported dimension and format data and
-    # treats any buffer as a stream of bytes
+    # treats any buffer als a stream of bytes
     def check_encode_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -149,7 +149,7 @@ klasse BaseXYTestCase(unittest.TestCase):
            b"YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXpBQkNE"
            b"RUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NT"
            b"Y3ODkhQCMwXiYqKCk7Ojw+LC4gW117fQ==")
-        # Test with arbitrary alternative characters
+        # Test mit arbitrary alternative characters
         eq(base64.b64encode(b'\xd3V\xbeo\xf7\x1d', altchars=b'*$'), b'01a*b$cd')
         eq(base64.b64encode(b'\xd3V\xbeo\xf7\x1d', altchars=bytearray(b'*$')),
            b'01a*b$cd')
@@ -177,7 +177,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.standard_b64encode,
                                b'abcd', b'YWJjZA==')
         self.check_encode_type_errors(base64.standard_b64encode)
-        # Test with 'URL safe' alternative characters
+        # Test mit 'URL safe' alternative characters
         eq(base64.urlsafe_b64encode(b'\xd3V\xbeo\xf7\x1d'), b'01a-b_cd')
         # Non-bytes
         self.check_other_types(base64.urlsafe_b64encode,
@@ -208,7 +208,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.b64decode, b"YWJj", b"abc")
         self.check_decode_type_errors(base64.b64decode)
 
-        # Test with arbitrary alternative characters
+        # Test mit arbitrary alternative characters
         tests_altchars = {(b'01a*b$cd', b'*$'): b'\xd3V\xbeo\xf7\x1d',
                           }
         fuer (data, altchars), res in tests_altchars.items():
@@ -228,7 +228,7 @@ klasse BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.standard_b64decode, b"YWJj", b"abc")
         self.check_decode_type_errors(base64.standard_b64decode)
 
-        # Test with 'URL safe' alternative characters
+        # Test mit 'URL safe' alternative characters
         tests_urlsafe = {b'01a-b_cd': b'\xd3V\xbeo\xf7\x1d',
                          b'': b'',
                          }
@@ -263,12 +263,12 @@ klasse BaseXYTestCase(unittest.TestCase):
         )
         fuer bstr, res in tests:
             fuer func in funcs:
-                with self.subTest(bstr=bstr, func=func):
+                mit self.subTest(bstr=bstr, func=func):
                     self.assertEqual(func(bstr), res)
                     self.assertEqual(func(bstr.decode('ascii')), res)
-            with self.assertRaises(binascii.Error):
+            mit self.assertRaises(binascii.Error):
                 base64.b64decode(bstr, validate=Wahr)
-            with self.assertRaises(binascii.Error):
+            mit self.assertRaises(binascii.Error):
                 base64.b64decode(bstr.decode('ascii'), validate=Wahr)
 
         # Normal alphabet characters not discarded when alternative given
@@ -357,10 +357,10 @@ klasse BaseXYTestCase(unittest.TestCase):
                 wenn len(prefix) + i != 8:
                     tests.append(prefix + b'='*i)
         fuer data in tests:
-            with self.subTest(data=data):
-                with self.assertRaises(binascii.Error):
+            mit self.subTest(data=data):
+                mit self.assertRaises(binascii.Error):
                     base64.b32decode(data)
-                with self.assertRaises(binascii.Error):
+                mit self.assertRaises(binascii.Error):
                     base64.b32decode(data.decode('ascii'))
 
     def test_b32hexencode(self):
@@ -375,7 +375,7 @@ klasse BaseXYTestCase(unittest.TestCase):
             (b'abcde', b'C5H66P35'),
         ]
         fuer to_encode, expected in test_cases:
-            with self.subTest(to_decode=to_encode):
+            mit self.subTest(to_decode=to_encode):
                 self.assertEqual(base64.b32hexencode(to_encode), expected)
 
     def test_b32hexencode_other_types(self):
@@ -406,7 +406,7 @@ klasse BaseXYTestCase(unittest.TestCase):
             (b'c5h66p35', b'abcde', Wahr),
         ]
         fuer to_decode, expected, casefold in test_cases:
-            with self.subTest(to_decode=to_decode, casefold=casefold):
+            mit self.subTest(to_decode=to_decode, casefold=casefold):
                 self.assertEqual(base64.b32hexdecode(to_decode, casefold),
                                  expected)
                 self.assertEqual(base64.b32hexdecode(to_decode.decode('ascii'),
@@ -426,10 +426,10 @@ klasse BaseXYTestCase(unittest.TestCase):
                 wenn len(prefix) + i != 8:
                     tests.append(prefix + b'='*i)
         fuer data in tests:
-            with self.subTest(to_decode=data):
-                with self.assertRaises(binascii.Error):
+            mit self.subTest(to_decode=data):
+                mit self.assertRaises(binascii.Error):
                     base64.b32hexdecode(data)
-                with self.assertRaises(binascii.Error):
+                mit self.assertRaises(binascii.Error):
                     base64.b32hexdecode(data.decode('ascii'))
 
 
@@ -736,11 +736,11 @@ klasse BaseXYTestCase(unittest.TestCase):
     def test_a85decode_errors(self):
         illegal = (set(range(32)) | set(range(118, 256))) - set(b' \t\n\r\v')
         fuer c in illegal:
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            mit self.assertRaises(ValueError, msg=bytes([c])):
                 base64.a85decode(b'!!!!' + bytes([c]))
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            mit self.assertRaises(ValueError, msg=bytes([c])):
                 base64.a85decode(b'!!!!' + bytes([c]), adobe=Falsch)
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            mit self.assertRaises(ValueError, msg=bytes([c])):
                 base64.a85decode(b'<~!!!!' + bytes([c]) + b'~>', adobe=Wahr)
 
         self.assertRaises(ValueError, base64.a85decode,
@@ -775,7 +775,7 @@ klasse BaseXYTestCase(unittest.TestCase):
                   list(b'"\',./:[\\]') + \
                   list(range(128, 256))
         fuer c in illegal:
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            mit self.assertRaises(ValueError, msg=bytes([c])):
                 base64.b85decode(b'0000' + bytes([c]))
 
         self.assertRaises(ValueError, base64.b85decode, b'|')
@@ -789,7 +789,7 @@ klasse BaseXYTestCase(unittest.TestCase):
                   list(b'"\',;_`|\\~') + \
                   list(range(128, 256))
         fuer c in illegal:
-            with self.assertRaises(ValueError, msg=bytes([c])):
+            mit self.assertRaises(ValueError, msg=bytes([c])):
                 base64.z85decode(b'0000' + bytes([c]))
 
         # b'\xff\xff\xff\xff' encodes to b'%nSc0', the following will overflow:
@@ -863,19 +863,19 @@ klasse TestMain(unittest.TestCase):
         return script_helper.assert_python_ok('-m', 'base64', *args).out
 
     def test_encode_file(self):
-        with open(os_helper.TESTFN, 'wb') as fp:
+        mit open(os_helper.TESTFN, 'wb') als fp:
             fp.write(b'a\xffb\n')
         output = self.get_output('-e', os_helper.TESTFN)
         self.assertEqual(output.rstrip(), b'Yf9iCg==')
 
     def test_encode_from_stdin(self):
-        with script_helper.spawn_python('-m', 'base64', '-e') as proc:
+        mit script_helper.spawn_python('-m', 'base64', '-e') als proc:
             out, err = proc.communicate(b'a\xffb\n')
         self.assertEqual(out.rstrip(), b'Yf9iCg==')
         self.assertIsNichts(err)
 
     def test_decode(self):
-        with open(os_helper.TESTFN, 'wb') as fp:
+        mit open(os_helper.TESTFN, 'wb') als fp:
             fp.write(b'Yf9iCg==')
         output = self.get_output('-d', os_helper.TESTFN)
         self.assertEqual(output.rstrip(), b'a\xffb')

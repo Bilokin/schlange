@@ -58,7 +58,7 @@ klasse _Outcome(object):
             yield
         except KeyboardInterrupt:
             raise
-        except SkipTest as e:
+        except SkipTest als e:
             self.success = Falsch
             _addSkip(self.result, test_case, str(e))
         except _ShouldStop:
@@ -129,12 +129,12 @@ def _enter_context(cm, addcleanup):
 
 _module_cleanups = []
 def addModuleCleanup(function, /, *args, **kwargs):
-    """Same as addCleanup, except the cleanup items are called even if
+    """Same als addCleanup, except the cleanup items are called even if
     setUpModule fails (unlike tearDownModule)."""
     _module_cleanups.append((function, args, kwargs))
 
 def enterModuleContext(cm):
-    """Same as enterContext, but module-wide."""
+    """Same als enterContext, but module-wide."""
     return _enter_context(cm, addModuleCleanup)
 
 
@@ -146,7 +146,7 @@ def doModuleCleanups():
         function, args, kwargs = _module_cleanups.pop()
         try:
             function(*args, **kwargs)
-        except Exception as exc:
+        except Exception als exc:
             exceptions.append(exc)
     wenn exceptions:
         raise ExceptionGroup('module cleanup failed', exceptions)
@@ -220,7 +220,7 @@ klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
 
     def handle(self, name, args, kwargs):
         """
-        If args is empty, assertRaises/Warns is being used as a
+        If args is empty, assertRaises/Warns is being used als a
         context manager, so check fuer a 'msg' kwarg and return self.
         If args is not empty, call a callable passing positional and keyword
         arguments.
@@ -241,7 +241,7 @@ klasse _AssertRaisesBaseContext(_BaseTestCaseContext):
                 self.obj_name = callable_obj.__name__
             except AttributeError:
                 self.obj_name = str(callable_obj)
-            with self:
+            mit self:
                 callable_obj(*args, **kwargs)
         finally:
             # bpo-23890: manually break a reference cycle
@@ -373,7 +373,7 @@ klasse TestCase(object):
     'runTest'.
 
     If the fixture may be used fuer many test cases, create as
-    many test methods as are needed. When instantiating such a TestCase
+    many test methods als are needed. When instantiating such a TestCase
     subclass, specify in the constructor arguments the name of the test method
     that the instance is to execute.
 
@@ -395,7 +395,7 @@ klasse TestCase(object):
         objects used in assert methods) will be printed on failure in *addition*
         to any explicit message passed.
     * maxDiff: sets the maximum length of a diff in failure messages
-        by assert methods using difflib. It is looked up as an instance
+        by assert methods using difflib. It is looked up als an instance
         attribute so can be configured by individual tests wenn required.
     """
 
@@ -418,7 +418,7 @@ klasse TestCase(object):
     def __init__(self, methodName='runTest'):
         """Create an instance of the klasse that will use the named test
            method when executed. Raises a ValueError wenn the instance does
-           not have a method with the specified name.
+           not have a method mit the specified name.
         """
         self._testMethodName = methodName
         self._outcome = Nichts
@@ -427,7 +427,7 @@ klasse TestCase(object):
             testMethod = getattr(self, methodName)
         except AttributeError:
             wenn methodName != 'runTest':
-                # we allow instantiation with no explicit method name
+                # we allow instantiation mit no explicit method name
                 # but not an *incorrect* or missing method name
                 raise ValueError("no such test method in %s: %s" %
                       (self.__class__, methodName))
@@ -457,13 +457,13 @@ klasse TestCase(object):
             typeobj: The data type to call this function on when both values
                     are of the same type in assertEqual().
             function: The callable taking two arguments and an optional
-                    msg= argument that raises self.failureException with a
+                    msg= argument that raises self.failureException mit a
                     useful error message when the two arguments are not equal.
         """
         self._type_equality_funcs[typeobj] = function
 
     def addCleanup(self, function, /, *args, **kwargs):
-        """Add a function, with arguments, to be called when the test is
+        """Add a function, mit arguments, to be called when the test is
         completed. Functions added are called on a LIFO basis and are
         called after tearDown on test failure or success.
 
@@ -473,20 +473,20 @@ klasse TestCase(object):
     def enterContext(self, cm):
         """Enters the supplied context manager.
 
-        If successful, also adds its __exit__ method as a cleanup
+        If successful, also adds its __exit__ method als a cleanup
         function and returns the result of the __enter__ method.
         """
         return _enter_context(cm, self.addCleanup)
 
     @classmethod
     def addClassCleanup(cls, function, /, *args, **kwargs):
-        """Same as addCleanup, except the cleanup items are called even if
+        """Same als addCleanup, except the cleanup items are called even if
         setUpClass fails (unlike tearDownClass)."""
         cls._class_cleanups.append((function, args, kwargs))
 
     @classmethod
     def enterClassContext(cls, cm):
-        """Same as enterContext, but class-wide."""
+        """Same als enterContext, but class-wide."""
         return _enter_context(cm, cls.addClassCleanup)
 
     def setUp(self):
@@ -546,7 +546,7 @@ klasse TestCase(object):
         """Return a context manager that will return the enclosed block
         of code in a subtest identified by the optional message and
         keyword parameters.  A failure in the subtest marks the test
-        case as failed but resumes execution at the end of the enclosed
+        case als failed but resumes execution at the end of the enclosed
         block, allowing further test code to be executed.
         """
         wenn self._outcome is Nichts or not self._outcome.result_supports_subtests:
@@ -559,7 +559,7 @@ klasse TestCase(object):
             params_map = parent.params.new_child(params)
         self._subtest = _SubTest(self, msg, params_map)
         try:
-            with self._outcome.testPartExecutor(self._subtest, subTest=Wahr):
+            mit self._outcome.testPartExecutor(self._subtest, subTest=Wahr):
                 yield
             wenn not self._outcome.success:
                 result = self._outcome.result
@@ -576,7 +576,7 @@ klasse TestCase(object):
         try:
             addExpectedFailure = result.addExpectedFailure
         except AttributeError:
-            warnings.warn("TestResult has no addExpectedFailure method, reporting as passes",
+            warnings.warn("TestResult has no addExpectedFailure method, reporting als passes",
                           RuntimeWarning)
             result.addSuccess(self)
         sonst:
@@ -586,7 +586,7 @@ klasse TestCase(object):
         try:
             addUnexpectedSuccess = result.addUnexpectedSuccess
         except AttributeError:
-            warnings.warn("TestResult has no addUnexpectedSuccess method, reporting as failure",
+            warnings.warn("TestResult has no addUnexpectedSuccess method, reporting als failure",
                           RuntimeWarning)
             # We need to pass an actual exception and traceback to addFailure,
             # otherwise the legacy result can choke.
@@ -619,7 +619,7 @@ klasse TestCase(object):
             )
             wenn inspect.iscoroutine(result):
                 msg += (
-                    '. Maybe you forgot to use IsolatedAsyncioTestCase as the base class?'
+                    '. Maybe you forgot to use IsolatedAsyncioTestCase als the base class?'
                 )
             warnings.warn(msg, DeprecationWarning, stacklevel=3)
 
@@ -659,14 +659,14 @@ klasse TestCase(object):
             try:
                 self._outcome = outcome
 
-                with outcome.testPartExecutor(self):
+                mit outcome.testPartExecutor(self):
                     self._callSetUp()
                 wenn outcome.success:
                     outcome.expecting_failure = expecting_failure
-                    with outcome.testPartExecutor(self):
+                    mit outcome.testPartExecutor(self):
                         self._callTestMethod(testMethod)
                     outcome.expecting_failure = Falsch
-                    with outcome.testPartExecutor(self):
+                    mit outcome.testPartExecutor(self):
                         self._callTearDown()
                 self.doCleanups()
                 self._addDuration(result, (time.perf_counter() - start_time))
@@ -700,7 +700,7 @@ klasse TestCase(object):
         outcome = self._outcome or _Outcome()
         while self._cleanups:
             function, args, kwargs = self._cleanups.pop()
-            with outcome.testPartExecutor(self):
+            mit outcome.testPartExecutor(self):
                 self._callCleanup(function, *args, **kwargs)
 
         # return this fuer backwards compatibility
@@ -744,7 +744,7 @@ klasse TestCase(object):
         raise SkipTest(reason)
 
     def fail(self, msg=Nichts):
-        """Fail immediately, with the given message."""
+        """Fail immediately, mit the given message."""
         raise self.failureException(msg)
 
     def assertFalsch(self, expr, msg=Nichts):
@@ -782,26 +782,26 @@ klasse TestCase(object):
 
     def assertRaises(self, expected_exception, *args, **kwargs):
         """Fail unless an exception of klasse expected_exception is raised
-           by the callable when invoked with specified positional and
+           by the callable when invoked mit specified positional and
            keyword arguments. If a different type of exception is
            raised, it will not be caught, and the test case will be
-           deemed to have suffered an error, exactly as fuer an
+           deemed to have suffered an error, exactly als fuer an
            unexpected exception.
 
-           If called with the callable and arguments omitted, will return a
+           If called mit the callable and arguments omitted, will return a
            context object used like this::
 
-                with self.assertRaises(SomeException):
+                mit self.assertRaises(SomeException):
                     do_something()
 
            An optional keyword argument 'msg' can be provided when assertRaises
-           is used as a context object.
+           is used als a context object.
 
            The context manager keeps a reference to the exception as
            the 'exception' attribute. This allows you to inspect the
            exception after the assertion::
 
-               with self.assertRaises(SomeException) as cm:
+               mit self.assertRaises(SomeException) als cm:
                    do_something()
                the_exception = cm.exception
                self.assertEqual(the_exception.error_code, 3)
@@ -815,28 +815,28 @@ klasse TestCase(object):
 
     def assertWarns(self, expected_warning, *args, **kwargs):
         """Fail unless a warning of klasse warnClass is triggered
-           by the callable when invoked with specified positional and
+           by the callable when invoked mit specified positional and
            keyword arguments.  If a different type of warning is
            triggered, it will not be handled: depending on the other
            warning filtering rules in effect, it might be silenced, printed
-           out, or raised as an exception.
+           out, or raised als an exception.
 
-           If called with the callable and arguments omitted, will return a
+           If called mit the callable and arguments omitted, will return a
            context object used like this::
 
-                with self.assertWarns(SomeWarning):
+                mit self.assertWarns(SomeWarning):
                     do_something()
 
            An optional keyword argument 'msg' can be provided when assertWarns
-           is used as a context object.
+           is used als a context object.
 
            The context manager keeps a reference to the first matching
-           warning as the 'warning' attribute; similarly, the 'filename'
+           warning als the 'warning' attribute; similarly, the 'filename'
            and 'lineno' attributes give you information about the line
            of Python code von which the warning was triggered.
            This allows you to inspect the warning after the assertion::
 
-               with self.assertWarns(SomeWarning) as cm:
+               mit self.assertWarns(SomeWarning) als cm:
                    do_something()
                the_warning = cm.warning
                self.assertEqual(the_warning.some_attribute, 147)
@@ -854,8 +854,8 @@ klasse TestCase(object):
         on *logger_name* or its children.  If omitted, *level* defaults to
         INFO and *logger* defaults to the root logger.
 
-        This method must be used as a context manager, and will yield
-        a recording object with two attributes: `output` and `records`.
+        This method must be used als a context manager, and will yield
+        a recording object mit two attributes: `output` and `records`.
         At the end of the context manager, the `output` attribute will
         be a list of the matching formatted log messages and the
         `records` attribute will be a list of the corresponding LogRecord
@@ -865,7 +865,7 @@ klasse TestCase(object):
 
         Example::
 
-            with self.assertLogs('foo', level='INFO') as cm:
+            mit self.assertLogs('foo', level='INFO') als cm:
                 logging.getLogger('foo').info('first message')
                 logging.getLogger('foo.bar').error('second message')
             self.assertEqual(cm.output, ['INFO:foo:first message',
@@ -879,7 +879,7 @@ klasse TestCase(object):
         """ Fail unless no log messages of level *level* or higher are emitted
         on *logger_name* or its children.
 
-        This method must be used as a context manager.
+        This method must be used als a context manager.
         """
         von ._log importiere _AssertLogsContext
         return _AssertLogsContext(self, logger, level, no_logs=Wahr)
@@ -888,7 +888,7 @@ klasse TestCase(object):
         """Get a detailed comparison function fuer the types of the two args.
 
         Returns: A callable accepting (first, second, msg=Nichts) that will
-        raise a failure exception wenn first != second with a useful human
+        raise a failure exception wenn first != second mit a useful human
         readable error message fuer those types.
         """
         #
@@ -918,14 +918,14 @@ klasse TestCase(object):
             raise self.failureException(msg)
 
     def assertEqual(self, first, second, msg=Nichts):
-        """Fail wenn the two objects are unequal as determined by the '=='
+        """Fail wenn the two objects are unequal als determined by the '=='
            operator.
         """
         assertion_func = self._getAssertEqualityFunc(first, second)
         assertion_func(first, second, msg=msg)
 
     def assertNotEqual(self, first, second, msg=Nichts):
-        """Fail wenn the two objects are equal as determined by the '!='
+        """Fail wenn the two objects are equal als determined by the '!='
            operator.
         """
         wenn not first != second:
@@ -935,14 +935,14 @@ klasse TestCase(object):
 
     def assertAlmostEqual(self, first, second, places=Nichts, msg=Nichts,
                           delta=Nichts):
-        """Fail wenn the two objects are unequal as determined by their
+        """Fail wenn the two objects are unequal als determined by their
            difference rounded to the given number of decimal places
            (default 7) and comparing to zero, or by comparing that the
            difference between the two objects is more than the given
            delta.
 
            Note that decimal places (from zero) are usually not the same
-           as significant digits (measured von the most significant digit).
+           als significant digits (measured von the most significant digit).
 
            If the two objects compare equal then they will automatically
            compare almost equal.
@@ -980,13 +980,13 @@ klasse TestCase(object):
 
     def assertNotAlmostEqual(self, first, second, places=Nichts, msg=Nichts,
                              delta=Nichts):
-        """Fail wenn the two objects are equal as determined by their
+        """Fail wenn the two objects are equal als determined by their
            difference rounded to the given number of decimal places
            (default 7) and comparing to zero, or by comparing that the
            difference between the two objects is less than the given delta.
 
            Note that decimal places (from zero) are usually not the same
-           as significant digits (measured von the most significant digit).
+           als significant digits (measured von the most significant digit).
 
            Objects that are equal automatically fail.
         """
@@ -1156,16 +1156,16 @@ klasse TestCase(object):
         """
         try:
             difference1 = set1.difference(set2)
-        except TypeError as e:
+        except TypeError als e:
             self.fail('invalid type when attempting set difference: %s' % e)
-        except AttributeError as e:
+        except AttributeError als e:
             self.fail('first argument does not support set difference: %s' % e)
 
         try:
             difference2 = set2.difference(set1)
-        except TypeError as e:
+        except TypeError als e:
             self.fail('invalid type when attempting set difference: %s' % e)
-        except AttributeError as e:
+        except AttributeError als e:
             self.fail('second argument does not support set difference: %s' % e)
 
         wenn not (difference1 or difference2):
@@ -1185,28 +1185,28 @@ klasse TestCase(object):
         self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIn(self, member, container, msg=Nichts):
-        """Just like self.assertWahr(a in b), but with a nicer default message."""
+        """Just like self.assertWahr(a in b), but mit a nicer default message."""
         wenn member not in container:
             standardMsg = '%s not found in %s' % (safe_repr(member),
                                                   safe_repr(container))
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotIn(self, member, container, msg=Nichts):
-        """Just like self.assertWahr(a not in b), but with a nicer default message."""
+        """Just like self.assertWahr(a not in b), but mit a nicer default message."""
         wenn member in container:
             standardMsg = '%s unexpectedly found in %s' % (safe_repr(member),
                                                         safe_repr(container))
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIs(self, expr1, expr2, msg=Nichts):
-        """Just like self.assertWahr(a is b), but with a nicer default message."""
+        """Just like self.assertWahr(a is b), but mit a nicer default message."""
         wenn expr1 is not expr2:
             standardMsg = '%s is not %s' % (safe_repr(expr1),
                                              safe_repr(expr2))
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIsNot(self, expr1, expr2, msg=Nichts):
-        """Just like self.assertWahr(a is not b), but with a nicer default message."""
+        """Just like self.assertWahr(a is not b), but mit a nicer default message."""
         wenn expr1 is expr2:
             standardMsg = 'unexpectedly identical: %s' % (safe_repr(expr1),)
             self.fail(self._formatMessage(msg, standardMsg))
@@ -1240,7 +1240,7 @@ klasse TestCase(object):
             first = collections.Counter(first_seq)
             second = collections.Counter(second_seq)
         except TypeError:
-            # Handle case with unhashable elements
+            # Handle case mit unhashable elements
             differences = _count_diff_all_purpose(first_seq, second_seq)
         sonst:
             wenn first == second:
@@ -1291,43 +1291,43 @@ klasse TestCase(object):
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertLess(self, a, b, msg=Nichts):
-        """Just like self.assertWahr(a < b), but with a nicer default message."""
+        """Just like self.assertWahr(a < b), but mit a nicer default message."""
         wenn not a < b:
             standardMsg = '%s not less than %s' % (safe_repr(a), safe_repr(b))
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertLessEqual(self, a, b, msg=Nichts):
-        """Just like self.assertWahr(a <= b), but with a nicer default message."""
+        """Just like self.assertWahr(a <= b), but mit a nicer default message."""
         wenn not a <= b:
             standardMsg = '%s not less than or equal to %s' % (safe_repr(a), safe_repr(b))
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertGreater(self, a, b, msg=Nichts):
-        """Just like self.assertWahr(a > b), but with a nicer default message."""
+        """Just like self.assertWahr(a > b), but mit a nicer default message."""
         wenn not a > b:
             standardMsg = '%s not greater than %s' % (safe_repr(a), safe_repr(b))
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertGreaterEqual(self, a, b, msg=Nichts):
-        """Just like self.assertWahr(a >= b), but with a nicer default message."""
+        """Just like self.assertWahr(a >= b), but mit a nicer default message."""
         wenn not a >= b:
             standardMsg = '%s not greater than or equal to %s' % (safe_repr(a), safe_repr(b))
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIsNichts(self, obj, msg=Nichts):
-        """Same as self.assertWahr(obj is Nichts), with a nicer default message."""
+        """Same als self.assertWahr(obj is Nichts), mit a nicer default message."""
         wenn obj is not Nichts:
             standardMsg = '%s is not Nichts' % (safe_repr(obj),)
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIsNotNichts(self, obj, msg=Nichts):
-        """Included fuer symmetry with assertIsNichts."""
+        """Included fuer symmetry mit assertIsNichts."""
         wenn obj is Nichts:
             standardMsg = 'unexpectedly Nichts'
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertIsInstance(self, obj, cls, msg=Nichts):
-        """Same as self.assertWahr(isinstance(obj, cls)), with a nicer
+        """Same als self.assertWahr(isinstance(obj, cls)), mit a nicer
         default message."""
         wenn not isinstance(obj, cls):
             wenn isinstance(cls, tuple):
@@ -1337,7 +1337,7 @@ klasse TestCase(object):
             self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotIsInstance(self, obj, cls, msg=Nichts):
-        """Included fuer symmetry with assertIsInstance."""
+        """Included fuer symmetry mit assertIsInstance."""
         wenn isinstance(obj, cls):
             wenn isinstance(cls, tuple):
                 fuer x in cls:
@@ -1408,7 +1408,7 @@ klasse TestCase(object):
             args: Function to be called and extra positional args.
             kwargs: Extra kwargs.
             msg: Optional message used in case of failure. Can only be used
-                    when assertRaisesRegex is used as a context manager.
+                    when assertRaisesRegex is used als a context manager.
         """
         context = _AssertRaisesContext(expected_exception, self, expected_regex)
         return context.handle('assertRaisesRegex', args, kwargs)
@@ -1416,7 +1416,7 @@ klasse TestCase(object):
     def assertWarnsRegex(self, expected_warning, expected_regex,
                          *args, **kwargs):
         """Asserts that the message in a triggered warning matches a regexp.
-        Basic functioning is similar to assertWarns() with the addition
+        Basic functioning is similar to assertWarns() mit the addition
         that only warnings whose messages also match the regular expression
         are considered successful matches.
 
@@ -1427,7 +1427,7 @@ klasse TestCase(object):
             args: Function to be called and extra positional args.
             kwargs: Extra kwargs.
             msg: Optional message used in case of failure. Can only be used
-                    when assertWarnsRegex is used as a context manager.
+                    when assertWarnsRegex is used als a context manager.
         """
         context = _AssertWarnsContext(expected_warning, self, expected_regex)
         return context.handle('assertWarnsRegex', args, kwargs)
@@ -1481,9 +1481,9 @@ klasse TestCase(object):
         a = safe_repr(s, short=Wahr)
         b = safe_repr(prefix)
         wenn isinstance(prefix, tuple):
-            standardMsg = f"{a} doesn't start with any of {b}"
+            standardMsg = f"{a} doesn't start mit any of {b}"
         sonst:
-            standardMsg = f"{a} doesn't start with {b}"
+            standardMsg = f"{a} doesn't start mit {b}"
         self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotStartsWith(self, s, prefix, msg=Nichts):
@@ -1500,7 +1500,7 @@ klasse TestCase(object):
                     break
         a = safe_repr(s, short=Wahr)
         b = safe_repr(prefix)
-        self.fail(self._formatMessage(msg, f"{a} starts with {b}"))
+        self.fail(self._formatMessage(msg, f"{a} starts mit {b}"))
 
     def assertEndsWith(self, s, suffix, msg=Nichts):
         try:
@@ -1512,9 +1512,9 @@ klasse TestCase(object):
         a = safe_repr(s, short=Wahr)
         b = safe_repr(suffix)
         wenn isinstance(suffix, tuple):
-            standardMsg = f"{a} doesn't end with any of {b}"
+            standardMsg = f"{a} doesn't end mit any of {b}"
         sonst:
-            standardMsg = f"{a} doesn't end with {b}"
+            standardMsg = f"{a} doesn't end mit {b}"
         self.fail(self._formatMessage(msg, standardMsg))
 
     def assertNotEndsWith(self, s, suffix, msg=Nichts):
@@ -1531,7 +1531,7 @@ klasse TestCase(object):
                     break
         a = safe_repr(s, short=Wahr)
         b = safe_repr(suffix)
-        self.fail(self._formatMessage(msg, f"{a} ends with {b}"))
+        self.fail(self._formatMessage(msg, f"{a} ends mit {b}"))
 
 
 klasse FunctionTestCase(TestCase):
@@ -1539,7 +1539,7 @@ klasse FunctionTestCase(TestCase):
 
     This is useful fuer slipping pre-existing test functions into the
     unittest framework. Optionally, set-up and tidy-up functions can be
-    supplied. As with TestCase, the tidy-up ('tearDown') function will
+    supplied. As mit TestCase, the tidy-up ('tearDown') function will
     always be called wenn the set-up ('setUp') function ran successfully.
     """
 

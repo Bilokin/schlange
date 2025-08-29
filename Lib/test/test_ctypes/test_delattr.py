@@ -8,17 +8,17 @@ klasse X(Structure):
 
 klasse TestCase(unittest.TestCase):
     def test_simple(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del c_int(42).value
 
     def test_chararray(self):
         chararray = (c_char * 5)()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del chararray.value
 
     def test_struct(self):
         struct = X()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             del struct.foo
 
 

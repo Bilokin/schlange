@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp273 generated von 'python-mappings/CP273.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp273 generated von 'python-mappings/CP273.TXT' mit gencodec.py.
 
 """#"
 

@@ -36,7 +36,7 @@ klasse TestStr(TestCase):
 
     def test_racing_join_replace(self):
         '''
-        Test joining a string of characters being replaced with ephemeral
+        Test joining a string of characters being replaced mit ephemeral
         strings by another thread.
         '''
         l = [*'abcdefg']

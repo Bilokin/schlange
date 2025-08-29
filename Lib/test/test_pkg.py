@@ -30,7 +30,7 @@ def fixdir(lst):
 # XXX Things to test
 #
 # importiere package without __init__
-# importiere package with __init__
+# importiere package mit __init__
 # __init__ importing submodule
 # __init__ importing global module
 # __init__ defining variables
@@ -83,7 +83,7 @@ klasse TestPkg(unittest.TestCase):
             wenn contents is Nichts:
                 os.mkdir(fullname)
             sonst:
-                with open(fullname, "w") as f:
+                mit open(fullname, "w") als f:
                     f.write(contents)
                     wenn not contents.endswith('\n'):
                         f.write('\n')
@@ -254,18 +254,18 @@ klasse TestPkg(unittest.TestCase):
 
 
         t7, sub, subsub = Nichts, Nichts, Nichts
-        importiere t7 as tas
+        importiere t7 als tas
         self.assertEqual(fixdir(dir(tas)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__'])
         self.assertFalsch(t7)
-        von t7 importiere sub as subpar
+        von t7 importiere sub als subpar
         self.assertEqual(fixdir(dir(subpar)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__'])
         self.assertFalsch(t7)
         self.assertFalsch(sub)
-        von t7.sub importiere subsub as subsubsub
+        von t7.sub importiere subsub als subsubsub
         self.assertEqual(fixdir(dir(subsubsub)),
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__path__', '__spec__',
@@ -273,14 +273,14 @@ klasse TestPkg(unittest.TestCase):
         self.assertFalsch(t7)
         self.assertFalsch(sub)
         self.assertFalsch(subsub)
-        von t7.sub.subsub importiere spam as ham
+        von t7.sub.subsub importiere spam als ham
         self.assertEqual(ham, 1)
         self.assertFalsch(t7)
         self.assertFalsch(sub)
         self.assertFalsch(subsub)
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_8(self):
         hier = [
                 ("t8", Nichts),

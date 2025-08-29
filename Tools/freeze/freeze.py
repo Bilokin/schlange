@@ -51,10 +51,10 @@ Options:
 -E:           Freeze will fail wenn any modules can't be found (that
               were not excluded using -x or -X).
 
--i filename:  Include a file with additional command line options.  Used
+-i filename:  Include a file mit additional command line options.  Used
               to prevent command lines growing beyond the capabilities of
               the shell/OS.  All arguments specified in filename
-              are read and the -i option replaced with the parsed
+              are read and the -i option replaced mit the parsed
               params (note - quoting args in this file is NOT supported)
 
 -s subsystem: Specify the subsystem (For Windows only.);
@@ -65,7 +65,7 @@ Options:
               is automatic.)
 
 -r prefix=f:  Replace path prefix.
-              Replace prefix with f in the source path references
+              Replace prefix mit f in the source path references
               contained in the resulting binary.
 
 Arguments:
@@ -82,7 +82,7 @@ NOTES:
 In order to use freeze successfully, you must have built Python and
 installed it ("make install").
 
-The script should not use modules provided only as shared libraries;
+The script should not use modules provided only als shared libraries;
 wenn it does, the resulting binary is not self-contained.
 """
 
@@ -110,17 +110,17 @@ importiere bkfile
 
 def main():
     # overridable context
-    prefix = Nichts                       # settable with -p option
-    exec_prefix = Nichts                  # settable with -P option
+    prefix = Nichts                       # settable mit -p option
+    exec_prefix = Nichts                  # settable mit -P option
     extensions = []
-    exclude = []                        # settable with -x option
-    addn_link = []      # settable with -l, but only honored under Windows.
+    exclude = []                        # settable mit -x option
+    addn_link = []      # settable mit -l, but only honored under Windows.
     path = sys.path[:]
     modargs = 0
     debug = 1
     odir = ''
     win = sys.platform[:3] == 'win'
-    replace_paths = []                  # settable with -r option
+    replace_paths = []                  # settable mit -r option
     error_if_any_missing = 0
 
     # default the exclude list fuer each platform
@@ -137,31 +137,31 @@ def main():
     subsystem = 'console'
 
     wenn sys.platform == "darwin" and sysconfig.get_config_var("PYTHONFRAMEWORK"):
-        drucke(f"{sys.argv[0]} cannot be used with framework builds of Python", file=sys.stderr)
+        drucke(f"{sys.argv[0]} cannot be used mit framework builds of Python", file=sys.stderr)
         sys.exit(1)
 
 
-    # parse command line by first replacing any "-i" options with the
+    # parse command line by first replacing any "-i" options mit the
     # file contents.
     pos = 1
     while pos < len(sys.argv)-1:
         # last option can not be "-i", so this ensures "pos+1" is in range!
         wenn sys.argv[pos] == '-i':
             try:
-                with open(sys.argv[pos+1]) as infp:
+                mit open(sys.argv[pos+1]) als infp:
                     options = infp.read().split()
-            except IOError as why:
-                usage("File name '%s' specified with the -i option "
+            except IOError als why:
+                usage("File name '%s' specified mit the -i option "
                       "can not be read - %s" % (sys.argv[pos+1], why) )
-            # Replace the '-i' and the filename with the read params.
+            # Replace the '-i' and the filename mit the read params.
             sys.argv[pos:pos+2] = options
             pos = pos + len(options) - 1 # Skip the name and the included args.
         pos = pos + 1
 
-    # Now parse the command line with the extras inserted.
+    # Now parse the command line mit the extras inserted.
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'r:a:dEe:hmo:p:P:qs:wX:x:l:')
-    except getopt.error as msg:
+    except getopt.error als msg:
         usage('getopt error: ' + str(msg))
 
     # process option arguments
@@ -320,7 +320,7 @@ def main():
         try:
             os.mkdir(odir)
             drucke("Created output directory", odir)
-        except OSError as msg:
+        except OSError als msg:
             usage('%s: mkdir failed (%s)' % (odir, str(msg)))
     base = ''
     wenn odir:
@@ -342,7 +342,7 @@ def main():
         try:
             custom_entry_point, python_entry_is_main = \
                 winmakemakefile.get_custom_entry_point(subsystem)
-        except ValueError as why:
+        except ValueError als why:
             usage(why)
 
 
@@ -372,7 +372,7 @@ def main():
         sonst:
             mf.load_file(mod)
 
-    # Add the main script as either __main__, or the actual module name.
+    # Add the main script als either __main__, or the actual module name.
     wenn python_entry_is_main:
         mf.run_script(scriptfile)
     sonst:
@@ -442,7 +442,7 @@ def main():
                  frozendllmain_c, os.path.basename(extensions_c)] + files
         maindefn = checkextensions_win32.CExtension( '__main__', xtras )
         frozen_extensions.append( maindefn )
-        with open(makefile, 'w') as outfp:
+        mit open(makefile, 'w') als outfp:
             winmakemakefile.makemakefile(outfp,
                                          locals(),
                                          frozen_extensions,
@@ -451,7 +451,7 @@ def main():
 
     # generate config.c and Makefile
     builtins.sort()
-    with open(config_c_in) as infp, bkfile.open(config_c, 'w') as outfp:
+    mit open(config_c_in) als infp, bkfile.open(config_c, 'w') als outfp:
         makeconfig.makeconfig(infp, outfp, builtins)
 
     cflags = ['$(OPT)']
@@ -470,7 +470,7 @@ def main():
             files + supp_sources +  addfiles + libs + \
             ['$(MODLIBS)', '$(LIBS)', '$(SYSLIBS)']
 
-    with bkfile.open(makefile, 'w') as outfp:
+    mit bkfile.open(makefile, 'w') als outfp:
         makemakefile.makemakefile(outfp, somevars, files, base_target)
 
     # Done!

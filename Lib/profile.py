@@ -11,7 +11,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# you may not use this file except in compliance mit the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -32,7 +32,7 @@ importiere warnings
 
 __all__ = ["run", "runctx", "Profile"]
 
-# Emit deprecation warning as per PEP 799
+# Emit deprecation warning als per PEP 799
 warnings.warn(
     "The profile module is deprecated and will be removed in Python 3.17. "
     "Use profiling.tracing (or cProfile) fuer tracing profilers instead.",
@@ -46,7 +46,7 @@ warnings.warn(
 #       global i_count
 #       i_count = i_count + 1
 #       return i_count
-#itimes = integer_timer # replace with C coded timer returning integers
+#itimes = integer_timer # replace mit C coded timer returning integers
 
 klasse _Utils:
     """Support klasse fuer utility functions which are shared by
@@ -104,7 +104,7 @@ def runctx(statement, globals, locals, filename=Nichts, sort=-1):
     """Run statement under profiler, supplying your own globals and locals,
     optionally saving results in filename.
 
-    statement and filename have the same semantics as profile.run
+    statement and filename have the same semantics als profile.run
     """
     return _Utils(Profile).runctx(statement, globals, locals, filename, sort)
 
@@ -117,9 +117,9 @@ klasse Profile:
     definitions of its members.  We use this external "parallel stack" to
     avoid contaminating the program that we are profiling. (old profiler
     used to write into the frames local dictionary!!) Derived classes
-    can change the definition of some entries, as long as they leave
+    can change the definition of some entries, als long als they leave
     [-2:] intact (frame and previous tuple).  In case an internal error is
-    detected, the -3 element is used as the function name.
+    detected, the -3 element is used als the function name.
 
     [ 0] = Time that needs to be charged to the parent frame's function.
            It is used so that a function call will not have to access the
@@ -132,7 +132,7 @@ klasse Profile:
     [-2] = Actual frame that we correspond to (used to sync exception handling).
     [-1] = Our parent 6-tuple (corresponds to frame.f_back).
 
-    Timing data fuer each function is stored as a 5-tuple in the dictionary
+    Timing data fuer each function is stored als a 5-tuple in the dictionary
     self.timings[].  The index is always the name stored in self.cur[-3].
     The following are the definitions of the members:
 
@@ -323,7 +323,7 @@ klasse Profile:
 
         wenn pfn in callers:
             callers[pfn] = callers[pfn] + 1  # hack: gather more
-            # stats such as the amount of time added to ct courtesy
+            # stats such als the amount of time added to ct courtesy
             # of this specific call, and the contribution to cc
             # courtesy of this call.
         sonst:
@@ -344,10 +344,10 @@ klasse Profile:
         }
 
 
-    # The next few functions play with self.cmd. By carefully preloading
+    # The next few functions play mit self.cmd. By carefully preloading
     # our parallel stack, we can force the profiled result to include
-    # an arbitrary string as the name of the calling function.
-    # We use self.cmd as that string, and the resulting stats look
+    # an arbitrary string als the name of the calling function.
+    # We use self.cmd als that string, and the resulting stats look
     # very nice :-).
 
     def set_cmd(self, cmd):
@@ -400,7 +400,7 @@ klasse Profile:
         pstats.Stats(self).strip_dirs().sort_stats(*sort).print_stats()
 
     def dump_stats(self, file):
-        with open(file, 'wb') as f:
+        mit open(file, 'wb') als f:
             self.create_stats()
             marshal.dump(self.stats, f)
 
@@ -419,7 +419,7 @@ klasse Profile:
 
 
     # The following two methods can be called by clients to use
-    # a profiler to profile a statement, given as a string.
+    # a profiler to profile a statement, given als a string.
 
     def run(self, cmd):
         importiere __main__
@@ -456,11 +456,11 @@ klasse Profile:
     #
     # Note that this difference is only significant wenn there are a lot of
     # events, and relatively little user code per event.  For example,
-    # code with small functions will typically benefit von having the
+    # code mit small functions will typically benefit von having the
     # profiler calibrated fuer the current platform.  This *could* be
     # done on the fly during init() time, but it is not worth the
     # effort.  Also note that wenn too large a value specified, then
-    # execution time on some functions will actually appear as a
+    # execution time on some functions will actually appear als a
     # negative number.  It is *normal* fuer some functions (with very
     # low call counts) to have such negative stats, even wenn the
     # calibration figure is "correct."
@@ -499,7 +499,7 @@ klasse Profile:
     def _calibrate_inner(self, m, verbose):
         get_time = self.get_time
 
-        # Set up a test case to be run with and without profiling.  Include
+        # Set up a test case to be run mit and without profiling.  Include
         # lots of calls, because we're trying to quantify stopwatch overhead.
         # Do not raise any exceptions, though, because we want to know
         # exactly how many profile events are generated (one call event, +
@@ -523,7 +523,7 @@ klasse Profile:
         wenn verbose:
             drucke("elapsed time without profiling =", elapsed_noprofile)
 
-        # elapsed_profile <- time f(m) takes with profiling.  The difference
+        # elapsed_profile <- time f(m) takes mit profiling.  The difference
         # is profiling overhead, only some of which the profiler subtracts
         # out on its own.
         p = Profile()
@@ -532,7 +532,7 @@ klasse Profile:
         t1 = get_time()
         elapsed_profile = t1 - t0
         wenn verbose:
-            drucke("elapsed time with profiling =", elapsed_profile)
+            drucke("elapsed time mit profiling =", elapsed_profile)
 
         # reported_time <- "CPU seconds" the profiler charged to f and f1.
         total_calls = 0.0
@@ -598,7 +598,7 @@ def main():
         sonst:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
-            with io.open_code(progname) as fp:
+            mit io.open_code(progname) als fp:
                 code = compile(fp.read(), progname, 'exec')
             spec = importlib.machinery.ModuleSpec(name='__main__', loader=Nichts,
                                                   origin=progname)
@@ -611,7 +611,7 @@ def main():
             }
         try:
             runctx(code, globs, Nichts, options.outfile, options.sort)
-        except BrokenPipeError as exc:
+        except BrokenPipeError als exc:
             # Prevent "Exception ignored" during interpreter shutdown.
             sys.stdout = Nichts
             sys.exit(exc.errno)
@@ -619,6 +619,6 @@ def main():
         parser.print_usage()
     return parser
 
-# When invoked as main program, invoke the profiler on a script
+# When invoked als main program, invoke the profiler on a script
 wenn __name__ == '__main__':
     main()

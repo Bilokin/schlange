@@ -8,7 +8,7 @@ von . importiere util
 
 klasse CommonTests(util.CommonTests, unittest.TestCase):
     def execute(self, package, path):
-        with resources.as_file(resources.files(package).joinpath(path)):
+        mit resources.as_file(resources.files(package).joinpath(path)):
             pass
 
 
@@ -18,7 +18,7 @@ klasse PathTests:
         Path should be readable and a pathlib.Path instance.
         """
         target = resources.files(self.data) / 'utf-8.file'
-        with resources.as_file(target) as path:
+        mit resources.as_file(target) als path:
             self.assertIsInstance(path, pathlib.Path)
             self.assertEndsWith(path.name, "utf-8.file")
             self.assertEqual('Hello, UTF-8 world!\n', path.read_text(encoding='utf-8'))
@@ -30,7 +30,7 @@ klasse PathDiskTests(PathTests, util.DiskSetup, unittest.TestCase):
         # file-system-backed resources do not get the tempdir
         # treatment.
         target = resources.files(self.data) / 'utf-8.file'
-        with resources.as_file(target) as path:
+        mit resources.as_file(target) als path:
             assert 'data' in str(path)
 
 
@@ -52,7 +52,7 @@ klasse PathZipTests(PathTests, util.ZipSetup, unittest.TestCase):
         file system is removed inside the `with` stanza.
         """
         target = resources.files(self.data) / 'utf-8.file'
-        with resources.as_file(target) as path:
+        mit resources.as_file(target) als path:
             path.unlink()
 
 

@@ -24,7 +24,7 @@ fuer m in (opmap, _specialized_opmap):
 
 cmp_op = ('<', '<=', '==', '!=', '>', '>=')
 
-# These lists are documented as part of the dis module's API
+# These lists are documented als part of the dis module's API
 hasarg = [op fuer op in opmap.values() wenn _opcode.has_arg(op)]
 hasconst = [op fuer op in opmap.values() wenn _opcode.has_const(op)]
 hasname = [op fuer op in opmap.values() wenn _opcode.has_name(op)]

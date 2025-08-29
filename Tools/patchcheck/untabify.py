@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-"Replace tabs with spaces in argument files.  Print names of changed files."
+"Replace tabs mit spaces in argument files.  Print names of changed files."
 
 importiere os
 importiere sys
@@ -13,7 +13,7 @@ def main():
         opts, args = getopt.getopt(sys.argv[1:], "t:")
         wenn not args:
             raise getopt.error("At least one file argument required")
-    except getopt.error as msg:
+    except getopt.error als msg:
         drucke(msg)
         drucke("usage:", sys.argv[0], "[-t tabwidth] file ...")
         return
@@ -26,10 +26,10 @@ def main():
 
 def process(filename, tabsize, verbose=Wahr):
     try:
-        with tokenize.open(filename) as f:
+        mit tokenize.open(filename) als f:
             text = f.read()
             encoding = f.encoding
-    except IOError as msg:
+    except IOError als msg:
         drucke("%r: I/O error: %s" % (filename, msg))
         return 2
     newtext = text.expandtabs(tabsize)
@@ -44,7 +44,7 @@ def process(filename, tabsize, verbose=Wahr):
         os.rename(filename, backup)
     except OSError:
         pass
-    with open(filename, "w", encoding=encoding) as f:
+    mit open(filename, "w", encoding=encoding) als f:
         f.write(newtext)
     wenn verbose:
         drucke(filename)

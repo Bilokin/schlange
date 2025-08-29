@@ -73,13 +73,13 @@ klasse MonitoringBasicTest(unittest.TestCase):
         sys.monitoring.set_events(TEST_TOOL, 15)
         self.assertEqual(sys.monitoring.get_events(TEST_TOOL), 15)
         sys.monitoring.set_events(TEST_TOOL, 0)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             sys.monitoring.set_events(TEST_TOOL, sys.monitoring.events.C_RETURN)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             sys.monitoring.set_events(TEST_TOOL, sys.monitoring.events.C_RAISE)
         sys.monitoring.free_tool_id(TEST_TOOL)
         self.assertEqual(sys.monitoring.get_tool(TEST_TOOL), Nichts)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             sys.monitoring.set_events(TEST_TOOL, sys.monitoring.events.CALL)
 
     def test_clear(self):
@@ -98,7 +98,7 @@ klasse MonitoringBasicTest(unittest.TestCase):
 
         # the first f() should trigger a PY_START and a LINE event
         # the second f() after clear_tool_id should not trigger any event
-        # the callback function should be cleared as well
+        # the callback function should be cleared als well
         self.assertEqual(len(events), 2)
         callback = sys.monitoring.register_callback(TEST_TOOL, E.LINE, Nichts)
         self.assertIs(callback, Nichts)
@@ -553,7 +553,7 @@ klasse MultipleMonitorsTest(MonitoringTestBase, unittest.TestCase):
             sys.monitoring.restart_events()
 
     def test_with_instruction_event(self):
-        """Test that the second tool can set events with instruction events set by the first tool."""
+        """Test that the second tool can set events mit instruction events set by the first tool."""
         def f():
             pass
         code = f.__code__
@@ -745,7 +745,7 @@ klasse TestDisable(MonitoringTestBase, unittest.TestCase):
                 counter.disable = Wahr
                 sys.monitoring.register_callback(TEST_TOOL, event, counter)
                 sys.monitoring.set_events(TEST_TOOL, event)
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     self.raise_handle_reraise()
             finally:
                 sys.monitoring.set_events(TEST_TOOL, 0)
@@ -874,7 +874,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
         self.check_events(func1, [("raise", KeyError)])
 
     def test_implicit_stop_iteration(self):
-        """Generators are documented as raising a StopIteration
+        """Generators are documented als raising a StopIteration
            when they terminate.
            However, we don't do that wenn we can avoid it, fuer speed.
            sys.monitoring handles that by injecting a STOP_ITERATION
@@ -942,7 +942,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
             try:
                 try:
                     1/0
-                except Exception as ex:
+                except Exception als ex:
                     raise
             except:
                 pass
@@ -973,7 +973,7 @@ klasse ExceptionMonitoringTest(CheckEvents):
             try:
                 try:
                     1/0
-                except ValueError as ex:
+                except ValueError als ex:
                     pass
             except:
                 pass
@@ -1459,7 +1459,7 @@ klasse TestLocalEvents(MonitoringTestBase, unittest.TestCase):
             ('line', 'func3', 6)])
 
     def test_set_non_local_event(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             sys.monitoring.set_local_events(TEST_TOOL, just_call.__code__, E.RAISE)
 
 def line_from_offset(code, offset):
@@ -1606,7 +1606,7 @@ klasse TestBranchAndJumpEvents(CheckEvents):
             try:
                 try:
                     raise KeyError
-                except* Exception as e:
+                except* Exception als e:
                     f = Foo(); f.meth()
             except KeyError:
                 pass
@@ -1797,7 +1797,7 @@ klasse TestBranchConsistency(MonitoringTestBase, unittest.TestCase):
             try:
                 try:
                     raise KeyError
-                except* Exception as e:
+                except* Exception als e:
                     f = Foo(); f.meth()
             except KeyError:
                 pass
@@ -2029,7 +2029,7 @@ klasse TestLoadSuperAttr(CheckEvents):
             ]
 
         fuer call_method in [Wahr, Falsch]:
-            with self.subTest(call_method=call_method):
+            mit self.subTest(call_method=call_method):
                 call_str = "()" wenn call_method sonst ""
                 code_super = code_template.format(cls="super", call=call_str)
                 code_int = code_template.format(cls="int", call=call_str)
@@ -2306,11 +2306,11 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
             sonst:
                 sys.monitoring.set_events(TEST_TOOL, event)
             event_value = int(math.log2(event))
-            with self.Scope(self.codelike, event_value):
+            mit self.Scope(self.codelike, event_value):
                 counter.count = 0
                 try:
                     func(*args)
-                except ValueError as e:
+                except ValueError als e:
                     self.assertIsInstance(expected, ValueError)
                     self.assertEqual(str(e), str(expected))
                     return
@@ -2318,7 +2318,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
                     self.assertEqual(counter.count, expected)
 
             prev = sys.monitoring.register_callback(TEST_TOOL, event, Nichts)
-            with self.Scope(self.codelike, event_value):
+            mit self.Scope(self.codelike, event_value):
                 counter.count = 0
                 func(*args)
                 self.assertEqual(counter.count, 0)
@@ -2330,7 +2330,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
         fuer expected, event, function, *args in self.cases:
             offset = 0
             self.codelike = _testcapi.CodeLike(1)
-            with self.subTest(function.__name__):
+            mit self.subTest(function.__name__):
                 args_ = (self.codelike, offset) + tuple(args)
                 self.check_event_count(event, function, args_, expected)
 
@@ -2341,20 +2341,20 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
             assert args and isinstance(args[-1], BaseException)
             offset = 0
             self.codelike = _testcapi.CodeLike(1)
-            with self.subTest(function.__name__):
+            mit self.subTest(function.__name__):
                 args_ = (self.codelike, offset) + tuple(args[:-1]) + (Nichts,)
                 evt = int(math.log2(event))
-                expected = ValueError(f"Firing event {evt} with no exception set")
+                expected = ValueError(f"Firing event {evt} mit no exception set")
                 self.check_event_count(event, function, args_, expected)
 
     def test_fire_event_failing_callback(self):
         fuer expected, event, function, *args in self.cases:
             offset = 0
             self.codelike = _testcapi.CodeLike(1)
-            with self.subTest(function.__name__):
+            mit self.subTest(function.__name__):
                 args_ = (self.codelike, offset) + tuple(args)
                 exc = OSError(42)
-                with self.assertRaises(type(exc)):
+                mit self.assertRaises(type(exc)):
                     self.check_event_count(event, function, args_, expected,
                                            callback_raises=exc)
 
@@ -2371,7 +2371,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
             sonst:
                 sys.monitoring.set_events(TEST_TOOL, event)
             event_value = int(math.log2(event))
-            with self.Scope(self.codelike, event_value):
+            mit self.Scope(self.codelike, event_value):
                 counter.count = 0
                 func(*args)
                 self.assertEqual(counter.count, expected)
@@ -2401,7 +2401,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
         fuer expected, event, function, *args in self.cases:
             offset = 0
             self.codelike = _testcapi.CodeLike(2)
-            with self.subTest(function.__name__):
+            mit self.subTest(function.__name__):
                 args_ = (self.codelike, 0) + tuple(args)
                 self.check_disable(event, function, args_, expected)
 
@@ -2417,7 +2417,7 @@ klasse TestCApiEventGeneration(MonitoringTestBase, unittest.TestCase):
             unwind_value = int(math.log2(E.PY_UNWIND))
             cl = _testcapi.CodeLike(2)
             common_args = (cl, 0)
-            with self.Scope(cl, yield_value, unwind_value):
+            mit self.Scope(cl, yield_value, unwind_value):
                 yield_counter.count = 0
                 unwind_counter.count = 0
 

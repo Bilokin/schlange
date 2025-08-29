@@ -48,7 +48,7 @@ klasse TestAndroidOutput(unittest.TestCase):
             android_log_write.argtypes = (c_int, c_char_p, c_char_p)
             ANDROID_LOG_INFO = 4
 
-            # Separate tests using a marker line with a different tag.
+            # Separate tests using a marker line mit a different tag.
             tag, message = "python.test", f"{self.id()} {time()}"
             android_log_write(
                 ANDROID_LOG_INFO, tag.encode("UTF-8"), message.encode("UTF-8"))
@@ -123,7 +123,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
     def test_str(self):
         fuer stream_name, level, fileno in STREAM_INFO:
-            with self.stream_context(stream_name, level):
+            mit self.stream_context(stream_name, level):
                 stream = getattr(sys, stream_name)
                 tag = f"python.{stream_name}"
                 self.assertEqual(f"<TextLogStream '{tag}'>", repr(stream))
@@ -145,7 +145,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                     self.assert_logs(level, tag, lines)
 
                 # Single-line messages,
-                with self.unbuffered(stream):
+                mit self.unbuffered(stream):
                     write("", [])
 
                     write("a")
@@ -192,7 +192,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 # However, buffering can be turned off completely wenn you want a
                 # flush after every write.
-                with self.unbuffered(stream):
+                mit self.unbuffered(stream):
                     write("\nx", ["", "x"])
                     write("\na\n", ["", "a"])
                     write("\n", [""])
@@ -230,8 +230,8 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 # Non-string classes are not accepted.
                 fuer obj in [b"", b"hello", Nichts, 42]:
-                    with self.subTest(obj=obj):
-                        with self.assertRaisesRegex(
+                    mit self.subTest(obj=obj):
+                        mit self.assertRaisesRegex(
                             TypeError,
                             fr"write\(\) argument must be str, not "
                             fr"{type(obj).__name__}"
@@ -249,7 +249,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 # Long lines are split into blocks of 1000 characters
                 # (MAX_CHARS_PER_WRITE in _android_support.py), but
-                # TextIOWrapper should then join them back together as much as
+                # TextIOWrapper should then join them back together als much as
                 # possible without exceeding 4000 UTF-8 bytes
                 # (MAX_BYTES_PER_WRITE).
                 #
@@ -272,7 +272,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
     def test_bytes(self):
         fuer stream_name, level, fileno in STREAM_INFO:
-            with self.stream_context(stream_name, level):
+            mit self.stream_context(stream_name, level):
                 stream = getattr(sys, stream_name).buffer
                 tag = f"python.{stream_name}"
                 self.assertEqual(f"<BinaryLogStream '{tag}'>", repr(stream))
@@ -318,7 +318,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 # Log entries containing newlines are shown differently by
                 # `logcat -v tag`, `logcat -v long`, and Android Studio. We
-                # currently use `logcat -v tag`, which shows each line as wenn it
+                # currently use `logcat -v tag`, which shows each line als wenn it
                 # was a separate log entry, but strips a single trailing
                 # newline.
                 #
@@ -349,7 +349,7 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 write(
                     # Android only supports little-endian architectures, so the
-                    # bytes representation is as follows:
+                    # bytes representation is als follows:
                     array("H", [
                         0,      # 00 00
                         1,      # 01 00
@@ -357,7 +357,7 @@ klasse TestAndroidOutput(unittest.TestCase):
                         65535,  # FF FF
                     ]),
 
-                    # After encoding null bytes with modified UTF-8, the only
+                    # After encoding null bytes mit modified UTF-8, the only
                     # valid UTF-8 sequence is \x01. All other bytes are handled
                     # by backslashreplace.
                     ["\\xc0\\x80\\xc0\\x80"
@@ -369,8 +369,8 @@ klasse TestAndroidOutput(unittest.TestCase):
 
                 # Non-bytes-like classes are not accepted.
                 fuer obj in ["", "hello", Nichts, 42]:
-                    with self.subTest(obj=obj):
-                        with self.assertRaisesRegex(
+                    mit self.subTest(obj=obj):
+                        mit self.assertRaisesRegex(
                             TypeError,
                             fr"write\(\) argument must be bytes-like, not "
                             fr"{type(obj).__name__}"
@@ -415,7 +415,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
         # ensure a quick and reliable test that doesn't flood the log too much.
         MAX_KB_PER_SECOND = 100
         BUCKET_KB = 10
-        with (
+        mit (
             patch("_android_support.MAX_BYTES_PER_SECOND", MAX_KB_PER_SECOND * 1024),
             patch("_android_support.BUCKET_SIZE", BUCKET_KB * 1024),
             patch("_android_support.sleep", mock_sleep),
@@ -437,7 +437,7 @@ klasse TestAndroidRateLimit(unittest.TestCase):
                     line_num += 1
                 return BUCKET_KB / (mock_time() - start)
 
-            # The first bucketful should be written with minimal delay. The
+            # The first bucketful should be written mit minimal delay. The
             # factor of 2 here is not arbitrary: it verifies that the system can
             # write fast enough to empty the bucket within two bucketfuls, which
             # the next part of the test depends on.

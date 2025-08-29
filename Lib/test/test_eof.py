@@ -12,7 +12,7 @@ klasse EOFTestCase(unittest.TestCase):
     def test_EOF_single_quote(self):
         expect = "unterminated string literal (detected at line 1) (<string>, line 1)"
         fuer quote in ("'", "\""):
-            with self.assertRaises(SyntaxError) as cm:
+            mit self.assertRaises(SyntaxError) als cm:
                 eval(f"""{quote}this is a test\
                 """)
             self.assertEqual(str(cm.exception), expect)
@@ -20,25 +20,25 @@ klasse EOFTestCase(unittest.TestCase):
 
     def test_EOFS(self):
         expect = ("unterminated triple-quoted string literal (detected at line 3) (<string>, line 1)")
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             eval("""ä = '''thîs is \na \ntest""")
         self.assertEqual(str(cm.exception), expect)
         self.assertEqual(cm.exception.text, "ä = '''thîs is ")
         self.assertEqual(cm.exception.offset, 5)
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             eval("""ä = '''thîs is \na \ntest""".encode())
         self.assertEqual(str(cm.exception), expect)
         self.assertEqual(cm.exception.text, "ä = '''thîs is ")
         self.assertEqual(cm.exception.offset, 5)
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             eval(BOM_UTF8 + """ä = '''thîs is \na \ntest""".encode())
         self.assertEqual(str(cm.exception), expect)
         self.assertEqual(cm.exception.text, "ä = '''thîs is ")
         self.assertEqual(cm.exception.offset, 5)
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             eval("""# coding: latin1\nä = '''thîs is \na \ntest""".encode('latin1'))
         self.assertEqual(str(cm.exception), "unterminated triple-quoted string literal (detected at line 4) (<string>, line 2)")
         self.assertEqual(cm.exception.text, "ä = '''thîs is ")
@@ -47,7 +47,7 @@ klasse EOFTestCase(unittest.TestCase):
     @force_not_colorized
     def test_EOFS_with_file(self):
         expect = ("(<string>, line 1)")
-        with os_helper.temp_dir() as temp_dir:
+        mit os_helper.temp_dir() als temp_dir:
             file_name = script_helper.make_script(temp_dir, 'foo',
                                                   """ä = '''thîs is \na \ntest""")
             rc, out, err = script_helper.assert_python_failure('-X', 'utf8', file_name)
@@ -87,39 +87,39 @@ klasse EOFTestCase(unittest.TestCase):
     @warnings_helper.ignore_warnings(category=SyntaxWarning)
     def test_eof_with_line_continuation(self):
         expect = "unexpected EOF while parsing (<string>, line 1)"
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             compile('"\\Xhh" \\', '<string>', 'exec')
         self.assertEqual(str(cm.exception), expect)
 
     def test_line_continuation_EOF(self):
         """A continuation at the end of input must be an error; bpo2180."""
         expect = 'unexpected EOF while parsing (<string>, line 1)'
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             exec('ä = 5\\')
         self.assertEqual(str(cm.exception), expect)
         self.assertEqual(cm.exception.text, 'ä = 5\\\n')
         self.assertEqual(cm.exception.offset, 7)
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             exec('ä = 5\\'.encode())
         self.assertEqual(str(cm.exception), expect)
         self.assertEqual(cm.exception.text, 'ä = 5\\\n')
         self.assertEqual(cm.exception.offset, 7)
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             exec('# coding:latin1\nä = 5\\'.encode('latin1'))
         self.assertEqual(str(cm.exception),
                          'unexpected EOF while parsing (<string>, line 2)')
         self.assertEqual(cm.exception.text, 'ä = 5\\\n')
         self.assertEqual(cm.exception.offset, 7)
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             exec(BOM_UTF8 + 'ä = 5\\'.encode())
         self.assertEqual(str(cm.exception), expect)
         self.assertEqual(cm.exception.text, 'ä = 5\\\n')
         self.assertEqual(cm.exception.offset, 7)
 
-        with self.assertRaises(SyntaxError) as cm:
+        mit self.assertRaises(SyntaxError) als cm:
             exec('\\')
         self.assertEqual(str(cm.exception), expect)
 
@@ -127,7 +127,7 @@ klasse EOFTestCase(unittest.TestCase):
     @force_not_colorized
     def test_line_continuation_EOF_from_file_bpo2180(self):
         """Ensure tok_nextc() does not add too many ending newlines."""
-        with os_helper.temp_dir() as temp_dir:
+        mit os_helper.temp_dir() als temp_dir:
             file_name = script_helper.make_script(temp_dir, 'foo', '\\')
             rc, out, err = script_helper.assert_python_failure('-X', 'utf8', file_name)
             err = err.decode().splitlines()

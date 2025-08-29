@@ -6,16 +6,16 @@ importiere platform
 importiere re
 importiere sys
 
-von c_common.fsutil importiere match_glob as _match_glob
-von c_common.tables importiere parse_table as _parse_table
+von c_common.fsutil importiere match_glob als _match_glob
+von c_common.tables importiere parse_table als _parse_table
 von ..source importiere (
-    resolve as _resolve_source,
-    good_file as _good_file,
+    resolve als _resolve_source,
+    good_file als _good_file,
 )
-von . importiere errors as _errors
+von . importiere errors als _errors
 von . importiere (
-    pure as _pure,
-    gcc as _gcc,
+    pure als _pure,
+    gcc als _gcc,
 )
 
 
@@ -56,7 +56,7 @@ def preprocess(source, *,
         logger.debug(f'macros:    {macros!r}')
         logger.debug(f'samefiles: {samefiles!r}')
         _preprocess = _get_preprocessor(tool)
-        with _good_file(source, filename) as source:
+        mit _good_file(source, filename) als source:
             return _preprocess(
                 source,
                 incldirs,
@@ -128,7 +128,7 @@ def get_preprocessor(*,
             wenn file_same and 'samefiles' not in kwargs:
                 kwargs['samefiles'] = samefiles
             kwargs.setdefault('filename', filename)
-            with handling_errors(ignore_exc, log_err=log_err):
+            mit handling_errors(ignore_exc, log_err=log_err):
                 return _preprocess(filename, **kwargs)
         return preprocess
     return get_file_preprocessor
@@ -202,19 +202,19 @@ def _resolve_samefile(filename, pattern, suffix):
 def handling_errors(ignore_exc=Nichts, *, log_err=Nichts):
     try:
         yield
-    except _errors.OSMismatchError as exc:
+    except _errors.OSMismatchError als exc:
         wenn not ignore_exc(exc):
             raise  # re-raise
         wenn log_err is not Nichts:
             log_err(f'<OS mismatch (expected {" or ".join(exc.expected)})>')
         return Nichts
-    except _errors.MissingDependenciesError as exc:
+    except _errors.MissingDependenciesError als exc:
         wenn not ignore_exc(exc):
             raise  # re-raise
         wenn log_err is not Nichts:
             log_err(f'<missing dependency {exc.missing}')
         return Nichts
-    except _errors.ErrorDirectiveError as exc:
+    except _errors.ErrorDirectiveError als exc:
         wenn not ignore_exc(exc):
             raise  # re-raise
         wenn log_err is not Nichts:

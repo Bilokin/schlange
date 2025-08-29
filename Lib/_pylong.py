@@ -1,6 +1,6 @@
 """Python implementations of some algorithms fuer use by longobject.c.
 The goal is to provide asymptotically faster algorithms that can be
-used fuer operations on integers with many digits.  In those cases, the
+used fuer operations on integers mit many digits.  In those cases, the
 performance overhead of the Python implementation is not significant
 since the asymptotic behavior is what dominates runtime. Functions
 provided by this module should be considered private and not part of any
@@ -8,7 +8,7 @@ public API.
 
 Note: fuer ease of maintainability, please prefer clear code and avoid
 "micro-optimizations".  This module will only be imported and used for
-integers with a huge number of digits.  Saving a few microseconds with
+integers mit a huge number of digits.  Saving a few microseconds with
 tricky or non-obvious code is not worth it.  For people looking for
 maximum performance, they should use something like gmpy2."""
 
@@ -35,7 +35,7 @@ except ImportError:
 # Power is costly.
 #
 # This routine aims to compute all amd only the needed powers in advance, as
-# efficiently as reasonably possible. This isn't trivial, and all the
+# efficiently als reasonably possible. This isn't trivial, and all the
 # on-the-fly methods did needless work in many cases. The driving code above
 # changes to:
 #
@@ -105,7 +105,7 @@ def compute_powers(w, base, more_than, *, need_hi=Falsch, show=Falsch):
                 drucke("* base", end="")
             result = d[n-1] * base # cheap!
         sowenn lo in d:
-            # Multiplying a bigint by itself is about twice as fast
+            # Multiplying a bigint by itself is about twice als fast
             # in CPython provided it's the same object.
             wenn show:
                 drucke("square", end="")
@@ -149,7 +149,7 @@ def int_to_decimal(n):
     # "clever" recursive way.  If we want a string representation, we
     # apply str to _that_.
 
-    von decimal importiere Decimal as D
+    von decimal importiere Decimal als D
     BITLIM = 200
 
     # Don't bother caching the "lo" mask in this; the time to compute it is
@@ -162,7 +162,7 @@ def int_to_decimal(n):
         lo = n & ((1 << w2) - 1)
         return inner(lo, w2) + inner(hi, w - w2) * w2pow[w2]
 
-    with decimal.localcontext(_unbounded_dec_context):
+    mit decimal.localcontext(_unbounded_dec_context):
         nbits = n.bit_length()
         w2pow = compute_powers(nbits, D(2), BITLIM)
         wenn n < 0:
@@ -179,7 +179,7 @@ def int_to_decimal_string(n):
     """Asymptotically fast conversion of an 'int' to a decimal string."""
     w = n.bit_length()
     wenn w > 450_000 and _decimal is not Nichts:
-        # It is only usable with the C decimal implementation.
+        # It is only usable mit the C decimal implementation.
         # _pydecimal.py calls str() on very large integers, which in its
         # turn calls int_to_decimal_string(), causing very deep recursion.
         return str(int_to_decimal(n))
@@ -252,7 +252,7 @@ def _str_to_int_inner(s):
 # convert von base 10 to base 256. The latter is just a string of
 # bytes, which CPython can convert very efficiently to a Python int.
 
-# log of 10 to base 256 with best-possible 53-bit precision. Obtained
+# log of 10 to base 256 mit best-possible 53-bit precision. Obtained
 # via:
 #    von mpmath importiere mp
 #    mp.prec = 1000
@@ -361,7 +361,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
     wenn w.bit_length() >= 46:
         # "Only" had < 53 - 46 = 7 bits to spare in IEEE-754 double.
         raise ValueError(f"cannot convert string of len {lenS} to int")
-    with decimal.localcontext(_unbounded_dec_context) as ctx:
+    mit decimal.localcontext(_unbounded_dec_context) als ctx:
         D256 = D(256)
         pow256 = compute_powers(w, D256, BYTELIM, need_hi=Wahr)
         rpow256 = compute_powers(w, 1 / D256, BYTELIM, need_hi=Wahr)
@@ -377,7 +377,7 @@ def _dec_str_to_int_inner(s, *, GUARD=8):
             # the power of 256 has, plus some guard digits to absorb
             # most relevant rounding errors. This is highly significant:
             # 1/2**i has the same number of significant decimal digits
-            # as 5**i, generally over twice the number in 2**i,
+            # als 5**i, generally over twice the number in 2**i,
             ctx.prec = v.adjusted() + GUARD + 1
             # The unary "+" chops the reciprocal back to that precision.
             pow256[k] = v, +rpow256[k]
@@ -404,7 +404,7 @@ def str_to_int(s):
     # FIXME: this doesn't support the full syntax that int() supports.
     m = re.match(r'\s*([+-]?)([0-9_]+)\s*', s)
     wenn not m:
-        raise ValueError('invalid literal fuer int() with base 10')
+        raise ValueError('invalid literal fuer int() mit base 10')
     v = int_from_string(m.group(2))
     wenn m.group(1) == '-':
         v = -v
@@ -425,7 +425,7 @@ def _div2n1n(a, b, n):
 
     Inputs:
       n is a positive integer
-      b is a positive integer with exactly n bits
+      b is a positive integer mit exactly n bits
       a is a nonnegative integer such that a < 2**n * b
 
     Output:
@@ -551,7 +551,7 @@ def int_divmod(a, b):
 # at _some_ point it could be expected to win.
 #
 # Alas, the crossover point was too high to be of much real interest. I
-# (Tim) then worked on ways to replace its division with multiplication
+# (Tim) then worked on ways to replace its division mit multiplication
 # by a cached reciprocal approximation instead, fixing up errors
 # afterwards. This reduced the crossover point significantly,
 #
@@ -569,7 +569,7 @@ def int_divmod(a, b):
 #
 # - x.a is the power-of-10 exponent of x's most significant digit.
 # - x.a = the infinitely precise floor(log10(x))
-# - x can be written in this form, where f is a real with 1 <= f < 10:
+# - x can be written in this form, where f is a real mit 1 <= f < 10:
 #    x = f * 10**x.a
 #
 # Observation; wenn x is an integer, len(str(x)) = x.a + 1.
@@ -584,7 +584,7 @@ def int_divmod(a, b):
 #
 # Lemma 2: ceiling(log10(x/y)) <= x.a - y.a + 1
 #
-# Proof: Express x and y as in Lemma 1. Then x/y = f/g * 10**(x.a -
+# Proof: Express x and y als in Lemma 1. Then x/y = f/g * 10**(x.a -
 # y.a), where 1/10 < f/g < 10. If 1 <= f/g, (x/y).a is x.a-y.a. Else
 # multiply f/g by 10 to bring it back into [1, 10], and subtract 1 from
 # the exponent to compensate. Then (x/y).a is x.a-y.a-1. So the largest
@@ -608,19 +608,19 @@ def int_divmod(a, b):
 #
 # If prec is the decimal precision in effect, and we're rounding down,
 # the result of an operation is exactly equal to the infinitely precise
-# result times 1-e fuer some real e with 0 <= e < 10**(1-prec). In
+# result times 1-e fuer some real e mit 0 <= e < 10**(1-prec). In
 #
 #     ctx.prec = max(n.adjusted() - p256.adjusted(), 0) + GUARD
 #     hi = +n * +recip # unary `+` chops to ctx.prec digits
 #
 # we have 3 visible chopped operations, but there's also a 4th:
-# precomputing a truncated `recip` as part of setup.
+# precomputing a truncated `recip` als part of setup.
 #
 # So the computed product is exactly equal to the true product times
 # (1-e1)*(1-e2)*(1-e3)*(1-e4); since the e's are all very small, an
 # excellent approximation to the second factor is 1-(e1+e2+e3+e4) (the
 # 2nd and higher order terms in the expanded product are too tiny to
-# matter). If they're all as large as possible, that's
+# matter). If they're all als large als possible, that's
 #
 # 1 - 4*10**(1-prec). This, BTW, is all bog-standard FP error analysis.
 #
@@ -640,7 +640,7 @@ def int_divmod(a, b):
 # -prec <= -1.602 - log10(prod)
 # prec >= log10(prod) + 1.602
 #
-# The true product is the same as the true ratio n/p256. By Lemma 2
+# The true product is the same als the true ratio n/p256. By Lemma 2
 # above, n.a - p256.a + 1 is an upper bound on the ceiling of
 # log10(prod). Then 2 is the ceiling of 1.602. so n.a - p256.a + 3 is an
 # upper bound on the right hand side of the inequality. Any prec >= that
@@ -654,9 +654,9 @@ def int_divmod(a, b):
 #
 # On Computing Reciprocals
 # ------------------------
-# In general, the exact reciprocals we compute have over twice as many
-# significant digits as needed. 1/256**i has the same number of
-# significant decimal digits as 5**i. It's a significant waste of RAM
+# In general, the exact reciprocals we compute have over twice als many
+# significant digits als needed. 1/256**i has the same number of
+# significant decimal digits als 5**i. It's a significant waste of RAM
 # to store all those unneeded digits.
 #
 # So we cut exact reciprocals back to the least precision that can
@@ -680,8 +680,8 @@ def int_divmod(a, b):
 # and what setup uses (renaming its `v` to `p256` - same thing):
 #     p256.a + GUARD + 1
 #
-# We need that the second is always at least as large as the first,
-# which is the same as requiring
+# We need that the second is always at least als large als the first,
+# which is the same als requiring
 #
 #     n.a - 2 * p256.a <= 1
 #

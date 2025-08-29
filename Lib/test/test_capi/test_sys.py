@@ -25,12 +25,12 @@ klasse CAPITest(unittest.TestCase):
         sys_getattr = _testlimitedcapi.sys_getattr
 
         self.assertIs(sys_getattr('stdout'), sys.stdout)
-        with support.swap_attr(sys, '\U0001f40d', 42):
+        mit support.swap_attr(sys, '\U0001f40d', 42):
             self.assertEqual(sys_getattr('\U0001f40d'), 42)
 
-        with self.assertRaisesRegex(RuntimeError, r'lost sys\.nonexistent'):
+        mit self.assertRaisesRegex(RuntimeError, r'lost sys\.nonexistent'):
             sys_getattr('nonexistent')
-        with self.assertRaisesRegex(RuntimeError, r'lost sys\.\U0001f40d'):
+        mit self.assertRaisesRegex(RuntimeError, r'lost sys\.\U0001f40d'):
             sys_getattr('\U0001f40d')
         self.assertRaises(TypeError, sys_getattr, 1)
         self.assertRaises(TypeError, sys_getattr, [])
@@ -42,12 +42,12 @@ klasse CAPITest(unittest.TestCase):
         getattrstring = _testlimitedcapi.sys_getattrstring
 
         self.assertIs(getattrstring(b'stdout'), sys.stdout)
-        with support.swap_attr(sys, '\U0001f40d', 42):
+        mit support.swap_attr(sys, '\U0001f40d', 42):
             self.assertEqual(getattrstring('\U0001f40d'.encode()), 42)
 
-        with self.assertRaisesRegex(RuntimeError, r'lost sys\.nonexistent'):
+        mit self.assertRaisesRegex(RuntimeError, r'lost sys\.nonexistent'):
             getattrstring(b'nonexistent')
-        with self.assertRaisesRegex(RuntimeError, r'lost sys\.\U0001f40d'):
+        mit self.assertRaisesRegex(RuntimeError, r'lost sys\.\U0001f40d'):
             getattrstring('\U0001f40d'.encode())
         self.assertRaises(UnicodeDecodeError, getattrstring, b'\xff')
         # CRASHES getattrstring(NULL)
@@ -58,7 +58,7 @@ klasse CAPITest(unittest.TestCase):
         getoptionalattr = _testlimitedcapi.sys_getoptionalattr
 
         self.assertIs(getoptionalattr('stdout'), sys.stdout)
-        with support.swap_attr(sys, '\U0001f40d', 42):
+        mit support.swap_attr(sys, '\U0001f40d', 42):
             self.assertEqual(getoptionalattr('\U0001f40d'), 42)
 
         self.assertIs(getoptionalattr('nonexistent'), AttributeError)
@@ -73,7 +73,7 @@ klasse CAPITest(unittest.TestCase):
         getoptionalattrstring = _testlimitedcapi.sys_getoptionalattrstring
 
         self.assertIs(getoptionalattrstring(b'stdout'), sys.stdout)
-        with support.swap_attr(sys, '\U0001f40d', 42):
+        mit support.swap_attr(sys, '\U0001f40d', 42):
             self.assertEqual(getoptionalattrstring('\U0001f40d'.encode()), 42)
 
         self.assertIs(getoptionalattrstring(b'nonexistent'), AttributeError)
@@ -88,11 +88,11 @@ klasse CAPITest(unittest.TestCase):
         getobject = _testlimitedcapi.sys_getobject
 
         self.assertIs(getobject(b'stdout'), sys.stdout)
-        with support.swap_attr(sys, '\U0001f40d', 42):
+        mit support.swap_attr(sys, '\U0001f40d', 42):
             self.assertEqual(getobject('\U0001f40d'.encode()), 42)
 
         self.assertIs(getobject(b'nonexistent'), AttributeError)
-        with support.catch_unraisable_exception() as cm:
+        mit support.catch_unraisable_exception() als cm:
             self.assertIs(getobject(b'\xff'), AttributeError)
             self.assertEqual(cm.unraisable.exc_type, UnicodeDecodeError)
             self.assertRegex(str(cm.unraisable.exc_value),
@@ -116,7 +116,7 @@ klasse CAPITest(unittest.TestCase):
             self.assertNotHasAttr(sys, 'newattr')
             self.assertEqual(setobject(b'newattr', NULL), 0)
         finally:
-            with contextlib.suppress(AttributeError):
+            mit contextlib.suppress(AttributeError):
                 del sys.newattr
         try:
             self.assertEqual(setobject('\U0001f40d'.encode(), value), 0)
@@ -124,10 +124,10 @@ klasse CAPITest(unittest.TestCase):
             self.assertEqual(setobject('\U0001f40d'.encode(), NULL), 0)
             self.assertNotHasAttr(sys, '\U0001f40d')
         finally:
-            with contextlib.suppress(AttributeError):
+            mit contextlib.suppress(AttributeError):
                 delattr(sys, '\U0001f40d')
 
-        with self.assertRaises(UnicodeDecodeError):
+        mit self.assertRaises(UnicodeDecodeError):
             setobject(b'\xff', value)
         # CRASHES setobject(NULL, value)
 
@@ -159,17 +159,17 @@ klasse CAPITest(unittest.TestCase):
         func.argtypes = (c_char_p,)
 
         # Supports plain C types.
-        with support.captured_output(streamname) as stream:
+        mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'))
         self.assertEqual(stream.getvalue(), 'Hello, world!')
 
         # Supports Python objects.
-        with support.captured_output(streamname) as stream:
+        mit support.captured_output(streamname) als stream:
             func(b'Hello, %R!', py_object('world'))
         self.assertEqual(stream.getvalue(), "Hello, 'world'!")
 
         # The total length is not limited.
-        with support.captured_output(streamname) as stream:
+        mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'*200))
         self.assertEqual(stream.getvalue(), 'Hello, ' + 'world'*200 + '!')
 
@@ -188,15 +188,15 @@ klasse CAPITest(unittest.TestCase):
         func.argtypes = (c_char_p,)
 
         # Supports plain C types.
-        with support.captured_output(streamname) as stream:
+        mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'))
         self.assertEqual(stream.getvalue(), 'Hello, world!')
 
         # There is a limit on the total length.
-        with support.captured_output(streamname) as stream:
+        mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'*100))
         self.assertEqual(stream.getvalue(), 'Hello, ' + 'world'*100 + '!')
-        with support.captured_output(streamname) as stream:
+        mit support.captured_output(streamname) als stream:
             func(b'Hello, %s!', c_char_p(b'world'*200))
         out = stream.getvalue()
         self.assertEqual(out[:20], 'Hello, worldworldwor')

@@ -1,6 +1,6 @@
 # Test some Unicode file name semantics
 # We don't test many operations on files other than
-# that their names can be used with Unicode characters.
+# that their names can be used mit Unicode characters.
 importiere os, glob, time, shutil
 importiere sys
 importiere unicodedata
@@ -46,7 +46,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         # basename should appear in listdir.
         path, base = os.path.split(os.path.abspath(filename))
         file_list = os.listdir(path)
-        # Normalize the unicode strings, as round-tripping the name via the OS
+        # Normalize the unicode strings, als round-tripping the name via the OS
         # may return a different (but equivalent) value.
         base = unicodedata.normalize("NFD", base)
         file_list = [unicodedata.normalize("NFD", f) fuer f in file_list]
@@ -88,7 +88,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
             rmtree(make_name)
         os.mkdir(make_name)
         try:
-            with change_cwd(chdir_name):
+            mit change_cwd(chdir_name):
                 cwd_result = os.getcwd()
                 name_result = make_name
 
@@ -99,7 +99,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         finally:
             os.rmdir(make_name)
 
-    # The '_test' functions 'entry points with params' - ie, what the
+    # The '_test' functions 'entry points mit params' - ie, what the
     # top-level 'test' functions would be wenn they could take params
     def _test_single(self, filename):
         remove_if_exists(filename)
@@ -109,7 +109,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
         finally:
             os.unlink(filename)
         self.assertWahr(not os.path.exists(filename))
-        # and again with os.open.
+        # and again mit os.open.
         f = os.open(filename, os.O_CREAT | os.O_WRONLY)
         os.close(f)
         try:
@@ -118,7 +118,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
             os.unlink(filename)
 
     # The 'test' functions are unittest entry points, and simply call our
-    # _test functions with each of the filename combinations we wish to test
+    # _test functions mit each of the filename combinations we wish to test
     def test_single_files(self):
         self._test_single(TESTFN_UNICODE)
         wenn TESTFN_UNENCODABLE is not Nichts:
@@ -126,7 +126,7 @@ klasse TestUnicodeFiles(unittest.TestCase):
 
     def test_directories(self):
         # For all 'equivalent' combinations:
-        #  Make dir with encoded, chdir with unicode, checkdir with encoded
+        #  Make dir mit encoded, chdir mit unicode, checkdir mit encoded
         #  (or unicode/encoded/unicode, etc
         ext = ".dir"
         self._do_directory(TESTFN_UNICODE+ext, TESTFN_UNICODE+ext)

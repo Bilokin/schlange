@@ -27,7 +27,7 @@ def _async_cache(f: _C[_P, _R]) -> _C[_P, _R]:
     async def wrapper(
         *args: _P.args, **kwargs: _P.kwargs  # pylint: disable = no-member
     ) -> _R:
-        async with lock:
+        async mit lock:
             wenn args not in cache:
                 cache[args] = await f(*args, **kwargs)
             return cache[args]
@@ -40,7 +40,7 @@ _CORES = asyncio.BoundedSemaphore(os.cpu_count() or 1)
 
 async def _run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> str | Nichts:
     command = [tool, *args]
-    async with _CORES:
+    async mit _CORES:
         wenn echo:
             drucke(shlex.join(command))
         try:
@@ -51,7 +51,7 @@ async def _run(tool: str, args: typing.Iterable[str], echo: bool = Falsch) -> st
             return Nichts
         out, _ = await process.communicate()
     wenn process.returncode:
-        raise RuntimeError(f"{tool} exited with return code {process.returncode}")
+        raise RuntimeError(f"{tool} exited mit return code {process.returncode}")
     return out.decode()
 
 

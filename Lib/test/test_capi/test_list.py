@@ -241,7 +241,7 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(set_slice(lst, 1, 5, []), list("af"))
         self.assertEqual(set_slice(lst, 3, len(lst), []), list("abc"))
 
-        # delete items with NULL
+        # delete items mit NULL
         lst = list("abcdef")
         self.assertEqual(set_slice(lst, 0, len(lst), NULL), [])
         self.assertEqual(set_slice(lst, 3, len(lst), NULL), list("abc"))

@@ -48,7 +48,7 @@ Unpack generic sequence
     >>> a == 0 and b == 1 and c == 2
     Wahr
 
-Single element unpacking, with extra syntax
+Single element unpacking, mit extra syntax
 
     >>> st = (99,)
     >>> sl = [100]
@@ -181,7 +181,7 @@ Ensure that custom `__len__()` is NOT called when showing the error message
       ...
     ValueError: too many values to unpack (expected 3)
 
-For evil cases like these as well, no actual count to be shown
+For evil cases like these als well, no actual count to be shown
 
     >>> klasse BadLength:
     ...     def __len__(self):

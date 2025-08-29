@@ -111,7 +111,7 @@ klasse ExecutorShutdownTest:
         self.assertGreater(len(others), 0)
 
     def test_hang_gh83386(self):
-        """shutdown(wait=Falsch) doesn't hang at exit with running futures.
+        """shutdown(wait=Falsch) doesn't hang at exit mit running futures.
 
         See https://github.com/python/cpython/issues/83386.
         """
@@ -178,7 +178,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_context_manager_shutdown(self):
-        with futures.ThreadPoolExecutor(max_workers=5) as e:
+        mit futures.ThreadPoolExecutor(max_workers=5) als e:
             executor = e
             self.assertEqual(list(e.map(abs, range(-5, 5))),
                              [5, 4, 3, 2, 1, 0, 1, 2, 3, 4])
@@ -203,7 +203,7 @@ klasse ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCas
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
         # Ensure that the executor cleans up the threads when calling
-        # shutdown with wait=Falsch
+        # shutdown mit wait=Falsch
         executor = futures.ThreadPoolExecutor(max_workers=5)
         res = executor.map(abs, range(-5, 5))
         threads = executor._threads
@@ -288,8 +288,8 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
 
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_context_manager_shutdown(self):
-        with futures.ProcessPoolExecutor(
-                max_workers=5, mp_context=self.get_context()) as e:
+        mit futures.ProcessPoolExecutor(
+                max_workers=5, mp_context=self.get_context()) als e:
             processes = e._processes
             self.assertEqual(list(e.map(abs, range(-5, 5))),
                              [5, 4, 3, 2, 1, 0, 1, 2, 3, 4])
@@ -323,7 +323,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     def test_shutdown_no_wait(self):
         # Ensure that the executor cleans up the processes when calling
-        # shutdown with wait=Falsch
+        # shutdown mit wait=Falsch
         executor = futures.ProcessPoolExecutor(
                 max_workers=5, mp_context=self.get_context())
         res = executor.map(abs, range(-5, 5))
@@ -381,7 +381,7 @@ klasse ProcessPoolShutdownTest(ExecutorShutdownTest):
             pass
 
         # Ensure that the executor cleans up after called
-        # shutdown with wait=Falsch
+        # shutdown mit wait=Falsch
         executor_manager_thread = executor._executor_manager_thread
         executor.shutdown(wait=Falsch)
         time.sleep(0.2)

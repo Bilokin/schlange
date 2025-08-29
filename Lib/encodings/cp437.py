@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp437 generated von 'VENDORS/MICSFT/PC/CP437.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp437 generated von 'VENDORS/MICSFT/PC/CP437.TXT' mit gencodec.py.
 
 """#"
 

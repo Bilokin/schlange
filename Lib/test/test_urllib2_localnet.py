@@ -249,7 +249,7 @@ klasse BasicAuthHandler(http.server.BaseHTTPRequestHandler):
 klasse FakeProxyHandler(http.server.BaseHTTPRequestHandler):
     """This is a 'fake proxy' that makes it look like the entire
     internet has gone down due to a sudden zombie invasion.  It main
-    utility is in providing us with authentication support for
+    utility is in providing us mit authentication support for
     testing.
     """
 
@@ -316,7 +316,7 @@ klasse BasicAuthTests(unittest.TestCase):
         ah = urllib.request.HTTPBasicAuthHandler()
         ah.add_password(self.REALM, self.server_url, self.USER, self.INCORRECT_PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
-        with self.assertRaises(urllib.error.HTTPError) as cm:
+        mit self.assertRaises(urllib.error.HTTPError) als cm:
             urllib.request.urlopen(self.server_url)
         cm.exception.close()
 
@@ -364,13 +364,13 @@ klasse ProxyAuthTests(unittest.TestCase):
         self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD+"bad")
         self.digest_auth_handler.set_qop("auth")
-        with self.assertRaises(urllib.error.HTTPError) as cm:
+        mit self.assertRaises(urllib.error.HTTPError) als cm:
             self.opener.open(self.URL)
         cm.exception.close()
 
     def test_proxy_with_no_password_raises_httperror(self):
         self.digest_auth_handler.set_qop("auth")
-        with self.assertRaises(urllib.error.HTTPError) as cm:
+        mit self.assertRaises(urllib.error.HTTPError) als cm:
             self.opener.open(self.URL)
         cm.exception.close()
 
@@ -378,7 +378,7 @@ klasse ProxyAuthTests(unittest.TestCase):
         self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth")
-        with self.opener.open(self.URL) as result:
+        mit self.opener.open(self.URL) als result:
             while result.read():
                 pass
 
@@ -394,7 +394,7 @@ klasse ProxyAuthTests(unittest.TestCase):
             # a URLError.
             pass
         sonst:
-            with result:
+            mit result:
                 while result.read():
                     pass
 
@@ -539,7 +539,7 @@ klasse TestUrlopen(unittest.TestCase):
 
         try:
             self.urlopen("http://localhost:%s/weeble" % handler.port)
-        except urllib.error.URLError as f:
+        except urllib.error.URLError als f:
             data = f.read()
             f.close()
         sonst:
@@ -589,7 +589,7 @@ klasse TestUrlopen(unittest.TestCase):
         handler = self.start_server()
         req = urllib.request.Request("http://localhost:%s/" % handler.port,
                                      headers={"Range": "bytes=20-39"})
-        with urllib.request.urlopen(req):
+        mit urllib.request.urlopen(req):
             pass
         self.assertEqual(handler.headers_received["Range"], "bytes=20-39")
 
@@ -597,14 +597,14 @@ klasse TestUrlopen(unittest.TestCase):
         handler = self.start_server()
         req = urllib.request.Request("http://localhost:%s/" % handler.port,
                                      headers={"X-SoMe-hEader": "foobar"})
-        with urllib.request.urlopen(req):
+        mit urllib.request.urlopen(req):
             pass
         self.assertIn("X-Some-Header", handler.headers_received.keys())
         self.assertNotIn("X-SoMe-hEader", handler.headers_received.keys())
 
     def test_basic(self):
         handler = self.start_server()
-        with urllib.request.urlopen("http://localhost:%s" % handler.port) as open_url:
+        mit urllib.request.urlopen("http://localhost:%s" % handler.port) als open_url:
             fuer attr in ("read", "close", "info", "geturl"):
                 self.assertHasAttr(open_url, attr)
             self.assertWahr(open_url.read(), "calling 'read' failed")
@@ -613,7 +613,7 @@ klasse TestUrlopen(unittest.TestCase):
         handler = self.start_server()
         open_url = urllib.request.urlopen(
             "http://localhost:%s" % handler.port)
-        with open_url:
+        mit open_url:
             info_obj = open_url.info()
         self.assertIsInstance(info_obj, email.message.Message,
                               "object returned by 'info' is not an "
@@ -621,10 +621,10 @@ klasse TestUrlopen(unittest.TestCase):
         self.assertEqual(info_obj.get_content_subtype(), "plain")
 
     def test_geturl(self):
-        # Make sure same URL as opened is returned by geturl.
+        # Make sure same URL als opened is returned by geturl.
         handler = self.start_server()
         open_url = urllib.request.urlopen("http://localhost:%s" % handler.port)
-        with open_url:
+        mit open_url:
             url = open_url.geturl()
         self.assertEqual(url, "http://localhost:%s" % handler.port)
 

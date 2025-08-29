@@ -1,7 +1,7 @@
 importiere re
 
 von ._regexes importiere (
-    GLOBAL as _GLOBAL,
+    GLOBAL als _GLOBAL,
 )
 von ._common importiere (
     log_match,
@@ -9,7 +9,7 @@ von ._common importiere (
     set_capture_groups,
 )
 von ._compound_decl_body importiere DECL_BODY_PARSERS
-von ._func_body importiere parse_function_statics as parse_function_body
+von ._func_body importiere parse_function_statics als parse_function_body
 
 
 GLOBAL = set_capture_groups(_GLOBAL, (

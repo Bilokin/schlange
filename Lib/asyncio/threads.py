@@ -1,4 +1,4 @@
-"""High-level support fuer working with threads in asyncio"""
+"""High-level support fuer working mit threads in asyncio"""
 
 importiere functools
 importiere contextvars

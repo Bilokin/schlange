@@ -46,7 +46,7 @@ klasse AnonTest(unittest.TestCase, StructCheckMixin):
         # attribute whose name is specified in _anonymous_ but not in _fields_.
 
         # AttributeError: 'x' is specified in _anonymous_ but not in _fields_
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             klasse Name(Structure):
                 _fields_ = []
                 _anonymous_ = ["x"]

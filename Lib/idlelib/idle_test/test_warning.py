@@ -6,7 +6,7 @@ Revise wenn output destination changes (http://bugs.python.org/issue18318).
 Make sure warnings module is left unaltered (http://bugs.python.org/issue18081).
 '''
 von idlelib importiere run
-von idlelib importiere pyshell as shell
+von idlelib importiere pyshell als shell
 importiere unittest
 von test.support importiere captured_stderr
 importiere warnings
@@ -18,7 +18,7 @@ showwarning = warnings.showwarning
 running_in_idle = 'idle' in showwarning.__name__
 
 # The following was generated von pyshell.idle_formatwarning
-# and checked as matching expectation.
+# and checked als matching expectation.
 idlemsg = '''
 Warning (from warnings module):
   File "test_warning.py", line 99
@@ -39,7 +39,7 @@ klasse RunWarnTest(unittest.TestCase):
         self.assertIs(warnings.showwarning, showwarning)
 
     def test_run_show(self):
-        with captured_stderr() as f:
+        mit captured_stderr() als f:
             run.idle_showwarning_subproc(
                     'Test', UserWarning, 'test_warning.py', 99, f, 'Line of code')
             # The following uses .splitlines to erase line-ending differences
@@ -63,7 +63,7 @@ klasse ShellWarnTest(unittest.TestCase):
         self.assertEqual(idlemsg, s)
 
     def test_shell_show(self):
-        with captured_stderr() as f:
+        mit captured_stderr() als f:
             shell.idle_showwarning(
                     'Test', UserWarning, 'test_warning.py', 99, f, 'Line of code')
             self.assertEqual(shellmsg.splitlines(), f.getvalue().splitlines())

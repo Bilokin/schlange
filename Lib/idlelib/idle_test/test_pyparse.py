@@ -40,15 +40,15 @@ klasse PyParseTest(unittest.TestCase):
         p = self.parser
         setcode = p.set_code
 
-        # Not empty and doesn't end with newline.
-        with self.assertRaises(AssertionError):
+        # Not empty and doesn't end mit newline.
+        mit self.assertRaises(AssertionError):
             setcode('a')
 
         tests = ('',
                  'a\n')
 
         fuer string in tests:
-            with self.subTest(string=string):
+            mit self.subTest(string=string):
                 setcode(string)
                 eq(p.code, string)
                 eq(p.study_level, 0)
@@ -60,13 +60,13 @@ klasse PyParseTest(unittest.TestCase):
         start = p.find_good_parse_start
         def char_in_string_false(index): return Falsch
 
-        # First line starts with 'def' and ends with ':', then 0 is the pos.
+        # First line starts mit 'def' and ends mit ':', then 0 is the pos.
         setcode('def spam():\n')
         eq(start(char_in_string_false), 0)
 
-        # First line begins with a keyword in the list and ends
-        # with an open brace, then 0 is the pos.  This is how
-        # hyperparser calls this function as the newline is not added
+        # First line begins mit a keyword in the list and ends
+        # mit an open brace, then 0 is the pos.  This is how
+        # hyperparser calls this function als the newline is not added
         # in the editor, but rather on the call to setcode.
         setcode('class spam( ' + ' \n')
         eq(start(char_in_string_false), 0)
@@ -81,12 +81,12 @@ klasse PyParseTest(unittest.TestCase):
         pos0, pos = 33, 42  # Start of 'class...', '    def' lines.
 
         # Passing no value or non-callable should fail (issue 32989).
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             start()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             start(Falsch)
 
-        # Make text look like a string.  This returns pos as the start
+        # Make text look like a string.  This returns pos als the start
         # position, but it's set to Nichts.
         self.assertIsNichts(start(is_char_in_string=lambda index: Wahr))
 
@@ -95,7 +95,7 @@ klasse PyParseTest(unittest.TestCase):
         eq(start(char_in_string_false), pos)
 
         # If the beginning of the def line is not in a string, then it
-        # returns that as the index.
+        # returns that als the index.
         eq(start(is_char_in_string=lambda index: index > pos), pos)
         # If the beginning of the def line is in a string, then it
         # looks fuer a previous index.
@@ -131,7 +131,7 @@ klasse PyParseTest(unittest.TestCase):
         p.set_code(code)
 
         # Previous character is not a newline.
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             p.set_lo(5)
 
         # A value of 0 doesn't change self.code.
@@ -182,7 +182,7 @@ klasse PyParseTest(unittest.TestCase):
             )
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)  # resets study_level
                 study()
                 eq(p.study_level, 1)
@@ -209,7 +209,7 @@ klasse PyParseTest(unittest.TestCase):
             )
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 eq(gettype(), test.continuation)
 
@@ -233,19 +233,19 @@ klasse PyParseTest(unittest.TestCase):
             # Backslash continuation.
             TestInfo('a = (1 + 2) - 5 *\\\n',
                      0, 19, '*', Nichts, ((0, 0), (4, 1), (11, 0))),
-            # Bracket continuation with close.
+            # Bracket continuation mit close.
             TestInfo('\n   def function1(self, a,\n                 b):\n',
                      1, 48, ':', Nichts, ((1, 0), (17, 1), (46, 0))),
-            # Bracket continuation with unneeded backslash.
+            # Bracket continuation mit unneeded backslash.
             TestInfo('\n   def function1(self, a,\\\n',
                      1, 28, ',', 17, ((1, 0), (17, 1))),
             # Bracket continuation.
             TestInfo('\n   def function1(self, a,\n',
                      1, 27, ',', 17, ((1, 0), (17, 1))),
-            # Bracket continuation with comment at end of line with text.
+            # Bracket continuation mit comment at end of line mit text.
             TestInfo('\n   def function1(self, a,  # End of line comment.\n',
                      1, 51, ',', 17, ((1, 0), (17, 1), (28, 2), (51, 1))),
-            # Multi-line statement with comment line in between code lines.
+            # Multi-line statement mit comment line in between code lines.
             TestInfo('  a = ["first item",\n  # Comment line\n    "next item",\n',
                      0, 55, ',', 6, ((0, 0), (6, 1), (7, 2), (19, 1),
                                      (23, 2), (38, 1), (42, 2), (53, 1))),
@@ -261,7 +261,7 @@ klasse PyParseTest(unittest.TestCase):
             )
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 study()
                 eq(p.study_level, 2)
@@ -294,11 +294,11 @@ klasse PyParseTest(unittest.TestCase):
 
         # Blank string doesn't have enough elements in goodlines.
         setcode('')
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             getlines()
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 eq(getlines(), test.lines)
 
@@ -327,7 +327,7 @@ klasse PyParseTest(unittest.TestCase):
 
         # Must be C_BRACKET continuation type.
         setcode('def function1(self, a, b):\n')
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             indent()
 
         fuer test in tests:
@@ -346,9 +346,9 @@ klasse PyParseTest(unittest.TestCase):
                   ('a = #\\\n'),                     # Inline comment.
                   )
         fuer string in errors:
-            with self.subTest(string=string):
+            mit self.subTest(string=string):
                 setcode(string)
-                with self.assertRaises(AssertionError):
+                mit self.assertRaises(AssertionError):
                     indent()
 
         TestInfo = namedtuple('TestInfo', ('string', 'spaces'))
@@ -369,7 +369,7 @@ klasse PyParseTest(unittest.TestCase):
                  TestInfo('(1 + 2) - 5 *\\\n', 3),
                  )
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 eq(indent(), test.spaces)
 
@@ -390,7 +390,7 @@ klasse PyParseTest(unittest.TestCase):
                  )
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 eq(baseindent(), test.indent)
 
@@ -418,7 +418,7 @@ klasse PyParseTest(unittest.TestCase):
             )
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 test.assert_(opener())
 
@@ -447,7 +447,7 @@ klasse PyParseTest(unittest.TestCase):
             )
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 test.assert_(closer())
 
@@ -467,14 +467,14 @@ klasse PyParseTest(unittest.TestCase):
             TestInfo('()(\n)\n', ((0, 0), (0, 1), (2, 0), (2, 1), (5, 0))),
             TestInfo('(())\n', ((0, 0), (0, 1), (1, 2), (3, 1), (4, 0))),
             TestInfo('(\n())\n', ((0, 0), (0, 1), (2, 2), (4, 1), (5, 0))),
-            # Same as matched test.
+            # Same als matched test.
             TestInfo('{)(]\n', ((0, 0), (0, 1), (2, 0), (2, 1), (4, 0))),
             TestInfo('(((())\n',
                      ((0, 0), (0, 1), (1, 2), (2, 3), (3, 4), (5, 3), (6, 2))),
             )
 
         fuer test in tests:
-            with self.subTest(string=test.string):
+            mit self.subTest(string=test.string):
                 setcode(test.string)
                 eq(bracketing(), test.bracket)
 

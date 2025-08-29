@@ -87,7 +87,7 @@ klasse FakeSocket:
 klasse EPipeSocket(FakeSocket):
 
     def __init__(self, text, pipe_trigger):
-        # When sendall() is called with pipe_trigger, raise EPIPE.
+        # When sendall() is called mit pipe_trigger, raise EPIPE.
         FakeSocket.__init__(self, text)
         self.pipe_trigger = pipe_trigger
 
@@ -317,8 +317,8 @@ klasse HeaderTests(TestCase):
             b'VCHAR: ' + bytes(range(0x21, 0x7E + 1)) + b'\r\n'
             b'obs-text: ' + bytes(range(0x80, 0xFF + 1)) + b'\r\n'
             b'obs-fold: text\r\n'
-            b' folded with space\r\n'
-            b'\tfolded with tab\r\n'
+            b' folded mit space\r\n'
+            b'\tfolded mit tab\r\n'
             b'Content-Length: 0\r\n'
             b'\r\n'
         )
@@ -336,8 +336,8 @@ klasse HeaderTests(TestCase):
         self.assertIn('obs-text', resp.msg)
         fuer folded in (resp.getheader('obs-fold'), resp.msg['obs-fold']):
             self.assertStartsWith(folded, 'text')
-            self.assertIn(' folded with space', folded)
-            self.assertEndsWith(folded, 'folded with tab')
+            self.assertIn(' folded mit space', folded)
+            self.assertEndsWith(folded, 'folded mit tab')
 
     def test_invalid_headers(self):
         conn = client.HTTPConnection('example.com')
@@ -365,8 +365,8 @@ klasse HeaderTests(TestCase):
             (b'ValidName', b'InvalidValue\n'),
         )
         fuer name, value in cases:
-            with self.subTest((name, value)):
-                with self.assertRaisesRegex(ValueError, 'Invalid header'):
+            mit self.subTest((name, value)):
+                mit self.assertRaisesRegex(ValueError, 'Invalid header'):
                     conn.putheader(name, value)
 
     def test_headers_debuglevel(self):
@@ -378,7 +378,7 @@ klasse HeaderTests(TestCase):
         )
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock, debuglevel=1)
-        with support.captured_stdout() as output:
+        mit support.captured_stdout() als output:
             resp.begin()
         lines = output.getvalue().splitlines()
         self.assertEqual(lines[0], "reply: 'HTTP/1.1 200 OK\\r\\n'")
@@ -391,15 +391,15 @@ klasse HeaderTests(TestCase):
         headers = [f"Name{i}: Value{i}".encode() fuer i in range(max_headers)]
         body = b"HTTP/1.1 200 OK\r\n" + b"\r\n".join(headers)
 
-        with self.subTest(max_headers=Nichts):
+        mit self.subTest(max_headers=Nichts):
             sock = FakeSocket(body)
             resp = client.HTTPResponse(sock)
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                 client.HTTPException, f"got more than 100 headers"
             ):
                 resp.begin()
 
-        with self.subTest(max_headers=max_headers):
+        mit self.subTest(max_headers=max_headers):
             sock = FakeSocket(body)
             resp = client.HTTPResponse(sock)
             resp.begin(_max_headers=max_headers)
@@ -415,16 +415,16 @@ klasse HeaderTests(TestCase):
             + b"\r\nContent-Length: 12\r\n\r\nDummy body\r\n"
         )
 
-        with self.subTest(max_headers=Nichts):
+        mit self.subTest(max_headers=Nichts):
             conn = client.HTTPConnection("example.com")
             conn.sock = FakeSocket(body)
             conn.request("GET", "/")
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                 client.HTTPException, f"got more than {client._MAXHEADERS} headers"
             ):
                 response = conn.getresponse()
 
-        with self.subTest(max_headers=Nichts):
+        mit self.subTest(max_headers=Nichts):
             conn = client.HTTPConnection(
                 "example.com", max_response_headers=max_headers
             )
@@ -448,7 +448,7 @@ klasse HttpMethodTests(TestCase):
         )
 
         fuer method in methods:
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                     ValueError, "method can't contain control characters"):
                 conn = client.HTTPConnection('example.com')
                 conn.sock = FakeSocket(Nichts)
@@ -690,7 +690,7 @@ klasse BasicTest(TestCase):
                 'URI not available in preferred format')
             PROXY_AUTHENTICATION_REQUIRED = (407,
                 'Proxy Authentication Required',
-                'You must authenticate with this proxy before proceeding')
+                'You must authenticate mit this proxy before proceeding')
             REQUEST_TIMEOUT = (408, 'Request Timeout',
                 'Request timed out; try again later')
             CONFLICT = 409, 'Conflict', 'Request conflict'
@@ -739,7 +739,7 @@ klasse BasicTest(TestCase):
             UNAVAILABLE_FOR_LEGAL_REASONS = (451,
                 'Unavailable For Legal Reasons',
                 'The server is denying access to the '
-                'resource as a consequence of a legal demand')
+                'resource als a consequence of a legal demand')
             # server errors
             INTERNAL_SERVER_ERROR = (500, 'Internal Server Error',
                 'Server got itself in trouble')
@@ -818,7 +818,7 @@ klasse BasicTest(TestCase):
 
     def test_partial_reads(self):
         # wenn we have Content-Length, HTTPResponse knows when to close itself,
-        # the same behaviour as when we read the whole thing with read()
+        # the same behaviour als when we read the whole thing mit read()
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -848,7 +848,7 @@ klasse BasicTest(TestCase):
 
     def test_partial_readintos(self):
         # wenn we have Content-Length, HTTPResponse knows when to close itself,
-        # the same behaviour as when we read the whole thing with read()
+        # the same behaviour als when we read the whole thing mit read()
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -981,7 +981,7 @@ klasse BasicTest(TestCase):
             self.assertEqual(p, c.port)
 
     def test_response_headers(self):
-        # test response with multiple message headers with the same field name.
+        # test response mit multiple message headers mit the same field name.
         text = ('HTTP/1.1 200 OK\r\n'
                 'Set-Cookie: Customer="WILE_E_COYOTE"; '
                 'Version="1"; Path="/acme"\r\n'
@@ -1041,7 +1041,7 @@ klasse BasicTest(TestCase):
                     b'Transfer-Encoding: chunked\r\n'
                     b'\r\n')
 
-        with open(__file__, 'rb') as body:
+        mit open(__file__, 'rb') als body:
             conn = client.HTTPConnection('example.com')
             sock = FakeSocket(body)
             conn.sock = sock
@@ -1126,7 +1126,7 @@ klasse BasicTest(TestCase):
         # See: Issue #12676
         conn = client.HTTPConnection('example.com')
         conn.sock = FakeSocket('')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             conn.request('POST', 'test', conn)
 
     def test_chunked(self):
@@ -1139,7 +1139,7 @@ klasse BasicTest(TestCase):
 
         # Explicit full read
         fuer n in (-123, -1, Nichts):
-            with self.subTest('full read', n=n):
+            mit self.subTest('full read', n=n):
                 sock = FakeSocket(chunked_start + last_chunk + chunked_end)
                 resp = client.HTTPResponse(sock, method="GET")
                 resp.begin()
@@ -1148,7 +1148,7 @@ klasse BasicTest(TestCase):
                 resp.close()
 
         # Read first chunk
-        with self.subTest('read1(-1)'):
+        mit self.subTest('read1(-1)'):
             sock = FakeSocket(chunked_start + last_chunk + chunked_end)
             resp = client.HTTPResponse(sock, method="GET")
             resp.begin()
@@ -1170,7 +1170,7 @@ klasse BasicTest(TestCase):
             resp.begin()
             try:
                 resp.read()
-            except client.IncompleteRead as i:
+            except client.IncompleteRead als i:
                 self.assertEqual(i.partial, expected)
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
@@ -1213,7 +1213,7 @@ klasse BasicTest(TestCase):
             resp.begin()
             try:
                 n = resp.readinto(b)
-            except client.IncompleteRead as i:
+            except client.IncompleteRead als i:
                 self.assertEqual(i.partial, expected)
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
@@ -1280,7 +1280,7 @@ klasse BasicTest(TestCase):
         resp.begin()
         try:
             resp.read()
-        except client.IncompleteRead as i:
+        except client.IncompleteRead als i:
             self.assertEqual(i.partial, b'Hello\r\n')
             self.assertEqual(repr(i),
                              "IncompleteRead(7 bytes read, 3 more expected)")
@@ -1326,7 +1326,7 @@ klasse BasicTest(TestCase):
             'r\n' * 32768
         )
         resp = client.HTTPResponse(FakeSocket(body))
-        with self.assertRaises(client.HTTPException) as cm:
+        mit self.assertRaises(client.HTTPException) als cm:
             resp.begin()
         # We must assert more because other reasonable errors that we
         # do not want can also be HTTPException derived.
@@ -1347,7 +1347,7 @@ klasse BasicTest(TestCase):
         self.assertRaises(client.LineTooLong, resp.read)
 
     def test_early_eof(self):
-        # Test httpresponse with no \r\n termination,
+        # Test httpresponse mit no \r\n termination,
         body = "HTTP/1.1 200 Ok"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -1482,7 +1482,7 @@ klasse BasicTest(TestCase):
         result = Nichts
         def run_server():
             [conn, address] = serv.accept()
-            with conn, conn.makefile("rb") as reader:
+            mit conn, conn.makefile("rb") als reader:
                 # Read the request header until a blank line
                 while Wahr:
                     line = reader.readline()
@@ -1532,7 +1532,7 @@ klasse BasicTest(TestCase):
         conn = UnsafeHTTPConnection('example.com\r\n')
         conn.sock = FakeSocket('')
         # set skip_host so a ValueError is not raised upon adding the
-        # invalid URL as the value of the "Host:" header
+        # invalid URL als the value of the "Host:" header
         conn.putrequest('GET', '/', skip_host=1)
 
     def test_putrequest_override_encoding(self):
@@ -1762,7 +1762,7 @@ klasse OfflineTest(TestCase):
         self.assertEqual(client.responses[client.NOT_FOUND], "Not Found")
 
     def test_client_constants(self):
-        # Make sure we don't break backward compatibility with 3.4
+        # Make sure we don't break backward compatibility mit 3.4
         expected = [
             'CONTINUE',
             'SWITCHING_PROTOCOLS',
@@ -1828,7 +1828,7 @@ klasse OfflineTest(TestCase):
             'TOO_EARLY'
         ]
         fuer const in expected:
-            with self.subTest(constant=const):
+            mit self.subTest(constant=const):
                 self.assertHasAttr(client, const)
 
 
@@ -1859,7 +1859,7 @@ klasse SourceAddressTest(TestCase):
         self.conn = client.HTTPSConnection(HOST, self.port,
                 source_address=('', self.source_port))
         # We don't test anything here other than the constructor not barfing as
-        # this code doesn't deal with setting up an active running SSL server
+        # this code doesn't deal mit setting up an active running SSL server
         # fuer an ssl_wrapped connect() to actually return from.
 
 
@@ -1922,7 +1922,7 @@ klasse PersistenceTest(TestCase):
             ('1.1', 'Connection: cloSE\r\n', Falsch),
         )
         fuer version, header, reuse in tests:
-            with self.subTest(version=version, header=header):
+            mit self.subTest(version=version, header=header):
                 msg = (
                     'HTTP/{} 200 OK\r\n'
                     '{}'
@@ -1933,7 +1933,7 @@ klasse PersistenceTest(TestCase):
                 conn = FakeSocketHTTPConnection(msg)
                 self.assertIsNichts(conn.sock)
                 conn.request('GET', '/open-connection')
-                with conn.getresponse() as response:
+                mit conn.getresponse() als response:
                     self.assertEqual(conn.sock is Nichts, not reuse)
                     response.read()
                 self.assertEqual(conn.sock is Nichts, not reuse)
@@ -1959,7 +1959,7 @@ klasse PersistenceTest(TestCase):
             (make_reset_reader, ConnectionResetError),
         )
         fuer stream_factory, exception in tests:
-            with self.subTest(exception=exception):
+            mit self.subTest(exception=exception):
                 conn = FakeSocketHTTPConnection(b'', stream_factory)
                 conn.request('GET', '/eof-response')
                 self.assertRaises(exception, conn.getresponse)
@@ -2000,9 +2000,9 @@ klasse HTTPSTest(TestCase):
         # Default settings: requires a valid cert von a trusted CA
         importiere ssl
         support.requires('network')
-        with socket_helper.transient_internet('self-signed.pythontest.net'):
+        mit socket_helper.transient_internet('self-signed.pythontest.net'):
             h = client.HTTPSConnection('self-signed.pythontest.net', 443)
-            with self.assertRaises(ssl.SSLError) as exc_info:
+            mit self.assertRaises(ssl.SSLError) als exc_info:
                 h.request('GET', '/')
             self.assertEqual(exc_info.exception.reason, 'CERTIFICATE_VERIFY_FAILED')
 
@@ -2010,7 +2010,7 @@ klasse HTTPSTest(TestCase):
         # Switch off cert verification
         importiere ssl
         support.requires('network')
-        with socket_helper.transient_internet('self-signed.pythontest.net'):
+        mit socket_helper.transient_internet('self-signed.pythontest.net'):
             context = ssl._create_unverified_context()
             h = client.HTTPSConnection('self-signed.pythontest.net', 443,
                                        context=context)
@@ -2024,7 +2024,7 @@ klasse HTTPSTest(TestCase):
     def test_networked_trusted_by_default_cert(self):
         # Default settings: requires a valid cert von a trusted CA
         support.requires('network')
-        with socket_helper.transient_internet('www.python.org'):
+        mit socket_helper.transient_internet('www.python.org'):
             h = client.HTTPSConnection('www.python.org', 443)
             h.request('GET', '/')
             resp = h.getresponse()
@@ -2034,11 +2034,11 @@ klasse HTTPSTest(TestCase):
             self.assertIn('text/html', content_type)
 
     def test_networked_good_cert(self):
-        # We feed the server's cert as a validating cert
+        # We feed the server's cert als a validating cert
         importiere ssl
         support.requires('network')
         selfsigned_pythontestdotnet = 'self-signed.pythontest.net'
-        with socket_helper.transient_internet(selfsigned_pythontestdotnet):
+        mit socket_helper.transient_internet(selfsigned_pythontestdotnet):
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
             self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
             self.assertEqual(context.check_hostname, Wahr)
@@ -2048,7 +2048,7 @@ klasse HTTPSTest(TestCase):
                                            context=context)
                 h.request('GET', '/')
                 resp = h.getresponse()
-            except ssl.SSLError as ssl_err:
+            except ssl.SSLError als ssl_err:
                 ssl_err_str = str(ssl_err)
                 # In the error message of [SSL: CERTIFICATE_VERIFY_FAILED] on
                 # modern Linux distros (Debian Buster, etc) default OpenSSL
@@ -2071,11 +2071,11 @@ klasse HTTPSTest(TestCase):
         # We feed a "CA" cert that is unrelated to the server's cert
         importiere ssl
         support.requires('network')
-        with socket_helper.transient_internet('self-signed.pythontest.net'):
+        mit socket_helper.transient_internet('self-signed.pythontest.net'):
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
             context.load_verify_locations(CERT_localhost)
             h = client.HTTPSConnection('self-signed.pythontest.net', 443, context=context)
-            with self.assertRaises(ssl.SSLError) as exc_info:
+            mit self.assertRaises(ssl.SSLError) als exc_info:
                 h.request('GET', '/')
             self.assertEqual(exc_info.exception.reason, 'CERTIFICATE_VERIFY_FAILED')
 
@@ -2084,7 +2084,7 @@ klasse HTTPSTest(TestCase):
         importiere ssl
         server = self.make_server(CERT_localhost)
         h = client.HTTPSConnection('localhost', server.port)
-        with self.assertRaises(ssl.SSLError) as exc_info:
+        mit self.assertRaises(ssl.SSLError) als exc_info:
             h.request('GET', '/')
         self.assertEqual(exc_info.exception.reason, 'CERTIFICATE_VERIFY_FAILED')
 
@@ -2108,13 +2108,13 @@ klasse HTTPSTest(TestCase):
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.load_verify_locations(CERT_fakehostname)
         h = client.HTTPSConnection('localhost', server.port, context=context)
-        with self.assertRaises(ssl.CertificateError):
+        mit self.assertRaises(ssl.CertificateError):
             h.request('GET', '/')
 
-        # Same with explicit context.check_hostname=Wahr
+        # Same mit explicit context.check_hostname=Wahr
         context.check_hostname = Wahr
         h = client.HTTPSConnection('localhost', server.port, context=context)
-        with self.assertRaises(ssl.CertificateError):
+        mit self.assertRaises(ssl.CertificateError):
             h.request('GET', '/')
 
         # With context.check_hostname=Falsch, the mismatching is ignored
@@ -2189,7 +2189,7 @@ klasse RequestBodyTest(TestCase):
             ((b'foo', b'bar'), b'3\r\nfoo\r\n3\r\nbar\r\n0\r\n\r\n'),
         )
         fuer body, expected in cases:
-            with self.subTest(body):
+            mit self.subTest(body):
                 self.conn = client.HTTPConnection('example.com')
                 self.conn.sock = self.sock = FakeSocket('')
 
@@ -2235,9 +2235,9 @@ klasse RequestBodyTest(TestCase):
 
     def test_text_file_body(self):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
-        with open(os_helper.TESTFN, "w", encoding="utf-8") as f:
+        mit open(os_helper.TESTFN, "w", encoding="utf-8") als f:
             f.write("body")
-        with open(os_helper.TESTFN, encoding="utf-8") as f:
+        mit open(os_helper.TESTFN, encoding="utf-8") als f:
             self.conn.request("PUT", "/url", f)
             message, f = self.get_headers_and_fp()
             self.assertEqual("text/plain", message.get_content_type())
@@ -2250,9 +2250,9 @@ klasse RequestBodyTest(TestCase):
 
     def test_binary_file_body(self):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
-        with open(os_helper.TESTFN, "wb") as f:
+        mit open(os_helper.TESTFN, "wb") als f:
             f.write(b"body\xc1")
-        with open(os_helper.TESTFN, "rb") as f:
+        mit open(os_helper.TESTFN, "rb") als f:
             self.conn.request("PUT", "/url", f)
             message, f = self.get_headers_and_fp()
             self.assertEqual("text/plain", message.get_content_type())
@@ -2411,7 +2411,7 @@ klasse TunnelTests(TestCase):
         self.assertIn(b'HEAD / HTTP/1.1\r\nHost: %(host)s:%(port)d\r\n' % d,
                       self.conn.sock.data)
 
-    # This request is not RFC-valid, but it's been possible with the library
+    # This request is not RFC-valid, but it's been possible mit the library
     # fuer years, so don't break it unexpectedly... This also tests
     # case-insensitivity when injecting Host: headers wenn they're missing.
     def test_connect_with_tunnel_with_different_host_header(self):
@@ -2460,7 +2460,7 @@ klasse TunnelTests(TestCase):
 
     def test_tunnel_connect_single_send_connection_setup(self):
         """Regresstion test fuer https://bugs.python.org/issue43332."""
-        with mock.patch.object(self.conn, 'send') as mock_send:
+        mit mock.patch.object(self.conn, 'send') als mock_send:
             self.conn.set_tunnel('destination.com')
             self.conn.connect()
             self.conn.request('GET', '/')
@@ -2513,7 +2513,7 @@ klasse TunnelTests(TestCase):
         self.conn._create_connection = self._create_connection(response_text)
         self.conn.set_tunnel('destination.com')
 
-        with support.captured_stdout() as output:
+        mit support.captured_stdout() als output:
             self.conn.request('PUT', '/', '')
         lines = output.getvalue().splitlines()
         self.assertIn('header: {}'.format(expected_header), lines)
@@ -2562,7 +2562,7 @@ klasse TunnelTests(TestCase):
         exc = Nichts
         try:
             self.conn.request('HEAD', '/', '')
-        except OSError as e:
+        except OSError als e:
             # keeping a reference to exc keeps response alive in the traceback
             exc = e
         self.assertIsNotNichts(exc)

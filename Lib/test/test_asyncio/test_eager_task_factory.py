@@ -6,7 +6,7 @@ importiere unittest
 
 von unittest importiere mock
 von asyncio importiere tasks
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 von test.support.script_helper importiere assert_python_ok
 
 MOCK_ANY = mock.ANY
@@ -23,7 +23,7 @@ klasse EagerTaskFactoryLoopTests:
     def run_coro(self, coro):
         """
         Helper method to run the `coro` coroutine in the test event loop.
-        It helps with making sure the event loop is running before starting
+        It helps mit making sure the event loop is running before starting
         to execute `coro`. This is important fuer testing the eager step
         functionality, since an eager step is taken only wenn the event loop
         is already running.
@@ -124,7 +124,7 @@ klasse EagerTaskFactoryLoopTests:
             self.assertGreater(t.cancelling(), 0)
             result = await t
 
-        with self.assertRaises(asyncio.CancelledError) as cm:
+        mit self.assertRaises(asyncio.CancelledError) als cm:
             self.run_coro(run())
 
         self.assertEqual('cancellation message', cm.exception.args[0])
@@ -392,7 +392,7 @@ async def recursive_taskgroups(width, depth):
     wenn depth == 0:
         return
 
-    async with asyncio.TaskGroup() as tg:
+    async mit asyncio.TaskGroup() als tg:
         futures = [
             tg.create_task(recursive_taskgroups(width, depth - 1))
             fuer _ in range(width)

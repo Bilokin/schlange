@@ -90,7 +90,7 @@ klasse Dialog(Toplevel):
 
     '''Class to open dialogs.
 
-    This klasse is intended as a base klasse fuer custom dialogs
+    This klasse is intended als a base klasse fuer custom dialogs
     '''
 
     def __init__(self, parent, title = Nichts):

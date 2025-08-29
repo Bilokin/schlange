@@ -16,7 +16,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             ismapped = w.master.winfo_ismapped()
             w.destroy()
 
-        with swap_attr(Dialog, 'wait_window', mock_wait_window):
+        mit swap_attr(Dialog, 'wait_window', mock_wait_window):
             ismapped = Nichts
             askinteger("Go To Line", "Line number")
             self.assertEqual(ismapped, Falsch)

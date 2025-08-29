@@ -29,7 +29,7 @@ von _pyrepl.console importiere Event
 von _pyrepl._module_completer importiere ImportParser, ModuleCompleter
 von _pyrepl.readline importiere (ReadlineAlikeReader, ReadlineConfig,
                               _ReadlineWrapper)
-von _pyrepl.readline importiere multiline_input as readline_multiline_input
+von _pyrepl.readline importiere multiline_input als readline_multiline_input
 
 try:
     importiere pty
@@ -632,7 +632,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         try:
             wenn os.isatty(sys.stdin.fileno()):
                 return
-        except OSError as ose:
+        except OSError als ose:
             self.skipTest(f"stdin tty check failed: {ose}")
         sonst:
             self.skipTest("stdin is not a tty")
@@ -642,7 +642,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         try:
             wenn os.isatty(sys.stdout.fileno()):
                 return
-        except OSError as ose:
+        except OSError als ose:
             self.skipTest(f"stdout tty check failed: {ose}")
         sonst:
             self.skipTest("stdout is not a tty")
@@ -796,7 +796,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         self.assert_screen_equal(reader, "c\x1d", clean=Wahr)
 
     def test_history_search_backward(self):
-        # Test <page up> history search backward with "imp" input
+        # Test <page up> history search backward mit "imp" input
         events = itertools.chain(
             code_to_events("import os\n"),
             code_to_events("imp"),
@@ -816,7 +816,7 @@ klasse TestPyReplOutput(ScreenEqualMixin, TestCase):
         self.assert_screen_equal(reader, "import os", clean=Wahr)
 
     def test_history_search_backward_empty(self):
-        # Test <page up> history search backward with an empty input
+        # Test <page up> history search backward mit an empty input
         events = itertools.chain(
             code_to_events("import os\n"),
             [
@@ -854,7 +854,7 @@ klasse TestPyReplCompleter(TestCase):
         self.assertEqual(output, "os.getpid()")
 
     def test_completion_with_many_options(self):
-        # Test with something that initially displays many options
+        # Test mit something that initially displays many options
         # and then complete von one of them. The first time tab is
         # pressed, the options are displayed (which corresponds to
         # when the repl shows [ not unique ]) and the second completes
@@ -934,7 +934,7 @@ klasse TestPyReplModuleCompleter(TestCase):
         # Make iter_modules() search only the standard library.
         # This makes the test more reliable in case there are
         # other user packages/scripts on PYTHONPATH which can
-        # interfere with the completions.
+        # interfere mit the completions.
         lib_path = os.path.dirname(importlib.__path__[0])
         self._saved_sys_path = sys.path
         sys.path = [lib_path]
@@ -956,7 +956,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("import importlib.\t\tres\t\n", "import importlib.resources"),
             ("import importlib.resources.\t\ta\t\n", "import importlib.resources.abc"),
             ("import foo, impo\t\n", "import foo, importlib"),
-            ("import foo as bar, impo\t\n", "import foo as bar, importlib"),
+            ("import foo als bar, impo\t\n", "import foo als bar, importlib"),
             ("from impo\t\n", "from importlib"),
             ("from importlib.res\t\n", "from importlib.resources"),
             ("from importlib.\t\tres\t\n", "from importlib.resources"),
@@ -966,7 +966,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from importlib.res\t importiere a\t\n", "from importlib.resources importiere abc"),
         )
         fuer code, expected in cases:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
                 output = reader.readline()
@@ -985,7 +985,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from _\t\n", "from _private"),
         )
         fuer code, expected in cases:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
                 output = reader.readline()
@@ -1006,7 +1006,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from foo importiere _\t\n", "from foo importiere _private"),
         )
         fuer code, expected in cases:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
                 output = reader.readline()
@@ -1017,7 +1017,7 @@ klasse TestPyReplModuleCompleter(TestCase):
         # Make iter_modules() search only the standard library.
         # This makes the test more reliable in case there are
         # other user packages/scripts on PYTHONPATH which can
-        # intefere with the completions.
+        # intefere mit the completions.
         lib_path = os.path.dirname(importlib.__path__[0])
         sys.path = [lib_path]
 
@@ -1026,7 +1026,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from bui\t\n", "from builtins"),
         )
         fuer code, expected in cases:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
                 output = reader.readline()
@@ -1040,7 +1040,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("_pyrepl", "from . importiere readl\t\n", "from . importiere readline"),
         )
         fuer package, code, expected in cases:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={"__package__": package})
                 output = reader.readline()
@@ -1050,14 +1050,14 @@ klasse TestPyReplModuleCompleter(TestCase):
                                             ModuleInfo(Nichts, "invalid-name", Wahr)])
     def test_invalid_identifiers(self):
         # Make sure modules which are not valid identifiers
-        # are not suggested as those cannot be imported via 'import'.
+        # are not suggested als those cannot be imported via 'import'.
         cases = (
             ("import valid\t\n", "import valid_name"),
             # 'invalid-name' contains a dash and should not be completed
             ("import invalid\t\n", "import invalid"),
         )
         fuer code, expected in cases:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
                 output = reader.readline()
@@ -1070,7 +1070,7 @@ klasse TestPyReplModuleCompleter(TestCase):
             ("from typing importiere Na\t\n", "from typing importiere Na"),
         )
         fuer code, expected in cases:
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 events = code_to_events(code)
                 reader = self.prepare_reader(events, namespace={})
                 output = reader.readline()
@@ -1095,7 +1095,7 @@ klasse TestPyReplModuleCompleter(TestCase):
         )
         completer = ModuleCompleter()
         fuer name, expected in cases:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertEqual(completer.get_path_and_prefix(name), expected)
 
     def test_parse(self):
@@ -1106,9 +1106,9 @@ klasse TestPyReplModuleCompleter(TestCase):
             ('import foo, ', (Nichts, '')),
             ('import foo, bar', (Nichts, 'bar')),
             ('import foo, bar, baz', (Nichts, 'baz')),
-            ('import foo as bar,', (Nichts, '')),
-            ('import foo as bar, ', (Nichts, '')),
-            ('import foo as bar, baz', (Nichts, 'baz')),
+            ('import foo als bar,', (Nichts, '')),
+            ('import foo als bar, ', (Nichts, '')),
+            ('import foo als bar, baz', (Nichts, 'baz')),
             ('import a.', (Nichts, 'a.')),
             ('import a.b', (Nichts, 'a.b')),
             ('import a.b.', (Nichts, 'a.b.')),
@@ -1134,24 +1134,24 @@ klasse TestPyReplModuleCompleter(TestCase):
             ('from foo importiere (a,', ('foo', '')),
             ('from foo importiere (a, ', ('foo', '')),
             ('from foo importiere (a, c', ('foo', 'c')),
-            ('from foo importiere (a as b, c', ('foo', 'c')),
+            ('from foo importiere (a als b, c', ('foo', 'c')),
         )
         fuer code, parsed in cases:
             parser = ImportParser(code)
             actual = parser.parse()
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 self.assertEqual(actual, parsed)
             # The parser should not get tripped up by any
             # other preceding statements
             _code = f'import xyz\n{code}'
             parser = ImportParser(_code)
             actual = parser.parse()
-            with self.subTest(code=_code):
+            mit self.subTest(code=_code):
                 self.assertEqual(actual, parsed)
             _code = f'import xyz;{code}'
             parser = ImportParser(_code)
             actual = parser.parse()
-            with self.subTest(code=_code):
+            mit self.subTest(code=_code):
                 self.assertEqual(actual, parsed)
 
     def test_parse_error(self):
@@ -1201,7 +1201,7 @@ klasse TestPyReplModuleCompleter(TestCase):
         fuer code in cases:
             parser = ImportParser(code)
             actual = parser.parse()
-            with self.subTest(code=code):
+            mit self.subTest(code=code):
                 self.assertEqual(actual, Nichts)
 
 klasse TestPasteEvent(TestCase):
@@ -1395,7 +1395,7 @@ klasse TestMain(ReplTestCase):
         output, exit_code = self.run_repl(["sorted(dir())", "exit()"], skip=Wahr)
         self.assertEqual(exit_code, 0)
 
-        # wenn `__main__` is not a file (impossible with pyrepl)
+        # wenn `__main__` is not a file (impossible mit pyrepl)
         case1 = f"{pre}, '__doc__', {post}" in output
 
         # wenn `__main__` is an uncached .py file (no .pyc)
@@ -1429,7 +1429,7 @@ klasse TestMain(ReplTestCase):
         clean_env = make_clean_env()
         clean_env["NO_COLOR"] = "1"  # force_not_colorized doesn't touch subprocesses
 
-        with tempfile.TemporaryDirectory() as td:
+        mit tempfile.TemporaryDirectory() als td:
             blue = pathlib.Path(td) / "blue"
             blue.mkdir()
             mod = blue / "calx.py"
@@ -1469,7 +1469,7 @@ klasse TestMain(ReplTestCase):
 
         self.assertEqual(exit_code, 0)
         fuer var, expected in expectations.items():
-            with self.subTest(var=var, expected=expected):
+            mit self.subTest(var=var, expected=expected):
                 wenn m := re.search(rf"\^{var}=(.+?)[\r\n]", output):
                     self._assertMatchOK(var, expected, actual=m.group(1))
                 sonst:
@@ -1570,7 +1570,7 @@ klasse TestMain(ReplTestCase):
         # See https://github.com/python/cpython/issues/129098.
         pyrepl_main_file = os.path.join(STDLIB_DIR, "_pyrepl", "__main__.py")
         self.assertWahr(os.path.exists(pyrepl_main_file), pyrepl_main_file)
-        with open(pyrepl_main_file) as fp:
+        mit open(pyrepl_main_file) als fp:
             excluded_lines = fp.readlines()
         excluded_lines = list(filter(Nichts, map(str.strip, excluded_lines)))
 
@@ -1578,7 +1578,7 @@ klasse TestMain(ReplTestCase):
             self._test_no_pyrepl_source_in_exc(filename, excluded_lines)
 
     def _test_no_pyrepl_source_in_exc(self, filename, excluded_lines):
-        with EnvironmentVarGuard() as env, self.subTest(filename=filename):
+        mit EnvironmentVarGuard() als env, self.subTest(filename=filename):
             env.unset("PYTHON_BASIC_REPL")
             commands = (f"eval(compile('spam', {filename!r}, 'eval'))\n"
                         f"exit()\n")
@@ -1586,7 +1586,7 @@ klasse TestMain(ReplTestCase):
             self.assertIn("Traceback (most recent call last)", output)
             self.assertIn("NameError: name 'spam' is not defined", output)
             fuer line in excluded_lines:
-                with self.subTest(line=line):
+                mit self.subTest(line=line):
                     self.assertNotIn(line, output)
 
     @force_not_colorized
@@ -1667,7 +1667,7 @@ klasse TestMain(ReplTestCase):
                     env["PYTHON_BASIC_REPL"] = "1"
                 sonst:
                     env.pop("PYTHON_BASIC_REPL", Nichts)
-                with self.subTest(set_tracebacklimit=set_tracebacklimit,
+                mit self.subTest(set_tracebacklimit=set_tracebacklimit,
                                   basic_repl=basic_repl):
                     output, exit_code = self.run_repl(commands, env=env, skip=Wahr)
                     self.assertIn("in x1", output)
@@ -1702,7 +1702,7 @@ klasse TestMain(ReplTestCase):
         wenn readline.backend != "editline":
             self.skipTest("GNU readline is not affected by this issue")
 
-        with tempfile.NamedTemporaryFile() as hfile:
+        mit tempfile.NamedTemporaryFile() als hfile:
             env = os.environ.copy()
             env["PYTHON_HISTORY"] = hfile.name
 
@@ -1721,7 +1721,7 @@ klasse TestMain(ReplTestCase):
     def test_history_survive_crash(self):
         env = os.environ.copy()
 
-        with tempfile.NamedTemporaryFile() as hfile:
+        mit tempfile.NamedTemporaryFile() als hfile:
             env["PYTHON_HISTORY"] = hfile.name
 
             commands = "1\n2\n3\nexit()\n"
@@ -1779,7 +1779,7 @@ klasse TestMain(ReplTestCase):
 
     def test_detect_pip_usage_in_repl(self):
         fuer pip_cmd in ("pip", "pip3", "python -m pip", "python3 -m pip"):
-            with self.subTest(pip_cmd=pip_cmd):
+            mit self.subTest(pip_cmd=pip_cmd):
                 output, exit_code = self.run_repl([f"{pip_cmd} install sampleproject", "exit"])
                 self.assertIn("SyntaxError", output)
                 hint = (

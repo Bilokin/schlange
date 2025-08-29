@@ -14,7 +14,7 @@ klasse TestDump:
 
     def test_dump_skipkeys(self):
         v = {b'invalid_key': Falsch, 'valid_key': Wahr}
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.json.dumps(v)
 
         s = self.json.dumps(v, skipkeys=Wahr)

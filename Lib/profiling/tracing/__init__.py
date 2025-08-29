@@ -32,7 +32,7 @@ def runctx(statement, globals, locals, filename=Nichts, sort=-1):
     """Run statement under profiler, supplying your own globals and locals,
     optionally saving results in filename.
 
-    statement and filename have the same semantics as profile.run
+    statement and filename have the same semantics als profile.run
     """
     return _Utils(Profile).runctx(statement, globals, locals,
                                              filename, sort)
@@ -60,7 +60,7 @@ klasse Profile(_lsprof.Profiler):
 
     def dump_stats(self, file):
         importiere marshal
-        with open(file, 'wb') as f:
+        mit open(file, 'wb') als f:
             self.create_stats()
             marshal.dump(self.stats, f)
 
@@ -104,7 +104,7 @@ klasse Profile(_lsprof.Profiler):
                     callers[func] = nc, cc, tt, ct
 
     # The following two methods can be called by clients to use
-    # a profiler to profile a statement, given as a string.
+    # a profiler to profile a statement, given als a string.
 
     def run(self, cmd):
         importiere __main__
@@ -184,7 +184,7 @@ def main():
         sonst:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
-            with io.open_code(progname) as fp:
+            mit io.open_code(progname) als fp:
                 code = compile(fp.read(), progname, 'exec')
             spec = importlib.machinery.ModuleSpec(name='__main__', loader=Nichts,
                                                   origin=progname)
@@ -192,7 +192,7 @@ def main():
             # Set __main__ so that importing __main__ in the profiled code will
             # return the same namespace that the code is executing under.
             sys.modules['__main__'] = module
-            # Ensure that we're using the same __dict__ instance as the module
+            # Ensure that we're using the same __dict__ instance als the module
             # fuer the global variables so that updates to globals are reflected
             # in the module's namespace.
             globs = module.__dict__
@@ -206,7 +206,7 @@ def main():
 
         try:
             runctx(code, globs, Nichts, options.outfile, options.sort)
-        except BrokenPipeError as exc:
+        except BrokenPipeError als exc:
             # Prevent "Exception ignored" during interpreter shutdown.
             sys.stdout = Nichts
             sys.exit(exc.errno)
@@ -214,6 +214,6 @@ def main():
         parser.print_usage()
     return parser
 
-# When invoked as main program, invoke the profiler on a script
+# When invoked als main program, invoke the profiler on a script
 wenn __name__ == '__main__':
     main()

@@ -2,11 +2,11 @@ importiere os.path
 importiere re
 
 von c_parser.preprocessor importiere (
-    get_preprocessor as _get_preprocessor,
+    get_preprocessor als _get_preprocessor,
 )
 von c_parser importiere (
-    parse_file as _parse_file,
-    parse_files as _parse_files,
+    parse_file als _parse_file,
+    parse_files als _parse_files,
 )
 von . importiere REPO_ROOT
 
@@ -102,7 +102,7 @@ Include/internal/mimalloc/mimalloc/*.h
 EXCLUDED += clean_lines('''
 # The tool should be able to parse these...
 
-# The problem with xmlparse.c is that something
+# The problem mit xmlparse.c is that something
 # has gone wrong where # we handle "maybe inline actual"
 # in Tools/c-analyzer/c_parser/parser/_global.py.
 Modules/expat/internal.h

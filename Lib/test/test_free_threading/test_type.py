@@ -36,7 +36,7 @@ klasse TestType(TestCase):
                     A.attr = x
 
 
-        with ThreadPoolExecutor(NTHREADS) as pool:
+        mit ThreadPoolExecutor(NTHREADS) als pool:
             pool.submit(read, (1,))
             pool.submit(write, (1,))
             pool.shutdown(wait=Wahr)

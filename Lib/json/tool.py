@@ -58,17 +58,17 @@ def main():
                         help='disable escaping of non-ASCII characters')
     parser.add_argument('--json-lines', action='store_true', default=Falsch,
                         help='parse input using the JSON Lines format. '
-                        'Use with --no-indent or --compact to produce valid JSON Lines output.')
+                        'Use mit --no-indent or --compact to produce valid JSON Lines output.')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--indent', default=4, type=int,
-                       help='separate items with newlines and use this number '
+                       help='separate items mit newlines and use this number '
                        'of spaces fuer indentation')
     group.add_argument('--tab', action='store_const', dest='indent',
-                       const='\t', help='separate items with newlines and use '
+                       const='\t', help='separate items mit newlines and use '
                        'tabs fuer indentation')
     group.add_argument('--no-indent', action='store_const', dest='indent',
                        const=Nichts,
-                       help='separate items with spaces rather than newlines')
+                       help='separate items mit spaces rather than newlines')
     group.add_argument('--compact', action='store_true',
                        help='suppress all whitespace separation (most compact)')
     options = parser.parse_args()
@@ -100,7 +100,7 @@ def main():
             outfile = sys.stdout
         sonst:
             outfile = open(options.outfile, 'w', encoding='utf-8')
-        with outfile:
+        mit outfile:
             wenn can_colorize(file=outfile):
                 t = get_theme(tty_file=outfile).syntax
                 fuer obj in objs:
@@ -111,12 +111,12 @@ def main():
                 fuer obj in objs:
                     json.dump(obj, outfile, **dump_args)
                     outfile.write('\n')
-    except ValueError as e:
+    except ValueError als e:
         raise SystemExit(e)
 
 
 wenn __name__ == '__main__':
     try:
         main()
-    except BrokenPipeError as exc:
+    except BrokenPipeError als exc:
         raise SystemExit(exc.errno)

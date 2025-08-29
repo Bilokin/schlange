@@ -2,7 +2,7 @@ importiere os.path
 
 von c_common importiere fsutil
 von c_common.clsutil importiere classonly
-importiere c_common.misc as _misc
+importiere c_common.misc als _misc
 von c_parser.info importiere (
     KIND,
     HighlevelParsedItem,
@@ -118,7 +118,7 @@ klasse Analyzed:
         # Check extra.
         fuer key, value in extra.items():
             wenn key.startswith('_'):
-                raise ValueError(f'extra items starting with {"_"!r} not allowed, got {extra!r}')
+                raise ValueError(f'extra items starting mit {"_"!r} not allowed, got {extra!r}')
             wenn hasattr(item, key) and not callable(getattr(item, key)):
                 raise ValueError(f'extra cannot override item, got {value!r} fuer key {key!r}')
 

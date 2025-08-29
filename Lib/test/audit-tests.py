@@ -1,7 +1,7 @@
 """This script contains the actual auditing tests.
 
 It should not be imported directly, but should be run by the test_audit
-module with arguments identifying each test.
+module mit arguments identifying each test.
 
 """
 
@@ -13,7 +13,7 @@ importiere sys
 klasse TestHook:
     """Used in standard hook tests to collect any logged events.
 
-    Should be used in a with block to ensure that it has no impact
+    Should be used in a mit block to ensure that it has no impact
     after the test completes.
     """
 
@@ -73,14 +73,14 @@ def assertRaises(ex_type):
     try:
         yield
         assert Falsch, f"expected {ex_type}"
-    except BaseException as ex:
+    except BaseException als ex:
         wenn isinstance(ex, AssertionError):
             raise
         assert type(ex) is ex_type, f"{ex} should be {ex_type}"
 
 
 def test_basic():
-    with TestHook() as hook:
+    mit TestHook() als hook:
         sys.audit("test_event", 1, 2, 3)
         assertEqual(hook.seen[0][0], "test_event")
         assertEqual(hook.seen[0][1], (1, 2, 3))
@@ -89,8 +89,8 @@ def test_basic():
 def test_block_add_hook():
     # Raising an exception should prevent a new hook von being added,
     # but will not propagate out.
-    with TestHook(raise_on_events="sys.addaudithook") as hook1:
-        with TestHook() as hook2:
+    mit TestHook(raise_on_events="sys.addaudithook") als hook1:
+        mit TestHook() als hook2:
             sys.audit("test_event")
             assertIn("test_event", hook1.seen_events)
             assertNotIn("test_event", hook2.seen_events)
@@ -98,12 +98,12 @@ def test_block_add_hook():
 
 def test_block_add_hook_baseexception():
     # Raising BaseException will propagate out when adding a hook
-    with assertRaises(BaseException):
-        with TestHook(
+    mit assertRaises(BaseException):
+        mit TestHook(
             raise_on_events="sys.addaudithook", exc_type=BaseException
-        ) as hook1:
+        ) als hook1:
             # Adding this next hook should raise BaseException
-            with TestHook() as hook2:
+            mit TestHook() als hook2:
                 pass
 
 
@@ -112,13 +112,13 @@ def test_marshal():
     o = ("a", "b", "c", 1, 2, 3)
     payload = marshal.dumps(o)
 
-    with TestHook() as hook:
+    mit TestHook() als hook:
         assertEqual(o, marshal.loads(marshal.dumps(o)))
 
         try:
-            with open("test-marshal.bin", "wb") as f:
+            mit open("test-marshal.bin", "wb") als f:
                 marshal.dump(o, f)
-            with open("test-marshal.bin", "rb") as f:
+            mit open("test-marshal.bin", "rb") als f:
                 assertEqual(o, marshal.load(f))
         finally:
             os.unlink("test-marshal.bin")
@@ -146,11 +146,11 @@ def test_pickle():
     # Before we add the hook, ensure our malicious pickle loads
     assertEqual("Pwned!", pickle.loads(payload_1))
 
-    with TestHook(raise_on_events="pickle.find_class") as hook:
-        with assertRaises(RuntimeError):
+    mit TestHook(raise_on_events="pickle.find_class") als hook:
+        mit assertRaises(RuntimeError):
             # With the hook enabled, loading globals is not allowed
             pickle.loads(payload_1)
-        # pickles with no globals are okay
+        # pickles mit no globals are okay
         pickle.loads(payload_2)
 
 
@@ -166,7 +166,7 @@ def test_monkeypatch():
 
     a = A()
 
-    with TestHook() as hook:
+    mit TestHook() als hook:
         # Catch name changes
         C.__name__ = "X"
         # Catch type changes
@@ -208,7 +208,7 @@ def test_open(testfn):
 
     # Try a range of "open" functions.
     # All of them should fail
-    with TestHook(raise_on_events={"open"}) as hook:
+    mit TestHook(raise_on_events={"open"}) als hook:
         fuer fn, *args in [
             (open, testfn, "r"),
             (open, sys.executable, "rb"),
@@ -226,7 +226,7 @@ def test_open(testfn):
         ]:
             wenn not fn:
                 continue
-            with assertRaises(RuntimeError):
+            mit assertRaises(RuntimeError):
                 try:
                     fn(*args)
                 except NotImplementedError:
@@ -273,7 +273,7 @@ def test_cantrace():
 
     old = sys.settrace(trace)
     try:
-        with TestHook() as hook:
+        mit TestHook() als hook:
             # No traced call
             eval("1")
 
@@ -300,7 +300,7 @@ def test_cantrace():
 def test_mmap():
     importiere mmap
 
-    with TestHook() as hook:
+    mit TestHook() als hook:
         mmap.mmap(-1, 8)
         assertEqual(hook.seen[0][1][:2], (-1, 8))
 
@@ -309,18 +309,18 @@ def test_ctypes_call_function():
     importiere ctypes
     importiere _ctypes
 
-    with TestHook() as hook:
+    mit TestHook() als hook:
         _ctypes.call_function(ctypes._memmove_addr, (0, 0, 0))
         assert ("ctypes.call_function", (ctypes._memmove_addr, (0, 0, 0))) in hook.seen, f"{ctypes._memmove_addr=} {hook.seen=}"
 
         ctypes.CFUNCTYPE(ctypes.c_voidp)(ctypes._memset_addr)(1, 0, 0)
         assert ("ctypes.call_function", (ctypes._memset_addr, (1, 0, 0))) in hook.seen, f"{ctypes._memset_addr=} {hook.seen=}"
 
-    with TestHook() as hook:
+    mit TestHook() als hook:
         ctypes.cast(ctypes.c_voidp(0), ctypes.POINTER(ctypes.c_char))
         assert "ctypes.call_function" in hook.seen_events
 
-    with TestHook() as hook:
+    mit TestHook() als hook:
         ctypes.string_at(id("ctypes.string_at") + 40)
         assert "ctypes.call_function" in hook.seen_events
         assert "ctypes.string_at" in hook.seen_events
@@ -331,7 +331,7 @@ def test_posixsubprocess():
 
     exe = b"xxx"
     args = [b"yyy", b"zzz"]
-    with TestHook() as hook:
+    mit TestHook() als hook:
         multiprocessing.util.spawnv_passfds(exe, args, ())
         assert ("_posixsubprocess.fork_exec", ([exe], args, Nichts)) in hook.seen
 
@@ -555,7 +555,7 @@ def test_wmi_exec_query():
     sys.addaudithook(hook)
     try:
         _wmi.exec_query("SELECT * FROM Win32_OperatingSystem")
-    except WindowsError as e:
+    except WindowsError als e:
         # gh-112278: WMI may be slow response when first called, but we still
         # get the audit event, so just ignore the timeout
         wenn e.winerror != 258:
@@ -575,7 +575,7 @@ def test_syslog():
     syslog.closelog()
     # implicit open
     syslog.syslog('test2')
-    # open with default ident
+    # open mit default ident
     syslog.openlog(logoption=syslog.LOG_NDELAY, facility=syslog.LOG_LOCAL0)
     sys.argv = Nichts
     syslog.openlog()
@@ -664,7 +664,7 @@ def test_sys_remote_exec():
                 remote_event_script_path = args[0]
 
     sys.addaudithook(hook)
-    with tempfile.NamedTemporaryFile(mode='w+', delete=Wahr) as tmp_file:
+    mit tempfile.NamedTemporaryFile(mode='w+', delete=Wahr) als tmp_file:
         tmp_file.write("a = 1+1\n")
         tmp_file.flush()
         sys.remote_exec(pid, tmp_file.name)

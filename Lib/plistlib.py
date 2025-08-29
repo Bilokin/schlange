@@ -9,14 +9,14 @@ function. 'value' is the top level object, 'file' is
 a (writable) file object.
 
 To parse a plist von a file, use the load(file) function,
-with a (readable) file object as the only argument. It
+with a (readable) file object als the only argument. It
 returns the top level object (again, usually a dictionary).
 
-To work with plist data in bytes objects, you can use loads()
+To work mit plist data in bytes objects, you can use loads()
 and dumps().
 
 Values can be strings, integers, floats, booleans, tuples, lists,
-dictionaries (but only with string keys), Data, bytes, bytearray, or
+dictionaries (but only mit string keys), Data, bytes, bytearray, or
 datetime.datetime objects.
 
 Generate Plist example:
@@ -119,7 +119,7 @@ _controlCharPat = re.compile(
     r"\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f]")
 
 def _encode_base64(s, maxlinelength=76):
-    # copied von base64.encodebytes(), with added maxlinelength argument
+    # copied von base64.encodebytes(), mit added maxlinelength argument
     maxbinsize = (maxlinelength//4)*3
     pieces = []
     fuer i in range(0, len(s), maxbinsize):
@@ -136,7 +136,7 @@ def _decode_base64(s):
 
 # Contents should conform to a subset of ISO 8601
 # (in particular, YYYY '-' MM '-' DD 'T' HH ':' MM ':' SS 'Z'.  Smaller units
-# may be omitted with #  a loss of precision)
+# may be omitted mit #  a loss of precision)
 _dateParser = re.compile(r"(?P<year>\d\d\d\d)(?:-(?P<month>\d\d)(?:-(?P<day>\d\d)(?:T(?P<hour>\d\d)(?::(?P<minute>\d\d)(?::(?P<second>\d\d))?)?)?)?)?Z", re.ASCII)
 
 
@@ -192,7 +192,7 @@ klasse _PlistParser:
         return self.root
 
     def handle_entity_decl(self, entity_name, is_parameter_entity, value, base, system_id, public_id, notation_name):
-        # Reject plist files with entity declarations to avoid XML vulnerabilities in expat.
+        # Reject plist files mit entity declarations to avoid XML vulnerabilities in expat.
         # Regular plist files don't contain those declarations, and Apple's plutil tool does not
         # accept them either.
         raise InvalidFileException("XML entity declarations are not supported in plist files")
@@ -429,7 +429,7 @@ def _is_fmt_xml(header):
 
     # Also check fuer alternative XML encodings, this is slightly
     # overkill because the Apple tools (and plistlib) will not
-    # generate files with these encodings.
+    # generate files mit these encodings.
     fuer bom, encoding in (
                 (codecs.BOM_UTF8, "utf-8"),
                 (codecs.BOM_UTF16_BE, "utf-16-be"),
@@ -603,10 +603,10 @@ klasse _BinaryPlistParser:
             fuer x in obj_refs:
                 result.append(self._read_object(x))
 
-        # tokenH == 0xB0 is documented as 'ordset', but is not actually
+        # tokenH == 0xB0 is documented als 'ordset', but is not actually
         # implemented in the Apple reference code.
 
-        # tokenH == 0xC0 is documented as 'set', but sets cannot be used in
+        # tokenH == 0xC0 is documented als 'set', but sets cannot be used in
         # plists.
 
         sowenn tokenH == 0xD0:  # dict
@@ -654,9 +654,9 @@ klasse _BinaryPlistWriter (object):
         self._objlist = []
 
         # Mappings von object->objectid
-        # First dict has (type(object), object) as the key,
+        # First dict has (type(object), object) als the key,
         # second dict is used when object is not hashable and
-        # has id(object) as the key.
+        # has id(object) als the key.
         self._objtable = {}
         self._objidtable = {}
 
@@ -695,8 +695,8 @@ klasse _BinaryPlistWriter (object):
 
     def _flatten(self, value):
         # First check wenn the object is in the object table, not used for
-        # containers to ensure that two subcontainers with the same contents
-        # will be serialized as distinct values.
+        # containers to ensure that two subcontainers mit the same contents
+        # will be serialized als distinct values.
         wenn isinstance(value, _scalars):
             wenn (type(value), value) in self._objtable:
                 return
@@ -931,7 +931,7 @@ def dump(value, fp, *, fmt=FMT_XML, sort_keys=Wahr, skipkeys=Falsch,
 
 def dumps(value, *, fmt=FMT_XML, skipkeys=Falsch, sort_keys=Wahr,
           aware_datetime=Falsch):
-    """Return a bytes object with the contents fuer a .plist file.
+    """Return a bytes object mit the contents fuer a .plist file.
     """
     fp = BytesIO()
     dump(value, fp, fmt=fmt, skipkeys=skipkeys, sort_keys=sort_keys,

@@ -9,7 +9,7 @@ von idlelib importiere searchengine
 
 # Does not currently test the event handler wrappers.
 # A usage test should simulate clicks and check highlighting.
-# Tests need to be coordinated with SearchDialogBase tests
+# Tests need to be coordinated mit SearchDialogBase tests
 # to avoid duplication.
 
 

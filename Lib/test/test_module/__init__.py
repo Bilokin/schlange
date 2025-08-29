@@ -127,41 +127,41 @@ a = A(destroyed)"""
         self.assertIs(wr(), Nichts)
 
     def test_module_getattr(self):
-        importiere test.test_module.good_getattr as gga
+        importiere test.test_module.good_getattr als gga
         von test.test_module.good_getattr importiere test
         self.assertEqual(test, "There is test")
         self.assertEqual(gga.x, 1)
         self.assertEqual(gga.y, 2)
-        with self.assertRaisesRegex(AttributeError,
+        mit self.assertRaisesRegex(AttributeError,
                                     "Deprecated, use whatever instead"):
             gga.yolo
         self.assertEqual(gga.whatever, "There is whatever")
         del sys.modules['test.test_module.good_getattr']
 
     def test_module_getattr_errors(self):
-        importiere test.test_module.bad_getattr as bga
+        importiere test.test_module.bad_getattr als bga
         von test.test_module importiere bad_getattr2
         self.assertEqual(bga.x, 1)
         self.assertEqual(bad_getattr2.x, 1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bga.nope
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bad_getattr2.nope
         del sys.modules['test.test_module.bad_getattr']
         wenn 'test.test_module.bad_getattr2' in sys.modules:
             del sys.modules['test.test_module.bad_getattr2']
 
     def test_module_dir(self):
-        importiere test.test_module.good_getattr as gga
+        importiere test.test_module.good_getattr als gga
         self.assertEqual(dir(gga), ['a', 'b', 'c'])
         del sys.modules['test.test_module.good_getattr']
 
     def test_module_dir_errors(self):
-        importiere test.test_module.bad_getattr as bga
+        importiere test.test_module.bad_getattr als bga
         von test.test_module importiere bad_getattr2
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dir(bga)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dir(bad_getattr2)
         del sys.modules['test.test_module.bad_getattr']
         wenn 'test.test_module.bad_getattr2' in sys.modules:
@@ -170,9 +170,9 @@ a = A(destroyed)"""
     def test_module_getattr_tricky(self):
         von test.test_module importiere bad_getattr3
         # these lookups should not crash
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             bad_getattr3.one
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             bad_getattr3.delgetattr
         wenn 'test.test_module.bad_getattr3' in sys.modules:
             del sys.modules['test.test_module.bad_getattr3']
@@ -261,9 +261,9 @@ a = A(destroyed)"""
         starts_with = "<module 'unittest' von '"
         ends_with = "__init__.py'>"
         self.assertEqual(r[:len(starts_with)], starts_with,
-                         '{!r} does not start with {!r}'.format(r, starts_with))
+                         '{!r} does not start mit {!r}'.format(r, starts_with))
         self.assertEqual(r[-len(ends_with):], ends_with,
-                         '{!r} does not end with {!r}'.format(r, ends_with))
+                         '{!r} does not end mit {!r}'.format(r, ends_with))
 
     def test_module_repr_with_namespace_package(self):
         m = ModuleType('foo')
@@ -350,7 +350,7 @@ a = A(destroyed)"""
         foo = ModuleType("foo")
         foo.__annotations__ = {}
         del foo.__annotations__
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del foo.__annotations__
 
     def test_annotations_are_created_correctly(self):
@@ -379,7 +379,7 @@ a = A(destroyed)"""
     # frozen and namespace module reprs are tested in importlib.
 
     def test_subclass_with_slots(self):
-        # In 3.11alpha this crashed, as the slots weren't NULLed.
+        # In 3.11alpha this crashed, als the slots weren't NULLed.
 
         klasse ModuleWithSlots(ModuleType):
             __slots__ = ("a", "b")
@@ -388,9 +388,9 @@ a = A(destroyed)"""
                 super().__init__(name)
 
         m = ModuleWithSlots("name")
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.a
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.b
         m.a, m.b = 1, 2
         self.assertEqual(m.a, 1)

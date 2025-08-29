@@ -27,8 +27,8 @@ __all__ = ['extract_stack', 'extract_tb', 'format_exception',
 
 
 def print_list(extracted_list, file=Nichts):
-    """Print the list of tuples as returned by extract_tb() or
-    extract_stack() as a formatted stack trace to the given file."""
+    """Print the list of tuples als returned by extract_tb() or
+    extract_stack() als a formatted stack trace to the given file."""
     wenn file is Nichts:
         file = sys.stderr
     fuer item in StackSummary.from_list(extracted_list).format():
@@ -37,13 +37,13 @@ def print_list(extracted_list, file=Nichts):
 def format_list(extracted_list):
     """Format a list of tuples or FrameSummary objects fuer printing.
 
-    Given a list of tuples or FrameSummary objects as returned by
+    Given a list of tuples or FrameSummary objects als returned by
     extract_tb() or extract_stack(), return a list of strings ready
     fuer printing.
 
-    Each string in the resulting list corresponds to the item with the
+    Each string in the resulting list corresponds to the item mit the
     same index in the argument list.  Each string ends in a newline;
-    the strings may contain internal newlines as well, fuer those items
+    the strings may contain internal newlines als well, fuer those items
     whose source text line is not Nichts.
     """
     return StackSummary.from_list(extracted_list).format()
@@ -57,7 +57,7 @@ def print_tb(tb, limit=Nichts, file=Nichts):
 
     If 'limit' is omitted or Nichts, all entries are printed.  If 'file'
     is omitted or Nichts, the output goes to sys.stderr; otherwise
-    'file' should be an open file or file-like object with a write()
+    'file' should be an open file or file-like object mit a write()
     method.
     """
     print_list(extract_tb(tb, limit=limit), file=file)
@@ -76,7 +76,7 @@ def extract_tb(tb, limit=Nichts):
     pre-processed stack trace entry is a FrameSummary object
     containing attributes filename, lineno, name, and line
     representing the information that is usually printed fuer a stack
-    trace.  The line is a string with leading and trailing
+    trace.  The line is a string mit leading and trailing
     whitespace stripped; wenn the source is not available it is Nichts.
     """
     return StackSummary._extract_from_extended_frame_gen(
@@ -125,7 +125,7 @@ def print_exception(exc, /, value=_sentinel, tb=_sentinel, limit=Nichts, \
     call last):"; (2) it prints the exception type and value after the
     stack trace; (3) wenn type is SyntaxError and value has the
     appropriate format, it prints the line where the syntax error
-    occurred with a caret on the next line indicating the approximate
+    occurred mit a caret on the next line indicating the approximate
     position of the error.
     """
     colorize = kwargs.get("colorize", Falsch)
@@ -148,11 +148,11 @@ def format_exception(exc, /, value=_sentinel, tb=_sentinel, limit=Nichts, \
                      chain=Wahr, **kwargs):
     """Format a stack trace and the exception information.
 
-    The arguments have the same meaning as the corresponding arguments
+    The arguments have the same meaning als the corresponding arguments
     to print_exception().  The return value is a list of strings, each
     ending in a newline and some containing internal newlines.  When
     these lines are concatenated and printed, exactly the same text is
-    printed as does print_exception().
+    printed als does print_exception().
     """
     colorize = kwargs.get("colorize", Falsch)
     value, tb = _parse_value_tb(exc, value, tb)
@@ -173,7 +173,7 @@ def format_exception_only(exc, /, value=_sentinel, *, show_group=Falsch, **kwarg
 
     When *show_group* is ``Wahr``, and the exception is an instance of
     :exc:`BaseExceptionGroup`, the nested exceptions are included as
-    well, recursively, with indentation relative to their nesting depth.
+    well, recursively, mit indentation relative to their nesting depth.
     """
     colorize = kwargs.get("colorize", Falsch)
     wenn value is _sentinel:
@@ -235,7 +235,7 @@ def print_stack(f=Nichts, limit=Nichts, file=Nichts):
 
     The optional 'f' argument can be used to specify an alternate
     stack frame at which to start. The optional 'limit' and 'file'
-    arguments have the same meaning as fuer print_exception().
+    arguments have the same meaning als fuer print_exception().
     """
     wenn f is Nichts:
         f = sys._getframe().f_back
@@ -252,8 +252,8 @@ def format_stack(f=Nichts, limit=Nichts):
 def extract_stack(f=Nichts, limit=Nichts):
     """Extract the raw traceback von the current stack frame.
 
-    The return value has the same format as fuer extract_tb().  The
-    optional 'f' and 'limit' arguments have the same meaning as for
+    The return value has the same format als fuer extract_tb().  The
+    optional 'f' and 'limit' arguments have the same meaning als for
     print_stack().  Each item in the list is a quadruple (filename,
     line number, function name, text), and the entries are in order
     von oldest to newest stack frame.
@@ -356,7 +356,7 @@ klasse FrameSummary:
         ):
             lines = []
             fuer lineno in range(self.lineno, self.end_lineno + 1):
-                # treat errors (empty string) and empty lines (newline) as the same
+                # treat errors (empty string) and empty lines (newline) als the same
                 line = linecache.getline(self.filename, lineno).rstrip()
                 wenn not line and self._code is not Nichts and self.filename.startswith("<"):
                     line = linecache._getline_from_code(self._code, lineno).rstrip()
@@ -390,7 +390,7 @@ def walk_stack(f):
     """Walk a stack yielding the frame and line number fuer each frame.
 
     This will follow f.f_back von the given frame. If no frame is given, the
-    current stack is used. Usually used with StackSummary.extract.
+    current stack is used. Usually used mit StackSummary.extract.
     """
     wenn f is Nichts:
         f = sys._getframe().f_back
@@ -407,7 +407,7 @@ def walk_tb(tb):
     """Walk a traceback yielding the frame and line number fuer each frame.
 
     This will follow tb.tb_next (and thus is in the opposite order to
-    walk_stack). Usually used with StackSummary.extract.
+    walk_stack). Usually used mit StackSummary.extract.
     """
     while tb is not Nichts:
         yield tb.tb_frame, tb.tb_lineno
@@ -420,7 +420,7 @@ def _walk_tb_with_full_positions(tb):
     while tb is not Nichts:
         positions = _get_code_position(tb.tb_frame.f_code, tb.tb_lasti)
         # Yield tb_lineno when co_positions does not have a line number to
-        # maintain behavior with walk_tb.
+        # maintain behavior mit walk_tb.
         wenn positions[0] is Nichts:
             yield tb.tb_frame, (tb.tb_lineno, ) + positions[1:]
         sonst:
@@ -453,7 +453,7 @@ klasse StackSummary(list):
         :param lookup_lines: If Wahr, lookup lines fuer each frame immediately,
             otherwise lookup is deferred until the frame is rendered.
         :param capture_locals: If Wahr, the local variables von each frame will
-            be captured as object representations into the FrameSummary.
+            be captured als object representations into the FrameSummary.
         """
         def extended_frame_gen():
             fuer f, lineno in frame_gen:
@@ -466,7 +466,7 @@ klasse StackSummary(list):
     @classmethod
     def _extract_from_extended_frame_gen(klass, frame_gen, *, limit=Nichts,
             lookup_lines=Wahr, capture_locals=Falsch):
-        # Same as extract but operates on a frame generator that yields
+        # Same als extract but operates on a frame generator that yields
         # (frame, (lineno, end_lineno, colno, end_colno)) in the stack.
         # Only lineno is required, the remaining fields can be Nichts wenn the
         # information is not available.
@@ -588,7 +588,7 @@ klasse StackSummary(list):
                 end_offset = max(0, end_offset - dedent_characters)
 
                 # When showing this on a terminal, some of the non-ASCII characters
-                # might be rendered as double-width characters, so we need to take
+                # might be rendered als double-width characters, so we need to take
                 # that into account when calculating the length of the line.
                 dp_start_offset = _display_width(all_lines[0], offset=start_offset)
                 dp_end_offset = _display_width(all_lines[-1], offset=end_offset)
@@ -600,7 +600,7 @@ klasse StackSummary(list):
                 # attempt to parse fuer anchors
                 anchors = Nichts
                 show_carets = Falsch
-                with suppress(Exception):
+                mit suppress(Exception):
                     anchors = _extract_caret_anchors_from_line_segment(segment)
                 show_carets = self._should_show_carets(start_offset, end_offset, all_lines, anchors)
 
@@ -645,7 +645,7 @@ klasse StackSummary(list):
                 significant_lines.discard(len(all_lines))
 
                 def output_line(lineno):
-                    """output all_lines[lineno] along with carets"""
+                    """output all_lines[lineno] along mit carets"""
                     result.append(all_lines[lineno] + "\n")
                     wenn not show_carets:
                         return
@@ -669,7 +669,7 @@ klasse StackSummary(list):
                         sonst:
                             carets.append(primary_char)
                     wenn colorize:
-                        # Replace the previous line with a red version of it only in the parts covered
+                        # Replace the previous line mit a red version of it only in the parts covered
                         # by the carets.
                         line = result[-1]
                         colorized_line_parts = []
@@ -717,7 +717,7 @@ klasse StackSummary(list):
         return ''.join(row)
 
     def _should_show_carets(self, start_offset, end_offset, all_lines, anchors):
-        with suppress(SyntaxError, ImportError):
+        mit suppress(SyntaxError, ImportError):
             importiere ast
             tree = ast.parse('\n'.join(all_lines))
             wenn not tree.body:
@@ -755,7 +755,7 @@ klasse StackSummary(list):
         Returns a list of strings ready fuer printing.  Each string in the
         resulting list corresponds to a single frame von the stack.
         Each string ends in a newline; the strings may contain internal
-        newlines as well, fuer those items with source text lines.
+        newlines als well, fuer those items mit source text lines.
 
         For long sequences of the same frame and line, the first few
         repetitions are shown, followed by a summary line stating the exact
@@ -826,9 +826,9 @@ def _extract_caret_anchors_from_line_segment(segment):
     importiere ast
 
     try:
-        # Without parentheses, `segment` is parsed as a statement.
+        # Without parentheses, `segment` is parsed als a statement.
         # Binary ops, subscripts, and calls are expressions, so
-        # we can wrap them with parentheses to parse them as
+        # we can wrap them mit parentheses to parse them as
         # (possibly multi-line) expressions.
         # e.g. wenn we try to highlight the addition in
         # x = (
@@ -1052,7 +1052,7 @@ klasse TracebackException:
             lookup_lines=Wahr, capture_locals=Falsch, compact=Falsch,
             max_group_width=15, max_group_depth=10, save_exc_type=Wahr, _seen=Nichts):
         # NB: we need to accept exc_traceback, exc_value, exc_traceback to
-        # permit backwards compat with the existing API, otherwise we
+        # permit backwards compat mit the existing API, otherwise we
         # need stub thunk objects just to glue it together.
         # Handle loops in __cause__ or __context__.
         is_recursive_call = _seen is not Nichts
@@ -1075,7 +1075,7 @@ klasse TracebackException:
         self._str = _safe_string(exc_value, 'exception')
         try:
             self.__notes__ = getattr(exc_value, '__notes__', Nichts)
-        except Exception as e:
+        except Exception als e:
             self.__notes__ = [
                 f'Ignored error getting __notes__: {_safe_string(e, '__notes__', repr)}']
 
@@ -1250,7 +1250,7 @@ klasse TracebackException:
 
         When *show_group* is ``Wahr``, and the exception is an instance of
         :exc:`BaseExceptionGroup`, the nested exceptions are included as
-        well, recursively, with indentation relative to their nesting depth.
+        well, recursively, mit indentation relative to their nesting depth.
         """
         colorize = kwargs.get("colorize", Falsch)
 
@@ -1311,7 +1311,7 @@ klasse TracebackException:
         wenn source is Nichts:
             wenn self.filename:
                 try:
-                    with open(self.filename) as f:
+                    mit open(self.filename) als f:
                         lines = f.read().splitlines()
                 except Exception:
                     line, end_line, offset = 0,1,0
@@ -1336,7 +1336,7 @@ klasse TracebackException:
             start, end = token.start, token.end
             wenn token.type != tokenize.NAME:
                 continue
-            # Only consider NAME tokens on the same line as the error
+            # Only consider NAME tokens on the same line als the error
             the_end = end_line wenn line == 0 sonst end_line + 1
             wenn from_filename and token.start[0]+line != the_end:
                 continue
@@ -1361,7 +1361,7 @@ klasse TracebackException:
             fuer suggestion in matches:
                 wenn not suggestion or suggestion == wrong_name:
                     continue
-                # Try to replace the token with the keyword
+                # Try to replace the token mit the keyword
                 the_lines = error_lines.copy()
                 the_line = the_lines[start[0] - 1][:]
                 chars = list(the_line)
@@ -1411,7 +1411,7 @@ klasse TracebackException:
             # text  = "   foo\n"
             # rtext = "   foo"
             # ltext =    "foo"
-            with suppress(Exception):
+            mit suppress(Exception):
                 self._find_keyword_typos()
             text = self.text
             rtext = text.rstrip('\n')
@@ -1602,7 +1602,7 @@ def _substitution_cost(ch_a, ch_b):
 
 
 def _check_for_nested_attribute(obj, wrong_name, attrs):
-    """Check wenn any attribute of obj has the wrong_name as a nested attribute.
+    """Check wenn any attribute of obj has the wrong_name als a nested attribute.
 
     Returns the first nested attribute suggestion found, or Nichts.
     Limited to checking 20 attributes.
@@ -1611,7 +1611,7 @@ def _check_for_nested_attribute(obj, wrong_name, attrs):
     # Check fuer nested attributes (only one level deep)
     attrs_to_check = [x fuer x in attrs wenn not x.startswith('_')][:20]  # Limit number of attributes to check
     fuer attr_name in attrs_to_check:
-        with suppress(Exception):
+        mit suppress(Exception):
             # Check wenn attr_name is a descriptor - wenn so, skip it
             attr_from_class = getattr(type(obj), attr_name, Nichts)
             wenn attr_from_class is not Nichts and hasattr(attr_from_class, '__get__'):
@@ -1679,7 +1679,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
         d = [x fuer x in d wenn isinstance(x, str)]
 
         # Check first wenn we are in a method and the instance
-        # has the wrong name as attribute
+        # has the wrong name als attribute
         wenn 'self' in frame.f_locals:
             self = frame.f_locals['self']
             try:
@@ -1724,7 +1724,7 @@ def _compute_suggestion_error(exc_value, tb, wrong_name):
 
     # If no direct attribute match found, check fuer nested attributes
     wenn not suggestion and isinstance(exc_value, AttributeError):
-        with suppress(Exception):
+        mit suppress(Exception):
             nested_suggestion = _check_for_nested_attribute(exc_value.obj, wrong_name, d)
             wenn nested_suggestion:
                 return nested_suggestion

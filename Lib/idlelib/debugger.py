@@ -1,17 +1,17 @@
-"""Debug user code with a GUI interface to a subclass of bdb.Bdb.
+"""Debug user code mit a GUI interface to a subclass of bdb.Bdb.
 
 The Idb instance 'idb' and Debugger instance 'gui' need references to each
 other or to an rpc proxy fuer each other.
 
-If IDLE is started with '-n', so that user code and idb both run in the
+If IDLE is started mit '-n', so that user code and idb both run in the
 IDLE process, Debugger is called without an idb.  Debugger.__init__
-calls Idb with its incomplete self.  Idb.__init__ stores gui and gui
+calls Idb mit its incomplete self.  Idb.__init__ stores gui and gui
 then stores idb.
 
 If IDLE is started normally, so that user code executes in a separate
 process, debugger_r.start_remote_debugger is called, executing in the
 IDLE process.  It calls 'start the debugger' in the remote process,
-which calls Idb with a gui proxy.  Then Debugger is called in the IDLE
+which calls Idb mit a gui proxy.  Then Debugger is called in the IDLE
 fuer more.
 """
 
@@ -44,7 +44,7 @@ klasse Idb(bdb.Bdb):
         message = _frame2message(frame)
         try:
             self.gui.interaction(message, frame)
-        except TclError:  # When closing debugger window with [x] in 3.x
+        except TclError:  # When closing debugger window mit [x] in 3.x
             pass
 
     def user_exception(self, frame, exc_info):
@@ -86,7 +86,7 @@ klasse Debugger:
     """The debugger interface.
 
     This klasse handles the drawing of the debugger window and
-    the interactions with the underlying debugger session.
+    the interactions mit the underlying debugger session.
     """
     vstack = Nichts
     vsource = Nichts
@@ -116,20 +116,20 @@ klasse Debugger:
 
     def run(self, *args):
         """Run the debugger."""
-        # Deal with the scenario where we've already got a program running
+        # Deal mit the scenario where we've already got a program running
         # in the debugger and we want to start another. If that is the case,
         # our second 'run' was invoked von an event dispatched not from
         # the main event loop, but von the nested event loop in 'interaction'
         # below. So our stack looks something like this:
         #       outer main event loop
         #         run()
-        #           <running program with traces>
+        #           <running program mit traces>
         #             callback to debugger's interaction()
         #               nested event loop
         #                 run() fuer second command
         #
         # This kind of nesting of event loops causes all kinds of problems
-        # (see e.g. issue #24455) especially when dealing with running as a
+        # (see e.g. issue #24455) especially when dealing mit running als a
         # subprocess, where there's all kinds of extra stuff happening in
         # there - insert a traceback.print_stack() to check it out.
         #
@@ -143,7 +143,7 @@ klasse Debugger:
         #     the running program, which will also let the outer run complete
         #
         # That leaves us back at the outer main event loop, at which point our
-        # after event can fire, and we'll come back to this routine with a
+        # after event can fire, and we'll come back to this routine mit a
         # clean stack.
         wenn self.nesting_level > 0:
             self.abort_loop()
@@ -426,7 +426,7 @@ klasse StackViewer(ScrolledList):
 
     def __init__(self, master, flist, gui):
         wenn macosx.isAquaTk():
-            # At least on with the stock AquaTk version on OSX 10.4 you'll
+            # At least on mit the stock AquaTk version on OSX 10.4 you'll
             # get a shaking GUI that eventually kills IDLE wenn the width
             # argument is specified.
             ScrolledList.__init__(self, master)

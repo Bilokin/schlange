@@ -20,15 +20,15 @@ von distutils.dep_util importiere newer
 
 klasse BCPPCompiler(CCompiler) :
     """Concrete klasse that implements an interface to the Borland C/C++
-    compiler, as defined by the CCompiler abstract class.
+    compiler, als defined by the CCompiler abstract class.
     """
 
     compiler_type = 'bcpp'
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary fuer this sort of single-compiler class.
-    # Would be nice to have a consistent interface with UnixCCompiler,
+    # als it really isn't necessary fuer this sort of single-compiler class.
+    # Would be nice to have a consistent interface mit UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
@@ -102,7 +102,7 @@ klasse BCPPCompiler(CCompiler) :
                 self.mkpath(os.path.dirname(output_file))
             try:
                 self.spawn(pp_args)
-            except DistutilsExecError as msg:
+            except DistutilsExecError als msg:
                 drucke(msg)
                 raise CompileError(msg)
 

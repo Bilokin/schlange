@@ -13,12 +13,12 @@ von contextlib importiere _GeneratorContextManager, contextmanager, nullcontext
 
 
 def do_with(obj):
-    with obj:
+    mit obj:
         pass
 
 
 async def do_async_with(obj):
-    async with obj:
+    async mit obj:
         pass
 
 
@@ -83,7 +83,7 @@ klasse Nested(object):
         return vars
 
     def __exit__(self, *exc_info):
-        # Behave like nested with statements
+        # Behave like nested mit statements
         # first in, last out
         # New exceptions override old ones
         ex = exc_info
@@ -91,7 +91,7 @@ klasse Nested(object):
             try:
                 wenn mgr.__exit__(*ex):
                     ex = (Nichts, Nichts, Nichts)
-            except BaseException as e:
+            except BaseException als e:
                 ex = (type(e), e, e.__traceback__)
         self.entered = Nichts
         wenn ex is not exc_info:
@@ -118,14 +118,14 @@ klasse MockNested(Nested):
 klasse FailureTestCase(unittest.TestCase):
     def testNameError(self):
         def fooNotDeclared():
-            with foo: pass
+            mit foo: pass
         self.assertRaises(NameError, fooNotDeclared)
 
     def testEnterAttributeError(self):
         klasse LacksEnter:
             def __exit__(self, type, value, traceback): ...
 
-        with self.assertRaisesRegex(TypeError, re.escape((
+        mit self.assertRaisesRegex(TypeError, re.escape((
             "object does not support the context manager protocol "
             "(missed __enter__ method)"
         ))):
@@ -140,9 +140,9 @@ klasse FailureTestCase(unittest.TestCase):
             "(missed __exit__ method)"
         ))
         # a missing __exit__ is reported missing before a missing __enter__
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             do_with(object())
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             do_with(LacksExit())
 
     def testWithForAsyncManager(self):
@@ -150,7 +150,7 @@ klasse FailureTestCase(unittest.TestCase):
             async def __aenter__(self): ...
             async def __aexit__(self, type, value, traceback): ...
 
-        with self.assertRaisesRegex(TypeError, re.escape((
+        mit self.assertRaisesRegex(TypeError, re.escape((
             "object does not support the context manager protocol "
             "(missed __exit__ method) but it supports the asynchronous "
             "context manager protocol. Did you mean to use 'async with'?"
@@ -161,7 +161,7 @@ klasse FailureTestCase(unittest.TestCase):
         klasse LacksAsyncEnter:
             async def __aexit__(self, type, value, traceback): ...
 
-        with self.assertRaisesRegex(TypeError, re.escape((
+        mit self.assertRaisesRegex(TypeError, re.escape((
             "object does not support the asynchronous context manager protocol "
             "(missed __aenter__ method)"
         ))):
@@ -176,9 +176,9 @@ klasse FailureTestCase(unittest.TestCase):
             "(missed __aexit__ method)"
         ))
         # a missing __aexit__ is reported missing before a missing __aenter__
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             do_async_with(object()).send(Nichts)
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             do_async_with(LacksAsyncExit()).send(Nichts)
 
     def testAsyncWithForSyncManager(self):
@@ -186,7 +186,7 @@ klasse FailureTestCase(unittest.TestCase):
             def __enter__(self): ...
             def __exit__(self, type, value, traceback): ...
 
-        with self.assertRaisesRegex(TypeError, re.escape((
+        mit self.assertRaisesRegex(TypeError, re.escape((
             "object does not support the asynchronous context manager protocol "
             "(missed __aexit__ method) but it supports the context manager "
             "protocol. Did you mean to use 'with'?"
@@ -199,20 +199,20 @@ klasse FailureTestCase(unittest.TestCase):
         self.assertRaises(SyntaxError, shouldRaiseSyntaxError, codestr)
 
     def testAssignmentToNichtsError(self):
-        self.assertRaisesSyntaxError('with mock as Nichts:\n  pass')
+        self.assertRaisesSyntaxError('with mock als Nichts:\n  pass')
         self.assertRaisesSyntaxError(
-            'with mock as (Nichts):\n'
+            'with mock als (Nichts):\n'
             '  pass')
 
     def testAssignmentToTupleOnlyContainingNichtsError(self):
-        self.assertRaisesSyntaxError('with mock as Nichts,:\n  pass')
+        self.assertRaisesSyntaxError('with mock als Nichts,:\n  pass')
         self.assertRaisesSyntaxError(
-            'with mock as (Nichts,):\n'
+            'with mock als (Nichts,):\n'
             '  pass')
 
     def testAssignmentToTupleContainingNichtsError(self):
         self.assertRaisesSyntaxError(
-            'with mock as (foo, Nichts, bar):\n'
+            'with mock als (foo, Nichts, bar):\n'
             '  pass')
 
     def testEnterThrows(self):
@@ -228,7 +228,7 @@ klasse FailureTestCase(unittest.TestCase):
             # Ruff complains that we're redefining `self.foo` here,
             # but the whole point of the test is to check that `self.foo`
             # is *not* redefined (because `__enter__` raises)
-            with ct as self.foo:  # noqa: F811
+            mit ct als self.foo:  # noqa: F811
                 pass
         self.assertRaises(RuntimeError, shouldThrow)
         self.assertEqual(self.foo, Nichts)
@@ -240,7 +240,7 @@ klasse FailureTestCase(unittest.TestCase):
             def __exit__(self, *args):
                 raise RuntimeError(42)
         def shouldThrow():
-            with ExitThrows():
+            mit ExitThrows():
                 pass
         self.assertRaises(RuntimeError, shouldThrow)
 
@@ -294,34 +294,34 @@ klasse ContextmanagerAssertionMixin(object):
 
 klasse NichtsxceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin):
     def testInlineGeneratorSyntax(self):
-        with mock_contextmanager_generator():
+        mit mock_contextmanager_generator():
             pass
 
     def testUnboundGenerator(self):
         mock = mock_contextmanager_generator()
-        with mock:
+        mit mock:
             pass
         self.assertAfterWithManagerInvariantsNoError(mock)
 
     def testInlineGeneratorBoundSyntax(self):
-        with mock_contextmanager_generator() as foo:
+        mit mock_contextmanager_generator() als foo:
             self.assertInWithGeneratorInvariants(foo)
         # FIXME: In the future, we'll try to keep the bound names von leaking
         self.assertAfterWithGeneratorInvariantsNoError(foo)
 
     def testInlineGeneratorBoundToExistingVariable(self):
-        with mock_contextmanager_generator() as foo:
+        mit mock_contextmanager_generator() als foo:
             self.assertInWithGeneratorInvariants(foo)
         self.assertAfterWithGeneratorInvariantsNoError(foo)
 
     def testInlineGeneratorBoundToDottedVariable(self):
-        with mock_contextmanager_generator() as self.foo:
+        mit mock_contextmanager_generator() als self.foo:
             self.assertInWithGeneratorInvariants(self.foo)
         self.assertAfterWithGeneratorInvariantsNoError(self.foo)
 
     def testBoundGenerator(self):
         mock = mock_contextmanager_generator()
-        with mock as foo:
+        mit mock als foo:
             self.assertInWithGeneratorInvariants(foo)
             self.assertInWithManagerInvariants(mock)
         self.assertAfterWithGeneratorInvariantsNoError(foo)
@@ -329,9 +329,9 @@ klasse NichtsxceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin)
 
     def testNestedSingleStatements(self):
         mock_a = mock_contextmanager_generator()
-        with mock_a as foo:
+        mit mock_a als foo:
             mock_b = mock_contextmanager_generator()
-            with mock_b as bar:
+            mit mock_b als bar:
                 self.assertInWithManagerInvariants(mock_a)
                 self.assertInWithManagerInvariants(mock_b)
                 self.assertInWithGeneratorInvariants(foo)
@@ -347,14 +347,14 @@ klasse NichtsxceptionalTestCase(unittest.TestCase, ContextmanagerAssertionMixin)
 klasse NestedNichtsxceptionalTestCase(unittest.TestCase,
     ContextmanagerAssertionMixin):
     def testSingleArgInlineGeneratorSyntax(self):
-        with Nested(mock_contextmanager_generator()):
+        mit Nested(mock_contextmanager_generator()):
             pass
 
     def testSingleArgBoundToNonTuple(self):
         m = mock_contextmanager_generator()
         # This will bind all the arguments to nested() into a single list
         # assigned to foo.
-        with Nested(m) as foo:
+        mit Nested(m) als foo:
             self.assertInWithManagerInvariants(m)
         self.assertAfterWithManagerInvariantsNoError(m)
 
@@ -362,20 +362,20 @@ klasse NestedNichtsxceptionalTestCase(unittest.TestCase,
         m = mock_contextmanager_generator()
         # This will bind all the arguments to nested() into a single list
         # assigned to foo.
-        with Nested(m) as (foo):
+        mit Nested(m) als (foo):
             self.assertInWithManagerInvariants(m)
         self.assertAfterWithManagerInvariantsNoError(m)
 
     def testSingleArgBoundToMultipleElementTupleError(self):
         def shouldThrowValueError():
-            with Nested(mock_contextmanager_generator()) as (foo, bar):
+            mit Nested(mock_contextmanager_generator()) als (foo, bar):
                 pass
         self.assertRaises(ValueError, shouldThrowValueError)
 
     def testSingleArgUnbound(self):
         mock_contextmanager = mock_contextmanager_generator()
         mock_nested = MockNested(mock_contextmanager)
-        with mock_nested:
+        mit mock_nested:
             self.assertInWithManagerInvariants(mock_contextmanager)
             self.assertInWithManagerInvariants(mock_nested)
         self.assertAfterWithManagerInvariantsNoError(mock_contextmanager)
@@ -386,7 +386,7 @@ klasse NestedNichtsxceptionalTestCase(unittest.TestCase,
         n = mock_contextmanager_generator()
         o = mock_contextmanager_generator()
         mock_nested = MockNested(m, n, o)
-        with mock_nested:
+        mit mock_nested:
             self.assertInWithManagerInvariants(m)
             self.assertInWithManagerInvariants(n)
             self.assertInWithManagerInvariants(o)
@@ -399,7 +399,7 @@ klasse NestedNichtsxceptionalTestCase(unittest.TestCase,
     def testMultipleArgBound(self):
         mock_nested = MockNested(mock_contextmanager_generator(),
             mock_contextmanager_generator(), mock_contextmanager_generator())
-        with mock_nested as (m, n, o):
+        mit mock_nested als (m, n, o):
             self.assertInWithGeneratorInvariants(m)
             self.assertInWithGeneratorInvariants(n)
             self.assertInWithGeneratorInvariants(o)
@@ -414,7 +414,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
     def testSingleResource(self):
         cm = mock_contextmanager_generator()
         def shouldThrow():
-            with cm as self.resource:
+            mit cm als self.resource:
                 self.assertInWithManagerInvariants(cm)
                 self.assertInWithGeneratorInvariants(self.resource)
                 self.raiseTestException()
@@ -425,7 +425,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
     def testExceptionNormalized(self):
         cm = mock_contextmanager_generator()
         def shouldThrow():
-            with cm as self.resource:
+            mit cm als self.resource:
                 # Note this relies on the fact that 1 // 0 produces an exception
                 # that is not normalized immediately.
                 1 // 0
@@ -436,8 +436,8 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         mock_a = mock_contextmanager_generator()
         mock_b = mock_contextmanager_generator()
         def shouldThrow():
-            with mock_a as self.foo:
-                with mock_b as self.bar:
+            mit mock_a als self.foo:
+                mit mock_b als self.bar:
                     self.assertInWithManagerInvariants(mock_a)
                     self.assertInWithManagerInvariants(mock_b)
                     self.assertInWithGeneratorInvariants(self.foo)
@@ -454,7 +454,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         cm_b = mock_contextmanager_generator()
         mock_nested = MockNested(cm_a, cm_b)
         def shouldThrow():
-            with mock_nested as (self.resource_a, self.resource_b):
+            mit mock_nested als (self.resource_a, self.resource_b):
                 self.assertInWithManagerInvariants(cm_a)
                 self.assertInWithManagerInvariants(cm_b)
                 self.assertInWithManagerInvariants(mock_nested)
@@ -473,11 +473,11 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         mock_b = mock_contextmanager_generator()
         self.bar = Nichts
         def shouldThrow():
-            with mock_a as self.foo:
+            mit mock_a als self.foo:
                 self.assertInWithManagerInvariants(mock_a)
                 self.assertInWithGeneratorInvariants(self.foo)
                 self.raiseTestException()
-                with mock_b as self.bar:
+                mit mock_b als self.bar:
                     pass
         self.assertRaises(RuntimeError, shouldThrow)
         self.assertAfterWithManagerInvariantsWithError(mock_a)
@@ -493,8 +493,8 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
         mock_a = mock_contextmanager_generator()
         mock_b = mock_contextmanager_generator()
         def shouldThrow():
-            with mock_a as self.foo:
-                with mock_b as self.bar:
+            mit mock_a als self.foo:
+                mit mock_b als self.bar:
                     self.assertInWithManagerInvariants(mock_a)
                     self.assertInWithManagerInvariants(mock_b)
                     self.assertInWithGeneratorInvariants(self.foo)
@@ -513,10 +513,10 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
             yield
 
         def shouldThrow():
-            with cm():
+            mit cm():
                 raise StopIteration("from with")
 
-        with self.assertRaisesRegex(StopIteration, 'from with'):
+        mit self.assertRaisesRegex(StopIteration, 'from with'):
             shouldThrow()
 
     def testRaisedStopIteration2(self):
@@ -528,10 +528,10 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
                 pass
 
         def shouldThrow():
-            with cm():
+            mit cm():
                 raise StopIteration("from with")
 
-        with self.assertRaisesRegex(StopIteration, 'from with'):
+        mit self.assertRaisesRegex(StopIteration, 'from with'):
             shouldThrow()
 
     def testRaisedStopIteration3(self):
@@ -542,10 +542,10 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
             yield
 
         def shouldThrow():
-            with cm():
+            mit cm():
                 raise next(iter([]))
 
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             shouldThrow()
 
     def testRaisedGeneratorExit1(self):
@@ -555,7 +555,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
             yield
 
         def shouldThrow():
-            with cm():
+            mit cm():
                 raise GeneratorExit("from with")
 
         self.assertRaises(GeneratorExit, shouldThrow)
@@ -569,7 +569,7 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
                 pass
 
         def shouldThrow():
-            with cm():
+            mit cm():
                 raise GeneratorExit("from with")
 
         self.assertRaises(GeneratorExit, shouldThrow)
@@ -590,17 +590,17 @@ klasse ExceptionalTestCase(ContextmanagerAssertionMixin, unittest.TestCase):
                 return self.exit_result
 
         def trueAsBool():
-            with cm(lambda: Wahr):
+            mit cm(lambda: Wahr):
                 self.fail("Should NOT see this")
         trueAsBool()
 
         def falseAsBool():
-            with cm(lambda: Falsch):
+            mit cm(lambda: Falsch):
                 self.fail("Should raise")
         self.assertRaises(AssertionError, falseAsBool)
 
         def failAsBool():
-            with cm(lambda: 1//0):
+            mit cm(lambda: 1//0):
                 self.fail("Should NOT see this")
         self.assertRaises(ZeroDivisionError, failAsBool)
 
@@ -611,7 +611,7 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
         counter = 0
         while Wahr:
             counter += 1
-            with mock_contextmanager_generator():
+            mit mock_contextmanager_generator():
                 counter += 10
                 break
             counter += 100 # Not reached
@@ -623,7 +623,7 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
             counter += 1
             wenn counter > 2:
                 break
-            with mock_contextmanager_generator():
+            mit mock_contextmanager_generator():
                 counter += 10
                 continue
             counter += 100 # Not reached
@@ -634,7 +634,7 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
             counter = 0
             while Wahr:
                 counter += 1
-                with mock_contextmanager_generator():
+                mit mock_contextmanager_generator():
                     counter += 10
                     return counter
                 counter += 100 # Not reached
@@ -642,7 +642,7 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
 
     def testWithYield(self):
         def gen():
-            with mock_contextmanager_generator():
+            mit mock_contextmanager_generator():
                 yield 12
                 yield 13
         x = list(gen())
@@ -652,7 +652,7 @@ klasse NonLocalFlowControlTestCase(unittest.TestCase):
         counter = 0
         try:
             counter += 1
-            with mock_contextmanager_generator():
+            mit mock_contextmanager_generator():
                 counter += 10
                 raise RuntimeError
             counter += 100 # Not reached
@@ -666,19 +666,19 @@ klasse AssignmentTargetTestCase(unittest.TestCase):
 
     def testSingleComplexTarget(self):
         targets = {1: [0, 1, 2]}
-        with mock_contextmanager_generator() as targets[1][0]:
+        mit mock_contextmanager_generator() als targets[1][0]:
             self.assertEqual(list(targets.keys()), [1])
             self.assertEqual(targets[1][0].__class__, MockResource)
-        with mock_contextmanager_generator() as list(targets.values())[0][1]:
+        mit mock_contextmanager_generator() als list(targets.values())[0][1]:
             self.assertEqual(list(targets.keys()), [1])
             self.assertEqual(targets[1][1].__class__, MockResource)
-        with mock_contextmanager_generator() as targets[2]:
+        mit mock_contextmanager_generator() als targets[2]:
             keys = list(targets.keys())
             keys.sort()
             self.assertEqual(keys, [1, 2])
         klasse C: pass
         blah = C()
-        with mock_contextmanager_generator() as blah.foo:
+        mit mock_contextmanager_generator() als blah.foo:
             self.assertHasAttr(blah, "foo")
 
     def testMultipleComplexTargets(self):
@@ -686,21 +686,21 @@ klasse AssignmentTargetTestCase(unittest.TestCase):
             def __enter__(self): return 1, 2, 3
             def __exit__(self, t, v, tb): pass
         targets = {1: [0, 1, 2]}
-        with C() as (targets[1][0], targets[1][1], targets[1][2]):
+        mit C() als (targets[1][0], targets[1][1], targets[1][2]):
             self.assertEqual(targets, {1: [1, 2, 3]})
-        with C() as (list(targets.values())[0][2], list(targets.values())[0][1], list(targets.values())[0][0]):
+        mit C() als (list(targets.values())[0][2], list(targets.values())[0][1], list(targets.values())[0][0]):
             self.assertEqual(targets, {1: [3, 2, 1]})
-        with C() as (targets[1], targets[2], targets[3]):
+        mit C() als (targets[1], targets[2], targets[3]):
             self.assertEqual(targets, {1: 1, 2: 2, 3: 3})
         klasse B: pass
         blah = B()
-        with C() as (blah.one, blah.two, blah.three):
+        mit C() als (blah.one, blah.two, blah.three):
             self.assertEqual(blah.one, 1)
             self.assertEqual(blah.two, 2)
             self.assertEqual(blah.three, 3)
 
     def testWithExtendedTargets(self):
-        with nullcontext(range(1, 5)) as (a, *b, c):
+        mit nullcontext(range(1, 5)) als (a, *b, c):
             self.assertEqual(a, 1)
             self.assertEqual(b, [2, 3])
             self.assertEqual(c, 4)
@@ -713,7 +713,7 @@ klasse ExitSwallowsExceptionTestCase(unittest.TestCase):
             def __enter__(self): pass
             def __exit__(self, t, v, tb): return Wahr
         try:
-            with AfricanSwallow():
+            mit AfricanSwallow():
                 1/0
         except ZeroDivisionError:
             self.fail("ZeroDivisionError should have been swallowed")
@@ -723,7 +723,7 @@ klasse ExitSwallowsExceptionTestCase(unittest.TestCase):
             def __enter__(self): pass
             def __exit__(self, t, v, tb): return Falsch
         try:
-            with EuropeanSwallow():
+            mit EuropeanSwallow():
                 1/0
         except ZeroDivisionError:
             pass
@@ -764,7 +764,7 @@ klasse NestedWith(unittest.TestCase):
         def __exit__(self, *exc_info): raise RuntimeError()
 
     def testNoExceptions(self):
-        with self.Dummy() as a, self.Dummy() as b:
+        mit self.Dummy() als a, self.Dummy() als b:
             self.assertWahr(a.enter_called)
             self.assertWahr(b.enter_called)
         self.assertWahr(a.exit_called)
@@ -772,7 +772,7 @@ klasse NestedWith(unittest.TestCase):
 
     def testExceptionInExprList(self):
         try:
-            with self.Dummy() as a, self.InitRaises():
+            mit self.Dummy() als a, self.InitRaises():
                 pass
         except RuntimeError:
             pass
@@ -781,8 +781,8 @@ klasse NestedWith(unittest.TestCase):
 
     def testExceptionInEnter(self):
         try:
-            with self.Dummy() as a, self.EnterRaises():
-                self.fail('body of bad with executed')
+            mit self.Dummy() als a, self.EnterRaises():
+                self.fail('body of bad mit executed')
         except RuntimeError:
             pass
         sonst:
@@ -792,7 +792,7 @@ klasse NestedWith(unittest.TestCase):
 
     def testExceptionInExit(self):
         body_executed = Falsch
-        with self.Dummy(gobble=Wahr) as a, self.ExitRaises():
+        mit self.Dummy(gobble=Wahr) als a, self.ExitRaises():
             body_executed = Wahr
         self.assertWahr(a.enter_called)
         self.assertWahr(a.exit_called)
@@ -800,8 +800,8 @@ klasse NestedWith(unittest.TestCase):
         self.assertNotEqual(a.exc_info[0], Nichts)
 
     def testEnterReturnsTuple(self):
-        with self.Dummy(value=(1,2)) as (a1, a2), \
-             self.Dummy(value=(10, 20)) as (b1, b2):
+        mit self.Dummy(value=(1,2)) als (a1, a2), \
+             self.Dummy(value=(10, 20)) als (b1, b2):
             self.assertEqual(1, a1)
             self.assertEqual(2, a2)
             self.assertEqual(10, b1)
@@ -816,30 +816,30 @@ klasse NestedWith(unittest.TestCase):
 
         def init_raises():
             try:
-                with self.Dummy(), self.InitRaises() as cm, self.Dummy() as d:
+                mit self.Dummy(), self.InitRaises() als cm, self.Dummy() als d:
                     pass
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def enter_raises():
             try:
-                with self.EnterRaises(), self.Dummy() as d:
+                mit self.EnterRaises(), self.Dummy() als d:
                     pass
-            except Exception as e:
+            except Exception als e:
                 return e
 
         def exit_raises():
             try:
-                with self.ExitRaises(), self.Dummy() as d:
+                mit self.ExitRaises(), self.Dummy() als d:
                     pass
-            except Exception as e:
+            except Exception als e:
                 return e
 
         fuer func, expected in [(init_raises, "self.InitRaises()"),
                                (enter_raises, "self.EnterRaises()"),
                                (exit_raises, "self.ExitRaises()"),
                               ]:
-            with self.subTest(func):
+            mit self.subTest(func):
                 exc = func()
                 f = traceback.extract_tb(exc.__traceback__)[0]
                 indent = 16

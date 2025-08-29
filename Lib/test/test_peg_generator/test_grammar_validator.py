@@ -3,7 +3,7 @@ von test importiere test_tools
 
 test_tools.skip_if_missing("peg_generator")
 with test_tools.imports_under_tool("peg_generator"):
-    von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+    von pegen.grammar_parser importiere GeneratedParser als GrammarParser
     von pegen.validator importiere SubRuleValidator, ValidationError, RaiseRuleValidator
     von pegen.testutil importiere parse_string
     von pegen.grammar importiere Grammar
@@ -31,7 +31,7 @@ klasse TestPegen(unittest.TestCase):
         """
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = SubRuleValidator(grammar)
-        with self.assertRaises(ValidationError):
+        mit self.assertRaises(ValidationError):
             fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)
 
@@ -46,7 +46,7 @@ klasse TestPegen(unittest.TestCase):
         """
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = SubRuleValidator(grammar)
-        with self.assertRaises(ValidationError):
+        mit self.assertRaises(ValidationError):
             fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)
 
@@ -56,6 +56,6 @@ klasse TestPegen(unittest.TestCase):
         """
         grammar: Grammar = parse_string(grammar_source, GrammarParser)
         validator = RaiseRuleValidator(grammar)
-        with self.assertRaises(ValidationError):
+        mit self.assertRaises(ValidationError):
             fuer rule_name, rule in grammar.rules.items():
                 validator.validate_rule(rule_name, rule)

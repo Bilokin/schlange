@@ -1,19 +1,19 @@
-"""Utilities fuer testing with Tkinter"""
+"""Utilities fuer testing mit Tkinter"""
 importiere functools
 
 
 def run_in_tk_mainloop(delay=1):
-    """Decorator fuer running a test method with a real Tk mainloop.
+    """Decorator fuer running a test method mit a real Tk mainloop.
 
     This starts a Tk mainloop before running the test, and stops it
     at the end. This is faster and more robust than the common
     alternative method of calling .update() and/or .update_idletasks().
 
-    Test methods using this must be written as generator functions,
+    Test methods using this must be written als generator functions,
     using "yield" to allow the mainloop to process events and "after"
     callbacks, and then continue the test von that point.
 
-    The delay argument is passed into root.after(...) calls as the number
+    The delay argument is passed into root.after(...) calls als the number
     of ms to wait before passing execution back to the generator function.
 
     This also assumes that the test klasse has a .root attribute,
@@ -42,7 +42,7 @@ def run_in_tk_mainloop(delay=1):
                     next(test_generator)
                 except StopIteration:
                     root.quit()
-                except Exception as exc:
+                except Exception als exc:
                     exception = exc
                     root.quit()
                 sonst:

@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2008-2012 Stefan Krah. All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without
+# Redistribution and use in source and binary forms, mit or without
 # modification, are permitted provided that the following conditions
 # are met:
 #
@@ -10,7 +10,7 @@
 #
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
+#    documentation and/or other materials provided mit the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE

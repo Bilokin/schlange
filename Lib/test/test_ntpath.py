@@ -62,7 +62,7 @@ def tester(fn, wantResult):
         raise TestFailed("%s should return: %s but returned: %s" \
               %(str(fn), str(wantResult), str(gotResult)))
 
-    # then with bytes
+    # then mit bytes
     fn = fn.replace("('", "(b'")
     fn = fn.replace('("', '(b"')
     fn = fn.replace("['", "[b'")
@@ -71,7 +71,7 @@ def tester(fn, wantResult):
     fn = fn.replace(', "', ', b"')
     fn = os.fsencode(fn).decode('latin1')
     fn = fn.encode('ascii', 'backslashreplace').decode('ascii')
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         gotResult = eval(fn)
     wenn _norm(wantResult) != _norm(gotResult):
@@ -287,7 +287,7 @@ klasse TestNtpath(NtpathTestCase):
         tester('ntpath.isabs("c:/foo/bar")', 1)
         tester('ntpath.isabs("\\\\conky\\mountpoint\\")', 1)
 
-        # gh-44626: paths with only a drive or root are not absolute.
+        # gh-44626: paths mit only a drive or root are not absolute.
         tester('ntpath.isabs("\\foo\\bar")', 0)
         tester('ntpath.isabs("/foo/bar")', 0)
         tester('ntpath.isabs("c:foo\\bar")', 0)
@@ -451,7 +451,7 @@ klasse TestNtpath(NtpathTestCase):
         tester("ntpath.normpath('//server/share/../..')",  '\\\\server\\share\\')
         tester("ntpath.normpath('//server/share/../../')", '\\\\server\\share\\')
 
-        # gh-96290: don't normalize partial/invalid UNC drives as rooted paths.
+        # gh-96290: don't normalize partial/invalid UNC drives als rooted paths.
         tester("ntpath.normpath('\\\\foo\\\\')", '\\\\foo\\\\')
         tester("ntpath.normpath('\\\\foo\\')", '\\\\foo\\')
         tester("ntpath.normpath('\\\\foo')", '\\\\foo')
@@ -553,7 +553,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertPathEqual(ntpath.realpath(os.fsencode(ABSTFN + "1"), **kwargs),
                          os.fsencode(ABSTFN))
 
-        # gh-88013: call ntpath.realpath with binary drive name may raise a
+        # gh-88013: call ntpath.realpath mit binary drive name may raise a
         # TypeError. The drive should not exist to reproduce the bug.
         drives = {f"{c}:\\" fuer c in string.ascii_uppercase} - set(os.listdrives())
         d = drives.pop().encode()
@@ -561,7 +561,7 @@ klasse TestNtpath(NtpathTestCase):
 
         # gh-106242: Embedded nulls and non-strict fallback to abspath
         wenn kwargs:
-            with self.assertRaises(OSError):
+            mit self.assertRaises(OSError):
                 ntpath.realpath(os_helper.TESTFN + "\0spam",
                                 **kwargs)
         sonst:
@@ -661,7 +661,7 @@ klasse TestNtpath(NtpathTestCase):
         os.mkdir(ABSTFN)
         self.addCleanup(os_helper.rmtree, ABSTFN)
 
-        with os_helper.change_cwd(ABSTFN):
+        mit os_helper.change_cwd(ABSTFN):
             os.mkdir("subdir")
             os.chdir("subdir")
             os.symlink(".", "recursive")
@@ -714,7 +714,7 @@ klasse TestNtpath(NtpathTestCase):
     @os_helper.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
     def test_realpath_symlink_loops(self):
-        # Symlink loops in non-strict mode are non-deterministic as to which
+        # Symlink loops in non-strict mode are non-deterministic als to which
         # path is returned, but it will always be the fully resolved path of
         # one member of the cycle
         ABSTFN = ntpath.abspath(os_helper.TESTFN)
@@ -755,7 +755,7 @@ klasse TestNtpath(NtpathTestCase):
                    + "\\" + ntpath.basename(ABSTFN) + "c", ABSTFN + "c")
         self.assertPathEqual(ntpath.realpath(ABSTFN + "c"), ABSTFN + "c")
 
-        # Test using relative path as well.
+        # Test using relative path als well.
         self.assertPathEqual(ntpath.realpath(ntpath.basename(ABSTFN)), ABSTFN)
 
     @os_helper.skip_unless_symlink
@@ -815,7 +815,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertRaises(OSError, ntpath.realpath, ABSTFN + "c", strict=ALL_BUT_LAST)
         self.assertRaises(OSError, ntpath.realpath, ABSTFN + "c", strict=Wahr)
 
-        # Test using relative path as well.
+        # Test using relative path als well.
         self.assertRaises(OSError, ntpath.realpath, ntpath.basename(ABSTFN),
                           strict=ALL_BUT_LAST)
         self.assertRaises(OSError, ntpath.realpath, ntpath.basename(ABSTFN),
@@ -871,7 +871,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertRaises(OSError, ntpath.realpath, ABSTFN + "c",
                             strict=ALLOW_MISSING)
 
-        # Test using relative path as well.
+        # Test using relative path als well.
         self.assertRaises(OSError, ntpath.realpath, ntpath.basename(ABSTFN),
                             strict=ALLOW_MISSING)
 
@@ -885,11 +885,11 @@ klasse TestNtpath(NtpathTestCase):
         self.addCleanup(os_helper.unlink, ABSTFN + "3link")
         self.addCleanup(os_helper.unlink, ABSTFN + "3.link")
 
-        with open(ABSTFN + "3", "wb") as f:
+        mit open(ABSTFN + "3", "wb") als f:
             f.write(b'0')
         os.symlink(ABSTFN + "3", ABSTFN + "3link")
 
-        with open("\\\\?\\" + ABSTFN + "3.", "wb") as f:
+        mit open("\\\\?\\" + ABSTFN + "3.", "wb") als f:
             f.write(b'1')
         os.symlink("\\\\?\\" + ABSTFN + "3.", ABSTFN + "3.link")
 
@@ -899,9 +899,9 @@ klasse TestNtpath(NtpathTestCase):
                              "\\\\?\\" + ABSTFN + "3.")
 
         # Resolved paths should be usable to open target files
-        with open(ntpath.realpath(ABSTFN + "3link"), "rb") as f:
+        mit open(ntpath.realpath(ABSTFN + "3link"), "rb") als f:
             self.assertEqual(f.read(), b'0')
-        with open(ntpath.realpath(ABSTFN + "3.link"), "rb") as f:
+        mit open(ntpath.realpath(ABSTFN + "3.link"), "rb") als f:
             self.assertEqual(f.read(), b'1')
 
         # When the prefix is included, it is not stripped
@@ -935,22 +935,22 @@ klasse TestNtpath(NtpathTestCase):
         test_file_long = ntpath.join(test_dir_long, "file.txt")
         test_file_short = ntpath.join(test_dir_short, "file.txt")
 
-        with open(test_file_long, "wb") as f:
+        mit open(test_file_long, "wb") als f:
             f.write(b"content")
 
         self.assertPathEqual(test_file_long, ntpath.realpath(test_file_short))
 
         fuer kwargs in {}, {'strict': Wahr}, {'strict': ALL_BUT_LAST}, {'strict': ALLOW_MISSING}:
-            with self.subTest(**kwargs):
-                with os_helper.change_cwd(test_dir_long):
+            mit self.subTest(**kwargs):
+                mit os_helper.change_cwd(test_dir_long):
                     self.assertPathEqual(
                         test_file_long,
                         ntpath.realpath("file.txt", **kwargs))
-                with os_helper.change_cwd(test_dir_long.lower()):
+                mit os_helper.change_cwd(test_dir_long.lower()):
                     self.assertPathEqual(
                         test_file_long,
                         ntpath.realpath("file.txt", **kwargs))
-                with os_helper.change_cwd(test_dir_short):
+                mit os_helper.change_cwd(test_dir_short):
                     self.assertPathEqual(
                         test_file_long,
                         ntpath.realpath("file.txt", **kwargs))
@@ -969,7 +969,7 @@ klasse TestNtpath(NtpathTestCase):
         test_file = ntpath.join(ABSTFN, "LongFileName123.txt")
         test_file_short = ntpath.join(ABSTFN, "LONGFI~1.TXT")
 
-        with open(test_file, "wb") as f:
+        mit open(test_file, "wb") als f:
             f.write(b"content")
         # Automatic generation of short names may be disabled on
         # NTFS volumes fuer the sake of performance.
@@ -989,7 +989,7 @@ klasse TestNtpath(NtpathTestCase):
             raise unittest.SkipTest('the filesystem seems to lack support fuer short filenames')
 
         # Deny the right to [S]YNCHRONIZE on the file to
-        # force nt._getfinalpathname to fail with ERROR_ACCESS_DENIED.
+        # force nt._getfinalpathname to fail mit ERROR_ACCESS_DENIED.
         p = subprocess.run(
             ['icacls.exe', test_file, '/deny', '*S-1-5-32-545:(S)'],
             creationflags=subprocess.DETACHED_PROCESS
@@ -1028,13 +1028,13 @@ klasse TestNtpath(NtpathTestCase):
                 assert errno is Nichts
                 expected = expected.replace('/', os.sep)
                 fuer mode in modes:
-                    with self.subTest(mode=mode):
+                    mit self.subTest(mode=mode):
                         self.assertEqual(realpath(path, strict=mode),
                                          ABSTFN + expected)
             sonst:
                 fuer mode in modes:
-                    with self.subTest(mode=mode):
-                        with self.assertRaises(expected) as cm:
+                    mit self.subTest(mode=mode):
+                        mit self.assertRaises(expected) als cm:
                             realpath(path, strict=mode)
                         wenn errno is not Nichts:
                             self.assertEqual(cm.exception.errno, errno)
@@ -1088,7 +1088,7 @@ klasse TestNtpath(NtpathTestCase):
         check("cycle/../link", all_modes, "/file")
 
     def test_expandvars(self):
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.clear()
             env["foo"] = "bar"
             env["{foo"] = "baz1"
@@ -1117,7 +1117,7 @@ klasse TestNtpath(NtpathTestCase):
     def test_expandvars_nonascii(self):
         def check(value, expected):
             tester('ntpath.expandvars(%r)' % value, expected)
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.clear()
             nonascii = os_helper.FS_NONASCII
             env['spam'] = nonascii
@@ -1136,7 +1136,7 @@ klasse TestNtpath(NtpathTestCase):
     def test_expanduser(self):
         tester('ntpath.expanduser("test")', 'test')
 
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             env.clear()
             tester('ntpath.expanduser("~test")', '~test')
 
@@ -1220,7 +1220,7 @@ klasse TestNtpath(NtpathTestCase):
         tester('ntpath.abspath("//.. . . .")', "\\\\")
         tester('ntpath.abspath("//../... . .")',  "\\\\..\\")
         tester('ntpath.abspath("//../.. . . .")', "\\\\..\\")
-        with os_helper.temp_cwd(os_helper.TESTFN) as cwd_dir: # bpo-31047
+        mit os_helper.temp_cwd(os_helper.TESTFN) als cwd_dir: # bpo-31047
             tester('ntpath.abspath("")', cwd_dir)
             tester('ntpath.abspath(" ")', cwd_dir + "\\ ")
             tester('ntpath.abspath("?")', cwd_dir + "\\?")
@@ -1252,7 +1252,7 @@ klasse TestNtpath(NtpathTestCase):
         tester('ntpath.relpath(ntpath.abspath("a"))', 'a')
         tester('ntpath.relpath("a/b")', 'a\\b')
         tester('ntpath.relpath("../a/b")', '..\\a\\b')
-        with os_helper.temp_cwd(os_helper.TESTFN) as cwd_dir:
+        mit os_helper.temp_cwd(os_helper.TESTFN) als cwd_dir:
             currentdir = ntpath.basename(cwd_dir)
             tester('ntpath.relpath("a", "../b")', '..\\'+currentdir+'\\a')
             tester('ntpath.relpath("a/b", "../c")', '..\\'+currentdir+'\\a\\b')
@@ -1341,14 +1341,14 @@ klasse TestNtpath(NtpathTestCase):
         self.assertRaises(TypeError, ntpath.commonpath, ['Foo', b'C:\\Foo\\Baz'])
 
     def test_sameopenfile(self):
-        with TemporaryFile() as tf1, TemporaryFile() as tf2:
+        mit TemporaryFile() als tf1, TemporaryFile() als tf2:
             # Make sure the same file is really the same
             self.assertWahr(ntpath.sameopenfile(tf1.fileno(), tf1.fileno()))
             # Make sure different files are really different
             self.assertFalsch(ntpath.sameopenfile(tf1.fileno(), tf2.fileno()))
             # Make sure invalid values don't cause issues on win32
             wenn sys.platform == "win32":
-                with self.assertRaises(OSError):
+                mit self.assertRaises(OSError):
                     # Invalid file descriptors shouldn't display assert
                     # dialogs (#4804)
                     ntpath.sameopenfile(-1, -1)
@@ -1368,7 +1368,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertWahr(ntpath.ismount(b"\\\\.\\c:\\"))
         self.assertWahr(ntpath.ismount(b"\\\\.\\C:\\"))
 
-        with os_helper.temp_dir() as d:
+        mit os_helper.temp_dir() als d:
             self.assertFalsch(ntpath.ismount(d))
 
         wenn sys.platform == "win32":
@@ -1379,7 +1379,7 @@ klasse TestNtpath(NtpathTestCase):
             #
             test_cwd = os.getenv("SystemRoot")
             drive, path = ntpath.splitdrive(test_cwd)
-            with os_helper.change_cwd(test_cwd):
+            mit os_helper.change_cwd(test_cwd):
                 self.assertFalsch(ntpath.ismount(drive.lower()))
                 self.assertFalsch(ntpath.ismount(drive.upper()))
 
@@ -1407,7 +1407,7 @@ klasse TestNtpath(NtpathTestCase):
         self.assertFalsch(ntpath.isreserved('..'))
         self.assertFalsch(ntpath.isreserved('/'))
         self.assertFalsch(ntpath.isreserved('/foo/bar'))
-        # A name that ends with a space or dot is reserved.
+        # A name that ends mit a space or dot is reserved.
         self.assertWahr(ntpath.isreserved('foo.'))
         self.assertWahr(ntpath.isreserved('foo '))
         # ASCII control characters are reserved.
@@ -1491,10 +1491,10 @@ klasse TestNtpath(NtpathTestCase):
             self.assertIsInstance(b_final_path, bytes)
             self.assertGreater(len(b_final_path), 0)
 
-    @unittest.skipIf(sys.platform != 'win32', "Can only test junctions with creation on win32.")
+    @unittest.skipIf(sys.platform != 'win32', "Can only test junctions mit creation on win32.")
     def test_isjunction(self):
-        with os_helper.temp_dir() as d:
-            with os_helper.change_cwd(d):
+        mit os_helper.temp_dir() als d:
+            mit os_helper.change_cwd(d):
                 os.mkdir('tmpdir')
 
                 importiere _winapi
@@ -1584,7 +1584,7 @@ klasse TestNtpath(NtpathTestCase):
         # Invalid volume returns Falsch von os.path method
         self.assertFalsch(ntpath.isdevdrive(r"\\?\Volume{00000000-0000-0000-0000-000000000000}\\"))
         # Invalid volume raises von underlying helper
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             nt._path_isdevdrive(r"\\?\Volume{00000000-0000-0000-0000-000000000000}\\")
 
     @unittest.skipIf(os.name == 'nt', "isdevdrive fallback only used off Win32")
@@ -1606,7 +1606,7 @@ klasse PathLikeTests(NtpathTestCase):
         self.file_name = os_helper.TESTFN
         self.file_path = FakePath(os_helper.TESTFN)
         self.addCleanup(os_helper.unlink, self.file_name)
-        with open(self.file_name, 'xb', 0) as file:
+        mit open(self.file_name, 'xb', 0) als file:
             file.write(b"test_ntpath.PathLikeTests")
 
     def _check_function(self, func):

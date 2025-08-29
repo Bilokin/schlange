@@ -82,7 +82,7 @@ def run_amock(app=hello_app, data=b"GET / HTTP/1.0\n\n"):
 
 
 def compare_generic_iter(make_it, match):
-    """Utility to compare a generic iterator with an iterable
+    """Utility to compare a generic iterator mit an iterable
 
     This tests the iterator using iter()/next().
     'make_it' must be a function returning a fresh
@@ -172,7 +172,7 @@ klasse IntegrationTests(TestCase):
         ]
 
         fuer status, exc_message in tests:
-            with self.subTest(status=status):
+            mit self.subTest(status=status):
                 out, err = run_amock(create_bad_app(status))
                 self.assertEndsWith(out,
                     b"A server error occurred.  Please contact the administrator."
@@ -219,8 +219,8 @@ klasse IntegrationTests(TestCase):
                 ("Content-Type", "text/plain"),
                 ("Date", "Wed, 24 Dec 2008 13:29:32 GMT"),
                 ])
-            # PEP3333 says environ variables are decoded as latin1.
-            # Encode as latin1 to get original bytes
+            # PEP3333 says environ variables are decoded als latin1.
+            # Encode als latin1 to get original bytes
             return [e["PATH_INFO"].encode("latin1")]
 
         out, err = run_amock(
@@ -239,7 +239,7 @@ klasse IntegrationTests(TestCase):
     def test_interrupted_write(self):
         # BaseHandler._write() and _flush() have to write all data, even if
         # it takes multiple send() calls.  Test this by interrupting a send()
-        # call with a Unix signal.
+        # call mit a Unix signal.
         pthread_kill = support.get_attribute(signal, "pthread_kill")
 
         def app(environ, start_response):
@@ -264,7 +264,7 @@ klasse IntegrationTests(TestCase):
         def run_client():
             http = HTTPConnection(*server.server_address)
             http.request("GET", "/")
-            with http.getresponse() as response:
+            mit http.getresponse() als response:
                 response.read(100)
                 # The main thread should now be blocking in a send() system
                 # call.  But in theory, it could get interrupted by other
@@ -541,7 +541,7 @@ klasse HandlerTests(TestCase):
             'SERVER_NAME': 'test_server_name',
         }
 
-        with support.swap_attr(TestHandler, 'os_environ', os_environ):
+        mit support.swap_attr(TestHandler, 'os_environ', os_environ):
             # override X and HOME variables
             handler = TestHandler(X="Y", HOME="/override/home")
             handler.setup_environ()
@@ -553,7 +553,7 @@ klasse HandlerTests(TestCase):
             self.assertEqual(getattr(handler, 'wsgi_' + attr),
                              handler.environ['wsgi.' + attr])
 
-        # Test handler.environ as a dict
+        # Test handler.environ als a dict
         expected = {}
         setup_testing_defaults(expected)
         # Handler inherits os_environ variables which are not overridden
@@ -786,7 +786,7 @@ klasse HandlerTests(TestCase):
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}
         h = SimpleHandler(BytesIO(), PartialWriter(), sys.stderr, environ)
         msg = "should not do partial writes"
-        with self.assertWarnsRegex(DeprecationWarning, msg):
+        mit self.assertWarnsRegex(DeprecationWarning, msg):
             h.run(hello_app)
         self.assertEqual(b"HTTP/1.0 200 OK\r\n"
             b"Content-Type: text/plain\r\n"
@@ -803,7 +803,7 @@ klasse HandlerTests(TestCase):
             BrokenPipeError,
             ConnectionResetError,
         ):
-            with self.subTest(exception=exception):
+            mit self.subTest(exception=exception):
                 klasse AbortingWriter:
                     def write(self, b):
                         raise exception

@@ -27,7 +27,7 @@ klasse I:
         return v
 
 klasse Ig:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined mit a generator'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0

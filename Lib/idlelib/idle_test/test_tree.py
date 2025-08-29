@@ -20,7 +20,7 @@ klasse TreeTest(unittest.TestCase):
         del cls.root
 
     def test_init(self):
-        # Start with code slightly adapted von htest.
+        # Start mit code slightly adapted von htest.
         sc = tree.ScrolledCanvas(
             self.root, bg="white", highlightthickness=0, takefocus=1)
         sc.frame.pack(expand=1, fill="both", side='left')

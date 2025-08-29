@@ -26,14 +26,14 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
 
     def test_type_flags(self):
         fuer cls in _CFuncPtr, PyCFuncPtrType:
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 self.assertWahr(_CFuncPtr.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalsch(_CFuncPtr.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Cannot call the metaclass __init__ more than once
         CdeclCallback = CFUNCTYPE(c_int, c_int, c_int)
-        with self.assertRaisesRegex(SystemError, "already initialized"):
+        mit self.assertRaisesRegex(SystemError, "already initialized"):
             PyCFuncPtrType.__init__(CdeclCallback, 'ptr', (), {})
 
     def test_basic(self):
@@ -61,7 +61,7 @@ klasse CFuncPtrTestCase(unittest.TestCase, StructCheckMixin):
         self.assertEqual(s(1, 2), 3)
         self.assertEqual(c(1, 2), 3)
         # The following no longer raises a TypeError - it is now
-        # possible, as in C, to call cdecl functions with more parameters.
+        # possible, als in C, to call cdecl functions mit more parameters.
         #self.assertRaises(TypeError, c, 1, 2, 3)
         self.assertEqual(c(1, 2, 3, 4, 5, 6), 3)
         wenn WINFUNCTYPE is not CFUNCTYPE:

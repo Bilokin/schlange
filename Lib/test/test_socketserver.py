@@ -33,7 +33,7 @@ requires_unix_sockets = unittest.skipUnless(HAVE_UNIX_SOCKETS,
 HAVE_FORKING = test.support.has_fork_support
 requires_forking = unittest.skipUnless(HAVE_FORKING, 'requires forking')
 
-# Remember real select() to avoid interferences with mocking
+# Remember real select() to avoid interferences mit mocking
 _real_select = select.select
 
 def receive(sock, n, timeout=test.support.SHORT_TIMEOUT):
@@ -102,7 +102,7 @@ klasse SocketServerTest(unittest.TestCase):
         wenn verbose: drucke("creating server")
         try:
             server = MyServer(addr, MyHandler)
-        except PermissionError as e:
+        except PermissionError als e:
             # Issue 29184: cannot bind() a Unix socket on Android.
             self.skipTest('Cannot create server (%s, %s): %s' %
                           (svrcls, addr, e))
@@ -145,7 +145,7 @@ klasse SocketServerTest(unittest.TestCase):
         wenn verbose: drucke("done")
 
     def stream_examine(self, proto, addr):
-        with socket.socket(proto, socket.SOCK_STREAM) as s:
+        mit socket.socket(proto, socket.SOCK_STREAM) als s:
             s.connect(addr)
             s.sendall(TEST_STR)
             buf = data = receive(s, 100)
@@ -155,7 +155,7 @@ klasse SocketServerTest(unittest.TestCase):
             self.assertEqual(buf, TEST_STR)
 
     def dgram_examine(self, proto, addr):
-        with socket.socket(proto, socket.SOCK_DGRAM) as s:
+        mit socket.socket(proto, socket.SOCK_DGRAM) als s:
             wenn HAVE_UNIX_SOCKETS and proto == socket.AF_UNIX:
                 s.bind(self.pickaddr(proto))
             s.sendto(TEST_STR, addr)
@@ -178,7 +178,7 @@ klasse SocketServerTest(unittest.TestCase):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @requires_forking
     def test_ForkingTCPServer(self):
-        with simple_subprocess(self):
+        mit simple_subprocess(self):
             self.run_server(socketserver.ForkingTCPServer,
                             socketserver.StreamRequestHandler,
                             self.stream_examine)
@@ -199,7 +199,7 @@ klasse SocketServerTest(unittest.TestCase):
     @requires_unix_sockets
     @requires_forking
     def test_ForkingUnixStreamServer(self):
-        with simple_subprocess(self):
+        mit simple_subprocess(self):
             self.run_server(socketserver.ForkingUnixStreamServer,
                             socketserver.StreamRequestHandler,
                             self.stream_examine)
@@ -217,7 +217,7 @@ klasse SocketServerTest(unittest.TestCase):
     @warnings_helper.ignore_fork_in_thread_deprecation_warnings()
     @requires_forking
     def test_ForkingUDPServer(self):
-        with simple_subprocess(self):
+        mit simple_subprocess(self):
             self.run_server(socketserver.ForkingUDPServer,
                             socketserver.DatagramRequestHandler,
                             self.dgram_examine)
@@ -281,13 +281,13 @@ klasse SocketServerTest(unittest.TestCase):
         # Create many servers fuer which bind() will fail, to see wenn this result
         # in FD exhaustion.
         fuer i in range(1024):
-            with self.assertRaises(OverflowError):
+            mit self.assertRaises(OverflowError):
                 socketserver.TCPServer((HOST, -1),
                                        socketserver.StreamRequestHandler)
 
     def test_context_manager(self):
-        with socketserver.TCPServer((HOST, 0),
-                                    socketserver.StreamRequestHandler) as server:
+        mit socketserver.TCPServer((HOST, 0),
+                                    socketserver.StreamRequestHandler) als server:
             pass
         self.assertEqual(-1, server.socket.fileno())
 
@@ -305,7 +305,7 @@ klasse ErrorHandlerTest(unittest.TestCase):
         self.check_result(handled=Wahr)
 
     def test_sync_not_handled(self):
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             BaseErrorTestServer(SystemExit)
         self.check_result(handled=Falsch)
 
@@ -314,7 +314,7 @@ klasse ErrorHandlerTest(unittest.TestCase):
         self.check_result(handled=Wahr)
 
     def test_threading_not_handled(self):
-        with threading_helper.catch_threading_exception() as cm:
+        mit threading_helper.catch_threading_exception() als cm:
             ThreadingErrorTestServer(SystemExit)
             self.check_result(handled=Falsch)
 
@@ -333,7 +333,7 @@ klasse ErrorHandlerTest(unittest.TestCase):
         self.check_result(handled=Falsch)
 
     def check_result(self, handled):
-        with open(os_helper.TESTFN) as log:
+        mit open(os_helper.TESTFN) als log:
             expected = 'Handler called\n' + 'Error handled\n' * handled
             self.assertEqual(log.read(), expected)
 
@@ -342,7 +342,7 @@ klasse BaseErrorTestServer(socketserver.TCPServer):
     def __init__(self, exception):
         self.exception = exception
         super().__init__((HOST, 0), BadHandler)
-        with socket.create_connection(self.server_address):
+        mit socket.create_connection(self.server_address):
             pass
         try:
             self.handle_request()
@@ -351,7 +351,7 @@ klasse BaseErrorTestServer(socketserver.TCPServer):
         self.wait_done()
 
     def handle_error(self, request, client_address):
-        with open(os_helper.TESTFN, 'a') as log:
+        mit open(os_helper.TESTFN, 'a') als log:
             log.write('Error handled\n')
 
     def wait_done(self):
@@ -360,7 +360,7 @@ klasse BaseErrorTestServer(socketserver.TCPServer):
 
 klasse BadHandler(socketserver.BaseRequestHandler):
     def handle(self):
-        with open(os_helper.TESTFN, 'a') as log:
+        mit open(os_helper.TESTFN, 'a') als log:
             log.write('Handler called\n')
         raise self.server.exception('Test error')
 
@@ -396,7 +396,7 @@ klasse SocketWriterTest(unittest.TestCase):
         self.addCleanup(server.server_close)
         s = socket.socket(
             server.address_family, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-        with s:
+        mit s:
             s.connect(server.server_address)
         server.handle_request()
         self.assertIsInstance(server.wfile, io.BufferedIOBase)
@@ -431,7 +431,7 @@ klasse SocketWriterTest(unittest.TestCase):
         def run_client():
             s = socket.socket(server.address_family, socket.SOCK_STREAM,
                 socket.IPPROTO_TCP)
-            with s, s.makefile('rb') as reader:
+            mit s, s.makefile('rb') als reader:
                 s.connect(server.server_address)
                 nonlocal response1
                 response1 = reader.readline()
@@ -505,7 +505,7 @@ klasse MiscTestCase(unittest.TestCase):
 
         server = MyServer((HOST, 0), socketserver.StreamRequestHandler)
         fuer n in range(10):
-            with socket.create_connection(server.server_address):
+            mit socket.create_connection(server.server_address):
                 server.handle_request()
         self.assertLess(len(server._threads), 10)
         server.server_close()

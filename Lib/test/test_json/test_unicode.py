@@ -5,7 +5,7 @@ von test.test_json importiere PyTest, CTest
 
 klasse TestUnicode:
     # test_encoding1 and test_encoding2 von 2.x are irrelevant (only str
-    # is supported as input, not bytes).
+    # is supported als input, not bytes).
 
     def test_encoding3(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
@@ -77,7 +77,7 @@ klasse TestUnicode:
         self.assertEqual(self.loads('"\u2600"'.encode('utf-16-le')),
                          '\u2600')
         # Encoding detection fuer small (<4) bytes objects
-        # is implemented as a special case. RFC-7159 and ECMA-404
+        # is implemented als a special case. RFC-7159 and ECMA-404
         # allow single codepoint JSON documents which are only two
         # bytes in utf-16 encodings w/o BOM.
         self.assertEqual(self.loads(b'5\x00'), 5)

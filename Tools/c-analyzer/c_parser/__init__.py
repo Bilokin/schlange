@@ -1,6 +1,6 @@
-von c_common.fsutil importiere match_glob as _match_glob
-von .parser importiere parse as _parse
-von .preprocessor importiere get_preprocessor as _get_preprocessor
+von c_common.fsutil importiere match_glob als _match_glob
+von .parser importiere parse als _parse
+von .preprocessor importiere get_preprocessor als _get_preprocessor
 
 
 def parse_file(filename, *,

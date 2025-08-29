@@ -32,14 +32,14 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         )
         self.assertEqual(fstring(t), "Python Developer")
 
-        # Interpolation with expressions
+        # Interpolation mit expressions
         a = 10
         b = 20
         t = t"Sum: {a + b}"
         self.assertTStringEqual(t, ("Sum: ", ""), [(a + b, "a + b")])
         self.assertEqual(fstring(t), "Sum: 30")
 
-        # Interpolation with function
+        # Interpolation mit function
         def square(x):
             return x * x
         t = t"Square: {square(5)}"
@@ -108,7 +108,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
 
         # Test !z conversion (error)
         num = 1
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             eval("t'{num!z}'")
 
     def test_debug_specifier(self):
@@ -120,14 +120,14 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         )
         self.assertEqual(fstring(t), "Value: value=42")
 
-        # Test debug specifier with format (conversion default to !r)
+        # Test debug specifier mit format (conversion default to !r)
         t = t"Value: {value=:.2f}"
         self.assertTStringEqual(
             t, ("Value: value=", ""), [(value, "value", Nichts, ".2f")]
         )
         self.assertEqual(fstring(t), "Value: value=42.00")
 
-        # Test debug specifier with conversion
+        # Test debug specifier mit conversion
         t = t"Value: {value=!s}"
         self.assertTStringEqual(
             t, ("Value: value=", ""), [(value, "value", "s")]
@@ -162,10 +162,10 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         t1 = t"Hello"
         expected_msg = 'can only concatenate string.templatelib.Template ' \
             '\\(not "str"\\) to string.templatelib.Template'
-        with self.assertRaisesRegex(TypeError, expected_msg):
+        mit self.assertRaisesRegex(TypeError, expected_msg):
             t1 + ", world"
 
-        # Test template + template with interpolation
+        # Test template + template mit interpolation
         name = "Python"
         t1 = t"Hello, "
         t2 = t"{name}"
@@ -176,7 +176,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         # Test string + template
         expected_msg = 'can only concatenate str ' \
             '\\(not "string.templatelib.Template"\\) to str'
-        with self.assertRaisesRegex(TypeError, expected_msg):
+        mit self.assertRaisesRegex(TypeError, expected_msg):
             "Hello, " + t"{name}"
 
     def test_nested_templates(self):
@@ -222,12 +222,12 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
             ("t'{x:{;}}'", "t-string: expecting a valid expression after '{'"),
             ("t'{1:d\n}'", "t-string: newlines are not allowed in format specifiers")
         ):
-            with self.subTest(case), self.assertRaisesRegex(SyntaxError, err):
+            mit self.subTest(case), self.assertRaisesRegex(SyntaxError, err):
                 eval(case)
 
     def test_runtime_errors(self):
         # Test missing variables
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             eval("t'Hello, {name}'")
 
     def test_literal_concatenation(self):
@@ -236,7 +236,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         self.assertTStringEqual(t, ("Hello, world",), ())
         self.assertEqual(fstring(t), "Hello, world")
 
-        # Test concatenation with interpolation
+        # Test concatenation mit interpolation
         name = "Python"
         t = t"Hello, " t"{name}"
         self.assertTStringEqual(t, ("Hello, ", ""), [(name, "name")])
@@ -244,7 +244,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
 
         # Test disallowed mix of t-string and string/f-string (incl. bytes)
         what = 't'
-        expected_msg = 'cannot mix t-string literals with string or bytes literals'
+        expected_msg = 'cannot mix t-string literals mit string or bytes literals'
         fuer case in (
             "t'{what}-string literal' 'str literal'",
             "t'{what}-string literal' u'unicode literal'",
@@ -261,8 +261,8 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
             "b'bytes literal' t'{what}-string literal'",
             "br'raw bytes literal' t'{what}-string literal'",
         ):
-            with self.subTest(case):
-                with self.assertRaisesRegex(SyntaxError, expected_msg):
+            mit self.subTest(case):
+                mit self.assertRaisesRegex(SyntaxError, expected_msg):
                     eval(case)
 
     def test_triple_quoted(self):
@@ -276,7 +276,7 @@ klasse TestTString(unittest.TestCase, TStringBaseCase):
         )
         self.assertEqual(fstring(t), "\n        Hello,\n        world\n        ")
 
-        # Test triple-quoted with interpolation
+        # Test triple-quoted mit interpolation
         name = "Python"
         t = t"""
         Hello,

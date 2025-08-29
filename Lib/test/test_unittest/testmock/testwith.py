@@ -16,21 +16,21 @@ klasse SampleException(Exception): pass
 klasse WithTest(unittest.TestCase):
 
     def test_with_statement(self):
-        with patch('%s.something' % __name__, sentinel.Something2):
+        mit patch('%s.something' % __name__, sentinel.Something2):
             self.assertEqual(something, sentinel.Something2, "unpatched")
         self.assertEqual(something, sentinel.Something)
 
 
     def test_with_statement_exception(self):
-        with self.assertRaises(SampleException):
-            with patch('%s.something' % __name__, sentinel.Something2):
+        mit self.assertRaises(SampleException):
+            mit patch('%s.something' % __name__, sentinel.Something2):
                 self.assertEqual(something, sentinel.Something2, "unpatched")
                 raise SampleException()
         self.assertEqual(something, sentinel.Something)
 
 
     def test_with_statement_as(self):
-        with patch('%s.something' % __name__) as mock_something:
+        mit patch('%s.something' % __name__) als mock_something:
             self.assertEqual(something, mock_something, "unpatched")
             self.assertWahr(is_instance(mock_something, MagicMock),
                             "patching wrong type")
@@ -41,14 +41,14 @@ klasse WithTest(unittest.TestCase):
         klasse Foo(object):
             something = 'foo'
         original = Foo.something
-        with patch.object(Foo, 'something'):
+        mit patch.object(Foo, 'something'):
             self.assertNotEqual(Foo.something, original, "unpatched")
         self.assertEqual(Foo.something, original)
 
 
     def test_with_statement_nested(self):
-        with catch_warnings(record=Wahr):
-            with patch('%s.something' % __name__) as mock_something, patch('%s.something_else' % __name__) as mock_something_else:
+        mit catch_warnings(record=Wahr):
+            mit patch('%s.something' % __name__) als mock_something, patch('%s.something_else' % __name__) als mock_something_else:
                 self.assertEqual(something, mock_something, "unpatched")
                 self.assertEqual(something_else, mock_something_else,
                                  "unpatched")
@@ -58,7 +58,7 @@ klasse WithTest(unittest.TestCase):
 
 
     def test_with_statement_specified(self):
-        with patch('%s.something' % __name__, sentinel.Patched) as mock_something:
+        mit patch('%s.something' % __name__, sentinel.Patched) als mock_something:
             self.assertEqual(something, mock_something, "unpatched")
             self.assertEqual(mock_something, sentinel.Patched, "wrong patch")
         self.assertEqual(something, sentinel.Something)
@@ -70,7 +70,7 @@ klasse WithTest(unittest.TestCase):
         mock.__exit__ = Mock()
         mock.__exit__.return_value = Falsch
 
-        with mock as m:
+        mit mock als m:
             self.assertEqual(m, mock.__enter__.return_value)
         mock.__enter__.assert_called_with()
         mock.__exit__.assert_called_with(Nichts, Nichts, Nichts)
@@ -79,31 +79,31 @@ klasse WithTest(unittest.TestCase):
     def test_context_manager_with_magic_mock(self):
         mock = MagicMock()
 
-        with self.assertRaises(TypeError):
-            with mock:
+        mit self.assertRaises(TypeError):
+            mit mock:
                 'foo' + 3
         mock.__enter__.assert_called_with()
         self.assertWahr(mock.__exit__.called)
 
 
     def test_with_statement_same_attribute(self):
-        with patch('%s.something' % __name__, sentinel.Patched) as mock_something:
+        mit patch('%s.something' % __name__, sentinel.Patched) als mock_something:
             self.assertEqual(something, mock_something, "unpatched")
 
-            with patch('%s.something' % __name__) as mock_again:
+            mit patch('%s.something' % __name__) als mock_again:
                 self.assertEqual(something, mock_again, "unpatched")
 
             self.assertEqual(something, mock_something,
-                             "restored with wrong instance")
+                             "restored mit wrong instance")
 
         self.assertEqual(something, sentinel.Something, "not restored")
 
 
     def test_with_statement_imbricated(self):
-        with patch('%s.something' % __name__) as mock_something:
+        mit patch('%s.something' % __name__) als mock_something:
             self.assertEqual(something, mock_something, "unpatched")
 
-            with patch('%s.something_else' % __name__) as mock_something_else:
+            mit patch('%s.something_else' % __name__) als mock_something_else:
                 self.assertEqual(something_else, mock_something_else,
                                  "unpatched")
 
@@ -113,12 +113,12 @@ klasse WithTest(unittest.TestCase):
 
     def test_dict_context_manager(self):
         foo = {}
-        with patch.dict(foo, {'a': 'b'}):
+        mit patch.dict(foo, {'a': 'b'}):
             self.assertEqual(foo, {'a': 'b'})
         self.assertEqual(foo, {})
 
-        with self.assertRaises(NameError):
-            with patch.dict(foo, {'a': 'b'}):
+        mit self.assertRaises(NameError):
+            mit patch.dict(foo, {'a': 'b'}):
                 self.assertEqual(foo, {'a': 'b'})
                 raise NameError('Konrad')
 
@@ -130,8 +130,8 @@ klasse WithTest(unittest.TestCase):
 
         c = C()
 
-        with patch.object(c, 'f') as patch1:
-            with patch.object(c, 'f') as patch2:
+        mit patch.object(c, 'f') als patch1:
+            mit patch.object(c, 'f') als patch2:
                 c.f()
             self.assertEqual(patch2.call_count, 1)
             self.assertEqual(patch1.call_count, 0)
@@ -143,7 +143,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_mock_open(self):
         mock = mock_open()
-        with patch('%s.open' % __name__, mock, create=Wahr) as patched:
+        mit patch('%s.open' % __name__, mock, create=Wahr) als patched:
             self.assertIs(patched, mock)
             open('foo')
 
@@ -153,8 +153,8 @@ klasse TestMockOpen(unittest.TestCase):
     def test_mock_open_context_manager(self):
         mock = mock_open()
         handle = mock.return_value
-        with patch('%s.open' % __name__, mock, create=Wahr):
-            with open('foo') as f:
+        mit patch('%s.open' % __name__, mock, create=Wahr):
+            mit open('foo') als f:
                 f.read()
 
         expected_calls = [call('foo'), call().__enter__(), call().read(),
@@ -164,10 +164,10 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_mock_open_context_manager_multiple_times(self):
         mock = mock_open()
-        with patch('%s.open' % __name__, mock, create=Wahr):
-            with open('foo') as f:
+        mit patch('%s.open' % __name__, mock, create=Wahr):
+            mit open('foo') als f:
                 f.read()
-            with open('bar') as f:
+            mit open('bar') als f:
                 f.read()
 
         expected_calls = [
@@ -181,7 +181,7 @@ klasse TestMockOpen(unittest.TestCase):
         mock = MagicMock()
         mock_open(mock)
 
-        with patch('%s.open' % __name__, mock, create=Wahr) as patched:
+        mit patch('%s.open' % __name__, mock, create=Wahr) als patched:
             self.assertIs(patched, mock)
             open('foo')
 
@@ -190,7 +190,7 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_read_data(self):
         mock = mock_open(read_data='foo')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.read()
 
@@ -201,7 +201,7 @@ klasse TestMockOpen(unittest.TestCase):
         # Check that readline will return all the lines von the fake file
         # And that once fully consumed, readline will return an empty string.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = h.readline()
             line2 = h.readline()
@@ -213,7 +213,7 @@ klasse TestMockOpen(unittest.TestCase):
 
         # Check that we properly emulate a file that doesn't end in a newline
         mock = mock_open(read_data='foo')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.readline()
         self.assertEqual(result, 'foo')
@@ -223,21 +223,21 @@ klasse TestMockOpen(unittest.TestCase):
     def test_dunder_iter_data(self):
         # Check that dunder_iter will return all the lines von the fake file.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             lines = [l fuer l in h]
         self.assertEqual(lines[0], 'foo\n')
         self.assertEqual(lines[1], 'bar\n')
         self.assertEqual(lines[2], 'baz\n')
         self.assertEqual(h.readline(), '')
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(h)
 
     def test_next_data(self):
         # Check that next will correctly return the next available
-        # line and plays well with the dunder_iter part.
+        # line and plays well mit the dunder_iter part.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = next(h)
             line2 = next(h)
@@ -250,7 +250,7 @@ klasse TestMockOpen(unittest.TestCase):
     def test_readlines_data(self):
         # Test that emulating a file that ends in a newline character works
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.readlines()
         self.assertEqual(result, ['foo\n', 'bar\n', 'baz\n'])
@@ -258,7 +258,7 @@ klasse TestMockOpen(unittest.TestCase):
         # Test that files without a final newline will also be correctly
         # emulated
         mock = mock_open(read_data='foo\nbar\nbaz')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             result = h.readlines()
 
@@ -267,16 +267,16 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_read_bytes(self):
         mock = mock_open(read_data=b'\xc6')
-        with patch('%s.open' % __name__, mock, create=Wahr):
-            with open('abc', 'rb') as f:
+        mit patch('%s.open' % __name__, mock, create=Wahr):
+            mit open('abc', 'rb') als f:
                 result = f.read()
         self.assertEqual(result, b'\xc6')
 
 
     def test_readline_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
-        with patch('%s.open' % __name__, m, create=Wahr):
-            with open('abc', 'rb') as f:
+        mit patch('%s.open' % __name__, m, create=Wahr):
+            mit open('abc', 'rb') als f:
                 line1 = f.readline()
                 line2 = f.readline()
                 line3 = f.readline()
@@ -287,14 +287,14 @@ klasse TestMockOpen(unittest.TestCase):
 
     def test_readlines_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
-        with patch('%s.open' % __name__, m, create=Wahr):
-            with open('abc', 'rb') as f:
+        mit patch('%s.open' % __name__, m, create=Wahr):
+            mit open('abc', 'rb') als f:
                 result = f.readlines()
         self.assertEqual(result, [b'abc\n', b'def\n', b'ghi\n'])
 
 
     def test_mock_open_read_with_argument(self):
-        # At one point calling read with an argument was broken
+        # At one point calling read mit an argument was broken
         # fuer mocks returned by mock_open
         some_data = 'foo\nbar\nbaz'
         mock = mock_open(read_data=some_data)
@@ -310,7 +310,7 @@ klasse TestMockOpen(unittest.TestCase):
         # Test that calling read, readline, and readlines pulls data
         # sequentially von the data we preload with
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = h.readline()
             rest = h.readlines()
@@ -318,7 +318,7 @@ klasse TestMockOpen(unittest.TestCase):
         self.assertEqual(rest, ['bar\n', 'baz\n'])
 
         mock = mock_open(read_data='foo\nbar\nbaz\n')
-        with patch('%s.open' % __name__, mock, create=Wahr):
+        mit patch('%s.open' % __name__, mock, create=Wahr):
             h = open('bar')
             line1 = h.readline()
             rest = h.read()

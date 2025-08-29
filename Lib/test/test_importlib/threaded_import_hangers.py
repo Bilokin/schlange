@@ -1,6 +1,6 @@
 # This is a helper module fuer test_threaded_import.  The test imports this
 # module, and this module tries to run various Python library functions in
-# their own thread, as a side effect of being imported.  If the spawned
+# their own thread, als a side effect of being imported.  If the spawned
 # thread doesn't complete in TIMEOUT seconds, an "appeared to hang" message
 # is appended to the module-global `errors` list.  That list remains empty
 # wenn (and only if) all functions tested complete.

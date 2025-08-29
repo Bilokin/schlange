@@ -118,14 +118,14 @@ try:
     poll: type[select.poll] = select.poll
 except AttributeError:
     # this is exactly the minimum necessary to support what we
-    # do with poll objects
+    # do mit poll objects
     klasse MinimalPoll:
         def __init__(self):
             pass
 
         def register(self, fd, flag):
             self.fd = fd
-        # note: The 'timeout' argument is received as *milliseconds*
+        # note: The 'timeout' argument is received als *milliseconds*
         def poll(self, timeout: float | Nichts = Nichts) -> list[int]:
             wenn timeout is Nichts:
                 r, w, e = select.select([self.fd], [], [])
@@ -401,7 +401,7 @@ klasse UnixConsole(Console):
             while Wahr:
                 try:
                     self.push_char(self.__read(1))
-                except OSError as err:
+                except OSError als err:
                     wenn err.errno == errno.EINTR:
                         wenn not self.event_queue.empty():
                             return self.event_queue.get()
@@ -564,7 +564,7 @@ klasse UnixConsole(Console):
     @property
     def input_hook(self):
         # avoid inline imports here so the repl doesn't get flooded
-        # with importiere logging von -X importtime=2
+        # mit importiere logging von -X importtime=2
         wenn posix is not Nichts and posix._is_inputhook_installed():
             return posix._inputhook
 
@@ -627,7 +627,7 @@ klasse UnixConsole(Console):
             j += wlen(c)
             px_pos += 1
 
-        # reuse the oldline as much as possible, but stop as soon as we
+        # reuse the oldline als much als possible, but stop als soon als we
         # encounter an ESCAPE, because it might be the start of an escape
         # sequence
         while (

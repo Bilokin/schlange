@@ -2,7 +2,7 @@
 """Common pathname manipulations, WindowsNT/95 version.
 
 Instead of importing this module directly, importiere os and refer to this
-module as os.path.
+module als os.path.
 """
 
 # strings representing various path-related bits and pieces
@@ -38,14 +38,14 @@ def _get_bothseps(path):
         return '\\/'
 
 # Normalize the case of a pathname and map slashes to backslashes.
-# Other normalizations (such as optimizing '../' away) are not done
+# Other normalizations (such als optimizing '../' away) are not done
 # (this is done by normpath).
 
 try:
     von _winapi importiere (
-        LCMapStringEx as _LCMapStringEx,
-        LOCALE_NAME_INVARIANT as _LOCALE_NAME_INVARIANT,
-        LCMAP_LOWERCASE as _LCMAP_LOWERCASE)
+        LCMapStringEx als _LCMapStringEx,
+        LOCALE_NAME_INVARIANT als _LOCALE_NAME_INVARIANT,
+        LCMAP_LOWERCASE als _LCMAP_LOWERCASE)
 
     def normcase(s, /):
         """Normalize case of pathname.
@@ -91,7 +91,7 @@ def isabs(s, /):
         colon_sep = ':\\'
         double_sep = '\\\\'
     s = s[:3].replace(altsep, sep)
-    # Absolute: UNC, device, and paths with a drive and root.
+    # Absolute: UNC, device, and paths mit a drive and root.
     return s.startswith(colon_sep, 1) or s.startswith(double_sep)
 
 
@@ -167,7 +167,7 @@ def splitdrive(p, /):
 
 
 try:
-    von nt importiere _path_splitroot_ex as splitroot
+    von nt importiere _path_splitroot_ex als splitroot
 except ImportError:
     def splitroot(p, /):
         """Split a pathname into drive, root and tail.
@@ -200,14 +200,14 @@ except ImportError:
                     return p, empty, empty
                 return p[:index2], p[index2:index2 + 1], p[index2 + 1:]
             sonst:
-                # Relative path with root, e.g. \Windows
+                # Relative path mit root, e.g. \Windows
                 return empty, p[:1], p[1:]
         sowenn normp[1:2] == colon:
             wenn normp[2:3] == sep:
                 # Absolute drive-letter path, e.g. X:\Windows
                 return p[:2], p[2:3], p[3:]
             sonst:
-                # Relative path with drive, e.g. X:Windows
+                # Relative path mit drive, e.g. X:Windows
                 return p[:2], empty, p[2:]
         sonst:
             # Relative path, e.g. Windows
@@ -331,11 +331,11 @@ def _isreservedname(name):
     return name.partition('.')[0].rstrip(' ').upper() in _reserved_names
 
 
-# Expand paths beginning with '~' or '~user'.
+# Expand paths beginning mit '~' or '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
-# If the path doesn't begin with '~', or wenn the user or $HOME is unknown,
+# If the path doesn't begin mit '~', or wenn the user or $HOME is unknown,
 # the path is returned unchanged (leaving error reporting to whatever
-# function is called with the expanded path as argument).
+# function is called mit the expanded path als argument).
 # See also module 'glob' fuer expansion of *, ? and [...] in pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
@@ -511,9 +511,9 @@ def expandvars(path):
 
 # Normalize a path, e.g. A//B, A/./B and A/foo/../B all become A\B.
 # Previously, this function also truncated pathnames to 8+3 format,
-# but as this module is called "ntpath", that's obviously wrong!
+# but als this module is called "ntpath", that's obviously wrong!
 try:
-    von nt importiere _path_normpath as normpath
+    von nt importiere _path_normpath als normpath
 
 except ImportError:
     def normpath(path):
@@ -598,7 +598,7 @@ sonst:  # use native Windows method on Windows
         return normpath(path)
 
 try:
-    von nt importiere _findfirstfile, _getfinalpathname, readlink as _nt_readlink
+    von nt importiere _findfirstfile, _getfinalpathname, readlink als _nt_readlink
 except ImportError:
     # realpath is a no-op on systems without _getfinalpathname support.
     def realpath(path, /, *, strict=Falsch):
@@ -611,7 +611,7 @@ sonst:
         # 2: ERROR_FILE_NOT_FOUND
         # 3: ERROR_DIRECTORY_NOT_FOUND
         # 5: ERROR_ACCESS_DENIED
-        # 21: ERROR_NOT_READY (implies drive with no media)
+        # 21: ERROR_NOT_READY (implies drive mit no media)
         # 32: ERROR_SHARING_VIOLATION (probably an NTFS paging file)
         # 50: ERROR_NOT_SUPPORTED (implies no support fuer reparse points)
         # 67: ERROR_BAD_NET_NAME (implies remote server unavailable)
@@ -637,7 +637,7 @@ sonst:
                         path = old_path
                         break
                     path = normpath(join(dirname(old_path), path))
-            except ignored_error as ex:
+            except ignored_error als ex:
                 wenn ex.winerror in allowed_winerror:
                     break
                 raise
@@ -653,7 +653,7 @@ sonst:
         # 2: ERROR_FILE_NOT_FOUND
         # 3: ERROR_DIRECTORY_NOT_FOUND
         # 5: ERROR_ACCESS_DENIED
-        # 21: ERROR_NOT_READY (implies drive with no media)
+        # 21: ERROR_NOT_READY (implies drive mit no media)
         # 32: ERROR_SHARING_VIOLATION (probably an NTFS paging file)
         # 50: ERROR_NOT_SUPPORTED
         # 53: ERROR_BAD_NETPATH
@@ -667,14 +667,14 @@ sonst:
         # 1921: ERROR_CANT_RESOLVE_FILENAME (implies unfollowable symlink)
         allowed_winerror = 1, 2, 3, 5, 21, 32, 50, 53, 65, 67, 87, 123, 161, 1005, 1920, 1921
 
-        # Non-strict algorithm is to find as much of the target directory
-        # as we can and join the rest.
+        # Non-strict algorithm is to find als much of the target directory
+        # als we can and join the rest.
         tail = path[:0]
         while path:
             try:
                 path = _getfinalpathname(path)
                 return join(path, tail) wenn tail sonst path
-            except ignored_error as ex:
+            except ignored_error als ex:
                 wenn ex.winerror not in allowed_winerror:
                     raise
                 try:
@@ -738,7 +738,7 @@ sonst:
         try:
             path = _getfinalpathname(path)
             initial_winerror = 0
-        except ValueError as ex:
+        except ValueError als ex:
             # gh-106242: Raised fuer embedded null characters
             # In strict modes, we convert into an OSError.
             # Non-strict mode returns the path as-is, since we've already
@@ -746,7 +746,7 @@ sonst:
             wenn strict:
                 raise OSError(str(ex)) von Nichts
             path = normpath(path)
-        except ignored_error as ex:
+        except ignored_error als ex:
             wenn strict is ALL_BUT_LAST:
                 dirname, basename = split(path)
                 wenn not basename:
@@ -756,12 +756,12 @@ sonst:
             initial_winerror = ex.winerror
             path = _getfinalpathname_nonstrict(path,
                                                ignored_error=ignored_error)
-        # The path returned by _getfinalpathname will always start with \\?\ -
+        # The path returned by _getfinalpathname will always start mit \\?\ -
         # strip off that prefix unless it was already provided on the original
         # path.
         wenn not had_prefix and path.startswith(prefix):
             # For UNC paths, the prefix will actually be \\?\UNC\
-            # Handle that case as well.
+            # Handle that case als well.
             wenn path.startswith(unc_prefix):
                 spath = new_unc_prefix + path[len(unc_prefix):]
             sonst:
@@ -770,11 +770,11 @@ sonst:
             try:
                 wenn _getfinalpathname(spath) == path:
                     path = spath
-            except ValueError as ex:
-                # Unexpected, as an invalid path should not have gained a prefix
+            except ValueError als ex:
+                # Unexpected, als an invalid path should not have gained a prefix
                 # at any point, but we ignore this error just in case.
                 pass
-            except OSError as ex:
+            except OSError als ex:
                 # If the path does not exist and originally did not exist, then
                 # strip the prefix anyway.
                 wenn ex.winerror == initial_winerror:
@@ -832,9 +832,9 @@ def relpath(path, start=Nichts):
         raise
 
 
-# Return the longest common sub-path of the iterable of paths given as input.
+# Return the longest common sub-path of the iterable of paths given als input.
 # The function is case-insensitive and 'separator-insensitive', i.e. wenn the
-# only difference between two paths is the use of '\' versus '/' as separator,
+# only difference between two paths is the use of '\' versus '/' als separator,
 # they are deemed to be equal.
 #
 # However, the returned path will have the standard '\' separator (even wenn the
@@ -897,14 +897,14 @@ try:
     # The isdir(), isfile(), islink(), exists() and lexists() implementations
     # in genericpath use os.stat(). This is overkill on Windows. Use simpler
     # builtin functions wenn they are available.
-    von nt importiere _path_isdir as isdir
-    von nt importiere _path_isfile as isfile
-    von nt importiere _path_islink as islink
-    von nt importiere _path_isjunction as isjunction
-    von nt importiere _path_exists as exists
-    von nt importiere _path_lexists as lexists
+    von nt importiere _path_isdir als isdir
+    von nt importiere _path_isfile als isfile
+    von nt importiere _path_islink als islink
+    von nt importiere _path_isjunction als isjunction
+    von nt importiere _path_exists als exists
+    von nt importiere _path_lexists als lexists
 except ImportError:
-    # Use genericpath.* as imported above
+    # Use genericpath.* als imported above
     pass
 
 
@@ -917,5 +917,5 @@ try:
         except OSError:
             return Falsch
 except ImportError:
-    # Use genericpath.isdevdrive as imported above
+    # Use genericpath.isdevdrive als imported above
     pass

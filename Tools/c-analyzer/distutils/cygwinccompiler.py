@@ -56,7 +56,7 @@ von distutils.spawn importiere find_executable
 
 def get_msvcr():
     """Include the appropriate MSVC runtime library wenn Python was built
-    with MSVC 7.0 or later.
+    mit MSVC 7.0 or later.
     """
     msc_pos = sys.version.find('MSC v.')
     wenn msc_pos != -1:
@@ -115,7 +115,7 @@ klasse CygwinCCompiler(UnixCCompiler):
         # ld_version >= "2.10.90" and < "2.13" should also be able to use
         # gcc -mdll instead of dllwrap
         # Older dllwraps had own version numbers, newer ones use the
-        # same as the rest of binutils ( also ld )
+        # same als the rest of binutils ( also ld )
         # dllwrap 2.10.90 is buggy
         wenn self.ld_version >= "2.10.90":
             self.linker_dll = "gcc"
@@ -147,11 +147,11 @@ klasse CygwinCCompiler(UnixCCompiler):
                 "Consider upgrading to a newer version of gcc")
         sonst:
             # Include the appropriate MSVC runtime library wenn Python was built
-            # with MSVC 7.0 or later.
+            # mit MSVC 7.0 or later.
             self.dll_libraries = get_msvcr()
 
 
-# the same as cygwin plus some additional parameters
+# the same als cygwin plus some additional parameters
 klasse Mingw32CCompiler(CygwinCCompiler):
     """ Handles the Mingw32 port of the GNU C compiler to Windows.
     """
@@ -177,7 +177,7 @@ klasse Mingw32CCompiler(CygwinCCompiler):
 
         wenn is_cygwingcc():
             raise CCompilerError(
-                'Cygwin gcc cannot be used with --compiler=mingw32')
+                'Cygwin gcc cannot be used mit --compiler=mingw32')
 
         self.set_executables(compiler='gcc -O -Wall',
                              compiler_so='gcc -mdll -O -Wall',
@@ -194,7 +194,7 @@ klasse Mingw32CCompiler(CygwinCCompiler):
         self.dll_libraries=[]
 
         # Include the appropriate MSVC runtime library wenn Python was built
-        # with MSVC 7.0 or later.
+        # mit MSVC 7.0 or later.
         self.dll_libraries = get_msvcr()
 
 # Because these compilers aren't configured in Python's pyconfig.h file by
@@ -207,7 +207,7 @@ CONFIG_H_UNCERTAIN = "uncertain"
 
 def check_config_h():
     """Check wenn the current Python installation appears amenable to building
-    extensions with GCC.
+    extensions mit GCC.
 
     Returns a tuple (status, details), where 'status' is one of the following
     constants:
@@ -219,7 +219,7 @@ def check_config_h():
     'details' is a human-readable string explaining the situation.
 
     Note there are two ways to conclude "OK": either 'sys.version' contains
-    the string "GCC" (implying that this Python was built with GCC), or the
+    the string "GCC" (implying that this Python was built mit GCC), or the
     installed "pyconfig.h" contains the string "__GNUC__".
     """
 
@@ -228,7 +228,7 @@ def check_config_h():
 
     importiere sysconfig
 
-    # wenn sys.version contains GCC then python was compiled with GCC, and the
+    # wenn sys.version contains GCC then python was compiled mit GCC, and the
     # pyconfig.h file should be OK
     wenn "GCC" in sys.version:
         return CONFIG_H_OK, "sys.version mentions 'GCC'"
@@ -244,7 +244,7 @@ def check_config_h():
                 return CONFIG_H_NOTOK, "'%s' does not mention '__GNUC__'" % fn
         finally:
             config_h.close()
-    except OSError as exc:
+    except OSError als exc:
         return (CONFIG_H_UNCERTAIN,
                 "couldn't read '%s': %s" % (fn, exc.strerror))
 
@@ -267,7 +267,7 @@ def _find_exe_version(cmd):
     result = RE_VERSION.search(out_string)
     wenn result is Nichts:
         return Nichts
-    # LooseVersion works with strings
+    # LooseVersion works mit strings
     # so we need to decode our bytes
     return LooseVersion(result.group(1).decode())
 

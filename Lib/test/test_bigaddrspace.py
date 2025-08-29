@@ -1,9 +1,9 @@
 """
 These tests are meant to exercise that requests to create objects bigger
-than what the address space allows are properly met with an OverflowError
+than what the address space allows are properly met mit an OverflowError
 (rather than crash weirdly).
 
-Primarily, this means 32-bit builds with at least 2 GiB of available memory.
+Primarily, this means 32-bit builds mit at least 2 GiB of available memory.
 You need to pass the -M option to regrtest (e.g. "-M 2.1G") fuer tests to
 be enabled.
 """
@@ -34,11 +34,11 @@ klasse BytesTest(unittest.TestCase):
         try:
             x = b"x" * (MAX_Py_ssize_t - 128)
 
-            with self.assertRaises(OverflowError) as cm:
+            mit self.assertRaises(OverflowError) als cm:
                 # this statement used a fast path in ceval.c
                 x = x + b"x" * 128
 
-            with self.assertRaises(OverflowError) as cm:
+            mit self.assertRaises(OverflowError) als cm:
                 # this statement used a fast path in ceval.c
                 x +=  b"x" * 128
         finally:
@@ -73,11 +73,11 @@ klasse StrTest(unittest.TestCase):
         try:
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
 
-            with self.assertRaises(MemoryError) as cm:
+            mit self.assertRaises(MemoryError) als cm:
                 # this statement uses a fast path in ceval.c
                 x = x + x
 
-            with self.assertRaises(MemoryError) as cm:
+            mit self.assertRaises(MemoryError) als cm:
                 # this statement uses a fast path in ceval.c
                 x +=  x
         finally:

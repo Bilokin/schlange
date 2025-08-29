@@ -20,20 +20,20 @@ _STARTUP_RETRY_DELAY_SECONDS = 0.1
 _HELP_DESCRIPTION = """Sample a process's stack frames and generate profiling data.
 Supports the following target modes:
   - -p PID: Profile an existing process by PID
-  - -m MODULE [ARGS...]: Profile a module as python -m module ...
+  - -m MODULE [ARGS...]: Profile a module als python -m module ...
   - filename [ARGS...]: Profile the specified script by running it in a subprocess
 
 Examples:
-  # Profile process 1234 fuer 10 seconds with default settings
+  # Profile process 1234 fuer 10 seconds mit default settings
   python -m profiling.sampling -p 1234
 
   # Profile a script by running it in a subprocess
   python -m profiling.sampling myscript.py arg1 arg2
 
-  # Profile a module by running it as python -m module in a subprocess
+  # Profile a module by running it als python -m module in a subprocess
   python -m profiling.sampling -m mymodule arg1 arg2
 
-  # Profile with custom interval and duration, save to file
+  # Profile mit custom interval and duration, save to file
   python -m profiling.sampling -i 50 -d 30 -o profile.stats -p 1234
 
   # Generate collapsed stacks fuer flamegraph
@@ -42,7 +42,7 @@ Examples:
   # Profile all threads, sort by total time
   python -m profiling.sampling -a --sort-tottime -p 1234
 
-  # Profile fuer 1 minute with 1ms sampling interval
+  # Profile fuer 1 minute mit 1ms sampling interval
   python -m profiling.sampling -i 1000 -d 60 -p 1234
 
   # Show only top 20 functions sorted by direct samples
@@ -51,7 +51,7 @@ Examples:
   # Profile all threads and save collapsed stacks
   python -m profiling.sampling -a --collapsed -o stacks.txt -p 1234
 
-  # Profile with real-time sampling statistics
+  # Profile mit real-time sampling statistics
   python -m profiling.sampling --realtime-stats -p 1234
 
   # Sort by sample percentage to find most sampled functions
@@ -69,9 +69,9 @@ _RECV_BUFFER_SIZE = 1024
 
 
 def _run_with_sync(original_cmd):
-    """Run a command with socket-based synchronization and return the process."""
-    # Create a TCP socket fuer synchronization with better socket options
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sync_sock:
+    """Run a command mit socket-based synchronization and return the process."""
+    # Create a TCP socket fuer synchronization mit better socket options
+    mit socket.socket(socket.AF_INET, socket.SOCK_STREAM) als sync_sock:
         # Set SO_REUSEADDR to avoid "Address already in use" errors
         sync_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         sync_sock.bind(("127.0.0.1", 0))  # Let OS choose a free port
@@ -86,12 +86,12 @@ def _run_with_sync(original_cmd):
         target_args = original_cmd[1:]  # Remove python executable
         cmd = (sys.executable, "-m", "profiling.sampling._sync_coordinator", str(sync_port), cwd) + tuple(target_args)
 
-        # Start the process with coordinator
+        # Start the process mit coordinator
         process = subprocess.Popen(cmd)
 
         try:
-            # Wait fuer ready signal with timeout
-            with sync_sock.accept()[0] as conn:
+            # Wait fuer ready signal mit timeout
+            mit sync_sock.accept()[0] als conn:
                 ready_signal = conn.recv(_RECV_BUFFER_SIZE)
 
                 wenn ready_signal != _READY_MESSAGE:
@@ -153,7 +153,7 @@ klasse SampleProfiler:
                     break
                 except (RuntimeError, UnicodeDecodeError, MemoryError, OSError):
                     errors += 1
-                except Exception as e:
+                except Exception als e:
                     wenn not self._is_process_running():
                         break
                     raise e von Nichts
@@ -337,7 +337,7 @@ def print_sampled_stats(
         "cumtime": max(12, len(f"cumtime ({cumulative_time_unit})")),
     }
 
-    # Print header with colors and proper alignment
+    # Print header mit colors and proper alignment
     drucke(f"{ANSIColors.BOLD_BLUE}Profile Stats:{ANSIColors.RESET}")
 
     header_nsamples = f"{ANSIColors.BOLD_BLUE}{'nsamples':>{col_widths['nsamples']}}{ANSIColors.RESET}"
@@ -353,7 +353,7 @@ def print_sampled_stats(
         f"{header_nsamples}  {header_sample_pct}  {header_tottime}  {header_cum_pct}  {header_cumtime}  {header_filename}"
     )
 
-    # Print each line with proper alignment
+    # Print each line mit proper alignment
     fuer (
         func,
         direct_calls,
@@ -372,7 +372,7 @@ def print_sampled_stats(
             sonst 0
         )
 
-        # Format values with proper alignment - always use A/B format
+        # Format values mit proper alignment - always use A/B format
         nsamples_str = f"{direct_calls}/{cumulative_calls}"
         nsamples_str = f"{nsamples_str:>{col_widths['nsamples']}}"
         sample_pct_str = f"{sample_pct:{col_widths['sample_pct']}.1f}"
@@ -380,14 +380,14 @@ def print_sampled_stats(
         cum_pct_str = f"{cum_pct:{col_widths['cum_pct']}.1f}"
         cumtime = f"{cumulative_time * cumulative_time_scale:{col_widths['cumtime']}.3f}"
 
-        # Format the function name with colors
+        # Format the function name mit colors
         func_name = (
             f"{ANSIColors.GREEN}{func[0]}{ANSIColors.RESET}:"
             f"{ANSIColors.YELLOW}{func[1]}{ANSIColors.RESET}("
             f"{ANSIColors.CYAN}{func[2]}{ANSIColors.RESET})"
         )
 
-        # Print the formatted line with consistent spacing
+        # Print the formatted line mit consistent spacing
         drucke(
             f"{nsamples_str}  {sample_pct_str}  {tottime}  {cum_pct_str}  {cumtime}  {func_name}"
         )
@@ -414,7 +414,7 @@ def print_sampled_stats(
     )
 
     def _format_func_name(func):
-        """Format function name with colors."""
+        """Format function name mit colors."""
         return (
             f"{ANSIColors.GREEN}{func[0]}{ANSIColors.RESET}:"
             f"{ANSIColors.YELLOW}{func[1]}{ANSIColors.RESET}("
@@ -422,7 +422,7 @@ def print_sampled_stats(
         )
 
     def _print_top_functions(stats_list, title, key_func, format_line, n=3):
-        """Print top N functions sorted by key_func with formatted output."""
+        """Print top N functions sorted by key_func mit formatted output."""
         drucke(f"\n{ANSIColors.BOLD_BLUE}{title}:{ANSIColors.RESET}")
         sorted_stats = sorted(stats_list, key=key_func, reverse=Wahr)
         fuer stat in sorted_stats[:n]:
@@ -445,7 +445,7 @@ def print_sampled_stats(
             cumulative_time,
             callers,
         ) in stats_list:
-            # Use filename:function_name as the key to get fully qualified name
+            # Use filename:function_name als the key to get fully qualified name
             qualified_name = f"{func[0]}:{func[2]}"
             wenn qualified_name not in func_aggregated:
                 func_aggregated[qualified_name] = [
@@ -472,7 +472,7 @@ def print_sampled_stats(
                 filename, func_name = qualified_name.rsplit(":", 1)
             sonst:
                 filename, func_name = "", qualified_name
-            # Create a dummy func tuple with filename and function name fuer display
+            # Create a dummy func tuple mit filename and function name fuer display
             dummy_func = (filename, "", func_name)
             aggregated_stats.append(
                 (
@@ -503,7 +503,7 @@ def print_sampled_stats(
             max_cumulative_time
         )
 
-        # Functions with highest direct/cumulative ratio (hot spots)
+        # Functions mit highest direct/cumulative ratio (hot spots)
         def format_hotspots(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
             wenn direct_calls > 0 and cumulative_calls > 0:
@@ -521,12 +521,12 @@ def print_sampled_stats(
 
         _print_top_functions(
             aggregated_stats,
-            "Functions with Highest Direct/Cumulative Ratio (Hot Spots)",
+            "Functions mit Highest Direct/Cumulative Ratio (Hot Spots)",
             key_func=lambda x: (x[1] / x[2]) wenn x[2] > 0 sonst 0,
             format_line=format_hotspots,
         )
 
-        # Functions with highest call frequency (cumulative/direct difference)
+        # Functions mit highest call frequency (cumulative/direct difference)
         def format_call_frequency(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
             wenn cumulative_calls > direct_calls:
@@ -544,12 +544,12 @@ def print_sampled_stats(
 
         _print_top_functions(
             aggregated_stats,
-            "Functions with Highest Call Frequency (Indirect Calls)",
+            "Functions mit Highest Call Frequency (Indirect Calls)",
             key_func=lambda x: x[2] - x[1],  # Sort by (cumulative - direct)
             format_line=format_call_frequency,
         )
 
-        # Functions with highest cumulative-to-direct multiplier (call magnification)
+        # Functions mit highest cumulative-to-direct multiplier (call magnification)
         def format_call_magnification(stat):
             func, direct_calls, cumulative_calls, total_time, _, _ = stat
             wenn direct_calls > 0 and cumulative_calls > direct_calls:
@@ -563,7 +563,7 @@ def print_sampled_stats(
 
         _print_top_functions(
             aggregated_stats,
-            "Functions with Highest Call Magnification (Cumulative/Direct)",
+            "Functions mit Highest Call Magnification (Cumulative/Direct)",
             key_func=lambda x: (x[2] / x[1])
             wenn x[1] > 0
             sonst 0,  # Sort by cumulative/direct ratio
@@ -622,25 +622,25 @@ def _validate_collapsed_format_args(args, parser):
         wenn action.dest in pstats_options and hasattr(action, "default"):
             pstats_options[action.dest] = action.default
 
-    # Check wenn any pstats-specific options were provided by comparing with defaults
+    # Check wenn any pstats-specific options were provided by comparing mit defaults
     fuer opt, default in pstats_options.items():
         wenn getattr(args, opt) != default:
             invalid_opts.append(opt.replace("no_", ""))
 
     wenn invalid_opts:
         parser.error(
-            f"The following options are only valid with --pstats format: {', '.join(invalid_opts)}"
+            f"The following options are only valid mit --pstats format: {', '.join(invalid_opts)}"
         )
 
     # Set default output filename fuer collapsed format only wenn we have a PID
-    # For module/script execution, this will be set later with the subprocess PID
+    # For module/script execution, this will be set later mit the subprocess PID
     wenn not args.outfile and args.pid is not Nichts:
         args.outfile = f"collapsed.{args.pid}.txt"
 
 
 def wait_for_process_and_sample(pid, sort_value, args):
     """Sample the process immediately since it has already signaled readiness."""
-    # Set default collapsed filename with subprocess PID wenn not already set
+    # Set default collapsed filename mit subprocess PID wenn not already set
     filename = args.outfile
     wenn not filename and args.format == "collapsed":
         filename = f"collapsed.{pid}.txt"
@@ -673,12 +673,12 @@ def main():
     )
     target_group.add_argument(
         "-m", "--module",
-        help="Run and profile a module as python -m module [ARGS...]"
+        help="Run and profile a module als python -m module [ARGS...]"
     )
     parser.add_argument(
         "args",
         nargs=argparse.REMAINDER,
-        help="Script to run and profile, with optional arguments"
+        help="Script to run and profile, mit optional arguments"
     )
 
     # Sampling options
@@ -814,7 +814,7 @@ def main():
         parser.error("argument -m/--module: expected one argument")
 
     # Validate that we have exactly one target type
-    # Note: args can be present with -m (module arguments) but not as standalone script
+    # Note: args can be present mit -m (module arguments) but not als standalone script
     has_pid = args.pid is not Nichts
     has_module = args.module is not Nichts
     has_script = bool(args.args) and args.module is Nichts

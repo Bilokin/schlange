@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec iso8859_2 generated von 'MAPPINGS/ISO8859/8859-2.TXT' with gencodec.py.
+""" Python Character Mapping Codec iso8859_2 generated von 'MAPPINGS/ISO8859/8859-2.TXT' mit gencodec.py.
 
 """#"
 

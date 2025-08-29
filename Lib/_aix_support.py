@@ -15,7 +15,7 @@ def _read_cmd_output(commandstring, capture_stderr=Falsch):
     fp = open("/tmp/_aix_support.%s"%(
         os.getpid(),), "w+b")
 
-    with contextlib.closing(fp) as fp:
+    mit contextlib.closing(fp) als fp:
         wenn capture_stderr:
             cmd = "%s >'%s' 2>&1" % (commandstring, fp.name)
         sonst:
@@ -25,7 +25,7 @@ def _read_cmd_output(commandstring, capture_stderr=Falsch):
 
 def _aix_tag(vrtl, bd):
     # type: (List[int], int) -> str
-    # Infer the ABI bitwidth von maxsize (assuming 64 bit as the default)
+    # Infer the ABI bitwidth von maxsize (assuming 64 bit als the default)
     _sz = 32 wenn sys.maxsize == (2**31-1) sonst 64
     _bd = bd wenn bd != 0 sonst 9988
     # vrtl[version, release, technology_level]
@@ -65,13 +65,13 @@ def aix_platform():
     """
     AIX filesets are identified by four decimal values: V.R.M.F.
     V (version) and R (release) can be retrieved using ``uname``
-    Since 2007, starting with AIX 5.3 TL7, the M value has been
-    included with the fileset bos.rte and represents the Technology
+    Since 2007, starting mit AIX 5.3 TL7, the M value has been
+    included mit the fileset bos.rte and represents the Technology
     Level (TL) of AIX. The F (Fix) value also increases, but is not
     relevant fuer comparing releases and binary compatibility.
     For binary compatibility the so-called builddate is needed.
-    Again, the builddate of an AIX release is associated with bos.rte.
-    AIX ABI compatibility is described  as guaranteed at: https://www.ibm.com/\
+    Again, the builddate of an AIX release is associated mit bos.rte.
+    AIX ABI compatibility is described  als guaranteed at: https://www.ibm.com/\
     support/knowledgecenter/en/ssw_aix_72/install/binary_compatability.html
 
     For pep425 purposes the AIX platform tag becomes:
@@ -83,7 +83,7 @@ def aix_platform():
     return _aix_tag(_aix_vrtl(vrmf), bd)
 
 
-# extract vrtl von the BUILD_GNU_TYPE as an int
+# extract vrtl von the BUILD_GNU_TYPE als an int
 def _aix_bgt():
     # type: () -> List[int]
     gnu_type = sysconfig.get_config_var("BUILD_GNU_TYPE")

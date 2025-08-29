@@ -71,7 +71,7 @@ klasse Percolator:
 
 
 def _percolator(parent):  # htest #
-    importiere tkinter as tk
+    importiere tkinter als tk
 
     klasse Tracer(Delegator):
         def __init__(self, name):

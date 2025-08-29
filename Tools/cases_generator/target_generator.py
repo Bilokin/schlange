@@ -71,7 +71,7 @@ def write_tailcall_dispatch_table(analysis: Analysis, out: CWriter) -> Nichts:
     outfile.write("#endif /* Py_TAIL_CALL_INTERP */\n")
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the file with dispatch targets.",
+    description="Generate the file mit dispatch targets.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
@@ -88,7 +88,7 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         out = CWriter(outfile, 0, Falsch)
         write_opcode_targets(data, out)
         write_tailcall_dispatch_table(data, out)

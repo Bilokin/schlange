@@ -15,7 +15,7 @@ importiere _winapi
 
 importiere asyncio
 von asyncio importiere windows_events
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 
 
 def tearDownModule():
@@ -114,7 +114,7 @@ klasse ProactorTests(WindowsEventsTestCase):
     def test_double_bind(self):
         ADDRESS = r'\\.\pipe\test_double_bind-%s' % os.getpid()
         server1 = windows_events.PipeServer(ADDRESS)
-        with self.assertRaises(PermissionError):
+        mit self.assertRaises(PermissionError):
             windows_events.PipeServer(ADDRESS)
         server1.close()
 
@@ -125,7 +125,7 @@ klasse ProactorTests(WindowsEventsTestCase):
     async def _test_pipe(self):
         ADDRESS = r'\\.\pipe\_test_pipe-%s' % os.getpid()
 
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             await self.loop.create_pipe_connection(
                 asyncio.Protocol, ADDRESS)
 
@@ -154,7 +154,7 @@ klasse ProactorTests(WindowsEventsTestCase):
 
         server.close()
 
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             await self.loop.create_pipe_connection(
                 asyncio.Protocol, ADDRESS)
 
@@ -163,21 +163,21 @@ klasse ProactorTests(WindowsEventsTestCase):
     def test_connect_pipe_cancel(self):
         exc = OSError()
         exc.winerror = _overlapped.ERROR_PIPE_BUSY
-        with mock.patch.object(_overlapped, 'ConnectPipe',
-                               side_effect=exc) as connect:
+        mit mock.patch.object(_overlapped, 'ConnectPipe',
+                               side_effect=exc) als connect:
             coro = self.loop._proactor.connect_pipe('pipe_address')
             task = self.loop.create_task(coro)
 
             # check that it's possible to cancel connect_pipe()
             task.cancel()
-            with self.assertRaises(asyncio.CancelledError):
+            mit self.assertRaises(asyncio.CancelledError):
                 self.loop.run_until_complete(task)
 
     def test_wait_for_handle(self):
         event = _overlapped.CreateEvent(Nichts, Wahr, Falsch, Nichts)
         self.addCleanup(_winapi.CloseHandle, event)
 
-        # Wait fuer unset event with 0.5s timeout;
+        # Wait fuer unset event mit 0.5s timeout;
         # result should be Falsch at timeout
         timeout = 0.5
         fut = self.loop._proactor.wait_for_handle(event, timeout)
@@ -207,11 +207,11 @@ klasse ProactorTests(WindowsEventsTestCase):
         event = _overlapped.CreateEvent(Nichts, Wahr, Falsch, Nichts)
         self.addCleanup(_winapi.CloseHandle, event)
 
-        # Wait fuer unset event with a cancelled future;
+        # Wait fuer unset event mit a cancelled future;
         # CancelledError should be raised immediately
         fut = self.loop._proactor.wait_for_handle(event, 10)
         fut.cancel()
-        with self.assertRaises(asyncio.CancelledError):
+        mit self.assertRaises(asyncio.CancelledError):
             self.loop.run_until_complete(fut)
 
         # asyncio issue #195: cancelling a _WaitHandleFuture twice
@@ -253,9 +253,9 @@ klasse ProactorTests(WindowsEventsTestCase):
         proactor = self.loop._proactor
         sock = socket.socket(type=socket.SOCK_DGRAM)
         bad_address = Nichts
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             proactor.connect(sock, bad_address)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             proactor.sendto(sock, b'abc', addr=bad_address)
         sock.close()
 
@@ -272,13 +272,13 @@ klasse ProactorTests(WindowsEventsTestCase):
             h = _overlapped.ConnectPipe(ADDRESS)
             try:
                 _winapi.CloseHandle(_overlapped.ConnectPipe(ADDRESS))
-            except OSError as e:
+            except OSError als e:
                 wenn e.winerror != _overlapped.ERROR_PIPE_BUSY:
                     raise
             finally:
                 _winapi.CloseHandle(h)
 
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             await probe()
 
         [server] = await self.loop.start_serving_pipe(asyncio.Protocol, ADDRESS)
@@ -294,7 +294,7 @@ klasse ProactorTests(WindowsEventsTestCase):
 
         server.close()
 
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             await probe()
 
         return "done"
@@ -332,7 +332,7 @@ klasse WinPolicyTests(WindowsEventsTestCase):
 
         old_policy = asyncio.events._get_event_loop_policy()
         try:
-            with self.assertWarnsRegex(
+            mit self.assertWarnsRegex(
                 DeprecationWarning,
                 "'asyncio.WindowsSelectorEventLoopPolicy' is deprecated",
             ):
@@ -349,7 +349,7 @@ klasse WinPolicyTests(WindowsEventsTestCase):
 
         old_policy = asyncio.events._get_event_loop_policy()
         try:
-            with self.assertWarnsRegex(
+            mit self.assertWarnsRegex(
                 DeprecationWarning,
                 "'asyncio.WindowsProactorEventLoopPolicy' is deprecated",
             ):

@@ -17,13 +17,13 @@ klasse Timer:
         self._stop = 0
 
     def time(self):
-        with self._cond:
+        mit self._cond:
             return self._time
 
     # increase the time but not beyond the established limit
     def sleep(self, t):
         assert t >= 0
-        with self._cond:
+        mit self._cond:
             t += self._time
             while self._stop < t:
                 self._time = self._stop
@@ -33,7 +33,7 @@ klasse Timer:
     # advance time limit fuer user code
     def advance(self, t):
         assert t >= 0
-        with self._cond:
+        mit self._cond:
             self._stop += t
             self._cond.notify_all()
 
@@ -100,7 +100,7 @@ klasse TestCase(unittest.TestCase):
             ([1, 2, 3, 2, 1], [1, 1, 2, 2, 3]),
         ]
         fuer priorities, expected in cases:
-            with self.subTest(priorities=priorities, expected=expected):
+            mit self.subTest(priorities=priorities, expected=expected):
                 fuer priority in priorities:
                     scheduler.enterabs(0.01, priority, fun, (priority,))
                 scheduler.run()

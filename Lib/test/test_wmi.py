@@ -18,7 +18,7 @@ def wmi_exec_query(query):
         except BrokenPipeError:
             pass
             # retry on pipe error
-        except WindowsError as exc:
+        except WindowsError als exc:
             wenn exc.winerror != 258:
                 raise
             # retry on timeout
@@ -41,10 +41,10 @@ klasse WmiTests(unittest.TestCase):
             self.test_wmi_query_os_version()
 
     def test_wmi_query_error(self):
-        # Invalid queries fail with OSError
+        # Invalid queries fail mit OSError
         try:
             wmi_exec_query("SELECT InvalidColumnName FROM InvalidTableName")
-        except OSError as ex:
+        except OSError als ex:
             wenn ex.winerror & 0xFFFFFFFF == 0x80041010:
                 # This is the expected error code. All others should fail the test
                 return
@@ -56,7 +56,7 @@ klasse WmiTests(unittest.TestCase):
 
     def test_wmi_query_not_select(self):
         # Queries other than SELECT are blocked to avoid potential exploits
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             wmi_exec_query("not select, just in case someone tries something")
 
     @support.requires_resource('cpu')
@@ -64,7 +64,7 @@ klasse WmiTests(unittest.TestCase):
         # Ensure very big queries fail
         # Test multiple times to ensure consistency
         fuer _ in range(2):
-            with self.assertRaises(OSError):
+            mit self.assertRaises(OSError):
                 wmi_exec_query("SELECT * FROM CIM_DataFile")
 
     def test_wmi_query_multiple_rows(self):
@@ -83,7 +83,7 @@ klasse WmiTests(unittest.TestCase):
     def test_wmi_query_threads(self):
         von concurrent.futures importiere ThreadPoolExecutor
         query = "SELECT ProcessId FROM Win32_Process WHERE ProcessId < 1000"
-        with ThreadPoolExecutor(4) as pool:
+        mit ThreadPoolExecutor(4) als pool:
             task = [pool.submit(wmi_exec_query, query) fuer _ in range(32)]
             fuer t in task:
                 self.assertRegex(t.result(), "ProcessId=")

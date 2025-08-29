@@ -30,8 +30,8 @@ importiere asyncio
 von asyncio importiere coroutines
 von asyncio importiere events
 von asyncio importiere selector_events
-von multiprocessing.util importiere _cleanup_tests as multiprocessing_cleanup_tests
-von test.test_asyncio importiere utils as test_utils
+von multiprocessing.util importiere _cleanup_tests als multiprocessing_cleanup_tests
+von test.test_asyncio importiere utils als test_utils
 von test importiere support
 von test.support importiere socket_helper
 von test.support importiere threading_helper
@@ -56,7 +56,7 @@ def _test_get_event_loop_new_process__sub_proc():
     async def doit():
         return 'hello'
 
-    with contextlib.closing(asyncio.new_event_loop()) as loop:
+    mit contextlib.closing(asyncio.new_event_loop()) als loop:
         asyncio.set_event_loop(loop)
         return loop.run_until_complete(doit())
 
@@ -281,7 +281,7 @@ klasse EventLoopTestsMixin:
             self.assertWahr(self.loop.is_running())
             self.loop.run_until_complete(coro1())
 
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
             RuntimeWarning,
             r"coroutine \S+ was never awaited"
         ):
@@ -346,7 +346,7 @@ klasse EventLoopTestsMixin:
         t = threading.Thread(target=run_in_thread)
         t.start()
 
-        with lock:
+        mit lock:
             self.loop.call_soon(callback, 'world')
             self.loop.run_forever()
         t.join()
@@ -607,7 +607,7 @@ klasse EventLoopTestsMixin:
     @unittest.skipUnless(hasattr(signal, 'setitimer'),
                          'need signal.setitimer()')
     def test_signal_handling_while_selecting(self):
-        # Test with a signal actually arriving during a select() call.
+        # Test mit a signal actually arriving during a select() call.
         caught = 0
 
         def my_handler():
@@ -654,7 +654,7 @@ klasse EventLoopTestsMixin:
         tr.close()
 
     def test_create_connection(self):
-        with test_utils.run_test_server() as httpd:
+        mit test_utils.run_test_server() als httpd:
             conn_fut = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop), *httpd.address)
             self._basetest_create_connection(conn_fut)
@@ -665,7 +665,7 @@ klasse EventLoopTestsMixin:
         # zero-length address fuer UNIX socket.
         check_sockname = not broken_unix_getsockname()
 
-        with test_utils.run_test_unix_server() as httpd:
+        mit test_utils.run_test_unix_server() als httpd:
             conn_fut = self.loop.create_unix_connection(
                 lambda: MyProto(loop=self.loop), httpd.address)
             self._basetest_create_connection(conn_fut, check_sockname)
@@ -733,8 +733,8 @@ klasse EventLoopTestsMixin:
                 return test_utils.dummy_ssl_context()
 
             # With ssl=Wahr, ssl.create_default_context() should be called
-            with mock.patch('ssl.create_default_context',
-                            side_effect=_dummy_ssl_create_context) as m:
+            mit mock.patch('ssl.create_default_context',
+                            side_effect=_dummy_ssl_create_context) als m:
                 conn_fut = create_connection(ssl=Wahr)
                 self._basetest_create_ssl_connection(conn_fut, check_sockname,
                                                      peername)
@@ -742,10 +742,10 @@ klasse EventLoopTestsMixin:
 
         # With the real ssl.create_default_context(), certificate
         # validation will fail
-        with self.assertRaises(ssl.SSLError) as cm:
+        mit self.assertRaises(ssl.SSLError) als cm:
             conn_fut = create_connection(ssl=Wahr)
             # Ignore the "SSL handshake failed" log in debug mode
-            with test_utils.disable_logger():
+            mit test_utils.disable_logger():
                 self._basetest_create_ssl_connection(conn_fut, check_sockname,
                                                      peername)
 
@@ -753,7 +753,7 @@ klasse EventLoopTestsMixin:
 
     @unittest.skipIf(ssl is Nichts, 'No ssl module')
     def test_create_ssl_connection(self):
-        with test_utils.run_test_server(use_ssl=Wahr) as httpd:
+        mit test_utils.run_test_server(use_ssl=Wahr) als httpd:
             create_connection = functools.partial(
                 self.loop.create_connection,
                 lambda: MyProto(loop=self.loop),
@@ -768,7 +768,7 @@ klasse EventLoopTestsMixin:
         # zero-length address fuer UNIX socket.
         check_sockname = not broken_unix_getsockname()
 
-        with test_utils.run_test_unix_server(use_ssl=Wahr) as httpd:
+        mit test_utils.run_test_unix_server(use_ssl=Wahr) als httpd:
             create_connection = functools.partial(
                 self.loop.create_unix_connection,
                 lambda: MyProto(loop=self.loop), httpd.address,
@@ -779,7 +779,7 @@ klasse EventLoopTestsMixin:
                                              peername=httpd.address)
 
     def test_create_connection_local_addr(self):
-        with test_utils.run_test_server() as httpd:
+        mit test_utils.run_test_server() als httpd:
             port = socket_helper.find_unused_port()
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop),
@@ -808,7 +808,7 @@ klasse EventLoopTestsMixin:
             lambda: MyProto(loop=self.loop),
             'localhost', port1, local_addr=('localhost', port2))
 
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             self.loop.run_until_complete(f)
 
     @socket_helper.skip_if_tcp_blackhole
@@ -829,15 +829,15 @@ klasse EventLoopTestsMixin:
             lambda: MyProto(loop=self.loop),
             'localhost', port1, local_addr=('localhost', port2))
 
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             self.loop.run_until_complete(f)
 
     def test_create_connection_local_addr_in_use(self):
-        with test_utils.run_test_server() as httpd:
+        mit test_utils.run_test_server() als httpd:
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop),
                 *httpd.address, local_addr=httpd.address)
-            with self.assertRaises(OSError) as cm:
+            mit self.assertRaises(OSError) als cm:
                 self.loop.run_until_complete(f)
             self.assertEqual(cm.exception.errno, errno.EADDRINUSE)
             self.assertIn(str(httpd.address), cm.exception.strerror)
@@ -872,7 +872,7 @@ klasse EventLoopTestsMixin:
                 csock.sendall(message)
                 response = csock.recv(99)
                 csock.close()
-            except Exception as exc:
+            except Exception als exc:
                 drucke(
                     "Failure in client thread in test_connect_accepted_socket",
                     exc)
@@ -908,9 +908,9 @@ klasse EventLoopTestsMixin:
         self.addCleanup(sock.close)
         coro = self.loop.connect_accepted_socket(
             MyProto, sock, ssl_handshake_timeout=support.LOOPBACK_TIMEOUT)
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 ValueError,
-                'ssl_handshake_timeout is only meaningful with ssl'):
+                'ssl_handshake_timeout is only meaningful mit ssl'):
             self.loop.run_until_complete(coro)
 
     @mock.patch('asyncio.base_events.socket')
@@ -998,11 +998,11 @@ klasse EventLoopTestsMixin:
         self.addCleanup(dup.close)
         self.assertIsInstance(dup, socket.socket)
         self.assertFalsch(sock.get_inheritable())
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             sock.settimeout(1)
         sock.settimeout(0)
         self.assertEqual(sock.gettimeout(), 0)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             sock.setblocking(Wahr)
         sock.setblocking(Falsch)
         server.close()
@@ -1075,9 +1075,9 @@ klasse EventLoopTestsMixin:
     def test_create_unix_server_path_socket_error(self):
         proto = MyProto(loop=self.loop)
         sock = socket.socket()
-        with sock:
+        mit sock:
             f = self.loop.create_unix_server(lambda: proto, '/test', sock=sock)
-            with self.assertRaisesRegex(ValueError,
+            mit self.assertRaisesRegex(ValueError,
                                         'path and sock can not be specified '
                                         'at the same time'):
                 self.loop.run_until_complete(f)
@@ -1182,9 +1182,9 @@ klasse EventLoopTestsMixin:
         # no CA loaded
         f_c = self.loop.create_connection(MyProto, host, port,
                                           ssl=sslcontext_client)
-        with mock.patch.object(self.loop, 'call_exception_handler'):
-            with test_utils.disable_logger():
-                with self.assertRaisesRegex(ssl.SSLError,
+        mit mock.patch.object(self.loop, 'call_exception_handler'):
+            mit test_utils.disable_logger():
+                mit self.assertRaisesRegex(ssl.SSLError,
                                             '(?i)certificate.verify.failed'):
                     self.loop.run_until_complete(f_c)
 
@@ -1212,9 +1212,9 @@ klasse EventLoopTestsMixin:
         f_c = self.loop.create_unix_connection(MyProto, path,
                                                ssl=sslcontext_client,
                                                server_hostname='invalid')
-        with mock.patch.object(self.loop, 'call_exception_handler'):
-            with test_utils.disable_logger():
-                with self.assertRaisesRegex(ssl.SSLError,
+        mit mock.patch.object(self.loop, 'call_exception_handler'):
+            mit test_utils.disable_logger():
+                mit self.assertRaisesRegex(ssl.SSLError,
                                             '(?i)certificate.verify.failed'):
                     self.loop.run_until_complete(f_c)
 
@@ -1249,9 +1249,9 @@ klasse EventLoopTestsMixin:
             |
             CERTIFICATE_VERIFY_FAILED                                       # AWS-LC
         )""", re.X)
-        with mock.patch.object(self.loop, 'call_exception_handler'):
-            with test_utils.disable_logger():
-                with self.assertRaisesRegex(ssl.CertificateError, regex):
+        mit mock.patch.object(self.loop, 'call_exception_handler'):
+            mit test_utils.disable_logger():
+                mit self.assertRaisesRegex(ssl.CertificateError, regex):
                     self.loop.run_until_complete(f_c)
 
         # close connection
@@ -1273,7 +1273,7 @@ klasse EventLoopTestsMixin:
         wenn hasattr(sslcontext_client, 'check_hostname'):
             sslcontext_client.check_hostname = Wahr
 
-        # Connection succeeds with correct CA and server hostname.
+        # Connection succeeds mit correct CA and server hostname.
         f_c = self.loop.create_unix_connection(MyProto, path,
                                                ssl=sslcontext_client,
                                                server_hostname='localhost')
@@ -1299,7 +1299,7 @@ klasse EventLoopTestsMixin:
         wenn hasattr(sslcontext_client, 'check_hostname'):
             sslcontext_client.check_hostname = Wahr
 
-        # Connection succeeds with correct CA and server hostname.
+        # Connection succeeds mit correct CA and server hostname.
         f_c = self.loop.create_connection(MyProto, host, port,
                                           ssl=sslcontext_client,
                                           server_hostname='localhost')
@@ -1348,7 +1348,7 @@ klasse EventLoopTestsMixin:
         host, port = sock.getsockname()
 
         f = self.loop.create_server(MyProto, host=host, port=port)
-        with self.assertRaises(OSError) as cm:
+        mit self.assertRaises(OSError) als cm:
             self.loop.run_until_complete(f)
         self.assertEqual(cm.exception.errno, errno.EADDRINUSE)
 
@@ -1369,7 +1369,7 @@ klasse EventLoopTestsMixin:
                 port = socket_helper.find_unused_port()
                 f = self.loop.create_server(TestMyProto, host=Nichts, port=port)
                 server = self.loop.run_until_complete(f)
-            except OSError as ex:
+            except OSError als ex:
                 wenn ex.errno == errno.EADDRINUSE:
                     try_count += 1
                     self.assertGreaterEqual(5, try_count)
@@ -1944,9 +1944,9 @@ klasse EventLoopTestsMixin:
         self.addCleanup(r.close)
         self.addCleanup(w.close)
         loop.close()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             loop.add_reader(r, callback)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             loop.add_writer(w, callback)
 
     def test_close_running_event_loop(self):
@@ -1954,7 +1954,7 @@ klasse EventLoopTestsMixin:
             self.loop.close()
 
         coro = close_loop(self.loop)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.run_until_complete(coro)
 
     def test_close(self):
@@ -1968,28 +1968,28 @@ klasse EventLoopTestsMixin:
         self.addCleanup(coro.close)
 
         # operation blocked when the loop is closed
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.run_forever()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fut = self.loop.create_future()
             self.loop.run_until_complete(fut)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.call_soon(func)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.call_soon_threadsafe(func)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.call_later(1.0, func)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.call_at(self.loop.time() + .0, func)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.create_task(coro)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop.add_signal_handler(signal.SIGTERM, func)
 
         # run_in_executor test is tricky: the method is a coroutine,
         # but run_until_complete cannot be called on closed loop.
         # Thus iterate once explicitly.
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             it = self.loop.run_in_executor(Nichts, func).__await__()
             next(it)
 
@@ -2026,7 +2026,7 @@ klasse SubprocessTestsMixin:
         stdin = transp.get_pipe_transport(0)
         stdin.write(b'Python The Winner')
         self.loop.run_until_complete(proto.got_data[1].wait())
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             transp.close()
         self.loop.run_until_complete(proto.completed)
         self.check_killed(proto.returncode)
@@ -2055,7 +2055,7 @@ klasse SubprocessTestsMixin:
         self.loop.run_until_complete(proto.got_data[1].wait())
         self.assertEqual(b'Python The Winner', proto.data[1])
 
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             transp.close()
         self.loop.run_until_complete(proto.completed)
         self.check_killed(proto.returncode)
@@ -2237,11 +2237,11 @@ klasse SubprocessTestsMixin:
             self.assertEqual(b'ERR:BrokenPipeError', proto.data[2])
         sonst:
             # After closing the read-end of a pipe, writing to the
-            # write-end using os.write() fails with errno==EINVAL and
+            # write-end using os.write() fails mit errno==EINVAL and
             # GetLastError()==ERROR_INVALID_NAME on Windows!?!  (Using
-            # WriteFile() we get ERROR_BROKEN_PIPE as expected.)
+            # WriteFile() we get ERROR_BROKEN_PIPE als expected.)
             self.assertEqual(b'ERR:OSError', proto.data[2])
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             transp.close()
         self.loop.run_until_complete(proto.completed)
         self.check_killed(proto.returncode)
@@ -2266,11 +2266,11 @@ klasse SubprocessTestsMixin:
                 asyncio.SubprocessProtocol,
                 'pwd', **kwds)
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(universal_newlines=Wahr))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(bufsize=4096))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(shell=Wahr))
 
     @support.requires_subprocess()
@@ -2283,13 +2283,13 @@ klasse SubprocessTestsMixin:
                 asyncio.SubprocessProtocol,
                 cmd, **kwds)
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(['ls', '-l']))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(universal_newlines=Wahr))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(bufsize=4096))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.loop.run_until_complete(connect(shell=Falsch))
 
 
@@ -2450,7 +2450,7 @@ klasse HandleTests(test_utils.TestCase):
                  % (re.escape(filename), lineno))
         self.assertRegex(repr(h), regex)
 
-        # partial function with keyword args
+        # partial function mit keyword args
         cb = functools.partial(noop, x=1)
         h = asyncio.Handle(cb, (2, 3), self.loop)
         regex = (r'^<Handle noop\(\)\(\) at %s:%s>$'
@@ -2503,7 +2503,7 @@ klasse HandleTests(test_utils.TestCase):
                     re.escape(create_filename), create_lineno))
         self.assertRegex(repr(h), regex)
 
-        # partial function with keyword args
+        # partial function mit keyword args
         cb = functools.partial(noop, x=1)
         create_lineno = sys._getframe().f_lineno + 1
         h = asyncio.Handle(cb, (2, 3), self.loop)
@@ -2544,7 +2544,7 @@ klasse HandleTests(test_utils.TestCase):
     def test_coroutine_like_object_debug_formatting(self):
         # Test that asyncio can format coroutines that are instances of
         # collections.abc.Coroutine, but lack cr_core or gi_code attributes
-        # (such as ones compiled with Cython).
+        # (such als ones compiled mit Cython).
 
         coro = CoroLike()
         coro.__name__ = 'AAA'
@@ -2652,15 +2652,15 @@ klasse TimerTests(unittest.TestCase):
 
         h1 = asyncio.TimerHandle(when, callback, (), self.loop)
         h2 = asyncio.TimerHandle(when, callback, (), self.loop)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertLess(h1, h2)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertLess(h2, h1)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertGreater(h1, h2)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertGreater(h2, h1)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertNotEqual(h1, h2)
 
         self.assertLessEqual(h1, h2)
@@ -2670,21 +2670,21 @@ klasse TimerTests(unittest.TestCase):
         self.assertEqual(h1, h2)
 
         h2.cancel()
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertEqual(h1, h2)
         self.assertNotEqual(h1, h2)
 
         h1 = asyncio.TimerHandle(when, callback, (), self.loop)
         h2 = asyncio.TimerHandle(when + 10.0, callback, (), self.loop)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertLess(h2, h1)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertLessEqual(h2, h1)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertGreater(h1, h2)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertGreaterEqual(h1, h2)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertEqual(h1, h2)
 
         self.assertLess(h1, h2)
@@ -2697,25 +2697,25 @@ klasse TimerTests(unittest.TestCase):
         self.assertIs(NotImplemented, h1.__eq__(h3))
         self.assertIs(NotImplemented, h1.__ne__(h3))
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             h1 < ()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             h1 > ()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             h1 <= ()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             h1 >= ()
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertEqual(h1, ())
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertNotEqual(h1, ALWAYS_EQ)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertGreater(h1, LARGEST)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertGreaterEqual(h1, LARGEST)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertLess(h1, SMALLEST)
-        with self.assertRaises(AssertionError):
+        mit self.assertRaises(AssertionError):
             self.assertLessEqual(h1, SMALLEST)
 
         self.assertNotEqual(h1, ())
@@ -2788,39 +2788,39 @@ klasse AbstractEventLoopTests(unittest.TestCase):
             f = mock.Mock()
             loop = asyncio.AbstractEventLoop()
 
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.run_in_executor(f, f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.getaddrinfo('localhost', 8080)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.getnameinfo(('localhost', 8080))
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.create_connection(f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.create_server(f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.create_datagram_endpoint(f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.sock_recv(f, 10)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.sock_recv_into(f, 10)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.sock_sendall(f, 10)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.sock_connect(f, f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.sock_accept(f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.sock_sendfile(f, f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.sendfile(f, f)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.connect_read_pipe(f, mock.sentinel.pipe)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.connect_write_pipe(f, mock.sentinel.pipe)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.subprocess_shell(f, mock.sentinel)
-            with self.assertRaises(NotImplementedError):
+            mit self.assertRaises(NotImplementedError):
                 await loop.subprocess_exec(f)
 
         loop = asyncio.new_event_loop()
@@ -2831,13 +2831,13 @@ klasse AbstractEventLoopTests(unittest.TestCase):
 klasse PolicyTests(unittest.TestCase):
 
     def test_abstract_event_loop_policy_deprecation(self):
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
                 DeprecationWarning, "'asyncio.AbstractEventLoopPolicy' is deprecated"):
             policy = asyncio.AbstractEventLoopPolicy()
             self.assertIsInstance(policy, asyncio.AbstractEventLoopPolicy)
 
     def test_default_event_loop_policy_deprecation(self):
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
                 DeprecationWarning, "'asyncio.DefaultEventLoopPolicy' is deprecated"):
             policy = asyncio.DefaultEventLoopPolicy()
             self.assertIsInstance(policy, asyncio.DefaultEventLoopPolicy)
@@ -2852,18 +2852,18 @@ klasse PolicyTests(unittest.TestCase):
         policy = test_utils.DefaultEventLoopPolicy()
         self.assertIsNichts(policy._local._loop)
 
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             loop = policy.get_event_loop()
         self.assertIsNichts(policy._local._loop)
 
     def test_get_event_loop_does_not_call_set_event_loop(self):
         policy = test_utils.DefaultEventLoopPolicy()
 
-        with mock.patch.object(
+        mit mock.patch.object(
                 policy, "set_event_loop",
-                wraps=policy.set_event_loop) as m_set_event_loop:
+                wraps=policy.set_event_loop) als m_set_event_loop:
 
-            with self.assertRaises(RuntimeError):
+            mit self.assertRaises(RuntimeError):
                 loop = policy.get_event_loop()
 
             m_set_event_loop.assert_not_called()
@@ -2906,28 +2906,28 @@ klasse PolicyTests(unittest.TestCase):
         old_loop.close()
 
     def test_get_event_loop_policy(self):
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
                 DeprecationWarning, "'asyncio.get_event_loop_policy' is deprecated"):
             policy = asyncio.get_event_loop_policy()
             self.assertIsInstance(policy, asyncio.events._AbstractEventLoopPolicy)
             self.assertIs(policy, asyncio.get_event_loop_policy())
 
     def test_set_event_loop_policy(self):
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
                 DeprecationWarning, "'asyncio.set_event_loop_policy' is deprecated"):
             self.assertRaises(
                 TypeError, asyncio.set_event_loop_policy, object())
 
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
                 DeprecationWarning, "'asyncio.get_event_loop_policy' is deprecated"):
             old_policy = asyncio.get_event_loop_policy()
 
         policy = test_utils.DefaultEventLoopPolicy()
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
                 DeprecationWarning, "'asyncio.set_event_loop_policy' is deprecated"):
             asyncio.set_event_loop_policy(policy)
 
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
                 DeprecationWarning, "'asyncio.get_event_loop_policy' is deprecated"):
             self.assertIs(policy, asyncio.get_event_loop_policy())
             self.assertIsNot(policy, old_policy)
@@ -3017,7 +3017,7 @@ klasse GetEventLoopTestsMixin:
     def test_get_running_loop_already_running(self):
         async def main():
             running_loop = asyncio.get_running_loop()
-            with contextlib.closing(asyncio.new_event_loop()) as loop:
+            mit contextlib.closing(asyncio.new_event_loop()) als loop:
                 try:
                     loop.run_forever()
                 except RuntimeError:
@@ -3043,13 +3043,13 @@ klasse GetEventLoopTestsMixin:
             asyncio.events._set_event_loop_policy(Policy())
             loop = asyncio.new_event_loop()
 
-            with self.assertRaises(TestError):
+            mit self.assertRaises(TestError):
                 asyncio.get_event_loop()
             asyncio.set_event_loop(Nichts)
-            with self.assertRaises(TestError):
+            mit self.assertRaises(TestError):
                 asyncio.get_event_loop()
 
-            with self.assertRaisesRegex(RuntimeError, 'no running'):
+            mit self.assertRaisesRegex(RuntimeError, 'no running'):
                 asyncio.get_running_loop()
             self.assertIs(asyncio._get_running_loop(), Nichts)
 
@@ -3061,10 +3061,10 @@ klasse GetEventLoopTestsMixin:
             loop.run_until_complete(func())
 
             asyncio.set_event_loop(loop)
-            with self.assertRaises(TestError):
+            mit self.assertRaises(TestError):
                 asyncio.get_event_loop()
             asyncio.set_event_loop(Nichts)
-            with self.assertRaises(TestError):
+            mit self.assertRaises(TestError):
                 asyncio.get_event_loop()
 
         finally:
@@ -3072,7 +3072,7 @@ klasse GetEventLoopTestsMixin:
             wenn loop is not Nichts:
                 loop.close()
 
-        with self.assertRaisesRegex(RuntimeError, 'no running'):
+        mit self.assertRaisesRegex(RuntimeError, 'no running'):
             asyncio.get_running_loop()
 
         self.assertIs(asyncio._get_running_loop(), Nichts)
@@ -3084,11 +3084,11 @@ klasse GetEventLoopTestsMixin:
             loop = asyncio.new_event_loop()
             self.addCleanup(loop.close)
 
-            with self.assertRaisesRegex(RuntimeError, 'no current'):
+            mit self.assertRaisesRegex(RuntimeError, 'no current'):
                 asyncio.get_event_loop()
 
             asyncio.set_event_loop(Nichts)
-            with self.assertRaisesRegex(RuntimeError, 'no current'):
+            mit self.assertRaisesRegex(RuntimeError, 'no current'):
                 asyncio.get_event_loop()
 
             async def func():
@@ -3102,7 +3102,7 @@ klasse GetEventLoopTestsMixin:
             self.assertIs(asyncio.get_event_loop(), loop)
 
             asyncio.set_event_loop(Nichts)
-            with self.assertRaisesRegex(RuntimeError, 'no current'):
+            mit self.assertRaisesRegex(RuntimeError, 'no current'):
                 asyncio.get_event_loop()
 
         finally:
@@ -3110,7 +3110,7 @@ klasse GetEventLoopTestsMixin:
             wenn loop is not Nichts:
                 loop.close()
 
-        with self.assertRaisesRegex(RuntimeError, 'no running'):
+        mit self.assertRaisesRegex(RuntimeError, 'no running'):
             asyncio.get_running_loop()
 
         self.assertIs(asyncio._get_running_loop(), Nichts)
@@ -3157,18 +3157,18 @@ klasse TestServer(unittest.TestCase):
 klasse TestAbstractServer(unittest.TestCase):
 
     def test_close(self):
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             events.AbstractServer().close()
 
     def test_wait_closed(self):
         loop = asyncio.new_event_loop()
         self.addCleanup(loop.close)
 
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             loop.run_until_complete(events.AbstractServer().wait_closed())
 
     def test_get_loop(self):
-        with self.assertRaises(NotImplementedError):
+        mit self.assertRaises(NotImplementedError):
             events.AbstractServer().get_loop()
 
 

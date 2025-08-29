@@ -43,7 +43,7 @@ klasse FnmatchTestCase(unittest.TestCase):
         check('a', r'[!\]')
         check('\\', r'[!\]', Falsch)
 
-        # test that filenames with newlines in them are handled correctly.
+        # test that filenames mit newlines in them are handled correctly.
         # http://bugs.python.org/issue6665
         check('foo\nbar', 'foo*')
         check('foo\nbar\n', 'foo*')
@@ -203,7 +203,7 @@ klasse FnmatchTestCase(unittest.TestCase):
         check('a[Z-/]b', r'a[Z-\]b', Falsch)
 
     def test_warnings(self):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('error', Warning)
             check = self.check_match
             check('[', '[[]')
@@ -257,7 +257,7 @@ klasse TranslateTestCase(unittest.TestCase):
             ('ab*cd*12*34', r'(?s:ab(?>.*?cd)(?>.*?12).*34)\z'),
             ('ab*cd*12*34*', r'(?s:ab(?>.*?cd)(?>.*?12)(?>.*?34).*)\z'),
         ]:
-            with self.subTest(pattern):
+            mit self.subTest(pattern):
                 translated = translate(pattern)
                 self.assertEqual(translated, expect, pattern)
 
@@ -271,7 +271,7 @@ klasse TranslateTestCase(unittest.TestCase):
             ('*ab*cd*12*34', r'(?s:(?>.*?ab)(?>.*?cd)(?>.*?12).*34)\z'),
             ('*ab*cd*12*34*', r'(?s:(?>.*?ab)(?>.*?cd)(?>.*?12)(?>.*?34).*)\z'),
         ]:
-            with self.subTest(pattern):
+            mit self.subTest(pattern):
                 translated = translate(pattern)
                 self.assertEqual(translated, expect, pattern)
 
@@ -285,7 +285,7 @@ klasse TranslateTestCase(unittest.TestCase):
             ('[abc]', r'(?s:[abc])\z'),
             ('[!abc]', r'(?s:[^abc])\z'),
             ('[!abc][!def]', r'(?s:[^abc][^def])\z'),
-            # with [[
+            # mit [[
             ('[[', r'(?s:\[\[)\z'),
             ('[[a', r'(?s:\[\[a)\z'),
             ('[[]', r'(?s:[\[])\z'),
@@ -300,7 +300,7 @@ klasse TranslateTestCase(unittest.TestCase):
             (r'[\]', r'(?s:[\\])\z'),
             (r'[\\]', r'(?s:[\\\\])\z'),
         ]:
-            with self.subTest(pattern):
+            mit self.subTest(pattern):
                 translated = translate(pattern)
                 self.assertEqual(translated, expect, pattern)
 

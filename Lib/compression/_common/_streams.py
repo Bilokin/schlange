@@ -64,7 +64,7 @@ klasse DecompressReader(io.RawIOBase):
         return self._fp.seekable()
 
     def readinto(self, b):
-        with memoryview(b) as view, view.cast("B") as byte_view:
+        mit memoryview(b) als view, view.cast("B") als byte_view:
             data = self.read(len(byte_view))
             byte_view[:len(data)] = data
         return len(data)
@@ -128,7 +128,7 @@ klasse DecompressReader(io.RawIOBase):
         self._decompressor = self._decomp_factory(**self._decomp_args)
 
     def seek(self, offset, whence=io.SEEK_SET):
-        # Recalculate offset as an absolute file position.
+        # Recalculate offset als an absolute file position.
         wenn whence == io.SEEK_SET:
             pass
         sowenn whence == io.SEEK_CUR:

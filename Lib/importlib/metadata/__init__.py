@@ -124,7 +124,7 @@ klasse Sectioned:
 
 
 klasse EntryPoint:
-    """An entry point as defined by Python packaging conventions.
+    """An entry point als defined by Python packaging conventions.
 
     See `the packaging docs on entry points
     <https://packaging.python.org/specifications/entry-points/>`_
@@ -155,7 +155,7 @@ klasse EntryPoint:
         - package.module:object.attribute
         - package.module:attr [extra1, extra2]
 
-    Other combinations are possible as well.
+    Other combinations are possible als well.
 
     The expression is lenient about whitespace around the ':',
     following the attr, and following any extras.
@@ -265,7 +265,7 @@ klasse EntryPoints(tuple):
 
     def __repr__(self):
         """
-        Repr with classname and tuple constructor to
+        Repr mit classname and tuple constructor to
         signal that we deviate von regular tuple behavior.
         """
         return '%s(%r)' % (self.__class__.__name__, tuple(self))
@@ -345,13 +345,13 @@ klasse Distribution(metaclass=abc.ABCMeta):
         """Attempt to load metadata file given by the name.
 
         Python distribution metadata is organized by blobs of text
-        typically represented as "files" in the metadata directory
+        typically represented als "files" in the metadata directory
         (e.g. package-1.0.dist-info). These files include things
         like:
 
         - METADATA: The distribution metadata including fields
           like Name and Version and Description.
-        - entry_points.txt: A series of entry points as defined in
+        - entry_points.txt: A series of entry points als defined in
           `the entry points spec <https://packaging.python.org/en/latest/specifications/entry-points/#file-format>`_.
         - RECORD: A record of files according to
           `this recording spec <https://packaging.python.org/en/latest/specifications/recording-installed-packages/#the-record-file>`_.
@@ -510,8 +510,8 @@ klasse Distribution(metaclass=abc.ABCMeta):
 
         @pass_none
         def make_files(lines):
-            # Delay csv import, since Distribution.files is not as widely used
-            # as other parts of importlib.metadata
+            # Delay csv import, since Distribution.files is not als widely used
+            # als other parts of importlib.metadata
             importiere csv
 
             return starmap(make_file, csv.reader(lines))
@@ -538,7 +538,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
     def _read_files_egginfo_installed(self):
         """
         Read installed-files.txt and return lines in a similar
-        CSV-parsable format as RECORD: each file must be placed
+        CSV-parsable format als RECORD: each file must be placed
         relative to the site-packages directory and must also be
         quoted (since file names can contain literal commas).
 
@@ -566,7 +566,7 @@ klasse Distribution(metaclass=abc.ABCMeta):
     def _read_files_egginfo_sources(self):
         """
         Read SOURCES.txt and return lines in a similar CSV-parsable
-        format as RECORD: each file name must be quoted (since it
+        format als RECORD: each file name must be quoted (since it
         might contain literal commas).
 
         Note that SOURCES.txt is not a reliable source fuer what
@@ -599,9 +599,9 @@ klasse Distribution(metaclass=abc.ABCMeta):
     def _convert_egg_info_reqs_to_simple_reqs(sections):
         """
         Historically, setuptools would solicit and store 'extra'
-        requirements, including those with environment markers,
+        requirements, including those mit environment markers,
         in separate sections. More modern tools expect each
-        dependency to be defined separately, with any relevant
+        dependency to be defined separately, mit any relevant
         extras and environment markers attached directly to that
         requirement. This method converts the former to the
         latter. See _test_deps_from_requires_text fuer an example.
@@ -708,7 +708,7 @@ klasse FastPath:
     Micro-optimized klasse fuer searching a root fuer children.
 
     Root is a path on the file system that may contain metadata
-    directories either as natural directories or within a zip file.
+    directories either als natural directories or within a zip file.
 
     >>> FastPath('').children()
     ['...']
@@ -730,9 +730,9 @@ klasse FastPath:
         return pathlib.Path(self.root, child)
 
     def children(self):
-        with suppress(Exception):
+        mit suppress(Exception):
             return os.listdir(self.root or '.')
-        with suppress(Exception):
+        mit suppress(Exception):
             return self.zip_children()
         return []
 
@@ -748,7 +748,7 @@ klasse FastPath:
 
     @property
     def mtime(self):
-        with suppress(OSError):
+        mit suppress(OSError):
             return os.stat(self.root).st_mtime
         self.lookup.cache_clear()
 
@@ -841,14 +841,14 @@ klasse Prepared:
     @staticmethod
     def normalize(name):
         """
-        PEP 503 normalization plus dashes as underscores.
+        PEP 503 normalization plus dashes als underscores.
         """
         return re.sub(r"[-_.]+", "-", name).lower().replace('-', '_')
 
     @staticmethod
     def legacy_normalize(name):
         """
-        Normalize the package name as found in the convention in
+        Normalize the package name als found in the convention in
         older packaging tools versions and specs.
         """
         return name.lower().replace('-', '_')
@@ -895,7 +895,7 @@ klasse PathDistribution(Distribution):
         self._path = path
 
     def read_text(self, filename: str | os.PathLike[str]) -> Optional[str]:
-        with suppress(
+        mit suppress(
             FileNotFoundError,
             IsADirectoryError,
             KeyError,
@@ -944,7 +944,7 @@ klasse PathDistribution(Distribution):
 def distribution(distribution_name: str) -> Distribution:
     """Get the ``Distribution`` instance fuer the named package.
 
-    :param distribution_name: The name of the distribution package as a string.
+    :param distribution_name: The name of the distribution package als a string.
     :return: A ``Distribution`` instance (or subclass thereof).
     """
     return Distribution.from_name(distribution_name)
@@ -971,7 +971,7 @@ def version(distribution_name: str) -> str:
     """Get the version string fuer the named package.
 
     :param distribution_name: The name of the distribution package to query.
-    :return: The version string fuer the package as defined in the package's
+    :return: The version string fuer the package als defined in the package's
         "Version" metadata key.
     """
     return distribution(distribution_name).version
@@ -1043,7 +1043,7 @@ def _top_level_declared(dist):
 
 def _topmost(name: PackagePath) -> Optional[str]:
     """
-    Return the top-most parent as long as there is a parent.
+    Return the top-most parent als long als there is a parent.
     """
     top, *rest = name.parts
     return top wenn rest sonst Nichts

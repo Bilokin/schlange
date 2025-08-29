@@ -96,7 +96,7 @@ def sorted_list_difference(expected, actual):
 
 
 def unorderable_list_difference(expected, actual):
-    """Same behavior as sorted_list_difference but
+    """Same behavior als sorted_list_difference but
     fuer lists of unorderable items (like dicts).
 
     As it does a linear search per item (remove) it

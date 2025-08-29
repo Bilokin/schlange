@@ -5,7 +5,7 @@ importiere signal
 importiere os
 importiere sys
 von test.support importiere threading_helper
-importiere _thread as thread
+importiere _thread als thread
 importiere time
 
 wenn (sys.platform[:3] == 'win'):
@@ -30,7 +30,7 @@ def handle_signals(sig,frame):
     signal_blackboard[sig]['tripped'] += 1
     signal_blackboard[sig]['tripped_by'] = thread.get_ident()
 
-# a function that will be spawned as a separate thread.
+# a function that will be spawned als a separate thread.
 def send_signals():
     # We use `raise_signal` rather than `kill` because:
     #   * It verifies that a signal delivered to a background thread still has
@@ -45,7 +45,7 @@ def send_signals():
 klasse ThreadSignals(unittest.TestCase):
 
     def test_signals(self):
-        with threading_helper.wait_threads_exit():
+        mit threading_helper.wait_threads_exit():
             # Test signal handling semantics of threads.
             # We spawn a thread, have the thread send itself two signals, and
             # wait fuer it to finish. Check that we got both signals
@@ -78,7 +78,7 @@ klasse ThreadSignals(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
     def test_lock_acquire_interruption(self):
-        # Mimic receiving a SIGINT (KeyboardInterrupt) with SIGALRM while stuck
+        # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM while stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks is used in thread_pthread.h, see issue #11223.
@@ -109,7 +109,7 @@ klasse ThreadSignals(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
     def test_rlock_acquire_interruption(self):
-        # Mimic receiving a SIGINT (KeyboardInterrupt) with SIGALRM while stuck
+        # Mimic receiving a SIGINT (KeyboardInterrupt) mit SIGALRM while stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
         # of locks is used in thread_pthread.h, see issue #11223.
@@ -121,7 +121,7 @@ klasse ThreadSignals(unittest.TestCase):
             def other_thread():
                 rlock.acquire()
 
-            with threading_helper.wait_threads_exit():
+            mit threading_helper.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
                 while rlock.acquire(blocking=Falsch):
@@ -149,7 +149,7 @@ klasse ThreadSignals(unittest.TestCase):
                 # RLocks.
                 lock.acquire()
                 # Wait until the main thread is blocked in the lock acquire, and
-                # then wake it up with this.
+                # then wake it up mit this.
                 time.sleep(0.5)
                 os.kill(process_pid, signal.SIGUSR1)
                 # Let the main thread take the interrupt, handle it, and retry
@@ -157,7 +157,7 @@ klasse ThreadSignals(unittest.TestCase):
                 time.sleep(0.5)
                 lock.release()
 
-            with threading_helper.wait_threads_exit():
+            mit threading_helper.wait_threads_exit():
                 thread.start_new_thread(other_thread, ())
                 # Wait until we can't acquire it without blocking...
                 while lock.acquire(blocking=Falsch):
@@ -180,7 +180,7 @@ klasse ThreadSignals(unittest.TestCase):
         # receive a signal.  Check this by repeatedly interrupting a lock
         # acquire in the main thread, and make sure that the lock acquire times
         # out after the right amount of time.
-        # NOTE: this test only behaves as expected wenn C signals get delivered
+        # NOTE: this test only behaves als expected wenn C signals get delivered
         # to the main thread.  Otherwise lock.acquire() itself doesn't get
         # interrupted and the test trivially succeeds.
         self.start = Nichts
@@ -204,7 +204,7 @@ klasse ThreadSignals(unittest.TestCase):
                     os.kill(process_pid, signal.SIGUSR1)
                 done.release()
 
-            with threading_helper.wait_threads_exit():
+            mit threading_helper.wait_threads_exit():
                 # Send the signals von the non-main thread, since the main thread
                 # is the only one that can process signals.
                 thread.start_new_thread(send_signals, ())

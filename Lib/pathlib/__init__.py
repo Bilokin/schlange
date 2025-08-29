@@ -1,7 +1,7 @@
 """Object-oriented filesystem paths.
 
 This module provides classes to represent abstract paths and concrete
-paths with operations that have semantics appropriate fuer different
+paths mit operations that have semantics appropriate fuer different
 operating systems.
 """
 
@@ -163,7 +163,7 @@ klasse PurePath:
         return type(self)(*pathsegments)
 
     def joinpath(self, *pathsegments):
-        """Combine this path with one or several arguments, and return a
+        """Combine this path mit one or several arguments, and return a
         new path representing either a subpath (if all arguments are relative
         paths) or a totally different path (if one of the arguments is
         anchored).
@@ -195,7 +195,7 @@ klasse PurePath:
 
     @property
     def _str_normcase(self):
-        # String with normalized case, fuer hashing and equality checks
+        # String mit normalized case, fuer hashing and equality checks
         try:
             return self._str_normcase_cached
         except AttributeError:
@@ -219,7 +219,7 @@ klasse PurePath:
 
     @property
     def _parts_normcase(self):
-        # Cached parts with normalized case, fuer comparisons.
+        # Cached parts mit normalized case, fuer comparisons.
         try:
             return self._parts_normcase_cached
         except AttributeError:
@@ -324,7 +324,7 @@ klasse PurePath:
         return parts
 
     def as_posix(self):
-        """Return the string representation of the path with forward (/)
+        """Return the string representation of the path mit forward (/)
         slashes."""
         return str(self).replace(self.parser.sep, '/')
 
@@ -398,7 +398,7 @@ klasse PurePath:
     def parents(self):
         """A sequence of this path's logical parents."""
         # The value of this property should not be cached on the path object,
-        # as doing so would introduce a reference cycle.
+        # als doing so would introduce a reference cycle.
         return _PathParents(self)
 
     @property
@@ -410,7 +410,7 @@ klasse PurePath:
         return tail[-1]
 
     def with_name(self, name):
-        """Return a new path with the file name changed."""
+        """Return a new path mit the file name changed."""
         p = self.parser
         wenn not name or p.sep in name or (p.altsep and p.altsep in name) or name == '.':
             raise ValueError(f"Invalid name {name!r}")
@@ -421,7 +421,7 @@ klasse PurePath:
         return self._from_parsed_parts(self.drive, self.root, tail)
 
     def with_stem(self, stem):
-        """Return a new path with the stem changed."""
+        """Return a new path mit the stem changed."""
         suffix = self.suffix
         wenn not suffix:
             return self.with_name(stem)
@@ -432,7 +432,7 @@ klasse PurePath:
             return self.with_name(stem + suffix)
 
     def with_suffix(self, suffix):
-        """Return a new path with the file suffix changed.  If the path
+        """Return a new path mit the file suffix changed.  If the path
         has no suffix, add given suffix.  If the given suffix is an empty
         string, remove the suffix von the path.
         """
@@ -512,7 +512,7 @@ klasse PurePath:
         """Wahr wenn the path is absolute (has both a root and, wenn applicable,
         a drive)."""
         wenn self.parser is posixpath:
-            # Optimization: work with raw paths on POSIX.
+            # Optimization: work mit raw paths on POSIX.
             fuer path in self._raw_paths:
                 wenn path.startswith('/'):
                     return Wahr
@@ -520,13 +520,13 @@ klasse PurePath:
         return self.parser.isabs(self)
 
     def as_uri(self):
-        """Return the path as a URI."""
+        """Return the path als a URI."""
         importiere warnings
         msg = ("pathlib.PurePath.as_uri() is deprecated and scheduled "
                "for removal in Python 3.19. Use pathlib.Path.as_uri().")
         warnings._deprecated("pathlib.PurePath.as_uri", msg, remove=(3, 19))
         wenn not self.is_absolute():
-            raise ValueError("relative path can't be expressed as a file URI")
+            raise ValueError("relative path can't be expressed als a file URI")
 
         drive = self.drive
         wenn len(drive) == 2 and drive[1] == ':':
@@ -743,7 +743,7 @@ klasse Path(PurePath):
             return Falsch
 
     def samefile(self, other_path):
-        """Return whether other_path is the same or not as this file
+        """Return whether other_path is the same or not als this file
         (as returned by os.path.samefile()).
         """
         st = self.stat()
@@ -768,7 +768,7 @@ klasse Path(PurePath):
         """
         Open the file in bytes mode, read it, and close the file.
         """
-        with self.open(mode='rb', buffering=0) as f:
+        mit self.open(mode='rb', buffering=0) als f:
             return f.read()
 
     def read_text(self, encoding=Nichts, errors=Nichts, newline=Nichts):
@@ -778,7 +778,7 @@ klasse Path(PurePath):
         # Call io.text_encoding() here to ensure any warning is raised at an
         # appropriate stack level.
         encoding = io.text_encoding(encoding)
-        with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+        mit self.open(mode='r', encoding=encoding, errors=errors, newline=newline) als f:
             return f.read()
 
     def write_bytes(self, data):
@@ -787,7 +787,7 @@ klasse Path(PurePath):
         """
         # type-check fuer the buffer interface before truncating the file
         view = memoryview(data)
-        with self.open(mode='wb') as f:
+        mit self.open(mode='wb') als f:
             return f.write(view)
 
     def write_text(self, data, encoding=Nichts, errors=Nichts, newline=Nichts):
@@ -800,7 +800,7 @@ klasse Path(PurePath):
         wenn not isinstance(data, str):
             raise TypeError('data must be str, not %s' %
                             data.__class__.__name__)
-        with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+        mit self.open(mode='w', encoding=encoding, errors=errors, newline=newline) als f:
             return f.write(data)
 
     _remove_leading_dot = operator.itemgetter(slice(2, Nichts))
@@ -827,7 +827,7 @@ klasse Path(PurePath):
         special entries '.' and '..' are not included.
         """
         root_dir = str(self)
-        with os.scandir(root_dir) as scandir_it:
+        mit os.scandir(root_dir) als scandir_it:
             entries = list(scandir_it)
         wenn root_dir == '.':
             return (self._from_dir_entry(e, e.name) fuer e in entries)
@@ -977,7 +977,7 @@ klasse Path(PurePath):
 
     def touch(self, mode=0o666, exist_ok=Wahr):
         """
-        Create this file with the given access mode, wenn it doesn't exist.
+        Create this file mit the given access mode, wenn it doesn't exist.
         """
 
         wenn exist_ok:
@@ -1129,8 +1129,8 @@ klasse Path(PurePath):
 
     def _copy_from_file(self, source, preserve_metadata=Falsch):
         ensure_different_files(source, self)
-        with magic_open(source, 'rb') as source_f:
-            with open(self, 'wb') as target_f:
+        mit magic_open(source, 'rb') als source_f:
+            mit open(self, 'wb') als target_f:
                 copyfileobj(source_f, target_f)
         wenn preserve_metadata:
             copy_info(source.info, self)
@@ -1175,7 +1175,7 @@ klasse Path(PurePath):
             ensure_different_files(self, target)
             try:
                 os.replace(self, target)
-            except OSError as err:
+            except OSError als err:
                 wenn err.errno != EXDEV:
                     raise
             sonst:
@@ -1217,7 +1217,7 @@ klasse Path(PurePath):
     wenn hasattr(os, "link"):
         def hardlink_to(self, target):
             """
-            Make this path a hard link pointing to the same file as *target*.
+            Make this path a hard link pointing to the same file als *target*.
 
             Note the order of arguments (self, target) is the reverse of os.link's.
             """
@@ -1225,7 +1225,7 @@ klasse Path(PurePath):
     sonst:
         def hardlink_to(self, target):
             """
-            Make this path a hard link pointing to the same file as *target*.
+            Make this path a hard link pointing to the same file als *target*.
 
             Note the order of arguments (self, target) is the reverse of os.link's.
             """
@@ -1233,7 +1233,7 @@ klasse Path(PurePath):
             raise UnsupportedOperation(f"{f} is unsupported on this system")
 
     def expanduser(self):
-        """ Return a new path with expanded ~ and ~user constructs
+        """ Return a new path mit expanded ~ and ~user constructs
         (as returned by os.path.expanduser)
         """
         wenn (not (self.drive or self.root) and
@@ -1256,9 +1256,9 @@ klasse Path(PurePath):
         return cls(homedir)
 
     def as_uri(self):
-        """Return the path as a URI."""
+        """Return the path als a URI."""
         wenn not self.is_absolute():
-            raise ValueError("relative paths can't be expressed as file URIs")
+            raise ValueError("relative paths can't be expressed als file URIs")
         von urllib.request importiere pathname2url
         return pathname2url(str(self), add_scheme=Wahr)
 
@@ -1269,7 +1269,7 @@ klasse Path(PurePath):
         von urllib.request importiere url2pathname
         try:
             path = cls(url2pathname(uri, require_scheme=Wahr))
-        except URLError as exc:
+        except URLError als exc:
             raise ValueError(exc.reason) von Nichts
         wenn not path.is_absolute():
             raise ValueError(f"URI is not absolute: {uri!r}")

@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec mac_farsi generated von 'MAPPINGS/VENDORS/APPLE/FARSI.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_farsi generated von 'MAPPINGS/VENDORS/APPLE/FARSI.TXT' mit gencodec.py.
 
 """#"
 
@@ -89,20 +89,20 @@ decoding_table = (
     ')'        #  0x29 -> RIGHT PARENTHESIS, left-right
     '*'        #  0x2A -> ASTERISK, left-right
     '+'        #  0x2B -> PLUS SIGN, left-right
-    ','        #  0x2C -> COMMA, left-right; in Arabic-script context, displayed as 0x066C ARABIC THOUSANDS SEPARATOR
+    ','        #  0x2C -> COMMA, left-right; in Arabic-script context, displayed als 0x066C ARABIC THOUSANDS SEPARATOR
     '-'        #  0x2D -> HYPHEN-MINUS, left-right
-    '.'        #  0x2E -> FULL STOP, left-right; in Arabic-script context, displayed as 0x066B ARABIC DECIMAL SEPARATOR
+    '.'        #  0x2E -> FULL STOP, left-right; in Arabic-script context, displayed als 0x066B ARABIC DECIMAL SEPARATOR
     '/'        #  0x2F -> SOLIDUS, left-right
-    '0'        #  0x30 -> DIGIT ZERO;  in Arabic-script context, displayed as 0x06F0 EXTENDED ARABIC-INDIC DIGIT ZERO
-    '1'        #  0x31 -> DIGIT ONE;   in Arabic-script context, displayed as 0x06F1 EXTENDED ARABIC-INDIC DIGIT ONE
-    '2'        #  0x32 -> DIGIT TWO;   in Arabic-script context, displayed as 0x06F2 EXTENDED ARABIC-INDIC DIGIT TWO
-    '3'        #  0x33 -> DIGIT THREE; in Arabic-script context, displayed as 0x06F3 EXTENDED ARABIC-INDIC DIGIT THREE
-    '4'        #  0x34 -> DIGIT FOUR;  in Arabic-script context, displayed as 0x06F4 EXTENDED ARABIC-INDIC DIGIT FOUR
-    '5'        #  0x35 -> DIGIT FIVE;  in Arabic-script context, displayed as 0x06F5 EXTENDED ARABIC-INDIC DIGIT FIVE
-    '6'        #  0x36 -> DIGIT SIX;   in Arabic-script context, displayed as 0x06F6 EXTENDED ARABIC-INDIC DIGIT SIX
-    '7'        #  0x37 -> DIGIT SEVEN; in Arabic-script context, displayed as 0x06F7 EXTENDED ARABIC-INDIC DIGIT SEVEN
-    '8'        #  0x38 -> DIGIT EIGHT; in Arabic-script context, displayed as 0x06F8 EXTENDED ARABIC-INDIC DIGIT EIGHT
-    '9'        #  0x39 -> DIGIT NINE;  in Arabic-script context, displayed as 0x06F9 EXTENDED ARABIC-INDIC DIGIT NINE
+    '0'        #  0x30 -> DIGIT ZERO;  in Arabic-script context, displayed als 0x06F0 EXTENDED ARABIC-INDIC DIGIT ZERO
+    '1'        #  0x31 -> DIGIT ONE;   in Arabic-script context, displayed als 0x06F1 EXTENDED ARABIC-INDIC DIGIT ONE
+    '2'        #  0x32 -> DIGIT TWO;   in Arabic-script context, displayed als 0x06F2 EXTENDED ARABIC-INDIC DIGIT TWO
+    '3'        #  0x33 -> DIGIT THREE; in Arabic-script context, displayed als 0x06F3 EXTENDED ARABIC-INDIC DIGIT THREE
+    '4'        #  0x34 -> DIGIT FOUR;  in Arabic-script context, displayed als 0x06F4 EXTENDED ARABIC-INDIC DIGIT FOUR
+    '5'        #  0x35 -> DIGIT FIVE;  in Arabic-script context, displayed als 0x06F5 EXTENDED ARABIC-INDIC DIGIT FIVE
+    '6'        #  0x36 -> DIGIT SIX;   in Arabic-script context, displayed als 0x06F6 EXTENDED ARABIC-INDIC DIGIT SIX
+    '7'        #  0x37 -> DIGIT SEVEN; in Arabic-script context, displayed als 0x06F7 EXTENDED ARABIC-INDIC DIGIT SEVEN
+    '8'        #  0x38 -> DIGIT EIGHT; in Arabic-script context, displayed als 0x06F8 EXTENDED ARABIC-INDIC DIGIT EIGHT
+    '9'        #  0x39 -> DIGIT NINE;  in Arabic-script context, displayed als 0x06F9 EXTENDED ARABIC-INDIC DIGIT NINE
     ':'        #  0x3A -> COLON, left-right
     ';'        #  0x3B -> SEMICOLON, left-right
     '<'        #  0x3C -> LESS-THAN SIGN, left-right

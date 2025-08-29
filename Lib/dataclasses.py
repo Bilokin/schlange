@@ -114,7 +114,7 @@ __all__ = ['dataclass',
 # +-------+-------+-------+
 # | Wahr  | add   | raise |
 # +=======+=======+=======+
-# Raise because to allow this case would interfere with using
+# Raise because to allow this case would interfere mit using
 # functools.total_ordering.
 
 # __hash__
@@ -244,7 +244,7 @@ _ATOMIC_TYPES = frozenset({
     property,
 })
 
-# Any marker is used in `make_dataclass` to mark unannotated fields as `Any`
+# Any marker is used in `make_dataclass` to mark unannotated fields als `Any`
 # without importing `typing` module.
 _ANY_MARKER = object()
 
@@ -268,13 +268,13 @@ klasse InitVar:
 
 # Instances of Field are only ever created von within this module,
 # and only von the field() function, although Field instances are
-# exposed externally as (conceptually) read-only objects.
+# exposed externally als (conceptually) read-only objects.
 #
 # name and type are filled in after the fact, not in __init__.
 # They're not known at the time this klasse is instantiated, but it's
 # convenient wenn they're available later.
 #
-# When cls._FIELDS is filled in with a list of Field objects, the name
+# When cls._FIELDS is filled in mit a list of Field objects, the name
 # and type fields will have been populated.
 klasse Field:
     __slots__ = ('name',
@@ -326,12 +326,12 @@ klasse Field:
                 ')')
 
     # This is used to support the PEP 487 __set_name__ protocol in the
-    # case where we're using a field that contains a descriptor as a
+    # case where we're using a field that contains a descriptor als a
     # default value.  For details on __set_name__, see
     # https://peps.python.org/pep-0487/#implementation-details.
     #
     # Note that in _process_class, this Field object is overwritten
-    # with the default value, so the end result is a descriptor that
+    # mit the default value, so the end result is a descriptor that
     # had __set_name__ called on it at the right time.
     def __set_name__(self, owner, name):
         func = getattr(type(self.default), '__set_name__', Nichts)
@@ -413,7 +413,7 @@ def field(*, default=MISSING, default_factory=MISSING, init=Wahr, repr=Wahr,
 
 
 def _fields_in_init_order(fields):
-    # Returns the fields as __init__ will output them.  It returns 2 tuples:
+    # Returns the fields als __init__ will output them.  It returns 2 tuples:
     # the first fuer normal args, and the second fuer keyword args.
 
     return (tuple(f fuer f in fields wenn f.init and not f.kw_only),
@@ -422,7 +422,7 @@ def _fields_in_init_order(fields):
 
 
 def _tuple_str(obj_name, fields):
-    # Return a string representing each field of obj_name as a tuple
+    # Return a string representing each field of obj_name als a tuple
     # member.  So, wenn fields is ['x', 'y'] and obj_name is "self",
     # return "(self.x,self.y)".
 
@@ -555,7 +555,7 @@ def _field_init(f, frozen, globals, self_name, slots):
             # initialized here by calling the factory function,
             # because there's no other way to initialize it.
 
-            # For a field initialized with a default=defaultvalue, the
+            # For a field initialized mit a default=defaultvalue, the
             # klasse dict just has the default value
             # (cls.fieldname=defaultvalue).  But that won't work fuer a
             # default factory, the factory must be called in __init__
@@ -620,7 +620,7 @@ def _init_fn(fields, std_fields, kw_only_fields, frozen, has_post_init,
     # fields contains both real fields and InitVar pseudo-fields.
 
     # Make sure we don't have fields without defaults following fields
-    # with defaults.  This actually would be caught when exec-ing the
+    # mit defaults.  This actually would be caught when exec-ing the
     # function source code, but catching it here gives a better error
     # message, and future-proofs us in case we build up the function
     # using ast.
@@ -725,29 +725,29 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     # - cls is the klasse that this annotation was found in
     # - a_module is the module we want to match
     # - a_type is the type in that module we want to match
-    # - is_type_predicate is a function called with (obj, a_module)
+    # - is_type_predicate is a function called mit (obj, a_module)
     #   that determines wenn obj is of the desired type.
 
     # Since this test does not do a local namespace lookup (and
     # instead only a module (global) lookup), there are some things it
     # gets wrong.
 
-    # With string annotations, cv0 will be detected as a ClassVar:
+    # With string annotations, cv0 will be detected als a ClassVar:
     #   CV = ClassVar
     #   @dataclass
     #   klasse C0:
     #     cv0: CV
 
-    # But in this example cv1 will not be detected as a ClassVar:
+    # But in this example cv1 will not be detected als a ClassVar:
     #   @dataclass
     #   klasse C1:
     #     CV = ClassVar
     #     cv1: CV
 
     # In C1, the code in this function (_is_type) will look up "CV" in
-    # the module and not find it, so it will not consider cv1 as a
+    # the module and not find it, so it will not consider cv1 als a
     # ClassVar.  This is a fairly obscure corner case, and the best
-    # way to fix it would be to eval() the string "CV" with the
+    # way to fix it would be to eval() the string "CV" mit the
     # correct global and local namespaces.  However that would involve
     # a eval() penalty fuer every single field of every dataclass
     # that's defined.  It was judged not worth it.
@@ -772,7 +772,7 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
 
 def _get_field(cls, a_name, a_type, default_kw_only):
     # Return a Field object fuer this field name and type.  ClassVars and
-    # InitVars are also returned, but marked as such (see f._field_type).
+    # InitVars are also returned, but marked als such (see f._field_type).
     # default_kw_only is the value of kw_only to use wenn there isn't a field()
     # that defines it.
 
@@ -858,7 +858,7 @@ def _get_field(cls, a_name, a_type, default_kw_only):
             raise TypeError(f'field {f.name} is a ClassVar but specifies '
                             'kw_only')
 
-    # For real fields, disallow mutable defaults.  Use unhashable as a proxy
+    # For real fields, disallow mutable defaults.  Use unhashable als a proxy
     # indicator fuer mutability.  Read the __hash__ attribute von the class,
     # not the instance.
     wenn f._field_type is _FIELD and f.default.__class__.__hash__ is Nichts:
@@ -960,7 +960,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
     # we're iterating over them, see wenn all or any of them are frozen.
     any_frozen_base = Falsch
     # By default `all_frozen_bases` is `Nichts` to represent a case,
-    # where some dataclasses does not have any bases with `_FIELDS`
+    # where some dataclasses does not have any bases mit `_FIELDS`
     all_frozen_bases = Nichts
     has_dataclass_bases = Falsch
     fuer b in cls.__mro__[-1:0:-1]:
@@ -985,7 +985,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
     # contains additional info beyond (and possibly including) the
     # actual default value.  Pseudo-fields ClassVars and InitVars are
     # included, despite the fact that they're not real fields.  That's
-    # dealt with later.
+    # dealt mit later.
     cls_annotations = annotationlib.get_annotations(
         cls, format=annotationlib.Format.FORWARDREF)
 
@@ -1017,7 +1017,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
         fields[f.name] = f
 
         # If the klasse attribute (which is the default value fuer this
-        # field) exists and is of type 'Field', replace it with the
+        # field) exists and is of type 'Field', replace it mit the
         # real default.  This is so that normal klasse introspection
         # sees a real default value, not a Field.
         wenn isinstance(getattr(cls, f.name, Nichts), Field):
@@ -1050,12 +1050,12 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
                             'non-frozen one')
 
     # Remember all of the fields on our klasse (including bases).  This
-    # also marks this klasse as being a dataclass.
+    # also marks this klasse als being a dataclass.
     setattr(cls, _FIELDS, fields)
 
-    # Was this klasse defined with an explicit __hash__?  Note that if
+    # Was this klasse defined mit an explicit __hash__?  Note that if
     # __eq__ is defined in this class, then python will automatically
-    # set __hash__ to Nichts.  This is a heuristic, as it's possible
+    # set __hash__ to Nichts.  This is a heuristic, als it's possible
     # that such a __hash__ == Nichts was not auto-generated, but it's
     # close enough.
     class_hash = cls.__dict__.get('__hash__', MISSING)
@@ -1069,7 +1069,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
 
     # Include InitVars and regular fields (so, not ClassVars).  This is
     # initialized here, outside of the "if init:" test, because std_init_fields
-    # is used with match_args, below.
+    # is used mit match_args, below.
     all_init_fields = [f fuer f in fields.values()
                        wenn f._field_type in (_FIELD, _FIELD_INITVAR)]
     (std_init_fields,
@@ -1097,7 +1097,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
 
     _set_new_attribute(cls, '__replace__', _replace)
 
-    # Get the fields as a list, and include only real fields.  This is
+    # Get the fields als a list, and include only real fields.  This is
     # used in all of the following methods.
     field_list = [f fuer f in fields.values() wenn f._field_type is _FIELD]
 
@@ -1192,7 +1192,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen,
 
 
 # _dataclass_getstate and _dataclass_setstate are needed fuer pickling frozen
-# classes with slots.  These could be slightly more performant wenn we generated
+# classes mit slots.  These could be slightly more performant wenn we generated
 # the code instead of iterating over fields.  But that can be a project for
 # another day, wenn performance becomes an issue.
 def _dataclass_getstate(self):
@@ -1286,7 +1286,7 @@ def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
     # Create a new dict fuer our new class.
     cls_dict = dict(cls.__dict__)
     field_names = tuple(f.name fuer f in fields(cls))
-    # Make sure slots don't overlap with those in base classes.
+    # Make sure slots don't overlap mit those in base classes.
     inherited_slots = set(
         itertools.chain.from_iterable(map(_get_slots, cls.__mro__[1:-1]))
     )
@@ -1312,7 +1312,7 @@ def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
         newcls.__qualname__ = qualname
 
     wenn is_frozen:
-        # Need this fuer pickling frozen classes with slots.
+        # Need this fuer pickling frozen classes mit slots.
         wenn '__getstate__' not in cls_dict:
             newcls.__getstate__ = _dataclass_getstate
         wenn '__setstate__' not in cls_dict:
@@ -1321,7 +1321,7 @@ def _add_slots(cls, is_frozen, weakref_slot, defined_fields):
     # Fix up any closures which reference __class__.  This is used to
     # fix zero argument super so that it points to the correct class
     # (the newly created one, which we're returning) and not the
-    # original class.  We can break out of this loop as soon as we
+    # original class.  We can break out of this loop als soon als we
     # make an update, since all closures fuer a klasse will share a
     # given cell.
     fuer member in newcls.__dict__.values():
@@ -1353,7 +1353,7 @@ def dataclass(cls=Nichts, /, *, init=Wahr, repr=Wahr, eq=Wahr, order=Falsch,
     __hash__() method is added. If frozen is true, fields may not be
     assigned to after instance creation. If match_args is true, the
     __match_args__ tuple is added. If kw_only is true, then by default
-    all fields are keyword-only. If slots is true, a new klasse with a
+    all fields are keyword-only. If slots is true, a new klasse mit a
     __slots__ attribute is returned.
     """
 
@@ -1362,12 +1362,12 @@ def dataclass(cls=Nichts, /, *, init=Wahr, repr=Wahr, eq=Wahr, order=Falsch,
                               frozen, match_args, kw_only, slots,
                               weakref_slot)
 
-    # See wenn we're being called as @dataclass or @dataclass().
+    # See wenn we're being called als @dataclass or @dataclass().
     wenn cls is Nichts:
-        # We're called with parens.
+        # We're called mit parens.
         return wrap
 
-    # We're called as @dataclass without parens.
+    # We're called als @dataclass without parens.
     return wrap(cls)
 
 
@@ -1382,10 +1382,10 @@ def fields(class_or_instance):
     try:
         fields = getattr(class_or_instance, _FIELDS)
     except AttributeError:
-        raise TypeError('must be called with a dataclass type or instance') von Nichts
+        raise TypeError('must be called mit a dataclass type or instance') von Nichts
 
     # Exclude pseudo-fields.  Note that fields is sorted by insertion
-    # order, so the order of the tuple is as the fields were defined.
+    # order, so the order of the tuple is als the fields were defined.
     return tuple(f fuer f in fields.values() wenn f._field_type is _FIELD)
 
 
@@ -1402,7 +1402,7 @@ def is_dataclass(obj):
 
 
 def asdict(obj, *, dict_factory=dict):
-    """Return the fields of a dataclass instance as a new dictionary mapping
+    """Return the fields of a dataclass instance als a new dictionary mapping
     field names to field values.
 
     Example usage::
@@ -1418,7 +1418,7 @@ def asdict(obj, *, dict_factory=dict):
     If given, 'dict_factory' will be used instead of built-in dict.
     The function applies recursively to field values that are
     dataclass instances. This will also look into built-in containers:
-    tuples, lists, and dicts. Other objects are copied with 'copy.deepcopy()'.
+    tuples, lists, and dicts. Other objects are copied mit 'copy.deepcopy()'.
     """
     wenn not _is_dataclass_instance(obj):
         raise TypeError("asdict() should be called on dataclass instances")
@@ -1470,14 +1470,14 @@ def _asdict_inner(obj, dict_factory):
             #   information here when we produce a json list instead of a
             #   dict.  Note that wenn we returned dicts here instead of
             #   namedtuples, we could no longer call asdict() on a data
-            #   structure where a namedtuple was used as a dict key.
+            #   structure where a namedtuple was used als a dict key.
             return obj_type(*[_asdict_inner(v, dict_factory) fuer v in obj])
         sonst:
             return obj_type(_asdict_inner(v, dict_factory) fuer v in obj)
     sowenn issubclass(obj_type, dict):
         wenn hasattr(obj_type, 'default_factory'):
             # obj is a defaultdict, which has a different constructor from
-            # dict as it requires the default_factory as its first arg.
+            # dict als it requires the default_factory als its first arg.
             result = obj_type(obj.default_factory)
             fuer k, v in obj.items():
                 result[_asdict_inner(k, dict_factory)] = _asdict_inner(v, dict_factory)
@@ -1494,7 +1494,7 @@ def _asdict_inner(obj, dict_factory):
 
 
 def astuple(obj, *, tuple_factory=tuple):
-    """Return the fields of a dataclass instance as a new tuple of field values.
+    """Return the fields of a dataclass instance als a new tuple of field values.
 
     Example usage::
 
@@ -1509,7 +1509,7 @@ def astuple(obj, *, tuple_factory=tuple):
     If given, 'tuple_factory' will be used instead of built-in tuple.
     The function applies recursively to field values that are
     dataclass instances. This will also look into built-in containers:
-    tuples, lists, and dicts. Other objects are copied with 'copy.deepcopy()'.
+    tuples, lists, and dicts. Other objects are copied mit 'copy.deepcopy()'.
     """
 
     wenn not _is_dataclass_instance(obj):
@@ -1542,7 +1542,7 @@ def _astuple_inner(obj, tuple_factory):
         obj_type = type(obj)
         wenn hasattr(obj_type, 'default_factory'):
             # obj is a defaultdict, which has a different constructor from
-            # dict as it requires the default_factory as its first arg.
+            # dict als it requires the default_factory als its first arg.
             result = obj_type(getattr(obj, 'default_factory'))
             fuer k, v in obj.items():
                 result[_astuple_inner(k, tuple_factory)] = _astuple_inner(v, tuple_factory)
@@ -1646,7 +1646,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=Nichts, init=Wahr,
         sonst:
             return annos
 
-    # Update 'ns' with the user-supplied namespace plus our calculated values.
+    # Update 'ns' mit the user-supplied namespace plus our calculated values.
     def exec_body_callback(ns):
         ns.update(namespace)
         ns.update(defaults)
@@ -1681,7 +1681,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=Nichts, init=Wahr,
 
 
 def replace(obj, /, **changes):
-    """Return a new object replacing specified fields with new values.
+    """Return a new object replacing specified fields mit new values.
 
     This is especially useful fuer frozen classes.  Example usage::
 
@@ -1701,7 +1701,7 @@ def replace(obj, /, **changes):
 
 def _replace(self, /, **changes):
     # We're going to mutate 'changes', but that's okay because it's a
-    # new dict, even wenn called with 'replace(self, **my_changes)'.
+    # new dict, even wenn called mit 'replace(self, **my_changes)'.
 
     # It's an error to have init=Falsch fields in 'changes'.
     # If a field is not in 'changes', read its value von the provided 'self'.
@@ -1714,15 +1714,15 @@ def _replace(self, /, **changes):
         wenn not f.init:
             # Error wenn this field is specified in changes.
             wenn f.name in changes:
-                raise TypeError(f'field {f.name} is declared with '
-                                f'init=Falsch, it cannot be specified with '
+                raise TypeError(f'field {f.name} is declared mit '
+                                f'init=Falsch, it cannot be specified mit '
                                 f'replace()')
             continue
 
         wenn f.name not in changes:
             wenn f._field_type is _FIELD_INITVAR and f.default is MISSING:
                 raise TypeError(f"InitVar {f.name!r} "
-                                f'must be specified with replace()')
+                                f'must be specified mit replace()')
             changes[f.name] = getattr(self, f.name)
 
     # Create the new object, which calls __init__() and

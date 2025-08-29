@@ -90,7 +90,7 @@ klasse AutoFileTests:
         self.f.close()
 
         ba = bytearray(b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        mit self.FileIO(TESTFN, 'r') als f:
             n = f.readinto(ba)
         self.assertEqual(ba, b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
@@ -100,13 +100,13 @@ klasse AutoFileTests:
         self.f.close()
 
         m = memoryview(bytearray(b'abcdefgh'))
-        with self.FileIO(TESTFN, 'r') as f:
+        mit self.FileIO(TESTFN, 'r') als f:
             n = f.readinto(m)
         self.assertEqual(m, b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
 
         m = memoryview(bytearray(b'abcdefgh')).cast('H', shape=[2, 2])
-        with self.FileIO(TESTFN, 'r') as f:
+        mit self.FileIO(TESTFN, 'r') als f:
             n = f.readinto(m)
         self.assertEqual(bytes(m), b'\x01\x02\x00\xffefgh')
         self.assertEqual(n, 4)
@@ -116,19 +116,19 @@ klasse AutoFileTests:
         self.f.close()
 
         a = array('B', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        mit self.FileIO(TESTFN, 'r') als f:
             n = f.readinto(a)
         self.assertEqual(a, array('B', [1, 2, 0, 255, 101, 102, 103, 104]))
         self.assertEqual(n, 4)
 
         a = array('b', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        mit self.FileIO(TESTFN, 'r') als f:
             n = f.readinto(a)
         self.assertEqual(a, array('b', [1, 2, 0, -1, 101, 102, 103, 104]))
         self.assertEqual(n, 4)
 
         a = array('I', b'abcdefgh')
-        with self.FileIO(TESTFN, 'r') as f:
+        mit self.FileIO(TESTFN, 'r') als f:
             n = f.readinto(a)
         self.assertEqual(a, array('I', b'\x01\x02\x00\xffefgh'))
         self.assertEqual(n, 4)
@@ -183,7 +183,7 @@ klasse AutoFileTests:
             pass
 
         f = TestSubclass(TESTFN)
-        with f:
+        mit f:
             self.assertIn(TestSubclass.__name__, repr(f))
 
         self.assertIn(TestSubclass.__name__, repr(f))
@@ -191,7 +191,7 @@ klasse AutoFileTests:
     def testReprNoCloseFD(self):
         fd = os.open(TESTFN, os.O_RDONLY)
         try:
-            with self.FileIO(fd, 'r', closefd=Falsch) as f:
+            mit self.FileIO(fd, 'r', closefd=Falsch) als f:
                 self.assertEqual(repr(f),
                                  "<%s.FileIO name=%r mode=%r closefd=Falsch>" %
                                  (self.modulename, f.name, f.mode))
@@ -201,8 +201,8 @@ klasse AutoFileTests:
     @infinite_recursion(25)
     def testRecursiveRepr(self):
         # Issue #25455
-        with swap_attr(self.f, 'name', self.f):
-            with self.assertRaises(RuntimeError):
+        mit swap_attr(self.f, 'name', self.f):
+            mit self.assertRaises(RuntimeError):
                 repr(self.f)  # Should not crash
 
     def testErrors(self):
@@ -247,7 +247,7 @@ klasse AutoFileTests:
         # Unix uses fstat and returns "[Errno 21]: Is a directory"
         try:
             self.FileIO('.', 'r')
-        except OSError as e:
+        except OSError als e:
             self.assertNotEqual(e.errno, 0)
             self.assertEqual(e.filename, ".")
         sonst:
@@ -256,7 +256,7 @@ klasse AutoFileTests:
     @unittest.skipIf(os.name == 'nt', "test only works on a POSIX-like system")
     def testOpenDirFD(self):
         fd = os.open('.', os.O_RDONLY)
-        with self.assertRaises(OSError) as cm:
+        mit self.assertRaises(OSError) als cm:
             self.FileIO(fd, 'r')
         os.close(fd)
         self.assertEqual(cm.exception.errno, errno.EISDIR)
@@ -286,7 +286,7 @@ klasse AutoFileTests:
             os.close(f.fileno())
             try:
                 func(self, f)
-            except OSError as e:
+            except OSError als e:
                 self.assertEqual(e.errno, errno.EBADF)
             sonst:
                 self.fail("Should have raised OSError")
@@ -366,7 +366,7 @@ klasse AutoFileTests:
     def test_syscalls_read(self):
         """Check set of system calls during common I/O patterns
 
-        It's expected as bits of the I/O implementation change, this will need
+        It's expected als bits of the I/O implementation change, this will need
         to change. The goal is to catch changes that unintentionally add
         additional systemcalls (ex. additional calls have been looked at in
         bpo-21679 and gh-120754).
@@ -377,7 +377,7 @@ klasse AutoFileTests:
 
         def check_readall(name, code, prelude="", cleanup="",
                           extra_checks=Nichts):
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 syscalls = strace_helper.get_events(code, _strace_flags,
                                                       prelude=prelude,
                                                       cleanup=cleanup)
@@ -389,7 +389,7 @@ klasse AutoFileTests:
 
                 # The first call should be an open that returns a
                 # file descriptor (fd). Afer that calls may vary. Once the file
-                # is opened, check calls refer to it by fd as the filename
+                # is opened, check calls refer to it by fd als the filename
                 # could be removed von the filesystem, renamed, etc. See:
                 # Time-of-check time-of-use (TOCTOU) software bug class.
                 #
@@ -442,7 +442,7 @@ klasse AutoFileTests:
 
         # "open, read, close" file using different common patterns.
         check_readall(
-            "open builtin with default options",
+            "open builtin mit default options",
             f"""
             f = open('{TESTFN}')
             f.read()
@@ -565,14 +565,14 @@ klasse OtherFileTests:
 
     def testModeStrings(self):
         # test that the mode attribute is correct fuer various mode strings
-        # given as init args
+        # given als init args
         try:
             fuer modes in [('w', 'wb'), ('wb', 'wb'), ('wb+', 'rb+'),
                           ('w+b', 'rb+'), ('a', 'ab'), ('ab', 'ab'),
                           ('ab+', 'ab+'), ('a+b', 'ab+'), ('r', 'rb'),
                           ('rb', 'rb'), ('rb+', 'rb+'), ('r+b', 'rb+')]:
                 # read modes are last so that TESTFN will exist first
-                with self.FileIO(TESTFN, modes[0]) as f:
+                mit self.FileIO(TESTFN, modes[0]) als f:
                     self.assertEqual(f.mode, modes[1])
         finally:
             wenn os.path.exists(TESTFN):
@@ -591,7 +591,7 @@ klasse OtherFileTests:
         try:
             f.write(b"abc")
             f.close()
-            with self.open(TESTFN_ASCII, "rb") as f:
+            mit self.open(TESTFN_ASCII, "rb") als f:
                 self.assertEqual(f.read(), b"abc")
         finally:
             os.unlink(TESTFN_ASCII)
@@ -608,7 +608,7 @@ klasse OtherFileTests:
         try:
             f.write(b"abc")
             f.close()
-            with self.open(TESTFN_UNICODE, "rb") as f:
+            mit self.open(TESTFN_UNICODE, "rb") als f:
                 self.assertEqual(f.read(), b"abc")
         finally:
             os.unlink(TESTFN_UNICODE)
@@ -627,8 +627,8 @@ klasse OtherFileTests:
 
     def testBooleanFd(self):
         fuer fd in Falsch, Wahr:
-            with self.assertWarnsRegex(RuntimeWarning,
-                    'bool is used as a file descriptor') as cm:
+            mit self.assertWarnsRegex(RuntimeWarning,
+                    'bool is used als a file descriptor') als cm:
                 f = self.FileIO(fd, closefd=Falsch)
             f.close()
             self.assertEqual(cm.filename, __file__)
@@ -638,7 +638,7 @@ klasse OtherFileTests:
         bad_mode = "qwerty"
         try:
             f = self.FileIO(TESTFN, bad_mode)
-        except ValueError as msg:
+        except ValueError als msg:
             wenn msg.args[0] != 0:
                 s = str(msg)
                 wenn TESTFN in s or bad_mode not in s:
@@ -712,7 +712,7 @@ klasse OtherFileTests:
         self.assertRaises(TypeError, self.FileIO, "1", 0, 0)
 
     def testWarnings(self):
-        with check_warnings(quiet=Wahr) as w:
+        mit check_warnings(quiet=Wahr) als w:
             self.assertEqual(w.warnings, [])
             self.assertRaises(TypeError, self.FileIO, [])
             self.assertEqual(w.warnings, [])
@@ -746,9 +746,9 @@ klasse COtherFileTests(OtherFileTests, unittest.TestCase):
     def test_open_code(self):
         # Check that the default behaviour of open_code matches
         # open("rb")
-        with self.FileIO(__file__, "rb") as f:
+        mit self.FileIO(__file__, "rb") als f:
             expected = f.read()
-        with _io.open_code(__file__) as f:
+        mit _io.open_code(__file__) als f:
             actual = f.read()
         self.assertEqual(expected, actual)
 
@@ -761,11 +761,11 @@ klasse PyOtherFileTests(OtherFileTests, unittest.TestCase):
     def test_open_code(self):
         # Check that the default behaviour of open_code matches
         # open("rb")
-        with self.FileIO(__file__, "rb") as f:
+        mit self.FileIO(__file__, "rb") als f:
             expected = f.read()
-        with check_warnings(quiet=Wahr) as w:
+        mit check_warnings(quiet=Wahr) als w:
             # Always test _open_code_with_warning
-            with _pyio._open_code_with_warning(__file__) as f:
+            mit _pyio._open_code_with_warning(__file__) als f:
                 actual = f.read()
             self.assertEqual(expected, actual)
             self.assertNotEqual(w.warnings, [])

@@ -143,7 +143,7 @@ klasse CompatibilityFiles:
 
     @property
     def _reader(self):
-        with suppress(AttributeError):
+        mit suppress(AttributeError):
             return self.spec.loader.get_resource_reader(self.spec.name)
 
     def _native(self):
@@ -162,7 +162,7 @@ klasse CompatibilityFiles:
 
 def wrap_spec(package):
     """
-    Construct a package spec with traversable compatibility
+    Construct a package spec mit traversable compatibility
     on the spec/loader/reader.
     """
     return SpecLoaderAdapter(package.__spec__, TraversableResourcesLoader)

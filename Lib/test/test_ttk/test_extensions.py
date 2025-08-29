@@ -40,7 +40,7 @@ klasse LabeledScaleTest(AbstractTkTest, unittest.TestCase):
         x = ttk.LabeledScale(self.root, variable=myvar)
         x.destroy()
         # Unless the tracing callback was removed, creating a new
-        # LabeledScale with the same var will cause an error now. This
+        # LabeledScale mit the same var will cause an error now. This
         # happens because the variable will be set to (possibly) a new
         # value which causes the tracing callback to be called and then
         # it tries calling instance attributes not yet defined.

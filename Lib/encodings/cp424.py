@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp424 generated von 'MAPPINGS/VENDORS/MISC/CP424.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp424 generated von 'MAPPINGS/VENDORS/MISC/CP424.TXT' mit gencodec.py.
 
 """#"
 

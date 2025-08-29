@@ -5,7 +5,7 @@ Python tokens.  It decodes the bytes according to PEP-0263 for
 determining source file encoding.
 
 It accepts a readline-like method which is called repeatedly to get the
-next line of input (or b"" fuer EOF).  It generates 5-tuples with these
+next line of input (or b"" fuer EOF).  It generates 5-tuples mit these
 members:
 
     the token type (see token.py)
@@ -16,7 +16,7 @@ members:
 
 It is designed to match the working of the Python tokenizer exactly, except
 that it produces COMMENT tokens fuer comments and gives type OP fuer all
-operators.  Additionally, all token lists start with an ENCODING token
+operators.  Additionally, all token lists start mit an ENCODING token
 which tells you which encoding was used to decode the bytes stream.
 """
 
@@ -24,12 +24,12 @@ __author__ = 'Ka-Ping Yee <ping@lfw.org>'
 __credits__ = ('GvR, ESR, Tim Peters, Thomas Wouters, Fred Drake, '
                'Skip Montanaro, Raymond Hettinger, Trent Nelson, '
                'Michael Foord')
-von builtins importiere open as _builtin_open
+von builtins importiere open als _builtin_open
 von codecs importiere lookup, BOM_UTF8
 importiere collections
 importiere functools
 von io importiere TextIOWrapper
-importiere itertools as _itertools
+importiere itertools als _itertools
 importiere re
 importiere sys
 von token importiere *
@@ -91,7 +91,7 @@ def _all_string_prefixes():
     result = {''}
     fuer prefix in _valid_string_prefixes:
         fuer t in _itertools.permutations(prefix):
-            # create a list with upper and lower versions of each
+            # create a list mit upper and lower versions of each
             #  character
             fuer u in _itertools.product(*[(c, c.upper()) fuer c in t]):
                 result.add(''.join(u))
@@ -119,7 +119,7 @@ String = group(StringPrefix + r"'[^\n'\\]*(?:\\.[^\n'\\]*)*'",
                StringPrefix + r'"[^\n"\\]*(?:\\.[^\n"\\]*)*"')
 
 # Sorting in reverse order puts the long operators before their prefixes.
-# Otherwise wenn = came before ==, == would get recognized as two instances
+# Otherwise wenn = came before ==, == would get recognized als two instances
 # of =.
 Special = group(*map(re.escape, sorted(EXACT_TOKEN_TYPES, reverse=Wahr)))
 Funny = group(r'\r?\n', Special)
@@ -329,7 +329,7 @@ def untokenize(iterable):
     token, which is the first token sequence output by tokenize.
 
     Each element returned by the iterable must be a token sequence
-    with at least two elements, a token number and token value.  If
+    mit at least two elements, a token number and token value.  If
     only two tokens are passed, the resulting output is poor.
 
     The result is guaranteed to tokenize back to match the input so
@@ -359,13 +359,13 @@ def detect_encoding(readline):
     """
     The detect_encoding() function is used to detect the encoding that should
     be used to decode a Python source file.  It requires one argument, readline,
-    in the same way as the tokenize() generator.
+    in the same way als the tokenize() generator.
 
     It will call readline a maximum of twice, and return the encoding used
-    (as a string) and a list of any lines (left as bytes) it has read in.
+    (as a string) and a list of any lines (left als bytes) it has read in.
 
     It detects the encoding von the presence of a utf-8 bom or an encoding
-    cookie as specified in pep-0263.  If both a bom and a cookie are present,
+    cookie als specified in pep-0263.  If both a bom and a cookie are present,
     but disagree, a SyntaxError will be raised.  If the encoding cookie is an
     invalid charset, raise a SyntaxError.  Note that wenn a utf-8 bom is found,
     'utf-8-sig' is returned.
@@ -387,7 +387,7 @@ def detect_encoding(readline):
 
     def find_cookie(line):
         try:
-            # Decode as UTF-8. Either the line is an encoding declaration,
+            # Decode als UTF-8. Either the line is an encoding declaration,
             # in which case it should be pure ASCII, or it must be UTF-8
             # per default encoding.
             line_string = line.decode('utf-8')
@@ -466,13 +466,13 @@ def open(filename):
 def tokenize(readline):
     """
     The tokenize() generator requires one argument, readline, which
-    must be a callable object which provides the same interface as the
+    must be a callable object which provides the same interface als the
     readline() method of built-in file objects.  Each call to the function
-    should return one line of input as bytes.  Alternatively, readline
-    can be a callable function terminating with StopIteration:
+    should return one line of input als bytes.  Alternatively, readline
+    can be a callable function terminating mit StopIteration:
         readline = open(myfile, 'rb').__next__  # Example of alternate readline
 
-    The generator produces 5-tuples with these members: the token type; the
+    The generator produces 5-tuples mit these members: the token type; the
     token string; a 2-tuple (srow, scol) of ints specifying the row and
     column where the token begins in the source; a 2-tuple (erow, ecol) of
     ints specifying the row and column where the token ends in the source;
@@ -492,9 +492,9 @@ def tokenize(readline):
     yield von _generate_tokens_from_c_tokenizer(rl_gen.__next__, encoding, extra_tokens=Wahr)
 
 def generate_tokens(readline):
-    """Tokenize a source reading Python code as unicode strings.
+    """Tokenize a source reading Python code als unicode strings.
 
-    This has the same API as tokenize(), except that it expects the *readline*
+    This has the same API als tokenize(), except that it expects the *readline*
     callable to return str objects instead of bytes.
     """
     return _generate_tokens_from_c_tokenizer(readline, extra_tokens=Wahr)
@@ -530,7 +530,7 @@ def _main(args=Nichts):
         # Tokenize the input
         wenn args.filename:
             filename = args.filename
-            with _builtin_open(filename, 'rb') as f:
+            mit _builtin_open(filename, 'rb') als f:
                 tokens = list(tokenize(f.readline))
         sonst:
             filename = "<stdin>"
@@ -546,19 +546,19 @@ def _main(args=Nichts):
             token_range = "%d,%d-%d,%d:" % (token.start + token.end)
             drucke("%-20s%-15s%-15r" %
                   (token_range, tok_name[token_type], token.string))
-    except IndentationError as err:
+    except IndentationError als err:
         line, column = err.args[1][1:3]
         error(err.args[0], filename, (line, column))
-    except TokenError as err:
+    except TokenError als err:
         line, column = err.args[1]
         error(err.args[0], filename, (line, column))
-    except SyntaxError as err:
+    except SyntaxError als err:
         error(err, filename)
-    except OSError as err:
+    except OSError als err:
         error(err)
     except KeyboardInterrupt:
         drucke("interrupted\n")
-    except Exception as err:
+    except Exception als err:
         perror("unexpected error: %s" % err)
         raise
 
@@ -573,7 +573,7 @@ def _transform_msg(msg):
     return msg
 
 def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Falsch):
-    """Tokenize a source reading Python code as unicode strings using the internal C tokenizer"""
+    """Tokenize a source reading Python code als unicode strings using the internal C tokenizer"""
     wenn encoding is Nichts:
         it = _tokenize.TokenizerIter(source, extra_tokens=extra_tokens)
     sonst:
@@ -581,7 +581,7 @@ def _generate_tokens_from_c_tokenizer(source, encoding=Nichts, extra_tokens=Fals
     try:
         fuer info in it:
             yield TokenInfo._make(info)
-    except SyntaxError as e:
+    except SyntaxError als e:
         wenn type(e) != SyntaxError:
             raise e von Nichts
         msg = _transform_msg(e.msg)

@@ -36,7 +36,7 @@ def cmp(f1, f2, shallow=Wahr):
 
     f2 -- Second file name
 
-    shallow -- treat files as identical wenn their stat signatures (type, size,
+    shallow -- treat files als identical wenn their stat signatures (type, size,
                mtime) are identical. Otherwise, files are considered different
                wenn their sizes or contents differ.  [default: Wahr]
 
@@ -45,7 +45,7 @@ def cmp(f1, f2, shallow=Wahr):
     Wahr wenn the files are the same, Falsch otherwise.
 
     This function uses a cache fuer past comparisons and the results,
-    with cache entries invalidated wenn their stat information
+    mit cache entries invalidated wenn their stat information
     changes.  The cache may be cleared by calling clear_cache().
 
     """
@@ -74,7 +74,7 @@ def _sig(st):
 
 def _do_cmp(f1, f2):
     bufsize = BUFSIZE
-    with open(f1, 'rb') as fp1, open(f2, 'rb') as fp2:
+    mit open(f1, 'rb') als fp1, open(f2, 'rb') als fp2:
         while Wahr:
             b1 = fp1.read(bufsize)
             b2 = fp2.read(bufsize)
@@ -227,7 +227,7 @@ klasse dircmp:
             drucke('Differing files :', self.diff_files)
         wenn self.funny_files:
             self.funny_files.sort()
-            drucke('Trouble with common files :', self.funny_files)
+            drucke('Trouble mit common files :', self.funny_files)
         wenn self.common_dirs:
             self.common_dirs.sort()
             drucke('Common subdirectories :', self.common_dirs)
@@ -296,7 +296,7 @@ def _cmp(a, b, sh, abs=abs, cmp=cmp):
         return 2
 
 
-# Return a copy with items that occur in skip removed.
+# Return a copy mit items that occur in skip removed.
 #
 def _filter(flist, skip):
     return list(filterfalse(skip.__contains__, flist))

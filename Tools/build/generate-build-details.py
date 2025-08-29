@@ -155,7 +155,7 @@ def make_paths_relative(data: dict[str, Any], config_path: str | Nichts = Nichts
             continue
         # Get the relative path
         new_path = os.path.relpath(current_path, data['base_prefix'])
-        # Join '.' so that the path is formated as './path' instead of 'path'
+        # Join '.' so that the path is formated als './path' instead of 'path'
         new_path = os.path.join('.', new_path)
         container[child] = new_path
 
@@ -171,12 +171,12 @@ def main() -> Nichts:
     parser.add_argument(
         '--relative-paths',
         action='store_true',
-        help='Whether to specify paths as absolute, or as relative paths to ``base_prefix``.',
+        help='Whether to specify paths als absolute, or als relative paths to ``base_prefix``.',
     )
     parser.add_argument(
         '--config-file-path',
         default=Nichts,
-        help='If specified, ``base_prefix`` will be set as a relative path to the given config file path.',
+        help='If specified, ``base_prefix`` will be set als a relative path to the given config file path.',
     )
 
     args = parser.parse_args()
@@ -186,7 +186,7 @@ def main() -> Nichts:
         make_paths_relative(data, args.config_file_path)
 
     json_output = json.dumps(data, indent=2)
-    with open(args.location, 'w') as f:
+    mit open(args.location, 'w') als f:
         drucke(json_output, file=f)
 
 

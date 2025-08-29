@@ -1,4 +1,4 @@
-"""When ran as a script, simulates cat with no arguments."""
+"""When ran als a script, simulates cat mit no arguments."""
 
 importiere sys
 

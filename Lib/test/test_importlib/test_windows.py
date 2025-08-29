@@ -1,4 +1,4 @@
-von test.test_importlib importiere util as test_util
+von test.test_importlib importiere util als test_util
 machinery = test_util.import_importlib('importlib.machinery')
 
 importiere os
@@ -63,9 +63,9 @@ def setup_module(machinery, name, path=Nichts):
     base_key = "Software\\Python\\PythonCore\\{}.{}".format(
         sys.version_info.major, sys.version_info.minor)
     assert key.casefold().startswith(base_key.casefold()), (
-        "expected key '{}' to start with '{}'".format(key, base_key))
+        "expected key '{}' to start mit '{}'".format(key, base_key))
     try:
-        with temp_module(name, "a = 1") as location:
+        mit temp_module(name, "a = 1") als location:
             try:
                 OpenKey(HKEY_CURRENT_USER, base_key)
                 wenn machinery.WindowsRegistryFinder.DEBUG_BUILD:
@@ -91,7 +91,7 @@ klasse WindowsRegistryFinderTests:
     test_module = "spamham{}".format(os.getpid())
 
     def test_find_spec_missing(self):
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
             DeprecationWarning,
             r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
             r"use site configuration instead\. Future versions of Python may "
@@ -101,8 +101,8 @@ klasse WindowsRegistryFinderTests:
         self.assertIsNichts(spec)
 
     def test_module_found(self):
-        with setup_module(self.machinery, self.test_module):
-            with self.assertWarnsRegex(
+        mit setup_module(self.machinery, self.test_module):
+            mit self.assertWarnsRegex(
                 DeprecationWarning,
                 r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
                 r"use site configuration instead\. Future versions of Python may "
@@ -112,8 +112,8 @@ klasse WindowsRegistryFinderTests:
             self.assertIsNotNichts(spec)
 
     def test_module_not_found(self):
-        with setup_module(self.machinery, self.test_module, path="."):
-            with self.assertWarnsRegex(
+        mit setup_module(self.machinery, self.test_module, path="."):
+            mit self.assertWarnsRegex(
                 DeprecationWarning,
                 r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
                 r"use site configuration instead\. Future versions of Python may "
@@ -125,7 +125,7 @@ klasse WindowsRegistryFinderTests:
     def test_raises_deprecation_warning(self):
         # WindowsRegistryFinder is not meant to be instantiated, so the
         # deprecation warning is raised in the 'find_spec' method instead.
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
             DeprecationWarning,
             r"importlib\.machinery\.WindowsRegistryFinder is deprecated; "
             r"use site configuration instead\. Future versions of Python may "
@@ -199,7 +199,7 @@ klasse WindowsBootstrapPathTests(unittest.TestCase):
         self.check_join(r"\\Server\Share", r"\\Server\Share")
         self.check_join(r"\\Server\Share\\", r"\\Server\Share\\")
 
-        # Handle edge cases with empty segments
+        # Handle edge cases mit empty segments
         self.check_join("C:\\A", "C:/A", "")
         self.check_join("C:\\", "C:/", "")
         self.check_join("C:", "C:", "")

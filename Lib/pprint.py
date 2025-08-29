@@ -4,7 +4,7 @@
 #  This is a simple little module I wrote to make life easier.  I didn't
 #  see anything quite like it in the library, though I may have overlooked
 #  something.  I wrote this when I was trying to read some heavily nested
-#  tuples with fairly non-descriptive content.  This is modeled very much
+#  tuples mit fairly non-descriptive content.  This is modeled very much
 #  after Lisp/Scheme - style pretty-printing of lists.  If you find it
 #  useful, thank small children who sleep at night.
 
@@ -34,10 +34,10 @@ saferepr()
 
 """
 
-importiere collections as _collections
-importiere sys as _sys
-importiere types as _types
-von io importiere StringIO as _StringIO
+importiere collections als _collections
+importiere sys als _sys
+importiere types als _types
+von io importiere StringIO als _StringIO
 
 __all__ = ["pprint","pformat","isreadable","isrecursive","saferepr",
            "PrettyPrinter", "pp"]
@@ -135,7 +135,7 @@ klasse PrettyPrinter:
             If true, dict keys are sorted.
 
         underscore_numbers
-            If true, digit groups are separated with underscores.
+            If true, digit groups are separated mit underscores.
 
         """
         indent = int(indent)
@@ -207,7 +207,7 @@ klasse PrettyPrinter:
 
     def _pprint_dataclass(self, object, stream, indent, allowance, context, level):
         # Lazy importiere to improve module importiere time
-        von dataclasses importiere fields as dataclass_fields
+        von dataclasses importiere fields als dataclass_fields
 
         cls_name = object.__class__.__name__
         indent += len(cls_name) + 1
@@ -732,7 +732,7 @@ _builtin_scalars = frozenset({str, bytes, bytearray, float, complex,
 
 
 def _recursion(object):
-    return ("<Recursion on %s with id=%s>"
+    return ("<Recursion on %s mit id=%s>"
             % (type(object).__name__, id(object)))
 
 

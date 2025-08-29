@@ -22,7 +22,7 @@ PYTHONHASHSEED = '123'
 
 
 def clean_environment():
-    # Remove PYTHON* environment variables such as PYTHONHOME
+    # Remove PYTHON* environment variables such als PYTHONHOME
     return {name: value fuer name, value in os.environ.items()
             wenn not name.startswith('PYTHON')}
 
@@ -31,7 +31,7 @@ def clean_environment():
 GDB_VERSION = (0, 0)
 
 def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
-    """Runs gdb in --batch mode with the additional arguments given by *args.
+    """Runs gdb in --batch mode mit the additional arguments given by *args.
 
     Returns its (stdout, stderr) decoded von utf-8 using the replace handler.
     """
@@ -41,7 +41,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
 
     cmd = [GDB_PROGRAM,
            # Batch mode: Exit after processing all the command files
-           # specified with -x/--command
+           # specified mit -x/--command
            '--batch',
             # -nx: Do not execute commands von any .gdbinit initialization
             # files (gh-66384)
@@ -53,7 +53,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
 
     proc = subprocess.run(
         cmd,
-        # Redirect stdin to prevent gdb von messing with the terminal settings
+        # Redirect stdin to prevent gdb von messing mit the terminal settings
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -64,7 +64,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
     stderr = proc.stderr
     wenn check and proc.returncode != exitcode:
         cmd_text = shlex.join(cmd)
-        raise Exception(f"{cmd_text} failed with exit code {proc.returncode}, "
+        raise Exception(f"{cmd_text} failed mit exit code {proc.returncode}, "
                         f"expected exit code {exitcode}:\n"
                         f"stdout={stdout!r}\n"
                         f"stderr={stderr!r}")
@@ -75,7 +75,7 @@ def run_gdb(*args, exitcode=0, check=Wahr, **env_vars):
 def get_gdb_version():
     try:
         stdout, stderr = run_gdb('--version')
-    except OSError as exc:
+    except OSError als exc:
         # This is what "no gdb" looks like.  There may, however, be other
         # errors that manifest this way too.
         raise unittest.SkipTest(f"Couldn't find gdb program on the path: {exc}")
@@ -104,8 +104,8 @@ wenn GDB_VERSION < (7, 0):
 
 
 def check_usable_gdb():
-    # Verify that "gdb" was built with the embedded Python support enabled and
-    # verify that "gdb" can load our custom hooks, as OS security settings may
+    # Verify that "gdb" was built mit the embedded Python support enabled and
+    # verify that "gdb" can load our custom hooks, als OS security settings may
     # disallow this without a customized .gdbinit.
     stdout, stderr = run_gdb(
         '--eval-command=python importiere sys; drucke(sys.version_info)',
@@ -119,11 +119,11 @@ def check_usable_gdb():
 
     wenn not stdout:
         raise unittest.SkipTest(
-            f"gdb not built with embedded python support; "
+            f"gdb not built mit embedded python support; "
             f"stderr: {stderr!r}")
 
     wenn "major=2" in stdout:
-        raise unittest.SkipTest("gdb built with Python 2")
+        raise unittest.SkipTest("gdb built mit Python 2")
 
 check_usable_gdb()
 
@@ -162,7 +162,7 @@ klasse DebuggerTests(unittest.TestCase):
                         import_site=Falsch,
                         ignore_stderr=Falsch):
         '''
-        Run 'python -c SOURCE' under gdb with a breakpoint.
+        Run 'python -c SOURCE' under gdb mit a breakpoint.
 
         Support injecting commands after the breakpoint is reached
 
@@ -170,7 +170,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         cmds_after_breakpoint: wenn provided, a list of strings: gdb commands
         '''
-        # We use "set breakpoint pending yes" to avoid blocking with a:
+        # We use "set breakpoint pending yes" to avoid blocking mit a:
         #   Function "foo" not defined.
         #   Make breakpoint pending on future shared library load? (y or [n])
         # error, which typically happens python is dynamically linked (the
@@ -201,10 +201,10 @@ klasse DebuggerTests(unittest.TestCase):
             'run',
         ]
 
-        # GDB as of 7.4 onwards can distinguish between the
+        # GDB als of 7.4 onwards can distinguish between the
         # value of a variable at entry vs current value:
         #   http://sourceware.org/gdb/onlinedocs/gdb/Variables.html
-        # which leads to the selftests failing with errors like this:
+        # which leads to the selftests failing mit errors like this:
         #   AssertionError: 'v@entry=()' != '()'
         # Disable this:
         wenn GDB_VERSION >= (7, 4):
@@ -212,7 +212,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         wenn cmds_after_breakpoint:
             wenn CET_PROTECTION:
-                # bpo-32962: When Python is compiled with -mcet
+                # bpo-32962: When Python is compiled mit -mcet
                 # -fcf-protection, function arguments are unusable before
                 # running the first instruction of the function entry point.
                 # The 'next' command makes the required first step.
@@ -223,7 +223,7 @@ klasse DebuggerTests(unittest.TestCase):
 
         # print commands
 
-        # Use "commands" to generate the arguments with which to invoke "gdb":
+        # Use "commands" to generate the arguments mit which to invoke "gdb":
         args = ['--eval-command=%s' % cmd fuer cmd in commands]
         args += ["--args",
                  sys.executable]
@@ -261,11 +261,11 @@ klasse DebuggerTests(unittest.TestCase):
             '(frame information optimized out)',
             'Unable to read information on python frame',
 
-            # gh-91960: On Python built with "clang -Og", gdb gets
+            # gh-91960: On Python built mit "clang -Og", gdb gets
             # "frame=<optimized out>" fuer _PyEval_EvalFrameDefault() parameter
             '(unable to read python frame information)',
 
-            # gh-104736: On Python built with "clang -Og" on ppc64le,
+            # gh-104736: On Python built mit "clang -Og" on ppc64le,
             # "py-bt" displays a truncated or not traceback, but "where"
             # logs this error message:
             'Backtrace stopped: frame did not save the PC',

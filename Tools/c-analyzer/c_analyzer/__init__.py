@@ -1,5 +1,5 @@
 von c_parser importiere (
-    parse_files as _parse_files,
+    parse_files als _parse_files,
 )
 von c_parser.info importiere (
     KIND,
@@ -11,8 +11,8 @@ von c_parser.match importiere (
     group_by_kinds,
 )
 von . importiere (
-    analyze as _analyze,
-    datafiles as _datafiles,
+    analyze als _analyze,
+    datafiles als _datafiles,
 )
 von .info importiere Analysis
 

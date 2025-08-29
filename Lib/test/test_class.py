@@ -492,7 +492,7 @@ klasse ClassTests(unittest.TestCase):
             self.assertRaises(TypeError, f, BadTypeClass())
 
     def testHashStuff(self):
-        # Test correct errors von hash() on objects with comparisons but
+        # Test correct errors von hash() on objects mit comparisons but
         #  no __hash__
 
         klasse C0:
@@ -521,7 +521,7 @@ klasse ClassTests(unittest.TestCase):
             '__setattr__', '__sizeof__', '__str__', '__subclasshook__'
         )
         fuer name in methods:
-            with self.subTest(name):
+            mit self.subTest(name):
                 self.assertWahr(callable(getattr(object, name, Nichts)))
                 self.assertWahr(callable(getattr(o, name, Nichts)))
                 self.assertWahr(callable(getattr(Custom, name, Nichts)))
@@ -546,7 +546,7 @@ klasse ClassTests(unittest.TestCase):
         not_defined.extend(map("__r{}__".format, augment))
         not_defined.extend(map("__i{}__".format, augment))
         fuer name in not_defined:
-            with self.subTest(name):
+            mit self.subTest(name):
                 self.assertFalsch(hasattr(object, name))
                 self.assertFalsch(hasattr(o, name))
                 self.assertFalsch(hasattr(Custom, name))
@@ -583,7 +583,7 @@ klasse ClassTests(unittest.TestCase):
             a = property(booh)
         try:
             A().a # Raised AttributeError: A instance has no attribute 'a'
-        except AttributeError as x:
+        except AttributeError als x:
             wenn str(x) != "booh":
                 self.fail("attribute error fuer A().a got masked: %s" % x)
 
@@ -603,13 +603,13 @@ klasse ClassTests(unittest.TestCase):
             self.fail("attribute error fuer I.__init__ got masked")
 
     def assertNotOrderable(self, a, b):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a < b
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a > b
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a <= b
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             a >= b
 
     def testHashComparisonOfMethods(self):
@@ -670,14 +670,14 @@ klasse ClassTests(unittest.TestCase):
         self.assertIsNot(name2, '__add__')
         self.assertIsNot(name2, name)
         type.__delattr__(A, name2)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             A() + 1
 
     def testSetattrNonStringName(self):
         klasse A:
             pass
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             type.__setattr__(A, b'x', Nichts)
 
     def testTypeAttributeAccessErrorMessages(self):
@@ -685,9 +685,9 @@ klasse ClassTests(unittest.TestCase):
             pass
 
         error_msg = "type object 'A' has no attribute 'x'"
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             A.x
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             del A.x
 
     def testObjectAttributeAccessErrorMessages(self):
@@ -706,37 +706,37 @@ klasse ClassTests(unittest.TestCase):
                     super().__setattr__(name, value)
 
         error_msg = "'A' object has no attribute 'x'"
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             A().x
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             del A().x
 
         error_msg = "'B' object has no attribute 'x'"
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             B().x
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             del B().x
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             AttributeError,
             "'B' object has no attribute 'x' and no __dict__ fuer setting new attributes"
         ):
             B().x = 0
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             AttributeError,
             "'C' object has no attribute 'x'"
         ):
             C().x = 0
 
         error_msg = "'B' object attribute 'y' is read-only"
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             del B().y
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             B().y = 0
 
         error_msg = 'z'
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             B().z
-        with self.assertRaisesRegex(AttributeError, error_msg):
+        mit self.assertRaisesRegex(AttributeError, error_msg):
             del B().z
 
     def testConstructorErrorMessages(self):
@@ -748,22 +748,22 @@ klasse ClassTests(unittest.TestCase):
 
         error_msg = r'C.__init__\(\) takes exactly one argument \(the instance to initialize\)'
 
-        with self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
+        mit self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
             C(42)
 
-        with self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
+        mit self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
             C.__new__(C, 42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        mit self.assertRaisesRegex(TypeError, error_msg):
             C().__init__(42)
 
-        with self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
+        mit self.assertRaisesRegex(TypeError, r'C\(\) takes no arguments'):
             object.__new__(C, 42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        mit self.assertRaisesRegex(TypeError, error_msg):
             object.__init__(C(), 42)
 
-        # Class with both `__init__` & `__new__` method overridden
+        # Class mit both `__init__` & `__new__` method overridden
         klasse D:
             def __new__(cls, *args, **kwargs):
                 super().__new__(cls, *args, **kwargs)
@@ -772,13 +772,13 @@ klasse ClassTests(unittest.TestCase):
 
         error_msg =  r'object.__new__\(\) takes exactly one argument \(the type to instantiate\)'
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        mit self.assertRaisesRegex(TypeError, error_msg):
             D(42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        mit self.assertRaisesRegex(TypeError, error_msg):
             D.__new__(D, 42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        mit self.assertRaisesRegex(TypeError, error_msg):
             object.__new__(D, 42)
 
         # Class that only overrides __init__
@@ -788,10 +788,10 @@ klasse ClassTests(unittest.TestCase):
 
         error_msg = r'object.__init__\(\) takes exactly one argument \(the instance to initialize\)'
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        mit self.assertRaisesRegex(TypeError, error_msg):
             E().__init__(42)
 
-        with self.assertRaisesRegex(TypeError, error_msg):
+        mit self.assertRaisesRegex(TypeError, error_msg):
             object.__init__(E(), 42)
 
     def testClassWithExtCall(self):
@@ -816,14 +816,14 @@ klasse ClassTests(unittest.TestCase):
             def __init__(self):
                 self.c = C()
 
-        with self.assertRaises(RecursionError):
+        mit self.assertRaises(RecursionError):
             C()
 
         def add_one_level():
             #Each call to C() consumes 2 levels, so offset by 1.
             C()
 
-        with self.assertRaises(RecursionError):
+        mit self.assertRaises(RecursionError):
             add_one_level()
 
     def testMetaclassCallOptimization(self):
@@ -1003,7 +1003,7 @@ klasse TestInlineValues(unittest.TestCase):
                     self.b = 2
             a = A()
             d = a.__dict__
-            with test.support.catch_unraisable_exception() as ex:
+            mit test.support.catch_unraisable_exception() als ex:
                 _testcapi.set_nomemory(0, 1)
                 del a
                 assert ex.unraisable.exc_type is MemoryError

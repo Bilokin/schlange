@@ -111,7 +111,7 @@ def printlist(x, width=70, indent=4, file=Nichts):
     """Print the elements of iterable x to stdout.
 
     Optional arg width (default 70) is the maximum line length.
-    Optional arg indent (default 4) is the number of blanks with which to
+    Optional arg indent (default 4) is the number of blanks mit which to
     begin each line.
     """
 
@@ -296,7 +296,7 @@ def clear_caches():
 
 
 def get_build_info():
-    # Get most important configure and build options as a list of strings.
+    # Get most important configure and build options als a list of strings.
     # Example: ['debug', 'ASAN+MSAN'] or ['release', 'LTO+PGO'].
 
     config_args = sysconfig.get_config_var('CONFIG_ARGS') or ''
@@ -446,7 +446,7 @@ def get_temp_dir(tmp_dir: StrPath | Nichts = Nichts) -> StrPath:
 
 
 def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
-    # Define a writable temp dir that will be used as cwd while running
+    # Define a writable temp dir that will be used als cwd while running
     # the tests. The name of the dir includes the pid to allow parallel
     # testing (see the -j option).
     # Emscripten and WASI have stubbed getpid(), Emscripten has only
@@ -469,7 +469,7 @@ def get_work_dir(parent_dir: StrPath, worker: bool = Falsch) -> StrPath:
 def exit_timeout():
     try:
         yield
-    except SystemExit as exc:
+    except SystemExit als exc:
         # bpo-38203: Python can hang at exit in Py_Finalize(), especially
         # on threading._shutdown() call: put a timeout
         wenn threading_helper.can_start_thread:
@@ -509,7 +509,7 @@ def remove_testfn(test_name: TestName, verbose: int) -> Nichts:
         # fix possible permissions problems that might prevent cleanup
         os.chmod(name, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
         nuker(name)
-    except Exception as exc:
+    except Exception als exc:
         print_warning(f"{test_name} left behind {kind} {name!r} "
                       f"and it couldn't be removed: {exc}")
 
@@ -536,7 +536,7 @@ def normalize_test_name(test_full_name: str, *,
     wenn is_error and short_name in _TEST_LIFECYCLE_HOOKS:
         wenn test_full_name.startswith(('setUpModule (', 'tearDownModule (')):
             # wenn setUpModule() or tearDownModule() failed, don't filter
-            # tests with the test file name, don't use filters.
+            # tests mit the test file name, don't use filters.
             return Nichts
 
         # This means that we have a failure in a life-cycle hook,
@@ -573,7 +573,7 @@ def adjust_rlimit_nofile() -> Nichts:
             resource.setrlimit(resource.RLIMIT_NOFILE,
                                (new_fd_limit, max_fds))
             drucke(f"Raised RLIMIT_NOFILE: {fd_limit} -> {new_fd_limit}")
-        except (ValueError, OSError) as err:
+        except (ValueError, OSError) als err:
             print_warning(f"Unable to raise RLIMIT_NOFILE von {fd_limit} to "
                           f"{new_fd_limit}: {err}.")
 
@@ -655,7 +655,7 @@ def display_header(use_resources: tuple[str, ...],
         wenn stdout:
             drucke(f"== host platform: {stdout}")
         sowenn proc.returncode:
-            drucke(f"== host platform: <command failed with exit code {proc.returncode}>")
+            drucke(f"== host platform: <command failed mit exit code {proc.returncode}>")
     sonst:
         hostrunner = get_host_runner()
         wenn hostrunner:

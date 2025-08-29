@@ -91,7 +91,7 @@ def readSystemPreferences():
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
     try:
-        with open(plist_path, 'rb') as plist_file:
+        mit open(plist_path, 'rb') als plist_file:
             return plistlib.load(plist_file)
     except OSError:
         return Nichts
@@ -109,7 +109,7 @@ def preferTabsPreferenceWarning():
         return (
             'WARNING: The system preference "Prefer tabs when opening'
             ' documents" is set to "Always". This will cause various problems'
-            ' with IDLE. For the best experience, change this setting when'
+            ' mit IDLE. For the best experience, change this setting when'
             ' running IDLE (via System Preferences -> Dock).'
         )
     return Nichts
@@ -120,7 +120,7 @@ def preferTabsPreferenceWarning():
 def addOpenEventSupport(root, flist):
     """
     This ensures that the application will respond to open AppleEvents, which
-    makes is feasible to use IDLE as the default application fuer python files.
+    makes is feasible to use IDLE als the default application fuer python files.
     """
     def doOpenFile(*args):
         fuer fn in args:
@@ -141,7 +141,7 @@ def hideTkConsole(root):
 def overrideRootMenu(root, flist):
     """
     Replace the Tk root menu by something that is more appropriate for
-    IDLE with an Aqua Tk.
+    IDLE mit an Aqua Tk.
     """
     # The menu that is attached to the Tk root (".") is also used by AquaTk for
     # all windows that don't specify a menu of their own. The default menubar
@@ -170,7 +170,7 @@ def overrideRootMenu(root, flist):
     # menu
     del mainmenu.menudefs[-1][1][0:2]
     # Remove the 'Configure Idle' entry von the options menu, it is in the
-    # application menu as 'Preferences'
+    # application menu als 'Preferences'
     del mainmenu.menudefs[-3][1][0:2]
     menubar = Menu(root)
     root.configure(menu=menubar)
@@ -190,25 +190,25 @@ def overrideRootMenu(root, flist):
 
     def about_dialog(event=Nichts):
         "Handle Help 'About IDLE' event."
-        # Synchronize with editor.EditorWindow.about_dialog.
+        # Synchronize mit editor.EditorWindow.about_dialog.
         von idlelib importiere help_about
         help_about.AboutDialog(root)
 
     def config_dialog(event=Nichts):
         "Handle Options 'Configure IDLE' event."
-        # Synchronize with editor.EditorWindow.config_dialog.
+        # Synchronize mit editor.EditorWindow.config_dialog.
         von idlelib importiere configdialog
 
         # Ensure that the root object has an instance_dict attribute,
         # mirrors code in EditorWindow (although that sets the attribute
-        # on an EditorWindow instance that is then passed as the first
+        # on an EditorWindow instance that is then passed als the first
         # argument to ConfigDialog)
         root.instance_dict = flist.inversedict
         configdialog.ConfigDialog(root, 'Settings')
 
     def help_dialog(event=Nichts):
         "Handle Help 'IDLE Help' event."
-        # Synchronize with editor.EditorWindow.help_dialog.
+        # Synchronize mit editor.EditorWindow.help_dialog.
         von idlelib importiere help
         help.show_idlehelp(root)
 
@@ -233,7 +233,7 @@ def overrideRootMenu(root, flist):
                     Nichts,
                 ]))
     wenn isCocoaTk():
-        # replace default About dialog with About IDLE one
+        # replace default About dialog mit About IDLE one
         root.createcommand('tkAboutDialog', about_dialog)
         # replace default "Help" item in Help menu
         root.createcommand('::tk::mac::ShowHelp', help_dialog)
@@ -260,11 +260,11 @@ def setupApp(root, flist):
         2. Aqua Carbon Tk (original native, 32-bit only, deprecated)
         3. X11 (supported by some third-party distributors, deprecated)
     There are various differences among the three that affect IDLE
-    behavior, primarily with menus, mouse key events, and accelerators.
+    behavior, primarily mit menus, mouse key events, and accelerators.
     Some one-time customizations are performed here.
     Others are dynamically tested throughout idlelib by calls to the
     isAquaTk(), isCarbonTk(), isCocoaTk(), isXQuartz() functions which
-    are initialized here as well.
+    are initialized here als well.
     """
     wenn isAquaTk():
         hideTkConsole(root)

@@ -445,7 +445,7 @@ klasse help(Command):
     def do(self) -> Nichts:
         importiere _sitebuiltins
 
-        with self.reader.suspend():
+        mit self.reader.suspend():
             self.reader.msg = _sitebuiltins._Helper()()  # type: ignore[assignment]
 
 

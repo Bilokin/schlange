@@ -18,7 +18,7 @@ von asyncio.selector_events importiere (BaseSelectorEventLoop,
                                      _SelectorDatagramTransport,
                                      _SelectorSocketTransport,
                                      _SelectorTransport)
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 
 MOCK_ANY = mock.ANY
 
@@ -86,7 +86,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         self.loop.remove_reader = mock.Mock()
         self.loop.remove_writer = mock.Mock()
         self.loop._ensure_fd_no_transport = mock.Mock()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             self.loop._make_ssl_transport(m, m, m, m)
         self.assertEqual(self.loop._ensure_fd_no_transport.call_count, 1)
 
@@ -151,7 +151,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
 
     def test_write_to_self_tryagain(self):
         self.loop._csock.send.side_effect = BlockingIOError
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             self.assertIsNichts(self.loop._write_to_self())
 
     def test_write_to_self_exception(self):
@@ -163,7 +163,7 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
     def test_sock_connect_resolve_using_socket_params(self, m_gai):
         addr = ('need-resolution.com', 8080)
         fuer sock_type in [socket.SOCK_STREAM, socket.SOCK_DGRAM]:
-            with self.subTest(sock_type):
+            mit self.subTest(sock_type):
                 sock = test_utils.mock_nonblocking_socket(type=sock_type)
 
                 m_gai.side_effect = \
@@ -351,9 +351,9 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         fuer backlog in [0, 1]:
             sock = mock.Mock()
             sock.accept.return_value = (mock.Mock(), mock.Mock())
-            with self.subTest(backlog):
+            mit self.subTest(backlog):
                 mock_obj = mock.patch.object
-                with mock_obj(self.loop, '_accept_connection2') as accept2_mock:
+                mit mock_obj(self.loop, '_accept_connection2') als accept2_mock:
                     self.loop._accept_connection(
                         mock.Mock(), sock, backlog=backlog)
                 self.loop.run_until_complete(asyncio.sleep(0))
@@ -365,12 +365,12 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         backlog = 100
         # Mock the coroutine generation fuer a connection to prevent
         # warnings related to un-awaited coroutines. _accept_connection2
-        # is an async function that is patched with AsyncMock. create_task
+        # is an async function that is patched mit AsyncMock. create_task
         # creates a task out of coroutine returned by AsyncMock, so use
         # asyncio.sleep(0) to ensure created tasks are complete to avoid
         # task pending warnings.
         mock_obj = mock.patch.object
-        with mock_obj(self.loop, '_accept_connection2') as accept2_mock:
+        mit mock_obj(self.loop, '_accept_connection2') als accept2_mock:
             self.loop._accept_connection(
                 mock.Mock(), sock, backlog=backlog)
         self.loop.run_until_complete(asyncio.sleep(0))
@@ -394,10 +394,10 @@ klasse BaseSelectorEventLoopTests(test_utils.TestCase):
         # all 100 times, continuing past ConnectionAbortedError
         # instead of unnecessarily returning early
         mock_obj = mock.patch.object
-        with mock_obj(self.loop, '_accept_connection2') as accept2_mock:
+        mit mock_obj(self.loop, '_accept_connection2') als accept2_mock:
             self.loop._accept_connection(
                 mock.Mock(), sock, backlog=backlog)
-        # as in test_accept_connection_multiple avoid task pending
+        # als in test_accept_connection_multiple avoid task pending
         # warnings by using asyncio.sleep(0)
         self.loop.run_until_complete(asyncio.sleep(0))
         self.assertEqual(sock.accept.call_count, backlog + 1)
@@ -683,7 +683,7 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
 
         transport = self.socket_transport()
         transport._force_close = mock.Mock()
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             transport._read_ready()
         transport._force_close.assert_called_with(err)
 
@@ -1070,7 +1070,7 @@ klasse SelectorSocketTransportTests(test_utils.TestCase):
         #  * Protocol has data in its buffer, like SSLProtocol in self._outgoing
         # The data is still written out.
 
-        # Also tested with real SSL transport in
+        # Also tested mit real SSL transport in
         # test.test_asyncio.test_ssl.TestSSL.test_remote_shutdown_receives_trailing_data
 
         data = memoryview(b'data')
@@ -1268,7 +1268,7 @@ klasse SelectorSocketTransportBufferedProtocolTests(test_utils.TestCase):
 
         transport = self.socket_transport()
         transport._force_close = mock.Mock()
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             transport._read_ready()
         transport._force_close.assert_called_with(err)
 

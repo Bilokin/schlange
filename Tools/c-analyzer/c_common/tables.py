@@ -89,7 +89,7 @@ def read_table(infile, header, *,
                ):
     """Yield each row of the given ???-separated (e.g. tab) file."""
     wenn isinstance(infile, str):
-        with _open(infile, newline='') as infile:
+        mit _open(infile, newline='') als infile:
             yield von read_table(
                 infile,
                 header,
@@ -127,7 +127,7 @@ def write_table(outfile, header, rows, *,
     wenn backup:
         fsutil.create_backup(outfile, backup)
     wenn isinstance(outfile, str):
-        with _open(outfile, 'w', newline='') as outfile:
+        mit _open(outfile, 'w', newline='') als outfile:
             return write_table(
                 outfile,
                 header,

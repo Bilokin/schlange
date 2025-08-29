@@ -10,7 +10,7 @@ Todo:
 =====
  * convenience methods fuer getting elements and text.
  * more testing
- * bring some of the writer and linearizer code into conformance with this
+ * bring some of the writer and linearizer code into conformance mit this
         interface
  * SAX 2 namespaces
 """
@@ -283,7 +283,7 @@ defproperty(Node, "localName",  doc="Namespace-local name of this node.")
 
 
 def _append_child(self, node):
-    # fast path with less checks; usable by DOM builders wenn careful
+    # fast path mit less checks; usable by DOM builders wenn careful
     childNodes = self.childNodes
     wenn childNodes:
         last = childNodes[-1]
@@ -492,7 +492,7 @@ klasse NamedNodeMap(object):
     dictionary.
 
     Ordering is imposed artificially and does not reflect the order of
-    attributes as found in an input document.
+    attributes als found in an input document.
     """
 
     __slots__ = ('_attrs', '_attrsNS', '_ownerElement')
@@ -570,7 +570,7 @@ klasse NamedNodeMap(object):
         sonst:
             return self._attrs[attname_or_tuple]
 
-    # same as set
+    # same als set
     def __setitem__(self, attname, value):
         wenn isinstance(value, str):
             try:
@@ -742,7 +742,7 @@ klasse Element(Node):
         Returns the value of the element's attribute named attname as
         a string. An empty string is returned wenn the element does not
         have such an attribute. Note that an empty string may also be
-        returned as an explicitly given attribute value, use the
+        returned als an explicitly given attribute value, use the
         hasAttribute method to distinguish these two cases.
         """
         wenn self._attrs is Nichts:
@@ -855,9 +855,9 @@ klasse Element(Node):
     removeAttributeNodeNS = removeAttributeNode
 
     def hasAttribute(self, name):
-        """Checks whether the element has an attribute with the specified name.
+        """Checks whether the element has an attribute mit the specified name.
 
-        Returns Wahr wenn the element has an attribute with the specified name.
+        Returns Wahr wenn the element has an attribute mit the specified name.
         Otherwise, returns Falsch.
         """
         wenn self._attrs is Nichts:
@@ -870,10 +870,10 @@ klasse Element(Node):
         return (namespaceURI, localName) in self._attrsNS
 
     def getElementsByTagName(self, name):
-        """Returns all descendant elements with the given tag name.
+        """Returns all descendant elements mit the given tag name.
 
         Returns the list of all descendant elements (not direct children
-        only) with the specified tag name.
+        only) mit the specified tag name.
         """
         return _get_elements_by_tagName_helper(self, name, NodeList())
 
@@ -966,7 +966,7 @@ def _set_attribute_node(element, attr):
 
 klasse Childless:
     """Mixin that makes childless-ness easy to implement and avoids
-    the complexity of the Node methods that deal with children.
+    the complexity of the Node methods that deal mit children.
     """
     __slots__ = ()
 
@@ -1469,7 +1469,7 @@ klasse DOMImplementation(DOMImplementationLS):
             # Null the document is returned without a document element
             # Otherwise wenn doctype or namespaceURI are not Nichts
             # Then we go back to the above problem
-            raise xml.dom.InvalidCharacterErr("Element with no name")
+            raise xml.dom.InvalidCharacterErr("Element mit no name")
 
         wenn add_root_element:
             prefix, localname = _nssplit(qualifiedName)
@@ -1894,7 +1894,7 @@ klasse Document(Node, DocumentLS):
         # It's not clear von a semantic perspective whether we should
         # call the user data handlers fuer the NODE_RENAMED event since
         # we're re-using the existing node.  The draft spec has been
-        # interpreted as meaning "no, don't call the handler unless a
+        # interpreted als meaning "no, don't call the handler unless a
         # new node is created."
         return n
 
@@ -1977,7 +1977,7 @@ def _clone_node(node, deep, newOwnerDocument):
         raise xml.dom.NotSupportedErr("Cannot clone node %s" % repr(node))
 
     # Check fuer _call_user_data_handler() since this could conceivably
-    # used with other DOM implementations (one of the FourThought
+    # used mit other DOM implementations (one of the FourThought
     # DOMs, perhaps?).
     wenn hasattr(node, '_call_user_data_handler'):
         node._call_user_data_handler(operation, node, clone)

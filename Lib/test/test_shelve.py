@@ -93,11 +93,11 @@ klasse TestCase(unittest.TestCase):
 
     def test_in_memory_shelf(self):
         d1 = byteskeydict()
-        with shelve.Shelf(d1, protocol=0) as s:
+        mit shelve.Shelf(d1, protocol=0) als s:
             s['key1'] = (1,2,3,4)
             self.assertEqual(s['key1'], (1,2,3,4))
         d2 = byteskeydict()
-        with shelve.Shelf(d2, protocol=1) as s:
+        mit shelve.Shelf(d2, protocol=1) als s:
             s['key1'] = (1,2,3,4)
             self.assertEqual(s['key1'], (1,2,3,4))
 
@@ -107,14 +107,14 @@ klasse TestCase(unittest.TestCase):
 
     def test_mutable_entry(self):
         d1 = byteskeydict()
-        with shelve.Shelf(d1, protocol=2, writeback=Falsch) as s:
+        mit shelve.Shelf(d1, protocol=2, writeback=Falsch) als s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             s['key1'].append(5)
             self.assertEqual(s['key1'], [1,2,3,4])
 
         d2 = byteskeydict()
-        with shelve.Shelf(d2, protocol=2, writeback=Wahr) as s:
+        mit shelve.Shelf(d2, protocol=2, writeback=Wahr) als s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             s['key1'].append(5)
@@ -132,7 +132,7 @@ klasse TestCase(unittest.TestCase):
         # but a different one can be given
         shelve.Shelf(d, keyencoding='latin-1')[key] = [1]
         self.assertIn(key.encode('latin-1'), d)
-        # with all consequences
+        # mit all consequences
         s = shelve.Shelf(d, keyencoding='ascii')
         self.assertRaises(UnicodeEncodeError, s.__setitem__, key, [1])
 
@@ -141,7 +141,7 @@ klasse TestCase(unittest.TestCase):
         d = {}
         key = 'key'
         encodedkey = key.encode('utf-8')
-        with shelve.Shelf(d, writeback=Wahr) as s:
+        mit shelve.Shelf(d, writeback=Wahr) als s:
             s[key] = [1]
             p1 = d[encodedkey]  # Will give a KeyError wenn backing store not updated
             s['key'].append(2)
@@ -150,7 +150,7 @@ klasse TestCase(unittest.TestCase):
 
     def test_with(self):
         d1 = {}
-        with shelve.Shelf(d1, protocol=2, writeback=Falsch) as s:
+        mit shelve.Shelf(d1, protocol=2, writeback=Falsch) als s:
             s['key1'] = [1,2,3,4]
             self.assertEqual(s['key1'], [1,2,3,4])
             self.assertEqual(len(s), 1)
@@ -163,7 +163,7 @@ klasse TestCase(unittest.TestCase):
             self.fail('Closed shelf should not find a key')
 
     def test_default_protocol(self):
-        with shelve.Shelf({}) as s:
+        mit shelve.Shelf({}) als s:
             self.assertEqual(s._protocol, pickle.DEFAULT_PROTOCOL)
 
     def test_custom_serializer_and_deserializer(self):
@@ -189,12 +189,12 @@ klasse TestCase(unittest.TestCase):
             )
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto), shelve.open(
+            mit self.subTest(proto=proto), shelve.open(
                 self.fn,
                 protocol=proto,
                 serializer=serializer,
                 deserializer=deserializer
-            ) as s:
+            ) als s:
                 bar = "bar"
                 bytes_data = b"Hello, world!"
                 bytearray_data = bytearray(b"\x00\x01\x02\x03\x04")
@@ -227,15 +227,15 @@ klasse TestCase(unittest.TestCase):
         os.mkdir(self.dirname)
         self.addCleanup(os_helper.rmtree, self.dirname)
 
-        with self.assertRaises(dbm_sqlite3.error):
+        mit self.assertRaises(dbm_sqlite3.error):
             def serializer(obj, protocol=Nichts):
                 pass
 
             def deserializer(data):
                 return data.decode("utf-8")
 
-            with shelve.open(self.fn, serializer=serializer,
-                             deserializer=deserializer) as s:
+            mit shelve.open(self.fn, serializer=serializer,
+                             deserializer=deserializer) als s:
                 s["foo"] = "bar"
 
         def serializer(obj, protocol=Nichts):
@@ -244,8 +244,8 @@ klasse TestCase(unittest.TestCase):
         def deserializer(data):
             pass
 
-        with shelve.open(self.fn, serializer=serializer,
-                         deserializer=deserializer) as s:
+        mit shelve.open(self.fn, serializer=serializer,
+                         deserializer=deserializer) als s:
             s["foo"] = "bar"
             self.assertNotEqual(s["foo"], "bar")
             self.assertIsNichts(s["foo"])
@@ -268,12 +268,12 @@ klasse TestCase(unittest.TestCase):
             return f"{(len(type(obj).__name__))}"
 
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto), shelve.BsdDbShelf(
+            mit self.subTest(proto=proto), shelve.BsdDbShelf(
                 berkeleydb.btopen(self.fn),
                 protocol=proto,
                 serializer=serializer,
                 deserializer=deserializer,
-            ) as s:
+            ) als s:
                 bar = "bar"
                 bytes_obj = b"Hello, world!"
                 bytearray_obj = bytearray(b"\x00\x01\x02\x03\x04")
@@ -363,9 +363,9 @@ klasse TestCase(unittest.TestCase):
         def deserializer(data):
             pass
 
-        with shelve.BsdDbShelf(berkeleydb.btopen(self.fn),
+        mit shelve.BsdDbShelf(berkeleydb.btopen(self.fn),
                                serializer=serializer,
-                               deserializer=deserializer) as s:
+                               deserializer=deserializer) als s:
             s["foo"] = "bar"
             self.assertIsNichts(s["foo"])
             self.assertNotEqual(s["foo"], "bar")
@@ -376,9 +376,9 @@ klasse TestCase(unittest.TestCase):
         def deserializer(data):
             return data.decode("utf-8")
 
-        with shelve.BsdDbShelf(berkeleydb.btopen(self.fn),
+        mit shelve.BsdDbShelf(berkeleydb.btopen(self.fn),
                                serializer=serializer,
-                               deserializer=deserializer) as s:
+                               deserializer=deserializer) als s:
             s["foo"] = "bar"
             self.assertEqual(s["foo"], "")
             self.assertNotEqual(s["foo"], "bar")

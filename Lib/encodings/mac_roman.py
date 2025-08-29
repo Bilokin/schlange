@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec mac_roman generated von 'MAPPINGS/VENDORS/APPLE/ROMAN.TXT' with gencodec.py.
+""" Python Character Mapping Codec mac_roman generated von 'MAPPINGS/VENDORS/APPLE/ROMAN.TXT' mit gencodec.py.
 
 """#"
 

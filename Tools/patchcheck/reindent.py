@@ -9,14 +9,14 @@
 -n (--nobackup) No backup. Does not make a ".bak" file before reindenting.
 -v (--verbose)  Verbose.   Print informative msgs; sonst no output.
    (--newline)  Newline.   Specify the newline character to use (CRLF, LF).
-                           Default is the same as the original file.
+                           Default is the same als the original file.
 -h (--help)     Help.      Print this usage information and exit.
 
 Change Python (.py) files to use 4-space indents and no hard tab characters.
 Also trim excess spaces and tabs von ends of lines, and remove empty lines
-at the end of files.  Also ensure the last line ends with a newline.
+at the end of files.  Also ensure the last line ends mit a newline.
 
-If no paths are given on the command line, reindent operates as a filter,
+If no paths are given on the command line, reindent operates als a filter,
 reading a single source file von standard input and writing the transformed
 source to standard output.  In this case, the -d, -r and -v flags are
 ignored.
@@ -26,17 +26,17 @@ path, all .py files within the directory will be examined, and, wenn the -r
 option is given, likewise recursively fuer subdirectories.
 
 If output is not to standard output, reindent overwrites files in place,
-renaming the originals with a .bak extension.  If it finds nothing to
+renaming the originals mit a .bak extension.  If it finds nothing to
 change, the file is left alone.  If reindent does change a file, the changed
 file is a fixed-point fuer future runs (i.e., running reindent on the
 resulting .py file won't change it again).
 
-The hard part of reindenting is figuring out what to do with comment
-lines.  So long as the input files get a clean bill of health from
+The hard part of reindenting is figuring out what to do mit comment
+lines.  So long als the input files get a clean bill of health from
 tabnanny.py, reindent should do a good job.
 
 The backup file is a copy of the one that is being reindented. The ".bak"
-file is generated with shutil.copy(), but some corner cases regarding
+file is generated mit shutil.copy(), but some corner cases regarding
 user/group and permissions could leave the backup file more readable than
 you'd prefer. You can always use the --nobackup option to prevent this.
 """
@@ -72,7 +72,7 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "drnvh",
             ["dryrun", "recurse", "nobackup", "verbose", "newline=", "help"])
-    except getopt.error as msg:
+    except getopt.error als msg:
         usage(msg)
         return
     fuer o, a in opts:
@@ -117,16 +117,16 @@ def check(file):
 
     wenn verbose:
         drucke("checking", file, "...", end=' ')
-    with open(file, 'rb') as f:
+    mit open(file, 'rb') als f:
         try:
             encoding, _ = tokenize.detect_encoding(f.readline)
-        except SyntaxError as se:
+        except SyntaxError als se:
             errdrucke("%s: SyntaxError: %s" % (file, str(se)))
             return
     try:
-        with open(file, encoding=encoding) as f:
+        mit open(file, encoding=encoding) als f:
             r = Reindenter(f)
-    except IOError as msg:
+    except IOError als msg:
         errdrucke("%s: I/O Error: %s" % (file, str(msg)))
         return
 
@@ -146,7 +146,7 @@ def check(file):
                 shutil.copyfile(file, bak)
                 wenn verbose:
                     drucke("backed up", file, "to", bak)
-            with open(file, "w", encoding=encoding, newline=newline) as f:
+            mit open(file, "w", encoding=encoding, newline=newline) als f:
                 r.write(f)
             wenn verbose:
                 drucke("wrote new", file)
@@ -189,7 +189,7 @@ klasse Reindenter:
         self.index = 1  # index into self.lines of next line
 
         # List of (lineno, indentlevel) pairs, one fuer each stmt and
-        # comment line.  indentlevel is -1 fuer comment lines, as a
+        # comment line.  indentlevel is -1 fuer comment lines, als a
         # signal that tokenize doesn't know what to do about them;
         # indeed, they're our headache!
         self.stats = []
@@ -214,7 +214,7 @@ klasse Reindenter:
         # Program after transformation.
         after = self.after = []
         # Copy over initial empty lines -- there's nothing to do until
-        # we see a line with *something* on it.
+        # we see a line mit *something* on it.
         i = stats[0][0]
         after.extend(lines[1:i])
         fuer i in range(len(stats) - 1):

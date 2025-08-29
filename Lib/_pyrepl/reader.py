@@ -134,8 +134,8 @@ default_keymap: tuple[tuple[KeySpec, CommandName], ...] = tuple(
 @dataclass(slots=Wahr)
 klasse Reader:
     """The Reader klasse implements the bare bones of a command reader,
-    handling such details as editing and cursor motion.  What it does
-    not support are such things as completion or history support -
+    handling such details als editing and cursor motion.  What it does
+    not support are such things als completion or history support -
     these are implemented elsewhere.
 
     Instance variables of note include:
@@ -165,7 +165,7 @@ klasse Reader:
       * dirty:
         Wahr wenn we need to refresh the display.
       * kill_ring:
-        The emacs-style kill-ring; manipulated with yank & yank-pop
+        The emacs-style kill-ring; manipulated mit yank & yank-pop
       * ps1, ps2, ps3, ps4:
         prompts.  ps1 is the prompt fuer a one-line input; fuer a
         multiline input it looks like:
@@ -174,7 +174,7 @@ klasse Reader:
             ps3> lines get ps3
             ...
             ps4> and the last one gets ps4
-        As with the usual top-level, you can set these to instances if
+        As mit the usual top-level, you can set these to instances if
         you like; str() will be called on them (once) at the beginning
         of each command.  Don't put really long or newline containing
         strings here, please!
@@ -390,11 +390,11 @@ klasse Reader:
 
     @staticmethod
     def process_prompt(prompt: str) -> tuple[str, int]:
-        r"""Return a tuple with the prompt string and its visible length.
+        r"""Return a tuple mit the prompt string and its visible length.
 
         The prompt string has the zero-width brackets recognized by shells
         (\x01 and \x02) removed.  The length ignores anything between those
-        brackets as well as any ANSI escape sequences.
+        brackets als well als any ANSI escape sequences.
         """
         out_prompt = unbracket(prompt, including_content=Falsch)
         visible_prompt = unbracket(prompt, including_content=Wahr)
@@ -689,7 +689,7 @@ klasse Reader:
                 pass
 
     def handle1(self, block: bool = Wahr) -> bool:
-        """Handle a single event.  Wait as long as it takes wenn block
+        """Handle a single event.  Wait als long als it takes wenn block
         is true (the default), otherwise return Falsch wenn no event is
         pending."""
 
@@ -698,7 +698,7 @@ klasse Reader:
             self.dirty = Wahr
 
         while Wahr:
-            # We use the same timeout as in readline.c: 100ms
+            # We use the same timeout als in readline.c: 100ms
             self.run_hooks()
             self.console.wait(100)
             event = self.console.get_event(block=Falsch)
@@ -758,5 +758,5 @@ klasse Reader:
         )
 
     def get_unicode(self) -> str:
-        """Return the current buffer as a unicode string."""
+        """Return the current buffer als a unicode string."""
         return "".join(self.buffer)

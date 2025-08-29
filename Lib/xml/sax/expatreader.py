@@ -43,7 +43,7 @@ klasse _ClosedParser:
 # --- ExpatLocator
 
 klasse ExpatLocator(xmlreader.Locator):
-    """Locator fuer use with the ExpatParser class.
+    """Locator fuer use mit the ExpatParser class.
 
     This uses a weak reference to the parser object to avoid creating
     a circular reference between the parser and the content handler.
@@ -209,7 +209,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             # document. When feeding chunks, they are not normally final -
             # except when invoked von close.
             self._parser.Parse(data, isFinal)
-        except expat.error as e:
+        except expat.error als e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
             # FIXME: when to invoke error()?
             self._err_handler.fatalError(exc)
@@ -222,7 +222,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         try:
             self._parser.SetReparseDeferralEnabled(Falsch)
             self._parser.Parse(b"", Falsch)
-        except expat.error as e:
+        except expat.error als e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
             self._err_handler.fatalError(exc)
         finally:
@@ -435,7 +435,7 @@ klasse ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
     def skipped_entity_handler(self, name, is_pe):
         wenn is_pe:
-            # The SAX spec requires to report skipped PEs with a '%'
+            # The SAX spec requires to report skipped PEs mit a '%'
             name = '%'+name
         self._cont_handler.skippedEntity(name)
 

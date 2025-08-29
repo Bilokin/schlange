@@ -15,14 +15,14 @@ importiere unittest
 klasse FinderTests(abc.FinderTests):
 
     """For a top-level module, it should just be found directly in the
-    directory being searched. This is true fuer a directory with source
+    directory being searched. This is true fuer a directory mit source
     [top-level source], bytecode [top-level bc], or both [top-level both].
     There is also the possibility that it is a package [top-level package], in
-    which case there will be a directory with the module name and an
+    which case there will be a directory mit the module name and an
     __init__.py file. If there is a directory without an __init__.py an
     ImportWarning is returned [empty dir].
 
-    For sub-modules and sub-packages, the same happens as above but only use
+    For sub-modules and sub-packages, the same happens als above but only use
     the tail end of the name [sub module] [sub package] [sub empty].
 
     When there is a conflict between a package and module having the same name
@@ -30,7 +30,7 @@ klasse FinderTests(abc.FinderTests):
     so that imports of modules within the package can occur rather than trigger
     an importiere error.
 
-    When there is a package and module with the same name, always pick the
+    When there is a package and module mit the same name, always pick the
     package over the module [package over module]. This is so that imports from
     the package have the possibility of succeeding.
 
@@ -48,7 +48,7 @@ klasse FinderTests(abc.FinderTests):
         return self._find(finder, module, loader_only=Wahr)
 
     def run_test(self, test, create=Nichts, *, compile_=Nichts, unlink=Nichts):
-        """Test the finding of 'test' with the creation of modules listed in
+        """Test the finding of 'test' mit the creation of modules listed in
         'create'.
 
         Any names listed in 'compile_' are byte-compiled. Modules
@@ -57,7 +57,7 @@ klasse FinderTests(abc.FinderTests):
         """
         wenn create is Nichts:
             create = {test}
-        with util.create_modules(*create) as mapping:
+        mit util.create_modules(*create) als mapping:
             wenn compile_:
                 fuer name in compile_:
                     py_compile.compile(mapping[name])
@@ -66,7 +66,7 @@ klasse FinderTests(abc.FinderTests):
                     os.unlink(mapping[name])
                     try:
                         make_legacy_pyc(mapping[name])
-                    except OSError as error:
+                    except OSError als error:
                         # Some tests do not set compile_=Wahr so the source
                         # module will not get compiled and there will be no
                         # PEP 3147 pyc file to rename.
@@ -97,7 +97,7 @@ klasse FinderTests(abc.FinderTests):
 
     # [sub module]
     def test_module_in_package(self):
-        with util.create_modules('pkg.__init__', 'pkg.sub') as mapping:
+        mit util.create_modules('pkg.__init__', 'pkg.sub') als mapping:
             pkg_dir = os.path.dirname(mapping['pkg.__init__'])
             loader = self.import_(pkg_dir, 'pkg.sub')
             self.assertHasAttr(loader, 'load_module')
@@ -105,7 +105,7 @@ klasse FinderTests(abc.FinderTests):
     # [sub package]
     def test_package_in_package(self):
         context = util.create_modules('pkg.__init__', 'pkg.sub.__init__')
-        with context as mapping:
+        mit context als mapping:
             pkg_dir = os.path.dirname(mapping['pkg.__init__'])
             loader = self.import_(pkg_dir, 'pkg.sub')
             self.assertHasAttr(loader, 'load_module')
@@ -117,7 +117,7 @@ klasse FinderTests(abc.FinderTests):
         self.assertIn('__init__', loader.get_filename(name))
 
     def test_failure(self):
-        with util.create_modules('blah') as mapping:
+        mit util.create_modules('blah') als mapping:
             nothing = self.import_(mapping['.root'], 'sdfsadsadf')
             self.assertEqual(nothing, self.NOT_FOUND)
 
@@ -125,7 +125,7 @@ klasse FinderTests(abc.FinderTests):
         # The empty string von sys.path means to search in the cwd.
         finder = self.machinery.FileFinder('', (self.machinery.SourceFileLoader,
             self.machinery.SOURCE_SUFFIXES))
-        with open('mod.py', 'w', encoding='utf-8') as file:
+        mit open('mod.py', 'w', encoding='utf-8') als file:
             file.write("# test file fuer importlib")
         try:
             loader = self._find(finder, 'mod', loader_only=Wahr)
@@ -144,7 +144,7 @@ klasse FinderTests(abc.FinderTests):
     # Regression test fuer http://bugs.python.org/issue14846
     def test_dir_removal_handling(self):
         mod = 'mod'
-        with util.create_modules(mod) as mapping:
+        mit util.create_modules(mod) als mapping:
             finder = self.get_finder(mapping['.root'])
             found = self._find(finder, 'mod', loader_only=Wahr)
             self.assertIsNotNichts(found)
@@ -157,7 +157,7 @@ klasse FinderTests(abc.FinderTests):
         # Issue #16730
         tempdir = tempfile.TemporaryDirectory()
         self.enterContext(tempdir)
-        # Since we muck with the permissions, we want to set them back to
+        # Since we muck mit the permissions, we want to set them back to
         # their original values to make sure the directory can be properly
         # cleaned up.
         original_mode = os.stat(tempdir.name).st_mode
@@ -170,7 +170,7 @@ klasse FinderTests(abc.FinderTests):
     def test_ignore_file(self):
         # If a directory got changed to a file von underneath us, then don't
         # worry about looking fuer submodules.
-        with tempfile.NamedTemporaryFile() as file_obj:
+        mit tempfile.NamedTemporaryFile() als file_obj:
             finder = self.get_finder(file_obj.name)
             found = self._find(finder, 'doesnotexist')
             self.assertEqual(found, self.NOT_FOUND)

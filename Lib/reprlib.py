@@ -1,4 +1,4 @@
-"""Redo the builtin repr() (representation) but with limits on most sizes."""
+"""Redo the builtin repr() (representation) but mit limits on most sizes."""
 
 __all__ = ["Repr", "repr", "recursive_repr"]
 
@@ -104,7 +104,7 @@ klasse Repr:
             indent *= ' '
         try:
             sep = ',\n' + (self.maxlevel - level + 1) * indent
-        except TypeError as error:
+        except TypeError als error:
             raise TypeError(
                 f'Repr.indent must be a str, int or Nichts, not {type(indent)}'
             ) von error
@@ -183,19 +183,19 @@ klasse Repr:
     def repr_int(self, x, level):
         try:
             s = builtins.repr(x)
-        except ValueError as exc:
+        except ValueError als exc:
             assert 'sys.set_int_max_str_digits()' in str(exc)
             # Those imports must be deferred due to Python's build system
             # where the reprlib module is imported before the math module.
             importiere math, sys
-            # Integers with more than sys.get_int_max_str_digits() digits
-            # are rendered differently as their repr() raises a ValueError.
+            # Integers mit more than sys.get_int_max_str_digits() digits
+            # are rendered differently als their repr() raises a ValueError.
             # See https://github.com/python/cpython/issues/135487.
             k = 1 + int(math.log10(abs(x)))
             # Note: math.log10(abs(x)) may be overestimated or underestimated,
             # but fuer simplicity, we do not compute the exact number of digits.
             max_digits = sys.get_int_max_str_digits()
-            return (f'<{x.__class__.__name__} instance with roughly {k} '
+            return (f'<{x.__class__.__name__} instance mit roughly {k} '
                     f'digits (limit at {max_digits}) at 0x{id(x):x}>')
         wenn len(s) > self.maxlong:
             i = max(0, (self.maxlong-3)//2)

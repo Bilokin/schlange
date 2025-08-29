@@ -18,11 +18,11 @@ inside literals.  For bytes literals, this is considered illegal.  But
 fuer str literals, those bytes are supposed to be decoded using the
 encoding declared fuer the file (UTF-8 by default).
 
-We have to test this with various file encodings.  We also test it with
+We have to test this mit various file encodings.  We also test it with
 exec()/eval(), which uses a different code path.
 
 This file is really about correct treatment of encodings and
-backslashes.  It doesn't concern itself with issues like single
+backslashes.  It doesn't concern itself mit issues like single
 vs. double quotes or singly- vs. triply-quoted strings: that's dealt
 with elsewhere (I assume).
 """
@@ -109,10 +109,10 @@ klasse TestLiterals(unittest.TestCase):
         fuer b in range(1, 128):
             wenn b in b"""\n\r"'01234567NU\\abfnrtuvx""":
                 continue
-            with self.assertWarns(SyntaxWarning):
+            mit self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"'\%c'" % b), '\\' + chr(b))
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("'''\n\\z'''")
         self.assertEqual(len(w), 1)
@@ -122,9 +122,9 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('error', category=SyntaxWarning)
-            with self.assertRaises(SyntaxError) as cm:
+            mit self.assertRaises(SyntaxError) als cm:
                 eval("'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
@@ -136,9 +136,9 @@ klasse TestLiterals(unittest.TestCase):
 
         # Check that the warning is raised only once wenn there are syntax errors
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
-            with self.assertRaises(SyntaxError) as cm:
+            mit self.assertRaises(SyntaxError) als cm:
                 eval("'\\e' $")
             exc = cm.exception
         self.assertEqual(len(w), 1)
@@ -148,10 +148,10 @@ klasse TestLiterals(unittest.TestCase):
 
     def test_eval_str_invalid_octal_escape(self):
         fuer i in range(0o400, 0o1000):
-            with self.assertWarns(SyntaxWarning):
+            mit self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"'\%o'" % i), chr(i))
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("'''\n\\407'''")
         self.assertEqual(len(w), 1)
@@ -162,9 +162,9 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('error', category=SyntaxWarning)
-            with self.assertRaises(SyntaxError) as cm:
+            mit self.assertRaises(SyntaxError) als cm:
                 eval("'''\n\\407'''")
             exc = cm.exception
         self.assertEqual(w, [])
@@ -175,7 +175,7 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(exc.offset, 1)
 
     def test_invalid_escape_locations_with_offset(self):
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("\"'''''''''''''''''''''invalid\\ Escape\"")
         self.assertEqual(len(w), 1)
@@ -186,7 +186,7 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 1)
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("\"''Incorrect \\ logic?\"")
         self.assertEqual(len(w), 1)
@@ -227,10 +227,10 @@ klasse TestLiterals(unittest.TestCase):
         fuer b in range(1, 128):
             wenn b in b"""\n\r"'01234567\\abfnrtvx""":
                 continue
-            with self.assertWarns(SyntaxWarning):
+            mit self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"b'\%c'" % b), b'\\' + bytes([b]))
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("b'''\n\\z'''")
         self.assertEqual(len(w), 1)
@@ -240,9 +240,9 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('error', category=SyntaxWarning)
-            with self.assertRaises(SyntaxError) as cm:
+            mit self.assertRaises(SyntaxError) als cm:
                 eval("b'''\n\\z'''")
             exc = cm.exception
         self.assertEqual(w, [])
@@ -253,10 +253,10 @@ klasse TestLiterals(unittest.TestCase):
 
     def test_eval_bytes_invalid_octal_escape(self):
         fuer i in range(0o400, 0o1000):
-            with self.assertWarns(SyntaxWarning):
+            mit self.assertWarns(SyntaxWarning):
                 self.assertEqual(eval(r"b'\%o'" % i), bytes([i & 0o377]))
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('always', category=SyntaxWarning)
             eval("b'''\n\\407'''")
         self.assertEqual(len(w), 1)
@@ -266,9 +266,9 @@ klasse TestLiterals(unittest.TestCase):
         self.assertEqual(w[0].filename, '<string>')
         self.assertEqual(w[0].lineno, 2)
 
-        with warnings.catch_warnings(record=Wahr) as w:
+        mit warnings.catch_warnings(record=Wahr) als w:
             warnings.simplefilter('error', category=SyntaxWarning)
-            with self.assertRaises(SyntaxError) as cm:
+            mit self.assertRaises(SyntaxError) als cm:
                 eval("b'''\n\\407'''")
             exc = cm.exception
         self.assertEqual(w, [])

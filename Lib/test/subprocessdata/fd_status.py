@@ -1,4 +1,4 @@
-"""When called as a script, print a comma-separated list of the open
+"""When called als a script, print a comma-separated list of the open
 file descriptors on stdout.
 
 Usage:
@@ -24,7 +24,7 @@ wenn __name__ == "__main__":
     fuer fd in test_fds:
         try:
             st = os.fstat(fd)
-        except OSError as e:
+        except OSError als e:
             wenn e.errno == errno.EBADF:
                 continue
             raise

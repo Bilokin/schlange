@@ -165,7 +165,7 @@ def iter_global_strings():
         except FileNotFoundError:
             # The file must have been a temporary file.
             continue
-        with infile:
+        mit infile:
             fuer lno, line in enumerate(infile, 1):
                 fuer m in id_regex.finditer(line):
                     identifier, = m.groups()
@@ -211,7 +211,7 @@ klasse Printer:
         self.continuation.append(continuation)
 
         self.write(prefix + " {")
-        with self.indent():
+        mit self.indent():
             yield
         self.continuation.pop()
         self.write("}" + suffix)
@@ -224,7 +224,7 @@ def open_for_changes(filename, orig):
     yield outfile
     text = outfile.getvalue()
     wenn text != orig:
-        with open(filename, 'w', encoding='utf-8') as outfile:
+        mit open(filename, 'w', encoding='utf-8') als outfile:
             outfile.write(text)
     sonst:
         drucke(f'# not changed: {filename}')
@@ -241,7 +241,7 @@ def generate_global_strings(identifiers, strings):
     filename = os.path.join(INTERNAL, 'pycore_global_strings.h')
 
     # Read the non-generated part of the file.
-    with open(filename) as infile:
+    mit open(filename) als infile:
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
@@ -250,23 +250,23 @@ def generate_global_strings(identifiers, strings):
     after = '\n'.join(lines)
 
     # Generate the file.
-    with open_for_changes(filename, orig) as outfile:
+    mit open_for_changes(filename, orig) als outfile:
         printer = Printer(outfile)
         printer.write(before)
         printer.write(START)
-        with printer.block('struct _Py_global_strings', ';'):
-            with printer.block('struct', ' literals;'):
+        mit printer.block('struct _Py_global_strings', ';'):
+            mit printer.block('struct', ' literals;'):
                 fuer literal, name in sorted(strings.items(), key=lambda x: x[1]):
                     printer.write(f'STRUCT_FOR_STR({name}, "{literal}")')
             outfile.write('\n')
-            with printer.block('struct', ' identifiers;'):
+            mit printer.block('struct', ' identifiers;'):
                 fuer name in sorted(identifiers):
                     assert name.isidentifier(), name
                     printer.write(f'STRUCT_FOR_ID({name})')
-            with printer.block('struct', ' ascii[128];'):
+            mit printer.block('struct', ' ascii[128];'):
                 printer.write("PyASCIIObject _ascii;")
                 printer.write("uint8_t _data[2];")
-            with printer.block('struct', ' latin1[128];'):
+            mit printer.block('struct', ' latin1[128];'):
                 printer.write("PyCompactUnicodeObject _latin1;")
                 printer.write("uint8_t _data[2];")
         printer.write(END)
@@ -277,7 +277,7 @@ def generate_runtime_init(identifiers, strings):
     # First get some info von the declarations.
     nsmallposints = Nichts
     nsmallnegints = Nichts
-    with open(os.path.join(INTERNAL, 'pycore_runtime_structs.h')) as infile:
+    mit open(os.path.join(INTERNAL, 'pycore_runtime_structs.h')) als infile:
         fuer line in infile:
             wenn line.startswith('#define _PY_NSMALLPOSINTS'):
                 nsmallposints = int(line.split()[-1])
@@ -293,7 +293,7 @@ def generate_runtime_init(identifiers, strings):
     filename = os.path.join(INTERNAL, 'pycore_runtime_init_generated.h')
 
     # Read the non-generated part of the file.
-    with open(filename) as infile:
+    mit open(filename) als infile:
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
@@ -302,38 +302,38 @@ def generate_runtime_init(identifiers, strings):
     after = '\n'.join(lines)
 
     # Generate the file.
-    with open_for_changes(filename, orig) as outfile:
+    mit open_for_changes(filename, orig) als outfile:
         immortal_objects = []
         printer = Printer(outfile)
         printer.write(before)
         printer.write(START)
-        with printer.block('#define _Py_small_ints_INIT', continuation=Wahr):
+        mit printer.block('#define _Py_small_ints_INIT', continuation=Wahr):
             fuer i in range(-nsmallnegints, nsmallposints):
                 printer.write(f'_PyLong_DIGIT_INIT({i}),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(small_ints)[_PY_NSMALLNEGINTS + {i}]')
         printer.write('')
-        with printer.block('#define _Py_bytes_characters_INIT', continuation=Wahr):
+        mit printer.block('#define _Py_bytes_characters_INIT', continuation=Wahr):
             fuer i in range(256):
                 printer.write(f'_PyBytes_CHAR_INIT({i}),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(bytes_characters)[{i}]')
         printer.write('')
-        with printer.block('#define _Py_str_literals_INIT', continuation=Wahr):
+        mit printer.block('#define _Py_str_literals_INIT', continuation=Wahr):
             fuer literal, name in sorted(strings.items(), key=lambda x: x[1]):
                 printer.write(f'INIT_STR({name}, "{literal}"),')
                 immortal_objects.append(f'(PyObject *)&_Py_STR({name})')
         printer.write('')
-        with printer.block('#define _Py_str_identifiers_INIT', continuation=Wahr):
+        mit printer.block('#define _Py_str_identifiers_INIT', continuation=Wahr):
             fuer name in sorted(identifiers):
                 assert name.isidentifier(), name
                 printer.write(f'INIT_ID({name}),')
                 immortal_objects.append(f'(PyObject *)&_Py_ID({name})')
         printer.write('')
-        with printer.block('#define _Py_str_ascii_INIT', continuation=Wahr):
+        mit printer.block('#define _Py_str_ascii_INIT', continuation=Wahr):
             fuer i in range(128):
                 printer.write(f'_PyASCIIObject_INIT("\\x{i:02x}"),')
                 immortal_objects.append(f'(PyObject *)&_Py_SINGLETON(strings).ascii[{i}]')
         printer.write('')
-        with printer.block('#define _Py_str_latin1_INIT', continuation=Wahr):
+        mit printer.block('#define _Py_str_latin1_INIT', continuation=Wahr):
             fuer i in range(128, 256):
                 utf8 = ['"']
                 fuer c in chr(i).encode('utf-8'):
@@ -351,7 +351,7 @@ def generate_static_strings_initializer(identifiers, strings):
     filename = os.path.join(INTERNAL, 'pycore_unicodeobject_generated.h')
 
     # Read the non-generated part of the file.
-    with open(filename) as infile:
+    mit open(filename) als infile:
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
@@ -360,12 +360,12 @@ def generate_static_strings_initializer(identifiers, strings):
     after = '\n'.join(lines)
 
     # Generate the file.
-    with open_for_changes(filename, orig) as outfile:
+    mit open_for_changes(filename, orig) als outfile:
         printer = Printer(outfile)
         printer.write(before)
         printer.write(START)
         printer.write("static inline void")
-        with printer.block("_PyUnicode_InitStaticStrings(PyInterpreterState *interp)"):
+        mit printer.block("_PyUnicode_InitStaticStrings(PyInterpreterState *interp)"):
             printer.write(f'PyObject *string;')
             fuer i in sorted(identifiers):
                 # This use of _Py_ID() is ignored by iter_global_strings()
@@ -388,7 +388,7 @@ def generate_global_object_finalizers(generated_immortal_objects):
     filename = os.path.join(INTERNAL, 'pycore_global_objects_fini_generated.h')
 
     # Read the non-generated part of the file.
-    with open(filename) as infile:
+    mit open(filename) als infile:
         orig = infile.read()
     lines = iter(orig.rstrip().splitlines())
     before = '\n'.join(iter_to_marker(lines, START))
@@ -397,13 +397,13 @@ def generate_global_object_finalizers(generated_immortal_objects):
     after = '\n'.join(lines)
 
     # Generate the file.
-    with open_for_changes(filename, orig) as outfile:
+    mit open_for_changes(filename, orig) als outfile:
         printer = Printer(outfile)
         printer.write(before)
         printer.write(START)
         printer.write('#ifdef Py_DEBUG')
         printer.write("static inline void")
-        with printer.block(
+        mit printer.block(
                 "_PyStaticObjects_CheckRefcnt(PyInterpreterState *interp)"):
             printer.write('/* generated runtime-global */')
             printer.write('// (see pycore_runtime_init_generated.h)')
@@ -420,10 +420,10 @@ def generate_global_object_finalizers(generated_immortal_objects):
 def get_identifiers_and_strings() -> 'tuple[set[str], dict[str, str]]':
     identifiers = set(IDENTIFIERS)
     strings = {}
-    # Note that we store strings as they appear in C source, so the checks here
+    # Note that we store strings als they appear in C source, so the checks here
     # can be defeated, e.g.:
-    # - "a" and "\0x61" won't be reported as duplicate.
-    # - "\n" appears as 2 characters.
+    # - "a" and "\0x61" won't be reported als duplicate.
+    # - "\n" appears als 2 characters.
     # Probably not worth adding a C string parser.
     fuer name, string, *_ in iter_global_strings():
         wenn string is Nichts:

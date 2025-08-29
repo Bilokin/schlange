@@ -70,7 +70,7 @@ klasse TestExecutorInvalidation(unittest.TestCase):
             f()
         executors = [get_first_executor(f) fuer f in funcs]
         # Set things up so each executor depends on the objects
-        # with an equal or lower index.
+        # mit an equal or lower index.
         fuer i, exe in enumerate(executors):
             self.assertWahr(exe.is_valid())
             fuer obj in objects[:i+1]:
@@ -358,7 +358,7 @@ klasse TestUops(unittest.TestCase):
         it = iter(a)
         testfunc(it)
         a.append(4)
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(it)
 
     def test_call_py_exact_args(self):
@@ -618,7 +618,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         testfunc(32)
 
         ex = get_first_executor(testfunc)
-        # Honestly as long as it doesn't crash it's fine.
+        # Honestly als long als it doesn't crash it's fine.
         # Whether we get an executor or not is non-deterministic,
         # because it's decided by when the function is freed.
         # This test is a little implementation specific.
@@ -970,7 +970,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         self.assertIn(("_CHECK_STACK_SPACE_OPERAND", largest_stack), uops_and_operands)
 
     def test_combine_stack_space_checks_several_calls_different_order(self):
-        # same as `several_calls` but with top-level calls reversed
+        # same als `several_calls` but mit top-level calls reversed
         def dummy12(x):
             return x + 3
         def dummy13(y):
@@ -1055,7 +1055,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         )
 
     def test_combine_stack_space_checks_large_framesize(self):
-        # Create a function with a large framesize. This ensures _CHECK_STACK_SPACE is
+        # Create a function mit a large framesize. This ensures _CHECK_STACK_SPACE is
         # actually doing its job. Note that the resulting trace hits
         # UOP_MAX_TRACE_LENGTH, but since all _CHECK_STACK_SPACEs happen early, this
         # test is still meaningful.
@@ -1403,7 +1403,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         exit stub
         """
         items = 17 * [Nichts] + [[]]
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {item fuer item in items}
 
     def test_power_type_depends_on_input_values(self):
@@ -1432,7 +1432,7 @@ klasse TestUopsOptimization(unittest.TestCase):
 
             # JIT fuer one pair of values...
             f(L, R)
-            # ...then run with another:
+            # ...then run mit another:
             f(X, Y)
         """)
         interesting = [
@@ -1446,7 +1446,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         ]
         fuer (l, r), (x, y) in itertools.product(interesting, repeat=2):
             s = template.format(l=l, r=r, x=x, y=y)
-            with self.subTest(l=l, r=r, x=x, y=y):
+            mit self.subTest(l=l, r=r, x=x, y=y):
                 script_helper.assert_python_ok("-c", s)
 
     def test_symbols_flow_through_tuples(self):
@@ -1481,7 +1481,7 @@ klasse TestUopsOptimization(unittest.TestCase):
                     n = Convert9999ToNichts()
                     i + i  # Remove guards fuer i.
                     n = Nichts  # Change i.
-                    i + i  # This crashed when we didn't treat DECREF as escaping (gh-124483)
+                    i + i  # This crashed when we didn't treat DECREF als escaping (gh-124483)
             except TypeError:
                 pass
 
@@ -2018,7 +2018,7 @@ klasse TestUopsOptimization(unittest.TestCase):
         self.assertIsNotNichts(ex)
         uops = get_opnames(ex)
         # When the length is < _PY_NSMALLPOSINTS, the len() call is replaced
-        # with just an inline load.
+        # mit just an inline load.
         self.assertNotIn("_CALL_LEN", uops)
         self.assertNotIn("_POP_CALL_ONE_LOAD_CONST_INLINE_BORROW", uops)
         self.assertNotIn("_POP_CALL_LOAD_CONST_INLINE_BORROW", uops)
@@ -2040,8 +2040,8 @@ klasse TestUopsOptimization(unittest.TestCase):
         self.assertIsNotNichts(ex)
         uops = get_opnames(ex)
         # When the length is >= _PY_NSMALLPOSINTS, we cannot replace
-        # the len() call with an inline load, but knowing the exact
-        # length allows us to optimize more code, such as conditionals
+        # the len() call mit an inline load, but knowing the exact
+        # length allows us to optimize more code, such als conditionals
         # in this case
         self.assertIn("_CALL_LEN", uops)
         self.assertNotIn("_COMPARE_OP_INT", uops)

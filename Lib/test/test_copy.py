@@ -258,7 +258,7 @@ klasse TestCopy(unittest.TestCase):
                 return self.foo == other.foo
         x = C(42)
         self.assertEqual(copy.copy(x), x)
-        # State with boolean value is false (issue #25718)
+        # State mit boolean value is false (issue #25718)
         x = C(0.0)
         self.assertEqual(copy.copy(x), x)
 
@@ -451,7 +451,7 @@ klasse TestCopy(unittest.TestCase):
         x = [(1, 2)]
         y = copy.deepcopy(x, memo)
         self.assertEqual(y, x)
-        # Tuples with immutable contents are immutable fuer deepcopy.
+        # Tuples mit immutable contents are immutable fuer deepcopy.
         self.assertEqual(len(memo), 2)
 
     def test_deepcopy_inst_vanilla(self):
@@ -572,7 +572,7 @@ klasse TestCopy(unittest.TestCase):
         self.assertEqual(y, x)
         self.assertIsNot(y, x)
         self.assertIsNot(y.foo, x.foo)
-        # State with boolean value is false (issue #25718)
+        # State mit boolean value is false (issue #25718)
         x = C([])
         y = copy.deepcopy(x)
         self.assertEqual(y, x)
@@ -693,9 +693,9 @@ klasse TestCopy(unittest.TestCase):
             def __reduce__(self):
                 return C, (), self.__dict__, Nichts, Nichts, state_setter
         x = C()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             copy.copy(x)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             copy.deepcopy(x)
 
     def test_reduce_6tuple_none(self):
@@ -703,9 +703,9 @@ klasse TestCopy(unittest.TestCase):
             def __reduce__(self):
                 return C, (), self.__dict__, Nichts, Nichts, Nichts
         x = C()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             copy.copy(x)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             copy.deepcopy(x)
 
     def test_copy_slots(self):
@@ -950,7 +950,7 @@ klasse TestReplace(unittest.TestCase):
             x: int
             y: int = 0
         fuer Point in (PointFromCall, PointFromInheritance, PointFromClass):
-            with self.subTest(Point=Point):
+            mit self.subTest(Point=Point):
                 p = Point(11, 22)
                 self.assertIsInstance(p, Point)
                 self.assertEqual(copy.replace(p), (11, 22))
@@ -958,7 +958,7 @@ klasse TestReplace(unittest.TestCase):
                 self.assertEqual(copy.replace(p, x=1), (1, 22))
                 self.assertEqual(copy.replace(p, y=2), (11, 2))
                 self.assertEqual(copy.replace(p, x=1, y=2), (1, 2))
-                with self.assertRaisesRegex(TypeError, 'unexpected field name'):
+                mit self.assertRaisesRegex(TypeError, 'unexpected field name'):
                     copy.replace(p, x=1, error=2)
 
     def test_dataclass(self):
@@ -974,7 +974,7 @@ klasse TestReplace(unittest.TestCase):
         self.assertEqual(attrs(copy.replace(c, x=1)), (1, 22))
         self.assertEqual(attrs(copy.replace(c, y=2)), (11, 2))
         self.assertEqual(attrs(copy.replace(c, x=1, y=2)), (1, 2))
-        with self.assertRaisesRegex(TypeError, 'unexpected keyword argument'):
+        mit self.assertRaisesRegex(TypeError, 'unexpected keyword argument'):
             copy.replace(c, x=1, error=2)
 
 

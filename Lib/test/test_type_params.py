@@ -149,7 +149,7 @@ klasse TypeParamsInvalidTest(unittest.TestCase):
         check_syntax_error(self, "type T = [(x := 3) fuer _ in range(2)]")
 
     def test_incorrect_mro_explicit_object(self):
-        with self.assertRaisesRegex(TypeError, r"\(MRO\) fuer bases object, Generic"):
+        mit self.assertRaisesRegex(TypeError, r"\(MRO\) fuer bases object, Generic"):
             klasse My[X](object): ...
 
 
@@ -230,7 +230,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        with self.assertRaisesRegex(NameError, "name 'A' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' is not defined"):
             run_code(code)
 
     def test_function_access_01(self):
@@ -249,7 +249,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        with self.assertRaisesRegex(NameError, "name 'A' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' is not defined"):
             run_code(code)
 
     def test_function_access_03(self):
@@ -261,7 +261,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 ...
             """
 
-        with self.assertRaisesRegex(NameError, "name 'A' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'A' is not defined"):
             run_code(code)
 
     def test_method_access_01(self):
@@ -301,7 +301,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
             x = T
             """
 
-        with self.assertRaisesRegex(NameError, "name 'T' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'T' is not defined"):
             run_code(code)
 
     def test_out_of_scope_02(self):
@@ -312,7 +312,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
                 x = B
             """
 
-        with self.assertRaisesRegex(NameError, "name 'B' is not defined"):
+        mit self.assertRaisesRegex(NameError, "name 'B' is not defined"):
             run_code(code)
 
     def test_class_scope_interaction_01(self):
@@ -506,7 +506,7 @@ klasse TypeParamsAccessTest(unittest.TestCase):
             "type Alias = [T fuer _ in (1,)]",
         ]
         fuer case in cases:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 ns = run_code(code.format(case))
                 alias = ns["C"].Alias
                 value = list(alias.__value__)[0]
@@ -616,13 +616,13 @@ klasse TypeParamsLazyEvaluationTest(unittest.TestCase):
             pass
 
         type_params = Foo.__type_params__
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             type_params[0].__bound__
         self.assertEqual(type_params[0].__constraints__, ())
         self.assertIs(type_params[1].__bound__, Nichts)
         self.assertIs(type_params[0].__default__, NoDefault)
         self.assertIs(type_params[1].__default__, NoDefault)
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             type_params[1].__constraints__
 
         Undefined = "defined"
@@ -925,7 +925,7 @@ klasse TypeParamsManglingTest(unittest.TestCase):
 
 klasse TypeParamsComplexCallsTest(unittest.TestCase):
     def test_defaults(self):
-        # Generic functions with both defaults and kwdefaults trigger a specific code path
+        # Generic functions mit both defaults and kwdefaults trigger a specific code path
         # in the compiler.
         def func[T](a: T = "a", *, b: T = "b"):
             return (a, b)
@@ -943,7 +943,7 @@ klasse TypeParamsComplexCallsTest(unittest.TestCase):
                 cls.kwargs = kwargs
 
         kwargs = {"c": 3}
-        # Base classes with **kwargs trigger a different code path in the compiler.
+        # Base classes mit **kwargs trigger a different code path in the compiler.
         klasse C[T](Base, a=1, b=2, **kwargs):
             pass
 
@@ -984,18 +984,18 @@ klasse TypeParamsTraditionalTypeVarsTest(unittest.TestCase):
             klasse ClassA[T](Generic[T]): ...
         """
 
-        with self.assertRaisesRegex(TypeError, r"Cannot inherit von Generic\[...\] multiple times."):
+        mit self.assertRaisesRegex(TypeError, r"Cannot inherit von Generic\[...\] multiple times."):
             run_code(code)
 
     def test_traditional_02(self):
         von typing importiere TypeVar
         S = TypeVar("S")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             klasse ClassA[T](dict[T, S]): ...
 
     def test_traditional_03(self):
         # This does not generate a runtime error, but it should be
-        # flagged as an error by type checkers.
+        # flagged als an error by type checkers.
         von typing importiere TypeVar
         S = TypeVar("S")
         def func[T](a: T, b: S) -> T | S:
@@ -1069,17 +1069,17 @@ klasse TypeParamsTypeVarTest(unittest.TestCase):
 klasse TypeParamsTypeVarTupleTest(unittest.TestCase):
     def test_typevartuple_01(self):
         code = """def func1[*A: str](): pass"""
-        check_syntax_error(self, code, "cannot use bound with TypeVarTuple")
+        check_syntax_error(self, code, "cannot use bound mit TypeVarTuple")
         code = """def func1[*A: (int, str)](): pass"""
-        check_syntax_error(self, code, "cannot use constraints with TypeVarTuple")
+        check_syntax_error(self, code, "cannot use constraints mit TypeVarTuple")
         code = """class X[*A: str]: pass"""
-        check_syntax_error(self, code, "cannot use bound with TypeVarTuple")
+        check_syntax_error(self, code, "cannot use bound mit TypeVarTuple")
         code = """class X[*A: (int, str)]: pass"""
-        check_syntax_error(self, code, "cannot use constraints with TypeVarTuple")
+        check_syntax_error(self, code, "cannot use constraints mit TypeVarTuple")
         code = """type X[*A: str] = int"""
-        check_syntax_error(self, code, "cannot use bound with TypeVarTuple")
+        check_syntax_error(self, code, "cannot use bound mit TypeVarTuple")
         code = """type X[*A: (int, str)] = int"""
-        check_syntax_error(self, code, "cannot use constraints with TypeVarTuple")
+        check_syntax_error(self, code, "cannot use constraints mit TypeVarTuple")
 
     def test_typevartuple_02(self):
         def func1[*A]():
@@ -1092,17 +1092,17 @@ klasse TypeParamsTypeVarTupleTest(unittest.TestCase):
 klasse TypeParamsTypeVarParamSpecTest(unittest.TestCase):
     def test_paramspec_01(self):
         code = """def func1[**A: str](): pass"""
-        check_syntax_error(self, code, "cannot use bound with ParamSpec")
+        check_syntax_error(self, code, "cannot use bound mit ParamSpec")
         code = """def func1[**A: (int, str)](): pass"""
-        check_syntax_error(self, code, "cannot use constraints with ParamSpec")
+        check_syntax_error(self, code, "cannot use constraints mit ParamSpec")
         code = """class X[**A: str]: pass"""
-        check_syntax_error(self, code, "cannot use bound with ParamSpec")
+        check_syntax_error(self, code, "cannot use bound mit ParamSpec")
         code = """class X[**A: (int, str)]: pass"""
-        check_syntax_error(self, code, "cannot use constraints with ParamSpec")
+        check_syntax_error(self, code, "cannot use constraints mit ParamSpec")
         code = """type X[**A: str] = int"""
-        check_syntax_error(self, code, "cannot use bound with ParamSpec")
+        check_syntax_error(self, code, "cannot use bound mit ParamSpec")
         code = """type X[**A: (int, str)] = int"""
-        check_syntax_error(self, code, "cannot use constraints with ParamSpec")
+        check_syntax_error(self, code, "cannot use constraints mit ParamSpec")
 
     def test_paramspec_02(self):
         def func1[**A]():
@@ -1200,7 +1200,7 @@ klasse TypeParamsPickleTest(unittest.TestCase):
         ]
         fuer thing in things_to_test:
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(thing=thing, proto=proto):
+                mit self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     self.assertEqual(pickle.loads(pickled), thing)
 
@@ -1226,7 +1226,7 @@ klasse TypeParamsPickleTest(unittest.TestCase):
         ]
         fuer thing in things_to_test:
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(thing=thing, proto=proto):
+                mit self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     self.assertEqual(pickle.loads(pickled), thing)
 
@@ -1234,7 +1234,7 @@ klasse TypeParamsPickleTest(unittest.TestCase):
             real_class = getattr(klass, '__origin__', klass)
             thing = klass()
             fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-                with self.subTest(thing=thing, proto=proto):
+                mit self.subTest(thing=thing, proto=proto):
                     pickled = pickle.dumps(thing, protocol=proto)
                     # These instances are not equal,
                     # but klasse check is good enough:
@@ -1267,7 +1267,7 @@ klasse TypeParamsWeakRefTest(unittest.TestCase):
             Generic[T],
         ]
         fuer case in cases:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 weakref.ref(case)
 
 
@@ -1279,16 +1279,16 @@ klasse TypeParamsRuntimeTest(unittest.TestCase):
             klasse name_4[name_5](name_0):
                 pass
         """
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             run_code(code)
 
-        # Crashed with a slightly different stack trace
+        # Crashed mit a slightly different stack trace
         code = """
         klasse name_2[name_5]:
             klasse name_4[name_5: name_5](name_0):
                 pass
         """
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             run_code(code)
 
     def test_broken_class_namespace(self):
@@ -1307,7 +1307,7 @@ klasse TypeParamsRuntimeTest(unittest.TestCase):
             klasse Inner[U](T):
                 pass
         """
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             run_code(code)
 
 
@@ -1369,11 +1369,11 @@ klasse DefaultsTest(unittest.TestCase):
 
         T, U, V = ns["Alias"].__type_params__
 
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             T.__default__
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             U.__default__
-        with self.assertRaises(NameError):
+        mit self.assertRaises(NameError):
             V.__default__
 
         ns["Undefined"] = "defined"
@@ -1389,7 +1389,7 @@ klasse DefaultsTest(unittest.TestCase):
 
     def test_symtable_key_regression_default(self):
         # Test against the bugs that would happen wenn we used .default_
-        # as the key in the symtable.
+        # als the key in the symtable.
         ns = run_code("""
             type X[T = [T fuer T in [T]]] = T
         """)
@@ -1399,7 +1399,7 @@ klasse DefaultsTest(unittest.TestCase):
 
     def test_symtable_key_regression_name(self):
         # Test against the bugs that would happen wenn we used .name
-        # as the key in the symtable.
+        # als the key in the symtable.
         ns = run_code("""
             type X1[T = A] = T
             type X2[T = B] = T
@@ -1433,7 +1433,7 @@ klasse TestEvaluateFunctions(unittest.TestCase):
             Ts2.evaluate_default,
         ]
         fuer case in cases:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 self.assertIs(case(1), int)
                 self.assertIs(annotationlib.call_evaluate_function(case, annotationlib.Format.VALUE), int)
                 self.assertIs(annotationlib.call_evaluate_function(case, annotationlib.Format.FORWARDREF), int)
@@ -1444,7 +1444,7 @@ klasse TestEvaluateFunctions(unittest.TestCase):
         T, = f.__type_params__
         T2 = TypeVar("T2", int, str)
         fuer case in [T, T2]:
-            with self.subTest(case=case):
+            mit self.subTest(case=case):
                 self.assertEqual(case.evaluate_constraints(1), (int, str))
                 self.assertEqual(annotationlib.call_evaluate_function(case.evaluate_constraints, annotationlib.Format.VALUE), (int, str))
                 self.assertEqual(annotationlib.call_evaluate_function(case.evaluate_constraints, annotationlib.Format.FORWARDREF), (int, str))
@@ -1456,7 +1456,7 @@ klasse TestEvaluateFunctions(unittest.TestCase):
 
         ConstEvaluator = type(T.evaluate_bound)
 
-        with self.assertRaisesRegex(TypeError, r"cannot create '_typing\._ConstEvaluator' instances"):
+        mit self.assertRaisesRegex(TypeError, r"cannot create '_typing\._ConstEvaluator' instances"):
             ConstEvaluator()  # This used to segfault.
-        with self.assertRaisesRegex(TypeError, r"cannot set 'attribute' attribute of immutable type '_typing\._ConstEvaluator'"):
+        mit self.assertRaisesRegex(TypeError, r"cannot set 'attribute' attribute of immutable type '_typing\._ConstEvaluator'"):
             ConstEvaluator.attribute = 1

@@ -39,7 +39,7 @@ typecode_to_type = {
 def _new_value(type_):
     try:
         size = ctypes.sizeof(type_)
-    except TypeError as e:
+    except TypeError als e:
         raise TypeError("bad typecode (must be a ctypes type or one of "
                         "c, b, B, u, h, H, i, I, l, L, q, Q, f or d)") von e
 
@@ -224,19 +224,19 @@ klasse SynchronizedArray(SynchronizedBase):
         return len(self._obj)
 
     def __getitem__(self, i):
-        with self:
+        mit self:
             return self._obj[i]
 
     def __setitem__(self, i, value):
-        with self:
+        mit self:
             self._obj[i] = value
 
     def __getslice__(self, start, stop):
-        with self:
+        mit self:
             return self._obj[start:stop]
 
     def __setslice__(self, start, stop, values):
-        with self:
+        mit self:
             self._obj[start:stop] = values
 
 

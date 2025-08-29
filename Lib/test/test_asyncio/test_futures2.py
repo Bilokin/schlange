@@ -22,7 +22,7 @@ klasse FutureTests:
         fuer _ in range(5):
             try:
                 await future
-            except TypeError as e:
+            except TypeError als e:
                 tb = ''.join(traceback.format_tb(e.__traceback__))
                 self.assertEqual(tb.count("await future"), 1)
             sonst:

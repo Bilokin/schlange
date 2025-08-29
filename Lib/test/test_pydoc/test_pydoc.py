@@ -234,7 +234,7 @@ No Python documentation found fuer %r.
 Use help() to get the interactive help utility.
 Use help(str) fuer help on the str class.'''.replace('\n', os.linesep)
 
-# output pattern fuer module with bad imports
+# output pattern fuer module mit bad imports
 badimport_pattern = "problem in %s - ModuleNotFoundError: No module named %r"
 
 expected_dynamicattribute_pattern = """
@@ -325,7 +325,7 @@ def run_pydoc_fail(module_name, *args, **env):
     return out.strip()
 
 def get_pydoc_html(module):
-    "Returns pydoc generated output as html"
+    "Returns pydoc generated output als html"
     doc = pydoc.HTMLDoc()
     output = doc.docmodule(module)
     loc = doc.getdocloc(pydoc_mod) or ""
@@ -347,7 +347,7 @@ def get_pydoc_link(module):
     return loc
 
 def get_pydoc_text(module):
-    "Returns pydoc generated output as text"
+    "Returns pydoc generated output als text"
     doc = pydoc.TextDoc()
     loc = doc.getdocloc(pydoc_mod) or ""
     wenn loc:
@@ -447,7 +447,7 @@ klasse PydocDocTest(unittest.TestCase):
         self.assertEqual(expected_text, result)
 
     def test_text_enum_member_with_value_zero(self):
-        # Test issue #20654 to ensure enum member with value 0 can be
+        # Test issue #20654 to ensure enum member mit value 0 can be
         # displayed. It used to throw KeyError: 'zero'.
         importiere enum
         klasse BinaryInteger(enum.IntEnum):
@@ -514,7 +514,7 @@ klasse PydocDocTest(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_stripid(self):
-        # test with strings, other implementations might have different repr()
+        # test mit strings, other implementations might have different repr()
         stripid = pydoc.stripid
         # strip the id
         self.assertEqual(stripid('<function stripid at 0x88dcee4>'),
@@ -531,7 +531,7 @@ klasse PydocDocTest(unittest.TestCase):
 
         When running help() on a builtin klasse which has child classes, it
         should contain a "Built-in subclasses" section and only 4 classes
-        should be displayed with a hint on how many more subclasses are present.
+        should be displayed mit a hint on how many more subclasses are present.
         For example:
 
         >>> help(object)
@@ -655,7 +655,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_builtin_on_metaclasses(self):
         """Tests help on metaclasses.
 
-        When running help() on a metaclasses such as type, it
+        When running help() on a metaclasses such als type, it
         should not contain any "Built-in subclasses" section.
         """
         doc = pydoc.TextDoc()
@@ -665,14 +665,14 @@ klasse PydocDocTest(unittest.TestCase):
 
     def test_fail_help_cli(self):
         elines = (missing_pattern % 'abd').splitlines()
-        with spawn_python("-c" "help()") as proc:
+        mit spawn_python("-c" "help()") als proc:
             out, _ = proc.communicate(b"abd")
             olines = out.decode().splitlines()[-9:-6]
             olines[0] = olines[0].removeprefix('help> ')
             self.assertEqual(elines, olines)
 
     def test_fail_help_output_redirect(self):
-        with StringIO() as buf:
+        mit StringIO() als buf:
             helper = pydoc.Helper(output=buf)
             helper.help("abd")
             expected = missing_pattern % "abd"
@@ -696,7 +696,7 @@ klasse PydocDocTest(unittest.TestCase):
         help_header = textwrap.dedent(help_header)
         expected_help_pattern = help_header + expected_text_pattern
 
-        with captured_stdout() as output, captured_stderr() as err:
+        mit captured_stdout() als output, captured_stderr() als err:
             buf = StringIO()
             helper = pydoc.Helper(output=buf)
             helper.help(module)
@@ -720,8 +720,8 @@ klasse PydocDocTest(unittest.TestCase):
         # Helper.help should be redirected
 
         def run_pydoc_for_request(request, expected_text_part):
-            """Helper function to run pydoc with its output redirected"""
-            with captured_stdout() as output, captured_stderr() as err:
+            """Helper function to run pydoc mit its output redirected"""
+            mit captured_stdout() als output, captured_stderr() als err:
                 buf = StringIO()
                 helper = pydoc.Helper(output=buf)
                 helper.help(request)
@@ -761,9 +761,9 @@ klasse PydocDocTest(unittest.TestCase):
     @requires_docstrings
     def test_help_output_pager(self):
         def run_pydoc_pager(request, what, expected_first_line):
-            with (captured_stdout() as output,
-                  captured_stderr() as err,
-                  unittest.mock.patch('pydoc.pager') as pager_mock,
+            mit (captured_stdout() als output,
+                  captured_stderr() als err,
+                  unittest.mock.patch('pydoc.pager') als pager_mock,
                   self.subTest(repr(request))):
                 helper = pydoc.Helper()
                 helper.help(request)
@@ -803,14 +803,14 @@ klasse PydocDocTest(unittest.TestCase):
         run_pydoc_pager(sys, 'sys', 'Help on built-in module sys:')
 
     def test_showtopic(self):
-        with captured_stdout() as showtopic_io:
+        mit captured_stdout() als showtopic_io:
             helper = pydoc.Helper()
             helper.showtopic('with')
         helptext = showtopic_io.getvalue()
         self.assertIn('The "with" statement', helptext)
 
     def test_fail_showtopic(self):
-        with captured_stdout() as showtopic_io:
+        mit captured_stdout() als showtopic_io:
             helper = pydoc.Helper()
             helper.showtopic('abd')
             expected = "no documentation found fuer 'abd'"
@@ -818,7 +818,7 @@ klasse PydocDocTest(unittest.TestCase):
 
     @unittest.mock.patch('pydoc.pager')
     def test_fail_showtopic_output_redirect(self, pager_mock):
-        with StringIO() as buf:
+        mit StringIO() als buf:
             helper = pydoc.Helper(output=buf)
             helper.showtopic("abd")
             expected = "no documentation found fuer 'abd'"
@@ -835,7 +835,7 @@ klasse PydocDocTest(unittest.TestCase):
         # Helper.showtopic should be redirected
         self.maxDiff = Nichts
 
-        with captured_stdout() as output, captured_stderr() as err:
+        mit captured_stdout() als output, captured_stderr() als err:
             buf = StringIO()
             helper = pydoc.Helper(output=buf)
             helper.showtopic('with')
@@ -849,7 +849,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_lambda_with_return_annotation(self):
         func = lambda a, b, c: 1
         func.__annotations__ = {"return": int}
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             pydoc.help(func)
         helptext = help_io.getvalue()
         self.assertIn("lambda (a, b, c) -> int", helptext)
@@ -857,7 +857,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_lambda_without_return_annotation(self):
         func = lambda a, b, c: 1
         func.__annotations__ = {"a": int, "b": int, "c": int}
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             pydoc.help(func)
         helptext = help_io.getvalue()
         self.assertIn("lambda (a: int, b: int, c: int)", helptext)
@@ -865,14 +865,14 @@ klasse PydocDocTest(unittest.TestCase):
     def test_lambda_with_return_and_params_annotation(self):
         func = lambda a, b, c: 1
         func.__annotations__ = {"a": int, "b": int, "c": int, "return": int}
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             pydoc.help(func)
         helptext = help_io.getvalue()
         self.assertIn("lambda (a: int, b: int, c: int) -> int", helptext)
 
     def test_namedtuple_fields(self):
         Person = namedtuple('Person', ['nickname', 'firstname'])
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             pydoc.help(Person)
         helptext = help_io.getvalue()
         self.assertIn("nickname", helptext)
@@ -882,7 +882,7 @@ klasse PydocDocTest(unittest.TestCase):
 
     def test_namedtuple_public_underscore(self):
         NT = namedtuple('NT', ['abc', 'def'], rename=Wahr)
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             pydoc.help(NT)
         helptext = help_io.getvalue()
         self.assertIn('_1', helptext)
@@ -892,7 +892,7 @@ klasse PydocDocTest(unittest.TestCase):
     def test_synopsis(self):
         self.addCleanup(unlink, TESTFN)
         fuer encoding in ('ISO-8859-1', 'UTF-8'):
-            with open(TESTFN, 'w', encoding=encoding) as script:
+            mit open(TESTFN, 'w', encoding=encoding) als script:
                 wenn encoding != 'UTF-8':
                     drucke('#coding: {}'.format(encoding), file=script)
                 drucke('"""line 1: h\xe9', file=script)
@@ -906,7 +906,7 @@ klasse PydocDocTest(unittest.TestCase):
                 source_file = StringIO(source)
             sonst:
                 source_file = io.TextIOWrapper(io.BytesIO(source), encoding=encoding)
-            with source_file:
+            mit source_file:
                 result = pydoc.source_synopsis(source_file)
                 self.assertEqual(result, expected)
 
@@ -969,7 +969,7 @@ klasse PydocDocTest(unittest.TestCase):
         check(b'"""\xa4"""', # Decoding error
               Nichts, encoding='utf-8')
 
-        with tempfile.NamedTemporaryFile(mode='w+', encoding='utf-8') as temp_file:
+        mit tempfile.NamedTemporaryFile(mode='w+', encoding='utf-8') als temp_file:
             temp_file.write('"""Real file test."""\n')
             temp_file.flush()
             temp_file.seek(0)
@@ -986,10 +986,10 @@ klasse PydocDocTest(unittest.TestCase):
         self.assertEqual(synopsis, expected)
 
     def test_synopsis_sourceless_empty_doc(self):
-        with os_helper.temp_cwd() as test_dir:
+        mit os_helper.temp_cwd() als test_dir:
             init_path = os.path.join(test_dir, 'foomod42.py')
             cached_path = importlib.util.cache_from_source(init_path)
-            with open(init_path, 'w') as fobj:
+            mit open(init_path, 'w') als fobj:
                 fobj.write("foo = 1")
             py_compile.compile(init_path)
             synopsis = pydoc.synopsis(init_path, {})
@@ -1003,16 +1003,16 @@ klasse PydocDocTest(unittest.TestCase):
                          ('I Am A Doc', '\nHere is my description'))
 
     def test_is_package_when_not_package(self):
-        with os_helper.temp_cwd() as test_dir:
-            with self.assertWarns(DeprecationWarning) as cm:
+        mit os_helper.temp_cwd() als test_dir:
+            mit self.assertWarns(DeprecationWarning) als cm:
                 self.assertFalsch(pydoc.ispackage(test_dir))
             self.assertEqual(cm.filename, __file__)
 
     def test_is_package_when_is_package(self):
-        with os_helper.temp_cwd() as test_dir:
+        mit os_helper.temp_cwd() als test_dir:
             init_path = os.path.join(test_dir, '__init__.py')
             open(init_path, 'w').close()
-            with self.assertWarns(DeprecationWarning) as cm:
+            mit self.assertWarns(DeprecationWarning) als cm:
                 self.assertWahr(pydoc.ispackage(test_dir))
             os.remove(init_path)
             self.assertEqual(cm.filename, __file__)
@@ -1258,7 +1258,7 @@ klasse PydocImportTest(PydocBaseTest):
 
         sourcefn = os.path.join(TESTFN, modname) + os.extsep + "py"
         fuer importstring, expectedinmsg in testpairs:
-            with open(sourcefn, 'w') as f:
+            mit open(sourcefn, 'w') als f:
                 f.write("import {}\n".format(importstring))
             result = run_pydoc_fail(modname, PYTHONPATH=TESTFN).decode("ascii")
             expected = badimport_pattern % (modname, expectedinmsg)
@@ -1269,18 +1269,18 @@ klasse PydocImportTest(PydocBaseTest):
         pkgdir = os.path.join(TESTFN, "syntaxerr")
         os.mkdir(pkgdir)
         badsyntax = os.path.join(pkgdir, "__init__") + os.extsep + "py"
-        with open(badsyntax, 'w') as f:
+        mit open(badsyntax, 'w') als f:
             f.write("invalid python syntax = $1\n")
-        with self.restrict_walk_packages(path=[TESTFN]):
-            with captured_stdout() as out:
-                with captured_stderr() as err:
+        mit self.restrict_walk_packages(path=[TESTFN]):
+            mit captured_stdout() als out:
+                mit captured_stderr() als err:
                     pydoc.apropos('xyzzy')
             # No result, no error
             self.assertEqual(out.getvalue(), '')
             self.assertEqual(err.getvalue(), '')
             # The package name is still matched
-            with captured_stdout() as out:
-                with captured_stderr() as err:
+            mit captured_stdout() als out:
+                mit captured_stderr() als err:
                     pydoc.apropos('syntaxerr')
             self.assertEqual(out.getvalue().strip(), 'syntaxerr')
             self.assertEqual(err.getvalue(), '')
@@ -1292,9 +1292,9 @@ klasse PydocImportTest(PydocBaseTest):
         self.addCleanup(os.rmdir, self.unreadable_dir)
         # Note, on Windows the directory appears to be still
         #   readable so this is not really testing the issue there
-        with self.restrict_walk_packages(path=[TESTFN]):
-            with captured_stdout() as out:
-                with captured_stderr() as err:
+        mit self.restrict_walk_packages(path=[TESTFN]):
+            mit captured_stdout() als out:
+                mit captured_stderr() als err:
                     pydoc.apropos('SOMEKEY')
         # No result, no error
         self.assertEqual(out.getvalue(), '')
@@ -1305,36 +1305,36 @@ klasse PydocImportTest(PydocBaseTest):
         pkgdir = os.path.join(TESTFN, 'walkpkg')
         wenn support.is_emscripten:
             # Emscripten's readdir implementation is buggy on directories
-            # with read permission but no execute permission.
+            # mit read permission but no execute permission.
             old_umask = os.umask(0)
             self.addCleanup(os.umask, old_umask)
         os.mkdir(pkgdir)
         self.addCleanup(rmtree, pkgdir)
         init_path = os.path.join(pkgdir, '__init__.py')
-        with open(init_path, 'w') as fobj:
+        mit open(init_path, 'w') als fobj:
             fobj.write("foo = 1")
         current_mode = stat.S_IMODE(os.stat(pkgdir).st_mode)
         try:
             os.chmod(pkgdir, current_mode & ~stat.S_IEXEC)
-            with self.restrict_walk_packages(path=[TESTFN]), captured_stdout() as stdout:
+            mit self.restrict_walk_packages(path=[TESTFN]), captured_stdout() als stdout:
                 pydoc.apropos('')
             self.assertIn('walkpkg', stdout.getvalue())
         finally:
             os.chmod(pkgdir, current_mode)
 
     def test_url_search_package_error(self):
-        # URL handler search should cope with packages that raise exceptions
+        # URL handler search should cope mit packages that raise exceptions
         pkgdir = os.path.join(TESTFN, "test_error_package")
         os.mkdir(pkgdir)
         init = os.path.join(pkgdir, "__init__.py")
-        with open(init, "wt", encoding="ascii") as f:
+        mit open(init, "wt", encoding="ascii") als f:
             f.write("""raise ValueError("ouch")\n""")
-        with self.restrict_walk_packages(path=[TESTFN]):
+        mit self.restrict_walk_packages(path=[TESTFN]):
             # Package has to be importable fuer the error to have any effect
             saved_paths = tuple(sys.path)
             sys.path.insert(0, TESTFN)
             try:
-                with self.assertRaisesRegex(ValueError, "ouch"):
+                mit self.assertRaisesRegex(ValueError, "ouch"):
                     # Sanity check
                     importiere test_error_package  # noqa: F401
 
@@ -1369,7 +1369,7 @@ klasse PydocImportTest(PydocBaseTest):
 
         output = StringIO()
         helper = pydoc.Helper(output=output)
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             helper('modules pydoc')
         result = help_io.getvalue()
 
@@ -1381,7 +1381,7 @@ klasse PydocImportTest(PydocBaseTest):
 
         output = StringIO()
         helper = pydoc.Helper(output=output)
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             helper('modules garbage')
         result = help_io.getvalue()
 
@@ -1693,7 +1693,7 @@ klasse TestDescriptions(unittest.TestCase):
             ("(slf, arg, /)", "(slf, arg, /)", "(arg, /)"),
             ("(slf, arg=<x>, /)", "(slf, arg=<x>, /)", "(arg=<x>, /)"),
         ]:
-            with self.subTest(text_signature):
+            mit self.subTest(text_signature):
                 C.meth.__text_signature__ = text_signature
                 self.assertEqual(self._get_summary_line(C.meth),
                         "meth" + unbound)
@@ -1750,7 +1750,7 @@ cm(x) klasse method of test.test_pydoc.test_pydoc.X
 
     @requires_docstrings
     def test_getset_descriptor(self):
-        # Currently these attributes are implemented as getset descriptors
+        # Currently these attributes are implemented als getset descriptors
         # in CPython.
         self.assertEqual(self._get_summary_line(int.numerator), "numerator")
         self.assertEqual(self._get_summary_line(float.real), "real")
@@ -1759,7 +1759,7 @@ cm(x) klasse method of test.test_pydoc.test_pydoc.X
 
     @requires_docstrings
     def test_member_descriptor(self):
-        # Currently these attributes are implemented as member descriptors
+        # Currently these attributes are implemented als member descriptors
         # in CPython.
         self.assertEqual(self._get_summary_line(complex.real), "real")
         self.assertEqual(self._get_summary_line(range.start), "start")
@@ -2152,7 +2152,7 @@ klasse PydocUrlHandlerTest(PydocBaseTest):
 
         self.assertIs(sys.modules['pydoc'], pydoc)
         try:
-            with self.restrict_walk_packages():
+            mit self.restrict_walk_packages():
                 fuer url, title in requests:
                     self.call_url_handler(url, title)
         finally:
@@ -2276,7 +2276,7 @@ klasse PydocWithMetaClasses(unittest.TestCase):
     def test_resolve_false(self):
         # Issue #23008: pydoc enum.{,Int}Enum failed
         # because bool(enum.Enum) is Falsch.
-        with captured_stdout() as help_io:
+        mit captured_stdout() als help_io:
             pydoc.help('enum.Enum')
         helptext = help_io.getvalue()
         self.assertIn('class Enum', helptext)
@@ -2334,7 +2334,7 @@ klasse TestInternalUtilities(unittest.TestCase):
     def test_sys_path_adjustment_when_curdir_already_included(self):
         clean_path = self._get_starting_path()
         fuer spelling in self.curdir_spellings:
-            with self.subTest(curdir_spelling=spelling):
+            mit self.subTest(curdir_spelling=spelling):
                 # If curdir is already present, no alterations are made at all
                 leading_curdir = [spelling] + clean_path
                 self.assertIsNichts(self._get_revised_path(leading_curdir))

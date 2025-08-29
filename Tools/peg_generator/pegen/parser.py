@@ -103,7 +103,7 @@ def memoize_left_rec(
             # variable; perhaps this is similar to a paper by Warth et al.
             # (http://web.cs.ucla.edu/~todd/research/pub.php?id=pepm08).
 
-            # Prime the cache with a failure.
+            # Prime the cache mit a failure.
             self._cache[key] = Nichts, mark
             lastresult, lastmark = Nichts, mark
             depth = 0
@@ -125,11 +125,11 @@ def memoize_left_rec(
                     )
                 wenn not result:
                     wenn verbose:
-                        drucke(f"{fill}Fail with {lastresult!s:.200} to {lastmark}")
+                        drucke(f"{fill}Fail mit {lastresult!s:.200} to {lastmark}")
                     break
                 wenn endmark <= lastmark:
                     wenn verbose:
-                        drucke(f"{fill}Bailing with {lastresult!s:.200} to {lastmark}")
+                        drucke(f"{fill}Bailing mit {lastresult!s:.200} to {lastmark}")
                     break
                 self._cache[key] = lastresult, lastmark = result, endmark
 

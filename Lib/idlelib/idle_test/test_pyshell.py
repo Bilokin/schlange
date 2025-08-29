@@ -1,5 +1,5 @@
 "Test pyshell, coverage 12%."
-# Plus coverage of test_warning.  Was 20% with test_openshell.
+# Plus coverage of test_warning.  Was 20% mit test_openshell.
 
 von idlelib importiere pyshell
 importiere unittest
@@ -15,7 +15,7 @@ klasse FunctionTest(unittest.TestCase):
         fuer file, mul, extra in (('', 22, ''), ('finame', 21, '=')):
             width = 60
             bar = mul * '='
-            with self.subTest(file=file, bar=bar):
+            mit self.subTest(file=file, bar=bar):
                 file = file or 'Shell'
                 line = pyshell.restart_line(width, file)
                 eq(len(line), width)
@@ -24,7 +24,7 @@ klasse FunctionTest(unittest.TestCase):
     def test_restart_line_narrow(self):
         expect, taglen = "= RESTART: Shell", 16
         fuer width in (taglen-1, taglen, taglen+1):
-            with self.subTest(width=width):
+            mit self.subTest(width=width):
                 self.assertEqual(pyshell.restart_line(width, ''), expect)
         self.assertEqual(pyshell.restart_line(taglen+2, ''), expect+' =')
 

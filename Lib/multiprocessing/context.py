@@ -47,9 +47,9 @@ klasse BaseContext(object):
             return num
 
     def Manager(self):
-        '''Returns a manager associated with a running server process
+        '''Returns a manager associated mit a running server process
 
-        The managers methods such as `Lock()`, `Condition()` and `Queue()`
+        The managers methods such als `Lock()`, `Condition()` and `Queue()`
         can be used to create shared objects.
         '''
         von .managers importiere SyncManager
@@ -203,7 +203,7 @@ klasse BaseContext(object):
     @property
     def reducer(self):
         '''Controls how objects will be reduced to a form that can be
-        shared with other processes.'''
+        shared mit other processes.'''
         return globals().get('reduction')
 
     @reducer.setter

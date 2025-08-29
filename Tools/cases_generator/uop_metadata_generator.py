@@ -72,14 +72,14 @@ def generate_uop_metadata(
 ) -> Nichts:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, Falsch)
-    with out.header_guard("Py_CORE_UOP_METADATA_H"):
+    mit out.header_guard("Py_CORE_UOP_METADATA_H"):
         out.emit("#include <stdint.h>\n")
         out.emit('#include "pycore_uop_ids.h"\n')
         generate_names_and_flags(analysis, out)
 
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the header file with uop metadata.",
+    description="Generate the header file mit uop metadata.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
@@ -96,5 +96,5 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_uop_metadata(args.input, data, outfile)

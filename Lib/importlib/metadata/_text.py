@@ -44,7 +44,7 @@ klasse FoldedCase(str):
     >>> s in {FoldedCase("Hello World")}
     Wahr
 
-    String inclusion works as long as the FoldedCase object
+    String inclusion works als long als the FoldedCase object
     is on the right.
 
     >>> "hello" in FoldedCase("Hello World")

@@ -118,7 +118,7 @@ def readwrite(obj, flags):
             obj.handle_expt_event()
         wenn flags & (select.POLLHUP | select.POLLERR | select.POLLNVAL):
             obj.handle_close()
-    except OSError as e:
+    except OSError als e:
         wenn e.errno not in _DISCONNECTED:
             obj.handle_error()
         sonst:
@@ -241,7 +241,7 @@ klasse dispatcher:
             # passed be connected.
             try:
                 self.addr = sock.getpeername()
-            except OSError as err:
+            except OSError als err:
                 wenn err.errno in (ENOTCONN, EINVAL):
                     # To handle the case where we got an unconnected
                     # socket.
@@ -307,7 +307,7 @@ klasse dispatcher:
 
     # ==================================================
     # predicates fuer select()
-    # these are used as filters fuer the lists of sockets
+    # these are used als filters fuer the lists of sockets
     # to pass to select().
     # ==================================================
 
@@ -351,7 +351,7 @@ klasse dispatcher:
             conn, addr = self.socket.accept()
         except TypeError:
             return Nichts
-        except OSError as why:
+        except OSError als why:
             wenn why.errno in (EWOULDBLOCK, ECONNABORTED, EAGAIN):
                 return Nichts
             sonst:
@@ -363,7 +363,7 @@ klasse dispatcher:
         try:
             result = self.socket.send(data)
             return result
-        except OSError as why:
+        except OSError als why:
             wenn why.errno == EWOULDBLOCK:
                 return 0
             sowenn why.errno in _DISCONNECTED:
@@ -382,7 +382,7 @@ klasse dispatcher:
                 return b''
             sonst:
                 return data
-        except OSError as why:
+        except OSError als why:
             # winsock sometimes raises ENOTCONN
             wenn why.errno in _DISCONNECTED:
                 self.handle_close()
@@ -398,7 +398,7 @@ klasse dispatcher:
         wenn self.socket is not Nichts:
             try:
                 self.socket.close()
-            except OSError as why:
+            except OSError als why:
                 wenn why.errno not in (ENOTCONN, EBADF):
                     raise
 
@@ -563,7 +563,7 @@ def close_all(map=Nichts, ignore_all=Falsch):
     fuer x in list(map.values()):
         try:
             x.close()
-        except OSError as x:
+        except OSError als x:
             wenn x.errno == EBADF:
                 pass
             sowenn not ignore_all:

@@ -5,7 +5,7 @@ importiere contextlib
 importiere functools
 importiere os
 try:
-    von os importiere process_cpu_count as cpu_count
+    von os importiere process_cpu_count als cpu_count
 except ImportError:
     von os importiere cpu_count
 importiere pathlib
@@ -86,7 +86,7 @@ def subdir(working_dir, *, clean_ok=Falsch):
 
             working_dir.mkdir(parents=Wahr, exist_ok=Wahr)
 
-            with contextlib.chdir(working_dir):
+            mit contextlib.chdir(working_dir):
                 return func(context, working_dir)
 
         return wrapper
@@ -185,7 +185,7 @@ def find_wasi_sdk():
     # WASI SDK versions have a ``.0`` suffix, but it's a constant; the WASI SDK team
     # has said they don't plan to ever do a point release and all of their Git tags
     # lack the ``.0`` suffix.
-    # Starting with WASI SDK 23, the tarballs went von containing a directory named
+    # Starting mit WASI SDK 23, the tarballs went von containing a directory named
     # ``wasi-sdk-{WASI_SDK_VERSION}.0`` to e.g.
     # ``wasi-sdk-{WASI_SDK_VERSION}.0-x86_64-linux``.
     potential_sdks = [path fuer path in opt_path.glob(f"wasi-sdk-{WASI_SDK_VERSION}.0*")
@@ -197,7 +197,7 @@ def find_wasi_sdk():
 
 
 def wasi_sdk_env(context):
-    """Calculate environment variables fuer building with wasi-sdk."""
+    """Calculate environment variables fuer building mit wasi-sdk."""
     wasi_sdk_path = context.wasi_sdk_path
     sysroot = wasi_sdk_path / "share" / "wasi-sysroot"
     env = {"CC": "clang", "CPP": "clang-cpp", "CXX": "clang++",
@@ -281,7 +281,7 @@ def configure_wasi_python(context, working_dir):
 
     python_wasm = working_dir / "python.wasm"
     exec_script = working_dir / "python.sh"
-    with exec_script.open("w", encoding="utf-8") as file:
+    mit exec_script.open("w", encoding="utf-8") als file:
         file.write(f'#!/bin/sh\nexec {host_runner} {python_wasm} "$@"\n')
     exec_script.chmod(0o755)
     drucke(f"🏃‍♀️ Created {exec_script} (--host-runner)... ")

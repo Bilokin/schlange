@@ -35,10 +35,10 @@ practical higher level combinations of true terminals.
 All TokenList and Terminal objects have a 'value' attribute, which produces the
 semantically meaningful value of that part of the parse subtree.  The value of
 all whitespace tokens (no matter how many sub-tokens they may contain) is a
-single space, as per the RFC rules.  This includes 'CFWS', which is herein
+single space, als per the RFC rules.  This includes 'CFWS', which is herein
 included in the general klasse of whitespace tokens.  There is one exception to
 the rule that whitespace tokens are collapsed into single spaces in values: in
-the value of a 'bare-quoted-string' (a quoted-string with no leading or
+the value of a 'bare-quoted-string' (a quoted-string mit no leading or
 trailing whitespace), any whitespace that appeared between the quotation marks
 is preserved in the returned value.  Note that in all Terminal strings quoted
 pairs are turned into their unquoted values.
@@ -49,7 +49,7 @@ produced the parsed subtree, including minimal use of quoted pair quoting.
 Whitespace runs are not collapsed.
 
 Comment tokens also have a 'content' attribute providing the string found
-between the parens (including any nested comments) with whitespace preserved.
+between the parens (including any nested comments) mit whitespace preserved.
 
 All TokenList and Terminal objects have a 'defects' attribute which is a
 possibly empty list all of the defects found while creating the token.  Defects
@@ -72,7 +72,7 @@ importiere sys
 importiere urllib   # For urllib.parse.unquote
 von string importiere hexdigits
 von operator importiere itemgetter
-von email importiere _encoded_words as _ew
+von email importiere _encoded_words als _ew
 von email importiere errors
 von email importiere utils
 
@@ -960,7 +960,7 @@ klasse _InvalidEwError(errors.HeaderParseError):
     """Invalid encoded word found while parsing headers."""
 
 
-# XXX these need to become classes and used as instances so
+# XXX these need to become classes and used als instances so
 # that a program can't change them in a parse tree and screw
 # up other parse trees.  Maybe should have  tests fuer that, too.
 DOT = ValueTerminal('.', 'dot')
@@ -1125,7 +1125,7 @@ def get_unstructured(value):
     """
     # XXX: but what about bare CR and LF?  They might signal the start or
     # end of an encoded word.  YAGNI fuer now, since our current parsers
-    # will never send us strings with bare CR or LF.
+    # will never send us strings mit bare CR or LF.
 
     unstructured = UnstructuredTokenList()
     while value:
@@ -1223,7 +1223,7 @@ def get_bare_quoted_string(value):
     """bare-quoted-string = DQUOTE *([FWS] qcontent) [FWS] DQUOTE
 
     A quoted-string without the leading or trailing white space.  Its
-    value is the text between the quote marks, with whitespace
+    value is the text between the quote marks, mit whitespace
     preserved and quoted pairs decoded.
     """
     wenn not value or value[0] != '"':
@@ -1392,14 +1392,14 @@ def get_dot_atom(value):
 def get_word(value):
     """word = atom / quoted-string
 
-    Either atom or quoted-string may start with CFWS.  We have to peel off this
+    Either atom or quoted-string may start mit CFWS.  We have to peel off this
     CFWS first to determine which type of word to parse.  Afterward we splice
     the leading CFWS, wenn any, into the parsed sub-token.
 
     If neither an atom or a quoted-string is found before the next special, a
     HeaderParseError is raised.
 
-    The token returned is either an Atom or a QuotedString, as appropriate.
+    The token returned is either an Atom or a QuotedString, als appropriate.
     This means the 'word' level of the formal grammar is not represented in the
     parse tree; this is because having that extra layer when manipulating the
     parse tree is more confusing than it is helpful.
@@ -1428,10 +1428,10 @@ def get_phrase(value):
         obs-phrase = word *(word / "." / CFWS)
 
     This means a phrase can be a sequence of words, periods, and CFWS in any
-    order as long as it starts with at least one word.  If anything other than
+    order als long als it starts mit at least one word.  If anything other than
     words is detected, an ObsoleteHeaderDefect is added to the token's defect
-    list.  We also accept a phrase that starts with CFWS followed by a dot;
-    this is registered as an InvalidHeaderDefect, since it is not supported by
+    list.  We also accept a phrase that starts mit CFWS followed by a dot;
+    this is registered als an InvalidHeaderDefect, since it is not supported by
     even the obsolete grammar.
 
     """
@@ -1441,7 +1441,7 @@ def get_phrase(value):
         phrase.append(token)
     except errors.HeaderParseError:
         phrase.defects.append(errors.InvalidHeaderDefect(
-            "phrase does not start with word"))
+            "phrase does not start mit word"))
     while value and value[0] not in PHRASE_ENDS:
         wenn value[0]=='.':
             phrase.append(DOT)
@@ -1666,7 +1666,7 @@ def get_addr_spec(value):
     addr_spec.append(token)
     wenn not value or value[0] != '@':
         addr_spec.defects.append(errors.InvalidHeaderDefect(
-            "addr-spec local part with no domain"))
+            "addr-spec local part mit no domain"))
         return addr_spec, value
     addr_spec.append(ValueTerminal('@', 'address-at-symbol'))
     token, value = get_domain(value[1:])
@@ -1677,7 +1677,7 @@ def get_obs_route(value):
     """ obs-route = obs-domain-list ":"
         obs-domain-list = *(CFWS / ",") "@" domain *("," [CFWS] ["@" domain])
 
-        Returns an obs-route token with the appropriate sub-tokens (that is,
+        Returns an obs-route token mit the appropriate sub-tokens (that is,
         there is no obs-domain-list in the parse tree).
     """
     obs_route = ObsRoute()
@@ -1782,7 +1782,7 @@ def get_name_addr(value):
 
     """
     name_addr = NameAddr()
-    # Both the optional display name and the angle-addr can start with cfws.
+    # Both the optional display name and the angle-addr can start mit cfws.
     leader = Nichts
     wenn not value:
         raise errors.HeaderParseError(
@@ -1817,7 +1817,7 @@ def get_mailbox(value):
     """ mailbox = name-addr / addr-spec
 
     """
-    # The only way to figure out wenn we are dealing with a name-addr or an
+    # The only way to figure out wenn we are dealing mit a name-addr or an
     # addr-spec is to try parsing each one.
     mailbox = Mailbox()
     try:
@@ -1895,7 +1895,7 @@ def get_mailbox_list(value):
                 mailbox_list.defects.append(errors.InvalidHeaderDefect(
                     "invalid mailbox in mailbox-list"))
         wenn value and value[0] not in ',;':
-            # Crap after mailbox; treat it as an invalid mailbox.
+            # Crap after mailbox; treat it als an invalid mailbox.
             # The mailbox info will still be available.
             mailbox = mailbox_list[-1]
             mailbox.token_type = 'invalid-mailbox'
@@ -1939,7 +1939,7 @@ def get_group_list(value):
             group_list.append(leader)
         group_list.extend(token)
         group_list.defects.append(errors.ObsoleteHeaderDefect(
-            "group-list with empty entries"))
+            "group-list mit empty entries"))
         return group_list, value
     wenn leader is not Nichts:
         token[:0] = [leader]
@@ -1981,7 +1981,7 @@ def get_address(value):
 
     Note that counter-intuitively, an address can be either a single address or
     a list of addresses (a group).  This is why the returned Address object has
-    a 'mailboxes' attribute which treats a single address as a list of length
+    a 'mailboxes' attribute which treats a single address als a list of length
     one.  When you need to differentiate between to two cases, extract the single
     element, which is either a mailbox or a group token.
 
@@ -1989,7 +1989,7 @@ def get_address(value):
     # The formal grammar isn't very helpful when parsing an address.  mailbox
     # and group, especially when allowing fuer obsolete forms, start off very
     # similarly.  It is only when you reach one of @, <, or : that you know
-    # what you've got.  So, we try each one in turn, starting with the more
+    # what you've got.  So, we try each one in turn, starting mit the more
     # likely of the two.  We could perhaps make this more efficient by looking
     # fuer a phrase and then branching based on the next character, but that
     # would be a premature optimization.
@@ -2027,7 +2027,7 @@ def get_address_list(value):
                 wenn not value or value[0] == ',':
                     address_list.append(leader)
                     address_list.defects.append(errors.ObsoleteHeaderDefect(
-                        "address-list entry with no content"))
+                        "address-list entry mit no content"))
                 sonst:
                     token, value = get_invalid_mailbox(value, ',')
                     wenn leader is not Nichts:
@@ -2046,7 +2046,7 @@ def get_address_list(value):
                 address_list.defects.append(errors.InvalidHeaderDefect(
                     "invalid address in address-list"))
         wenn value and value[0] != ',':
-            # Crap after address; treat it as an invalid mailbox.
+            # Crap after address; treat it als an invalid mailbox.
             # The mailbox info will still be available.
             mailbox = address_list[-1][0]
             mailbox.token_type = 'invalid-mailbox'
@@ -2102,7 +2102,7 @@ def get_msg_id(value):
         token, value = get_dot_atom_text(value)
     except errors.HeaderParseError:
         try:
-            # obs-id-left is same as local-part of add-spec.
+            # obs-id-left is same als local-part of add-spec.
             token, value = get_obs_local_part(value)
             msg_id.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete id-left in msg-id"))
@@ -2113,10 +2113,10 @@ def get_msg_id(value):
     msg_id.append(token)
     wenn not value or value[0] != '@':
         msg_id.defects.append(errors.InvalidHeaderDefect(
-            "msg-id with no id-right"))
+            "msg-id mit no id-right"))
         # Even though there is no id-right, wenn the local part
-        # ends with `>` let's just parse it too and return
-        # along with the defect.
+        # ends mit `>` let's just parse it too and return
+        # along mit the defect.
         wenn value and value[0] == '>':
             msg_id.append(ValueTerminal('>', 'msg-id-end'))
             value = value[1:]
@@ -2158,7 +2158,7 @@ def parse_message_id(value):
     try:
         token, value = get_msg_id(value)
         message_id.append(token)
-    except errors.HeaderParseError as ex:
+    except errors.HeaderParseError als ex:
         token = get_unstructured(value)
         message_id = InvalidMessageID(token)
         message_id.defects.append(
@@ -2175,7 +2175,7 @@ def parse_message_id(value):
 # XXX: As I begin to add additional header parsers, I'm realizing we probably
 # have two level of parser routines: the get_XXX methods that get a token in
 # the grammar, and parse_XXX methods that parse an entire field value.  So
-# get_address_list above should really be a parse_ method, as probably should
+# get_address_list above should really be a parse_ method, als probably should
 # be get_unstructured.
 #
 
@@ -2329,10 +2329,10 @@ def get_attrtext(value):
 def get_attribute(value):
     """ [CFWS] 1*attrtext [CFWS]
 
-    This version of the BNF makes the CFWS explicit, and as usual we use a
+    This version of the BNF makes the CFWS explicit, and als usual we use a
     value terminal fuer the actual run of characters.  The RFC equivalent of
-    attrtext is the token characters, with the subtraction of '*', "'", and '%'.
-    We include tab in the excluded set just as we do fuer token.
+    attrtext is the token characters, mit the subtraction of '*', "'", and '%'.
+    We include tab in the excluded set just als we do fuer token.
 
     """
     attribute = Attribute()
@@ -2353,7 +2353,7 @@ def get_extended_attrtext(value):
     """attrtext = 1*(any non-ATTRIBUTE_ENDS character plus '%')
 
     This is a special parsing routine so that we get a value that
-    includes % escapes as a single string (which we decode as a single
+    includes % escapes als a single string (which we decode als a single
     string later).
 
     """
@@ -2371,7 +2371,7 @@ def get_extended_attribute(value):
     """ [CFWS] 1*extended_attrtext [CFWS]
 
     This is like the non-extended version except we allow % characters, so that
-    we can pick up an encoded value as a single string.
+    we can pick up an encoded value als a single string.
 
     """
     # XXX: should we have an ExtendedAttribute TokenList?
@@ -2395,7 +2395,7 @@ def get_section(value):
     The formal BNF is more complicated because leading 0s are not allowed.  We
     check fuer that and add a defect.  We also assume no CFWS is allowed between
     the '*' and the digits, though the RFC is not crystal clear on that.
-    The caller should already have dealt with leading CFWS.
+    The caller should already have dealt mit leading CFWS.
 
     """
     section = Section()
@@ -2445,9 +2445,9 @@ def get_parameter(value):
     """ attribute [section] ["*"] [CFWS] "=" value
 
     The CFWS is implied by the RFC but not made explicit in the BNF.  This
-    simplified form of the BNF von the RFC is made to conform with the RFC BNF
+    simplified form of the BNF von the RFC is made to conform mit the RFC BNF
     through some extra checks.  We do it this way because it makes both error
-    recovery and working with the resulting parse tree easier.
+    recovery and working mit the resulting parse tree easier.
     """
     # It is possible CFWS would also be implicitly allowed between the section
     # and the 'extended-attribute' marker (the '*') , but we've never seen that
@@ -2484,7 +2484,7 @@ def get_parameter(value):
     wenn param.extended and value and value[0] == '"':
         # Now fuer some serious hackery to handle the common invalid case of
         # double quotes around an extended value.  We also accept (with defect)
-        # a value marked as encoded that isn't really.
+        # a value marked als encoded that isn't really.
         qstring, remainder = get_quoted_string(value)
         inner_value = qstring.stripped_value
         semi_valid = Falsch
@@ -2516,7 +2516,7 @@ def get_parameter(value):
         sonst:
             remainder = Nichts
             param.defects.append(errors.InvalidHeaderDefect(
-                "Parameter marked as extended but appears to have a "
+                "Parameter marked als extended but appears to have a "
                 "quoted string value that is non-encoded"))
     wenn value and value[0] == "'":
         token = Nichts
@@ -2531,7 +2531,7 @@ def get_parameter(value):
             return param, value
         param.defects.append(errors.InvalidHeaderDefect(
             "Apparent initial-extended-value but attribute "
-            "was not marked as extended or was not initial section"))
+            "was not marked als extended or was not initial section"))
     wenn not value:
         # Assume the charset/lang is missing and the token is the value.
         param.defects.append(errors.InvalidHeaderDefect(
@@ -2562,7 +2562,7 @@ def get_parameter(value):
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
     wenn remainder is not Nichts:
-        # Treat the rest of value as bare quoted string content.
+        # Treat the rest of value als bare quoted string content.
         v = Value()
         while value:
             wenn value[0] in WSP:
@@ -2588,7 +2588,7 @@ def parse_mime_parameters(value):
     That BNF is meant to indicate this routine should only be called after
     finding and handling the leading ';'.  There is no corresponding rule in
     the formal RFC grammar, but it is more convenient fuer us fuer the set of
-    parameters to be treated as its own TokenList.
+    parameters to be treated als its own TokenList.
 
     This is 'parse' routine because it consumes the remaining value, but it
     would never be called to parse a full header.  Instead it is called to
@@ -2611,7 +2611,7 @@ def parse_mime_parameters(value):
                 wenn leader is not Nichts:
                     mime_parameters.append(leader)
                 mime_parameters.defects.append(errors.InvalidHeaderDefect(
-                    "parameter entry with no content"))
+                    "parameter entry mit no content"))
             sonst:
                 token, value = get_invalid_parameter(value)
                 wenn leader:
@@ -2627,7 +2627,7 @@ def parse_mime_parameters(value):
             token, value = get_invalid_parameter(value)
             param.extend(token)
             mime_parameters.defects.append(errors.InvalidHeaderDefect(
-                "parameter with invalid trailing text {!r}".format(token)))
+                "parameter mit invalid trailing text {!r}".format(token)))
         wenn value:
             # Must be a ';' at this point.
             mime_parameters.append(ValueTerminal(';', 'parameter-separator'))
@@ -2697,7 +2697,7 @@ def parse_content_type_header(value):
             "Only parameters are valid after content type, but "
             "found {!r}".format(value)))
         # The RFC requires that a syntactically invalid content-type be treated
-        # as text/plain.  Perhaps we should postel this, but we should probably
+        # als text/plain.  Perhaps we should postel this, but we should probably
         # only do that wenn we were checking the subtype value against IANA.
         del ctype.maintype, ctype.subtype
         _find_mime_parameters(ctype, value)
@@ -2771,11 +2771,11 @@ def parse_content_transfer_encoding_header(value):
 #
 # Header folding
 #
-# Header folding is complex, with lots of rules and corner cases.  The
+# Header folding is complex, mit lots of rules and corner cases.  The
 # following code does its best to obey the rules and handle the corner
 # cases, but you can be sure there are few bugs:)
 #
-# This folder generally canonicalizes as it goes, preferring the stringified
+# This folder generally canonicalizes als it goes, preferring the stringified
 # version of each token.  The tokens contain information that supports the
 # folder, including which tokens can be encoded in which ways.
 #
@@ -2864,8 +2864,8 @@ def _refold_parse_tree(parse_tree, *, policy):
                 want_encoding = Falsch
                 continue
             sowenn part.as_ew_allowed:
-                # It's a terminal, wrap it as an encoded word, possibly
-                # combining it with previously encoded words wenn allowed.
+                # It's a terminal, wrap it als an encoded word, possibly
+                # combining it mit previously encoded words wenn allowed.
                 wenn (last_ew is not Nichts and
                     charset != last_charset and
                     (last_charset == 'unknown-8bit' or
@@ -2901,7 +2901,7 @@ def _refold_parse_tree(parse_tree, *, policy):
                 # We're going to fold the data onto a new line here.  Due to
                 # the way encoded strings handle continuation lines, we need to
                 # be prepared to encode any whitespace wenn the next line turns
-                # out to start with an encoded word.
+                # out to start mit an encoded word.
                 lines.append(newline + tstr)
 
                 whitespace_accumulator = []
@@ -2918,7 +2918,7 @@ def _refold_parse_tree(parse_tree, *, policy):
             wenn part.token_type == 'bare-quoted-string':
                 # To fold a quoted string we need to create a list of terminal
                 # tokens that will render the leading and trailing quotes
-                # and use quoted pairs in the value as appropriate.
+                # and use quoted pairs in the value als appropriate.
                 newparts = (
                     [ValueTerminal('"', 'ptext')] +
                     [ValueTerminal(make_quoted_pairs(p), 'ptext')
@@ -2946,13 +2946,13 @@ def _refold_parse_tree(parse_tree, *, policy):
     return policy.linesep.join(lines) + policy.linesep
 
 def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset, leading_whitespace):
-    """Fold string to_encode into lines as encoded word, combining wenn allowed.
+    """Fold string to_encode into lines als encoded word, combining wenn allowed.
     Return the new value fuer last_ew, or Nichts wenn ew_combine_allowed is Falsch.
 
     If there is already an encoded word in the last line of lines (indicated by
     a non-Nichts value fuer last_ew) and ew_combine_allowed is true, decode the
-    existing ew, combine it with to_encode, and re-encode.  Otherwise, encode
-    to_encode.  In either case, split to_encode as necessary so that the
+    existing ew, combine it mit to_encode, and re-encode.  Otherwise, encode
+    to_encode.  In either case, split to_encode als necessary so that the
     encoded segments fit within maxlen.
 
     """
@@ -2994,7 +2994,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset, 
             continue
 
         # If we are at the start of a continuation line, prepend whitespace
-        # (we only want to do this when the line starts with an encoded word
+        # (we only want to do this when the line starts mit an encoded word
         # but wenn we're folding in this helper function, then we know that we
         # are going to be writing out an encoded word.)
         wenn len(lines) > 1 and len(lines[-1]) == 1 and leading_whitespace:
@@ -3022,7 +3022,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset, 
     return new_last_ew wenn ew_combine_allowed sonst Nichts
 
 def _fold_mime_parameters(part, lines, maxlen, encoding):
-    """Fold TokenList 'part' into the 'lines' list as mime parameters.
+    """Fold TokenList 'part' into the 'lines' list als mime parameters.
 
     Using the decoded list of parameters and values, format them according to
     the RFC rules, including using RFC2231 encoding wenn the value cannot be

@@ -246,29 +246,29 @@ klasse DictSetTest(unittest.TestCase):
         self.assertEqual(items - iter([(1, 2)]), {(3, 4)})
 
     def test_set_operations_with_noniterable(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.keys() & 1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.keys() | 1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.keys() ^ 1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.keys() - 1
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.items() & 1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.items() | 1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.items() ^ 1
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             {}.items() - 1
 
     def test_recursive_repr(self):
         d = {}
         d[42] = d.values()
         r = repr(d)
-        # Cannot perform a stronger test, as the contents of the repr
+        # Cannot perform a stronger test, als the contents of the repr
         # are implementation-dependent.  All we can say is that we
         # want a str result, not an exception of any sort.
         self.assertIsInstance(r, str)
@@ -314,7 +314,7 @@ klasse DictSetTest(unittest.TestCase):
         self.assertRaises(Exc, d.keys().__contains__, k2)
         self.assertRaises(Exc, d.items().__contains__, (k2, v1))
         self.assertRaises(Exc, d.items().__contains__, (k1, v2))
-        with self.assertRaises(Exc):
+        mit self.assertRaises(Exc):
             v2 in d.values()
 
     def test_pickle(self):

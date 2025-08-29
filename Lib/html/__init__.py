@@ -2,8 +2,8 @@
 General functions fuer HTML manipulation.
 """
 
-importiere re as _re
-von html.entities importiere html5 as _html5
+importiere re als _re
+von html.entities importiere html5 als _html5
 
 
 __all__ = ['escape', 'unescape']

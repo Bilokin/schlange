@@ -31,7 +31,7 @@ klasse ImportTests(unittest.TestCase):
 
     def check_import_loaded_module(self, import_module):
         fuer name in ('os', 'sys', 'test', 'unittest'):
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertIn(name, sys.modules)
                 old_module = sys.modules[name]
                 module = import_module(name)
@@ -42,7 +42,7 @@ klasse ImportTests(unittest.TestCase):
         old_modules = dict(sys.modules)
         try:
             fuer name in ('colorsys', 'math'):
-                with self.subTest(name=name):
+                mit self.subTest(name=name):
                     sys.modules.pop(name, Nichts)
                     module = import_module(name)
                     self.assertIsInstance(module, types.ModuleType)
@@ -74,7 +74,7 @@ klasse ImportTests(unittest.TestCase):
             # PyImport_AddModuleObject() accepts non-string names
             names.append(tuple(['hashable non-string']))
         fuer name in names:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertNotIn(name, sys.modules)
                 try:
                     module = add_module(name)
@@ -136,7 +136,7 @@ klasse ImportTests(unittest.TestCase):
     def test_importmodulenoblock(self):
         # Test deprecated (stable ABI only) PyImport_ImportModuleNoBlock()
         importmodulenoblock = _testlimitedcapi.PyImport_ImportModuleNoBlock
-        with check_warnings(('', DeprecationWarning)):
+        mit check_warnings(('', DeprecationWarning)):
             self.check_import_func(importmodulenoblock)
             self.assertRaises(UnicodeDecodeError, importmodulenoblock, b'\xff')
 
@@ -196,7 +196,7 @@ klasse ImportTests(unittest.TestCase):
             self.assertIs(importmodulelevel('test_capi', globals(), NULL, NULL, 2),
                           sys.modules['test.test_capi'])
         self.assertRaises(ValueError, importmodulelevel, 'os', NULL, NULL, NULL, -1)
-        with self.assertWarns(ImportWarning):
+        mit self.assertWarns(ImportWarning):
             self.assertRaises(KeyError, importmodulelevel, 'test_import', {}, NULL, NULL, 1)
         self.assertRaises(TypeError, importmodulelevel, 'test_import', [], NULL, NULL, 1)
 
@@ -327,13 +327,13 @@ klasse ImportTests(unittest.TestCase):
         von email.message importiere Message
         self.assertIs(attr, Message)
 
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             # nonexistent module
             importmoduleattr('nonexistentmodule', 'attr')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             # nonexistent attribute
             importmoduleattr('sys', 'nonexistentattr')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             # attribute name containing a dot
             importmoduleattr('sys', 'implementation.name')
 
@@ -344,17 +344,17 @@ klasse ImportTests(unittest.TestCase):
 
         # Invalid module name type
         fuer mod_name in (object(), 123, b'bytes'):
-            with self.subTest(mod_name=mod_name):
-                with self.assertRaises(TypeError):
+            mit self.subTest(mod_name=mod_name):
+                mit self.assertRaises(TypeError):
                     importmoduleattr(mod_name, "attr")
 
         # Invalid attribute name type
         fuer attr_name in (object(), 123, b'bytes'):
-            with self.subTest(attr_name=attr_name):
-                with self.assertRaises(TypeError):
+            mit self.subTest(attr_name=attr_name):
+                mit self.assertRaises(TypeError):
                     importmoduleattr("sys", attr_name)
 
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             importmoduleattr(NULL, "argv")
         # CRASHES importmoduleattr("sys", NULL)
 
@@ -363,9 +363,9 @@ klasse ImportTests(unittest.TestCase):
         importmoduleattr = _testcapi.PyImport_ImportModuleAttrString
         self.check_importmoduleattr(importmoduleattr)
 
-        with self.assertRaises(UnicodeDecodeError):
+        mit self.assertRaises(UnicodeDecodeError):
             importmoduleattr(b"sys\xff", "argv")
-        with self.assertRaises(UnicodeDecodeError):
+        mit self.assertRaises(UnicodeDecodeError):
             importmoduleattr("sys", b"argv\xff")
 
         # CRASHES importmoduleattr(NULL, "argv")

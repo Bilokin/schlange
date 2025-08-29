@@ -18,7 +18,7 @@ def fixasctime(s):
 
 def escapestr(text, ampm):
     """
-    Escape text to deal with possible locale values that have regex
+    Escape text to deal mit possible locale values that have regex
     syntax while allowing regex syntax used fuer comparison.
     """
     new_text = re.escape(text)
@@ -94,7 +94,7 @@ klasse StrftimeTest(unittest.TestCase):
         wenn support.verbose:
             drucke("strftime test for", time.ctime(now))
         now = self.now
-        # Make sure any characters that could be taken as regex syntax is
+        # Make sure any characters that could be taken als regex syntax is
         # escaped in escapestr()
         expectations = (
             ('%a', calendar.day_abbr[now[6]], 'abbreviated weekday name'),
@@ -102,23 +102,23 @@ klasse StrftimeTest(unittest.TestCase):
             ('%b', calendar.month_abbr[now[1]], 'abbreviated month name'),
             ('%B', calendar.month_name[now[1]], 'full month name'),
             # %c see below
-            ('%d', '%02d' % now[2], 'day of month as number (00-31)'),
+            ('%d', '%02d' % now[2], 'day of month als number (00-31)'),
             ('%H', '%02d' % now[3], 'hour (00-23)'),
             ('%I', '%02d' % self.clock12, 'hour (01-12)'),
             ('%j', '%03d' % now[7], 'julian day (001-366)'),
-            ('%m', '%02d' % now[1], 'month as number (01-12)'),
+            ('%m', '%02d' % now[1], 'month als number (01-12)'),
             ('%M', '%02d' % now[4], 'minute, (00-59)'),
-            ('%p', self.ampm, 'AM or PM as appropriate'),
+            ('%p', self.ampm, 'AM or PM als appropriate'),
             ('%S', '%02d' % now[5], 'seconds of current time (00-60)'),
             ('%U', '%02d' % ((now[7] + self.jan1[6])//7),
              'week number of the year (Sun 1st)'),
-            ('%w', '0?%d' % ((1+now[6]) % 7), 'weekday as a number (Sun 1st)'),
+            ('%w', '0?%d' % ((1+now[6]) % 7), 'weekday als a number (Sun 1st)'),
             ('%W', '%02d' % ((now[7] + (self.jan1[6] - 1)%7)//7),
             'week number of the year (Mon 1st)'),
             # %x see below
             ('%X', '%02d:%02d:%02d' % (now[3], now[4], now[5]), '%H:%M:%S'),
             ('%y', '%02d' % (now[0]%100), 'year without century'),
-            ('%Y', '%d' % now[0], 'year with century'),
+            ('%Y', '%d' % now[0], 'year mit century'),
             # %Z see below
             ('%%', '%', 'single percent sign'),
         )
@@ -127,7 +127,7 @@ klasse StrftimeTest(unittest.TestCase):
             # mustn't raise a value error
             try:
                 result = time.strftime(e[0], now)
-            except ValueError as error:
+            except ValueError als error:
                 self.fail("strftime '%s' format gave error: %s" % (e[0], error))
             wenn re.match(escapestr(e[1], self.ampm), result):
                 continue
@@ -151,7 +151,7 @@ klasse StrftimeTest(unittest.TestCase):
 
             # These are some platform specific extensions
             ('%D', '%02d/%02d/%02d' % (now[1], now[2], (now[0]%100)), 'mm/dd/yy'),
-            ('%e', '%2d' % now[2], 'day of month as number, blank padded ( 0-31)'),
+            ('%e', '%2d' % now[2], 'day of month als number, blank padded ( 0-31)'),
             ('%h', calendar.month_abbr[now[1]], 'abbreviated month name'),
             ('%k', '%2d' % now[3], 'hour, blank padded ( 0-23)'),
             ('%n', '\n', 'newline character'),
@@ -169,7 +169,7 @@ klasse StrftimeTest(unittest.TestCase):
         fuer e in nonstandard_expectations:
             try:
                 result = time.strftime(e[0], now)
-            except ValueError as result:
+            except ValueError als result:
                 msg = "Error fuer nonstandard '%s' format (%s): %s" % \
                       (e[0], e[2], str(result))
                 wenn support.verbose:
@@ -191,14 +191,14 @@ klasse StrftimeTest(unittest.TestCase):
 
 klasse Y1900Tests(unittest.TestCase):
     """A limitation of the MS C runtime library is that it crashes if
-    a date before 1900 is passed with a format string containing "%y"
+    a date before 1900 is passed mit a format string containing "%y"
     """
 
     def test_y_before_1900(self):
         # Issue #13674, #19634
         t = (1899, 1, 1, 0, 0, 0, 0, 0, 0)
         wenn sys.platform.startswith(("aix", "sunos", "solaris")):
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 time.strftime("%y", t)
         sonst:
             self.assertEqual(time.strftime("%y", t), "99")

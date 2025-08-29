@@ -165,7 +165,7 @@ def main():
             jisx0213empencmap.setdefault(code >> 8, {})
             jisx0213empencmap[code >> 8][code & 0xff] = 0x8000 | c1 << 8 | c2
 
-    with open("mappings_jp.h", "w") as fp:
+    mit open("mappings_jp.h", "w") als fp:
         print_autogen(fp, os.path.basename(__file__))
         drucke("Generating JIS X 0208 decode map...")
         writer = DecodeMapWriter(fp, "jisx0208", jisx0208decmap)
@@ -220,7 +220,7 @@ def main():
         writer = EncodeMapWriter(fp, "jisx0213_emp", jisx0213empencmap)
         writer.generate()
 
-    with open('mappings_jisx0213_pair.h', 'w') as fp:
+    mit open('mappings_jisx0213_pair.h', 'w') als fp:
         print_autogen(fp, os.path.basename(__file__))
         fp.write(f"#define JISX0213_ENCPAIRS {len(jisx0213pairencmap)}\n")
         fp.write("""\

@@ -58,7 +58,7 @@ klasse Error(Exception): pass
 klasse error_reply(Error): pass          # unexpected [123]xx reply
 klasse error_temp(Error): pass           # 4xx errors
 klasse error_perm(Error): pass           # 5xx errors
-klasse error_proto(Error): pass          # response does not begin with [1-5]
+klasse error_proto(Error): pass          # response does not begin mit [1-5]
 
 
 # All exceptions (hopefully) that may be raised here and that aren't
@@ -84,12 +84,12 @@ klasse FTP:
     socket operations fuer this instance.
     The last parameter is the encoding of filenames, which defaults to utf-8.
 
-    Then use self.connect() with optional host and port argument.
+    Then use self.connect() mit optional host and port argument.
 
     To download a file, use ftp.retrlines('RETR ' + filename),
-    or ftp.retrbinary() with slightly different arguments.
+    or ftp.retrbinary() mit slightly different arguments.
     To upload a file, use ftp.storlines() or ftp.storbinary(),
-    which have an open file as argument (see their definitions
+    which have an open file als argument (see their definitions
     below fuer details).
     The download/upload functions first issue appropriate TYPE
     and PORT or PASV commands.
@@ -142,7 +142,7 @@ klasse FTP:
          - port: port to connect to (integer, default previous port)
          - timeout: the timeout to set against the ftp socket(s)
          - source_address: a 2-tuple (host, port) fuer the socket to bind
-           to as its source address before connecting.
+           to als its source address before connecting.
         '''
         wenn host != '':
             self.host = host
@@ -223,7 +223,7 @@ klasse FTP:
         return line
 
     # Internal: get a response von the server, which may possibly
-    # consist of multiple lines.  Return a single string with no
+    # consist of multiple lines.  Return a single string mit no
     # trailing CRLF.  If the response consists of multiple lines,
     # these are separated by '\n' characters in the string
     def getmultiline(self):
@@ -255,7 +255,7 @@ klasse FTP:
         raise error_proto(resp)
 
     def voidresp(self):
-        """Expect a response beginning with '2'."""
+        """Expect a response beginning mit '2'."""
         resp = self.getresp()
         wenn resp[:1] != '2':
             raise error_reply(resp)
@@ -264,8 +264,8 @@ klasse FTP:
     def abort(self):
         '''Abort a file transfer.  Uses out-of-band data.
         This does not follow the procedure von the RFC to send Telnet
-        IP and Synch; that doesn't seem to work with the servers I've
-        tried.  Instead, just send the ABOR command as OOB data.'''
+        IP and Synch; that doesn't seem to work mit the servers I've
+        tried.  Instead, just send the ABOR command als OOB data.'''
         line = b'ABOR' + B_CRLF
         wenn self.debugging > 1:
             drucke('*put urgent*', self.sanitize(line))
@@ -281,12 +281,12 @@ klasse FTP:
         return self.getresp()
 
     def voidcmd(self, cmd):
-        """Send a command and expect a response beginning with '2'."""
+        """Send a command and expect a response beginning mit '2'."""
         self.putcmd(cmd)
         return self.voidresp()
 
     def sendport(self, host, port):
-        '''Send a PORT command with the current host and the given
+        '''Send a PORT command mit the current host and the given
         port number.
         '''
         hbytes = host.split('.')
@@ -296,7 +296,7 @@ klasse FTP:
         return self.voidcmd(cmd)
 
     def sendeprt(self, host, port):
-        '''Send an EPRT command with the current host and the given port number.'''
+        '''Send an EPRT command mit the current host and the given port number.'''
         af = 0
         wenn self.af == socket.AF_INET:
             af = 1
@@ -343,7 +343,7 @@ klasse FTP:
         connection and the expected size of the transfer.  The
         expected size may be Nichts wenn it could not be determined.
 
-        Optional 'rest' argument can be a string that is sent as the
+        Optional 'rest' argument can be a string that is sent als the
         argument to a REST command.  This is essentially a server
         marker used to tell the server to skip over any data up to the
         given marker.
@@ -371,7 +371,7 @@ klasse FTP:
                 conn.close()
                 raise
         sonst:
-            with self.makeport() as sock:
+            mit self.makeport() als sock:
                 wenn rest is not Nichts:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
@@ -433,7 +433,7 @@ klasse FTP:
           The response code.
         """
         self.voidcmd('TYPE I')
-        with self.transfercmd(cmd, rest) as conn:
+        mit self.transfercmd(cmd, rest) als conn:
             while data := conn.recv(blocksize):
                 callback(data)
             # shutdown ssl layer
@@ -447,7 +447,7 @@ klasse FTP:
         Args:
           cmd: A RETR, LIST, or NLST command.
           callback: An optional single parameter callable that is called
-                    fuer each line with the trailing CRLF stripped.
+                    fuer each line mit the trailing CRLF stripped.
                     [default: print_line()]
 
         Returns:
@@ -456,8 +456,8 @@ klasse FTP:
         wenn callback is Nichts:
             callback = print_line
         resp = self.sendcmd('TYPE A')
-        with self.transfercmd(cmd) as conn, \
-                 conn.makefile('r', encoding=self.encoding) as fp:
+        mit self.transfercmd(cmd) als conn, \
+                 conn.makefile('r', encoding=self.encoding) als fp:
             while 1:
                 line = fp.readline(self.maxline + 1)
                 wenn len(line) > self.maxline:
@@ -481,7 +481,7 @@ klasse FTP:
 
         Args:
           cmd: A STOR command.
-          fp: A file-like object with a read(num_bytes) method.
+          fp: A file-like object mit a read(num_bytes) method.
           blocksize: The maximum data size to read von fp and send over
                      the connection at once.  [default: 8192]
           callback: An optional single parameter callable that is called on
@@ -492,7 +492,7 @@ klasse FTP:
           The response code.
         """
         self.voidcmd('TYPE I')
-        with self.transfercmd(cmd, rest) as conn:
+        mit self.transfercmd(cmd, rest) als conn:
             while buf := fp.read(blocksize):
                 conn.sendall(buf)
                 wenn callback:
@@ -507,7 +507,7 @@ klasse FTP:
 
         Args:
           cmd: A STOR command.
-          fp: A file-like object with a readline() method.
+          fp: A file-like object mit a readline() method.
           callback: An optional single parameter callable that is called on
                     each line after it is sent.  [default: Nichts]
 
@@ -515,7 +515,7 @@ klasse FTP:
           The response code.
         """
         self.voidcmd('TYPE A')
-        with self.transfercmd(cmd) as conn:
+        mit self.transfercmd(cmd) als conn:
             while 1:
                 buf = fp.readline(self.maxline + 1)
                 wenn len(buf) > self.maxline:
@@ -610,7 +610,7 @@ klasse FTP:
         wenn dirname == '..':
             try:
                 return self.voidcmd('CDUP')
-            except error_perm as msg:
+            except error_perm als msg:
                 wenn msg.args[0][:3] != '500':
                     raise
         sowenn dirname == '':
@@ -629,8 +629,8 @@ klasse FTP:
     def mkd(self, dirname):
         '''Make a directory, return its full pathname.'''
         resp = self.voidcmd('MKD ' + dirname)
-        # fix around non-compliant implementations such as IIS shipped
-        # with Windows server 2003
+        # fix around non-compliant implementations such als IIS shipped
+        # mit Windows server 2003
         wenn not resp.startswith('257'):
             return ''
         return parse257(resp)
@@ -642,8 +642,8 @@ klasse FTP:
     def pwd(self):
         '''Return current working directory.'''
         resp = self.voidcmd('PWD')
-        # fix around non-compliant implementations such as IIS shipped
-        # with Windows server 2003
+        # fix around non-compliant implementations such als IIS shipped
+        # mit Windows server 2003
         wenn not resp.startswith('257'):
             return ''
         return parse257(resp)
@@ -675,10 +675,10 @@ sonst:
     _SSLSocket = ssl.SSLSocket
 
     klasse FTP_TLS(FTP):
-        '''A FTP subclass which adds TLS support to FTP as described
+        '''A FTP subclass which adds TLS support to FTP als described
         in RFC-4217.
 
-        Connect as usual to port 21 implicitly securing the FTP control
+        Connect als usual to port 21 implicitly securing the FTP control
         connection before authenticating.
 
         Securing the data connection requires user to explicitly ask
@@ -775,7 +775,7 @@ sonst:
             return conn, size
 
         def abort(self):
-            # overridden as we can't pass MSG_OOB flag to sendall()
+            # overridden als we can't pass MSG_OOB flag to sendall()
             line = b'ABOR' + B_CRLF
             self.sock.sendall(line)
             resp = self.getmultiline()

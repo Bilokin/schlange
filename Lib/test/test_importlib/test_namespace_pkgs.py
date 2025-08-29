@@ -13,7 +13,7 @@ von test.test_importlib importiere util
 #
 # need to test when nested, so that the top-level path isn't sys.path
 # need to test dynamic path detection, both at top-level and nested
-# with dynamic path, check when a loader is returned on path reload (that is,
+# mit dynamic path, check when a loader is returned on path reload (that is,
 #  trying to switch von a namespace package to a regular package)
 
 
@@ -21,7 +21,7 @@ von test.test_importlib importiere util
 def sys_modules_context():
     """
     Make sure sys.modules is the same object and has the same content
-    when exiting the context as when entering.
+    when exiting the context als when entering.
 
     Similar to importlib.test.util.uncache, but doesn't require explicit
     names.
@@ -42,7 +42,7 @@ def namespace_tree_context(**kwargs):
     Save importiere state and sys.modules cache and restore it on exit.
     Typical usage:
 
-    >>> with namespace_tree_context(path=['/tmp/xxyy/portion1',
+    >>> mit namespace_tree_context(path=['/tmp/xxyy/portion1',
     ...         '/tmp/xxyy/portion2']):
     ...     pass
     """
@@ -50,7 +50,7 @@ def namespace_tree_context(**kwargs):
     kwargs.setdefault('meta_path', sys.meta_path)
     kwargs.setdefault('path_hooks', sys.path_hooks)
     import_context = util.import_state(**kwargs)
-    with import_context, sys_modules_context():
+    mit import_context, sys_modules_context():
         yield
 
 klasse NamespacePackageTest(unittest.TestCase):
@@ -75,7 +75,7 @@ klasse SingleNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
     def test_cant_import_other(self):
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
 
     def test_simple_repr(self):
@@ -91,7 +91,7 @@ klasse DynamicPathNamespacePackage(NamespacePackageTest):
         importiere foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
 
         # Now modify sys.path
@@ -126,7 +126,7 @@ klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
     paths = ['portion1']
 
     def test_invalidate_caches(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
+        mit tempfile.TemporaryDirectory() als temp_dir:
             # we manipulate sys.path before anything is imported to avoid
             # accidental cache invalidation when changing it
             sys.path.append(temp_dir)
@@ -135,7 +135,7 @@ klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
             self.assertEqual(foo.one.attr, 'portion1 foo one')
 
             # the module does not exist, so it cannot be imported
-            with self.assertRaises(ImportError):
+            mit self.assertRaises(ImportError):
                 importiere foo.just_created
 
             # util.create_modules() manipulates sys.path
@@ -143,11 +143,11 @@ klasse SeparatedNamespacePackagesCreatedWhileRunning(NamespacePackageTest):
             namespace_path = os.path.join(temp_dir, 'foo')
             os.mkdir(namespace_path)
             module_path = os.path.join(namespace_path, 'just_created.py')
-            with open(module_path, 'w', encoding='utf-8') as file:
+            mit open(module_path, 'w', encoding='utf-8') als file:
                 file.write('attr = "just_created foo"')
 
             # the module is not known, so it cannot be imported yet
-            with self.assertRaises(ImportError):
+            mit self.assertRaises(ImportError):
                 importiere foo.just_created
 
             # but after explicit cache invalidation, it is importable
@@ -187,7 +187,7 @@ klasse SingleZipNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
     def test_cant_import_other(self):
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
 
 
@@ -211,7 +211,7 @@ klasse SingleNestedZipNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
     def test_cant_import_other(self):
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
 
 
@@ -233,7 +233,7 @@ klasse LegacySupport(NamespacePackageTest):
 
     def test_non_namespace_package_takes_precedence(self):
         importiere foo.one
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
         self.assertIn('__init__', foo.__file__)
         self.assertNotIn('namespace', str(foo.__loader__).lower())
@@ -253,7 +253,7 @@ klasse DynamicPathCalculation(NamespacePackageTest):
         self.assertEqual(parent.child.one.attr, 'parent child one')
         self.assertEqual(parent.child.two.attr, 'parent child two')
 
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere parent.child.three
 
         self.assertEqual(len(parent.__path__), 2)
@@ -270,7 +270,7 @@ klasse DynamicPathCalculation(NamespacePackageTest):
         self.assertEqual(parent.child.one.attr, 'parent child one')
         self.assertEqual(parent.child.two.attr, 'parent child two')
 
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere parent.child.three
 
         # now add project3
@@ -328,15 +328,15 @@ klasse ReloadTests(NamespacePackageTest):
 
     def test_cant_import_other(self):
         importiere foo
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
         foo = importlib.reload(foo)
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
 
     def test_dynamic_path(self):
         importiere foo.one
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importiere foo.two
 
         # Now modify sys.path and reload.

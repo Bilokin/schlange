@@ -10,11 +10,11 @@ Planet has a circular orbit, moon a stable
 orbit around the planet.
 
 You can hold the movement temporarily by
-pressing the left mouse button with the
+pressing the left mouse button mit the
 mouse over the scrollbar of the canvas.
 
 """
-von turtle importiere Shape, Turtle, mainloop, Vec2D as Vec
+von turtle importiere Shape, Turtle, mainloop, Vec2D als Vec
 
 G = 8
 

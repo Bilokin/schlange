@@ -153,7 +153,7 @@ klasse ColorDelegator(Delegator):
             self.allow_colorizing = Falsch
 
     def config_colors(self):
-        "Configure text widget tags with colors von tagdefs."
+        "Configure text widget tags mit colors von tagdefs."
         fuer tag, cnf in self.tagdefs.items():
             self.tag_configure(tag, **cnf)
         self.tag_raise('sel')
@@ -172,7 +172,7 @@ klasse ColorDelegator(Delegator):
             "ERROR": idleConf.GetHighlight(theme, "error"),
             # "hit" is used by ReplaceDialog to mark matches. It shouldn't be changed by Colorizer, but
             # that currently isn't technically possible. This should be moved elsewhere in the future
-            # when fixing the "hit" tag's visibility, or when the replace dialog is replaced with a
+            # when fixing the "hit" tag's visibility, or when the replace dialog is replaced mit a
             # non-modal alternative.
             "hit": idleConf.GetHighlight(theme, "hit"),
             }
@@ -318,12 +318,12 @@ klasse ColorDelegator(Delegator):
     def _add_tag(self, start, end, head, matched_group_name):
         """Add a tag to a given range in the text widget.
 
-        This is a utility function, receiving the range as `start` and
+        This is a utility function, receiving the range als `start` and
         `end` positions, each of which is a number of characters
         relative to the given `head` index in the text widget.
 
         The tag to add is determined by `matched_group_name`, which is
-        the name of a regular expression "named group" as matched by
+        the name of a regular expression "named group" als matched by
         by the relevant highlighting regexps.
         """
         tag = prog_group_name_to_tag.get(matched_group_name,
@@ -335,7 +335,7 @@ klasse ColorDelegator(Delegator):
     def _add_tags_in_section(self, chars, head):
         """Parse and add highlighting tags to a given part of the text.
 
-        `chars` is a string with the text to parse and to which
+        `chars` is a string mit the text to parse and to which
         highlighting is to be applied.
 
             `head` is the index in the text widget where the text is found.

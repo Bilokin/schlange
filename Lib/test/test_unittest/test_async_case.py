@@ -309,21 +309,21 @@ klasse TestAsyncCase(unittest.TestCase):
             async def test3(self):
                 return Nothing()
 
-        with self.assertWarns(DeprecationWarning) as w:
+        mit self.assertWarns(DeprecationWarning) als w:
             Test('test1').run()
         self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test1', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'int'", str(w.warning))
 
-        with self.assertWarns(DeprecationWarning) as w:
+        mit self.assertWarns(DeprecationWarning) als w:
             Test('test2').run()
         self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test2', str(w.warning))
         self.assertEqual(w.filename, __file__)
         self.assertIn("returned 'async_generator'", str(w.warning))
 
-        with self.assertWarns(DeprecationWarning) as w:
+        mit self.assertWarns(DeprecationWarning) als w:
             Test('test3').run()
         self.assertIn('It is deprecated to return a value that is not Nichts', str(w.warning))
         self.assertIn('test3', str(w.warning))
@@ -417,11 +417,11 @@ klasse TestAsyncCase(unittest.TestCase):
     def test_enterAsyncContext_arg_errors(self):
         klasse Test(unittest.IsolatedAsyncioTestCase):
             async def test_func(slf):
-                with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
+                mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                     await slf.enterAsyncContext(LacksEnterAndExit())
-                with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
+                mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                     await slf.enterAsyncContext(LacksEnter())
-                with self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
+                mit self.assertRaisesRegex(TypeError, 'asynchronous context manager'):
                     await slf.enterAsyncContext(LacksExit())
 
         test = Test('test_func')

@@ -61,14 +61,14 @@ klasse ModuleBrowserTest(unittest.TestCase):
     def test_is_browseable_extension(self):
         path = "/path/to/file"
         fuer ext in py_extensions:
-            with self.subTest(ext=ext):
+            mit self.subTest(ext=ext):
                 filename = f'{path}{ext}'
                 actual = browser.is_browseable_extension(filename)
                 expected = ext not in browser.browseable_extension_blocklist
                 self.assertEqual(actual, expected)
 
 
-# Nested tree same as in test_pyclbr.py except fuer supers on C0. C1.
+# Nested tree same als in test_pyclbr.py except fuer supers on C0. C1.
 mb = pyclbr
 module, fname = 'test', 'test.py'
 C0 = mb.Class(module, 'C0', ['base'], fname, 1, end_lineno=9)
@@ -103,21 +103,21 @@ klasse TransformChildrenTest(unittest.TestCase):
         # Check that second call does not change suffix.
         tcl = list(transform(mock_pyclbr_tree, 'test'))
         eq(tcl[0].name, 'C0(base)')
-        # Nothing to traverse wenn parameter name isn't same as tree module.
+        # Nothing to traverse wenn parameter name isn't same als tree module.
         tcl = list(transform(mock_pyclbr_tree, 'different name'))
         eq(tcl, [])
 
     def test_transform_node_children(self):
         eq = self.assertEqual
         transform = browser.transform_children
-        # Class with two children, one name altered.
+        # Class mit two children, one name altered.
         tcl = list(transform(C0.children))
         eq(tcl, [F1, C1])
         eq(tcl[0].name, 'F1')
         eq(tcl[1].name, 'C1()')
         tcl = list(transform(C0.children))
         eq(tcl[1].name, 'C1()')
-        # Function with two children.
+        # Function mit two children.
         eq(list(transform(f0.children)), [f1, c1])
 
 
@@ -164,11 +164,11 @@ klasse ModuleBrowserTreeItemTest(unittest.TestCase):
     def test_ondoubleclick(self, fopen):
         mbt = self.mbt
 
-        with mock.patch('os.path.exists', return_value=Falsch):
+        mit mock.patch('os.path.exists', return_value=Falsch):
             mbt.OnDoubleClick()
             fopen.assert_not_called()
 
-        with mock.patch('os.path.exists', return_value=Wahr):
+        mit mock.patch('os.path.exists', return_value=Wahr):
             mbt.OnDoubleClick()
             fopen.assert_called_once_with(fname)
 

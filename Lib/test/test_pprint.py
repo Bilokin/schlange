@@ -115,7 +115,7 @@ klasse Unorderable:
     def __repr__(self):
         return str(id(self))
 
-# Class Orderable is orderable with any type
+# Class Orderable is orderable mit any type
 klasse Orderable:
     def __init__(self, hash):
         self._hash = hash
@@ -151,7 +151,7 @@ klasse QueryTestCase(unittest.TestCase):
                                   stream=io.StringIO(), compact=Wahr)
         pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO())
         pp = pprint.PrettyPrinter(sort_dicts=Falsch)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             pp = pprint.PrettyPrinter(4, 40, 5, io.StringIO(), Wahr)
         self.assertRaises(ValueError, pprint.PrettyPrinter, indent=-1)
         self.assertRaises(ValueError, pprint.PrettyPrinter, depth=0)
@@ -176,7 +176,7 @@ klasse QueryTestCase(unittest.TestCase):
                             "expected isreadable fuer %r" % (safe,))
 
     def test_stdout_is_Nichts(self):
-        with contextlib.redirect_stdout(Nichts):
+        mit contextlib.redirect_stdout(Nichts):
             # smoke test - there is no output to check
             value = 'this should not fail'
             pprint.pdrucke(value)
@@ -241,12 +241,12 @@ klasse QueryTestCase(unittest.TestCase):
     def test_same_as_repr(self):
         # Simple objects, small containers and classes that override __repr__
         # to directly call super's __repr__.
-        # For those the result should be the same as repr().
+        # For those the result should be the same als repr().
         # Ahem.  The docs don't say anything about that -- this appears to
         # be testing an implementation quirk.  Starting in Python 2.5, it's
         # not true fuer dicts:  pprint always sorts dicts by key now; before,
         # it sorted a dict display wenn and only wenn the display required
-        # multiple lines.  For that reason, dicts with more than one element
+        # multiple lines.  For that reason, dicts mit more than one element
         # aren't tested here.
         fuer simple in (0, 0, 0+0j, 0.0, "", b"", bytearray(),
                        (), tuple2(), tuple3(),
@@ -563,7 +563,7 @@ mappingproxy(OrderedDict([('the', 0),
             lengths = {"empty": empty, "short": short, "long": long}
             prefix = "odict" wenn dict_class is collections.OrderedDict sonst "dict"
             fuer name, d in lengths.items():
-                with self.subTest(length=name, prefix=prefix):
+                mit self.subTest(length=name, prefix=prefix):
                     is_short = len(d) < 6
                     joiner = ", " wenn is_short sonst ",\n "
                     k = d.keys()
@@ -593,11 +593,11 @@ mappingproxy(OrderedDict([('the', 0),
         short = dict(zip('edcba', 'edcba'))
         long = dict((chr(x), chr(x)) fuer x in range(90, 64, -1))
         lengths = {"empty": empty, "short": short, "long": long}
-        # Test that a subclass that doesn't replace __repr__ works with different lengths
+        # Test that a subclass that doesn't replace __repr__ works mit different lengths
         klasse MV(MappingView): pass
 
         fuer name, d in lengths.items():
-            with self.subTest(length=name, name="Views"):
+            mit self.subTest(length=name, name="Views"):
                 is_short = len(d) < 6
                 joiner = ", " wenn is_short sonst ",\n "
                 i = d.items()
@@ -643,7 +643,7 @@ mappingproxy(OrderedDict([('the', 0),
                          "{1: dict_values([{...}])}")
 
     def test_unorderable_items_views(self):
-        """Check that views with unorderable items have stable sorting."""
+        """Check that views mit unorderable items have stable sorting."""
         d = dict((((3+1j), 3), ((1+1j), (1+0j)), (1j, 0j), (500, Nichts), (499, Nichts)))
         iv = ItemsView(d)
         self.assertEqual(pprint.pformat(iv),
@@ -815,10 +815,10 @@ dataclass5(a=dataclass6(c=...,
 
     def test_subclassing(self):
         # length(repr(obj)) > width
-        o = {'names with spaces': 'should be presented using repr()',
+        o = {'names mit spaces': 'should be presented using repr()',
              'others.should.not.be': 'like.this'}
         exp = """\
-{'names with spaces': 'should be presented using repr()',
+{'names mit spaces': 'should be presented using repr()',
  others.should.not.be: like.this}"""
 
         dotted_printer = DottedPrettyPrinter()
@@ -882,7 +882,7 @@ frozenset2({0,
         # the test.  The hard-coded repr depends on the sort order of
         # frozensets.
         #
-        # However, as the docs point out: "Since sets only define
+        # However, als the docs point out: "Since sets only define
         # partial ordering (subset relationships), the output of the
         # list.sort() method is undefined fuer lists of sets."
         #
@@ -1021,11 +1021,11 @@ frozenset2({0,
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys).items())),
             'dict_items([' + ','.join('(%r,Nichts)' % k fuer k in skeys) + '])')
 
-        # Issue 10017: TypeError on user-defined types as dict keys.
+        # Issue 10017: TypeError on user-defined types als dict keys.
         self.assertEqual(pprint.pformat({Unorderable: 0, 1: 0}),
                          '{1: 0, ' + repr(Unorderable) +': 0}')
 
-        # Issue 14998: TypeError on tuples with NoneTypes as dict keys.
+        # Issue 14998: TypeError on tuples mit NoneTypes als dict keys.
         keys = [(1,), (Nichts,)]
         self.assertEqual(pprint.pformat(dict.fromkeys(keys, 0)),
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))
@@ -1098,7 +1098,7 @@ frozenset2({0,
      'goujat\\t qui '
      'fumait au '
      'zoo']]]]]""")
-        # An unwrappable string is formatted as its repr
+        # An unwrappable string is formatted als its repr
         unwrappable = "x" * 100
         self.assertEqual(pprint.pformat(unwrappable, width=80), repr(unwrappable))
         self.assertEqual(pprint.pformat(''), "''")

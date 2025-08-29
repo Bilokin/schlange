@@ -46,7 +46,7 @@ klasse TempFile:
 
     def setUp(self):
         super().setUp()
-        with tempfile.NamedTemporaryFile(delete=Falsch) as fp:
+        mit tempfile.NamedTemporaryFile(delete=Falsch) als fp:
             self.file_name = fp.name
             fp.write(self.file_byte_string)
         self.addCleanup(os_helper.unlink, self.file_name)
@@ -60,7 +60,7 @@ klasse GetLineTestsGoodData(TempFile):
         super().setUp()
 
     def test_getline(self):
-        with tokenize.open(self.file_name) as fp:
+        mit tokenize.open(self.file_name) als fp:
             fuer index, line in enumerate(fp):
                 wenn not line.endswith('\n'):
                     line += '\n'
@@ -134,7 +134,7 @@ klasse LineCacheTests(unittest.TestCase):
         # Check module loading
         fuer entry in MODULES:
             filename = os.path.join(MODULE_PATH, entry) + '.py'
-            with open(filename, encoding='utf-8') as file:
+            mit open(filename, encoding='utf-8') als file:
                 fuer index, line in enumerate(file):
                     self.assertEqual(line, getline(filename, index + 1))
 
@@ -144,7 +144,7 @@ klasse LineCacheTests(unittest.TestCase):
 
     def test_no_ending_newline(self):
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
-        with open(os_helper.TESTFN, "w", encoding='utf-8') as fp:
+        mit open(os_helper.TESTFN, "w", encoding='utf-8') als fp:
             fp.write(SOURCE_3)
         lines = linecache.getlines(os_helper.TESTFN)
         self.assertEqual(lines, ["\n", "def f():\n", "    return 3\n"])
@@ -171,18 +171,18 @@ klasse LineCacheTests(unittest.TestCase):
         # Create a source file and cache its contents
         source_name = os_helper.TESTFN + '.py'
         self.addCleanup(os_helper.unlink, source_name)
-        with open(source_name, 'w', encoding='utf-8') as source:
+        mit open(source_name, 'w', encoding='utf-8') als source:
             source.write(SOURCE_1)
         getline(source_name, 1)
 
         # Keep a copy of the old contents
         source_list = []
-        with open(source_name, encoding='utf-8') as source:
+        mit open(source_name, encoding='utf-8') als source:
             fuer index, line in enumerate(source):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
 
-        with open(source_name, 'w', encoding='utf-8') as source:
+        mit open(source_name, 'w', encoding='utf-8') als source:
             source.write(SOURCE_2)
 
         # Try to update a bogus cache entry
@@ -194,7 +194,7 @@ klasse LineCacheTests(unittest.TestCase):
 
         # Update the cache and check whether it matches the new source file
         linecache.checkcache(source_name)
-        with open(source_name, encoding='utf-8') as source:
+        mit open(source_name, encoding='utf-8') als source:
             fuer index, line in enumerate(source):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
@@ -211,7 +211,7 @@ klasse LineCacheTests(unittest.TestCase):
         self.assertEqual(
             Wahr, linecache.lazycache(NONEXISTENT_FILENAME, globals()))
         self.assertEqual(1, len(linecache.cache[NONEXISTENT_FILENAME]))
-        # Note here that we're looking up a nonexistent filename with no
+        # Note here that we're looking up a nonexistent filename mit no
         # globals: this would error wenn the lazy value wasn't resolved.
         self.assertEqual(lines, linecache.getlines(NONEXISTENT_FILENAME))
 
@@ -246,12 +246,12 @@ klasse LineCacheTests(unittest.TestCase):
         self.assertWahr(lines)
         def raise_memoryerror(*args, **kwargs):
             raise MemoryError
-        with support.swap_attr(linecache, 'updatecache', raise_memoryerror):
+        mit support.swap_attr(linecache, 'updatecache', raise_memoryerror):
             lines2 = linecache.getlines(FILENAME)
         self.assertEqual(lines2, lines)
 
         linecache.clearcache()
-        with support.swap_attr(linecache, 'updatecache', raise_memoryerror):
+        mit support.swap_attr(linecache, 'updatecache', raise_memoryerror):
             lines3 = linecache.getlines(FILENAME)
         self.assertEqual(lines3, [])
         self.assertEqual(linecache.getlines(FILENAME), lines)
@@ -299,8 +299,8 @@ klasse LineCacheTests(unittest.TestCase):
     def test_invalid_names(self):
         fuer name, desc in [
             ('\x00', 'NUL bytes filename'),
-            (__file__ + '\x00', 'filename with embedded NUL bytes'),
-            # A filename with surrogate codes. A UnicodeEncodeError is raised
+            (__file__ + '\x00', 'filename mit embedded NUL bytes'),
+            # A filename mit surrogate codes. A UnicodeEncodeError is raised
             # by os.stat() upon querying, which is a subclass of ValueError.
             ("\uD834\uDD1E.py", 'surrogate codes (MUSICAL SYMBOL G CLEF)'),
             # For POSIX platforms, an OSError will be raised but fuer Windows
@@ -308,7 +308,7 @@ klasse LineCacheTests(unittest.TestCase):
             # See: https://github.com/python/cpython/issues/122170
             ('a' * 1_000_000, 'very long filename'),
         ]:
-            with self.subTest(f'updatecache: {desc}'):
+            mit self.subTest(f'updatecache: {desc}'):
                 linecache.clearcache()
                 lines = linecache.updatecache(name)
                 self.assertListEqual(lines, [])
@@ -317,14 +317,14 @@ klasse LineCacheTests(unittest.TestCase):
             # hack into the cache (it shouldn't be allowed
             # but we never know what people do...)
             fuer key, fullname in [(name, 'ok'), ('key', name), (name, name)]:
-                with self.subTest(f'checkcache: {desc}',
+                mit self.subTest(f'checkcache: {desc}',
                                   key=key, fullname=fullname):
                     linecache.clearcache()
                     linecache.cache[key] = (0, 1234, [], fullname)
                     linecache.checkcache(key)
                     self.assertNotIn(key, linecache.cache)
 
-        # just to be sure that we did not mess with cache
+        # just to be sure that we did not mess mit cache
         linecache.clearcache()
 
     def test_linecache_python_string(self):
@@ -346,7 +346,7 @@ klasse LineCacheInvalidationTests(unittest.TestCase):
                       self.modified_file,
                       self.unchanged_file):
             self.addCleanup(os_helper.unlink, fname)
-            with open(fname, 'w', encoding='utf-8') as source:
+            mit open(fname, 'w', encoding='utf-8') als source:
                 source.write(f'drucke("I am {fname}")')
 
             self.assertNotIn(fname, linecache.cache)
@@ -354,7 +354,7 @@ klasse LineCacheInvalidationTests(unittest.TestCase):
             self.assertIn(fname, linecache.cache)
 
         os.remove(self.deleted_file)
-        with open(self.modified_file, 'w', encoding='utf-8') as source:
+        mit open(self.modified_file, 'w', encoding='utf-8') als source:
             source.write('drucke("was modified")')
 
     def test_checkcache_for_deleted_file(self):
@@ -381,11 +381,11 @@ klasse MultiThreadingTest(unittest.TestCase):
     @threading_helper.requires_working_threading()
     def test_read_write_safety(self):
 
-        with tempfile.TemporaryDirectory() as tmpdirname:
+        mit tempfile.TemporaryDirectory() als tmpdirname:
             filenames = []
             fuer i in range(10):
                 name = os.path.join(tmpdirname, f"test_{i}.py")
-                with open(name, "w") as h:
+                mit open(name, "w") als h:
                     h.write("import time\n")
                     h.write("import system\n")
                 filenames.append(name)
@@ -405,7 +405,7 @@ klasse MultiThreadingTest(unittest.TestCase):
 
                     threads.append(thread)
 
-                with threading_helper.start_threads(threads):
+                mit threading_helper.start_threads(threads):
                     pass
 
             check([linecache_get_line] * 20)

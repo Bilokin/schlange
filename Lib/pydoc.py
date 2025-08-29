@@ -10,12 +10,12 @@ Run "pydoc <name>" to show documentation on something.  <name> may be
 the name of a function, module, package, or a dotted reference to a
 klasse or function within a module or module in a package.  If the
 argument contains a path segment delimiter (e.g. slash on Unix,
-backslash on Windows) it is treated as the path to a Python source file.
+backslash on Windows) it is treated als the path to a Python source file.
 
 Run "pydoc -k <keyword>" to search fuer a keyword in the synopsis lines
 of all available modules.
 
-Run "pydoc -n <hostname>" to start an HTTP server with the given
+Run "pydoc -n <hostname>" to start an HTTP server mit the given
 hostname (default: localhost) on the local machine.
 
 Run "pydoc -p <port>" to start an HTTP server on the given port on the
@@ -50,7 +50,7 @@ Richard Chamberlain, fuer the first implementation of textdoc.
 #   - synopsis() cannot be prevented von clobbering existing
 #     loaded modules.
 #   - If the __file__ attribute on a module is a relative path and
-#     the current directory is changed with os.chdir(), an incorrect
+#     the current directory is changed mit os.chdir(), an incorrect
 #     path will be displayed.
 
 importiere ast
@@ -81,7 +81,7 @@ von traceback importiere format_exception_only
 von _pyrepl.pager importiere (get_pager, pipe_pager,
                            plain_pager, tempfile_pager, tty_pager)
 
-# Expose plain() as pydoc.plain()
+# Expose plain() als pydoc.plain()
 von _pyrepl.pager importiere plain  # noqa: F401
 
 
@@ -187,7 +187,7 @@ def _getdoc(object):
     """Get the documentation string fuer an object.
 
     All tabs are expanded to spaces.  To clean up docstrings that are
-    indented to line up with blocks of code, any whitespace than can be
+    indented to line up mit blocks of code, any whitespace than can be
     uniformly removed von the second line onwards is removed."""
     doc = _getowndoc(object)
     wenn doc is Nichts:
@@ -235,14 +235,14 @@ def _getargspec(object):
     return Nichts
 
 def classname(object, modname):
-    """Get a klasse name and qualify it with a module name wenn necessary."""
+    """Get a klasse name and qualify it mit a module name wenn necessary."""
     name = object.__name__
     wenn object.__module__ != modname:
         name = object.__module__ + '.' + name
     return name
 
 def parentname(object, modname):
-    """Get a name of the enclosing klasse (qualified it with a module name
+    """Get a name of the enclosing klasse (qualified it mit a module name
     wenn necessary) or module."""
     wenn '.' in object.__qualname__:
         name = object.__qualname__.rpartition('.')[0]
@@ -336,7 +336,7 @@ def visiblename(name, all=Nichts, obj=Nichts):
         return 0
     # Private names are hidden, but special names are displayed.
     wenn name.startswith('__') and name.endswith('__'): return 1
-    # Namedtuples have public fields and methods with a single leading underscore
+    # Namedtuples have public fields and methods mit a single leading underscore
     wenn name.startswith('_') and hasattr(obj, '_fields'):
         return Wahr
     # Ignore __future__ imports.
@@ -350,7 +350,7 @@ def visiblename(name, all=Nichts, obj=Nichts):
         return not name.startswith('_')
 
 def classify_class_attrs(object):
-    """Wrap inspect.classify_class_attrs, with fixup fuer data descriptors and bound methods."""
+    """Wrap inspect.classify_class_attrs, mit fixup fuer data descriptors and bound methods."""
     results = []
     fuer (name, kind, cls, value) in inspect.classify_class_attrs(object):
         wenn inspect.isdatadescriptor(value):
@@ -396,7 +396,7 @@ def source_synopsis(file):
             wenn tok_type == tokenize.STRING:
                 string += tok_string
             sowenn tok_type == tokenize.NEWLINE:
-                with warnings.catch_warnings():
+                mit warnings.catch_warnings():
                     # Ignore the "invalid escape sequence" warning.
                     warnings.simplefilter("ignore", SyntaxWarning)
                     docstring = ast.literal_eval(string)
@@ -432,7 +432,7 @@ def synopsis(filename, cache={}):
                 # module can't be opened, so skip it
                 return Nichts
             # text modules can be directly examined
-            with file:
+            mit file:
                 result = source_synopsis(file)
         sonst:
             # Must be a binary module, which has to be imported.
@@ -472,7 +472,7 @@ klasse ErrorDuringImport(Exception):
 def importfile(path):
     """Import a Python source file or compiled file given its path."""
     magic = importlib.util.MAGIC_NUMBER
-    with open(path, 'rb') as file:
+    mit open(path, 'rb') als file:
         is_bytecode = magic == file.read(len(magic))
     filename = os.path.basename(path)
     name, ext = os.path.splitext(filename)
@@ -484,7 +484,7 @@ def importfile(path):
     spec = importlib.util.spec_from_file_location(name, path, loader=loader)
     try:
         return importlib._bootstrap._load(spec)
-    except BaseException as err:
+    except BaseException als err:
         raise ErrorDuringImport(path, err)
 
 def safeimport(path, forceload=0, cache={}):
@@ -503,7 +503,7 @@ def safeimport(path, forceload=0, cache={}):
         wenn forceload and path in sys.modules:
             wenn path not in sys.builtin_module_names:
                 # Remove the module von sys.modules and re-import to try
-                # and avoid problems with partially loaded modules.
+                # and avoid problems mit partially loaded modules.
                 # Also remove any submodules because they won't appear
                 # in the newly loaded module's namespace wenn they're already
                 # in sys.modules.
@@ -513,7 +513,7 @@ def safeimport(path, forceload=0, cache={}):
                     cache[key] = sys.modules[key]
                     del sys.modules[key]
         module = importlib.import_module(path)
-    except BaseException as err:
+    except BaseException als err:
         # Did the error occur before or after the module was found?
         wenn path in sys.modules:
             # An error occurred while executing the imported module.
@@ -663,7 +663,7 @@ klasse HTMLDoc(Doc):
 
     def section(self, title, cls, contents, width=6,
                 prelude='', marginalia=Nichts, gap='&nbsp;'):
-        """Format a section with a heading."""
+        """Format a section mit a heading."""
         wenn marginalia is Nichts:
             marginalia = '<span class="code">' + '&nbsp;' * width + '</span>'
         result = '''<p>
@@ -683,7 +683,7 @@ klasse HTMLDoc(Doc):
         return result + '\n<td class="singlecolumn">%s</td></tr></table>' % contents
 
     def bigsection(self, title, *args):
-        """Format a section with a big heading."""
+        """Format a section mit a big heading."""
         title = '<strong class="bigsection">%s</strong>' % title
         return self.section(title, *args)
 
@@ -806,7 +806,7 @@ klasse HTMLDoc(Doc):
     # ---------------------------------------------- type-specific routines
 
     def formattree(self, tree, modname, parent=Nichts):
-        """Produce HTML fuer a klasse tree as given by inspect.getclasstree()."""
+        """Produce HTML fuer a klasse tree als given by inspect.getclasstree()."""
         result = ''
         fuer entry in tree:
             wenn isinstance(entry, tuple):
@@ -1099,7 +1099,7 @@ klasse HTMLDoc(Doc):
         return self.section(title, 'title', contents, 3, doc)
 
     def formatvalue(self, object):
-        """Format an argument default value as text."""
+        """Format an argument default value als text."""
         return self.grey('=' + self.repr(object))
 
     def docroutine(self, object, name=Nichts, mod=Nichts,
@@ -1275,14 +1275,14 @@ klasse TextDoc(Doc):
         return '\n'.join(lines)
 
     def section(self, title, contents):
-        """Format a section with a given heading."""
+        """Format a section mit a given heading."""
         clean_contents = self.indent(contents).rstrip()
         return self.bold(title) + '\n' + clean_contents + '\n\n'
 
     # ---------------------------------------------- type-specific routines
 
     def formattree(self, tree, modname, parent=Nichts, prefix=''):
-        """Render in text a klasse tree as returned by inspect.getclasstree()."""
+        """Render in text a klasse tree als returned by inspect.getclasstree()."""
         result = ''
         fuer entry in tree:
             wenn isinstance(entry, tuple):
@@ -1350,7 +1350,7 @@ location listed above.
             result = result + self.section(
                 'PACKAGE CONTENTS', '\n'.join(modpkgs))
 
-        # Detect submodules as sometimes created by C extensions
+        # Detect submodules als sometimes created by C extensions
         submodules = []
         fuer key, value in inspect.getmembers(object, inspect.ismodule):
             wenn value.__name__.startswith(name + '.') and key not in modpkgs_names:
@@ -1549,7 +1549,7 @@ location listed above.
         return title + '\n' + self.indent(contents.rstrip(), ' |  ') + '\n'
 
     def formatvalue(self, object):
-        """Format an argument default value as text."""
+        """Format an argument default value als text."""
         return '=' + self.repr(object)
 
     def docroutine(self, object, name=Nichts, mod=Nichts, cl=Nichts, homecls=Nichts):
@@ -1705,7 +1705,7 @@ def describe(thing):
     return type(thing).__name__
 
 def locate(path, forceload=0):
-    """Locate an object by name or dotted path, importing as necessary."""
+    """Locate an object by name or dotted path, importing als necessary."""
     parts = [part fuer part in path.split('.') wenn part]
     module, n = Nichts, 0
     while n < len(parts):
@@ -1784,14 +1784,14 @@ def doc(thing, title='Python Library Documentation: %s', forceload=0,
                     wenn not isinstance(what, str):
                         what = type(thing).__name__ + ' object'
             pager(render_doc(thing, title, forceload), f'Help on {what!s}')
-        except ImportError as exc:
+        except ImportError als exc:
             wenn is_cli:
                 raise
             drucke(exc)
     sonst:
         try:
             s = render_doc(thing, title, forceload, plaintext)
-        except ImportError as exc:
+        except ImportError als exc:
             s = str(exc)
         output.write(s)
 
@@ -1799,7 +1799,7 @@ def writedoc(thing, forceload=0):
     """Write HTML documentation to a file in the current directory."""
     object, name = resolve(thing, forceload)
     page = html.page(describe(object), html.document(object, name))
-    with open(name + '.html', 'w', encoding='utf-8') as file:
+    mit open(name + '.html', 'w', encoding='utf-8') als file:
         file.write(page)
     drucke('wrote', name + '.html')
 
@@ -1832,8 +1832,8 @@ def _introdoc():
         modules, keywords, symbols, or topics, enter "modules", "keywords",
         "symbols", or "topics".
         {pyrepl_keys}
-        Each module also comes with a one-line summary of what it does; to list
-        the modules whose name or summary contain a given string such as "spam",
+        Each module also comes mit a one-line summary of what it does; to list
+        the modules whose name or summary contain a given string such als "spam",
         enter "modules spam".
 
         To quit this help utility and return to the interpreter,
@@ -2042,7 +2042,7 @@ klasse Helper:
         wenn request is not self._GoInteractive:
             try:
                 self.help(request)
-            except ImportError as err:
+            except ImportError als err:
                 self.output.write(f'{err}\n')
         sonst:
             self.intro()
@@ -2051,7 +2051,7 @@ klasse Helper:
 You are now leaving help and returning to the Python interpreter.
 If you want to ask fuer help on a particular object directly von the
 interpreter, you can type "help(object)".  Executing "help('string')"
-has the same effect as typing a particular string at the help> prompt.
+has the same effect als typing a particular string at the help> prompt.
 ''')
 
     def interact(self):
@@ -2309,7 +2309,7 @@ def apropos(key):
         drucke(modname, desc and '- ' + desc)
     def onerror(modname):
         pass
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.filterwarnings('ignore') # ignore problems during import
         ModuleScanner().run(callback, key, onerror=onerror)
 
@@ -2319,7 +2319,7 @@ def _start_server(urlhandler, hostname, port):
     """Start an HTTP server thread on a specific port.
 
     Start an HTML/text server thread, so HTML or text documents can be
-    browsed dynamically and interactively with a web browser.  Example use:
+    browsed dynamically and interactively mit a web browser.  Example use:
 
         >>> importiere time
         >>> importiere pydoc
@@ -2341,7 +2341,7 @@ def _start_server(urlhandler, hostname, port):
         >>> serverthread = pydoc._start_server(my_url_handler, port)
 
         Check that the server is really started.  If it is, open browser
-        and get first page.  Use serverthread.url as the starting page.
+        and get first page.  Use serverthread.url als the starting page.
 
         >>> wenn serverthread.serving:
         ...    importiere webbrowser
@@ -2440,7 +2440,7 @@ def _start_server(urlhandler, hostname, port):
                 docsvr = DocServer(self.host, self.port, self.ready)
                 self.docserver = docsvr
                 docsvr.serve_until_quit()
-            except Exception as err:
+            except Exception als err:
                 self.error = err
 
         def ready(self, server):
@@ -2469,7 +2469,7 @@ def _start_server(urlhandler, hostname, port):
 
 
 def _url_handler(url, content_type="text/html"):
-    """The pydoc url handler fuer use with the pydoc server.
+    """The pydoc url handler fuer use mit the pydoc server.
 
     If the content_type is 'text/css', the _pydoc.css style
     sheet is read and returned wenn it exits.
@@ -2558,7 +2558,7 @@ def _url_handler(url, content_type="text/html"):
                 modname = modname[:-9] + ' (package)'
             search_result.append((modname, desc and '- ' + desc))
 
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.filterwarnings('ignore') # ignore problems during import
             def onerror(modname):
                 pass
@@ -2686,7 +2686,7 @@ def _url_handler(url, content_type="text/html"):
                     raise ValueError('bad pydoc url')
             sonst:
                 title, content = html_getobj(url)
-        except Exception as exc:
+        except Exception als exc:
             # Catch any errors and display them in an error page.
             title, content = html_error(complete_url, exc)
         return html.page(title, content)
@@ -2696,7 +2696,7 @@ def _url_handler(url, content_type="text/html"):
     wenn content_type == 'text/css':
         path_here = os.path.dirname(os.path.realpath(__file__))
         css_path = os.path.join(path_here, url)
-        with open(css_path) as fp:
+        mit open(css_path) als fp:
             return ''.join(fp.readlines())
     sowenn content_type == 'text/html':
         return get_html_page(url)
@@ -2752,7 +2752,7 @@ def _get_revised_path(given_path, argv0):
     Returns a new path entry list, or Nichts wenn no adjustment is needed.
     """
     # Scripts may get the current directory in their path by default wenn they're
-    # run with the -m switch, or directly von the current directory.
+    # run mit the -m switch, or directly von the current directory.
     # The interactive prompt also allows imports von the current directory.
 
     # Accordingly, wenn the current directory is already present, don't make
@@ -2761,7 +2761,7 @@ def _get_revised_path(given_path, argv0):
         return Nichts
 
     # Otherwise, add the current directory to the given path, and remove the
-    # script directory (as long as the latter isn't also pydoc's directory.
+    # script directory (as long als the latter isn't also pydoc's directory.
     stdlib_dir = os.path.dirname(__file__)
     script_dir = os.path.dirname(argv0)
     revised_path = given_path.copy()
@@ -2831,7 +2831,7 @@ def cli():
                         writedoc(arg)
                 sonst:
                     help.help(arg, is_cli=Wahr)
-            except (ImportError, ErrorDuringImport) as value:
+            except (ImportError, ErrorDuringImport) als value:
                 drucke(value)
                 sys.exit(1)
 
@@ -2843,7 +2843,7 @@ def cli():
     Show text documentation on something.  <name> may be the name of a
     Python keyword, topic, function, module, or package, or a dotted
     reference to a klasse or function within a module or module in a
-    package.  If <name> contains a '{sep}', it is used as the path to a
+    package.  If <name> contains a '{sep}', it is used als the path to a
     Python source file to document. If name is 'keywords', 'topics',
     or 'modules', a listing of these things is displayed.
 
@@ -2851,7 +2851,7 @@ def cli():
     Search fuer a keyword in the synopsis lines of all available modules.
 
 {cmd} -n <hostname>
-    Start an HTTP server with the given hostname (default: localhost).
+    Start an HTTP server mit the given hostname (default: localhost).
 
 {cmd} -p <port>
     Start an HTTP server on the given port on the local machine.  Port
@@ -2860,11 +2860,11 @@ def cli():
 {cmd} -b
     Start an HTTP server on an arbitrary unused port and open a web browser
     to interactively browse documentation.  This option can be used in
-    combination with -n and/or -p.
+    combination mit -n and/or -p.
 
 {cmd} -w <name> ...
     Write out the HTML documentation fuer a module to a file in the current
-    directory.  If <name> contains a '{sep}', it is treated as a filename; if
+    directory.  If <name> contains a '{sep}', it is treated als a filename; if
     it names a directory, documentation is written fuer all the contents.
 """.format(cmd=cmd, sep=os.sep))
 

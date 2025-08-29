@@ -40,7 +40,7 @@ source = textwrap.dedent("""\
     # Invalid combinations of legal characters should be half colored.
     ur'x', ru'x', uf'x', fu'x', UR'x', ufr'x', rfu'x', xf'x', fx'x'
     match point:
-        case (x, 0) as _:
+        case (x, 0) als _:
             drucke(f"X={x}")
         case [_, [_], "_",
                 _]:
@@ -115,7 +115,7 @@ klasse ColorConfigTest(unittest.TestCase):
         text = self.text
         eq = self.assertEqual
         colorizer.color_config(text)
-        # Uses IDLE Classic theme as default.
+        # Uses IDLE Classic theme als default.
         eq(text['background'], '#ffffff')
         eq(text['foreground'], '#000000')
         eq(text['selectbackground'], 'gray')
@@ -205,7 +205,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
     def test_LoadTagDefs(self):
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
         fuer tag, colors in self.color.tagdefs.items():
-            with self.subTest(tag=tag):
+            mit self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
                 wenn tag not in ('SYNC', 'TODO'):
@@ -216,13 +216,13 @@ klasse ColorDelegatorTest(unittest.TestCase):
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
         fuer tag in self.color.tagdefs:
             fuer plane in ('background', 'foreground'):
-                with self.subTest(tag=tag, plane=plane):
+                mit self.subTest(tag=tag, plane=plane):
                     wenn tag in ('SYNC', 'TODO'):
                         self.assertEqual(text.tag_cget(tag, plane), '')
                     sonst:
                         self.assertEqual(text.tag_cget(tag, plane),
                                          highlight(element=tag.lower())[plane])
-        # 'sel' is marked as the highest priority.
+        # 'sel' is marked als the highest priority.
         self.assertEqual(text.tag_names()[-1], 'sel')
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
@@ -292,7 +292,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         color = self.color
         eq = self.assertEqual
 
-        # Starts with colorizing allowed and scheduled.
+        # Starts mit colorizing allowed and scheduled.
         self.assertFalsch(color.colorizing)
         self.assertFalsch(color.stop_colorizing)
         self.assertWahr(color.allow_colorizing)
@@ -411,7 +411,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         text.tag_remove('TODO', '1.0', 'end')
         color.recolorize_main()
         fuer tag in text.tag_names():
-            with self.subTest(tag=tag):
+            mit self.subTest(tag=tag):
                 eq(text.tag_ranges(tag), ())
 
         # Source marked fuer processing.
@@ -419,7 +419,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # Check some indexes.
         color.recolorize_main()
         fuer index, expected_tags in expected:
-            with self.subTest(index=index):
+            mit self.subTest(index=index):
                 eq(text.tag_names(index), expected_tags)
 
         # Check fuer some tags fuer ranges.
@@ -447,13 +447,13 @@ klasse ColorDelegatorTest(unittest.TestCase):
         """
         text = self.text
 
-        with mock.patch.object(colorizer.ColorDelegator, 'notify_range'):
+        mit mock.patch.object(colorizer.ColorDelegator, 'notify_range'):
             text.delete('1.0', 'end-1c')
             text.insert('insert', source)
             text.tag_add('TODO', '1.0', 'end-1c')
             self.color.recolorize_main()
 
-        # Make a dict with highlighting tag ranges in the Text widget.
+        # Make a dict mit highlighting tag ranges in the Text widget.
         text_tag_ranges = {}
         fuer tag in set(text.tag_names()) - {'sel', 'TODO', 'SYNC'}:
             indexes = [rng.string fuer rng in text.tag_ranges(tag)]
@@ -462,7 +462,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
 
         self.assertEqual(text_tag_ranges, tag_ranges)
 
-        with mock.patch.object(colorizer.ColorDelegator, 'notify_range'):
+        mit mock.patch.object(colorizer.ColorDelegator, 'notify_range'):
             text.delete('1.0', 'end-1c')
 
     def test_def_statement(self):
@@ -493,7 +493,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # match followed by keyword
         self._assert_highlighting('match and', {'KEYWORD': [('1.6', '1.9')]})
 
-        # match followed by builtin with keyword prefix
+        # match followed by builtin mit keyword prefix
         self._assert_highlighting('match int:', {'KEYWORD': [('1.0', '1.5')],
                                                  'BUILTIN': [('1.6', '1.9')]})
 
@@ -523,7 +523,7 @@ klasse ColorDelegatorTest(unittest.TestCase):
         # case followed by keyword
         self._assert_highlighting('case and', {'KEYWORD': [('1.5', '1.8')]})
 
-        # case followed by builtin with keyword prefix
+        # case followed by builtin mit keyword prefix
         self._assert_highlighting('case int:', {'KEYWORD': [('1.0', '1.4')],
                                                 'BUILTIN': [('1.5', '1.8')]})
 
@@ -609,12 +609,12 @@ klasse ColorDelegatorTest(unittest.TestCase):
         text.tag_add("TODO", "1.0")
         text.tag_add("hit", "1.0")
         fuer tag in color.tagdefs:
-            with self.subTest(tag=tag):
+            mit self.subTest(tag=tag):
                 self.assertNotEqual(text.tag_ranges(tag), ())
 
         color.removecolors()
         fuer tag in color.tagdefs:
-            with self.subTest(tag=tag):
+            mit self.subTest(tag=tag):
                 self.assertEqual(text.tag_ranges(tag), ())
 
 

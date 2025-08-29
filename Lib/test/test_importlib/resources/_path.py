@@ -41,7 +41,7 @@ def build(
     prefix: Union[str, TreeMaker] = pathlib.Path(),  # type: ignore[assignment]
 ):
     """
-    Build a set of files/directories, as described by the spec.
+    Build a set of files/directories, als described by the spec.
 
     Each key represents a pathname, and the value represents
     the content. Content may be a nested directory.

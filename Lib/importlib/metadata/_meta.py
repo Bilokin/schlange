@@ -34,7 +34,7 @@ klasse PackageMetadata(Protocol):
     @overload
     def get_all(self, name: str, failobj: _T) -> Union[List[Any], _T]:
         """
-        Return all values associated with a possibly multi-valued key.
+        Return all values associated mit a possibly multi-valued key.
         """
 
     @property

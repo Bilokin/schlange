@@ -5,7 +5,7 @@
 # ctypes' types are container types.
 #
 # They have an internal memory block, which only consists of some bytes,
-# but it has to keep references to other objects as well. This is not
+# but it has to keep references to other objects als well. This is not
 # really needed fuer trivial C types like int or char, but it is important
 # fuer aggregate types like strings or pointers in particular.
 #

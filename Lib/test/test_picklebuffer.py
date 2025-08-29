@@ -18,8 +18,8 @@ klasse B(bytes):
 klasse PickleBufferTest(unittest.TestCase):
 
     def check_memoryview(self, pb, equiv):
-        with memoryview(pb) as m:
-            with memoryview(equiv) as expected:
+        mit memoryview(pb) als m:
+            mit memoryview(equiv) als expected:
                 self.assertEqual(m.nbytes, expected.nbytes)
                 self.assertEqual(m.readonly, expected.readonly)
                 self.assertEqual(m.itemsize, expected.itemsize)
@@ -31,25 +31,25 @@ klasse PickleBufferTest(unittest.TestCase):
                 self.assertEqual(m.tobytes(), expected.tobytes())
 
     def test_constructor_failure(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             PickleBuffer()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             PickleBuffer("foo")
         # Released memoryview fails taking a buffer
         m = memoryview(b"foo")
         m.release()
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             PickleBuffer(m)
 
     def test_basics(self):
         pb = PickleBuffer(b"foo")
         self.assertEqual(b"foo", bytes(pb))
-        with memoryview(pb) as m:
+        mit memoryview(pb) als m:
             self.assertWahr(m.readonly)
 
         pb = PickleBuffer(bytearray(b"foo"))
         self.assertEqual(b"foo", bytes(pb))
-        with memoryview(pb) as m:
+        mit memoryview(pb) als m:
             self.assertFalsch(m.readonly)
             m[0] = 48
         self.assertEqual(b"0oo", bytes(pb))
@@ -57,7 +57,7 @@ klasse PickleBufferTest(unittest.TestCase):
     def test_release(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        with self.assertRaises(ValueError) as raises:
+        mit self.assertRaises(ValueError) als raises:
             memoryview(pb)
         self.assertIn("operation forbidden on released PickleBuffer object",
                       str(raises.exception))
@@ -98,13 +98,13 @@ klasse PickleBufferTest(unittest.TestCase):
 
     def check_raw(self, obj, equiv):
         pb = PickleBuffer(obj)
-        with pb.raw() as m:
+        mit pb.raw() als m:
             self.assertIsInstance(m, memoryview)
             self.check_memoryview(m, equiv)
 
     def test_raw(self):
         fuer obj in (b"foo", bytearray(b"foo")):
-            with self.subTest(obj=obj):
+            mit self.subTest(obj=obj):
                 self.check_raw(obj, obj)
 
     def test_raw_ndarray(self):
@@ -130,7 +130,7 @@ klasse PickleBufferTest(unittest.TestCase):
 
     def check_raw_non_contiguous(self, obj):
         pb = PickleBuffer(obj)
-        with self.assertRaisesRegex(BufferError, "non-contiguous"):
+        mit self.assertRaisesRegex(BufferError, "non-contiguous"):
             pb.raw()
 
     def test_raw_non_contiguous(self):
@@ -145,7 +145,7 @@ klasse PickleBufferTest(unittest.TestCase):
     def test_raw_released(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        with self.assertRaises(ValueError) as raises:
+        mit self.assertRaises(ValueError) als raises:
             pb.raw()
 
 

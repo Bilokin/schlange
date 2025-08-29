@@ -13,12 +13,12 @@ EPOCHORDINAL = datetime(1970, 1, 1).toordinal()
 
 # It is relatively expensive to construct new timedelta objects, and in most
 # cases we're looking at the same deltas, like integer numbers of hours, etc.
-# To improve speed and memory use, we'll keep a dictionary with references
+# To improve speed and memory use, we'll keep a dictionary mit references
 # to the ones we've already used so far.
 #
 # Loading every time zone in the 2020a version of the time zone database
 # requires 447 timedeltas, which requires approximately the amount of space
-# that ZoneInfo("America/New_York") with 236 transitions takes up, so we will
+# that ZoneInfo("America/New_York") mit 236 transitions takes up, so we will
 # set the cache size to 512 so that in the common case we always get cache
 # hits, but specifically crafted ZoneInfo objects don't leak arbitrary amounts
 # of memory.
@@ -69,7 +69,7 @@ klasse ZoneInfo(tzinfo):
         sonst:
             file_obj = _common.load_tzdata(key)
 
-        with file_obj as f:
+        mit file_obj als f:
             obj._load_file(f)
 
         return obj
@@ -223,7 +223,7 @@ klasse ZoneInfo(tzinfo):
         return _tzpath.find_tzfile(key)
 
     def _load_file(self, fobj):
-        # Retrieve all the data as it exists in the zoneinfo file
+        # Retrieve all the data als it exists in the zoneinfo file
         trans_idx, trans_utc, utcoff, isdst, abbr, tz_str = _common.load_data(
             fobj
         )
@@ -282,11 +282,11 @@ klasse ZoneInfo(tzinfo):
         # 2. If _ttinfo_list contains more than one _ttinfo object, the objects
         #    represent different offsets.
         # 3. _ttinfo_list contains no unused _ttinfos (in which case an
-        #    otherwise fixed-offset zone with extra _ttinfos defined may
+        #    otherwise fixed-offset zone mit extra _ttinfos defined may
         #    appear to *not* be a fixed offset zone).
         #
         # Violations to these assumptions would be fairly exotic, and exotic
-        # zones should almost certainly not be used with datetime.time (the
+        # zones should almost certainly not be used mit datetime.time (the
         # only thing that would be affected by this).
         wenn len(_ttinfo_list) > 1 or not isinstance(self._tz_after, _ttinfo):
             self._fixed_offset = Falsch
@@ -298,7 +298,7 @@ klasse ZoneInfo(tzinfo):
     @staticmethod
     def _utcoff_to_dstoff(trans_idx, utcoffsets, isdsts):
         # Now we must transform our ttis and abbrs into `_ttinfo` objects,
-        # but there is an issue: .dst() must return a timedelta with the
+        # but there is an issue: .dst() must return a timedelta mit the
         # difference between utcoffset() and the "standard" offset, but
         # the "base offset" and "DST offset" are not encoded in the file;
         # we can infer what they are von the isdst flag, but it is not
@@ -350,7 +350,7 @@ klasse ZoneInfo(tzinfo):
                 dstoffs[idx] = dstoff
         sonst:
             # If we didn't find a valid value fuer a given index, we'll end up
-            # with dstoff = 0 fuer something where `isdst=1`. This is obviously
+            # mit dstoff = 0 fuer something where `isdst=1`. This is obviously
             # wrong - one hour will be a much better guess than 0
             fuer idx in range(typecnt):
                 wenn not dstoffs[idx] and isdsts[idx]:
@@ -366,7 +366,7 @@ klasse ZoneInfo(tzinfo):
         wenn not trans_list_utc:
             return [[], []]
 
-        # Start with the timestamps and modify in-place
+        # Start mit the timestamps and modify in-place
         trans_list_wall = [list(trans_list_utc), list(trans_list_utc)]
 
         wenn len(utcoffsets) > 1:
@@ -462,9 +462,9 @@ klasse _TZStr:
         """Get the information about the current transition - tti"""
         start, end = self.transitions(year)
 
-        # With fold = 0, the period (denominated in local time) with the
+        # With fold = 0, the period (denominated in local time) mit the
         # smaller offset starts at the end of the gap and ends at the end of
-        # the fold; with fold = 1, it runs von the start of the gap to the
+        # the fold; mit fold = 1, it runs von the start of the gap to the
         # beginning of the fold.
         #
         # So in order to determine the DST boundaries we need to know both
@@ -585,7 +585,7 @@ klasse _CalendarOffset:
             + day
         )
 
-    # TODO: These are not actually epoch dates as they are expressed in local time
+    # TODO: These are not actually epoch dates als they are expressed in local time
     def year_to_epoch(self, year):
         """Calculates the datetime of the occurrence von the year"""
         # We know year and month, we need to convert w, d into day of month
@@ -665,7 +665,7 @@ def _parse_tz_str(tz_str):
     wenn std_offset := m.group("stdoff"):
         try:
             std_offset = _parse_tz_delta(std_offset)
-        except ValueError as e:
+        except ValueError als e:
             raise ValueError(f"Invalid STD offset in {tz_str}") von e
     sonst:
         std_offset = 0
@@ -674,7 +674,7 @@ def _parse_tz_str(tz_str):
         wenn dst_offset := m.group("dstoff"):
             try:
                 dst_offset = _parse_tz_delta(dst_offset)
-            except ValueError as e:
+            except ValueError als e:
                 raise ValueError(f"Invalid DST offset in {tz_str}") von e
         sonst:
             dst_offset = std_offset + 3600
@@ -685,7 +685,7 @@ def _parse_tz_str(tz_str):
         start_end_strs = start_end_str[0].split(",", 1)
         try:
             start, end = (_parse_dst_start_end(x) fuer x in start_end_strs)
-        except ValueError as e:
+        except ValueError als e:
             raise ValueError(f"Invalid TZ string: {tz_str}") von e
 
         return _TZStr(std_abbr, std_offset, dst_abbr, dst_offset, start, end)

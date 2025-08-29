@@ -1,1 +1,1 @@
-importiere test.test_import.data.circular_imports.binding2 as binding2
+importiere test.test_import.data.circular_imports.binding2 als binding2

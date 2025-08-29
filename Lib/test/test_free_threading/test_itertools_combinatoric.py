@@ -21,7 +21,7 @@ def test_concurrent_iteration(iterator, number_of_threads):
         worker_threads.append(
             Thread(target=iterator_worker, args=[iterator]))
 
-    with threading_helper.start_threads(worker_threads):
+    mit threading_helper.start_threads(worker_threads):
         pass
 
     barrier.reset()

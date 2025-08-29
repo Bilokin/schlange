@@ -32,11 +32,11 @@ importiere urllib.request
 von unittest importiere mock
 von copy importiere copy
 
-# These tests are not particularly useful wenn Python was invoked with -S.
+# These tests are not particularly useful wenn Python was invoked mit -S.
 # If you add tests that are useful under -S, this skip should be moved
 # to the klasse level.
 wenn sys.flags.no_site:
-    raise unittest.SkipTest("Python was invoked with -S")
+    raise unittest.SkipTest("Python was invoked mit -S")
 
 importiere site
 
@@ -55,7 +55,7 @@ def setUpModule():
             os.makedirs(site.USER_SITE)
             # modify sys.path: will be restored by tearDownModule()
             site.addsitedir(site.USER_SITE)
-        except PermissionError as exc:
+        except PermissionError als exc:
             raise unittest.SkipTest('unable to create user site directory (%r): %s'
                                     % (site.USER_SITE, exc))
 
@@ -118,7 +118,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
         self.assertFalsch(os.path.exists(pth_file.bad_dir_path))
 
     def test_addpackage(self):
-        # Make sure addpackage() imports wenn the line starts with 'import',
+        # Make sure addpackage() imports wenn the line starts mit 'import',
         # adds directories to sys.path fuer any line in the file that is not a
         # comment or importiere that is a valid directory name fuer where the .pth
         # file resides; invalid directories are not added
@@ -137,7 +137,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
         pth_dir = os.path.abspath(pth_dir)
         pth_basename = pth_name + '.pth'
         pth_fn = os.path.join(pth_dir, pth_basename)
-        with open(pth_fn, 'w', encoding='utf-8') as pth_file:
+        mit open(pth_fn, 'w', encoding='utf-8') als pth_file:
             self.addCleanup(lambda: os.remove(pth_fn))
             pth_file.write(contents)
         return pth_dir, pth_basename
@@ -145,7 +145,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
     def test_addpackage_import_bad_syntax(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("import bad-syntax\n")
-        with captured_stderr() as err_out:
+        mit captured_stderr() als err_out:
             site.addpackage(pth_dir, pth_fn, set())
         self.assertRegex(err_out.getvalue(), "line 1")
         self.assertRegex(err_out.getvalue(),
@@ -160,7 +160,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
     def test_addpackage_import_bad_exec(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("randompath\nimport nosuchmodule\n")
-        with captured_stderr() as err_out:
+        mit captured_stderr() als err_out:
             site.addpackage(pth_dir, pth_fn, set())
         self.assertRegex(err_out.getvalue(), "line 2")
         self.assertRegex(err_out.getvalue(),
@@ -178,7 +178,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
     def test_addpackage_import_bad_pth_file(self):
         # Issue 5258
         pth_dir, pth_fn = self.make_pth("abc\x00def\n")
-        with captured_stderr() as err_out:
+        mit captured_stderr() als err_out:
             self.assertFalsch(site.addpackage(pth_dir, pth_fn, set()))
         self.maxDiff = Nichts
         self.assertEqual(err_out.getvalue(), "")
@@ -273,7 +273,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
         wenn usersite == site.getsitepackages()[0]:
             self.assertEqual(rc, 1)
         sonst:
-            self.assertEqual(rc, 0, "User site still added to path with -s")
+            self.assertEqual(rc, 0, "User site still added to path mit -s")
 
         env = os.environ.copy()
         env["PYTHONNOUSERSITE"] = "1"
@@ -284,7 +284,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
             self.assertEqual(rc, 1)
         sonst:
             self.assertEqual(rc, 0,
-                        "User site still added to path with PYTHONNOUSERSITE")
+                        "User site still added to path mit PYTHONNOUSERSITE")
 
         env = os.environ.copy()
         env["PYTHONUSERBASE"] = "/tmp"
@@ -307,7 +307,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
         importiere sysconfig
         sysconfig._CONFIG_VARS = Nichts
 
-        with EnvironmentVarGuard() as environ:
+        mit EnvironmentVarGuard() als environ:
             environ['PYTHONUSERBASE'] = 'xoxo'
             self.assertStartsWith(site.getuserbase(), 'xoxo')
 
@@ -355,7 +355,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
         site.USER_SITE = Nichts
         site.USER_BASE = Nichts
 
-        with EnvironmentVarGuard() as environ, \
+        mit EnvironmentVarGuard() als environ, \
              mock.patch('os.path.expanduser', lambda path: path):
             environ.unset('PYTHONUSERBASE', 'APPDATA')
 
@@ -365,8 +365,8 @@ klasse HelperFunctionsTests(unittest.TestCase):
             user_site = site.getusersitepackages()
             self.assertStartsWith(user_site, user_base)
 
-        with mock.patch('os.path.isdir', return_value=Falsch) as mock_isdir, \
-             mock.patch.object(site, 'addsitedir') as mock_addsitedir, \
+        mit mock.patch('os.path.isdir', return_value=Falsch) als mock_isdir, \
+             mock.patch.object(site, 'addsitedir') als mock_addsitedir, \
              support.swap_attr(site, 'ENABLE_USER_SITE', Wahr):
 
             # addusersitepackages() must not add user_site to sys.path
@@ -394,7 +394,7 @@ klasse HelperFunctionsTests(unittest.TestCase):
     def test_trace(self):
         message = "bla-bla-bla"
         fuer verbose, out in (Wahr, message + "\n"), (Falsch, ""):
-            with mock.patch('sys.flags', mock.Mock(verbose=verbose)), \
+            mit mock.patch('sys.flags', mock.Mock(verbose=verbose)), \
                     mock.patch('sys.stderr', io.StringIO()):
                 site._trace(message)
                 self.assertEqual(sys.stderr.getvalue(), out)
@@ -416,8 +416,8 @@ klasse PthFile(object):
         self.bad_dir_path = os.path.join(self.base_dir, self.bad_dirname)
 
     def create(self):
-        """Create a .pth file with a comment, blank lines, an ``import
-        <self.imported>``, a line with self.good_dirname, and a line with
+        """Create a .pth file mit a comment, blank lines, an ``import
+        <self.imported>``, a line mit self.good_dirname, and a line with
         self.bad_dirname.
 
         Creation of the directory fuer self.good_dir_path (based off of
@@ -530,7 +530,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
         temp_dir = tempfile.mkdtemp()
         self.addCleanup(os_helper.rmtree, temp_dir)
 
-        with EnvironmentVarGuard() as environ:
+        mit EnvironmentVarGuard() als environ:
             environ['PYTHONPATH'] = temp_dir
 
             fuer module_name in mod_names:
@@ -540,7 +540,7 @@ klasse ImportSideEffectTests(unittest.TestCase):
                 customize_path = os.path.join(temp_dir, f'{module_name}.py')
                 eyecatcher = f'EXECUTED_{module_name}'
 
-                with open(customize_path, 'w') as f:
+                mit open(customize_path, 'w') als f:
                     f.write(f'drucke("{eyecatcher}")')
 
                 output = subprocess.check_output([sys.executable, '-c', '""'])
@@ -568,10 +568,10 @@ klasse ImportSideEffectTests(unittest.TestCase):
         # Reset global urllib.request._opener
         self.addCleanup(urllib.request.urlcleanup)
         try:
-            with socket_helper.transient_internet(url):
-                with urllib.request.urlopen(req) as data:
+            mit socket_helper.transient_internet(url):
+                mit urllib.request.urlopen(req) als data:
                     code = data.getcode()
-        except urllib.error.HTTPError as e:
+        except urllib.error.HTTPError als e:
             code = e.code
         self.assertEqual(code, 200, msg="Can't find " + url)
 
@@ -601,7 +601,7 @@ klasse StartupImportTests(unittest.TestCase):
         self.assertEqual(popen.returncode, 0, repr(stdout))
         isolated_paths = ast.literal_eval(stdout)
 
-        # bpo-27807: Even with -I, the site module executes all .pth files
+        # bpo-27807: Even mit -I, the site module executes all .pth files
         # found in sys.path (see site.addpackage()). Skip the test wenn at least
         # one .pth file is found.
         fuer path in isolated_paths:
@@ -678,7 +678,7 @@ klasse _pthFileTests(unittest.TestCase):
                 _pth_file = os.path.splitext(exe_file)[0] + '._pth'
             sonst:
                 _pth_file = os.path.splitext(dll_file)[0] + '._pth'
-            with open(_pth_file, 'w', encoding='utf8') as f:
+            mit open(_pth_file, 'w', encoding='utf8') als f:
                 fuer line in lines:
                     drucke(line, file=f)
             return exe_file
@@ -691,7 +691,7 @@ klasse _pthFileTests(unittest.TestCase):
             exe_file = os.path.join(temp_dir, os.path.split(sys.executable)[1])
             os.symlink(sys.executable, exe_file)
             _pth_file = exe_file + '._pth'
-            with open(_pth_file, 'w') as f:
+            mit open(_pth_file, 'w') als f:
                 fuer line in lines:
                     drucke(line, file=f)
             return exe_file
@@ -857,7 +857,7 @@ klasse CommandLineTests(unittest.TestCase):
     def invoke_command_line(self, *args):
         args = ["-m", "site", *args]
 
-        with EnvironmentVarGuard() as env:
+        mit EnvironmentVarGuard() als env:
             env["PYTHONUTF8"] = "1"
             env["PYTHONIOENCODING"] = "utf-8"
             proc = spawn_python(*args, text=Wahr, env=env,

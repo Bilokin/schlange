@@ -46,7 +46,7 @@ get_spec = calltip.get_argspec
 klasse Get_argspecTest(unittest.TestCase):
     # The get_spec function must return a string, even wenn blank.
     # Test a variety of objects to be sure that none cause it to raise
-    # (quite aside von getting as correct an answer as possible).
+    # (quite aside von getting als correct an answer als possible).
     # The tests of builtins may break wenn inspect or the docstrings change,
     # but a red buildbot is better than a user crash (as has happened).
     # For a simple mismatch, change the expected output to the actual.
@@ -61,7 +61,7 @@ klasse Get_argspecTest(unittest.TestCase):
         # Python klasse that inherits builtin methods
         klasse List(list): "List() doc"
 
-        # Simulate builtin with no docstring fuer default tip test
+        # Simulate builtin mit no docstring fuer default tip test
         klasse SB:  __call__ = Nichts
 
         wenn List.__doc__ is not Nichts:
@@ -139,7 +139,7 @@ you\'ll probably have to override _wrap_chunks().''')
                "bbbbbbbbbbbbbbbbbbbbbb')"
 
         fuer func,doc in [(foo, sfoo), (bar, sbar), (baz, sbaz)]:
-            with self.subTest(func=func, doc=doc):
+            mit self.subTest(func=func, doc=doc):
                 self.assertEqual(get_spec(func), doc)
 
     def test_docline_truncation(self):
@@ -160,7 +160,7 @@ you\'ll probably have to override _wrap_chunks().''')
 bytes(iterable_of_ints) -> bytes
 bytes(string, encoding[, errors]) -> bytes
 bytes(bytes_or_buffer) -> immutable copy of bytes_or_buffer
-bytes(int) -> bytes object of size given by the parameter initialized with null bytes
+bytes(int) -> bytes object of size given by the parameter initialized mit null bytes
 bytes() -> empty bytes object''')
 
     def test_multiline_docstring_2(self):
@@ -183,13 +183,13 @@ bytes() -> empty bytes object''')
 
         doc = '\ndoc' wenn t1.__doc__ is not Nichts sonst ''
         fuer func in (t1, t2, t3, t4, t5, TC):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 self.assertEqual(get_spec(func), func.tip + doc)
 
     def test_methods(self):
         doc = '\ndoc' wenn TC.__doc__ is not Nichts sonst ''
         fuer meth in (TC.t1, TC.t2, TC.t3, TC.t4, TC.t5, TC.t6, TC.__call__):
-            with self.subTest(meth=meth):
+            mit self.subTest(meth=meth):
                 self.assertEqual(get_spec(meth), meth.tip + doc)
         self.assertEqual(get_spec(TC.cm), "(a)" + doc)
         self.assertEqual(get_spec(TC.sm), "(b)" + doc)
@@ -200,7 +200,7 @@ bytes() -> empty bytes object''')
         fuer meth, mtip  in ((tc.t1, "()"), (tc.t4, "(*args)"),
                             (tc.t6, "(self)"), (tc.__call__, '(ci)'),
                             (tc, '(ci)'), (TC.cm, "(a)"),):
-            with self.subTest(meth=meth, mtip=mtip):
+            mit self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip + doc)
 
     def test_starred_parameter(self):
@@ -209,7 +209,7 @@ bytes() -> empty bytes object''')
             def m1(*args): pass
         c = C()
         fuer meth, mtip  in ((C.m1, '(*args)'), (c.m1, "(*args)"),):
-            with self.subTest(meth=meth, mtip=mtip):
+            mit self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_invalid_method_get_spec(self):
@@ -224,13 +224,13 @@ bytes() -> empty bytes object''')
 
     def test_non_ascii_name(self):
         # test that re works to delete a first parameter name that
-        # includes non-ascii chars, such as various forms of A.
+        # includes non-ascii chars, such als various forms of A.
         uni = "(A\u0391\u0410\u05d0\u0627\u0905\u1e00\u3042, a)"
         assert calltip._first_param.sub('', uni) == '(a)'
 
     def test_no_docstring(self):
         fuer meth, mtip in ((TC.nd, "(self)"), (tc.nd, "()")):
-            with self.subTest(meth=meth, mtip=mtip):
+            mit self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_buggy_getattr_class(self):
@@ -247,7 +247,7 @@ bytes() -> empty bytes object''')
         fuer meth, mtip  in ((NoCall, default_tip), (CallA, default_tip),
                             (NoCall(), ''), (CallA(), '(ci)'),
                             (CallB(), '(a, b, c)')):
-            with self.subTest(meth=meth, mtip=mtip):
+            mit self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_metaclass_class(self):  # Failure case fuer issue 38689.
@@ -257,12 +257,12 @@ bytes() -> empty bytes object''')
             __slots__ = '__class__'
         fuer meth, mtip  in ((Type, get_spec(type)), (Object, default_tip),
                             (Object(), '')):
-            with self.subTest(meth=meth, mtip=mtip):
+            mit self.subTest(meth=meth, mtip=mtip):
                 self.assertEqual(get_spec(meth), mtip)
 
     def test_non_callables(self):
         fuer obj in (0, 0.0, '0', b'0', [], {}):
-            with self.subTest(obj=obj):
+            mit self.subTest(obj=obj):
                 self.assertEqual(get_spec(obj), '')
 
 
@@ -323,7 +323,7 @@ klasse CalltipTest(unittest.TestCase):
         self.ct.tips_removed = 0
 
     def open_close(self, testfunc):
-        # Open-close template with testfunc called in between.
+        # Open-close template mit testfunc called in between.
         opentip = self.ct.open_calltip
         self.text.insert(1.0, 'f(')
         opentip(Falsch)
@@ -350,7 +350,7 @@ klasse CalltipTest(unittest.TestCase):
     def test_repeated_parens(self):
         def parens(self):
             fuer context in "a", "'":
-                with self.subTest(context=context):
+                mit self.subTest(context=context):
                     self.text.insert('insert', context)
                     fuer char in '(()())':
                         self.text.insert('insert', char)

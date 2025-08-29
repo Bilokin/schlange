@@ -6,8 +6,8 @@ importiere math
 importiere sys
 importiere operator
 
-von decimal importiere Decimal as D
-von fractions importiere Fraction as F
+von decimal importiere Decimal als D
+von fractions importiere Fraction als F
 
 # Constants related to the hash implementation;  hash(x) is based
 # on the reduction of x modulo the prime _PyHASH_MODULUS.
@@ -106,7 +106,7 @@ klasse HashTest(unittest.TestCase):
             self.check_equal_hash(x, F.from_float(x))
 
     def test_complex(self):
-        # complex numbers with zero imaginary part should hash equal to
+        # complex numbers mit zero imaginary part should hash equal to
         # the corresponding float
 
         test_values = [0.0, -0.0, 1.0, -1.0, 0.40625, -5136.5,
@@ -203,7 +203,7 @@ klasse ComparisonTest(unittest.TestCase):
                 self.assertGreaterEqual(second, first)
 
     def test_complex(self):
-        # comparisons with complex are special:  equality and inequality
+        # comparisons mit complex are special:  equality and inequality
         # comparisons should always succeed, but order comparisons should
         # raise TypeError.
         z = 1.0 + 0j

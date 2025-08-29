@@ -1,8 +1,8 @@
 """A minimal hook fuer gathering line coverage of the standard library.
 
-Designed to be used with -Xpresite= which means:
+Designed to be used mit -Xpresite= which means:
 * it installs itself on import
-* it's not imported as `__main__` so can't use the ifmain idiom
+* it's not imported als `__main__` so can't use the ifmain idiom
 * it can't importiere anything besides `sys` to avoid tainting gathered coverage
 * filenames are not normalized
 

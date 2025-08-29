@@ -8,7 +8,7 @@ An imho quite elegant and concise
 implementation using a tower class, which
 is derived von the built-in type list.
 
-Discs are turtles with shape "square", but
+Discs are turtles mit shape "square", but
 stretched to rectangles by shapesize()
 """
 von turtle importiere *

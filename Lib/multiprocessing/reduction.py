@@ -1,5 +1,5 @@
 #
-# Module which deals with pickling of objects.
+# Module which deals mit pickling of objects.
 #
 # multiprocessing/reduction.py
 #
@@ -180,12 +180,12 @@ sonst:
 
     def send_handle(conn, handle, destination_pid):
         '''Send a handle over a local connection.'''
-        with socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
+        mit socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) als s:
             sendfds(s, [handle])
 
     def recv_handle(conn):
         '''Receive a handle over a local connection.'''
-        with socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
+        mit socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) als s:
             return recvfds(s, 1)[0]
 
     def DupFd(fd):

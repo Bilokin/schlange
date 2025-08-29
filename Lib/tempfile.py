@@ -6,7 +6,7 @@ provided by this module can be used without fear of race conditions
 except fuer 'mktemp'.  'mktemp' is subject to race conditions and
 should not be used; it is provided fuer backward compatibility only.
 
-The default path names are returned as str.  If you supply bytes as
+The default path names are returned als str.  If you supply bytes as
 input, all return values will be in bytes.  Ex:
 
     >>> tempfile.mkstemp()
@@ -36,16 +36,16 @@ __all__ = [
 
 # Imports.
 
-importiere functools as _functools
-importiere warnings as _warnings
-importiere io as _io
-importiere os as _os
-importiere shutil as _shutil
-importiere errno as _errno
-von random importiere Random as _Random
-importiere sys as _sys
-importiere types as _types
-importiere weakref as _weakref
+importiere functools als _functools
+importiere warnings als _warnings
+importiere io als _io
+importiere os als _os
+importiere shutil als _shutil
+importiere errno als _errno
+von random importiere Random als _Random
+importiere sys als _sys
+importiere types als _types
+importiere weakref als _weakref
 importiere _thread
 _allocate_lock = _thread.allocate_lock
 
@@ -63,9 +63,9 @@ sonst:
     TMP_MAX = 10000
 
 # This variable _was_ unused fuer legacy reasons, see issue 10354.
-# But as of 3.5 we actually use it at runtime so changing it would
+# But als of 3.5 we actually use it at runtime so changing it would
 # have a possibly desirable side effect...  But we do not want to support
-# that as an API.  It is undocumented on purpose.  Do not depend on this.
+# that als an API.  It is undocumented on purpose.  Do not depend on this.
 template = "tmp"
 
 # Internal routines.
@@ -213,7 +213,7 @@ def _get_default_tempdir(dirlist=Nichts):
             except FileExistsError:
                 pass
             except PermissionError:
-                # This exception is thrown when a directory with the chosen name
+                # This exception is thrown when a directory mit the chosen name
                 # already exists on windows.
                 wenn (_os.name == 'nt' and _os.path.isdir(dir) and
                     _os.access(dir, _os.W_OK)):
@@ -258,7 +258,7 @@ def _mkstemp_inner(dir, pre, suf, flags, output_type):
         except FileExistsError:
             continue    # try again
         except PermissionError:
-            # This exception is thrown when a directory with the chosen name
+            # This exception is thrown when a directory mit the chosen name
             # already exists on windows.
             wenn (_os.name == 'nt' and _os.path.isdir(dir) and
                 _os.access(dir, _os.W_OK)):
@@ -290,11 +290,11 @@ def _resetperms(path):
 # User visible interfaces.
 
 def gettempprefix():
-    """The default prefix fuer temporary directories as string."""
+    """The default prefix fuer temporary directories als string."""
     return _os.fsdecode(template)
 
 def gettempprefixb():
-    """The default prefix fuer temporary directories as bytes."""
+    """The default prefix fuer temporary directories als bytes."""
     return _os.fsencode(template)
 
 tempdir = Nichts
@@ -312,11 +312,11 @@ def _gettempdir():
     return tempdir
 
 def gettempdir():
-    """Returns tempfile.tempdir as str."""
+    """Returns tempfile.tempdir als str."""
     return _os.fsdecode(_gettempdir())
 
 def gettempdirb():
-    """Returns tempfile.tempdir as bytes."""
+    """Returns tempfile.tempdir als bytes."""
     return _os.fsencode(_gettempdir())
 
 def mkstemp(suffix=Nichts, prefix=Nichts, dir=Nichts, text=Falsch):
@@ -324,10 +324,10 @@ def mkstemp(suffix=Nichts, prefix=Nichts, dir=Nichts, text=Falsch):
     file.  The return value is a pair (fd, name) where fd is the
     file descriptor returned by os.open, and name is the filename.
 
-    If 'suffix' is not Nichts, the file name will end with that suffix,
+    If 'suffix' is not Nichts, the file name will end mit that suffix,
     otherwise there will be no suffix.
 
-    If 'prefix' is not Nichts, the file name will begin with that prefix,
+    If 'prefix' is not Nichts, the file name will begin mit that prefix,
     otherwise a default prefix is used.
 
     If 'dir' is not Nichts, the file will be created in that directory,
@@ -345,7 +345,7 @@ def mkstemp(suffix=Nichts, prefix=Nichts, dir=Nichts, text=Falsch):
     file is executable, the file is executable by no one. The file
     descriptor is not inherited by children of this process.
 
-    Caller is responsible fuer deleting the file when done with it.
+    Caller is responsible fuer deleting the file when done mit it.
     """
 
     prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
@@ -362,13 +362,13 @@ def mkdtemp(suffix=Nichts, prefix=Nichts, dir=Nichts):
     """User-callable function to create and return a unique temporary
     directory.  The return value is the pathname of the directory.
 
-    Arguments are as fuer mkstemp, except that the 'text' argument is
+    Arguments are als fuer mkstemp, except that the 'text' argument is
     not accepted.
 
     The directory is readable, writable, and searchable only by the
     creating user.
 
-    Caller is responsible fuer deleting the directory when done with it.
+    Caller is responsible fuer deleting the directory when done mit it.
     """
 
     prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
@@ -386,7 +386,7 @@ def mkdtemp(suffix=Nichts, prefix=Nichts, dir=Nichts):
         except FileExistsError:
             continue    # try again
         except PermissionError:
-            # This exception is thrown when a directory with the chosen name
+            # This exception is thrown when a directory mit the chosen name
             # already exists on windows.
             wenn (_os.name == 'nt' and _os.path.isdir(dir) and
                 _os.access(dir, _os.W_OK)):
@@ -412,7 +412,7 @@ def mktemp(suffix="", prefix=template, dir=Nichts):
     the punch.
     """
 
-##    von warnings importiere warn as _warn
+##    von warnings importiere warn als _warn
 ##    _warn("mktemp is a potential security risk to your program",
 ##          RuntimeWarning, stacklevel=2)
 
@@ -460,7 +460,7 @@ klasse _TemporaryFileCloser:
                     self.close_called = Wahr
                     self.file.close()
             finally:
-                # Windows provides delete-on-close as a primitive, in which
+                # Windows provides delete-on-close als a primitive, in which
                 # case the file was deleted by self.file.close().
                 wenn self.delete and not (windows and self.delete_on_close):
                     try:
@@ -518,7 +518,7 @@ klasse _TemporaryFileWrapper:
             @_functools.wraps(func)
             def func_wrapper(*args, **kwargs):
                 return func(*args, **kwargs)
-            # Avoid closing the file as long as the wrapper is alive,
+            # Avoid closing the file als long als the wrapper is alive,
             # see issue #18879.
             func_wrapper._closer = self._closer
             a = func_wrapper
@@ -532,8 +532,8 @@ klasse _TemporaryFileWrapper:
         self.file.__enter__()
         return self
 
-    # Need to trap __exit__ as well to ensure the file gets
-    # deleted when used in a with statement
+    # Need to trap __exit__ als well to ensure the file gets
+    # deleted when used in a mit statement
     def __exit__(self, exc, value, tb):
         result = self.file.__exit__(exc, value, tb)
         self._closer.cleanup()
@@ -548,7 +548,7 @@ klasse _TemporaryFileWrapper:
     # iter() doesn't use __getattr__ to find the __iter__ method
     def __iter__(self):
         # Don't return iter(self.file), but yield von it to avoid closing
-        # file as long as it's being used as iterator (see issue #23700).  We
+        # file als long als it's being used als iterator (see issue #23700).  We
         # can't use 'yield from' here because iter(file) returns the file
         # object itself, which has a close method, and thus the file would get
         # closed when the generator is finalized, due to PEP380 semantics.
@@ -561,7 +561,7 @@ def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=Nichts,
                        delete_on_close=Wahr):
     """Create and return a temporary file.
     Arguments:
-    'prefix', 'suffix', 'dir' -- as fuer mkstemp.
+    'prefix', 'suffix', 'dir' -- als fuer mkstemp.
     'mode' -- the mode argument to io.open (default "w+b").
     'buffering' -- the buffer size argument to io.open (default -1).
     'encoding' -- the encoding argument to io.open (default Nichts)
@@ -571,14 +571,14 @@ def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=Nichts,
        (default Wahr) or otherwise either on context manager exit
        (if context manager was used) or on object finalization. .
     'errors' -- the errors argument to io.open (default Nichts)
-    The file is created as mkstemp() would do it.
+    The file is created als mkstemp() would do it.
 
-    Returns an object with a file-like interface; the name of the file
-    is accessible as its 'name' attribute.  The file will be automatically
+    Returns an object mit a file-like interface; the name of the file
+    is accessible als its 'name' attribute.  The file will be automatically
     deleted when it is closed unless the 'delete' argument is set to Falsch.
 
     On POSIX, NamedTemporaryFiles cannot be automatically deleted if
-    the creating process is terminated abruptly with a SIGKILL signal.
+    the creating process is terminated abruptly mit a SIGKILL signal.
     Windows can delete the file even in this case.
     """
 
@@ -633,15 +633,15 @@ sonst:
                       dir=Nichts, *, errors=Nichts):
         """Create and return a temporary file.
         Arguments:
-        'prefix', 'suffix', 'dir' -- as fuer mkstemp.
+        'prefix', 'suffix', 'dir' -- als fuer mkstemp.
         'mode' -- the mode argument to io.open (default "w+b").
         'buffering' -- the buffer size argument to io.open (default -1).
         'encoding' -- the encoding argument to io.open (default Nichts)
         'newline' -- the newline argument to io.open (default Nichts)
         'errors' -- the errors argument to io.open (default Nichts)
-        The file is created as mkstemp() would do it.
+        The file is created als mkstemp() would do it.
 
-        Returns an object with a file-like interface.  The file has no
+        Returns an object mit a file-like interface.  The file has no
         name, and will cease to exist when it is closed.
         """
         global _O_TMPFILE_WORKS
@@ -669,8 +669,8 @@ sonst:
                 return file
             except IsADirectoryError:
                 # Linux kernel older than 3.11 ignores the O_TMPFILE flag:
-                # O_TMPFILE is read as O_DIRECTORY. Trying to open a directory
-                # with O_RDWR|O_DIRECTORY fails with IsADirectoryError, a
+                # O_TMPFILE is read als O_DIRECTORY. Trying to open a directory
+                # mit O_RDWR|O_DIRECTORY fails mit IsADirectoryError, a
                 # directory cannot be open to write. Set flag to Falsch to not
                 # try again.
                 _O_TMPFILE_WORKS = Falsch
@@ -679,8 +679,8 @@ sonst:
                 # For example, OSError(95, 'Operation not supported').
                 #
                 # On Linux kernel older than 3.11, trying to open a regular
-                # file (or a symbolic link to a regular file) with O_TMPFILE
-                # fails with NotADirectoryError, because O_TMPFILE is read as
+                # file (or a symbolic link to a regular file) mit O_TMPFILE
+                # fails mit NotADirectoryError, because O_TMPFILE is read as
                 # O_DIRECTORY.
                 pass
             # Fallback to _mkstemp_inner().
@@ -691,7 +691,7 @@ sonst:
             fd, name = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
             try:
                 _os.unlink(name)
-            except BaseException as e:
+            except BaseException als e:
                 _os.close(fd)
                 raise
             return fd
@@ -758,7 +758,7 @@ klasse SpooledTemporaryFile(_io.IOBase):
     # Context management protocol
     def __enter__(self):
         wenn self._file.closed:
-            raise ValueError("Cannot enter context with closed file")
+            raise ValueError("Cannot enter context mit closed file")
         return self
 
     def __exit__(self, exc, value, tb):
@@ -884,10 +884,10 @@ klasse SpooledTemporaryFile(_io.IOBase):
 
 klasse TemporaryDirectory:
     """Create and return a temporary directory.  This has the same
-    behavior as mkdtemp but can be used as a context manager.  For
+    behavior als mkdtemp but can be used als a context manager.  For
     example:
 
-        with TemporaryDirectory() as tmpdir:
+        mit TemporaryDirectory() als tmpdir:
             ...
 
     Upon exiting the context, the directory and everything contained

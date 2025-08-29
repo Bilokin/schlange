@@ -5,7 +5,7 @@ importiere unittest
 
 doctests = """
 
-Test simple loop with conditional
+Test simple loop mit conditional
 
     >>> sum(i*i fuer i in range(100) wenn i&1 == 1)
     166650
@@ -15,7 +15,7 @@ Test simple nesting
     >>> list((i,j) fuer i in range(3) fuer j in range(4) )
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
 
-Test nesting with the inner expression dependent on the outer
+Test nesting mit the inner expression dependent on the outer
 
     >>> list((i,j) fuer i in range(4) fuer j in range(i) )
     [(1, 0), (2, 0), (2, 1), (3, 0), (3, 1), (3, 2)]
@@ -103,14 +103,14 @@ Verify that parenthesis are required in a statement
        ...
     SyntaxError: invalid syntax
 
-Verify that parenthesis are required when used as a keyword argument value
+Verify that parenthesis are required when used als a keyword argument value
 
     >>> dict(a = i fuer i in range(10))
     Traceback (most recent call last):
        ...
     SyntaxError: invalid syntax. Maybe you meant '==' or ':=' instead of '='?
 
-Verify that parenthesis are required when used as a keyword argument value
+Verify that parenthesis are required when used als a keyword argument value
 
     >>> dict(a = (i fuer i in range(10))) #doctest: +ELLIPSIS
     {'a': <generator object <genexpr> at ...>}
@@ -144,7 +144,7 @@ Verify re-use of tuples (a side benefit of using genexps over listcomps)
     >>> int(max(tupleids) - min(tupleids))
     0
 
-Verify that syntax error's are raised fuer genexps used as lvalues
+Verify that syntax error's are raised fuer genexps used als lvalues
 
     >>> (y fuer y in (1,2)) = 10
     Traceback (most recent call last):

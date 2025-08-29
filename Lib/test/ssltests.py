@@ -22,7 +22,7 @@ def run_regrtests(*extra_args):
     wenn not extra_args:
         args.extend([
             '-r',  # randomize
-            '-w',  # re-run failed tests with -v
+            '-w',  # re-run failed tests mit -v
             '-u', 'network',  # use network
             '-u', 'urlfetch',  # download test vectors
             '-j', '0'  # use multiple CPUs

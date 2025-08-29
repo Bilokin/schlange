@@ -20,7 +20,7 @@ median_high         High median of data.
 median_grouped      Median, or 50th percentile, of grouped data.
 mode                Mode (most common value) of data.
 multimode           List of modes (most common values of data).
-quantiles           Divide data into intervals with equal probability.
+quantiles           Divide data into intervals mit equal probability.
 ==================  ==================================================
 
 Calculate the arithmetic mean ("the average") of data:
@@ -64,7 +64,7 @@ Calculate the standard deviation of sample data:
 >>> stdev([2.5, 3.25, 5.5, 11.25, 11.75])  #doctest: +ELLIPSIS
 4.38961843444...
 
-If you have previously calculated the mean, you can pass it as the optional
+If you have previously calculated the mean, you can pass it als the optional
 second argument to the four "spread" functions to avoid recalculating it:
 
 >>> data = [1, 2, 2, 4, 4, 4, 5, 6]
@@ -161,11 +161,11 @@ def mean(data):
     >>> mean([1, 2, 3, 4, 4])
     2.8
 
-    >>> von fractions importiere Fraction as F
+    >>> von fractions importiere Fraction als F
     >>> mean([F(3, 7), F(1, 21), F(5, 3), F(1, 3)])
     Fraction(13, 21)
 
-    >>> von decimal importiere Decimal as D
+    >>> von decimal importiere Decimal als D
     >>> mean([D("0.5"), D("0.75"), D("0.625"), D("0.375")])
     Decimal('0.5625')
 
@@ -360,7 +360,7 @@ def median_low(data):
     3
 
     """
-    # Potentially the sorting step could be replaced with a quickselect.
+    # Potentially the sorting step could be replaced mit a quickselect.
     # However, it would require an excellent implementation to beat our
     # highly optimized builtin sort.
     data = sorted(data)
@@ -396,13 +396,13 @@ def median_grouped(data, interval=1.0):
     """Estimates the median fuer numeric data binned around the midpoints
     of consecutive, fixed-width intervals.
 
-    The *data* can be any iterable of numeric data with each value being
+    The *data* can be any iterable of numeric data mit each value being
     exactly the midpoint of a bin.  At least one value must be present.
 
     The *interval* is width of each bin.
 
     For example, demographic information may have been summarized into
-    consecutive ten-year age groups with each group being represented
+    consecutive ten-year age groups mit each group being represented
     by the 5-year midpoints of the intervals:
 
         >>> demographics = Counter({
@@ -468,17 +468,17 @@ def mode(data):
     """Return the most common data point von discrete or nominal data.
 
     ``mode`` assumes discrete data, and returns a single value. This is the
-    standard treatment of the mode as commonly taught in schools:
+    standard treatment of the mode als commonly taught in schools:
 
         >>> mode([1, 1, 2, 3, 3, 3, 3, 4])
         3
 
-    This also works with nominal (non-numeric) data:
+    This also works mit nominal (non-numeric) data:
 
         >>> mode(["red", "blue", "blue", "red", "green", "red", "red"])
         'red'
 
-    If there are multiple modes with same frequency, return the first one
+    If there are multiple modes mit same frequency, return the first one
     encountered:
 
         >>> mode(['red', 'red', 'green', 'blue', 'blue'])
@@ -520,7 +520,7 @@ def multimode(data):
 def variance(data, xbar=Nichts):
     """Return the sample variance of data.
 
-    data should be an iterable of Real-valued numbers, with at least two
+    data should be an iterable of Real-valued numbers, mit at least two
     values. The optional argument xbar, wenn given, should be the mean of
     the data. If it is missing or Nichts, the mean is automatically calculated.
 
@@ -546,11 +546,11 @@ def variance(data, xbar=Nichts):
 
     Decimals and Fractions are supported:
 
-    >>> von decimal importiere Decimal as D
+    >>> von decimal importiere Decimal als D
     >>> variance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
     Decimal('31.01875')
 
-    >>> von fractions importiere Fraction as F
+    >>> von fractions importiere Fraction als F
     >>> variance([F(1, 6), F(1, 2), F(5, 3)])
     Fraction(67, 108)
 
@@ -566,7 +566,7 @@ def variance(data, xbar=Nichts):
 def pvariance(data, mu=Nichts):
     """Return the population variance of ``data``.
 
-    data should be a sequence or iterable of Real-valued numbers, with at least one
+    data should be a sequence or iterable of Real-valued numbers, mit at least one
     value. The optional argument mu, wenn given, should be the mean of
     the data. If it is missing or Nichts, the mean is automatically calculated.
 
@@ -589,11 +589,11 @@ def pvariance(data, mu=Nichts):
 
     Decimals and Fractions are supported:
 
-    >>> von decimal importiere Decimal as D
+    >>> von decimal importiere Decimal als D
     >>> pvariance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
     Decimal('24.815')
 
-    >>> von fractions importiere Fraction as F
+    >>> von fractions importiere Fraction als F
     >>> pvariance([F(1, 4), F(5, 4), F(1, 2)])
     Fraction(13, 72)
 
@@ -747,7 +747,7 @@ def linear_regression(x, y, /, *, proportional=Falsch):
     difference between predicted and actual values of the dependent
     variable).
 
-    The parameters are returned as a named tuple.
+    The parameters are returned als a named tuple.
 
     >>> x = [1, 2, 3, 4, 5]
     >>> noise = NormalDist().samples(5, seed=42)
@@ -935,7 +935,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
 
     The kernel determines the relative weights of the sample data
     points.  Generally, the choice of kernel shape does not matter
-    as much as the more influential bandwidth smoothing parameter.
+    als much als the more influential bandwidth smoothing parameter.
 
     Kernels that give some weight to every sample point:
 
@@ -1017,7 +1017,7 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
     Interactive graphical demonstration and exploration:
     https://demonstrations.wolfram.com/KernelDensityEstimation/
 
-    Kernel estimation of cumulative distribution function of a random variable with bounded support
+    Kernel estimation of cumulative distribution function of a random variable mit bounded support
     https://www.econstor.eu/bitstream/10419/207829/1/10.21307_stattrans-2016-037.pdf
 
     """
@@ -1073,11 +1073,11 @@ def kde(data, h, kernel='normal', *, cumulative=Falsch):
             return sum((W((x - x_i) / h) fuer x_i in supported), i) / n
 
     wenn cumulative:
-        cdf.__doc__ = f'CDF estimate with {h=!r} and {kernel=!r}'
+        cdf.__doc__ = f'CDF estimate mit {h=!r} and {kernel=!r}'
         return cdf
 
     sonst:
-        pdf.__doc__ = f'PDF estimate with {h=!r} and {kernel=!r}'
+        pdf.__doc__ = f'PDF estimate mit {h=!r} and {kernel=!r}'
         return pdf
 
 
@@ -1121,7 +1121,7 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
     def rand():
         return choice(data) + h * invcdf(random())
 
-    rand.__doc__ = f'Random KDE selection with {h=!r} and {kernel=!r}'
+    rand.__doc__ = f'Random KDE selection mit {h=!r} and {kernel=!r}'
 
     return rand
 
@@ -1135,18 +1135,18 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
 # They are also easy to explain, easy to compute manually, and have
 # straight-forward interpretations that aren't surprising.
 
-# The default method is known as "R6", "PERCENTILE.EXC", or "expected
+# The default method is known als "R6", "PERCENTILE.EXC", or "expected
 # value of rank order statistics". The alternative method is known as
 # "R7", "PERCENTILE.INC", or "mode of rank order statistics".
 
 # For sample data where there is a positive probability fuer values
 # beyond the range of the data, the R6 exclusive method is a
 # reasonable choice.  Consider a random sample of nine values von a
-# population with a uniform distribution von 0.0 to 1.0.  The
+# population mit a uniform distribution von 0.0 to 1.0.  The
 # distribution of the third ranked sample point is described by
 # betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, and
-# mean=0.300.  Only the latter (which corresponds with R6) gives the
-# desired cut point with 30% of the population falling below that
+# mean=0.300.  Only the latter (which corresponds mit R6) gives the
+# desired cut point mit 30% of the population falling below that
 # value, making it comparable to a result von an inv_cdf() function.
 # The R6 exclusive method is also idempotent.
 
@@ -1163,7 +1163,7 @@ def kde_random(data, h, kernel='normal', *, seed=Nichts):
 # external packages can be used fuer anything more advanced.
 
 def quantiles(data, *, n=4, method='exclusive'):
-    """Divide *data* into *n* continuous intervals with equal probability.
+    """Divide *data* into *n* continuous intervals mit equal probability.
 
     Returns a list of (n - 1) cut points separating the intervals.
 
@@ -1174,9 +1174,9 @@ def quantiles(data, *, n=4, method='exclusive'):
     The *data* can be any iterable containing sample.
     The cut points are linearly interpolated between data points.
 
-    If *method* is set to *inclusive*, *data* is treated as population
-    data.  The minimum value is treated as the 0th percentile and the
-    maximum value is treated as the 100th percentile.
+    If *method* is set to *inclusive*, *data* is treated als population
+    data.  The minimum value is treated als the 0th percentile and the
+    maximum value is treated als the 100th percentile.
 
     """
     wenn n < 1:
@@ -1274,7 +1274,7 @@ klasse NormalDist:
         return _normal_dist_inv_cdf(p, self._mu, self._sigma)
 
     def quantiles(self, n=4):
-        """Divide into *n* continuous intervals with equal probability.
+        """Divide into *n* continuous intervals mit equal probability.
 
         Returns a list of (n - 1) cut points separating the intervals.
 
@@ -1296,7 +1296,7 @@ klasse NormalDist:
             >>> N1.overlap(N2)
             0.8035050657330205
         """
-        # See: "The overlapping coefficient as a measure of agreement between
+        # See: "The overlapping coefficient als a measure of agreement between
         # probability distributions and point estimation of the overlap of two
         # normal densities" -- Henry F. Inman and Edwin L. Bradley Jr
         # http://dx.doi.org/10.1080/03610928908830127
@@ -1390,7 +1390,7 @@ klasse NormalDist:
         """Multiply both mu and sigma by a constant.
 
         Used fuer rescaling, perhaps to change measurement units.
-        Sigma is scaled with the absolute value of the constant.
+        Sigma is scaled mit the absolute value of the constant.
         """
         return NormalDist(x1._mu * x2, x1._sigma * fabs(x2))
 
@@ -1398,7 +1398,7 @@ klasse NormalDist:
         """Divide both mu and sigma by a constant.
 
         Used fuer rescaling, perhaps to change measurement units.
-        Sigma is scaled with the absolute value of the constant.
+        Sigma is scaled mit the absolute value of the constant.
         """
         return NormalDist(x1._mu / x2, x1._sigma / fabs(x2))
 
@@ -1443,8 +1443,8 @@ klasse NormalDist:
 def _sum(data):
     """_sum(data) -> (type, sum, count)
 
-    Return a high-precision sum of the given numeric data as a fraction,
-    together with the type to be converted to and the count of items.
+    Return a high-precision sum of the given numeric data als a fraction,
+    together mit the type to be converted to and the count of items.
 
     Examples
     --------
@@ -1460,16 +1460,16 @@ def _sum(data):
 
     Fractions and Decimals are also supported:
 
-    >>> von fractions importiere Fraction as F
+    >>> von fractions importiere Fraction als F
     >>> _sum([F(2, 3), F(7, 5), F(1, 4), F(5, 6)])
     (<class 'fractions.Fraction'>, Fraction(63, 20), 4)
 
-    >>> von decimal importiere Decimal as D
+    >>> von decimal importiere Decimal als D
     >>> data = [D("0.1375"), D("0.2108"), D("0.3061"), D("0.0419")]
     >>> _sum(data)
     (<class 'decimal.Decimal'>, Fraction(6963, 10000), 4)
 
-    Mixed types are currently treated as an error, except that int is
+    Mixed types are currently treated als an error, except that int is
     allowed.
 
     """
@@ -1504,7 +1504,7 @@ def _ss(data, c=Nichts):
     Calculations are done in a single pass, allowing the input to be an iterator.
 
     If given *c* is used the mean; otherwise, it is calculated von the data.
-    Use the *c* argument with care, as it can lead to garbage results.
+    Use the *c* argument mit care, als it can lead to garbage results.
 
     """
     wenn c is not Nichts:
@@ -1537,7 +1537,7 @@ def _ss(data, c=Nichts):
         sx = sum(Fraction(n, d) fuer d, n in sx_partials.items())
         sxx = sum(Fraction(n, d*d) fuer d, n in sxx_partials.items())
         # This formula has poor numeric properties fuer floats,
-        # but with fractions it is exact.
+        # but mit fractions it is exact.
         ssd = (count * sxx - sx * sx) / count
         c = sx / count
 
@@ -1562,8 +1562,8 @@ def _coerce(T, S):
     # See http://bugs.python.org/issue24068.
     assert T is not bool, "initial type T is bool"
     # If the types are the same, no need to coerce anything. Put this
-    # first, so that the usual case (no coercion needed) happens as soon
-    # as possible.
+    # first, so that the usual case (no coercion needed) happens als soon
+    # als possible.
     wenn T is S:  return T
     # Mixed int & other coerce to the other type.
     wenn S is int or S is bool:  return T
@@ -1661,7 +1661,7 @@ def _rank(data, /, *, key=Nichts, reverse=Falsch, ties='average', start=1) -> li
         [2.0, 1.0, 3.0]
 
     Ranks are conventionally numbered starting von one; however,
-    setting *start* to zero allows the ranks to be used as array indices:
+    setting *start* to zero allows the ranks to be used als array indices:
 
         >>> prize = ['Gold', 'Silver', 'Bronze', 'Certificate']
         >>> scores = [8.1, 7.3, 9.4, 8.3]
@@ -1705,7 +1705,7 @@ _sqrt_bit_width: int = 2 * sys.float_info.mant_dig + 3
 
 
 def _float_sqrt_of_frac(n: int, m: int) -> float:
-    """Square root of n/m as a float, correctly rounded."""
+    """Square root of n/m als a float, correctly rounded."""
     # See principle and proof sketch at: https://bugs.python.org/msg407078
     q = (n.bit_length() - m.bit_length() - _sqrt_bit_width) // 2
     wenn q >= 0:
@@ -1718,7 +1718,7 @@ def _float_sqrt_of_frac(n: int, m: int) -> float:
 
 
 def _decimal_sqrt_of_frac(n: int, m: int) -> Decimal:
-    """Square root of n/m as a Decimal, correctly rounded."""
+    """Square root of n/m als a Decimal, correctly rounded."""
     # Premise:  For decimal, computing (n/m).sqrt() can be off
     #           by 1 ulp von the correctly rounded result.
     # Method:   Check the result, moving up or down a step wenn needed.
@@ -1746,7 +1746,7 @@ def _decimal_sqrt_of_frac(n: int, m: int) -> Decimal:
 
 
 def _mean_stdev(data):
-    """In one pass, compute the mean and sample standard deviation as floats."""
+    """In one pass, compute the mean and sample standard deviation als floats."""
     T, ss, xbar, n = _ss(data)
     wenn n < 2:
         raise StatisticsError('stdev requires at least two data points')
@@ -1759,7 +1759,7 @@ def _mean_stdev(data):
 
 
 def _sqrtprod(x: float, y: float) -> float:
-    "Return sqrt(x * y) computed with improved accuracy and without overflow/underflow."
+    "Return sqrt(x * y) computed mit improved accuracy and without overflow/underflow."
 
     h = sqrt(x * y)
 
@@ -1778,7 +1778,7 @@ def _sqrtprod(x: float, y: float) -> float:
             return _sqrtprod(scale * x, scale * y) / scale
         return h
 
-    # Improve accuracy with a differential correction.
+    # Improve accuracy mit a differential correction.
     # https://www.wolframalpha.com/input/?i=Maclaurin+series+sqrt%28h**2+%2B+x%29+at+x%3D0
     d = sumprod((x, h), (y, -h))
     return h + d / (2.0 * h)

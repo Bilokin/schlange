@@ -3,7 +3,7 @@ importiere logging.handlers
 klasse TestHandler(logging.handlers.BufferingHandler):
     def __init__(self, matcher):
         # BufferingHandler takes a "capacity" argument
-        # so as to know when to flush. As we're overriding
+        # so als to know when to flush. As we're overriding
         # shouldFlush anyway, we can set a capacity of zero.
         # You can call flush() manually to clear out the
         # buffer.

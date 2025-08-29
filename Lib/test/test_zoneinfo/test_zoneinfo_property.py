@@ -7,7 +7,7 @@ importiere zoneinfo
 
 von test.support.hypothesis_helper importiere hypothesis
 
-importiere test.test_zoneinfo._support as test_support
+importiere test.test_zoneinfo._support als test_support
 
 ZoneInfoTestBase = test_support.ZoneInfoTestBase
 
@@ -42,7 +42,7 @@ def _valid_keys():
             return Falsch
 
     # This relies on the fact that dictionaries maintain insertion order — for
-    # shrinking purposes, it is preferable to start with the standard version,
+    # shrinking purposes, it is preferable to start mit the standard version,
     # then move to the posix/ version, then to the right/ version.
     out_zones = {"": available_zones}
     fuer prefix in ["posix", "right"]:
@@ -136,7 +136,7 @@ klasse ZoneInfoPickleTest(ZoneInfoTestBase):
     module = py_zoneinfo
 
     def setUp(self):
-        with contextlib.ExitStack() as stack:
+        mit contextlib.ExitStack() als stack:
             stack.enter_context(test_support.set_zoneinfo_module(self.module))
             self.addCleanup(stack.pop_all().close)
 
@@ -290,12 +290,12 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         c_overflow_exc = Nichts
         try:
             py_dt = dt.astimezone(py_zi)
-        except OverflowError as e:
+        except OverflowError als e:
             py_overflow_exc = e
 
         try:
             c_dt = dt.astimezone(c_zi)
-        except OverflowError as e:
+        except OverflowError als e:
             c_overflow_exc = e
 
         wenn (py_overflow_exc is not Nichts) != (c_overflow_exc is not Nichts):
@@ -331,12 +331,12 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         c_overflow_exc = Nichts
         try:
             py_utc = py_dt.astimezone(UTC)
-        except OverflowError as e:
+        except OverflowError als e:
             py_overflow_exc = e
 
         try:
             c_utc = c_dt.astimezone(UTC)
-        except OverflowError as e:
+        except OverflowError als e:
             c_overflow_exc = e
 
         wenn (py_overflow_exc is not Nichts) != (c_overflow_exc is not Nichts):
@@ -353,18 +353,18 @@ klasse PythonCConsistencyTest(unittest.TestCase):
         py_zi = py_zoneinfo.ZoneInfo(key)
         c_zi = c_zoneinfo.ZoneInfo(key)
 
-        with test_support.set_zoneinfo_module(py_zoneinfo):
+        mit test_support.set_zoneinfo_module(py_zoneinfo):
             py_pkl = pickle.dumps(py_zi)
 
-        with test_support.set_zoneinfo_module(c_zoneinfo):
+        mit test_support.set_zoneinfo_module(c_zoneinfo):
             c_pkl = pickle.dumps(c_zi)
 
-        with test_support.set_zoneinfo_module(c_zoneinfo):
+        mit test_support.set_zoneinfo_module(c_zoneinfo):
             # Python → C
             py_to_c_zi = pickle.loads(py_pkl)
             self.assertIs(py_to_c_zi, c_zi)
 
-        with test_support.set_zoneinfo_module(py_zoneinfo):
+        mit test_support.set_zoneinfo_module(py_zoneinfo):
             # C → Python
             c_to_py_zi = pickle.loads(c_pkl)
             self.assertIs(c_to_py_zi, py_zi)

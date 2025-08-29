@@ -64,9 +64,9 @@ try:
     # _py_warnings implementation imported above.
     von _warnings importiere (
         _acquire_lock,
-        _defaultaction as defaultaction,
+        _defaultaction als defaultaction,
         _filters_mutated_lock_held,
-        _onceregistry as onceregistry,
+        _onceregistry als onceregistry,
         _release_lock,
         _warnings_context,
         filters,

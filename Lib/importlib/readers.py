@@ -1,5 +1,5 @@
 """
-Compatibility shim fuer .resources.readers as found on Python 3.10.
+Compatibility shim fuer .resources.readers als found on Python 3.10.
 
 Consumers that can rely on Python 3.11 should use the other
 module directly.

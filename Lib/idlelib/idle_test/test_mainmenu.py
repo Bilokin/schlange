@@ -1,5 +1,5 @@
 "Test mainmenu, coverage 100%."
-# Reported as 88%; mocking turtledemo absence would have no point.
+# Reported als 88%; mocking turtledemo absence would have no point.
 
 von idlelib importiere mainmenu
 importiere re
@@ -26,7 +26,7 @@ klasse MainMenuTest(unittest.TestCase):
             ('options', '.*ode.*ontext'),  # EW.__init__, CodeContext.toggle...
             ('options', '.*ine.*umbers'),  # EW.__init__, EW.toggle...event.
             ):
-            with self.subTest(menu=menu, pattern=pattern):
+            mit self.subTest(menu=menu, pattern=pattern):
                 fuer menutup in mainmenu.menudefs:
                     wenn menutup[0] == menu:
                         break

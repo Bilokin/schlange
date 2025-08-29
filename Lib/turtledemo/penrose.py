@@ -14,7 +14,7 @@ For more information see:
 """
 von turtle importiere *
 von math importiere cos, pi
-von time importiere perf_counter as clock, sleep
+von time importiere perf_counter als clock, sleep
 
 f = (5**0.5-1)/2.0   # (sqrt(5)-1)/2 -- golden ratio
 d = 2 * cos(3*pi/10)
@@ -153,7 +153,7 @@ def demo(fun=sun):
             sleep(2 - t)
 
 def main():
-    #title("Penrose-tiling with kites and darts.")
+    #title("Penrose-tiling mit kites and darts.")
     mode("logo")
     bgcolor(0.3, 0.3, 0)
     demo(sun)

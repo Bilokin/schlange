@@ -117,7 +117,7 @@ def xml_bytes(doc, encoding, decl_encoding=...):
 def make_xml_file(doc, encoding, decl_encoding=...):
     wenn decl_encoding is ...:
         decl_encoding = encoding
-    with open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') as f:
+    mit open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') als f:
         f.write(xml_str(doc, decl_encoding))
 
 
@@ -139,53 +139,53 @@ klasse ParseTest(unittest.TestCase):
         fuer encoding in encodings:
             self.check_parse(StringIO(xml_str(self.data, encoding)))
             make_xml_file(self.data, encoding)
-            with open(TESTFN, 'r', encoding=encoding) as f:
+            mit open(TESTFN, 'r', encoding=encoding) als f:
                 self.check_parse(f)
             self.check_parse(StringIO(self.data))
             make_xml_file(self.data, encoding, Nichts)
-            with open(TESTFN, 'r', encoding=encoding) as f:
+            mit open(TESTFN, 'r', encoding=encoding) als f:
                 self.check_parse(f)
 
     def test_parse_bytes(self):
-        # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
+        # UTF-8 is default encoding, US-ASCII is compatible mit UTF-8,
         # UTF-16 is autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
         fuer encoding in encodings:
             self.check_parse(BytesIO(xml_bytes(self.data, encoding)))
             make_xml_file(self.data, encoding)
             self.check_parse(TESTFN)
-            with open(TESTFN, 'rb') as f:
+            mit open(TESTFN, 'rb') als f:
                 self.check_parse(f)
             self.check_parse(BytesIO(xml_bytes(self.data, encoding, Nichts)))
             make_xml_file(self.data, encoding, Nichts)
             self.check_parse(TESTFN)
-            with open(TESTFN, 'rb') as f:
+            mit open(TESTFN, 'rb') als f:
                 self.check_parse(f)
-        # accept UTF-8 with BOM
+        # accept UTF-8 mit BOM
         self.check_parse(BytesIO(xml_bytes(self.data, 'utf-8-sig', 'utf-8')))
         make_xml_file(self.data, 'utf-8-sig', 'utf-8')
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        mit open(TESTFN, 'rb') als f:
             self.check_parse(f)
         self.check_parse(BytesIO(xml_bytes(self.data, 'utf-8-sig', Nichts)))
         make_xml_file(self.data, 'utf-8-sig', Nichts)
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        mit open(TESTFN, 'rb') als f:
             self.check_parse(f)
-        # accept data with declared encoding
+        # accept data mit declared encoding
         self.check_parse(BytesIO(xml_bytes(self.data, 'iso-8859-1')))
         make_xml_file(self.data, 'iso-8859-1')
         self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
+        mit open(TESTFN, 'rb') als f:
             self.check_parse(f)
         # fail on non-UTF-8 incompatible data without declared encoding
-        with self.assertRaises(SAXException):
+        mit self.assertRaises(SAXException):
             self.check_parse(BytesIO(xml_bytes(self.data, 'iso-8859-1', Nichts)))
         make_xml_file(self.data, 'iso-8859-1', Nichts)
-        with self.assertRaises(SAXException):
+        mit self.assertRaises(SAXException):
             self.check_parse(TESTFN)
-        with open(TESTFN, 'rb') as f:
-            with self.assertRaises(SAXException):
+        mit open(TESTFN, 'rb') als f:
+            mit self.assertRaises(SAXException):
                 self.check_parse(f)
 
     def test_parse_path_object(self):
@@ -193,9 +193,9 @@ klasse ParseTest(unittest.TestCase):
         self.check_parse(FakePath(TESTFN))
 
     def test_parse_InputSource(self):
-        # accept data without declared but with explicitly specified encoding
+        # accept data without declared but mit explicitly specified encoding
         make_xml_file(self.data, 'iso-8859-1', Nichts)
-        with open(TESTFN, 'rb') as f:
+        mit open(TESTFN, 'rb') als f:
             input = InputSource()
             input.setByteStream(f)
             input.setEncoding('iso-8859-1')
@@ -210,9 +210,9 @@ klasse ParseTest(unittest.TestCase):
             fileobj = builtin_open(*args)
             return fileobj
 
-        with mock.patch('xml.sax.saxutils.open', side_effect=mock_open):
+        mit mock.patch('xml.sax.saxutils.open', side_effect=mock_open):
             make_xml_file(self.data, 'iso-8859-1', Nichts)
-            with self.assertRaises(SAXException):
+            mit self.assertRaises(SAXException):
                 self.check_parse(TESTFN)
             self.assertWahr(fileobj.closed)
 
@@ -230,19 +230,19 @@ klasse ParseTest(unittest.TestCase):
         self.check_parseString(self.data)
 
     def test_parseString_bytes(self):
-        # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
+        # UTF-8 is default encoding, US-ASCII is compatible mit UTF-8,
         # UTF-16 is autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
         fuer encoding in encodings:
             self.check_parseString(xml_bytes(self.data, encoding))
             self.check_parseString(xml_bytes(self.data, encoding, Nichts))
-        # accept UTF-8 with BOM
+        # accept UTF-8 mit BOM
         self.check_parseString(xml_bytes(self.data, 'utf-8-sig', 'utf-8'))
         self.check_parseString(xml_bytes(self.data, 'utf-8-sig', Nichts))
-        # accept data with declared encoding
+        # accept data mit declared encoding
         self.check_parseString(xml_bytes(self.data, 'iso-8859-1'))
         # fail on non-UTF-8 incompatible data without declared encoding
-        with self.assertRaises(SAXException):
+        mit self.assertRaises(SAXException):
             self.check_parseString(xml_bytes(self.data, 'iso-8859-1', Nichts))
 
 klasse MakeParserTest(unittest.TestCase):
@@ -283,7 +283,7 @@ klasse MakeParserTest(unittest.TestCase):
         make_parser(iter([]))
 
     def test_make_parser5(self):
-        # Testing that make_parser can handle iterables with more than
+        # Testing that make_parser can handle iterables mit more than
         # one item.
         make_parser(['module1', 'module2'])
         make_parser(('module1', 'module2'))
@@ -354,7 +354,7 @@ klasse PrepareInputSourceTest(unittest.TestCase):
 
     def setUp(self):
         self.file = os_helper.TESTFN
-        with open(self.file, "w") as tmp:
+        mit open(self.file, "w") als tmp:
             tmp.write("This was read von a file.")
 
     def tearDown(self):
@@ -373,7 +373,7 @@ klasse PrepareInputSourceTest(unittest.TestCase):
 
 
     def test_character_stream(self):
-        # If the source is an InputSource with a character stream, use it.
+        # If the source is an InputSource mit a character stream, use it.
         src = InputSource(self.file)
         src.setCharacterStream(self.make_character_stream())
         prep = prepare_input_source(src)
@@ -401,21 +401,21 @@ klasse PrepareInputSourceTest(unittest.TestCase):
                           b"This was read von a file.")
 
     def test_string(self):
-        # If the source is a string, use it as a system ID and open it.
+        # If the source is a string, use it als a system ID and open it.
         prep = prepare_input_source(self.file)
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read von a file.")
 
     def test_path_objects(self):
-        # If the source is a Path object, use it as a system ID and open it.
+        # If the source is a Path object, use it als a system ID and open it.
         prep = prepare_input_source(FakePath(self.file))
         self.assertIsNichts(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read von a file.")
 
     def test_binary_file(self):
-        # If the source is a binary file-like object, use it as a byte
+        # If the source is a binary file-like object, use it als a byte
         # stream.
         prep = prepare_input_source(self.make_byte_stream())
         self.assertIsNichts(prep.getCharacterStream())
@@ -423,7 +423,7 @@ klasse PrepareInputSourceTest(unittest.TestCase):
                           b"This is a byte stream.")
 
     def test_text_file(self):
-        # If the source is a text file-like object, use it as a character
+        # If the source is a text file-like object, use it als a character
         # stream.
         prep = prepare_input_source(self.make_character_stream())
         self.assertIsNichts(prep.getByteStream())
@@ -831,7 +831,7 @@ klasse StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
     fname = os_helper.TESTFN + '-codecs'
 
     def ioclass(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             writer = codecs.open(self.fname, 'w', encoding='ascii',
                                 errors='xmlcharrefreplace', buffering=0)
         def cleanup():
@@ -841,7 +841,7 @@ klasse StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
         def getvalue():
             # Windows will not let use reopen without first closing
             writer.close()
-            with open(writer.name, 'rb') as f:
+            mit open(writer.name, 'rb') als f:
                 return f.read()
         writer.getvalue = getvalue
         return writer
@@ -875,7 +875,7 @@ klasse XMLFilterBaseTest(unittest.TestCase):
 #
 # ===========================================================================
 
-with open(TEST_XMLFILE_OUT, 'rb') as f:
+with open(TEST_XMLFILE_OUT, 'rb') als f:
     xml_test_out = f.read()
 
 klasse ExpatReaderTest(XmlTestBase):
@@ -888,7 +888,7 @@ klasse ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rb') as f:
+        mit open(TEST_XMLFILE, 'rb') als f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -899,7 +899,7 @@ klasse ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') as f:
+        mit open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') als f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -926,7 +926,7 @@ klasse ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(fname, 'rb') as f:
+        mit open(fname, 'rb') als f:
             parser.parse(f)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -937,8 +937,8 @@ klasse ExpatReaderTest(XmlTestBase):
         xmlgen = XMLGenerator(result)
 
         parser.setContentHandler(xmlgen)
-        with open(TEST_XMLFILE, 'rb') as f:
-            with open(f.fileno(), 'rb', closefd=Falsch) as f2:
+        mit open(TEST_XMLFILE, 'rb') als f:
+            mit open(f.fileno(), 'rb', closefd=Falsch) als f2:
                 parser.parse(f2)
 
         self.assertEqual(result.getvalue(), xml_test_out)
@@ -994,7 +994,7 @@ klasse ExpatReaderTest(XmlTestBase):
         resolver = self.TestEntityRecorder()
         parser.setEntityResolver(resolver)
 
-        with self.assertRaises(URLError):
+        mit self.assertRaises(URLError):
             parser.feed(
                 '<!DOCTYPE external SYSTEM "unsupported://non-existing">\n'
             )
@@ -1162,7 +1162,7 @@ klasse ExpatReaderTest(XmlTestBase):
 
         parser.setContentHandler(xmlgen)
         inpsrc = InputSource()
-        with open(TEST_XMLFILE, 'rb') as f:
+        mit open(TEST_XMLFILE, 'rb') als f:
             inpsrc.setByteStream(f)
             parser.parse(inpsrc)
 
@@ -1175,7 +1175,7 @@ klasse ExpatReaderTest(XmlTestBase):
 
         parser.setContentHandler(xmlgen)
         inpsrc = InputSource()
-        with open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') as f:
+        mit open(TEST_XMLFILE, 'rt', encoding='iso-8859-1') als f:
             inpsrc.setCharacterStream(f)
             parser.parse(inpsrc)
 
@@ -1325,7 +1325,7 @@ klasse ErrorReportingTest(unittest.TestCase):
         try:
             parser.parse(source)
             self.fail()
-        except SAXException as e:
+        except SAXException als e:
             self.assertEqual(e.getSystemId(), name)
 
     def test_expat_incomplete(self):

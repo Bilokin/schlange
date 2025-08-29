@@ -7,7 +7,7 @@ importiere unittest
 importiere unittest.mock
 von test.support importiere requires, swap_attr
 von test importiere support
-importiere tkinter as tk
+importiere tkinter als tk
 von idlelib.idle_test.tkinter_testing_utils importiere run_in_tk_mainloop
 
 von idlelib.delegator importiere Delegator
@@ -355,7 +355,7 @@ klasse LineNumbersTest(unittest.TestCase):
         ln.show_sidebar()
         self.assertEqual(ln.sidebar_text['font'], test_font)
 
-        # Call the font update with line numbers shown, change is picked up.
+        # Call the font update mit line numbers shown, change is picked up.
         self.font_override = orig_font
         ln.update_font()
         self.assertEqual(ln.sidebar_text['font'], orig_font)
@@ -374,18 +374,18 @@ klasse LineNumbersTest(unittest.TestCase):
         ln.hide_sidebar()
 
         self.highlight_cfg = test_colors
-        # Nothing breaks with inactive line numbers.
+        # Nothing breaks mit inactive line numbers.
         ln.update_colors()
 
         # Show line numbers, previous colors change is immediately effective.
         ln.show_sidebar()
         assert_colors_are_equal(test_colors)
 
-        # Call colors update with no change to the configured colors.
+        # Call colors update mit no change to the configured colors.
         ln.update_colors()
         assert_colors_are_equal(test_colors)
 
-        # Call the colors update with line numbers shown, change is picked up.
+        # Call the colors update mit line numbers shown, change is picked up.
         self.highlight_cfg = orig_colors
         ln.update_colors()
         assert_colors_are_equal(orig_colors)
@@ -613,7 +613,7 @@ klasse ShellSidebarTest(unittest.TestCase):
 
     @run_in_tk_mainloop()
     def test_very_long_wrapped_line(self):
-        with support.adjust_int_max_str_digits(11_111), \
+        mit support.adjust_int_max_str_digits(11_111), \
                 swap_attr(self.shell, 'squeezer', Nichts):
             self.do_input('x = ' + '1'*10_000 + '\n')
             yield

@@ -1,18 +1,18 @@
-"""Support fuer running coroutines in parallel with staggered start times."""
+"""Support fuer running coroutines in parallel mit staggered start times."""
 
 __all__ = 'staggered_race',
 
 importiere contextlib
 
 von . importiere events
-von . importiere exceptions as exceptions_mod
+von . importiere exceptions als exceptions_mod
 von . importiere locks
 von . importiere tasks
 von . importiere futures
 
 
 async def staggered_race(coro_fns, delay, *, loop=Nichts):
-    """Run coroutines with staggered start times and take the first to finish.
+    """Run coroutines mit staggered start times and take the first to finish.
 
     This method takes an iterable of coroutine functions. The first one is
     started immediately. From then on, whenever the immediately preceding one
@@ -58,7 +58,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
 
         - *exceptions*: list of exceptions returned by the coroutines.
           ``len(exceptions)`` is equal to the number of coroutines actually
-          started, and the order is the same as in ``coro_fns``. The winning
+          started, and the order is the same als in ``coro_fns``. The winning
           coroutine's entry is ``Nichts``.
 
     """
@@ -97,7 +97,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
         await ok_to_start.wait()
         # Wait fuer the previous task to finish, or fuer delay seconds
         wenn previous_failed is not Nichts:
-            with contextlib.suppress(exceptions_mod.TimeoutError):
+            mit contextlib.suppress(exceptions_mod.TimeoutError):
                 # Use asyncio.wait_for() instead of asyncio.wait() here, so
                 # that wenn we get cancelled at this point, Event.wait() is also
                 # cancelled, otherwise there will be a "Task destroyed but it is
@@ -126,7 +126,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             result = await coro_fn()
         except (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as e:
+        except BaseException als e:
             exceptions[this_index] = e
             this_failed.set()  # Kickstart the next coroutine
         sonst:
@@ -136,10 +136,10 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             winner_index = this_index
             winner_result = result
             # Cancel all other tasks. We take care to not cancel the current
-            # task as well. If we do so, then since there is no `await` after
+            # task als well. If we do so, then since there is no `await` after
             # here and CancelledError are usually thrown at one, we will
             # encounter a curious corner case where the current task will end
-            # up as done() == Wahr, cancelled() == Falsch, exception() ==
+            # up als done() == Wahr, cancelled() == Falsch, exception() ==
             # asyncio.CancelledError. This behavior is specified in
             # https://bugs.python.org/issue30048
             current_task = tasks.current_task(loop)
@@ -162,7 +162,7 @@ async def staggered_race(coro_fns, delay, *, loop=Nichts):
             on_completed_fut = loop.create_future()
             try:
                 await on_completed_fut
-            except exceptions_mod.CancelledError as ex:
+            except exceptions_mod.CancelledError als ex:
                 propagate_cancellation_error = ex
                 fuer task in running_tasks:
                     task.cancel(*ex.args)

@@ -22,7 +22,7 @@ klasse JoinTestBase:
         self.assertEqual(pp, P(r'C:/a/b\x/y'))
         pp = p.joinpath('/x/y')
         self.assertEqual(pp, P('C:/x/y'))
-        # Joining with a different drive => the first path is ignored, even
+        # Joining mit a different drive => the first path is ignored, even
         # wenn the second path is relative.
         pp = p.joinpath('D:x/y')
         self.assertEqual(pp, P('D:x/y'))
@@ -30,47 +30,47 @@ klasse JoinTestBase:
         self.assertEqual(pp, P('D:/x/y'))
         pp = p.joinpath('//host/share/x/y')
         self.assertEqual(pp, P('//host/share/x/y'))
-        # Joining with the same drive => the first path is appended to if
+        # Joining mit the same drive => the first path is appended to if
         # the second path is relative.
         pp = p.joinpath('c:x/y')
         self.assertEqual(pp, P(r'c:/a/b\x/y'))
         pp = p.joinpath('c:/x/y')
         self.assertEqual(pp, P('c:/x/y'))
-        # Joining with files with NTFS data streams => the filename should
-        # not be parsed as a drive letter
+        # Joining mit files mit NTFS data streams => the filename should
+        # not be parsed als a drive letter
         pp = p.joinpath('./d:s')
         self.assertEqual(pp, P(r'C:/a/b\./d:s'))
         pp = p.joinpath('./dd:s')
         self.assertEqual(pp, P(r'C:/a/b\./dd:s'))
         pp = p.joinpath('E:d:s')
         self.assertEqual(pp, P('E:d:s'))
-        # Joining onto a UNC path with no root
+        # Joining onto a UNC path mit no root
         pp = P('//server').joinpath('share')
         self.assertEqual(pp, P(r'//server\share'))
         pp = P('//./BootPartition').joinpath('Windows')
         self.assertEqual(pp, P(r'//./BootPartition\Windows'))
 
     def test_div(self):
-        # Basically the same as joinpath().
+        # Basically the same als joinpath().
         P = self.cls
         p = P('C:/a/b')
         self.assertEqual(p / 'x/y', P(r'C:/a/b\x/y'))
         self.assertEqual(p / 'x' / 'y', P(r'C:/a/b\x\y'))
         self.assertEqual(p / '/x/y', P('C:/x/y'))
         self.assertEqual(p / '/x' / 'y', P(r'C:/x\y'))
-        # Joining with a different drive => the first path is ignored, even
+        # Joining mit a different drive => the first path is ignored, even
         # wenn the second path is relative.
         self.assertEqual(p / 'D:x/y', P('D:x/y'))
         self.assertEqual(p / 'D:' / 'x/y', P('D:x/y'))
         self.assertEqual(p / 'D:/x/y', P('D:/x/y'))
         self.assertEqual(p / 'D:' / '/x/y', P('D:/x/y'))
         self.assertEqual(p / '//host/share/x/y', P('//host/share/x/y'))
-        # Joining with the same drive => the first path is appended to if
+        # Joining mit the same drive => the first path is appended to if
         # the second path is relative.
         self.assertEqual(p / 'c:x/y', P(r'c:/a/b\x/y'))
         self.assertEqual(p / 'c:/x/y', P('c:/x/y'))
-        # Joining with files with NTFS data streams => the filename should
-        # not be parsed as a drive letter
+        # Joining mit files mit NTFS data streams => the filename should
+        # not be parsed als a drive letter
         self.assertEqual(p / './d:s', P(r'C:/a/b\./d:s'))
         self.assertEqual(p / './dd:s', P(r'C:/a/b\./dd:s'))
         self.assertEqual(p / 'E:d:s', P('E:d:s'))
@@ -132,7 +132,7 @@ klasse JoinTestBase:
         self.assertEqual(par[::2], (P('z:a'),))
         self.assertEqual(par[::-1], (P('z:'), P('z:a')))
         self.assertEqual(list(par), [P('z:a'), P('z:')])
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             par[2]
         p = P('z:/a/b')
         par = p.parents
@@ -146,7 +146,7 @@ klasse JoinTestBase:
         self.assertEqual(par[::2], (P('z:/a'),))
         self.assertEqual(par[::-1], (P('z:/'), P('z:/a'),))
         self.assertEqual(list(par), [P('z:/a'), P('z:/')])
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             par[2]
         p = P('//a/b/c/d')
         par = p.parents
@@ -160,7 +160,7 @@ klasse JoinTestBase:
         self.assertEqual(par[::2], (P('//a/b/c'),))
         self.assertEqual(par[::-1], (P('//a/b/'), P('//a/b/c')))
         self.assertEqual(list(par), [P('//a/b/c'), P('//a/b/')])
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             par[2]
 
     def test_anchor(self):

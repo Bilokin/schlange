@@ -93,7 +93,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
         klasse Core(object):
             pass
 
-        with self.assertRaisesRegex(TypeError, "must have storage info"):
+        mit self.assertRaisesRegex(TypeError, "must have storage info"):
             POINTER(Core)
 
         klasse CtBase(Core, metaclass=ct_meta):
@@ -208,8 +208,8 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
     def test_bad_type_message(self):
         """Verify the error message that lists all available type codes"""
         # (The string is generated at runtime, so this checks the underlying
-        # set of types as well as correct construction of the string.)
-        with self.assertRaises(AttributeError) as cm:
+        # set of types als well als correct construction of the string.)
+        mit self.assertRaises(AttributeError) als cm:
             klasse F(metaclass=PyCSimpleType):
                 _type_ = "\0"
         message = str(cm.exception)
@@ -224,7 +224,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
 
     def test_creating_pointer_in_dunder_init_3(self):
         """Check wenn interfcase subclasses properly creates according internal
-        pointer types. But not the same as external pointer types.
+        pointer types. But not the same als external pointer types.
         """
 
         klasse StructureMeta(PyCStructType):
@@ -247,7 +247,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
                 target = dct.get('_type_', Nichts)
                 wenn target is Nichts:
 
-                    # Create corresponding interface type and then set it as target
+                    # Create corresponding interface type and then set it als target
                     target = StructureMeta(
                         f"_{name}_",
                         (bases[0]._type_,),
@@ -287,7 +287,7 @@ klasse PyCSimpleTypeAsMetaclassTest(unittest.TestCase):
 
     def test_creating_pointer_in_dunder_init_4(self):
         """Check wenn interfcase subclasses properly creates according internal
-        pointer types, the same as external pointer types.
+        pointer types, the same als external pointer types.
         """
         klasse StructureMeta(PyCStructType):
             def __new__(cls, name, bases, dct, /, create_pointer_type=Wahr):

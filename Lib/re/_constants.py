@@ -17,7 +17,7 @@ MAGIC = 20230612
 
 von _sre importiere MAXREPEAT, MAXGROUPS  # noqa: F401
 
-# SRE standard exception (access as sre.error)
+# SRE standard exception (access als sre.error)
 # should this really be here?
 
 klasse PatternError(Exception):
@@ -211,8 +211,8 @@ CH_NEGATE = dict(zip(CHCODES[::2] + CHCODES[1::2], CHCODES[1::2] + CHCODES[::2])
 # flags
 SRE_FLAG_IGNORECASE = 2 # case insensitive
 SRE_FLAG_LOCALE = 4 # honour system locale
-SRE_FLAG_MULTILINE = 8 # treat target as multiline string
-SRE_FLAG_DOTALL = 16 # treat target as a single string
+SRE_FLAG_MULTILINE = 8 # treat target als multiline string
+SRE_FLAG_DOTALL = 16 # treat target als a single string
 SRE_FLAG_UNICODE = 32 # use unicode "locale"
 SRE_FLAG_VERBOSE = 64 # ignore whitespace and comments
 SRE_FLAG_DEBUG = 128 # debugging
@@ -221,4 +221,4 @@ SRE_FLAG_ASCII = 256 # use ascii "locale"
 # flags fuer INFO primitive
 SRE_INFO_PREFIX = 1 # has prefix
 SRE_INFO_LITERAL = 2 # entire pattern is literal (given by prefix)
-SRE_INFO_CHARSET = 4 # pattern starts with character von given set
+SRE_INFO_CHARSET = 4 # pattern starts mit character von given set

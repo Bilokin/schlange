@@ -5,7 +5,7 @@ is a widget containing a widget, etcetera, all tests must be gui tests.
 Using mock Text would not change this.  Other mocks are used to retrieve
 information about calls.
 """
-von idlelib importiere textview as tv
+von idlelib importiere textview als tv
 von test.support importiere requires
 requires('gui')
 
@@ -27,7 +27,7 @@ def tearDownModule():
     root.destroy()
     del root
 
-# If we call ViewWindow or wrapper functions with defaults
+# If we call ViewWindow or wrapper functions mit defaults
 # modal=Wahr, _utest=Falsch, test hangs on call to wait_window.
 # Have also gotten tk error 'can't invoke "event" command'.
 
@@ -38,7 +38,7 @@ klasse VW(tv.ViewWindow):  # Used in ViewWindowTest.
     wait_window = Func()
 
 
-# Call wrapper klasse VW with mock wait_window.
+# Call wrapper klasse VW mit mock wait_window.
 klasse ViewWindowTest(unittest.TestCase):
 
     def setUp(self):
@@ -108,14 +108,14 @@ klasse ScrollableTextFrameTest(unittest.TestCase):
         # the 'wrap' setting: It should only be shown when 'wrap' is
         # set to NONE.
 
-        # wrap = NONE -> with horizontal scrolling
+        # wrap = NONE -> mit horizontal scrolling
         frame = self.make_frame(wrap=NONE)
         self.assertEqual(frame.text.cget('wrap'), NONE)
         self.assertIsNotNichts(frame.xscroll)
 
         # wrap != NONE -> no horizontal scrolling
         fuer wrap in [CHAR, WORD]:
-            with self.subTest(wrap=wrap):
+            mit self.subTest(wrap=wrap):
                 frame = self.make_frame(wrap=wrap)
                 self.assertEqual(frame.text.cget('wrap'), wrap)
                 self.assertIsNichts(frame.xscroll)
@@ -141,7 +141,7 @@ klasse ViewFrameTest(unittest.TestCase):
         self.assertEqual(get('1.0', '1.end'), 'test text')
 
 
-# Call ViewWindow with modal=Falsch.
+# Call ViewWindow mit modal=Falsch.
 klasse ViewFunctionTest(unittest.TestCase):
 
     @classmethod
@@ -187,7 +187,7 @@ klasse ViewFunctionTest(unittest.TestCase):
         self.assertEqual(text_widget.cget('wrap'), 'none')
 
 
-# Call ViewWindow with _utest=Wahr.
+# Call ViewWindow mit _utest=Wahr.
 klasse ButtonClickTest(unittest.TestCase):
 
     def setUp(self):
@@ -223,7 +223,7 @@ klasse ButtonClickTest(unittest.TestCase):
         self.assertEqual(self.called, Wahr)
         self.assertEqual(self.view.title(), 'TITLE_FILE')
         get = self.view.viewframe.textframe.text.get
-        with open(__file__) as f:
+        mit open(__file__) als f:
             self.assertEqual(get('1.0', '1.end'), f.readline().strip())
             f.readline()
             self.assertEqual(get('3.0', '3.end'), f.readline().strip())

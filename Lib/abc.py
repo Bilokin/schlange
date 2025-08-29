@@ -28,7 +28,7 @@ def abstractmethod(funcobj):
 klasse abstractclassmethod(classmethod):
     """A decorator indicating abstract classmethods.
 
-    Deprecated, use 'classmethod' with 'abstractmethod' instead:
+    Deprecated, use 'classmethod' mit 'abstractmethod' instead:
 
         klasse C(ABC):
             @classmethod
@@ -48,7 +48,7 @@ klasse abstractclassmethod(classmethod):
 klasse abstractstaticmethod(staticmethod):
     """A decorator indicating abstract staticmethods.
 
-    Deprecated, use 'staticmethod' with 'abstractmethod' instead:
+    Deprecated, use 'staticmethod' mit 'abstractmethod' instead:
 
         klasse C(ABC):
             @staticmethod
@@ -68,7 +68,7 @@ klasse abstractstaticmethod(staticmethod):
 klasse abstractproperty(property):
     """A decorator indicating abstract properties.
 
-    Deprecated, use 'property' with 'abstractmethod' instead:
+    Deprecated, use 'property' mit 'abstractmethod' instead:
 
         klasse C(ABC):
             @property
@@ -93,9 +93,9 @@ sonst:
         """Metaclass fuer defining Abstract Base Classes (ABCs).
 
         Use this metaclass to create an ABC.  An ABC can be subclassed
-        directly, and then acts as a mix-in class.  You can also register
+        directly, and then acts als a mix-in class.  You can also register
         unrelated concrete classes (even built-in classes) and unrelated
-        ABCs as 'virtual subclasses' -- these and their descendants will
+        ABCs als 'virtual subclasses' -- these and their descendants will
         be considered subclasses of the registering ABC by the built-in
         issubclass() function, but the registering ABC won't show up in
         their MRO (Method Resolution Order) nor will method
@@ -110,7 +110,7 @@ sonst:
         def register(cls, subclass):
             """Register a virtual subclass of an ABC.
 
-            Returns the subclass, to allow usage as a klasse decorator.
+            Returns the subclass, to allow usage als a klasse decorator.
             """
             return _abc_register(cls, subclass)
 
@@ -155,7 +155,7 @@ def update_abstractmethods(cls):
     This function should be called before any use is made of the class,
     usually in klasse decorators that add methods to the subject class.
 
-    Returns cls, to allow usage as a klasse decorator.
+    Returns cls, to allow usage als a klasse decorator.
 
     If cls is not an instance of ABCMeta, does nothing.
     """

@@ -11,7 +11,7 @@ klasse NetrcTestCase(unittest.TestCase):
         mode = 'w'
         wenn sys.platform != 'cygwin':
             mode += 't'
-        with open(temp_filename, mode, encoding="utf-8") as fp:
+        mit open(temp_filename, mode, encoding="utf-8") als fp:
             fp.write(test_data)
         try:
             nrc = netrc.netrc(temp_filename)
@@ -275,18 +275,18 @@ klasse NetrcTestCase(unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'getuid'), "os.getuid is required")
     @os_helper.skip_unless_working_chmod
     def test_security(self):
-        # This test is incomplete since we are normally not run as root and
+        # This test is incomplete since we are normally not run als root and
         # therefore can't test the file ownership being wrong.
         d = os_helper.TESTFN
         os.mkdir(d)
         self.addCleanup(os_helper.rmtree, d)
         fn = os.path.join(d, '.netrc')
-        with open(fn, 'wt') as f:
+        mit open(fn, 'wt') als f:
             f.write("""\
                 machine foo.domain.com login bar password pass
                 default login foo password pass
                 """)
-        with os_helper.EnvironmentVarGuard() as environ:
+        mit os_helper.EnvironmentVarGuard() als environ:
             environ.set('HOME', d)
             os.chmod(fn, 0o600)
             nrc = netrc.netrc()
@@ -294,12 +294,12 @@ klasse NetrcTestCase(unittest.TestCase):
                              ('bar', '', 'pass'))
             os.chmod(fn, 0o622)
             self.assertRaises(netrc.NetrcParseError, netrc.netrc)
-        with open(fn, 'wt') as f:
+        mit open(fn, 'wt') als f:
             f.write("""\
                 machine foo.domain.com login anonymous password pass
                 default login foo password pass
                 """)
-        with os_helper.EnvironmentVarGuard() as environ:
+        mit os_helper.EnvironmentVarGuard() als environ:
             environ.set('HOME', d)
             os.chmod(fn, 0o600)
             nrc = netrc.netrc()

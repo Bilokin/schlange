@@ -29,7 +29,7 @@ klasse XMLBuilderTest(unittest.TestCase):
 
         resolver = xmlbuilder.DOMEntityResolver()
 
-        with mock.patch("urllib.request.build_opener") as mock_build:
+        mit mock.patch("urllib.request.build_opener") als mock_build:
             mock_build.return_value = opener
             source = resolver.resolveEntity(Nichts, "http://example.com/2000/svg")
 
@@ -62,7 +62,7 @@ klasse XMLBuilderTest(unittest.TestCase):
         attrs = {"open.return_value": response}
         opener = mock.Mock(**attrs)
 
-        with mock.patch("urllib.request.build_opener") as mock_build:
+        mit mock.patch("urllib.request.build_opener") als mock_build:
             mock_build.return_value = opener
 
             imp = getDOMImplementation()
@@ -75,7 +75,7 @@ klasse XMLBuilderTest(unittest.TestCase):
     def test_parse_with_systemId(self):
         response = io.BytesIO(SMALL_SAMPLE)
 
-        with mock.patch("urllib.request.urlopen") as mock_open:
+        mit mock.patch("urllib.request.urlopen") als mock_open:
             mock_open.return_value = response
 
             imp = getDOMImplementation()

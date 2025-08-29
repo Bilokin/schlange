@@ -172,7 +172,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_b(Index()))
         self.assertEqual(0, getargs_b(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_b, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_b(BadIndex2()))
         self.assertEqual(0, getargs_b(BadIndex3()))
         self.assertRaises(TypeError, getargs_b, Int())
@@ -196,7 +196,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_B(Index()))
         self.assertEqual(0, getargs_B(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_B, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_B(BadIndex2()))
         self.assertEqual(0, getargs_B(BadIndex3()))
         self.assertRaises(TypeError, getargs_B, Int())
@@ -208,22 +208,22 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(UCHAR_MAX, getargs_B(-1))
         self.assertEqual(0, getargs_B(0))
         self.assertEqual(UCHAR_MAX, getargs_B(UCHAR_MAX))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(0, getargs_B(UCHAR_MAX+1))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_B(-UCHAR_MAX))
         self.assertEqual(SCHAR_MAX+1, getargs_B(SCHAR_MIN))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(SCHAR_MAX, getargs_B(SCHAR_MIN-1))
 
         self.assertEqual(128, getargs_B(-2**7))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(127, getargs_B(-2**7-1))
 
         self.assertEqual(42, getargs_B(42))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(UCHAR_MAX & VERY_LARGE, getargs_B(VERY_LARGE))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(UCHAR_MAX & -VERY_LARGE, getargs_B(-VERY_LARGE))
 
     def test_H(self):
@@ -233,7 +233,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_H(Index()))
         self.assertEqual(0, getargs_H(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_H, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_H(BadIndex2()))
         self.assertEqual(0, getargs_H(BadIndex3()))
         self.assertRaises(TypeError, getargs_H, Int())
@@ -245,17 +245,17 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(USHRT_MAX, getargs_H(-1))
         self.assertEqual(0, getargs_H(0))
         self.assertEqual(USHRT_MAX, getargs_H(USHRT_MAX))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(0, getargs_H(USHRT_MAX+1))
         self.assertEqual(SHRT_MAX+1, getargs_H(SHRT_MIN))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(SHRT_MAX, getargs_H(SHRT_MIN-1))
 
         self.assertEqual(42, getargs_H(42))
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(USHRT_MAX & VERY_LARGE, getargs_H(VERY_LARGE))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(USHRT_MAX & -VERY_LARGE, getargs_H(-VERY_LARGE))
 
     def test_I(self):
@@ -265,7 +265,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_I(Index()))
         self.assertEqual(0, getargs_I(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_I, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_I(BadIndex2()))
         self.assertEqual(0, getargs_I(BadIndex3()))
         self.assertRaises(TypeError, getargs_I, Int())
@@ -277,17 +277,17 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(UINT_MAX, getargs_I(-1))
         self.assertEqual(0, getargs_I(0))
         self.assertEqual(UINT_MAX, getargs_I(UINT_MAX))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(0, getargs_I(UINT_MAX+1))
         self.assertEqual(INT_MAX+1, getargs_I(INT_MIN))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(INT_MAX, getargs_I(INT_MIN-1))
 
         self.assertEqual(42, getargs_I(42))
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(UINT_MAX & VERY_LARGE, getargs_I(VERY_LARGE))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(UINT_MAX & -VERY_LARGE, getargs_I(-VERY_LARGE))
 
     def test_k(self):
@@ -297,7 +297,7 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_k(Index()))
         self.assertEqual(0, getargs_k(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_k, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_k(BadIndex2()))
         self.assertEqual(0, getargs_k(BadIndex3()))
         self.assertRaises(TypeError, getargs_k, Int())
@@ -309,17 +309,17 @@ klasse Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(ULONG_MAX, getargs_k(-1))
         self.assertEqual(0, getargs_k(0))
         self.assertEqual(ULONG_MAX, getargs_k(ULONG_MAX))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(0, getargs_k(ULONG_MAX+1))
         self.assertEqual(LONG_MAX+1, getargs_k(LONG_MIN))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(LONG_MAX, getargs_k(LONG_MIN-1))
 
         self.assertEqual(42, getargs_k(42))
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(ULONG_MAX & VERY_LARGE, getargs_k(VERY_LARGE))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(ULONG_MAX & -VERY_LARGE, getargs_k(-VERY_LARGE))
 
 klasse Signed_TestCase(unittest.TestCase):
@@ -330,7 +330,7 @@ klasse Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_h(Index()))
         self.assertEqual(0, getargs_h(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_h, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_h(BadIndex2()))
         self.assertEqual(0, getargs_h(BadIndex3()))
         self.assertRaises(TypeError, getargs_h, Int())
@@ -354,7 +354,7 @@ klasse Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_i(Index()))
         self.assertEqual(0, getargs_i(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_i, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_i(BadIndex2()))
         self.assertEqual(0, getargs_i(BadIndex3()))
         self.assertRaises(TypeError, getargs_i, Int())
@@ -378,7 +378,7 @@ klasse Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_l(Index()))
         self.assertEqual(0, getargs_l(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_l, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_l(BadIndex2()))
         self.assertEqual(0, getargs_l(BadIndex3()))
         self.assertRaises(TypeError, getargs_l, Int())
@@ -403,7 +403,7 @@ klasse Signed_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_n(Index()))
         self.assertEqual(0, getargs_n(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_n, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_n(BadIndex2()))
         self.assertEqual(0, getargs_n(BadIndex3()))
         self.assertRaises(TypeError, getargs_n, Int())
@@ -431,7 +431,7 @@ klasse LongLong_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_L(Index()))
         self.assertEqual(0, getargs_L(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_L, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_L(BadIndex2()))
         self.assertEqual(0, getargs_L(BadIndex3()))
         self.assertRaises(TypeError, getargs_L, Int())
@@ -455,7 +455,7 @@ klasse LongLong_TestCase(unittest.TestCase):
         self.assertEqual(99, getargs_K(Index()))
         self.assertEqual(0, getargs_K(IndexIntSubclass()))
         self.assertRaises(TypeError, getargs_K, BadIndex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(1, getargs_K(BadIndex2()))
         self.assertEqual(0, getargs_K(BadIndex3()))
         self.assertRaises(TypeError, getargs_K, Int())
@@ -467,17 +467,17 @@ klasse LongLong_TestCase(unittest.TestCase):
         self.assertEqual(ULLONG_MAX, getargs_K(ULLONG_MAX))
         self.assertEqual(0, getargs_K(0))
         self.assertEqual(ULLONG_MAX, getargs_K(ULLONG_MAX))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(0, getargs_K(ULLONG_MAX+1))
         self.assertEqual(LLONG_MAX+1, getargs_K(LLONG_MIN))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(LLONG_MAX, getargs_K(LLONG_MIN-1))
 
         self.assertEqual(42, getargs_K(42))
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(ULLONG_MAX & VERY_LARGE, getargs_K(VERY_LARGE))
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(ULLONG_MAX & -VERY_LARGE, getargs_K(-VERY_LARGE))
 
 
@@ -491,7 +491,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertEqual(getargs_f(FloatSubclass(7.5)), 7.5)
         self.assertEqual(getargs_f(FloatSubclass2(7.5)), 7.5)
         self.assertRaises(TypeError, getargs_f, BadFloat())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(getargs_f(BadFloat2()), 4.25)
         self.assertEqual(getargs_f(BadFloat3(7.5)), 7.5)
         self.assertEqual(getargs_f(Index()), 99.0)
@@ -525,7 +525,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertEqual(getargs_d(FloatSubclass(7.5)), 7.5)
         self.assertEqual(getargs_d(FloatSubclass2(7.5)), 7.5)
         self.assertRaises(TypeError, getargs_d, BadFloat())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(getargs_d(BadFloat2()), 4.25)
         self.assertEqual(getargs_d(BadFloat3(7.5)), 7.5)
         self.assertEqual(getargs_d(Index()), 99.0)
@@ -549,7 +549,7 @@ klasse Float_TestCase(unittest.TestCase, FloatsAreIdenticalMixin):
         self.assertEqual(getargs_D(ComplexSubclass(7.5+0.25j)), 7.5+0.25j)
         self.assertEqual(getargs_D(ComplexSubclass2(7.5+0.25j)), 7.5+0.25j)
         self.assertRaises(TypeError, getargs_D, BadComplex())
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(getargs_D(BadComplex2()), 4.25+0.5j)
         self.assertEqual(getargs_D(BadComplex3(7.5+0.25j)), 7.5+0.25j)
         self.assertEqual(getargs_D(Index()), 99.0+0j)
@@ -695,7 +695,7 @@ klasse Keywords_TestCase(unittest.TestCase):
         # required arg missing
         try:
             getargs_keywords(arg1=(1,2))
-        except TypeError as err:
+        except TypeError als err:
             self.assertEqual(
                 str(err), "function missing required argument 'arg2' (pos 2)")
         sonst:
@@ -704,7 +704,7 @@ klasse Keywords_TestCase(unittest.TestCase):
     def test_too_many_args(self):
         try:
             getargs_keywords((1,2),3,(4,(5,6)),(7,8,9),10,111)
-        except TypeError as err:
+        except TypeError als err:
             self.assertEqual(str(err), "function takes at most 5 arguments (6 given)")
         sonst:
             self.fail('TypeError should have been raised')
@@ -713,7 +713,7 @@ klasse Keywords_TestCase(unittest.TestCase):
         # extraneous keyword arg
         try:
             getargs_keywords((1,2),3,arg5=10,arg666=666)
-        except TypeError as err:
+        except TypeError als err:
             self.assertEqual(str(err), "this function got an unexpected keyword argument 'arg666'")
         sonst:
             self.fail('TypeError should have been raised')
@@ -721,7 +721,7 @@ klasse Keywords_TestCase(unittest.TestCase):
     def test_surrogate_keyword(self):
         try:
             getargs_keywords((1,2), 3, (4,(5,6)), (7,8,9), **{'\uDC80': 10})
-        except TypeError as err:
+        except TypeError als err:
             self.assertEqual(str(err), "this function got an unexpected keyword argument '\udc80'")
         sonst:
             self.fail('TypeError should have been raised')
@@ -769,31 +769,31 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
             (1, -1, -1)
             )
         # required arg missing
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             r"function missing required argument 'required' \(pos 1\)"):
             getargs_keyword_only(optional=2)
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             r"function missing required argument 'required' \(pos 1\)"):
             getargs_keyword_only(keyword_only=3)
 
     def test_too_many_args(self):
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             r"function takes at most 2 positional arguments \(3 given\)"):
             getargs_keyword_only(1, 2, 3)
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             r"function takes at most 3 arguments \(4 given\)"):
             getargs_keyword_only(1, 2, 3, keyword_only=5)
 
     def test_invalid_keyword(self):
         # extraneous keyword arg
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             "this function got an unexpected keyword argument 'monster'"):
             getargs_keyword_only(1, 2, monster=666)
 
     def test_surrogate_keyword(self):
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             "this function got an unexpected keyword argument '\udc80'"):
             getargs_keyword_only(1, 2, **{'\uDC80': 10})
 
@@ -804,10 +804,10 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
             def __hash__(self):
                 # Guaranteed different hash
                 return str.__hash__(self) ^ 3
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             "invalid keyword argument fuer this function"):
             getargs_keyword_only(1, 2, **{BadStr("keyword_only"): 3})
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             "this function got an unexpected keyword argument"):
             getargs_keyword_only(1, 2, **{BadStr("monster"): 666})
 
@@ -817,16 +817,16 @@ klasse KeywordOnly_TestCase(unittest.TestCase):
                 return Falsch
             def __hash__(self):
                 return str.__hash__(self)
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             "invalid keyword argument fuer this function"):
             getargs_keyword_only(1, 2, **{BadStr("keyword_only"): 3})
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             "this function got an unexpected keyword argument"):
             getargs_keyword_only(1, 2, **{BadStr("monster"): 666})
 
 
 klasse PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
-    von _testcapi importiere getargs_positional_only_and_keywords as getargs
+    von _testcapi importiere getargs_positional_only_and_keywords als getargs
 
     def test_positional_args(self):
         # using all possible positional args
@@ -844,16 +844,16 @@ klasse PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
     def test_required_args(self):
         self.assertEqual(self.getargs(1), (1, -1, -1))
         # required positional arg missing
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             r"function takes at least 1 positional argument \(0 given\)"):
             self.getargs()
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             r"function takes at least 1 positional argument \(0 given\)"):
             self.getargs(keyword=3)
 
     def test_empty_keyword(self):
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
             "this function got an unexpected keyword argument ''"):
             self.getargs(1, 2, **{'': 666})
 
@@ -903,11 +903,11 @@ klasse Bytes_TestCase(unittest.TestCase):
 
     def test_w_star(self):
         # getargs_w_star() modifies first and last byte
-        # getargs_w_star_opt() takes additional optional args: with one
-        #   argument it should behave the same as getargs_w_star
+        # getargs_w_star_opt() takes additional optional args: mit one
+        #   argument it should behave the same als getargs_w_star
         von _testcapi importiere getargs_w_star, getargs_w_star_opt
         fuer func in (getargs_w_star, getargs_w_star_opt):
-            with self.subTest(func=func):
+            mit self.subTest(func=func):
                 self.assertRaises(TypeError, func, 'abc\xe9')
                 self.assertRaises(TypeError, func, b'bytes')
                 self.assertRaises(TypeError, func, b'nul:\0')
@@ -1135,7 +1135,7 @@ klasse SkipitemTest(unittest.TestCase):
         skipitem() in the same file.  (If so, shame on you!)
 
         With a few exceptions**, this function brute-force tests all
-        printable ASCII*** characters (32 to 126 inclusive) as format units,
+        printable ASCII*** characters (32 to 126 inclusive) als format units,
         checking to see that PyArg_ParseTupleAndKeywords() return consistent
         errors both when the unit is attempted to be used and when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
@@ -1147,7 +1147,7 @@ klasse SkipitemTest(unittest.TestCase):
            ** Some format units have special funny semantics and it would
               be difficult to accommodate them here.  Since these are all
               well-established and properly skipped in skipitem() we can
-              get away with not testing them--this test is really intended
+              get away mit not testing them--this test is really intended
               to catch *new* format units.
 
           *** Python C source files must be ASCII.  Therefore it's impossible
@@ -1174,7 +1174,7 @@ klasse SkipitemTest(unittest.TestCase):
                 _testcapi.parse_tuple_and_keywords(tuple_1, dict_b,
                     format, keywords)
                 when_not_skipped = Falsch
-            except SystemError as e:
+            except SystemError als e:
                 s = "argument 1 (impossible<bad format char>)"
                 when_not_skipped = (str(e) == s)
             except TypeError:
@@ -1186,7 +1186,7 @@ klasse SkipitemTest(unittest.TestCase):
                 _testcapi.parse_tuple_and_keywords(empty_tuple, dict_b,
                     optional_format, keywords)
                 when_skipped = Falsch
-            except SystemError as e:
+            except SystemError als e:
                 s = "impossible<bad format char>: '{}'".format(format)
                 when_skipped = (str(e) == s)
 
@@ -1207,23 +1207,23 @@ klasse SkipitemTest(unittest.TestCase):
         fuer c in string.ascii_letters:
             fuer c2 in '#*':
                 f = c + c2
-                with self.subTest(format=f):
+                mit self.subTest(format=f):
                     optional_format = "|" + f + "i"
                     wenn f in supported:
                         parse(empty_tuple, dict_b, optional_format, keywords)
                     sonst:
-                        with self.assertRaisesRegex(SystemError,
+                        mit self.assertRaisesRegex(SystemError,
                                     'impossible<bad format char>'):
                             parse(empty_tuple, dict_b, optional_format, keywords)
 
         fuer c in map(chr, range(32, 128)):
             f = 'e' + c
             optional_format = "|" + f + "i"
-            with self.subTest(format=f):
+            mit self.subTest(format=f):
                 wenn c in 'st':
                     parse(empty_tuple, dict_b, optional_format, keywords)
                 sonst:
-                    with self.assertRaisesRegex(SystemError,
+                    mit self.assertRaisesRegex(SystemError,
                                 'impossible<bad format char>'):
                         parse(empty_tuple, dict_b, optional_format, keywords)
 
@@ -1251,13 +1251,13 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
         self.assertEqual(parse((), {'a': 1, 'b': 2}, 'OO', ['a', 'b']), (1, 2))
         self.assertEqual(parse((), {'b': 2}, '|OO', ['a', 'b']), (NULL, 2))
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "function missing required argument 'a'"):
             parse((), {}, 'O', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "this function got an unexpected keyword argument 'b'"):
             parse((), {'b': 1}, '|O', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 fr"argument fuer function given by name \('a'\) "
                 fr"and position \(1\)"):
             parse((1,), {'a': 2}, 'O|O', ['a', 'b'])
@@ -1291,47 +1291,47 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
 
         self.assertEqual(parse((1, 2, 3), {}, 'OOO', ['', '', 'a']), (1, 2, 3))
         self.assertEqual(parse((1, 2), {'a': 3}, 'OOO', ['', '', 'a']), (1, 2, 3))
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                r'function takes at least 2 positional arguments \(1 given\)'):
             parse((1,), {'a': 3}, 'OOO', ['', '', 'a'])
         self.assertEqual(parse((1,), {}, 'O|OO', ['', '', 'a']),
                          (1, NULL, NULL))
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                r'function takes at least 1 positional argument \(0 given\)'):
             parse((), {}, 'O|OO', ['', '', 'a'])
         self.assertEqual(parse((1, 2), {'a': 3}, 'OO$O', ['', '', 'a']),
                          (1, 2, 3))
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                r'function takes exactly 2 positional arguments \(1 given\)'):
             parse((1,), {'a': 3}, 'OO$O', ['', '', 'a'])
         self.assertEqual(parse((1,), {}, 'O|O$O', ['', '', 'a']),
                          (1, NULL, NULL))
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                r'function takes at least 1 positional argument \(0 given\)'):
             parse((), {}, 'O|O$O', ['', '', 'a'])
-        with self.assertRaisesRegex(SystemError, r'Empty parameter name after \$'):
+        mit self.assertRaisesRegex(SystemError, r'Empty parameter name after \$'):
             parse((1,), {}, 'O|$OO', ['', '', 'a'])
-        with self.assertRaisesRegex(SystemError, 'Empty keyword'):
+        mit self.assertRaisesRegex(SystemError, 'Empty keyword'):
             parse((1,), {}, 'O|OO', ['', 'a', ''])
 
     def test_nonascii_keywords(self):
         parse = _testcapi.parse_tuple_and_keywords
 
         fuer name in ('a', 'ä', 'ŷ', '㷷', '𐀀'):
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertEqual(parse((), {name: 1}, 'O', [name]), (1,))
                 self.assertEqual(parse((), {}, '|O', [name]), (NULL,))
-                with self.assertRaisesRegex(TypeError,
+                mit self.assertRaisesRegex(TypeError,
                         f"function missing required argument '{name}'"):
                     parse((), {}, 'O', [name])
-                with self.assertRaisesRegex(TypeError,
+                mit self.assertRaisesRegex(TypeError,
                         fr"argument fuer function given by name \('{name}'\) "
                         fr"and position \(1\)"):
                     parse((1,), {name: 2}, 'O|O', [name, 'b'])
-                with self.assertRaisesRegex(TypeError,
+                mit self.assertRaisesRegex(TypeError,
                         f"this function got an unexpected keyword argument '{name}'"):
                     parse((), {name: 1}, '|O', ['b'])
-                with self.assertRaisesRegex(TypeError,
+                mit self.assertRaisesRegex(TypeError,
                         "this function got an unexpected keyword argument 'b'"):
                     parse((), {'b': 1}, '|O', [name])
 
@@ -1339,29 +1339,29 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
                 self.assertEqual(parse((), {}, '|O', [invalid]), (NULL,))
                 self.assertEqual(parse((1,), {'b': 2}, 'O|O', [invalid, 'b']),
                                     (1, 2))
-                with self.assertRaisesRegex(TypeError,
+                mit self.assertRaisesRegex(TypeError,
                         f"function missing required argument '{name}\ufffd'"):
                     parse((), {}, 'O', [invalid])
-                with self.assertRaisesRegex(UnicodeDecodeError,
+                mit self.assertRaisesRegex(UnicodeDecodeError,
                         f"'utf-8' codec can't decode bytes? "):
                     parse((), {'b': 1}, '|OO', [invalid, 'b'])
-                with self.assertRaisesRegex(UnicodeDecodeError,
+                mit self.assertRaisesRegex(UnicodeDecodeError,
                         f"'utf-8' codec can't decode bytes? "):
                     parse((), {'b': 1}, '|O', [invalid])
 
                 fuer name2 in ('b', 'ë', 'ĉ', 'Ɐ', '𐀁'):
-                    with self.subTest(name2=name2):
-                        with self.assertRaisesRegex(TypeError,
+                    mit self.subTest(name2=name2):
+                        mit self.assertRaisesRegex(TypeError,
                                 f"this function got an unexpected keyword argument '{name2}'"):
                             parse((), {name2: 1}, '|O', [name])
 
                 name2 = name.encode().decode('latin1')
                 wenn name2 != name:
-                    with self.assertRaisesRegex(TypeError,
+                    mit self.assertRaisesRegex(TypeError,
                             f"this function got an unexpected keyword argument '{name2}'"):
                         parse((), {name2: 1}, '|O', [name])
                     name3 = name + '3'
-                    with self.assertRaisesRegex(TypeError,
+                    mit self.assertRaisesRegex(TypeError,
                             f"this function got an unexpected keyword argument '{name2}'"):
                         parse((), {name2: 1, name3: 2}, '|OO', [name, name3])
 
@@ -1374,58 +1374,58 @@ klasse ParseTupleAndKeywords_Test(unittest.TestCase):
         parse(((1, 2, 3),), {}, '(iii)', ['a'])
         parse(([1, 2, 3],), {}, '(iii)', ['a'])
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be tuple of length 2, not 3"):
             parse(((1, 2, 3),), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be tuple of length 2, not 1"):
             parse(((1,),), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be sequence of length 2, not 3"):
             parse(([1, 2, 3],), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be sequence of length 2, not 1"):
             parse(([1,],), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be 2-item tuple, not int"):
             parse((1,), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be 2-item tuple, not Nichts$"):
             parse((Nichts,), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be 2-item tuple, not str"):
             parse(('ab',), {}, '(CC)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be 2-item tuple, not bytes"):
             parse((b'ab',), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be 2-item tuple, not bytearray"):
             parse((bytearray(b'ab'),), {}, '(ii)', ['a'])
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                 "argument 1 must be 2-item tuple, not dict"):
             parse(({},), {}, '(ii)', ['a'])
 
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                 "argument must be 3-item tuple, not list"):
             self.assertEqual(parse(([1, 2, 3],), {}, '(OOO)', ['a']), (1, 2, 3))
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                 "argument must be 2-item tuple, not list"):
-            with self.assertRaisesRegex(TypeError,
+            mit self.assertRaisesRegex(TypeError,
                     "argument 1 must be tuple of length 2, not 3"):
                 parse(([1, 2, 3],), {}, '(OO)', ['a'])
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                 "argument must be 2-item tuple, not list"):
-            with self.assertRaisesRegex(TypeError,
+            mit self.assertRaisesRegex(TypeError,
                     "argument 1 must be tuple of length 2, not 1"):
                 parse(([1,],), {}, '(OO)', ['a'])
 
         fuer f in 'es', 'et', 'es#', 'et#':
-            with self.assertRaises(LookupError):  # empty encoding ""
+            mit self.assertRaises(LookupError):  # empty encoding ""
                 parse((('a',),), {}, '(' + f + ')', ['a'])
-            with self.assertRaisesRegex(TypeError,
+            mit self.assertRaisesRegex(TypeError,
                     "argument 1 must be tuple of length 1, not 0"):
                 parse(((),), {}, '(' + f + ')', ['a'])
-            with self.assertRaisesRegex(TypeError,
+            mit self.assertRaisesRegex(TypeError,
                     "argument 1 must be sequence of length 1, not 0"):
                 parse(([],), {}, '(' + f + ')', ['a'])
 

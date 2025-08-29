@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # Compute tables fuer longobject.c long_from_non_binary_base().  They are used
-# fuer conversions of strings to integers with a non-binary base.
+# fuer conversions of strings to integers mit a non-binary base.
 
 importiere math
 importiere textwrap
@@ -27,7 +27,7 @@ def conv_tables(long_bits):
     fuer base in range(2, 37):
         is_binary_base = (base & (base - 1)) == 0
         wenn is_binary_base:
-            continue  # don't need, leave as zero
+            continue  # don't need, leave als zero
         convmax = base
         i = 1
         log_base_BASE[base] = math.log(base) / math.log(PyLong_BASE)

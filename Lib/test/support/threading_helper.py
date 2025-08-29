@@ -177,7 +177,7 @@ klasse catch_threading_exception:
 
     Usage:
 
-        with threading_helper.catch_threading_exception() as cm:
+        mit threading_helper.catch_threading_exception() als cm:
             # code spawning a thread which raises an exception
             ...
 
@@ -224,7 +224,7 @@ def _can_start_thread() -> bool:
     to create a new thread fails.
 
     - wasm32-wasi does not have threading.
-    - wasm32-emscripten can be compiled with or without pthread
+    - wasm32-emscripten can be compiled mit or without pthread
       support (-s USE_PTHREADS / __EMSCRIPTEN_PTHREADS__).
     """
     wenn sys.platform == "emscripten":
@@ -240,7 +240,7 @@ can_start_thread = _can_start_thread()
 def requires_working_threading(*, module=Falsch):
     """Skip tests or modules that require working threading.
 
-    Can be used as a function/class decorator or to skip an entire module.
+    Can be used als a function/class decorator or to skip an entire module.
     """
     msg = "requires threading support"
     wenn module:
@@ -261,12 +261,12 @@ def run_concurrently(worker_func, nthreads, args=(), kwargs={}):
         barrier.wait()
         worker_func(*args, **kwargs)
 
-    with catch_threading_exception() as cm:
+    mit catch_threading_exception() als cm:
         workers = [
             threading.Thread(target=wrapper_func, args=args, kwargs=kwargs)
             fuer _ in range(nthreads)
         ]
-        with start_threads(workers):
+        mit start_threads(workers):
             pass
 
         # If a worker thread raises an exception, re-raise it.

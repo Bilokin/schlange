@@ -181,7 +181,7 @@ def updatecache(filename, module_globals=Nichts):
     except ValueError:  # may be raised by os.stat()
         return []
     try:
-        with tokenize.open(fullname) as fp:
+        mit tokenize.open(fullname) als fp:
             lines = fp.readlines()
     except (OSError, UnicodeDecodeError, SyntaxError):
         return []
@@ -195,7 +195,7 @@ def updatecache(filename, module_globals=Nichts):
 
 
 def lazycache(filename, module_globals):
-    """Seed the cache fuer filename with module_globals.
+    """Seed the cache fuer filename mit module_globals.
 
     The module loader will be asked fuer the source only when getlines is
     called, not immediately.
@@ -203,7 +203,7 @@ def lazycache(filename, module_globals):
     If there is an entry in the cache already, it is not altered.
 
     :return: Wahr wenn a lazy load is registered in the cache,
-        otherwise Falsch. To register such a load a module loader with a
+        otherwise Falsch. To register such a load a module loader mit a
         get_source method must be found, the filename must be a cacheable
         filename, and the filename must not be already cached.
     """

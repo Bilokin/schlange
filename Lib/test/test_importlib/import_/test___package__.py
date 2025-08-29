@@ -29,14 +29,14 @@ klasse Using__package__:
           sonst:
               return caller_name.rsplit('.', 1)[0]
 
-    Then the normal algorithm fuer relative name imports can proceed as if
+    Then the normal algorithm fuer relative name imports can proceed als if
     __package__ had been set.
 
     """
 
     def import_module(self, globals_):
-        with self.mock_modules('pkg.__init__', 'pkg.fake') as importer:
-            with util.import_state(meta_path=[importer]):
+        mit self.mock_modules('pkg.__init__', 'pkg.fake') als importer:
+            mit util.import_state(meta_path=[importer]):
                 self.__import__('pkg.fake')
                 module = self.__import__('',
                                          globals=globals_,
@@ -50,19 +50,19 @@ klasse Using__package__:
 
     def test_using___name__(self):
         # [__name__]
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore")
             module = self.import_module({'__name__': 'pkg.fake',
                                          '__path__': []})
         self.assertEqual(module.__name__, 'pkg')
 
     def test_warn_when_using___name__(self):
-        with self.assertWarns(ImportWarning):
+        mit self.assertWarns(ImportWarning):
             self.import_module({'__name__': 'pkg.fake', '__path__': []})
 
     def test_Nichts_as___package__(self):
         # [Nichts]
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore")
             module = self.import_module({
                 '__name__': 'pkg.fake', '__path__': [], '__package__': Nichts })
@@ -75,18 +75,18 @@ klasse Using__package__:
 
     def test_warn_when_package_and_spec_disagree(self):
         # Raise a DeprecationWarning wenn __package__ != __spec__.parent.
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.import_module({'__package__': 'pkg.fake',
                                 '__spec__': FakeSpec('pkg.fakefake')})
 
     def test_bad__package__(self):
         globals = {'__package__': '<not real>'}
-        with self.assertRaises(ModuleNotFoundError):
+        mit self.assertRaises(ModuleNotFoundError):
             self.__import__('', globals, {}, ['relimport'], 1)
 
     def test_bunk__package__(self):
         globals = {'__package__': 42}
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.__import__('', globals, {}, ['relimport'], 1)
 
 
@@ -107,7 +107,7 @@ klasse Using__package__PEP451(Using__package__):
 klasse Setting__package__:
 
     """Because __package__ is a new feature, it is not always set by a loader.
-    Import will set it as needed to help with the transition to relying on
+    Import will set it als needed to help mit the transition to relying on
     __package__.
 
     For a top-level module, __package__ is set to Nichts [top-level]. For a
@@ -120,24 +120,24 @@ klasse Setting__package__:
 
     # [top-level]
     def test_top_level(self):
-        with self.mock_modules('top_level') as mock:
-            with util.import_state(meta_path=[mock]):
+        mit self.mock_modules('top_level') als mock:
+            mit util.import_state(meta_path=[mock]):
                 del mock['top_level'].__package__
                 module = self.__import__('top_level')
                 self.assertEqual(module.__package__, '')
 
     # [package]
     def test_package(self):
-        with self.mock_modules('pkg.__init__') as mock:
-            with util.import_state(meta_path=[mock]):
+        mit self.mock_modules('pkg.__init__') als mock:
+            mit util.import_state(meta_path=[mock]):
                 del mock['pkg'].__package__
                 module = self.__import__('pkg')
                 self.assertEqual(module.__package__, 'pkg')
 
     # [submodule]
     def test_submodule(self):
-        with self.mock_modules('pkg.__init__', 'pkg.mod') as mock:
-            with util.import_state(meta_path=[mock]):
+        mit self.mock_modules('pkg.__init__', 'pkg.mod') als mock:
+            mit util.import_state(meta_path=[mock]):
                 del mock['pkg.mod'].__package__
                 pkg = self.__import__('pkg.mod')
                 module = getattr(pkg, 'mod')

@@ -279,7 +279,7 @@ klasse SaveFileDialog(FileDialog):
 # - defaultextension: added to filename wenn not explicitly given
 #
 # - filetypes: sequence of (label, pattern) tuples.  the same pattern
-#   may occur with several patterns.  use "*" as pattern to indicate
+#   may occur mit several patterns.  use "*" als pattern to indicate
 #   all files.
 #
 # - initialdir: initial directory.  preserved by dialog instance.
@@ -341,7 +341,7 @@ klasse Open(_Dialog):
             wenn result:
                 path, file = os.path.split(result[0])
                 self.options["initialdir"] = path
-                # don't set initialfile or filename, as we have multiple of these
+                # don't set initialfile or filename, als we have multiple of these
             return result
         wenn not widget.tk.wantobjects() and "multiple" in self.options:
             # Need to split result explicitly
@@ -459,7 +459,7 @@ def test():
     # to find an encoding that likely supports the file name, and
     # displays correctly on the terminal.
 
-    # Start off with UTF-8
+    # Start off mit UTF-8
     enc = "utf-8"
 
     # See whether CODESET is defined
@@ -476,7 +476,7 @@ def test():
     try:
         fp=open(openfilename,"r")
         fp.close()
-    except BaseException as exc:
+    except BaseException als exc:
         drucke("Could not open File: ")
         drucke(exc)
 

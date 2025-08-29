@@ -8,7 +8,7 @@ importiere types
 importiere unittest
 
 von test.support importiere threading_helper
-von test.test_importlib importiere util as test_util
+von test.test_importlib importiere util als test_util
 
 
 klasse CollectInit:
@@ -34,7 +34,7 @@ klasse LazyLoaderFactoryTests(unittest.TestCase):
 
     def test_validation(self):
         # No exec_module(), no lazy loading.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             util.LazyLoader.factory(object)
 
 
@@ -61,7 +61,7 @@ klasse TestingImporter(abc.MetaPathFinder, abc.Loader):
 klasse LazyLoaderTests(unittest.TestCase):
 
     def test_init(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             # Classes that don't define exec_module() trigger TypeError.
             util.LazyLoader(object)
 
@@ -86,8 +86,8 @@ klasse LazyLoaderTests(unittest.TestCase):
         # End-to-end test to verify the load is in fact lazy.
         importer = TestingImporter()
         assert importer.loaded is Nichts
-        with test_util.uncache(importer.module_name):
-            with test_util.import_state(meta_path=[importer]):
+        mit test_util.uncache(importer.module_name):
+            mit test_util.import_state(meta_path=[importer]):
                 module = importlib.import_module(importer.module_name)
         self.assertIsNichts(importer.loaded)
         # Trigger load.
@@ -96,7 +96,7 @@ klasse LazyLoaderTests(unittest.TestCase):
         self.assertEqual(module, importer.loaded)
 
     def test_attr_unchanged(self):
-        # An attribute only mutated as a side-effect of importiere should not be
+        # An attribute only mutated als a side-effect of importiere should not be
         # changed needlessly.
         module = self.new_module()
         self.assertEqual(TestingImporter.mutated_name, module.__name__)
@@ -133,15 +133,15 @@ klasse LazyLoaderTests(unittest.TestCase):
         self.assertNotHasAttr(module, '__name__')
 
     def test_module_substitution_error(self):
-        with test_util.uncache(TestingImporter.module_name):
+        mit test_util.uncache(TestingImporter.module_name):
             fresh_module = types.ModuleType(TestingImporter.module_name)
             sys.modules[TestingImporter.module_name] = fresh_module
             module = self.new_module()
-            with self.assertRaisesRegex(ValueError, "substituted"):
+            mit self.assertRaisesRegex(ValueError, "substituted"):
                 module.__name__
 
     def test_module_already_in_sys(self):
-        with test_util.uncache(TestingImporter.module_name):
+        mit test_util.uncache(TestingImporter.module_name):
             module = self.new_module()
             sys.modules[TestingImporter.module_name] = module
             # Force the load; just care that no exception is raised.
@@ -149,7 +149,7 @@ klasse LazyLoaderTests(unittest.TestCase):
 
     @threading_helper.requires_working_threading()
     def test_module_load_race(self):
-        with test_util.uncache(TestingImporter.module_name):
+        mit test_util.uncache(TestingImporter.module_name):
             loader = TestingImporter()
             module = self.new_module(loader=loader)
             self.assertEqual(loader.load_count, 0)
@@ -159,7 +159,7 @@ klasse LazyLoaderTests(unittest.TestCase):
                 def run(self):
                     try:
                         super().run()
-                    except Exception as exc:
+                    except Exception als exc:
                         self.exc = exc
 
             def access_module():
@@ -179,11 +179,11 @@ klasse LazyLoaderTests(unittest.TestCase):
             self.assertEqual(loader.load_count, 1)
 
     def test_lazy_self_referential_modules(self):
-        # Directory modules with submodules that reference the parent can attempt to access
-        # the parent module during a load. Verify that this common pattern works with lazy loading.
+        # Directory modules mit submodules that reference the parent can attempt to access
+        # the parent module during a load. Verify that this common pattern works mit lazy loading.
         # json is a good example in the stdlib.
         json_modules = [name fuer name in sys.modules wenn name.startswith('json')]
-        with test_util.uncache(*json_modules):
+        mit test_util.uncache(*json_modules):
             # Standard lazy loading, unwrapped
             spec = util.find_spec('json')
             loader = util.LazyLoader(spec.loader)
@@ -192,12 +192,12 @@ klasse LazyLoaderTests(unittest.TestCase):
             sys.modules['json'] = module
             loader.exec_module(module)
 
-            # Trigger load with attribute lookup, ensure expected behavior
+            # Trigger load mit attribute lookup, ensure expected behavior
             test_load = module.loads('{}')
             self.assertEqual(test_load, {})
 
     def test_lazy_module_type_override(self):
-        # Verify that lazy loading works with a module that modifies
+        # Verify that lazy loading works mit a module that modifies
         # its __class__ to be a custom type.
 
         # Example module von PEP 726
@@ -219,9 +219,9 @@ sys.modules[__name__].__class__ = ImmutableModule
         sys.modules[TestingImporter.module_name] = module
         self.assertIsInstance(module, util._LazyModule)
         self.assertEqual(module.CONSTANT, 3.14)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             module.CONSTANT = 2.71
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del module.CONSTANT
 
 

@@ -5,7 +5,7 @@ von typing importiere Dict, Set
 
 test_tools.skip_if_missing("peg_generator")
 with test_tools.imports_under_tool("peg_generator"):
-    von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+    von pegen.grammar_parser importiere GeneratedParser als GrammarParser
     von pegen.testutil importiere parse_string
     von pegen.first_sets importiere FirstSetCalculator
     von pegen.grammar importiere Grammar

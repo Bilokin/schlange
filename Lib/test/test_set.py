@@ -246,7 +246,7 @@ klasse TestJointOps:
             data = self.thetype(self.s)
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
-            # Set iterators unpickle as list iterators due to the
+            # Set iterators unpickle als list iterators due to the
             # undefined order of set items.
             # self.assertEqual(type(itorg), type(it))
             self.assertIsInstance(it, collections.abc.Iterator)
@@ -432,7 +432,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         fuer v1 in ['Q', (1,)]:
             try:
                 self.s.remove(v1)
-            except KeyError as e:
+            except KeyError als e:
                 v2 = e.args[0]
                 self.assertEqual(v1, v2)
             sonst:
@@ -442,7 +442,7 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         key = self.thetype([3, 4])
         try:
             self.s.remove(key)
-        except KeyError as e:
+        except KeyError als e:
             self.assertWahr(e.args[0] is key,
                          "KeyError should be {0}, not {1}".format(key,
                                                                   e.args[0]))
@@ -651,14 +651,14 @@ klasse TestSet(TestJointOps, unittest.TestCase):
         elem = [1, 2, 3]
 
         def check_unhashable_element():
-            msg = "cannot use 'list' as a set element (unhashable type: 'list')"
+            msg = "cannot use 'list' als a set element (unhashable type: 'list')"
             return self.assertRaisesRegex(TypeError, re.escape(msg))
 
-        with check_unhashable_element():
+        mit check_unhashable_element():
             elem in myset
-        with check_unhashable_element():
+        mit check_unhashable_element():
             myset.add(elem)
-        with check_unhashable_element():
+        mit check_unhashable_element():
             myset.discard(elem)
 
         # Only TypeError exception is overriden,
@@ -668,11 +668,11 @@ klasse TestSet(TestJointOps, unittest.TestCase):
                 raise KeyError('error')
 
         elem2 = HashError()
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             elem2 in myset
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             myset.add(elem2)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             myset.discard(elem2)
 
 
@@ -689,7 +689,7 @@ klasse TestSetSubclass(TestSet):
         u = subclass([1, 2])
         self.assertIs(type(u), subclass)
         self.assertEqual(set(u), {1, 2})
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             subclass(sequence=())
 
         klasse subclass_with_init(set):
@@ -711,7 +711,7 @@ klasse TestSetSubclass(TestSet):
         self.assertEqual(set(u), {1, 2})
         self.assertIsNichts(u.newarg)
         # disallow kwargs in __new__ only (https://bugs.python.org/issue43413#msg402000)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             subclass_with_new([1, 2], newarg=3)
 
 
@@ -801,7 +801,7 @@ klasse TestFrozenSetSubclass(TestFrozenSet):
         u = subclass([1, 2])
         self.assertIs(type(u), subclass)
         self.assertEqual(set(u), {1, 2})
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             subclass(sequence=())
 
         klasse subclass_with_init(frozenset):
@@ -967,9 +967,9 @@ klasse TestBasicOps:
                              "%s != %s" % (self.set, copy))
 
     def test_issue_37219(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             set().difference(123)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             set().difference_update(123)
 
 #------------------------------------------------------------------------------
@@ -1111,7 +1111,7 @@ klasse TestSetOfSets(unittest.TestCase):
         outer = set([inner])
         element = outer.pop()
         self.assertEqual(type(element), frozenset)
-        outer.add(inner)        # Rebuild set of sets with .add method
+        outer.add(inner)        # Rebuild set of sets mit .add method
         outer.remove(inner)
         self.assertEqual(outer, set())   # Verify that remove worked
         outer.discard(inner)    # Absence of KeyError indicates working fine
@@ -1716,7 +1716,7 @@ klasse I:
         return v
 
 klasse Ig:
-    'Sequence using iterator protocol defined with a generator'
+    'Sequence using iterator protocol defined mit a generator'
     def __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
@@ -1897,7 +1897,7 @@ klasse TestOperationsMutating:
             set1, set2 = self.make_sets_of_bad_objects()
             try:
                 function(set1, set2)
-            except RuntimeError as e:
+            except RuntimeError als e:
                 # Just make sure we don't crash here.
                 self.assertIn("changed size during iteration", str(e))
 
@@ -2072,7 +2072,7 @@ def cube(n):
 
 def linegraph(G):
     """Graph, the vertices of which are edges of G,
-    with two vertices being adjacent iff the corresponding
+    mit two vertices being adjacent iff the corresponding
     edges share a vertex."""
     L = {}
     fuer x in G:

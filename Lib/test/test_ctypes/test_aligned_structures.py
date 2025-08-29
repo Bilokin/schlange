@@ -71,7 +71,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
 
     def test_negative_align(self):
         fuer base in (Structure, LittleEndianStructure, BigEndianStructure):
-            with (
+            mit (
                 self.subTest(base=base),
                 self.assertRaisesRegex(
                     ValueError,
@@ -84,7 +84,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
 
     def test_zero_align_no_fields(self):
         fuer base in (Structure, LittleEndianStructure, BigEndianStructure):
-            with self.subTest(base=base):
+            mit self.subTest(base=base):
                 klasse MyStructure(base):
                     _align_ = 0
                     _fields_ = []
@@ -94,7 +94,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
 
     def test_zero_align_with_fields(self):
         fuer base in (Structure, LittleEndianStructure, BigEndianStructure):
-            with self.subTest(base=base):
+            mit self.subTest(base=base):
                 klasse MyStructure(base):
                     _align_ = 0
                     _fields_ = [
@@ -121,7 +121,7 @@ klasse TestAlignedStructures(unittest.TestCase, StructCheckMixin):
                     ("z", c_uint32),
                 ]
             self.check_struct(Main)
-            with self.assertRaises(ValueError) as ctx:
+            mit self.assertRaises(ValueError) als ctx:
                 Main.from_buffer(data)
                 self.assertEqual(
                     ctx.exception.args[0],

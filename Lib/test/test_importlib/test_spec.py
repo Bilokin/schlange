@@ -1,4 +1,4 @@
-von test.test_importlib importiere util as test_util
+von test.test_importlib importiere util als test_util
 
 init = test_util.import_importlib('importlib')
 machinery = test_util.import_importlib('importlib.machinery')
@@ -246,7 +246,7 @@ klasse ModuleSpecMethodsTests:
 
     def test_load(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        mit CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             installed = sys.modules[self.spec.name]
 
@@ -259,7 +259,7 @@ klasse ModuleSpecMethodsTests:
             def exec_module(self, module):
                 sys.modules[module.__name__] = replacement
         self.spec.loader = ReplacingLoader()
-        with CleanImport(self.spec.name):
+        mit CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             installed = sys.modules[self.spec.name]
 
@@ -271,8 +271,8 @@ klasse ModuleSpecMethodsTests:
             def exec_module(self, module):
                 raise RuntimeError
         self.spec.loader = FailedLoader()
-        with CleanImport(self.spec.name):
-            with self.assertRaises(RuntimeError):
+        mit CleanImport(self.spec.name):
+            mit self.assertRaises(RuntimeError):
                 loaded = self.bootstrap._load(self.spec)
             self.assertNotIn(self.spec.name, sys.modules)
 
@@ -282,21 +282,21 @@ klasse ModuleSpecMethodsTests:
                 del sys.modules[module.__name__]
                 raise RuntimeError
         self.spec.loader = FailedLoader()
-        with CleanImport(self.spec.name):
-            with self.assertRaises(RuntimeError):
+        mit CleanImport(self.spec.name):
+            mit self.assertRaises(RuntimeError):
                 loaded = self.bootstrap._load(self.spec)
             self.assertNotIn(self.spec.name, sys.modules)
 
     def test_load_legacy_attributes_immutable(self):
         module = object()
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", ImportWarning)
             klasse ImmutableLoader(TestLoader):
                 def load_module(self, name):
                     sys.modules[name] = module
                     return module
             self.spec.loader = ImmutableLoader()
-            with CleanImport(self.spec.name):
+            mit CleanImport(self.spec.name):
                 loaded = self.bootstrap._load(self.spec)
 
                 self.assertIs(sys.modules[self.spec.name], module)
@@ -305,7 +305,7 @@ klasse ModuleSpecMethodsTests:
 
     def test_reload(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        mit CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             reloaded = self.bootstrap._exec(self.spec, loaded)
             installed = sys.modules[self.spec.name]
@@ -316,7 +316,7 @@ klasse ModuleSpecMethodsTests:
 
     def test_reload_modified(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        mit CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.eggs = 2
             reloaded = self.bootstrap._exec(self.spec, loaded)
@@ -326,7 +326,7 @@ klasse ModuleSpecMethodsTests:
 
     def test_reload_extra_attributes(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        mit CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.available = Falsch
             reloaded = self.bootstrap._exec(self.spec, loaded)
@@ -336,7 +336,7 @@ klasse ModuleSpecMethodsTests:
 
     def test_reload_init_module_attrs(self):
         self.spec.loader = NewLoader()
-        with CleanImport(self.spec.name):
+        mit CleanImport(self.spec.name):
             loaded = self.bootstrap._load(self.spec)
             loaded.__name__ = 'ham'
             del loaded.__loader__

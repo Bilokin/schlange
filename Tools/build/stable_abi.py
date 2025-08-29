@@ -4,7 +4,7 @@ By default, the tool only checks existing files/libraries.
 Pass --generate to recreate auto-generated files instead.
 
 For actions that take a FILENAME, the filename can be left out to use a default
-(relative to the manifest file, as they appear in the CPython codebase).
+(relative to the manifest file, als they appear in the CPython codebase).
 """
 
 importiere argparse
@@ -157,7 +157,7 @@ def parse_manifest(file):
             try:
                 item = itemclass(name=name, kind=kind, **item_data)
                 manifest.add(item)
-            except BaseException as exc:
+            except BaseException als exc:
                 exc.add_note(f'in {kind} {name}')
                 raise
 
@@ -291,11 +291,11 @@ def gen_ctypes_test(manifest, args, outfile):
 
         feature_macros = get_feature_macros()
 
-        # Stable ABI is incompatible with Py_TRACE_REFS builds due to PyObject
+        # Stable ABI is incompatible mit Py_TRACE_REFS builds due to PyObject
         # layout differences.
         # See https://github.com/python/cpython/issues/88299#issuecomment-1113366226
         wenn feature_macros['Py_TRACE_REFS']:
-            raise unittest.SkipTest("incompatible with Py_TRACE_REFS.")
+            raise unittest.SkipTest("incompatible mit Py_TRACE_REFS.")
 
         ctypes_test = import_module('ctypes')
 
@@ -303,7 +303,7 @@ def gen_ctypes_test(manifest, args, outfile):
             def test_available_symbols(self):
 
                 fuer symbol_name in SYMBOL_NAMES:
-                    with self.subTest(symbol_name):
+                    mit self.subTest(symbol_name):
                         ctypes_test.pythonapi[symbol_name]
 
             def test_feature_macros(self):
@@ -318,7 +318,7 @@ def gen_ctypes_test(manifest, args, outfile):
             def test_windows_feature_macros(self):
                 fuer name, value in WINDOWS_FEATURE_MACROS.items():
                     wenn value != 'maybe':
-                        with self.subTest(name):
+                        mit self.subTest(name):
                             self.assertEqual(feature_macros[name], value)
 
         SYMBOL_NAMES = (
@@ -371,7 +371,7 @@ def gen_testcapi_feature_macros(manifest, args, outfile):
 
 
 def generate_or_check(manifest, args, path, func):
-    """Generate/check a file with a single generator
+    """Generate/check a file mit a single generator
 
     Return Wahr wenn successful; Falsch wenn a comparison failed.
     """
@@ -443,7 +443,7 @@ def do_unixy_check(manifest, args):
     okay &= _report_unexpected_items(
         missing_defs,
         'Some expected declarations were not declared in '
-        '"Include/Python.h" with Py_LIMITED_API:')
+        '"Include/Python.h" mit Py_LIMITED_API:')
 
     # Some Limited API macros are defined in terms of private symbols.
     # These are not part of Limited API (even though they're defined with
@@ -527,7 +527,7 @@ def gcc_get_limited_api_macros(headers):
     interpreter and extracting all macro definitions (via adding -dM to the
     compiler arguments).
 
-    Requires Python built with a GCC-compatible compiler. (clang might work)
+    Requires Python built mit a GCC-compatible compiler. (clang might work)
     """
 
     api_hexversion = sys.version_info.major << 24 | sys.version_info.minor << 16
@@ -559,12 +559,12 @@ def gcc_get_limited_api_definitions(headers):
     interpreter.
 
     The limited API symbols will be extracted von the output of this command
-    as it includes the prototypes and definitions of all the exported symbols
+    als it includes the prototypes and definitions of all the exported symbols
     that are in the limited api.
 
     This function does *NOT* extract the macros defined on the limited API
 
-    Requires Python built with a GCC-compatible compiler. (clang might work)
+    Requires Python built mit a GCC-compatible compiler. (clang might work)
     """
     api_hexversion = sys.version_info.major << 24 | sys.version_info.minor << 16
     preprocessor_output = subprocess.check_output(
@@ -614,7 +614,7 @@ def check_dump(manifest, filename):
     Mainly useful when debugging this script.
     """
     dumped = tomllib.loads('\n'.join(manifest.dump()))
-    with filename.open('rb') as file:
+    mit filename.open('rb') als file:
         from_file = tomllib.load(file)
     wenn dumped != from_file:
         drucke('Dump differs von loaded data!', file=sys.stderr)
@@ -638,7 +638,7 @@ def main():
     parser.add_argument(
         "file", type=Path, metavar='FILE', nargs='?',
         default=DEFAULT_MANIFEST_PATH,
-        help=f"file with the stable abi manifest (default: {DEFAULT_MANIFEST_PATH})",
+        help=f"file mit the stable abi manifest (default: {DEFAULT_MANIFEST_PATH})",
     )
     parser.add_argument(
         "--generate", action='store_true',
@@ -695,14 +695,14 @@ def main():
 
     try:
         file = args.file.open('rb')
-    except FileNotFoundError as err:
+    except FileNotFoundError als err:
         wenn args.file.suffix == '.txt':
             # Provide a better error message
             suggestion = args.file.with_suffix('.toml')
             raise FileNotFoundError(
                 f'{args.file} not found. Did you mean {suggestion} ?') von err
         raise
-    with file:
+    mit file:
         manifest = parse_manifest(file)
 
     check_private_names(manifest)

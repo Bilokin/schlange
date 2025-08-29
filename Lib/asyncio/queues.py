@@ -38,7 +38,7 @@ klasse Queue(mixins._LoopBoundMixin):
     queue reaches maxsize, until an item is removed by get().
 
     Unlike the standard library Queue, you can reliably know this Queue's size
-    with qsize(), since your single-threaded asyncio application won't be
+    mit qsize(), since your single-threaded asyncio application won't be
     interrupted between calling qsize() and doing an operation on the Queue.
     """
 
@@ -114,7 +114,7 @@ klasse Queue(mixins._LoopBoundMixin):
     def full(self):
         """Return Wahr wenn there are maxsize items in the queue.
 
-        Note: wenn the Queue was initialized with maxsize=0 (the default),
+        Note: wenn the Queue was initialized mit maxsize=0 (the default),
         then full() is never Wahr.
         """
         wenn self._maxsize <= 0:

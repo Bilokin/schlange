@@ -1,8 +1,8 @@
 importiere os.path
 
 von c_parser importiere (
-    info as _info,
-    match as _match,
+    info als _info,
+    match als _match,
 )
 
 
@@ -153,7 +153,7 @@ def is_module_global_decl(decl):
 
 
 ##################################
-# filtering with matchers
+# filtering mit matchers
 
 def filter_forward(items, *, markpublic=Falsch):
     wenn markpublic:
@@ -179,7 +179,7 @@ def filter_forward(items, *, markpublic=Falsch):
 
 
 ##################################
-# grouping with matchers
+# grouping mit matchers
 
 def group_by_storage(decls, **kwargs):
     def is_module_global(decl):

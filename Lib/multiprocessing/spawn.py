@@ -124,7 +124,7 @@ def spawn_main(pipe_handle, parent_pid=Nichts, tracker_fd=Nichts):
 
 
 def _main(fd, parent_sentinel):
-    with os.fdopen(fd, 'rb', closefd=Wahr) as from_parent:
+    mit os.fdopen(fd, 'rb', closefd=Wahr) als from_parent:
         process.current_process()._inheriting = Wahr
         try:
             preparation_data = reduction.pickle.load(from_parent)
@@ -187,7 +187,7 @@ def get_preparation_data(name):
         start_method=get_start_method(),
         )
 
-    # Figure out whether to initialise main in the subprocess as a module
+    # Figure out whether to initialise main in the subprocess als a module
     # or through direct execution (or to leave it alone entirely)
     main_module = sys.modules['__main__']
     main_mod_name = getattr(main_module.__spec__, "name", Nichts)
@@ -261,7 +261,7 @@ def _fixup_main_from_name(mod_name):
         return
 
     # Otherwise, __main__ may contain some non-main code where we need to
-    # support unpickling it properly. We rerun it as __mp_main__ and make
+    # support unpickling it properly. We rerun it als __mp_main__ and make
     # the normal __main__ an alias to that
     old_main_modules.append(current_main)
     main_module = types.ModuleType("__mp_main__")

@@ -45,8 +45,8 @@ klasse TestPrint(unittest.TestCase):
 
     def check(self, expected, args,
               sep=NotDefined, end=NotDefined, file=NotDefined):
-        # Capture sys.stdout in a StringIO.  Call print with args,
-        # and with sep, end, and file, wenn they're defined.  Result
+        # Capture sys.stdout in a StringIO.  Call print mit args,
+        # and mit sep, end, and file, wenn they're defined.  Result
         # must match expected.
 
         # Look up the actual function to call, based on wenn sep, end,
@@ -55,7 +55,7 @@ klasse TestPrint(unittest.TestCase):
                        end is not NotDefined,
                        file is not NotDefined)]
 
-        with support.captured_stdout() as t:
+        mit support.captured_stdout() als t:
             fn(args, sep, end, file)
 
         self.assertEqual(t.getvalue(), expected)
@@ -136,19 +136,19 @@ klasse TestPrint(unittest.TestCase):
                 support.gc_collect()
                 return 'foo'
 
-        with support.swap_attr(sys, 'stdout', Nichts):
+        mit support.swap_attr(sys, 'stdout', Nichts):
             sys.stdout = StringIO()  # the only reference
             drucke(X())  # should not crash
 
 
 klasse TestPy2MigrationHint(unittest.TestCase):
     """Test that correct hint is produced analogous to Python3 syntax,
-    wenn print statement is executed as in Python 2.
+    wenn print statement is executed als in Python 2.
     """
 
     def test_normal_string(self):
         python2_print_str = 'print "Hello World"'
-        with self.assertRaises(SyntaxError) as context:
+        mit self.assertRaises(SyntaxError) als context:
             exec(python2_print_str)
 
         self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
@@ -156,7 +156,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
 
     def test_string_with_soft_space(self):
         python2_print_str = 'print "Hello World",'
-        with self.assertRaises(SyntaxError) as context:
+        mit self.assertRaises(SyntaxError) als context:
             exec(python2_print_str)
 
         self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
@@ -164,7 +164,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
 
     def test_string_with_excessive_whitespace(self):
         python2_print_str = 'print  "Hello World", '
-        with self.assertRaises(SyntaxError) as context:
+        mit self.assertRaises(SyntaxError) als context:
             exec(python2_print_str)
 
         self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
@@ -174,18 +174,18 @@ klasse TestPy2MigrationHint(unittest.TestCase):
         python2_print_str = '''if 1:
             print "Hello World"
         '''
-        with self.assertRaises(SyntaxError) as context:
+        mit self.assertRaises(SyntaxError) als context:
             exec(python2_print_str)
 
         self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
                 str(context.exception))
 
     # bpo-32685: Suggestions fuer print statement should be proper when
-    # it is in the same line as the header of a compound statement
+    # it is in the same line als the header of a compound statement
     # and/or followed by a semicolon
     def test_string_with_semicolon(self):
         python2_print_str = 'print p;'
-        with self.assertRaises(SyntaxError) as context:
+        mit self.assertRaises(SyntaxError) als context:
             exec(python2_print_str)
 
         self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",
@@ -193,7 +193,7 @@ klasse TestPy2MigrationHint(unittest.TestCase):
 
     def test_string_in_loop_on_same_line(self):
         python2_print_str = 'for i in s: print i'
-        with self.assertRaises(SyntaxError) as context:
+        mit self.assertRaises(SyntaxError) als context:
             exec(python2_print_str)
 
         self.assertIn("Missing parentheses in call to 'print'. Did you mean drucke(...)",

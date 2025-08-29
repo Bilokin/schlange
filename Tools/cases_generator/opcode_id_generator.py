@@ -26,7 +26,7 @@ def generate_opcode_header(
 ) -> Nichts:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, Falsch)
-    with out.header_guard("Py_OPCODE_IDS_H"):
+    mit out.header_guard("Py_OPCODE_IDS_H"):
         out.emit("/* Instruction opcodes fuer compiled code */\n")
 
         def write_define(name: str, op: int) -> Nichts:
@@ -42,7 +42,7 @@ def generate_opcode_header(
 
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the header file with all opcode IDs.",
+    description="Generate the header file mit all opcode IDs.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
@@ -59,5 +59,5 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_opcode_header(args.input, data, outfile)

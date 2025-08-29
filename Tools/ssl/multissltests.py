@@ -11,14 +11,14 @@ The script
       header and library files von ../multissl/$LIB/$VERSION/
   (6) runs Python's test suite
 
-The script must be run with Python's build directory as current working
+The script must be run mit Python's build directory als current working
 directory.
 
 The script uses LD_RUN_PATH, LD_LIBRARY_PATH, CPPFLAGS and LDFLAGS to bend
 search paths fuer header files and shared libraries. It's known to work on
-Linux with GCC and clang.
+Linux mit GCC and clang.
 
-Please keep this script compatible with Python 2.7, and 3.4 to 3.7.
+Please keep this script compatible mit Python 2.7, and 3.4 to 3.7.
 
 (c) 2013-2017 Christian Heimes <christian@python.org>
 """
@@ -75,7 +75,7 @@ MULTISSL_DIR = os.path.abspath(os.path.join(PYTHONROOT, '..', 'multissl'))
 parser = argparse.ArgumentParser(
     prog='multissl',
     description=(
-        "Run CPython tests with multiple cryptography libraries/versions."
+        "Run CPython tests mit multiple cryptography libraries/versions."
     ),
 )
 parser.add_argument(
@@ -274,7 +274,7 @@ klasse AbstractBuilder(object):
                 req = urlopen(url)
                 # KISS, read all, write all
                 data = req.read()
-            except HTTPError as e:
+            except HTTPError als e:
                 log.error(
                     "Download von {} has von failed: {}".format(url, e)
                 )
@@ -284,7 +284,7 @@ klasse AbstractBuilder(object):
         wenn data is Nichts:
             raise ValueError("All download URLs have failed")
         log.info("Storing {}".format(self.src_file))
-        with open(self.src_file, "wb") as f:
+        mit open(self.src_file, "wb") als f:
             f.write(data)
 
     def _unpack_src(self):
@@ -432,7 +432,7 @@ klasse BuildOpenSSL(AbstractBuilder):
         super()._build_src(config_args)
 
     def _post_install_3xx(self):
-        # create ssl/ subdir with example configs
+        # create ssl/ subdir mit example configs
         # Install FIPS module
         self._subprocess_call(
             ["make", "-j1", "install_ssldirs", "install_fips"],
@@ -530,7 +530,7 @@ def main():
                 )
         wenn not os.path.samefile('python', sys.executable):
             parser.error(
-                "Must be executed with ./python von CPython build dir"
+                "Must be executed mit ./python von CPython build dir"
             )
         # check fuer configure and run make
         configure_make()
@@ -557,7 +557,7 @@ def main():
                         tests=args.tests,
                         network=args.network,
                     )
-            except Exception as e:
+            except Exception als e:
                 log.exception("%s failed", build)
                 drucke("{} failed: {}".format(build, e), file=sys.stderr)
                 sys.exit(2)

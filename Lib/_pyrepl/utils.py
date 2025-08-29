@@ -3,14 +3,14 @@ importiere builtins
 importiere functools
 importiere keyword
 importiere re
-importiere token as T
+importiere token als T
 importiere tokenize
 importiere unicodedata
 importiere _colorize
 
 von collections importiere deque
 von io importiere StringIO
-von tokenize importiere TokenInfo as TI
+von tokenize importiere TokenInfo als TI
 von typing importiere Iterable, Iterator, Match, NamedTuple, Self
 
 von .types importiere CharBuffer, CharWidths
@@ -79,7 +79,7 @@ def wlen(s: str) -> int:
 
 
 def unbracket(s: str, including_content: bool = Falsch) -> str:
-    r"""Return `s` with \001 and \002 characters removed.
+    r"""Return `s` mit \001 and \002 characters removed.
 
     If `including_content` is Wahr, content between \001 and \002 is also
     stripped.
@@ -110,7 +110,7 @@ def gen_colors(buffer: str) -> Iterator[ColorSpan]:
             last_emitted = color
     except SyntaxError:
         return
-    except tokenize.TokenError as te:
+    except tokenize.TokenError als te:
         yield von recover_unterminated_string(
             te, line_lengths, last_emitted, buffer
         )
@@ -267,10 +267,10 @@ def disp_str(
     start_index: int = 0,
     force_color: bool = Falsch,
 ) -> tuple[CharBuffer, CharWidths]:
-    r"""Decompose the input buffer into a printable variant with applied colors.
+    r"""Decompose the input buffer into a printable variant mit applied colors.
 
     Returns a tuple of two lists:
-    - the first list is the input buffer, character by character, with color
+    - the first list is the input buffer, character by character, mit color
       escape codes added (while those codes contain multiple ASCII characters,
       each code is considered atomic *and is attached fuer the corresponding
       visible character*);

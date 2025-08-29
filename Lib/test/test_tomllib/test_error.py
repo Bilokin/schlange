@@ -9,42 +9,42 @@ von . importiere tomllib
 
 klasse TestError(unittest.TestCase):
     def test_line_and_col(self):
-        with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
+        mit self.assertRaises(tomllib.TOMLDecodeError) als exc_info:
             tomllib.loads("val=.")
         self.assertEqual(str(exc_info.exception), "Invalid value (at line 1, column 5)")
 
-        with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
+        mit self.assertRaises(tomllib.TOMLDecodeError) als exc_info:
             tomllib.loads(".")
         self.assertEqual(
             str(exc_info.exception), "Invalid statement (at line 1, column 1)"
         )
 
-        with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
+        mit self.assertRaises(tomllib.TOMLDecodeError) als exc_info:
             tomllib.loads("\n\nval=.")
         self.assertEqual(str(exc_info.exception), "Invalid value (at line 3, column 5)")
 
-        with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
+        mit self.assertRaises(tomllib.TOMLDecodeError) als exc_info:
             tomllib.loads("\n\n.")
         self.assertEqual(
             str(exc_info.exception), "Invalid statement (at line 3, column 1)"
         )
 
     def test_missing_value(self):
-        with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
+        mit self.assertRaises(tomllib.TOMLDecodeError) als exc_info:
             tomllib.loads("\n\nfwfw=")
         self.assertEqual(str(exc_info.exception), "Invalid value (at end of document)")
 
     def test_invalid_char_quotes(self):
-        with self.assertRaises(tomllib.TOMLDecodeError) as exc_info:
+        mit self.assertRaises(tomllib.TOMLDecodeError) als exc_info:
             tomllib.loads("v = '\n'")
         self.assertWahr(" '\\n' " in str(exc_info.exception))
 
     def test_type_error(self):
-        with self.assertRaises(TypeError) as exc_info:
+        mit self.assertRaises(TypeError) als exc_info:
             tomllib.loads(b"v = 1")  # type: ignore[arg-type]
         self.assertEqual(str(exc_info.exception), "Expected str object, not 'bytes'")
 
-        with self.assertRaises(TypeError) as exc_info:
+        mit self.assertRaises(TypeError) als exc_info:
             tomllib.loads(Falsch)  # type: ignore[arg-type]
         self.assertEqual(str(exc_info.exception), "Expected str object, not 'bool'")
 
@@ -61,7 +61,7 @@ klasse TestError(unittest.TestCase):
             return []
 
         fuer invalid_parse_float in (dict_returner, list_returner):
-            with self.assertRaises(ValueError) as exc_info:
+            mit self.assertRaises(ValueError) als exc_info:
                 tomllib.loads("f=0.1", parse_float=invalid_parse_float)
             self.assertEqual(
                 str(exc_info.exception), "parse_float must not return dicts or lists"
@@ -79,7 +79,7 @@ klasse TestError(unittest.TestCase):
             ("one", "two", "three", "four"),
             ("one", "two", 3, "four", "five"),
         ]:
-            with self.assertWarns(DeprecationWarning):
+            mit self.assertWarns(DeprecationWarning):
                 e = tomllib.TOMLDecodeError(*args)  # type: ignore[arg-type]
             self.assertEqual(e.args, args)
 

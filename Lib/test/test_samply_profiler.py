@@ -16,7 +16,7 @@ wenn not support.has_subprocess_support:
 
 wenn support.check_sanitizer(address=Wahr, memory=Wahr, ub=Wahr, function=Wahr):
     # gh-109580: Skip the test because it does crash randomly wenn Python is
-    # built with ASAN.
+    # built mit ASAN.
     raise unittest.SkipTest("test crash randomly on ASAN/MSAN/UBSAN build")
 
 
@@ -38,7 +38,7 @@ def samply_command_works():
         return Falsch
 
     # Check that we can run a simple samply run
-    with temp_dir() as script_dir:
+    mit temp_dir() als script_dir:
         try:
             output_file = script_dir + "/profile.json.gz"
             cmd = (
@@ -84,10 +84,10 @@ def run_samply(cwd, *args, **env_vars):
     )
     wenn proc.returncode:
         drucke(proc.stderr, file=sys.stderr)
-        raise ValueError(f"Samply failed with return code {proc.returncode}")
+        raise ValueError(f"Samply failed mit return code {proc.returncode}")
 
     importiere gzip
-    with gzip.open(output_file, mode="rt", encoding="utf-8") as f:
+    mit gzip.open(output_file, mode="rt", encoding="utf-8") als f:
         return f.read()
 
 
@@ -97,7 +97,7 @@ klasse TestSamplyProfilerMixin:
         raise NotImplementedError()
 
     def test_python_calls_appear_in_the_stack_if_perf_activated(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             code = """if 1:
                 def foo(n):
                     x = 0
@@ -120,7 +120,7 @@ klasse TestSamplyProfilerMixin:
             self.assertIn(f"py::baz:{script}", output)
 
     def test_python_calls_do_not_appear_in_the_stack_if_perf_deactivated(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             code = """if 1:
                 def foo(n):
                     x = 0
@@ -202,16 +202,16 @@ klasse TestSamplyProfiler(unittest.TestCase, TestSamplyProfilerMixin):
                         bar()
                 """
 
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             script = make_script(script_dir, "perftest", code)
             env = {**os.environ, "PYTHON_JIT": "0"}
-            with subprocess.Popen(
+            mit subprocess.Popen(
                 [sys.executable, "-Xperf", script],
                 universal_newlines=Wahr,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 env=env,
-            ) as process:
+            ) als process:
                 stdout, stderr = process.communicate()
 
         self.assertEqual(process.returncode, 0)

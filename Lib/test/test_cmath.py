@@ -1,7 +1,7 @@
 von test.support importiere requires_IEEE_754, cpython_only, import_helper
 von test.support.testcase importiere ComplexesAreIdenticalMixin
 von test.test_math importiere parse_testfile, test_file
-importiere test.test_math as test_math
+importiere test.test_math als test_math
 importiere unittest
 importiere cmath, math
 von cmath importiere phase, polar, rect, pi
@@ -140,7 +140,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         self.assertEqual(math.copysign(1., cmath.nanj.real), 1.)
         self.assertEqual(math.copysign(1., cmath.nanj.imag), 1.)
 
-        # Check consistency with reprs.
+        # Check consistency mit reprs.
         self.assertEqual(repr(cmath.inf), "inf")
         self.assertEqual(repr(cmath.infj), "infj")
         self.assertEqual(repr(cmath.nan), "nan")
@@ -150,7 +150,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
         # Test automatic calling of __complex__ and __float__ by cmath
         # functions
 
-        # some random values to use as test values; we avoid values
+        # some random values to use als test values; we avoid values
         # fuer which any of the functions in cmath is undefined
         # (i.e. 0., 1., -1., 1j, -1j) or would cause overflow
         cx_arg = 4.419414439 + 1.497100113j
@@ -269,7 +269,7 @@ klasse CMathTests(ComplexesAreIdenticalMixin, unittest.TestCase):
                 self.rAssertAlmostEqual(float_fn(v), z.real)
                 self.assertEqual(0., z.imag)
 
-        # test two-argument version of log with various bases
+        # test two-argument version of log mit various bases
         fuer base in [0.5, 2., 10.]:
             fuer v in positive:
                 z = cmath.log(v, base)
@@ -544,13 +544,13 @@ klasse IsCloseTests(test_math.IsCloseTests):
     isclose = cmath.isclose
 
     def test_reject_complex_tolerances(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.isclose(1j, 1j, rel_tol=1j)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.isclose(1j, 1j, abs_tol=1j)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             self.isclose(1j, 1j, rel_tol=1j, abs_tol=1j)
 
     def test_complex_values(self):

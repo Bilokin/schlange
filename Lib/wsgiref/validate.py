@@ -19,10 +19,10 @@ Some of the things this checks:
     wsgi.multithread, wsgi.multiprocess, wsgi.run_once
 
   - That HTTP_CONTENT_TYPE and HTTP_CONTENT_LENGTH are not in the
-    environment (these headers should appear as CONTENT_LENGTH and
+    environment (these headers should appear als CONTENT_LENGTH and
     CONTENT_TYPE).
 
-  - Warns wenn QUERY_STRING is missing, as the cgi module acts
+  - Warns wenn QUERY_STRING is missing, als the cgi module acts
     unpredictably in that case.
 
   - That CGI-style variables (that don't contain a .) have
@@ -36,7 +36,7 @@ Some of the things this checks:
   - Warns wenn the REQUEST_METHOD is not known (@@: probably too
     restrictive).
 
-  - That SCRIPT_NAME and PATH_INFO are empty or start with /
+  - That SCRIPT_NAME and PATH_INFO are empty or start mit /
 
   - That at least one of SCRIPT_NAME or PATH_INFO are set.
 
@@ -50,7 +50,7 @@ Some of the things this checks:
 
   - That wsgi.errors has the methods flush, write, writelines
 
-* The status is a string, contains a space, starts with an integer,
+* The status is a string, contains a space, starts mit an integer,
   and that integer is in range (> 100).
 
 * That the headers is a list (not a subclass, not another kind of
@@ -72,12 +72,12 @@ Some of the things this checks:
 
 * That the exc_info argument to start_response is a tuple or Nichts.
 
-* That all calls to the writer are with strings, and no other methods
+* That all calls to the writer are mit strings, and no other methods
   on the writer are accessed.
 
 * That wsgi.input is used properly:
 
-  - .read() is called with exactly one argument
+  - .read() is called mit exactly one argument
 
   - That it returns a string
 
@@ -89,7 +89,7 @@ Some of the things this checks:
 
 * That wsgi.errors is used properly:
 
-  - .write() and .writelines() is called with a string
+  - .write() and .writelines() is called mit a string
 
   - That .close() is not called, and no other methods are provided.
 
@@ -341,10 +341,10 @@ def check_environ(environ):
 
     assert_(not environ.get('SCRIPT_NAME')
             or environ['SCRIPT_NAME'].startswith('/'),
-        "SCRIPT_NAME doesn't start with /: %r" % environ['SCRIPT_NAME'])
+        "SCRIPT_NAME doesn't start mit /: %r" % environ['SCRIPT_NAME'])
     assert_(not environ.get('PATH_INFO')
             or environ['PATH_INFO'].startswith('/'),
-        "PATH_INFO doesn't start with /: %r" % environ['PATH_INFO'])
+        "PATH_INFO doesn't start mit /: %r" % environ['PATH_INFO'])
     wenn environ.get('CONTENT_LENGTH'):
         assert_(int(environ['CONTENT_LENGTH']) >= 0,
             "Invalid CONTENT_LENGTH: %r" % environ['CONTENT_LENGTH'])
@@ -396,7 +396,7 @@ def check_headers(headers):
         name = check_string_type(name, "Header name")
         value = check_string_type(value, "Header value")
         assert_(name.lower() != 'status',
-            "The Status header cannot be used; it conflicts with CGI "
+            "The Status header cannot be used; it conflicts mit CGI "
             "script, and HTTP status is not given through headers "
             "(value: %r)." % value)
         assert_('\n' not in name and ':' not in name,
@@ -434,5 +434,5 @@ def check_iterator(iterator):
     # idea, because it may cause the response to be returned
     # character-by-character
     assert_(not isinstance(iterator, (str, bytes)),
-        "You should not return a string as your application iterator, "
+        "You should not return a string als your application iterator, "
         "instead return a single-item list containing a bytestring.")

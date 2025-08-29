@@ -18,7 +18,7 @@ wenn support.check_cflags_pgo():
 
 test_tools.skip_if_missing("peg_generator")
 with test_tools.imports_under_tool("peg_generator"):
-    von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+    von pegen.grammar_parser importiere GeneratedParser als GrammarParser
     von pegen.testutil importiere (
         parse_string,
         generate_parser_c_extension,
@@ -54,7 +54,7 @@ klasse Tests(unittest.TestCase):
 
         wenn invalid_cases:
             fuer case in invalid_cases:
-                with self.assertRaises(SyntaxError):
+                mit self.assertRaises(SyntaxError):
                     parse.parse_string(case, mode=0)
 
     def verify_ast_generation(self, stmt):
@@ -85,8 +85,8 @@ klasse TestCParser(unittest.TestCase):
         cls._has_run = Wahr
 
         # When running under regtest, a separate tempdir is used
-        # as the current directory and watched fuer left-overs.
-        # Reusing that as the base fuer temporary directories
+        # als the current directory and watched fuer left-overs.
+        # Reusing that als the base fuer temporary directories
         # ensures everything is cleaned up properly and
         # cleans up afterwards wenn not (with warnings).
         cls.tmp_base = os.getcwd()
@@ -98,7 +98,7 @@ klasse TestCParser(unittest.TestCase):
         cls.library_dir = tempfile.mkdtemp(dir=cls.tmp_base)
         cls.addClassCleanup(shutil.rmtree, cls.library_dir)
 
-        with contextlib.ExitStack() as stack:
+        mit contextlib.ExitStack() als stack:
             python_exe = stack.enter_context(support.setup_venv_with_pip_setuptools("venv"))
             sitepackages = subprocess.check_output(
                 [python_exe, "-c", "import sysconfig; drucke(sysconfig.get_path('platlib'))"],
@@ -361,7 +361,7 @@ klasse TestCParser(unittest.TestCase):
         import_as_name_from[alias_ty]: a=NAME 'as' b=NAME { _PyAST_alias(((expr_ty) a)->v.Name.id, ((expr_ty) b)->v.Name.id, EXTRA) }
         """
         test_source = """
-        fuer stmt in ("from a importiere b as c", "from . importiere a as b"):
+        fuer stmt in ("from a importiere b als c", "from . importiere a als b"):
             expected_ast = ast.parse(stmt)
             actual_ast = parse.parse_string(stmt, mode=1)
             self.assertEqual(ast_dump(expected_ast), ast_dump(actual_ast))
@@ -385,7 +385,7 @@ klasse TestCParser(unittest.TestCase):
         pass_stmt[stmt_ty]: a='pass' { _PyAST_Pass(EXTRA) }
         """
         test_source = """
-        stmt = "with (\\n    a as b,\\n    c as d\\n): pass"
+        stmt = "with (\\n    a als b,\\n    c als d\\n): pass"
         the_ast = parse.parse_string(stmt, mode=1)
         self.assertStartsWith(ast_dump(the_ast),
             "Module(body=[With(items=[withitem(context_expr=Name(id='a', ctx=Load()), optional_vars=Name(id='b', ctx=Store())), "
@@ -421,7 +421,7 @@ klasse TestCParser(unittest.TestCase):
         fuer text in ("a b 42 b a", "\u540d \u540d 42 \u540d \u540d"):
             try:
                 parse.parse_string(text, mode=0)
-            except SyntaxError as e:
+            except SyntaxError als e:
                 tb = traceback.format_exc()
             self.assertWahr('File "<string>", line 1' in tb)
             self.assertWahr(f"SyntaxError: invalid syntax" in tb)
@@ -450,7 +450,7 @@ klasse TestCParser(unittest.TestCase):
         """
         # PyTuple_New raises SystemError wenn an invalid argument was passed.
         test_source = """
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             parse.parse_string("a", mode=0)
         """
         self.run_test(grammar_source, test_source)
@@ -503,7 +503,7 @@ klasse TestCParser(unittest.TestCase):
         """
         test_source = """
         self.assertEqual(parse.parse_string("number :", mode=0), Nichts)
-        with self.assertRaises(SyntaxError) as e:
+        mit self.assertRaises(SyntaxError) als e:
             parse.parse_string("a", mode=0)
         self.assertIn("expected ':'", str(e.exception))
         """
@@ -516,7 +516,7 @@ klasse TestCParser(unittest.TestCase):
         test_source = """
         self.assertEqual(parse.parse_string("number :", mode=0), Nichts)
         self.assertEqual(parse.parse_string("number ;", mode=0), Nichts)
-        with self.assertRaises(SyntaxError) as e:
+        mit self.assertRaises(SyntaxError) als e:
             parse.parse_string("a", mode=0)
         self.assertIn("expected (':' | ';')", e.exception.args[0])
         """

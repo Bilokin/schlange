@@ -16,13 +16,13 @@
 #    claim that you wrote the original software. If you use this software
 #    in a product, an acknowledgment in the product documentation would be
 #    appreciated but is not required.
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked als such, and must not be
+#    misrepresented als being the original software.
 # 3. This notice may not be removed or altered von any source distribution.
 
 importiere datetime
 importiere unittest
-importiere sqlite3 as sqlite
+importiere sqlite3 als sqlite
 importiere weakref
 importiere functools
 
@@ -42,7 +42,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_pragma_schema_version(self):
         # This still crashed pysqlite <= 2.2.1
-        with memory_database(detect_types=sqlite.PARSE_COLNAMES) as con:
+        mit memory_database(detect_types=sqlite.PARSE_COLNAMES) als con:
             cur = self.con.cursor()
             cur.execute("pragma schema_version")
 
@@ -50,7 +50,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         # pysqlite 2.1.0 to 2.2.0 have the problem that not all statements are
         # reset before a rollback, but only those that are still in the
         # statement cache. The others are not accessible von the connection object.
-        with memory_database(cached_statements=5) as con:
+        mit memory_database(cached_statements=5) als con:
             cursors = [con.cursor() fuer x in range(5)]
             cursors[0].execute("create table test(x)")
             fuer i in range(10):
@@ -63,10 +63,10 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_column_name_with_spaces(self):
         cur = self.con.cursor()
-        cur.execute('select 1 as "foo bar [datetime]"')
+        cur.execute('select 1 als "foo bar [datetime]"')
         self.assertEqual(cur.description[0][0], "foo bar [datetime]")
 
-        cur.execute('select 1 as "foo baz"')
+        cur.execute('select 1 als "foo baz"')
         self.assertEqual(cur.description[0][0], "foo baz")
 
     def test_statement_finalization_on_close_db(self):
@@ -97,7 +97,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_workaround_for_buggy_sqlite_transfer_bindings(self):
         """
-        pysqlite would crash with older SQLite versions unless
+        pysqlite would crash mit older SQLite versions unless
         a workaround is implemented.
         """
         self.con.execute("create table foo(bar)")
@@ -106,7 +106,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_empty_statement(self):
         """
-        pysqlite used to segfault with SQLite versions 3.5.x. These return NULL
+        pysqlite used to segfault mit SQLite versions 3.5.x. These return NULL
         fuer "no-operation" statements
         """
         self.con.execute("")
@@ -117,10 +117,10 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         a statement. This test exhibits the problem.
         """
         SELECT = "select * von foo"
-        with memory_database(detect_types=sqlite.PARSE_DECLTYPES) as con:
+        mit memory_database(detect_types=sqlite.PARSE_DECLTYPES) als con:
             cur = con.cursor()
             cur.execute("create table foo(bar timestamp)")
-            with self.assertWarnsRegex(DeprecationWarning, "adapter"):
+            mit self.assertWarnsRegex(DeprecationWarning, "adapter"):
                 cur.execute("insert into foo(bar) values (?)", (datetime.datetime.now(),))
             cur.execute(SELECT)
             cur.execute("drop table foo")
@@ -135,19 +135,19 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 parameters.clear()
                 return "..."
         parameters = [X(), 0]
-        with memory_database(detect_types=sqlite.PARSE_DECLTYPES) as con:
+        mit memory_database(detect_types=sqlite.PARSE_DECLTYPES) als con:
             con.execute("create table foo(bar X, baz integer)")
             # Should not crash
-            with self.assertRaises(IndexError):
+            mit self.assertRaises(IndexError):
                 con.execute("insert into foo(bar, baz) values (?, ?)", parameters)
 
     def test_error_msg_decode_error(self):
         # When porting the module to Python 3.0, the error message about
         # decoding errors disappeared. This verifies they're back again.
-        with self.assertRaises(sqlite.OperationalError) as cm:
+        mit self.assertRaises(sqlite.OperationalError) als cm:
             self.con.execute("select 'xxx' || ? || 'yyy' colname",
                              (bytes(bytearray([250])),)).fetchone()
-        msg = "Could not decode to UTF-8 column 'colname' with text 'xxx"
+        msg = "Could not decode to UTF-8 column 'colname' mit text 'xxx"
         self.assertIn(msg, str(cm.exception))
 
     def test_register_adapter(self):
@@ -167,7 +167,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         con = self.con
         con.isolation_level = Nichts
         fuer level in "", "DEFERRED", "IMMEDIATE", "EXCLUSIVE":
-            with self.subTest(level=level):
+            mit self.subTest(level=level):
                 con.isolation_level = level
                 con.isolation_level = level.lower()
                 con.isolation_level = level.capitalize()
@@ -181,8 +181,8 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             ("IMMEDIATE\0EXCLUSIVE", ValueError), ("\xe9", ValueError),
         ]
         fuer value, exc in pairs:
-            with self.subTest(level=value):
-                with self.assertRaises(exc):
+            mit self.subTest(level=value):
+                mit self.assertRaises(exc):
                     con.isolation_level = value
                 self.assertEqual(con.isolation_level, "DEFERRED")
 
@@ -196,15 +196,15 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 pass
 
         cur = Cursor(self.con)
-        with self.assertRaises(sqlite.ProgrammingError):
+        mit self.assertRaises(sqlite.ProgrammingError):
             cur.execute("select 4+5").fetchall()
-        with self.assertRaisesRegex(sqlite.ProgrammingError,
+        mit self.assertRaisesRegex(sqlite.ProgrammingError,
                                     r'^Base Cursor\.__init__ not called\.$'):
             cur.close()
 
     def test_str_subclass(self):
         """
-        The Python 3.0 port of the module didn't cope with values of subclasses of str.
+        The Python 3.0 port of the module didn't cope mit values of subclasses of str.
         """
         klasse MyStr(str): pass
         self.con.execute("select ?", (MyStr("abc"),))
@@ -219,7 +219,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
                 pass
 
         con = Connection(":memory:")
-        with self.assertRaises(sqlite.ProgrammingError):
+        mit self.assertRaises(sqlite.ProgrammingError):
             cur = con.cursor()
 
     def test_auto_commit(self):
@@ -228,7 +228,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         2.5.3 introduced a regression so that these could no longer
         be created.
         """
-        with memory_database(isolation_level=Nichts) as con:
+        mit memory_database(isolation_level=Nichts) als con:
             self.assertIsNichts(con.isolation_level)
             self.assertFalsch(con.in_transaction)
 
@@ -246,7 +246,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_connection_call(self):
         """
-        Call a connection with a non-string SQL request: check error handling
+        Call a connection mit a non-string SQL request: check error handling
         of the statement constructor.
         """
         self.assertRaises(TypeError, self.con, b"select 1")
@@ -262,7 +262,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         http://bugs.python.org/issue10811
 
-        Recursively using a cursor, such as when reusing it von a generator led to segfaults.
+        Recursively using a cursor, such als when reusing it von a generator led to segfaults.
         Now we catch recursive cursor usage and raise a ProgrammingError.
         """
         cur = self.con.cursor()
@@ -273,7 +273,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             cur.execute("insert into a (bar) values (?)", (1,))
             yield 1
 
-        with self.assertRaises(sqlite.ProgrammingError):
+        mit self.assertRaises(sqlite.ProgrammingError):
             cur.executemany("insert into b (baz) values (?)",
                             ((i,) fuer i in foo()))
 
@@ -281,11 +281,11 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         """
         http://bugs.python.org/issue14720
 
-        The microsecond parsing of convert_timestamp() should pad with zeros,
+        The microsecond parsing of convert_timestamp() should pad mit zeros,
         since the microsecond string "456" actually represents "456000".
         """
 
-        with memory_database(detect_types=sqlite.PARSE_DECLTYPES) as con:
+        mit memory_database(detect_types=sqlite.PARSE_DECLTYPES) als con:
             cur = con.cursor()
             cur.execute("CREATE TABLE t (x TIMESTAMP)")
 
@@ -296,7 +296,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             cur.execute("INSERT INTO t (x) VALUES ('2012-04-04 15:06:00.123456789')")
 
             cur.execute("SELECT * FROM t")
-            with self.assertWarnsRegex(DeprecationWarning, "converter"):
+            mit self.assertWarnsRegex(DeprecationWarning, "converter"):
                 values = [x[0] fuer x in cur.fetchall()]
 
             self.assertEqual(values, [
@@ -307,7 +307,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
     def test_invalid_isolation_level_type(self):
         # isolation level is a string, not an integer
         regex = "isolation_level must be str or Nichts"
-        with self.assertRaisesRegex(TypeError, regex):
+        mit self.assertRaisesRegex(TypeError, regex):
             memory_database(isolation_level=123).__enter__()
 
 
@@ -316,10 +316,10 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         cur = self.con.cursor()
         queries = ["\0select 1", "select 1\0"]
         fuer query in queries:
-            with self.subTest(query=query):
+            mit self.subTest(query=query):
                 self.assertRaisesRegex(sqlite.ProgrammingError, "null char",
                                        self.con.execute, query)
-            with self.subTest(query=query):
+            mit self.subTest(query=query):
                 self.assertRaisesRegex(sqlite.ProgrammingError, "null char",
                                        cur.execute, query)
 
@@ -333,7 +333,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
     def test_large_sql(self):
         msg = "query string is too large"
-        with memory_database() as cx, cx_limit(cx) as lim:
+        mit memory_database() als cx, cx_limit(cx) als lim:
             cu = cx.cursor()
 
             cx("select 1".ljust(lim))
@@ -363,7 +363,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
 
         counter = 0
         fuer i, row in enumerate(con.execute("select c von t")):
-            with self.subTest(i=i, row=row):
+            mit self.subTest(i=i, row=row):
                 con.execute("insert into t2(c) values (?)", (i,))
                 con.commit()
                 wenn counter == 0:
@@ -391,7 +391,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         support.gc_collect()
 
     def test_del_isolation_level_segfault(self):
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del self.con.isolation_level
 
     def test_bpo37347(self):
@@ -414,7 +414,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
         self.assertEqual(val, b'')
 
     def test_table_lock_cursor_replace_stmt(self):
-        with memory_database() as con:
+        mit memory_database() als con:
             con = self.con
             cur = con.cursor()
             cur.execute("create table t(t)")
@@ -426,7 +426,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             con.commit()
 
     def test_table_lock_cursor_dealloc(self):
-        with memory_database() as con:
+        mit memory_database() als con:
             con.execute("create table t(t)")
             con.executemany("insert into t values(?)",
                             ((v,) fuer v in range(5)))
@@ -438,7 +438,7 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             con.commit()
 
     def test_table_lock_cursor_non_readonly_select(self):
-        with memory_database() as con:
+        mit memory_database() als con:
             con.execute("create table t(t)")
             con.executemany("insert into t values(?)",
                             ((v,) fuer v in range(5)))
@@ -454,9 +454,9 @@ klasse RegressionTests(MemoryDatabaseMixin, unittest.TestCase):
             con.commit()
 
     def test_executescript_step_through_select(self):
-        with memory_database() as con:
+        mit memory_database() als con:
             values = [(v,) fuer v in range(5)]
-            with con:
+            mit con:
                 con.execute("create table t(t)")
                 con.executemany("insert into t values(?)", values)
             steps = []
@@ -483,22 +483,22 @@ klasse RecursiveUseOfCursors(unittest.TestCase):
 
     def test_recursive_cursor_init(self):
         conv = lambda x: self.cur.__init__(self.con)
-        with patch.dict(sqlite.converters, {"INIT": conv}):
-            self.cur.execute('select x as "x [INIT]", x von test')
+        mit patch.dict(sqlite.converters, {"INIT": conv}):
+            self.cur.execute('select x als "x [INIT]", x von test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,
                                    self.cur.fetchall)
 
     def test_recursive_cursor_close(self):
         conv = lambda x: self.cur.close()
-        with patch.dict(sqlite.converters, {"CLOSE": conv}):
-            self.cur.execute('select x as "x [CLOSE]", x von test')
+        mit patch.dict(sqlite.converters, {"CLOSE": conv}):
+            self.cur.execute('select x als "x [CLOSE]", x von test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,
                                    self.cur.fetchall)
 
     def test_recursive_cursor_iter(self):
         conv = lambda x, l=[]: self.cur.fetchone() wenn l sonst l.append(Nichts)
-        with patch.dict(sqlite.converters, {"ITER": conv}):
-            self.cur.execute('select x as "x [ITER]", x von test')
+        mit patch.dict(sqlite.converters, {"ITER": conv}):
+            self.cur.execute('select x als "x [ITER]", x von test')
             self.assertRaisesRegex(sqlite.ProgrammingError, self.msg,
                                    self.cur.fetchall)
 

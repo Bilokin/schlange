@@ -16,5 +16,5 @@ importiere json.tool
 wenn __name__ == '__main__':
     try:
         json.tool.main()
-    except BrokenPipeError as exc:
+    except BrokenPipeError als exc:
         raise SystemExit(exc.errno)

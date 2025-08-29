@@ -51,7 +51,7 @@ klasse Test_MultibyteCodec(unittest.TestCase):
                           b'apple\x92ham\x93spam', 'test.cjktest')
 
     def test_errorcallback_custom_ignore(self):
-        # Issue #23215: MemoryError with custom error handlers and multibyte codecs
+        # Issue #23215: MemoryError mit custom error handlers and multibyte codecs
         data = 100 * "\udc00"
         codecs.register_error("test.ignore", codecs.ignore_errors)
         fuer enc in ALL_CJKENCODINGS:
@@ -124,7 +124,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         self.assertEqual(encoder.encode('', Wahr), b'\xa9\xdc')
 
     def test_state_methods_with_buffer_state(self):
-        # euc_jis_2004 stores state as a buffer of pending bytes
+        # euc_jis_2004 stores state als a buffer of pending bytes
         encoder = codecs.getincrementalencoder('euc_jis_2004')()
 
         initial_state = encoder.getstate()
@@ -160,7 +160,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
         # are expected to be the same across all builds of Python,
         # regardless of x32/64 bit, endianness and compiler.
 
-        # euc_jis_2004 stores state as a buffer of pending bytes
+        # euc_jis_2004 stores state als a buffer of pending bytes
         buffer_state_encoder = codecs.getincrementalencoder('euc_jis_2004')()
         self.assertEqual(buffer_state_encoder.getstate(), 0)
         buffer_state_encoder.encode('\u00e6')
@@ -231,7 +231,7 @@ klasse Test_IncrementalEncoder(unittest.TestCase):
 klasse Test_IncrementalDecoder(unittest.TestCase):
 
     def test_dbcs(self):
-        # cp949 decoder is simple with only 1 or 2 bytes sequences.
+        # cp949 decoder is simple mit only 1 or 2 bytes sequences.
         decoder = codecs.getincrementaldecoder('cp949')()
         self.assertEqual(decoder.decode(b'\xc6\xc4\xc0\xcc\xbd'),
                          '\ud30c\uc774')
@@ -314,7 +314,7 @@ klasse Test_StreamReader(unittest.TestCase):
                 f.write(b'\xa1')
             finally:
                 f.close()
-            with self.assertWarns(DeprecationWarning):
+            mit self.assertWarns(DeprecationWarning):
                 f = codecs.open(TESTFN, encoding='cp949')
             try:
                 self.assertRaises(UnicodeDecodeError, f.read, 2)

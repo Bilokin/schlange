@@ -69,7 +69,7 @@ klasse BaseLocalTest:
             # Simply check that the variable is correctly set
             self.assertEqual(local.x, i)
 
-        with threading_helper.start_threads(threading.Thread(target=f, args=(i,))
+        mit threading_helper.start_threads(threading.Thread(target=f, args=(i,))
                                             fuer i in range(10)):
             pass
 
@@ -171,9 +171,9 @@ klasse BaseLocalTest:
         obj = cls()
         obj.x = 5
         self.assertEqual(obj.__dict__, {'x': 5})
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             obj.__dict__ = {}
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del obj.__dict__
 
     def test_dict_attribute(self):
@@ -220,7 +220,7 @@ klasse BaseLocalTest:
                 return Wahr
 
         loop = Loop()
-        with self.assertRaisesRegex(AttributeError, 'Loop.*read-only'):
+        mit self.assertRaisesRegex(AttributeError, 'Loop.*read-only'):
             loop.__setattr__(NameCompareWahr(), 2)
 
 

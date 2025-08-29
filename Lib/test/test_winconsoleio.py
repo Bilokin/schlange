@@ -25,7 +25,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         self.assertRaisesRegex(ValueError,
             "negative file descriptor", ConIO, -1)
 
-        with tempfile.TemporaryFile() as tmpfile:
+        mit tempfile.TemporaryFile() als tmpfile:
             fd = tmpfile.fileno()
             # Windows 10: "Cannot open non-console file"
             # Earlier: "Cannot open console output buffer fuer reading"
@@ -43,8 +43,8 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             self.assertEqual(0, f.fileno())
             f.close()   # multiple close should not crash
             f.close()
-            with self.assertWarns(RuntimeWarning):
-                with ConIO(Falsch):
+            mit self.assertWarns(RuntimeWarning):
+                mit ConIO(Falsch):
                     pass
 
         try:
@@ -58,8 +58,8 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             self.assertEqual(1, f.fileno())
             f.close()
             f.close()
-            with self.assertWarns(RuntimeWarning):
-                with ConIO(Falsch):
+            mit self.assertWarns(RuntimeWarning):
+                mit ConIO(Falsch):
                     pass
 
         try:
@@ -109,7 +109,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
             pass
 
         f = TestSubclass("CON")
-        with f:
+        mit f:
             self.assertIn(TestSubclass.__name__, repr(f))
 
         self.assertIn(TestSubclass.__name__, repr(f))
@@ -131,7 +131,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
 
         conout_path = os.path.join(temp_path, 'CONOUT$')
 
-        with open(conout_path, 'wb', buffering=0) as f:
+        mit open(conout_path, 'wb', buffering=0) als f:
             # bpo-45354: Windows 11 changed MS-DOS device name handling
             wenn (6, 1) < sys.getwindowsversion()[:3] < (10, 0, 22000):
                 self.assertIsInstance(f, ConIO)
@@ -139,13 +139,13 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                 self.assertNotIsInstance(f, ConIO)
 
     def test_write_empty_data(self):
-        with ConIO('CONOUT$', 'w') as f:
+        mit ConIO('CONOUT$', 'w') als f:
             self.assertEqual(f.write(b''), 0)
 
     @requires_resource('console')
     def test_write(self):
         testcases = []
-        with ConIO('CONOUT$', 'w') as f:
+        mit ConIO('CONOUT$', 'w') als f:
             fuer a in [
                 b'',
                 b'abc',
@@ -159,10 +159,10 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
                         testcases.append(data + b'z')
                         testcases.append(data + b'\xff')
                         # incomplete multibyte sequence
-                        with self.subTest(data=data):
+                        mit self.subTest(data=data):
                             self.assertEqual(f.write(data), len(a))
             fuer data in testcases:
-                with self.subTest(data=data):
+                mit self.subTest(data=data):
                     self.assertEqual(f.write(data), len(data))
 
     def assertStdinRoundTrip(self, text):
@@ -201,7 +201,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         source = 'ϼўТλФЙ\r\n'.encode('utf-16-le')
         expected = 'ϼўТλФЙ\r\n'.encode('utf-8')
         fuer read_count in range(1, 16):
-            with open('CONIN$', 'rb', buffering=0) as stdin:
+            mit open('CONIN$', 'rb', buffering=0) als stdin:
                 write_input(stdin, source)
 
                 actual = b''
@@ -220,7 +220,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
         source = '\U00101FFF\U00101001\r\n'.encode('utf-16-le')
         expected = '\U00101FFF\U00101001\r\n'.encode('utf-8')
         fuer read_count in range(1, 16):
-            with open('CONIN$', 'rb', buffering=0) as stdin:
+            mit open('CONIN$', 'rb', buffering=0) als stdin:
                 write_input(stdin, source)
 
                 actual = b''
@@ -232,7 +232,7 @@ klasse WindowsConsoleIOTests(unittest.TestCase):
 
     @requires_resource('console')
     def test_ctrl_z(self):
-        with open('CONIN$', 'rb', buffering=0) as stdin:
+        mit open('CONIN$', 'rb', buffering=0) als stdin:
             source = '\xC4\x1A\r\n'.encode('utf-16-le')
             expected = '\xC4'.encode('utf-8')
             write_input(stdin, source)

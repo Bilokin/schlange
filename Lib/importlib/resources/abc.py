@@ -62,7 +62,7 @@ klasse TraversalError(Exception):
 @runtime_checkable
 klasse Traversable(Protocol):
     """
-    An object with a subset of pathlib.Path methods suitable for
+    An object mit a subset of pathlib.Path methods suitable for
     traversing directories and opening files.
 
     Any exceptions that occur when accessing the backing resource
@@ -77,16 +77,16 @@ klasse Traversable(Protocol):
 
     def read_bytes(self) -> bytes:
         """
-        Read contents of self as bytes
+        Read contents of self als bytes
         """
-        with self.open('rb') as strm:
+        mit self.open('rb') als strm:
             return strm.read()
 
     def read_text(self, encoding: Optional[str] = Nichts) -> str:
         """
-        Read contents of self as text
+        Read contents of self als text
         """
-        with self.open(encoding=encoding) as strm:
+        mit self.open(encoding=encoding) als strm:
             return strm.read()
 
     @abc.abstractmethod
@@ -103,7 +103,7 @@ klasse Traversable(Protocol):
 
     def joinpath(self, *descendants: StrPath) -> "Traversable":
         """
-        Return Traversable resolved with any descendants applied.
+        Return Traversable resolved mit any descendants applied.
 
         Each descendant should be a path segment relative to self
         and each may contain multiple levels separated by
@@ -135,10 +135,10 @@ klasse Traversable(Protocol):
     @abc.abstractmethod
     def open(self, mode='r', *args, **kwargs):
         """
-        mode may be 'r' or 'rb' to open as text or binary. Return a handle
-        suitable fuer reading (same as pathlib.Path.open).
+        mode may be 'r' or 'rb' to open als text or binary. Return a handle
+        suitable fuer reading (same als pathlib.Path.open).
 
-        When opening as text, accepts encoding parameters such as those
+        When opening als text, accepts encoding parameters such als those
         accepted by io.TextIOWrapper.
         """
 

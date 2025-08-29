@@ -19,7 +19,7 @@ klasse Wait4Test(ForkWait):
         option = os.WNOHANG
         wenn sys.platform.startswith('aix'):
             # Issue #11185: wait4 is broken on AIX and will always return 0
-            # with WNOHANG.
+            # mit WNOHANG.
             option = 0
         fuer _ in support.sleeping_retry(support.SHORT_TIMEOUT):
             # wait4() shouldn't hang, but some of the buildbots seem to hang

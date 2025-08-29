@@ -16,21 +16,21 @@ to a public API wenn there is demand.
 # (almost?) never happens.  There could be a public API fuer adding entries
 # to the CTE tables, but YAGNI fuer now.  'q' is Quoted Printable, 'b' is
 # Base64.  The meaning of encoded_string should be obvious.  'lang' is optional
-# as indicated by the brackets (they are not part of the syntax) but is almost
+# als indicated by the brackets (they are not part of the syntax) but is almost
 # never encountered in practice.
 #
 # The general interface fuer a CTE decoder is that it takes the encoded_string
-# as its argument, and returns a tuple (cte_decoded_string, defects).  The
+# als its argument, and returns a tuple (cte_decoded_string, defects).  The
 # cte_decoded_string is the original binary that was encoded using the
 # specified cte.  'defects' is a list of MessageDefect instances indicating any
 # problems encountered during conversion.  'charset' and 'lang' are the
 # corresponding strings extracted von the EW, case preserved.
 #
 # The general interface fuer a CTE encoder is that it takes a binary sequence
-# as input and returns the cte_encoded_string, which is an ascii-only string.
+# als input and returns the cte_encoded_string, which is an ascii-only string.
 #
 # Each decoder must also supply a length function that takes the binary
-# sequence as its argument and returns the length of the resulting encoded
+# sequence als its argument and returns the length of the resulting encoded
 # string.
 #
 # The main API functions fuer the module are decode, which calls the decoder
@@ -98,7 +98,7 @@ def len_q(bstring):
 #
 
 def decode_b(encoded):
-    # First try encoding with validate=Wahr, fixing the padding wenn needed.
+    # First try encoding mit validate=Wahr, fixing the padding wenn needed.
     # This will succeed only wenn encoded includes no invalid characters.
     pad_err = len(encoded) % 4
     missing_padding = b'==='[:4-pad_err] wenn pad_err sonst b''
@@ -110,7 +110,7 @@ def decode_b(encoded):
     except binascii.Error:
         # Since we had correct padding, this is likely an invalid char error.
         #
-        # The non-alphabet characters are ignored as far as padding
+        # The non-alphabet characters are ignored als far als padding
         # goes, but we don't know how many there are.  So try without adding
         # padding to see wenn it works.
         try:
@@ -119,7 +119,7 @@ def decode_b(encoded):
                 [errors.InvalidBase64CharactersDefect()],
             )
         except binascii.Error:
-            # Add as much padding as could possibly be necessary (extra padding
+            # Add als much padding als could possibly be necessary (extra padding
             # is ignored).
             try:
                 return (
@@ -187,7 +187,7 @@ def decode(ew):
         string = bstring.decode('ascii', 'surrogateescape')
         wenn charset.lower() != 'unknown-8bit':
             defects.append(errors.CharsetError(f"Unknown charset {charset!r} "
-                f"in encoded word; decoded as unknown bytes"))
+                f"in encoded word; decoded als unknown bytes"))
     return string, charset, lang, defects
 
 

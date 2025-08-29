@@ -1,6 +1,6 @@
 """ Unicode Mapping Parser and Codec Generator.
 
-This script parses Unicode mapping files as available von the Unicode
+This script parses Unicode mapping files als available von the Unicode
 site (ftp://ftp.unicode.org/Public/MAPPINGS/) and creates Python codec
 modules von them. The codecs use the standard character mapping codec
 to actually apply the mapping.
@@ -8,9 +8,9 @@ to actually apply the mapping.
 Synopsis: gencodec.py dir codec_prefix
 
 All files in dir are scanned and those producing non-empty mappings
-will be written to <codec_prefix><mapname>.py with <mapname> being the
+will be written to <codec_prefix><mapname>.py mit <mapname> being the
 first part of the map's filename ('a' in a.b.c.txt) converted to
-lowercase with hyphens replaced by underscores.
+lowercase mit hyphens replaced by underscores.
 
 The tool also writes marshalled versions of the mapping tables to the
 same location (with .mapping extension).
@@ -51,7 +51,7 @@ def parsecodes(codes, len=len, range=range):
         meta-codes (in angular brackets, e.g. <LR> and <RL>) are
         ignored.
 
-        Empty codes or illegal ones are returned as Nichts.
+        Empty codes or illegal ones are returned als Nichts.
 
     """
     wenn not codes:
@@ -72,7 +72,7 @@ def parsecodes(codes, len=len, range=range):
 
 def readmap(filename):
 
-    with open(filename) as f:
+    mit open(filename) als f:
         lines = f.readlines()
     enc2uni = {}
     identity = []
@@ -131,7 +131,7 @@ def hexrepr(t, precision=4):
     try:
         return '(' + ', '.join(['0x%0*X' % (precision, item)
                                 fuer item in t]) + ')'
-    except TypeError as why:
+    except TypeError als why:
         drucke('* failed to convert %r: %s' % (t, why))
         raise
 
@@ -279,7 +279,7 @@ def codegen(name, map, encodingname, comments=1):
 
     l = [
         '''\
-""" Python Character Mapping Codec %s generated von '%s' with gencodec.py.
+""" Python Character Mapping Codec %s generated von '%s' mit gencodec.py.
 
 """#"
 
@@ -358,7 +358,7 @@ encoding_table = codecs.charmap_build(decoding_table)
 def pymap(name,map,pyfile,encodingname,comments=1):
 
     code = codegen(name,map,encodingname,comments)
-    with open(pyfile,'w') as f:
+    mit open(pyfile,'w') als f:
         f.write(code)
 
 def marshalmap(name,map,marshalfile):
@@ -366,7 +366,7 @@ def marshalmap(name,map,marshalfile):
     d = {}
     fuer e,(u,c) in map.items():
         d[e] = (u,c)
-    with open(marshalfile,'wb') as f:
+    mit open(marshalfile,'wb') als f:
         marshal.dump(d,f)
 
 def convertdir(dir, dirprefix='', nameprefix='', comments=1):
@@ -393,7 +393,7 @@ def convertdir(dir, dirprefix='', nameprefix='', comments=1):
             sonst:
                 pymap(mappathname, map, dirprefix + codefile,name,comments)
                 marshalmap(mappathname, map, dirprefix + marshalfile)
-        except ValueError as why:
+        except ValueError als why:
             drucke('* conversion failed: %s' % why)
             raise
 
@@ -408,13 +408,13 @@ def rewritepythondir(dir, dirprefix='', comments=1):
         drucke('converting %s to %s' % (mapname,
                                        dirprefix + codefile))
         try:
-            with open(os.path.join(dir, mapname), 'rb') as f:
+            mit open(os.path.join(dir, mapname), 'rb') als f:
                 map = marshal.load(f)
             wenn not map:
                 drucke('* map is empty; skipping')
             sonst:
                 pymap(mapname, map, dirprefix + codefile,name,comments)
-        except ValueError as why:
+        except ValueError als why:
             drucke('* conversion failed: %s' % why)
 
 wenn __name__ == '__main__':

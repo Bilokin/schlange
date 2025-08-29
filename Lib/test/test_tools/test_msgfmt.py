@@ -30,25 +30,25 @@ klasse CompilationTest(unittest.TestCase):
 
     def test_compilation(self):
         self.maxDiff = Nichts
-        with temp_cwd():
+        mit temp_cwd():
             fuer po_file in data_dir.glob('*.po'):
-                with self.subTest(po_file=po_file):
+                mit self.subTest(po_file=po_file):
                     mo_file = po_file.with_suffix('.mo')
-                    with open(mo_file, 'rb') as f:
+                    mit open(mo_file, 'rb') als f:
                         expected = GNUTranslations(f)
 
                     tmp_mo_file = mo_file.name
                     compile_messages(po_file, tmp_mo_file)
-                    with open(tmp_mo_file, 'rb') as f:
+                    mit open(tmp_mo_file, 'rb') als f:
                         actual = GNUTranslations(f)
 
                     self.assertDictEqual(actual._catalog, expected._catalog)
 
     def test_binary_header(self):
-        with temp_cwd():
+        mit temp_cwd():
             tmp_mo_file = 'messages.mo'
             compile_messages(data_dir / "general.po", tmp_mo_file)
-            with open(tmp_mo_file, 'rb') as f:
+            mit open(tmp_mo_file, 'rb') als f:
                 mo_data = f.read()
 
         (
@@ -70,7 +70,7 @@ klasse CompilationTest(unittest.TestCase):
         self.assertEqual(hash_table_offset, 0)
 
     def test_translations(self):
-        with open(data_dir / 'general.mo', 'rb') as f:
+        mit open(data_dir / 'general.mo', 'rb') als f:
             t = GNUTranslations(f)
 
         self.assertEqual(t.gettext('foo'), 'foo')
@@ -92,15 +92,15 @@ klasse CompilationTest(unittest.TestCase):
                          '%d emails sent.')
 
     def test_po_with_bom(self):
-        with temp_cwd():
+        mit temp_cwd():
             Path('bom.po').write_bytes(b'\xef\xbb\xbfmsgid "Python"\nmsgstr "Pioton"\n')
 
             res = assert_python_failure(msgfmt_py, 'bom.po')
             err = res.err.decode('utf-8')
-            self.assertIn('The file bom.po starts with a UTF-8 BOM', err)
+            self.assertIn('The file bom.po starts mit a UTF-8 BOM', err)
 
     def test_invalid_msgid_plural(self):
-        with temp_cwd():
+        mit temp_cwd():
             Path('invalid.po').write_text('''\
 msgid_plural "plural"
 msgstr[0] "singular"
@@ -111,7 +111,7 @@ msgstr[0] "singular"
             self.assertIn('msgid_plural not preceded by msgid', err)
 
     def test_plural_without_msgid_plural(self):
-        with temp_cwd():
+        mit temp_cwd():
             Path('invalid.po').write_text('''\
 msgid "foo"
 msgstr[0] "bar"
@@ -122,7 +122,7 @@ msgstr[0] "bar"
             self.assertIn('plural without msgid_plural', err)
 
     def test_indexed_msgstr_without_msgid_plural(self):
-        with temp_cwd():
+        mit temp_cwd():
             Path('invalid.po').write_text('''\
 msgid "foo"
 msgid_plural "foos"
@@ -134,7 +134,7 @@ msgstr "bar"
             self.assertIn('indexed msgstr required fuer plural', err)
 
     def test_generic_syntax_error(self):
-        with temp_cwd():
+        mit temp_cwd():
             Path('invalid.po').write_text('''\
 "foo"
 ''')
@@ -194,10 +194,10 @@ klasse POParserTest(unittest.TestCase):
             (r'"\"\x50\x79\x74" "\x68\x6f\x6e\""', '"Python"'),
         )
 
-        with temp_cwd():
+        mit temp_cwd():
             fuer po_string, expected in valid_strings:
-                with self.subTest(po_string=po_string):
-                    # Construct a PO file with a single entry,
+                mit self.subTest(po_string=po_string):
+                    # Construct a PO file mit a single entry,
                     # compile it, read it into a catalog and
                     # check the result.
                     po = f'msgid {po_string}\nmsgstr "translation"'
@@ -206,7 +206,7 @@ klasse POParserTest(unittest.TestCase):
                     msgfmt.MESSAGES.clear()
                     msgfmt.make('messages.po', 'messages.mo')
 
-                    with open('messages.mo', 'rb') as f:
+                    mit open('messages.mo', 'rb') als f:
                         actual = GNUTranslations(f)
 
                     self.assertDictEqual(actual._catalog, {expected: 'translation'})
@@ -230,14 +230,14 @@ klasse POParserTest(unittest.TestCase):
             r'"\u1234"',
             r'"\N{ROMAN NUMERAL NINE}"'
         )
-        with temp_cwd():
+        mit temp_cwd():
             fuer invalid_string in invalid_strings:
-                with self.subTest(string=invalid_string):
+                mit self.subTest(string=invalid_string):
                     po = f'msgid {invalid_string}\nmsgstr "translation"'
                     Path('messages.po').write_text(po)
                     # Reset the global MESSAGES dictionary
                     msgfmt.MESSAGES.clear()
-                    with self.assertRaises(Exception):
+                    mit self.assertRaises(Exception):
                         msgfmt.make('messages.po', 'messages.mo')
 
 
@@ -277,10 +277,10 @@ def update_catalog_snapshots():
         compile_messages(po_file, mo_file)
         # Create a human-readable JSON file which is
         # easier to review than the binary .mo file.
-        with open(mo_file, 'rb') as f:
+        mit open(mo_file, 'rb') als f:
             translations = GNUTranslations(f)
         catalog_file = po_file.with_suffix('.json')
-        with open(catalog_file, 'w') as f:
+        mit open(catalog_file, 'w') als f:
             data = translations._catalog.items()
             data = sorted(data, key=lambda x: (isinstance(x[0], tuple), x[0]))
             json.dump(data, f, indent=4)

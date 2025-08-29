@@ -151,7 +151,7 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('2br45qb', 35), 4294967296)
         self.assertEqual(int('1z141z4', 36), 4294967296)
 
-        # tests with base 0
+        # tests mit base 0
         # this fails on 3.0, but in 2.x the old octal syntax is allowed
         self.assertEqual(int(' 0o123  ', 0), 83)
         self.assertEqual(int(' 0o123  ', 0), 83)
@@ -162,14 +162,14 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int(' 0O123   ', 0), 83)
         self.assertEqual(int(' 0X123  ', 0), 291)
         self.assertEqual(int(' 0B100 ', 0), 4)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('010', 0)
 
         # without base still base 10
         self.assertEqual(int('0123'), 123)
         self.assertEqual(int('0123', 10), 123)
 
-        # tests with prefix and base != 0
+        # tests mit prefix and base != 0
         self.assertEqual(int('0x123', 16), 291)
         self.assertEqual(int('0o123', 8), 83)
         self.assertEqual(int('0b100', 2), 4)
@@ -231,15 +231,15 @@ klasse IntTestCases(unittest.TestCase):
         self.assertEqual(int('1z141z5', 36), 4294967297)
 
     def test_invalid_signs(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('+')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('-')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('- 1')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('+ 1')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int(' + 1 ')
 
     def test_unicode(self):
@@ -258,9 +258,9 @@ klasse IntTestCases(unittest.TestCase):
             wenn any(ch in lit fuer ch in '.eEjJ'):
                 continue
             self.assertRaises(ValueError, int, lit, 0)
-        # Additional test cases with bases != 0, only fuer the constructor:
+        # Additional test cases mit bases != 0, only fuer the constructor:
         self.assertEqual(int("1_00", 3), 9)
-        self.assertEqual(int("0_100"), 100)  # not valid as a literal!
+        self.assertEqual(int("0_100"), 100)  # not valid als a literal!
         self.assertEqual(int(b"1_00"), 100)  # byte underscore
         self.assertRaises(ValueError, int, "_100")
         self.assertRaises(ValueError, int, "+_100")
@@ -281,9 +281,9 @@ klasse IntTestCases(unittest.TestCase):
     def test_keyword_args(self):
         # Test invoking int() using keyword arguments.
         self.assertEqual(int('100', base=2), 4)
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        mit self.assertRaisesRegex(TypeError, 'keyword argument'):
             int(x=1.2)
-        with self.assertRaisesRegex(TypeError, 'keyword argument'):
+        mit self.assertRaisesRegex(TypeError, 'keyword argument'):
             int(x='100', base=2)
         self.assertRaises(TypeError, int, base=10)
         self.assertRaises(TypeError, int, base=0)
@@ -291,15 +291,15 @@ klasse IntTestCases(unittest.TestCase):
     def test_int_base_limits(self):
         """Testing the supported limits of the int() base parameter."""
         self.assertEqual(int('0', 5), 0)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('0', 1)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('0', 37)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('0', -909)  # An old magic value base von Python 2.
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('0', base=0-(2**234))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             int('0', base=2**234)
         # Bases 2 through 36 are supported.
         fuer base in range(2,37):
@@ -307,9 +307,9 @@ klasse IntTestCases(unittest.TestCase):
 
     def test_int_base_bad_types(self):
         """Not integer types are not valid bases; issue16772."""
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             int('0', 5.5)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             int('0', 5.0)
 
     def test_int_base_indexable(self):
@@ -321,7 +321,7 @@ klasse IntTestCases(unittest.TestCase):
 
         # Check out of range bases.
         fuer base in 2**100, -2**100, 1, 37:
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 int('43', base)
 
         # Check in-range bases.
@@ -353,15 +353,15 @@ klasse IntTestCases(unittest.TestCase):
 
         fuer f in factories:
             x = f(b'100')
-            with self.subTest(type(x)):
+            mit self.subTest(type(x)):
                 self.assertEqual(int(x), 100)
                 wenn isinstance(x, (str, bytes, bytearray)):
                     self.assertEqual(int(x, 2), 4)
                 sonst:
                     msg = "can't convert non-string"
-                    with self.assertRaisesRegex(TypeError, msg):
+                    mit self.assertRaisesRegex(TypeError, msg):
                         int(x, 2)
-                with self.assertRaisesRegex(ValueError, 'invalid literal'):
+                mit self.assertRaisesRegex(ValueError, 'invalid literal'):
                     int(f(b'A' * 0x10))
 
     def test_int_memoryview(self):
@@ -403,7 +403,7 @@ klasse IntTestCases(unittest.TestCase):
             klasse JustTrunc(base):
                 def __trunc__(self):
                     return 42
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 int(JustTrunc())
 
     def test_int_subclass_with_index(self):
@@ -456,7 +456,7 @@ klasse IntTestCases(unittest.TestCase):
                 return Wahr
 
         bad_int = BadIndex()
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
@@ -467,27 +467,27 @@ klasse IntTestCases(unittest.TestCase):
         self.assertIs(type(n), int)
 
         bad_int = BadInt()
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
 
         bad_int = BadInt2()
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             n = int(bad_int)
         self.assertEqual(n, 1)
         self.assertIs(type(n), int)
 
     def test_error_message(self):
         def check(s, base=Nichts):
-            with self.assertRaises(ValueError,
-                                   msg="int(%r, %r)" % (s, base)) as cm:
+            mit self.assertRaises(ValueError,
+                                   msg="int(%r, %r)" % (s, base)) als cm:
                 wenn base is Nichts:
                     int(s)
                 sonst:
                     int(s, base)
             self.assertEqual(cm.exception.args[0],
-                "invalid literal fuer int() with base %d: %r" %
+                "invalid literal fuer int() mit base %d: %r" %
                 (10 wenn base is Nichts sonst base, s))
 
         check('\xbd')
@@ -495,13 +495,13 @@ klasse IntTestCases(unittest.TestCase):
         check('  123 456  ')
 
         check('123\x00')
-        # SF bug 1545497: embedded NULs were not detected with explicit base
+        # SF bug 1545497: embedded NULs were not detected mit explicit base
         check('123\x00', 10)
         check('123\x00 245', 20)
         check('123\x00 245', 16)
         check('123\x00245', 20)
         check('123\x00245', 16)
-        # byte string with embedded NUL
+        # byte string mit embedded NUL
         check(b'123\x00')
         check(b'123\x00', 10)
         # non-UTF-8 byte string
@@ -542,7 +542,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
     def test_disabled_limit(self):
         self.assertGreater(sys.get_int_max_str_digits(), 0)
         self.assertLess(sys.get_int_max_str_digits(), 20_000)
-        with support.adjust_int_max_str_digits(0):
+        mit support.adjust_int_max_str_digits(0):
             self.assertEqual(sys.get_int_max_str_digits(), 0)
             i = self.int_class('1' * 20_000)
             str(i)
@@ -561,7 +561,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         self.assertEqual(len(str(10 ** (maxdigits - 1))), maxdigits)
 
     def check(self, i, base=Nichts):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             wenn base is Nichts:
                 self.int_class(i)
             sonst:
@@ -578,7 +578,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         self.check('1' * (maxdigits + 1))
 
         i = 10 ** maxdigits
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             str(i)
 
     def test_denial_of_service_prevented_int_to_str(self):
@@ -588,9 +588,9 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
 
         huge_int = int(f'0x{"c"*65_000}', base=16)  # 78268 decimal digits.
         digits = 78_268
-        with (
+        mit (
                 support.adjust_int_max_str_digits(digits),
-                support.Stopwatch() as sw_convert):
+                support.Stopwatch() als sw_convert):
             huge_decimal = str(huge_int)
         self.assertEqual(len(huge_decimal), digits)
         # Ensuring that we chose a slow enough conversion to measure.
@@ -600,22 +600,22 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
             raise unittest.SkipTest('"slow" conversion took only '
                                     f'{sw_convert.seconds} seconds.')
 
-        # We test with the limit almost at the size needed to check performance.
+        # We test mit the limit almost at the size needed to check performance.
         # The performant limit check is slightly fuzzy, give it a some room.
-        with support.adjust_int_max_str_digits(int(.995 * digits)):
-            with (
-                    self.assertRaises(ValueError) as err,
-                    support.Stopwatch() as sw_fail_huge):
+        mit support.adjust_int_max_str_digits(int(.995 * digits)):
+            mit (
+                    self.assertRaises(ValueError) als err,
+                    support.Stopwatch() als sw_fail_huge):
                 str(huge_int)
         self.assertIn('conversion', str(err.exception))
         self.assertLessEqual(sw_fail_huge.seconds, sw_convert.seconds/2)
 
-        # Now we test that a conversion that would take 30x as long also fails
+        # Now we test that a conversion that would take 30x als long also fails
         # in a similarly fast fashion.
         extra_huge_int = int(f'0x{"c"*500_000}', base=16)  # 602060 digits.
-        with (
-                self.assertRaises(ValueError) as err,
-                support.Stopwatch() as sw_fail_extra_huge):
+        mit (
+                self.assertRaises(ValueError) als err,
+                support.Stopwatch() als sw_fail_extra_huge):
             # If not limited, 8 seconds said Zen based cloud VM.
             str(extra_huge_int)
         self.assertIn('conversion', str(err.exception))
@@ -628,9 +628,9 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
 
         digits = 133700
         huge = '8'*digits
-        with (
+        mit (
                 support.adjust_int_max_str_digits(digits),
-                support.Stopwatch() as sw_convert):
+                support.Stopwatch() als sw_convert):
             int(huge)
         # Ensuring that we chose a slow enough conversion to measure.
         # It takes 0.1 seconds on a Zen based cloud VM in an opt build.
@@ -639,20 +639,20 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
             raise unittest.SkipTest('"slow" conversion took only '
                                     f'{sw_convert.seconds} seconds.')
 
-        with support.adjust_int_max_str_digits(digits - 1):
-            with (
-                    self.assertRaises(ValueError) as err,
-                    support.Stopwatch() as sw_fail_huge):
+        mit support.adjust_int_max_str_digits(digits - 1):
+            mit (
+                    self.assertRaises(ValueError) als err,
+                    support.Stopwatch() als sw_fail_huge):
                 int(huge)
         self.assertIn('conversion', str(err.exception))
         self.assertLessEqual(sw_fail_huge.seconds, sw_convert.seconds/2)
 
-        # Now we test that a conversion that would take 30x as long also fails
+        # Now we test that a conversion that would take 30x als long also fails
         # in a similarly fast fashion.
         extra_huge = '7'*1_200_000
-        with (
-                self.assertRaises(ValueError) as err,
-                support.Stopwatch() as sw_fail_extra_huge):
+        mit (
+                self.assertRaises(ValueError) als err,
+                support.Stopwatch() als sw_fail_extra_huge):
             # If not limited, 8 seconds in the Zen based cloud VM.
             int(extra_huge)
         self.assertIn('conversion', str(err.exception))
@@ -663,7 +663,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         maxdigits = sys.get_int_max_str_digits()
 
         fuer base in (2, 4, 8, 16, 32):
-            with self.subTest(base=base):
+            mit self.subTest(base=base):
                 self.int_class('1' * (maxdigits + 1), base)
                 assert maxdigits < 100_000
                 self.int_class('1' * 100_000, base)
@@ -697,19 +697,19 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         s = '2' * max_digits
         i = int_class(s, base)
         wenn base > 10:
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 str(i)
         sowenn base < 10:
             str(i)
-        with self.assertRaises(ValueError) as err:
+        mit self.assertRaises(ValueError) als err:
             int_class(f'{s}1', base)
 
     def test_int_from_other_bases(self):
         base = 3
-        with self.subTest(base=base):
+        mit self.subTest(base=base):
             self._other_base_helper(base)
         base = 36
-        with self.subTest(base=base):
+        mit self.subTest(base=base):
             self._other_base_helper(base)
 
     def test_int_max_str_digits_is_per_interpreter(self):
@@ -725,7 +725,7 @@ klasse IntStrDigitLimitsTests(unittest.TestCase):
         sonst:
             raise AssertionError('Expected a int max str digits ValueError.')
         """
-        with support.adjust_int_max_str_digits(4000):
+        mit support.adjust_int_max_str_digits(4000):
             before_value = sys.get_int_max_str_digits()
             self.assertEqual(support.run_in_subinterp(code), 0,
                              'subinterp code failure, check stderr.')
@@ -787,11 +787,11 @@ klasse PyLongModuleTests(unittest.TestCase):
         assert -v1 == v3
         v4 = int(' +' + s + ' ')
         assert v1 == v4
-        with self.assertRaises(ValueError) as err:
+        mit self.assertRaises(ValueError) als err:
             int(s + 'z')
-        with self.assertRaises(ValueError) as err:
+        mit self.assertRaises(ValueError) als err:
             int(s + '_')
-        with self.assertRaises(ValueError) as err:
+        mit self.assertRaises(ValueError) als err:
             int('_' + s)
 
     @support.cpython_only  # tests implementation details of CPython.
@@ -799,15 +799,15 @@ klasse PyLongModuleTests(unittest.TestCase):
     @mock.patch.object(_pylong, "int_to_decimal_string")
     def test_pylong_misbehavior_error_path_to_str(
             self, mock_int_to_str):
-        with support.adjust_int_max_str_digits(20_000):
+        mit support.adjust_int_max_str_digits(20_000):
             big_value = int('7'*19_999)
             mock_int_to_str.return_value = Nichts  # not a str
-            with self.assertRaises(TypeError) as ctx:
+            mit self.assertRaises(TypeError) als ctx:
                 str(big_value)
             self.assertIn('_pylong.int_to_decimal_string did not',
                           str(ctx.exception))
             mock_int_to_str.side_effect = RuntimeError("testABC")
-            with self.assertRaises(RuntimeError):
+            mit self.assertRaises(RuntimeError):
                 str(big_value)
 
     @support.cpython_only  # tests implementation details of CPython.
@@ -816,15 +816,15 @@ klasse PyLongModuleTests(unittest.TestCase):
     def test_pylong_misbehavior_error_path_from_str(
             self, mock_int_from_str):
         big_value = '7'*19_999
-        with support.adjust_int_max_str_digits(20_000):
+        mit support.adjust_int_max_str_digits(20_000):
             mock_int_from_str.return_value = b'not an int'
-            with self.assertRaises(TypeError) as ctx:
+            mit self.assertRaises(TypeError) als ctx:
                 int(big_value)
             self.assertIn('_pylong.int_from_string did not',
                           str(ctx.exception))
 
             mock_int_from_str.side_effect = RuntimeError("test123")
-            with self.assertRaises(RuntimeError):
+            mit self.assertRaises(RuntimeError):
                 int(big_value)
 
     def test_pylong_roundtrip(self):
@@ -884,7 +884,7 @@ klasse PyLongModuleTests(unittest.TestCase):
 
         liar = LyingStr("42")
         # We have to pass the liar directly to the complaining function. If we
-        # just try `int(liar)`, earlier layers will replace it with plain old
+        # just try `int(liar)`, earlier layers will replace it mit plain old
         # "43".
         # Embedding `len(liar)` into the f-string failed on the WASI testbot
         # (don't know what that is):

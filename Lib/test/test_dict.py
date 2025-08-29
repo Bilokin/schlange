@@ -18,9 +18,9 @@ klasse DictTest(unittest.TestCase):
         klasse Custom(dict):
             pass
         fuer invalid in {1 : 2}, Custom({1 : 2}):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 dict(**invalid)
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 {}.update(**invalid)
 
     def test_constructor(self):
@@ -267,7 +267,7 @@ klasse DictTest(unittest.TestCase):
         self.assertRaises(ValueError, {}.update, [(1, 2, 3)])
 
     def test_update_type_error(self):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             {}.update([object() fuer _ in range(3)])
 
         self.assertEqual(str(cm.exception), "object is not iterable")
@@ -281,7 +281,7 @@ klasse DictTest(unittest.TestCase):
             raise TypeError("oops")
             yield "value"
 
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             dict([badgen() fuer _ in range(3)])
 
         self.assertEqual(str(cm.exception), "oops")
@@ -415,7 +415,7 @@ klasse DictTest(unittest.TestCase):
         fuer dict_size in [10, 100, 1000, 10000, 100000]:
             dict_size = random.randrange(
                 dict_size // 2, dict_size + dict_size // 2)
-            with self.subTest(dict_size=dict_size):
+            mit self.subTest(dict_size=dict_size):
                 d = {}
                 fuer i in range(dict_size):
                     d[i] = i
@@ -533,7 +533,7 @@ klasse DictTest(unittest.TestCase):
     def test_popitem(self):
         # dict.popitem()
         fuer copymode in -1, +1:
-            # -1: b has same structure as a
+            # -1: b has same structure als a
             # +1: b is a.copy()
             fuer log2size in range(12):
                 size = 2**log2size
@@ -558,7 +558,7 @@ klasse DictTest(unittest.TestCase):
         self.assertRaises(KeyError, d.popitem)
 
     def test_pop(self):
-        # Tests fuer pop with specified key
+        # Tests fuer pop mit specified key
         d = {}
         k, v = 'abc', 'def'
         d[k] = v
@@ -594,7 +594,7 @@ klasse DictTest(unittest.TestCase):
         # changing dict size during iteration
         d = {}
         d[1] = 1
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fuer i in d:
                 d[i+1] = 1
 
@@ -602,7 +602,7 @@ klasse DictTest(unittest.TestCase):
         # change dict content during iteration
         d = {}
         d[0] = 0
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fuer i in d:
                 del d[0]
                 d[0] = 0
@@ -611,7 +611,7 @@ klasse DictTest(unittest.TestCase):
         # change dict content during iteration
         d = {}
         d[0] = 0
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fuer i in d.values():
                 del d[0]
                 d[0] = 0
@@ -620,7 +620,7 @@ klasse DictTest(unittest.TestCase):
         # change dict content during iteration
         d = {}
         d[0] = 0
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             fuer i in d.items():
                 del d[0]
                 d[0] = 0
@@ -692,7 +692,7 @@ klasse DictTest(unittest.TestCase):
         d1 = {BadCmp(): 1}
         d2 = {1: 1}
 
-        with self.assertRaises(Exc):
+        mit self.assertRaises(Exc):
             d1 == d2
 
     def test_keys_contained(self):
@@ -701,7 +701,7 @@ klasse DictTest(unittest.TestCase):
 
     def helper_keys_contained(self, fn):
         # Test rich comparisons against dict key views, which should behave the
-        # same as sets.
+        # same als sets.
         empty = fn(dict())
         empty2 = fn(dict())
         smaller = fn({1:1, 2:2})
@@ -750,19 +750,19 @@ klasse DictTest(unittest.TestCase):
 
         d1 = {1: C()}
         d2 = {1: C()}
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             d1.items() == d2.items()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             d1.items() != d2.items()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             d1.items() <= d2.items()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             d1.items() >= d2.items()
 
         d3 = {1: C(), 2: C()}
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             d2.items() < d3.items()
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             d3.items() > d2.items()
 
     def test_dictview_set_operations_on_keys(self):
@@ -800,7 +800,7 @@ klasse DictTest(unittest.TestCase):
         fuer _ in range(100):
             left = {x:rr(3) fuer x in range(20) wenn rr(2)}
             right = {x:rr(3) fuer x in range(20) wenn rr(2)}
-            with self.subTest(left=left, right=right):
+            mit self.subTest(left=left, right=right):
                 expected = set(left.items()) ^ set(right.items())
                 actual = left.items() ^ right.items()
                 self.assertEqual(actual, expected)
@@ -840,7 +840,7 @@ klasse DictTest(unittest.TestCase):
             def __missing__(self, key):
                 raise RuntimeError(key)
         e = E()
-        with self.assertRaises(RuntimeError) as c:
+        mit self.assertRaises(RuntimeError) als c:
             e[42]
         self.assertEqual(c.exception.args, (42,))
 
@@ -849,21 +849,21 @@ klasse DictTest(unittest.TestCase):
                 # An instance variable __missing__ should have no effect
                 self.__missing__ = lambda key: Nichts
         f = F()
-        with self.assertRaises(KeyError) as c:
+        mit self.assertRaises(KeyError) als c:
             f[42]
         self.assertEqual(c.exception.args, (42,))
 
         klasse G(dict):
             pass
         g = G()
-        with self.assertRaises(KeyError) as c:
+        mit self.assertRaises(KeyError) als c:
             g[42]
         self.assertEqual(c.exception.args, (42,))
 
     def test_tuple_keyerror(self):
         # SF #1576657
         d = {}
-        with self.assertRaises(KeyError) as c:
+        mit self.assertRaises(KeyError) als c:
             d[(1,)]
         self.assertEqual(c.exception.args, ((1,),))
 
@@ -892,7 +892,7 @@ klasse DictTest(unittest.TestCase):
                      'd.setdefault(x2, 42)',
                      'd.pop(x2)',
                      'd.update({x2: 2})']:
-            with self.assertRaises(CustomException):
+            mit self.assertRaises(CustomException):
                 exec(stmt, locals())
 
     def test_resize1(self):
@@ -934,9 +934,9 @@ klasse DictTest(unittest.TestCase):
         d[9] = 6
 
     def test_empty_presized_dict_in_freelist(self):
-        # Bug #3537: wenn an empty but presized dict with a size larger
+        # Bug #3537: wenn an empty but presized dict mit a size larger
         # than 7 was in the freelist, it triggered an assertion failure
-        with self.assertRaises(ZeroDivisionError):
+        mit self.assertRaises(ZeroDivisionError):
             d = {'a': 1 // 0, 'b': Nichts, 'c': Nichts, 'd': Nichts, 'e': Nichts,
                  'f': Nichts, 'g': Nichts, 'h': Nichts}
         d = {}
@@ -993,7 +993,7 @@ klasse DictTest(unittest.TestCase):
         orig_size = sys.getsizeof(a)
 
         del a['y']  # split table is combined
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             del a['y']
 
         self.assertEqual(list(a), ['x', 'z'])
@@ -1009,7 +1009,7 @@ klasse DictTest(unittest.TestCase):
         a, b = self.make_shared_key_dict(2)
 
         a.pop('y')
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             a.pop('y')
 
         self.assertEqual(list(a), ['x', 'z'])
@@ -1026,7 +1026,7 @@ klasse DictTest(unittest.TestCase):
         a, b = self.make_shared_key_dict(2)
 
         a['a'] = 4
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             b.pop('a')
 
     @support.cpython_only
@@ -1038,7 +1038,7 @@ klasse DictTest(unittest.TestCase):
 
         item = a.popitem()  # split table is combined
         self.assertEqual(item, ('z', 3))
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             del a['z']
 
         self.assertGreater(sys.getsizeof(a), orig_size)
@@ -1101,9 +1101,9 @@ klasse DictTest(unittest.TestCase):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is not necessarily the same as the original.  It is
+            # is not necessarily the same als the original.  It is
             # merely an object supporting the iterator protocol, yielding
-            # the same objects as the original one.
+            # the same objects als the original one.
             # self.assertEqual(type(itorg), type(it))
             self.assertIsInstance(it, collections.abc.Iterator)
             self.assertEqual(dict(it), data)
@@ -1157,9 +1157,9 @@ klasse DictTest(unittest.TestCase):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
             # note that the type of the unpickled iterator
-            # is not necessarily the same as the original.  It is
+            # is not necessarily the same als the original.  It is
             # merely an object supporting the iterator protocol, yielding
-            # the same objects as the original one.
+            # the same objects als the original one.
             # self.assertEqual(type(itorg), type(it))
             self.assertIsInstance(it, collections.abc.Iterator)
             self.assertEqual(dict(it), data)
@@ -1437,7 +1437,7 @@ klasse DictTest(unittest.TestCase):
 
     @support.cpython_only
     def test_dict_items_result_gc_reversed(self):
-        # Same as test_dict_items_result_gc above, but reversed.
+        # Same als test_dict_items_result_gc above, but reversed.
         it = reversed({Nichts: []}.items())
         gc.collect()
         self.assertWahr(gc.is_tracked(next(it)))
@@ -1532,7 +1532,7 @@ klasse DictTest(unittest.TestCase):
             dicts.append(d)
 
         fuer d in dicts:
-            with self.subTest(d=d):
+            mit self.subTest(d=d):
                 self.assertEqual(d.get('key1'), 42)
 
                 # Try to make an object that is of type `str` and is equal to
@@ -1553,7 +1553,7 @@ klasse DictTest(unittest.TestCase):
                 # that `__eq__` gets called.
                 #
                 # Note that this might not hold fuer `key3_1` and `key3_2`
-                # because they might be the same object as one of the dict keys,
+                # because they might be the same object als one of the dict keys,
                 # in which case implementations are allowed to skip the call to
                 # `__eq__`.
                 eq_count = 0
@@ -1565,20 +1565,20 @@ klasse DictTest(unittest.TestCase):
         key = [1, 2, 3]
 
         def check_unhashable_key():
-            msg = "cannot use 'list' as a dict key (unhashable type: 'list')"
+            msg = "cannot use 'list' als a dict key (unhashable type: 'list')"
             return self.assertRaisesRegex(TypeError, re.escape(msg))
 
-        with check_unhashable_key():
+        mit check_unhashable_key():
             key in d
-        with check_unhashable_key():
+        mit check_unhashable_key():
             d[key]
-        with check_unhashable_key():
+        mit check_unhashable_key():
             d[key] = 2
-        with check_unhashable_key():
+        mit check_unhashable_key():
             d.setdefault(key, 2)
-        with check_unhashable_key():
+        mit check_unhashable_key():
             d.pop(key)
-        with check_unhashable_key():
+        mit check_unhashable_key():
             d.get(key)
 
         # Only TypeError exception is overriden,
@@ -1588,17 +1588,17 @@ klasse DictTest(unittest.TestCase):
                 raise KeyError('error')
 
         key2 = HashError()
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             key2 in d
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d[key2]
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d[key2] = 2
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d.setdefault(key2, 2)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d.pop(key2)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             d.get(key2)
 
 

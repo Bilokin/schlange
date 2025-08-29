@@ -66,12 +66,12 @@ klasse _Database(MutableMapping):
 
         try:
             self._cx = sqlite3.connect(uri, autocommit=Wahr, uri=Wahr)
-        except sqlite3.Error as exc:
+        except sqlite3.Error als exc:
             raise error(str(exc))
 
         wenn flag != "ro":
             # This is an optimization only; it's ok wenn it fails.
-            with suppress(sqlite3.OperationalError):
+            mit suppress(sqlite3.OperationalError):
                 self._cx.execute("PRAGMA journal_mode = wal")
 
             wenn flag == "rwc":
@@ -82,16 +82,16 @@ klasse _Database(MutableMapping):
             raise error(_ERR_CLOSED)
         try:
             return closing(self._cx.execute(*args, **kwargs))
-        except sqlite3.Error as exc:
+        except sqlite3.Error als exc:
             raise error(str(exc))
 
     def __len__(self):
-        with self._execute(GET_SIZE) as cu:
+        mit self._execute(GET_SIZE) als cu:
             row = cu.fetchone()
         return row[0]
 
     def __getitem__(self, key):
-        with self._execute(LOOKUP_KEY, (key,)) as cu:
+        mit self._execute(LOOKUP_KEY, (key,)) als cu:
             row = cu.fetchone()
         wenn not row:
             raise KeyError(key)
@@ -101,16 +101,16 @@ klasse _Database(MutableMapping):
         self._execute(STORE_KV, (key, value))
 
     def __delitem__(self, key):
-        with self._execute(DELETE_KEY, (key,)) as cu:
+        mit self._execute(DELETE_KEY, (key,)) als cu:
             wenn not cu.rowcount:
                 raise KeyError(key)
 
     def __iter__(self):
         try:
-            with self._execute(ITER_KEYS) as cu:
+            mit self._execute(ITER_KEYS) als cu:
                 fuer row in cu:
                     yield row[0]
-        except sqlite3.Error as exc:
+        except sqlite3.Error als exc:
             raise error(str(exc))
 
     def close(self):

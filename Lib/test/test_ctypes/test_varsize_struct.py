@@ -33,7 +33,7 @@ klasse VarSizeTest(unittest.TestCase):
         self.assertEqual((x.item, x.array[0]), (42, 100))
 
     def test_array_invalid_length(self):
-        # cannot create arrays with non-positive size
+        # cannot create arrays mit non-positive size
         self.assertRaises(ValueError, lambda: c_int * -1)
         self.assertRaises(ValueError, lambda: c_int * -3)
 

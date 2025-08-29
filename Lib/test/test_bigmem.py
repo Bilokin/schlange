@@ -2,10 +2,10 @@
 
 These tests try to exercise the 32-bit boundary that is sometimes, if
 rarely, exceeded in practice, but almost never tested.  They are really only
-meaningful on 64-bit builds on machines with a *lot* of memory, but the
-tests are always run, usually with very low memory limits to make sure the
+meaningful on 64-bit builds on machines mit a *lot* of memory, but the
+tests are always run, usually mit very low memory limits to make sure the
 tests themselves don't suffer von bitrot.  To run them fuer real, pass a
-high memory limit to regrtest, with the -M option.
+high memory limit to regrtest, mit the -M option.
 """
 
 von test importiere support
@@ -26,9 +26,9 @@ importiere sys
 # test wouldn't be very useful) and a memuse of 1 (one byte per size-unit,
 # wenn it allocates only one big string at a time.)
 #
-# When run with a memory limit set, both decorators skip tests that need
+# When run mit a memory limit set, both decorators skip tests that need
 # more memory than available to be meaningful.  The precisionbigmemtest will
-# always pass minsize as size, even wenn there is much more memory available.
+# always pass minsize als size, even wenn there is much more memory available.
 # The bigmemtest decorator will scale size upward to fill available memory.
 #
 # Bigmem testing houserules:
@@ -51,7 +51,7 @@ importiere sys
 #    2. That way, int-wrapping problems are more easily detected.
 #
 #  - Despite the bigmemtest decorator, all tests will actually be called
-#    with a much smaller number too, in the normal test run (5Kb currently.)
+#    mit a much smaller number too, in the normal test run (5Kb currently.)
 #    This is so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
 #    passed-in 'size', and don't rely on the size being very large. Also,
@@ -59,7 +59,7 @@ importiere sys
 #    test uses more, adjust 'size' upward, instead.
 
 # BEWARE: it seems that one failing test can yield other subsequent tests to
-# fail as well. I do not know whether it is due to memory fragmentation
+# fail als well. I do not know whether it is due to memory fragmentation
 # issues, or other specifics of the platform malloc() routine.
 
 ascii_char_size = 1
@@ -474,7 +474,7 @@ klasse BaseStrTest:
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
-    # This test is meaningful even with size < 2G, as long as the
+    # This test is meaningful even mit size < 2G, als long als the
     # doubled string is > 2G (but it tests more wenn both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     def test_concat(self, size):
@@ -485,7 +485,7 @@ klasse BaseStrTest:
         self.assertEqual(len(s), size * 2)
         self.assertEqual(s.count(_('.')), size * 2)
 
-    # This test is meaningful even with size < 2G, as long as the
+    # This test is meaningful even mit size < 2G, als long als the
     # repeated string is > 2G (but it tests more wenn both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     def test_repeat(self, size):
@@ -682,7 +682,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s[-1], "'")
         self.assertEqual(s.count('-'), size)
         del s
-        # repr() will create a string four times as large as this 'binary
+        # repr() will create a string four times als large als this 'binary
         # string', but we don't want to allocate much more than twice
         # size in total.  (We do extra testing in test_repr_large())
         size = size // 5 * 2
@@ -738,7 +738,7 @@ klasse StrTest(unittest.TestCase, BaseStrTest):
         finally:
             r = s = Nichts
 
-    # The original test_translate is overridden here, so as to get the
+    # The original test_translate is overridden here, so als to get the
     # correct size estimate: str.translate() uses an intermediate Py_UCS4
     # representation.
 
@@ -820,7 +820,7 @@ klasse TupleTest(unittest.TestCase):
 
     # As a side-effect of testing long tuples, these tests happen to test
     # having more than 2<<31 references to any given object. Hence the
-    # use of different types of objects as contents in different tests.
+    # use of different types of objects als contents in different tests.
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2)
     def test_compare(self, size):

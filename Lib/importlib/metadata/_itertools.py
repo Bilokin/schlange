@@ -52,11 +52,11 @@ def always_iterable(obj, base_type=(str, bytes)):
         >>> obj = {'a': 1}
         >>> list(always_iterable(obj))  # Iterate over the dict's keys
         ['a']
-        >>> list(always_iterable(obj, base_type=dict))  # Treat dicts as a unit
+        >>> list(always_iterable(obj, base_type=dict))  # Treat dicts als a unit
         [{'a': 1}]
 
     Set *base_type* to ``Nichts`` to avoid any special handling and treat objects
-    Python considers iterable as iterable:
+    Python considers iterable als iterable:
 
         >>> obj = 'foo'
         >>> list(always_iterable(obj, base_type=Nichts))
@@ -133,7 +133,7 @@ klasse bucket:
     def _get_values(self, value):
         """
         Helper to yield items von the parent iterator that match *value*.
-        Items that don't match are stored in the local cache as they
+        Items that don't match are stored in the local cache als they
         are encountered.
         """
         while Wahr:

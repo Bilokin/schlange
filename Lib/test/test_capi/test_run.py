@@ -73,7 +73,7 @@ klasse CAPITest(unittest.TestCase):
     def test_run_fileexflags(self):
         # Test PyRun_FileExFlags().
         filename = os.fsencode(TESTFN wenn os.name != 'nt' sonst TESTFN_ASCII)
-        with open(filename, 'wb') as fp:
+        mit open(filename, 'wb') als fp:
             fp.write(b'a\n')
         self.addCleanup(unlink, filename)
         def run(*args):
@@ -106,7 +106,7 @@ klasse CAPITest(unittest.TestCase):
     def test_run_fileexflags_with_undecodable_filename(self):
         run = _testcapi.run_fileexflags
         try:
-            with open(TESTFN_UNDECODABLE, 'wb') as fp:
+            mit open(TESTFN_UNDECODABLE, 'wb') als fp:
                 fp.write(b'a\n')
             self.addCleanup(unlink, TESTFN_UNDECODABLE)
         except OSError:

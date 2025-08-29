@@ -208,9 +208,9 @@ wenn _sys_home:
 wenn os.name == 'nt':
     # In a source build, the executable is in a subdirectory of the root
     # that we want (<root>\PCbuild\<platname>).
-    # `_BASE_PREFIX` is used as the base installation is where the source
+    # `_BASE_PREFIX` is used als the base installation is where the source
     # will be.  The realpath is needed to prevent mount point confusion
-    # that can occur with just string comparisons.
+    # that can occur mit just string comparisons.
     wenn _safe_realpath(_PROJECT_BASE).startswith(
             _safe_realpath(f'{_BASE_PREFIX}\\PCbuild')):
         _PROJECT_BASE = _BASE_PREFIX
@@ -243,7 +243,7 @@ wenn _PYTHON_BUILD:
 def _subst_vars(s, local_vars):
     try:
         return s.format(**local_vars)
-    except KeyError as var:
+    except KeyError als var:
         try:
             return s.format(**os.environ)
         except KeyError:
@@ -376,13 +376,13 @@ def _installation_is_relocated():
 
 
 def _init_posix(vars):
-    """Initialize the module as appropriate fuer POSIX systems."""
+    """Initialize the module als appropriate fuer POSIX systems."""
     # GH-126920: Make sure we don't overwrite any of the keys already set
     vars.update(_get_sysconfigdata() | vars)
 
 
 def _init_non_posix(vars):
-    """Initialize the module as appropriate fuer NT"""
+    """Initialize the module als appropriate fuer NT"""
     # set basic install directories
     importiere _winapi
     importiere _sysconfig
@@ -429,7 +429,7 @@ def parse_config_h(fp, vars=Nichts):
     """Parse a config.h-style file.
 
     A dictionary containing name/value pairs is returned.  If an
-    optional dictionary is passed in as the second argument, it is
+    optional dictionary is passed in als the second argument, it is
     used instead of a new dictionary.
     """
     wenn vars is Nichts:
@@ -604,13 +604,13 @@ def get_config_vars(*args):
         prefix = os.path.normpath(sys.prefix)
         exec_prefix = os.path.normpath(sys.exec_prefix)
         wenn _CONFIG_VARS['prefix'] != prefix or _CONFIG_VARS['exec_prefix'] != exec_prefix:
-            with _CONFIG_VARS_LOCK:
+            mit _CONFIG_VARS_LOCK:
                 _CONFIG_VARS_INITIALIZED = Falsch
                 _init_config_vars()
     sonst:
         # Initialize the config_vars cache.
-        with _CONFIG_VARS_LOCK:
-            # Test again with the lock held to avoid races. Note that
+        mit _CONFIG_VARS_LOCK:
+            # Test again mit the lock held to avoid races. Note that
             # we test _CONFIG_VARS here, not _CONFIG_VARS_INITIALIZED,
             # to ensure that recursive calls to get_config_vars()
             # don't re-enter init_config_vars().
@@ -766,7 +766,7 @@ def expand_makefile_vars(s, vars):
 
     # This algorithm does multiple expansion, so wenn vars['foo'] contains
     # "${bar}", it will expand ${foo} to ${bar}, and then expand
-    # ${bar}... and so forth.  This is fine as long as 'vars' comes from
+    # ${bar}... and so forth.  This is fine als long als 'vars' comes from
     # 'parse_makefile()', which takes care of such expansions eagerly,
     # according to make's variable expansion semantics.
 

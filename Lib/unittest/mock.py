@@ -42,7 +42,7 @@ von threading importiere RLock
 
 
 klasse InvalidSpecError(Exception):
-    """Indicates that an invalid value was used as a mock spec."""
+    """Indicates that an invalid value was used als a mock spec."""
 
 
 _builtins = {name fuer name in dir(builtins) wenn not name.startswith('_')}
@@ -82,7 +82,7 @@ def _is_exception(obj):
 
 
 def _extract_mock(obj):
-    # Autospecced functions will return a FunctionType with "mock" attribute
+    # Autospecced functions will return a FunctionType mit "mock" attribute
     # which is the actual mock object that needs to be used.
     wenn isinstance(obj, FunctionTypes) and hasattr(obj, 'mock'):
         return obj.mock
@@ -97,7 +97,7 @@ def _get_signature_object(func, as_instance, eat_self):
     Return a (reduced func, signature) tuple, or Nichts.
     """
     wenn isinstance(func, type) and not as_instance:
-        # If it's a type and should be modelled as a type, use __init__.
+        # If it's a type and should be modelled als a type, use __init__.
         func = func.__init__
         # Skip the `self` argument in __init__
         eat_self = Wahr
@@ -138,7 +138,7 @@ def _check_signature(func, mock, skipfirst, instance=Falsch):
 
 
 def _copy_func_details(func, funcopy):
-    # we explicitly don't copy func.__dict__ into this copy as it would
+    # we explicitly don't copy func.__dict__ into this copy als it would
     # expose original attributes that should be mocked
     fuer attribute in (
         '__name__', '__doc__', '__text_signature__',
@@ -182,9 +182,9 @@ def _instance_callable(obj):
 
 
 def _set_signature(mock, original, instance=Falsch):
-    # creates a function with signature (*args, **kwargs) that delegates to a
-    # mock. It still does signature checking by calling a lambda with the same
-    # signature as the original.
+    # creates a function mit signature (*args, **kwargs) that delegates to a
+    # mock. It still does signature checking by calling a lambda mit the same
+    # signature als the original.
 
     skipfirst = isinstance(original, type)
     result = _get_signature_object(original, instance, skipfirst)
@@ -208,9 +208,9 @@ def _set_signature(mock, original, instance=Falsch):
     return funcopy
 
 def _set_async_signature(mock, original, instance=Falsch, is_async_mock=Falsch):
-    # creates an async function with signature (*args, **kwargs) that delegates to a
-    # mock. It still does signature checking by calling a lambda with the same
-    # signature as the original.
+    # creates an async function mit signature (*args, **kwargs) that delegates to a
+    # mock. It still does signature checking by calling a lambda mit the same
+    # signature als the original.
 
     skipfirst = isinstance(original, type)
     func, sig = _get_signature_object(original, instance, skipfirst)
@@ -323,7 +323,7 @@ klasse _SentinelObject(object):
 
 
 klasse _Sentinel(object):
-    """Access attributes to return a named object, usable as a sentinel."""
+    """Access attributes to return a named object, usable als a sentinel."""
     def __init__(self):
         self._sentinels = {}
 
@@ -402,7 +402,7 @@ def _check_and_set_parent(parent, value, name, new_name):
 
     _parent = parent
     while _parent is not Nichts:
-        # setting a mock (value) as a child or return value of itself
+        # setting a mock (value) als a child or return value of itself
         # should not modify the mock
         wenn _parent is value:
             return Falsch
@@ -434,7 +434,7 @@ klasse Base(object):
 klasse NonCallableMock(Base):
     """A non-callable version of `Mock`"""
 
-    # Store a mutex as a klasse attribute in order to protect concurrent access
+    # Store a mutex als a klasse attribute in order to protect concurrent access
     # to mock attributes. Using a klasse attribute allows all NonCallableMock
     # instances to share the mutex fuer simplicity.
     #
@@ -508,7 +508,7 @@ klasse NonCallableMock(Base):
 
     def attach_mock(self, mock, attribute):
         """
-        Attach a mock as an attribute of this one, replacing its name and
+        Attach a mock als an attribute of this one, replacing its name and
         parent. Calls to the attached mock will be recorded in the
         `method_calls` and `mock_calls` attributes of this one."""
         inner_mock = _extract_mock(mock)
@@ -702,7 +702,7 @@ klasse NonCallableMock(Base):
                     f"{name!r} is not a valid assertion. Use a spec "
                     f"for the mock wenn {name!r} is meant to be an attribute")
 
-        with NonCallableMock._lock:
+        mit NonCallableMock._lock:
             result = self._mock_children.get(name)
             wenn result is _deleted:
                 raise AttributeError(name)
@@ -729,7 +729,7 @@ klasse NonCallableMock(Base):
                     target_name = self.__dict__['_mock_name'] or self
                     raise InvalidSpecError(
                         f'Cannot autospec attr {name!r} von target '
-                        f'{target_name!r} as it has already been mocked out. '
+                        f'{target_name!r} als it has already been mocked out. '
                         f'[target={self!r}, attr={result.spec!r}]')
                 self._mock_children[name]  = result
 
@@ -899,7 +899,7 @@ klasse NonCallableMock(Base):
                 break
             sonst:
                 # If an autospecced object is attached using attach_mock the
-                # child would be a function with mock object as attribute from
+                # child would be a function mit mock object als attribute from
                 # which signature has to be derived.
                 child = _extract_mock(child)
                 children = child._mock_children
@@ -911,7 +911,7 @@ klasse NonCallableMock(Base):
     def _call_matcher(self, _call):
         """
         Given a call (or simply an (args, kwargs) tuple), return a
-        comparison key suitable fuer matching with other calls.
+        comparison key suitable fuer matching mit other calls.
         This is a best effort method which relies on the spec's signature,
         wenn available, or falls back on the arguments themselves.
         """
@@ -930,7 +930,7 @@ klasse NonCallableMock(Base):
             try:
                 bound_call = sig.bind(*args, **kwargs)
                 return call(name, bound_call.args, bound_call.kwargs)
-            except TypeError as e:
+            except TypeError als e:
                 return e.with_traceback(Nichts)
         sonst:
             return _call
@@ -964,7 +964,7 @@ klasse NonCallableMock(Base):
             raise AssertionError(msg)
 
     def assert_called_with(self, /, *args, **kwargs):
-        """assert that the last call was made with the specified arguments.
+        """assert that the last call was made mit the specified arguments.
 
         Raises an AssertionError wenn the args and keyword args passed in are
         different to the last call to the mock."""
@@ -987,7 +987,7 @@ klasse NonCallableMock(Base):
 
     def assert_called_once_with(self, /, *args, **kwargs):
         """assert that the mock was called exactly once and that call was
-        with the specified arguments."""
+        mit the specified arguments."""
         wenn not self.call_count == 1:
             msg = ("Expected '%s' to be called once. Called %s times.%s"
                    % (self._mock_name or 'mock',
@@ -998,7 +998,7 @@ klasse NonCallableMock(Base):
 
 
     def assert_has_calls(self, calls, any_order=Falsch):
-        """assert the mock has been called with the specified calls.
+        """assert the mock has been called mit the specified calls.
         The `mock_calls` list is checked fuer the calls.
 
         If `any_order` is Falsch (the default) then the calls must be
@@ -1043,7 +1043,7 @@ klasse NonCallableMock(Base):
 
 
     def assert_any_call(self, /, *args, **kwargs):
-        """assert the mock has been called with the specified arguments.
+        """assert the mock has been called mit the specified arguments.
 
         The assert passes wenn the mock has *ever* been called, unlike
         `assert_called_with` and `assert_called_once_with` that only pass if
@@ -1060,7 +1060,7 @@ klasse NonCallableMock(Base):
 
     def _get_child_mock(self, /, **kw):
         """Create the child mocks fuer attributes and return value.
-        By default child mocks will be the same type as the parent.
+        By default child mocks will be the same type als the parent.
         Subclasses of Mock may want to override this to customize the way
         child mocks are made.
 
@@ -1097,7 +1097,7 @@ klasse NonCallableMock(Base):
 
 
     def _calls_repr(self):
-        """Renders self.mock_calls as a string.
+        """Renders self.mock_calls als a string.
 
         Example: "\nCalls: [call(1), call(2)]."
 
@@ -1163,7 +1163,7 @@ klasse CallableMixin(Base):
 
 
     def _mock_check_sig(self, /, *args, **kwargs):
-        # stub method that can be replaced with one with a specific signature
+        # stub method that can be replaced mit one mit a specific signature
         pass
 
 
@@ -1261,7 +1261,7 @@ klasse Mock(CallableMixin, NonCallableMock):
     that specify the behaviour of the Mock object:
 
     * `spec`: This can be either a list of strings or an existing object (a
-      klasse or instance) that acts as the specification fuer the mock object. If
+      klasse or instance) that acts als the specification fuer the mock object. If
       you pass in an object then a list of strings is formed by calling dir on
       the object (excluding unsupported magic attributes and methods). Accessing
       any attribute not in this list will raise an `AttributeError`.
@@ -1276,9 +1276,9 @@ klasse Mock(CallableMixin, NonCallableMock):
 
     * `side_effect`: A function to be called whenever the Mock is called. See
       the `side_effect` attribute. Useful fuer raising exceptions or
-      dynamically changing return values. The function is called with the same
-      arguments as the mock, and unless it returns `DEFAULT`, the return
-      value of this function is used as the return value.
+      dynamically changing return values. The function is called mit the same
+      arguments als the mock, and unless it returns `DEFAULT`, the return
+      value of this function is used als the return value.
 
       If `side_effect` is an iterable then each call to the mock will return
       the next value von the iterable. If any of the members of the iterable
@@ -1309,7 +1309,7 @@ klasse Mock(CallableMixin, NonCallableMock):
       mock. This can be useful fuer debugging. The name is propagated to child
       mocks.
 
-    Mocks can also be called with arbitrary keyword arguments. These will be
+    Mocks can also be called mit arbitrary keyword arguments. These will be
     used to set attributes on the mock after it is created.
     """
 
@@ -1347,11 +1347,11 @@ klasse _patch(object):
             _check_spec_arg_typos(kwargs)
         wenn _is_instance_mock(spec):
             raise InvalidSpecError(
-                f'Cannot spec attr {attribute!r} as the spec '
+                f'Cannot spec attr {attribute!r} als the spec '
                 f'has already been mocked out. [spec={spec!r}]')
         wenn _is_instance_mock(spec_set):
             raise InvalidSpecError(
-                f'Cannot spec attr {attribute!r} as the spec_set '
+                f'Cannot spec attr {attribute!r} als the spec_set '
                 f'target has already been mocked out. [spec_set={spec_set!r}]')
 
         self.getter = getter
@@ -1406,7 +1406,7 @@ klasse _patch(object):
     @contextlib.contextmanager
     def decoration_helper(self, patched, args, keywargs):
         extra_args = []
-        with contextlib.ExitStack() as exit_stack:
+        mit contextlib.ExitStack() als exit_stack:
             fuer patching in patched.patchings:
                 arg = exit_stack.enter_context(patching)
                 wenn patching.attribute_name is not Nichts:
@@ -1419,16 +1419,16 @@ klasse _patch(object):
 
 
     def decorate_callable(self, func):
-        # NB. Keep the method in sync with decorate_async_callable()
+        # NB. Keep the method in sync mit decorate_async_callable()
         wenn hasattr(func, 'patchings'):
             func.patchings.append(self)
             return func
 
         @wraps(func)
         def patched(*args, **keywargs):
-            with self.decoration_helper(patched,
+            mit self.decoration_helper(patched,
                                         args,
-                                        keywargs) as (newargs, newkeywargs):
+                                        keywargs) als (newargs, newkeywargs):
                 return func(*newargs, **newkeywargs)
 
         patched.patchings = [self]
@@ -1436,16 +1436,16 @@ klasse _patch(object):
 
 
     def decorate_async_callable(self, func):
-        # NB. Keep the method in sync with decorate_callable()
+        # NB. Keep the method in sync mit decorate_callable()
         wenn hasattr(func, 'patchings'):
             func.patchings.append(self)
             return func
 
         @wraps(func)
         async def patched(*args, **keywargs):
-            with self.decoration_helper(patched,
+            mit self.decoration_helper(patched,
                                         args,
-                                        keywargs) as (newargs, newkeywargs):
+                                        keywargs) als (newargs, newkeywargs):
                 return await func(*newargs, **newkeywargs)
 
         patched.patchings = [self]
@@ -1519,7 +1519,7 @@ klasse _patch(object):
 
             wenn spec is not Nichts or spec_set is not Nichts:
                 wenn original is DEFAULT:
-                    raise TypeError("Can't use 'spec' with create=Wahr")
+                    raise TypeError("Can't use 'spec' mit create=Wahr")
                 wenn isinstance(original, type):
                     # If we're patching out a klasse and there is a spec
                     inherit = Wahr
@@ -1575,7 +1575,7 @@ klasse _patch(object):
                                          **_kwargs)
         sowenn autospec is not Nichts:
             # spec is ignored, new *must* be default, spec_set is treated
-            # as a boolean. Should we check spec is not Nichts and that spec_set
+            # als a boolean. Should we check spec is not Nichts and that spec_set
             # is a bool?
             wenn new is not DEFAULT:
                 raise TypeError(
@@ -1583,21 +1583,21 @@ klasse _patch(object):
                     "autospec and new."
                 )
             wenn original is DEFAULT:
-                raise TypeError("Can't use 'autospec' with create=Wahr")
+                raise TypeError("Can't use 'autospec' mit create=Wahr")
             spec_set = bool(spec_set)
             wenn autospec is Wahr:
                 autospec = original
 
             wenn _is_instance_mock(self.target):
                 raise InvalidSpecError(
-                    f'Cannot autospec attr {self.attribute!r} as the patch '
+                    f'Cannot autospec attr {self.attribute!r} als the patch '
                     f'target has already been mocked out. '
                     f'[target={self.target!r}, attr={autospec!r}]')
             wenn _is_instance_mock(autospec):
                 target_name = getattr(self.target, '__name__', self.target)
                 raise InvalidSpecError(
                     f'Cannot autospec attr {self.attribute!r} von target '
-                    f'{target_name!r} as it has already been mocked out. '
+                    f'{target_name!r} als it has already been mocked out. '
                     f'[target={self.target!r}, attr={autospec!r}]')
 
             new = create_autospec(autospec, spec_set=spec_set,
@@ -1689,16 +1689,16 @@ def _patch_object(
         new_callable=Nichts, *, unsafe=Falsch, **kwargs
     ):
     """
-    patch the named member (`attribute`) on an object (`target`) with a mock
+    patch the named member (`attribute`) on an object (`target`) mit a mock
     object.
 
-    `patch.object` can be used as a decorator, klasse decorator or a context
+    `patch.object` can be used als a decorator, klasse decorator or a context
     manager. Arguments `new`, `spec`, `create`, `spec_set`,
-    `autospec` and `new_callable` have the same meaning as fuer `patch`. Like
+    `autospec` and `new_callable` have the same meaning als fuer `patch`. Like
     `patch`, `patch.object` takes arbitrary keyword arguments fuer configuring
     the mock object it creates.
 
-    When used as a klasse decorator `patch.object` honours `patch.TEST_PREFIX`
+    When used als a klasse decorator `patch.object` honours `patch.TEST_PREFIX`
     fuer choosing which methods to wrap.
     """
     wenn type(target) is str:
@@ -1715,23 +1715,23 @@ def _patch_object(
 def _patch_multiple(target, spec=Nichts, create=Falsch, spec_set=Nichts,
                     autospec=Nichts, new_callable=Nichts, **kwargs):
     """Perform multiple patches in a single call. It takes the object to be
-    patched (either as an object or a string to fetch the object by importing)
+    patched (either als an object or a string to fetch the object by importing)
     and keyword arguments fuer the patches::
 
-        with patch.multiple(settings, FIRST_PATCH='one', SECOND_PATCH='two'):
+        mit patch.multiple(settings, FIRST_PATCH='one', SECOND_PATCH='two'):
             ...
 
-    Use `DEFAULT` as the value wenn you want `patch.multiple` to create
+    Use `DEFAULT` als the value wenn you want `patch.multiple` to create
     mocks fuer you. In this case the created mocks are passed into a decorated
     function by keyword, and a dictionary is returned when `patch.multiple` is
-    used as a context manager.
+    used als a context manager.
 
-    `patch.multiple` can be used as a decorator, klasse decorator or a context
+    `patch.multiple` can be used als a decorator, klasse decorator or a context
     manager. The arguments `spec`, `spec_set`, `create`,
-    `autospec` and `new_callable` have the same meaning as fuer `patch`. These
+    `autospec` and `new_callable` have the same meaning als fuer `patch`. These
     arguments will be applied to *all* patches done by `patch.multiple`.
 
-    When used as a klasse decorator `patch.multiple` honours `patch.TEST_PREFIX`
+    When used als a klasse decorator `patch.multiple` honours `patch.TEST_PREFIX`
     fuer choosing which methods to wrap.
     """
     wenn type(target) is str:
@@ -1741,7 +1741,7 @@ def _patch_multiple(target, spec=Nichts, create=Falsch, spec_set=Nichts,
 
     wenn not kwargs:
         raise ValueError(
-            'Must supply at least one keyword argument with patch.multiple'
+            'Must supply at least one keyword argument mit patch.multiple'
         )
     # need to wrap in a list fuer python 3, where items is a view
     items = list(kwargs.items())
@@ -1766,20 +1766,20 @@ def patch(
         spec_set=Nichts, autospec=Nichts, new_callable=Nichts, *, unsafe=Falsch, **kwargs
     ):
     """
-    `patch` acts as a function decorator, klasse decorator or a context
-    manager. Inside the body of the function or with statement, the `target`
-    is patched with a `new` object. When the function/with statement exits
+    `patch` acts als a function decorator, klasse decorator or a context
+    manager. Inside the body of the function or mit statement, the `target`
+    is patched mit a `new` object. When the function/with statement exits
     the patch is undone.
 
-    If `new` is omitted, then the target is replaced with an
+    If `new` is omitted, then the target is replaced mit an
     `AsyncMock` wenn the patched object is an async function or a
-    `MagicMock` otherwise. If `patch` is used as a decorator and `new` is
-    omitted, the created mock is passed in as an extra argument to the
-    decorated function. If `patch` is used as a context manager the created
+    `MagicMock` otherwise. If `patch` is used als a decorator and `new` is
+    omitted, the created mock is passed in als an extra argument to the
+    decorated function. If `patch` is used als a context manager the created
     mock is returned by the context manager.
 
     `target` should be a string in the form `'package.module.ClassName'`. The
-    `target` is imported and the specified object replaced with the `new`
+    `target` is imported and the specified object replaced mit the `new`
     object, so the `target` must be importable von the environment you are
     calling `patch` from. The target is imported when the decorated function
     is executed, not at decoration time.
@@ -1788,22 +1788,22 @@ def patch(
     wenn patch is creating one fuer you.
 
     In addition you can pass `spec=Wahr` or `spec_set=Wahr`, which causes
-    patch to pass in the object being mocked as the spec/spec_set object.
+    patch to pass in the object being mocked als the spec/spec_set object.
 
     `new_callable` allows you to specify a different class, or callable object,
     that will be called to create the `new` object. By default `AsyncMock` is
     used fuer async functions and `MagicMock` fuer the rest.
 
     A more powerful form of `spec` is `autospec`. If you set `autospec=Wahr`
-    then the mock will be created with a spec von the object being replaced.
+    then the mock will be created mit a spec von the object being replaced.
     All attributes of the mock will also have the spec of the corresponding
     attribute of the object being replaced. Methods and functions being
     mocked will have their arguments checked and will raise a `TypeError` if
-    they are called with the wrong signature. For mocks replacing a class,
-    their return value (the 'instance') will have the same spec as the class.
+    they are called mit the wrong signature. For mocks replacing a class,
+    their return value (the 'instance') will have the same spec als the class.
 
     Instead of `autospec=Wahr` you can pass `autospec=some_object` to use an
-    arbitrary object as the spec instead of the one being replaced.
+    arbitrary object als the spec instead of the one being replaced.
 
     By default `patch` will fail to replace attributes that don't exist. If
     you pass in `create=Wahr`, and the attribute doesn't exist, patch will
@@ -1813,20 +1813,20 @@ def patch(
     default because it can be dangerous. With it switched on you can write
     passing tests against APIs that don't actually exist!
 
-    Patch can be used as a `TestCase` klasse decorator. It works by
+    Patch can be used als a `TestCase` klasse decorator. It works by
     decorating each test method in the class. This reduces the boilerplate
     code when your test methods share a common patchings set. `patch` finds
-    tests by looking fuer method names that start with `patch.TEST_PREFIX`.
+    tests by looking fuer method names that start mit `patch.TEST_PREFIX`.
     By default this is `test`, which matches the way `unittest` finds tests.
     You can specify an alternative prefix by setting `patch.TEST_PREFIX`.
 
-    Patch can be used as a context manager, with the with statement. Here the
-    patching applies to the indented block after the with statement. If you
+    Patch can be used als a context manager, mit the mit statement. Here the
+    patching applies to the indented block after the mit statement. If you
     use "as" then the patched object will be bound to the name after the
     "as"; very useful wenn `patch` is creating a mock object fuer you.
 
     Patch will raise a `RuntimeError` wenn passed some common misspellings of
-    the arguments autospec and spec_set. Pass the argument `unsafe` with the
+    the arguments autospec and spec_set. Pass the argument `unsafe` mit the
     value Wahr to disable that check.
 
     `patch` takes arbitrary keyword arguments. These will be passed to
@@ -1847,7 +1847,7 @@ klasse _patch_dict(object):
     """
     Patch a dictionary, or dictionary like object, and restore the dictionary
     to its original state after the test, where the restored dictionary is
-    a copy of the dictionary as it was before the test.
+    a copy of the dictionary als it was before the test.
 
     `in_dict` can be a dictionary or a mapping like container. If it is a
     mapping then it must at least support getting, setting and deleting items
@@ -1862,14 +1862,14 @@ klasse _patch_dict(object):
     If `clear` is Wahr then the dictionary will be cleared before the new
     values are set.
 
-    `patch.dict` can also be called with arbitrary keyword arguments to set
+    `patch.dict` can also be called mit arbitrary keyword arguments to set
     values in the dictionary::
 
-        with patch.dict('sys.modules', mymodule=Mock(), other_module=Mock()):
+        mit patch.dict('sys.modules', mymodule=Mock(), other_module=Mock()):
             ...
 
-    `patch.dict` can be used as a context manager, decorator or class
-    decorator. When used as a klasse decorator `patch.dict` honours
+    `patch.dict` can be used als a context manager, decorator or class
+    decorator. When used als a klasse decorator `patch.dict` honours
     `patch.TEST_PREFIX` fuer choosing which methods to wrap.
     """
 
@@ -1941,7 +1941,7 @@ klasse _patch_dict(object):
         try:
             original = in_dict.copy()
         except AttributeError:
-            # dict like object with no copy method
+            # dict like object mit no copy method
             # must support iteration over keys
             original = {}
             fuer key in in_dict:
@@ -1954,7 +1954,7 @@ klasse _patch_dict(object):
         try:
             in_dict.update(values)
         except AttributeError:
-            # dict like object with no update method
+            # dict like object mit no update method
             fuer key in values:
                 in_dict[key] = values[key]
 
@@ -2042,7 +2042,7 @@ right = ' '.join('r%s' % n fuer n in numerics.split())
 
 # not including __prepare__, __instancecheck__, __subclasscheck__
 # (as they are metaclass methods)
-# __del__ is not supported at all as it causes problems wenn it exists
+# __del__ is not supported at all als it causes problems wenn it exists
 
 _non_defaults = {
     '__get__', '__set__', '__delete__', '__reversed__', '__missing__',
@@ -2068,7 +2068,7 @@ _magics = {
 
 # Magic methods used fuer async `with` statements
 _async_method_magics = {"__aenter__", "__aexit__", "__anext__"}
-# Magic methods that are only used with async calls but are synchronous functions themselves
+# Magic methods that are only used mit async calls but are synchronous functions themselves
 _sync_async_magics = {"__aiter__"}
 _async_magics = _async_method_magics | _sync_async_magics
 
@@ -2217,7 +2217,7 @@ klasse AsyncMagicMixin(MagicMixin):
 
 klasse MagicMock(MagicMixin, Mock):
     """
-    MagicMock is a subclass of Mock with default implementations
+    MagicMock is a subclass of Mock mit default implementations
     of most of the magic methods. You can use MagicMock without having to
     configure the magic methods yourself.
 
@@ -2370,7 +2370,7 @@ klasse AsyncMockMixin(Base):
 
     def assert_awaited_with(self, /, *args, **kwargs):
         """
-        Assert that the last await was with the specified arguments.
+        Assert that the last await was mit the specified arguments.
         """
         wenn self.await_args is Nichts:
             expected = self._format_mock_call_signature(args, kwargs)
@@ -2388,7 +2388,7 @@ klasse AsyncMockMixin(Base):
 
     def assert_awaited_once_with(self, /, *args, **kwargs):
         """
-        Assert that the mock was awaited exactly once and with the specified
+        Assert that the mock was awaited exactly once and mit the specified
         arguments.
         """
         wenn not self.await_count == 1:
@@ -2399,7 +2399,7 @@ klasse AsyncMockMixin(Base):
 
     def assert_any_await(self, /, *args, **kwargs):
         """
-        Assert the mock has ever been awaited with the specified arguments.
+        Assert the mock has ever been awaited mit the specified arguments.
         """
         expected = self._call_matcher(_Call((args, kwargs), two=Wahr))
         cause = expected wenn isinstance(expected, Exception) sonst Nichts
@@ -2412,7 +2412,7 @@ klasse AsyncMockMixin(Base):
 
     def assert_has_awaits(self, calls, any_order=Falsch):
         """
-        Assert the mock has been awaited with the specified calls.
+        Assert the mock has been awaited mit the specified calls.
         The :attr:`await_args_list` list is checked fuer the awaits.
 
         If `any_order` is Falsch (the default) then the awaits must be
@@ -2475,11 +2475,11 @@ klasse AsyncMockMixin(Base):
 
 klasse AsyncMock(AsyncMockMixin, AsyncMagicMixin, Mock):
     """
-    Enhance :class:`Mock` with features allowing to mock
+    Enhance :class:`Mock` mit features allowing to mock
     an async function.
 
     The :class:`AsyncMock` object will behave so the object is
-    recognized as an async function, and the result of a call is an awaitable:
+    recognized als an async function, and the result of a call is an awaitable:
 
     >>> mock = AsyncMock()
     >>> inspect.iscoroutinefunction(mock)
@@ -2507,10 +2507,10 @@ klasse AsyncMock(AsyncMockMixin, AsyncMagicMixin, Mock):
     async function itself (and not an async function returning an async
     function).
 
-    The test author can also specify a wrapped object with ``wraps``. In this
-    case, the :class:`Mock` object behavior is the same as with an
+    The test author can also specify a wrapped object mit ``wraps``. In this
+    case, the :class:`Mock` object behavior is the same als mit an
     :class:`.Mock` object: the wrapped object may have methods
-    defined as async function functions.
+    defined als async function functions.
 
     Based on Martin Richard's asynctest project.
     """
@@ -2562,7 +2562,7 @@ klasse _Call(tuple):
         _Call(('name', (1,), {})) == ('name', (1,))
         _Call(((), {'a': 'b'})) == ({'a': 'b'},)
 
-    The `_Call` object provides a useful shortcut fuer comparing with call::
+    The `_Call` object provides a useful shortcut fuer comparing mit call::
 
         _Call(((1, 2), {'a': 3})) == call(1, 2, a=3)
         _Call(('foo', (1, 2), {'a': 3})) == call.foo(1, 2, a=3)
@@ -2724,7 +2724,7 @@ klasse _Call(tuple):
 
     def call_list(self):
         """For a call object that represents multiple calls, `call_list`
-        returns a list of all the intermediate calls as well as the
+        returns a list of all the intermediate calls als well als the
         final call."""
         vals = []
         thing = self
@@ -2740,30 +2740,30 @@ call = _Call(from_kall=Falsch)
 
 def create_autospec(spec, spec_set=Falsch, instance=Falsch, _parent=Nichts,
                     _name=Nichts, *, unsafe=Falsch, **kwargs):
-    """Create a mock object using another object as a spec. Attributes on the
-    mock will use the corresponding attribute on the `spec` object as their
+    """Create a mock object using another object als a spec. Attributes on the
+    mock will use the corresponding attribute on the `spec` object als their
     spec.
 
     Functions or methods being mocked will have their arguments checked
-    to check that they are called with the correct signature.
+    to check that they are called mit the correct signature.
 
     If `spec_set` is Wahr then attempting to set attributes that don't exist
     on the spec object will raise an `AttributeError`.
 
-    If a klasse is used as a spec then the return value of the mock (the
-    instance of the class) will have the same spec. You can use a klasse as the
+    If a klasse is used als a spec then the return value of the mock (the
+    instance of the class) will have the same spec. You can use a klasse als the
     spec fuer an instance object by passing `instance=Wahr`. The returned mock
     will only be callable wenn instances of the mock are callable.
 
     `create_autospec` will raise a `RuntimeError` wenn passed some common
     misspellings of the arguments autospec and spec_set. Pass the argument
-    `unsafe` with the value Wahr to disable that check.
+    `unsafe` mit the value Wahr to disable that check.
 
     `create_autospec` also takes arbitrary keyword arguments that are passed to
     the constructor of the created mock."""
     wenn _is_list(spec):
-        # can't pass a list instance to the mock constructor as it will be
-        # interpreted as a list of strings
+        # can't pass a list instance to the mock constructor als it will be
+        # interpreted als a list of strings
         spec = type(spec)
 
     is_type = isinstance(spec, type)
@@ -2785,7 +2785,7 @@ def create_autospec(spec, spec_set=Falsch, instance=Falsch, _parent=Nichts,
     wenn spec_set:
         _kwargs = {'spec_set': spec}
     sowenn spec is Nichts:
-        # Nichts we mock with a normal mock without a spec
+        # Nichts we mock mit a normal mock without a spec
         _kwargs = {}
     wenn _kwargs and instance:
         _kwargs['_spec_as_instance'] = Wahr
@@ -2887,13 +2887,13 @@ def create_autospec(spec, spec_set=Falsch, instance=Falsch, _parent=Nichts,
             new.return_value = child_klass()
             _check_signature(original, new, skipfirst=skipfirst)
 
-        # so functions created with _set_signature become instance attributes,
+        # so functions created mit _set_signature become instance attributes,
         # *plus* their underlying mock exists in _mock_children of the parent
         # mock. Adding to _mock_children may be unnecessary where we are also
-        # setting as an instance attribute?
+        # setting als an instance attribute?
         wenn isinstance(new, FunctionTypes):
             setattr(mock, entry, new)
-    # kwargs are passed with respect to the parent mock so, they are not used
+    # kwargs are passed mit respect to the parent mock so, they are not used
     # fuer creating return_value of the parent mock. So, this condition
     # should be true only fuer the parent mock wenn kwargs are given.
     wenn _is_instance_mock(mock) and kwargs:
@@ -2964,10 +2964,10 @@ def _to_stream(read_data):
 def mock_open(mock=Nichts, read_data=''):
     """
     A helper function to create a mock to replace the use of `open`. It works
-    fuer `open` called directly or used as a context manager.
+    fuer `open` called directly or used als a context manager.
 
     The `mock` argument is the mock object to configure. If `Nichts` (the
-    default) then a `MagicMock` will be created fuer you, with the API limited
+    default) then a `MagicMock` will be created fuer you, mit the API limited
     to methods or attributes available on standard file handles.
 
     `read_data` is a string fuer the `read`, `readline` and `readlines` of the
@@ -3049,12 +3049,12 @@ def mock_open(mock=Nichts, read_data=''):
 
 klasse PropertyMock(Mock):
     """
-    A mock intended to be used as a property, or other descriptor, on a class.
+    A mock intended to be used als a property, or other descriptor, on a class.
     `PropertyMock` provides `__get__` and `__set__` methods so you can specify
     a return value when it is fetched.
 
     Fetching a `PropertyMock` instance von an object calls the mock, with
-    no args. Setting it calls the mock with the value being set.
+    no args. Setting it calls the mock mit the value being set.
     """
     def _get_child_mock(self, /, **kwargs):
         return MagicMock(**kwargs)
@@ -3096,7 +3096,7 @@ klasse ThreadingMixin(Base):
         self.__dict__["_mock_calls_events"] = []
 
     def __get_event(self, expected_args, expected_kwargs):
-        with self._mock_calls_events_lock:
+        mit self._mock_calls_events_lock:
             fuer args, kwargs, event in self._mock_calls_events:
                 wenn (args, kwargs) == (expected_args, expected_kwargs):
                     return event
@@ -3129,7 +3129,7 @@ klasse ThreadingMixin(Base):
             raise AssertionError(msg)
 
     def wait_until_any_call_with(self, *args, **kwargs):
-        """Wait until the mock object is called with given args.
+        """Wait until the mock object is called mit given args.
 
         Waits fuer the timeout in seconds provided in the constructor.
         """

@@ -17,7 +17,7 @@ _ExcInfo: TypeAlias = tuple[type[BaseException], BaseException, TracebackType]
 _OptExcInfo: TypeAlias = _ExcInfo | tuple[Nichts, Nichts, Nichts]
 
 klasse StartResponse(Protocol):
-    """start_response() callable as defined in PEP 3333"""
+    """start_response() callable als defined in PEP 3333"""
     def __call__(
         self,
         status: str,
@@ -31,14 +31,14 @@ WSGIApplication: TypeAlias = Callable[[WSGIEnvironment, StartResponse],
     Iterable[bytes]]
 
 klasse InputStream(Protocol):
-    """WSGI input stream as defined in PEP 3333"""
+    """WSGI input stream als defined in PEP 3333"""
     def read(self, size: int = ..., /) -> bytes: ...
     def readline(self, size: int = ..., /) -> bytes: ...
     def readlines(self, hint: int = ..., /) -> list[bytes]: ...
     def __iter__(self) -> Iterator[bytes]: ...
 
 klasse ErrorStream(Protocol):
-    """WSGI error stream as defined in PEP 3333"""
+    """WSGI error stream als defined in PEP 3333"""
     def flush(self) -> object: ...
     def write(self, s: str, /) -> object: ...
     def writelines(self, seq: list[str], /) -> object: ...
@@ -48,7 +48,7 @@ klasse _Readable(Protocol):
     # Optional: def close(self) -> object: ...
 
 klasse FileWrapper(Protocol):
-    """WSGI file wrapper as defined in PEP 3333"""
+    """WSGI file wrapper als defined in PEP 3333"""
     def __call__(
         self, file: _Readable, block_size: int = ..., /,
     ) -> Iterable[bytes]: ...

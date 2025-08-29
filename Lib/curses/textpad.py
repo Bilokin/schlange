@@ -1,10 +1,10 @@
-"""Simple textbox editing widget with Emacs-like keybindings."""
+"""Simple textbox editing widget mit Emacs-like keybindings."""
 
 importiere curses
 importiere curses.ascii
 
 def rectangle(win, uly, ulx, lry, lrx):
-    """Draw a rectangle with corners at the provided upper-left
+    """Draw a rectangle mit corners at the provided upper-left
     and lower-right coordinates.
     """
     win.vline(uly+1, ulx, curses.ACS_VLINE, lry - uly - 1)

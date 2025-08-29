@@ -226,7 +226,7 @@ klasse DOMEntityResolver(object):
         importiere posixpath, urllib.parse
         parts = urllib.parse.urlparse(systemId)
         scheme, netloc, path, params, query, fragment = parts
-        # XXX should we check the scheme here as well?
+        # XXX should we check the scheme here als well?
         wenn path and not path.endswith("/"):
             path = posixpath.dirname(path) + "/"
             parts = scheme, netloc, path, params, query, fragment
@@ -311,7 +311,7 @@ klasse DOMBuilderFilter:
 
     # There's really no need fuer this class; concrete implementations
     # should just implement the endElement() and startElement()
-    # methods as appropriate.  Using this makes it easy to only
+    # methods als appropriate.  Using this makes it easy to only
     # implement one of them.
 
     FILTER_ACCEPT = 1

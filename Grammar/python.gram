@@ -138,7 +138,7 @@ compound_stmt[stmt_ty]:
     | &('def' | '@' | 'async') function_def
     | &'wenn' if_stmt
     | &('klasse' | '@') class_def
-    | &('with' | 'async') with_stmt
+    | &('mit' | 'async') with_stmt
     | &('fuer' | 'async') for_stmt
     | &'try' try_stmt
     | &'while' while_stmt
@@ -238,14 +238,14 @@ import_from_as_names[asdl_alias_seq*]:
     | a[asdl_alias_seq*]=','.import_from_as_name+ { a }
 import_from_as_name[alias_ty]:
     | invalid_import_from_as_name
-    | a=NAME b=['as' z=NAME { z }] { _PyAST_alias(
+    | a=NAME b=['als' z=NAME { z }] { _PyAST_alias(
         a->v.Name.id, (b) ? ((expr_ty) b)->v.Name.id : NULL, EXTRA) }
 
 dotted_as_names[asdl_alias_seq*]:
     | a[asdl_alias_seq*]=','.dotted_as_name+ { a }
 dotted_as_name[alias_ty]:
     | invalid_dotted_as_name
-    | a=dotted_name b=['as' z=NAME { z }] { _PyAST_alias(
+    | a=dotted_name b=['als' z=NAME { z }] { _PyAST_alias(
         a->v.Name.id, (b) ? ((expr_ty) b)->v.Name.id : NULL, EXTRA) }
 
 dotted_name[expr_ty]:
@@ -415,18 +415,18 @@ for_stmt[stmt_ty]:
 
 with_stmt[stmt_ty]:
     | invalid_with_stmt_indent
-    | 'with' '(' a[asdl_withitem_seq*]=','.with_item+ ','? ')' ':' tc=[TYPE_COMMENT] b=block {
+    | 'mit' '(' a[asdl_withitem_seq*]=','.with_item+ ','? ')' ':' tc=[TYPE_COMMENT] b=block {
        _PyAST_With(a, b, NEW_TYPE_COMMENT(p, tc), EXTRA) }
-    | 'with' a[asdl_withitem_seq*]=','.with_item+ ':' tc=[TYPE_COMMENT] b=block {
+    | 'mit' a[asdl_withitem_seq*]=','.with_item+ ':' tc=[TYPE_COMMENT] b=block {
         _PyAST_With(a, b, NEW_TYPE_COMMENT(p, tc), EXTRA) }
-    | 'async' 'with' '(' a[asdl_withitem_seq*]=','.with_item+ ','? ')' ':' b=block {
+    | 'async' 'mit' '(' a[asdl_withitem_seq*]=','.with_item+ ','? ')' ':' b=block {
        CHECK_VERSION(stmt_ty, 5, "Async with statements are", _PyAST_AsyncWith(a, b, NULL, EXTRA)) }
-    | 'async' 'with' a[asdl_withitem_seq*]=','.with_item+ ':' tc=[TYPE_COMMENT] b=block {
+    | 'async' 'mit' a[asdl_withitem_seq*]=','.with_item+ ':' tc=[TYPE_COMMENT] b=block {
        CHECK_VERSION(stmt_ty, 5, "Async with statements are", _PyAST_AsyncWith(a, b, NEW_TYPE_COMMENT(p, tc), EXTRA)) }
     | invalid_with_stmt
 
 with_item[withitem_ty]:
-    | e=expression 'as' t=star_target &(',' | ')' | ':') { _PyAST_withitem(e, t, p->arena) }
+    | e=expression 'als' t=star_target &(',' | ')' | ':') { _PyAST_withitem(e, t, p->arena) }
     | invalid_with_item
     | e=expression { _PyAST_withitem(e, NULL, p->arena) }
 
@@ -449,7 +449,7 @@ except_block[excepthandler_ty]:
     | invalid_except_stmt_indent
     | 'except' e=expression ':' b=block {
         _PyAST_ExceptHandler(e, NULL, b, EXTRA) }
-    | 'except' e=expression 'as' t=NAME ':' b=block {
+    | 'except' e=expression 'als' t=NAME ':' b=block {
         _PyAST_ExceptHandler(e, ((expr_ty) t)->v.Name.id, b, EXTRA) }
     | 'except' e=expressions ':' b=block {
         CHECK_VERSION(
@@ -463,7 +463,7 @@ except_star_block[excepthandler_ty]:
     | invalid_except_star_stmt_indent
     | 'except' '*' e=expression ':' b=block {
         _PyAST_ExceptHandler(e, NULL, b, EXTRA) }
-    | 'except' '*' e=expression 'as' t=NAME ':' b=block {
+    | 'except' '*' e=expression 'als' t=NAME ':' b=block {
         _PyAST_ExceptHandler(e, ((expr_ty) t)->v.Name.id, b, EXTRA) }
     | 'except' '*' e=expressions ':' b=block {
         CHECK_VERSION(
@@ -506,7 +506,7 @@ pattern[pattern_ty]:
     | or_pattern
 
 as_pattern[pattern_ty]:
-    | pattern=or_pattern 'as' target=pattern_capture_target {
+    | pattern=or_pattern 'als' target=pattern_capture_target {
         _PyAST_MatchAs(pattern, target->v.Name.id, EXTRA) }
     | invalid_as_pattern
 
@@ -1372,7 +1372,7 @@ invalid_double_type_comments:
     | TYPE_COMMENT NEWLINE TYPE_COMMENT NEWLINE INDENT {
         RAISE_SYNTAX_ERROR("Cannot have two type comments on def") }
 invalid_with_item:
-    | expression 'as' a=expression &(',' | ')' | ':') {
+    | expression 'als' a=expression &(',' | ')' | ':') {
         RAISE_SYNTAX_ERROR_INVALID_TARGET(STAR_TARGETS, a) }
 
 invalid_for_if_clause:
@@ -1394,11 +1394,11 @@ invalid_import:
     | 'importiere' token=NEWLINE {
         RAISE_SYNTAX_ERROR_STARTING_FROM(token, "Expected one or more names after 'importiere'") }
 invalid_dotted_as_name:
-    | dotted_name 'as' !(NAME (',' | ')' | NEWLINE)) a=expression {
+    | dotted_name 'als' !(NAME (',' | ')' | NEWLINE)) a=expression {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a,
             "cannot use %s as import target", _PyPegen_get_expr_name(a)) }
 invalid_import_from_as_name:
-    | NAME 'as' !(NAME (',' | ')' | NEWLINE)) a=expression {
+    | NAME 'als' !(NAME (',' | ')' | NEWLINE)) a=expression {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a,
             "cannot use %s as import target", _PyPegen_get_expr_name(a)) }
 
@@ -1409,47 +1409,47 @@ invalid_import_from_targets:
         RAISE_SYNTAX_ERROR_STARTING_FROM(token, "Expected one or more names after 'importiere'") }
 
 invalid_with_stmt:
-    | ['async'] 'with' ','.(expression ['as' star_target])+ NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
-    | ['async'] 'with' '(' ','.(expressions ['as' star_target])+ ','? ')' NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | ['async'] 'mit' ','.(expression ['als' star_target])+ NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | ['async'] 'mit' '(' ','.(expressions ['als' star_target])+ ','? ')' NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
 invalid_with_stmt_indent:
-    | ['async'] a='with' ','.(expression ['as' star_target])+ ':' NEWLINE !INDENT {
-        RAISE_INDENTATION_ERROR("expected an indented block after 'with' statement on line %d", a->lineno) }
-    | ['async'] a='with' '(' ','.(expressions ['as' star_target])+ ','? ')' ':' NEWLINE !INDENT {
-        RAISE_INDENTATION_ERROR("expected an indented block after 'with' statement on line %d", a->lineno) }
+    | ['async'] a='mit' ','.(expression ['als' star_target])+ ':' NEWLINE !INDENT {
+        RAISE_INDENTATION_ERROR("expected an indented block after 'mit' statement on line %d", a->lineno) }
+    | ['async'] a='mit' '(' ','.(expressions ['als' star_target])+ ','? ')' ':' NEWLINE !INDENT {
+        RAISE_INDENTATION_ERROR("expected an indented block after 'mit' statement on line %d", a->lineno) }
 
 invalid_try_stmt:
     | a='try' ':' NEWLINE !INDENT {
         RAISE_INDENTATION_ERROR("expected an indented block after 'try' statement on line %d", a->lineno) }
     | 'try' ':' block !('except' | 'finally') { RAISE_SYNTAX_ERROR("expected 'except' or 'finally' block") }
-    | 'try' ':' block* except_block+ a='except' b='*' expression ['as' NAME] ':' {
+    | 'try' ':' block* except_block+ a='except' b='*' expression ['als' NAME] ':' {
         RAISE_SYNTAX_ERROR_KNOWN_RANGE(a, b, "cannot have both 'except' and 'except*' on the same 'try'") }
-    | 'try' ':' block* except_star_block+ a='except' [expression ['as' NAME]] ':' {
+    | 'try' ':' block* except_star_block+ a='except' [expression ['als' NAME]] ':' {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "cannot have both 'except' and 'except*' on the same 'try'") }
 invalid_except_stmt:
-    | 'except' a=expression ',' expressions 'as' NAME  ':' {
-        RAISE_SYNTAX_ERROR_STARTING_FROM(a, "multiple exception types must be parenthesized when using 'as'") }
-    | a='except' expression ['as' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | 'except' a=expression ',' expressions 'als' NAME  ':' {
+        RAISE_SYNTAX_ERROR_STARTING_FROM(a, "multiple exception types must be parenthesized when using 'als'") }
+    | a='except' expression ['als' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
     | a='except' NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
-    | 'except' expression 'as' a=expression ':' block {
+    | 'except' expression 'als' a=expression ':' block {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(
             a, "cannot use except statement with %s", _PyPegen_get_expr_name(a)) }
 invalid_except_star_stmt:
-    | 'except' '*' a=expression ',' expressions 'as' NAME  ':' {
-        RAISE_SYNTAX_ERROR_STARTING_FROM(a, "multiple exception types must be parenthesized when using 'as'") }
-    | a='except' '*' expression ['as' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | 'except' '*' a=expression ',' expressions 'als' NAME  ':' {
+        RAISE_SYNTAX_ERROR_STARTING_FROM(a, "multiple exception types must be parenthesized when using 'als'") }
+    | a='except' '*' expression ['als' NAME ] NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
     | a='except' '*' (NEWLINE | ':') { RAISE_SYNTAX_ERROR("expected one or more exception types") }
-    | 'except' '*' expression 'as' a=expression ':' block {
+    | 'except' '*' expression 'als' a=expression ':' block {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(
             a, "cannot use except* statement with %s", _PyPegen_get_expr_name(a)) }
 invalid_finally_stmt:
     | a='finally' ':' NEWLINE !INDENT {
         RAISE_INDENTATION_ERROR("expected an indented block after 'finally' statement on line %d", a->lineno) }
 invalid_except_stmt_indent:
-    | a='except' expression ['as' NAME ] ':' NEWLINE !INDENT {
+    | a='except' expression ['als' NAME ] ':' NEWLINE !INDENT {
         RAISE_INDENTATION_ERROR("expected an indented block after 'except' statement on line %d", a->lineno) }
     | a='except' ':' NEWLINE !INDENT { RAISE_INDENTATION_ERROR("expected an indented block after 'except' statement on line %d", a->lineno) }
 invalid_except_star_stmt_indent:
-    | a='except' '*' expression ['as' NAME ] ':' NEWLINE !INDENT {
+    | a='except' '*' expression ['als' NAME ] ':' NEWLINE !INDENT {
         RAISE_INDENTATION_ERROR("expected an indented block after 'except*' statement on line %d", a->lineno) }
 invalid_match_stmt:
     | "match" subject_expr NEWLINE { CHECK_VERSION(void*, 10, "Pattern matching is", RAISE_SYNTAX_ERROR("expected ':'") ) }
@@ -1460,8 +1460,8 @@ invalid_case_block:
     | a="case" patterns guard? ':' NEWLINE !INDENT {
         RAISE_INDENTATION_ERROR("expected an indented block after 'case' statement on line %d", a->lineno) }
 invalid_as_pattern:
-    | or_pattern 'as' a="_" { RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "cannot use '_' as a target") }
-    | or_pattern 'as' a=expression {
+    | or_pattern 'als' a="_" { RAISE_SYNTAX_ERROR_KNOWN_LOCATION(a, "cannot use '_' as a target") }
+    | or_pattern 'als' a=expression {
         RAISE_SYNTAX_ERROR_KNOWN_LOCATION(
             a, "cannot use %s as pattern target", _PyPegen_get_expr_name(a)) }
 invalid_class_pattern:

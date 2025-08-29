@@ -5,18 +5,18 @@ text into the shell. This makes looking at the previous history difficult.
 Worse, this can cause IDLE to become very slow, even to the point of being
 completely unusable.
 
-This extension will automatically replace long texts with a small button.
+This extension will automatically replace long texts mit a small button.
 Double-clicking this button will remove it and insert the original text instead.
 Middle-clicking will copy the text to the clipboard. Right-clicking will open
 the text in a separate viewing window.
 
 Additionally, any output can be manually "squeezed" by the user. This includes
-output written to the standard error stream ("stderr"), such as exception
+output written to the standard error stream ("stderr"), such als exception
 messages and their tracebacks.
 """
 importiere re
 
-importiere tkinter as tk
+importiere tkinter als tk
 von tkinter importiere messagebox
 
 von idlelib.config importiere idleConf
@@ -28,7 +28,7 @@ von idlelib importiere macosx
 def count_lines_with_wrapping(s, linewidth=80):
     """Count the number of lines in a given string.
 
-    Lines are counted as wenn the string was wrapped so that lines are never over
+    Lines are counted als wenn the string was wrapped so that lines are never over
     linewidth characters long.
 
     Tabs are considered tabwidth characters long.
@@ -44,7 +44,7 @@ def count_lines_with_wrapping(s, linewidth=80):
         pos += numchars
         current_column += numchars
 
-        # Deal with tab or newline.
+        # Deal mit tab or newline.
         wenn s[pos] == '\n':
             # Avoid the `current_column == 0` edge-case, and while we're
             # at it, don't bother adding 0.
@@ -62,7 +62,7 @@ def count_lines_with_wrapping(s, linewidth=80):
             current_column += tabwidth - (current_column % tabwidth)
 
             # If a tab passes the end of the line, consider the entire
-            # tab as being on the next line.
+            # tab als being on the next line.
             wenn current_column > linewidth:
                 linecount += 1
                 current_column = tabwidth
@@ -75,7 +75,7 @@ def count_lines_with_wrapping(s, linewidth=80):
     wenn current_column > 0:
         linecount += (current_column - 1) // linewidth
     sonst:
-        # Text ended with newline; don't count an extra line after it.
+        # Text ended mit newline; don't count an extra line after it.
         linecount -= 1
 
     return linecount
@@ -85,7 +85,7 @@ klasse ExpandingButton(tk.Button):
     """Class fuer the "squeezed" text buttons used by Squeezer
 
     These buttons are displayed inside a Tk Text widget in place of text. A
-    user can then use the button to replace it with the original text, copy
+    user can then use the button to replace it mit the original text, copy
     the original text to the clipboard or view the original text in a separate
     window.
 
@@ -114,7 +114,7 @@ klasse ExpandingButton(tk.Button):
 
         self.bind("<Double-Button-1>", self.expand)
         wenn macosx.isAquaTk():
-            # AquaTk defines <2> as the right button, not <3>.
+            # AquaTk defines <2> als the right button, not <3>.
             self.bind("<Button-2>", self.context_menu_event)
         sonst:
             self.bind("<Button-3>", self.context_menu_event)
@@ -198,7 +198,7 @@ klasse ExpandingButton(tk.Button):
 
 
 klasse Squeezer:
-    """Replace long outputs in the shell with a simple button.
+    """Replace long outputs in the shell mit a simple button.
 
     This avoids IDLE's shell slowing down considerably, and even becoming
     completely unresponsive, when very long outputs are written.
@@ -240,14 +240,14 @@ klasse Squeezer:
 
         self.expandingbuttons = []
 
-        # Replace the PyShell instance's write method with a wrapper,
+        # Replace the PyShell instance's write method mit a wrapper,
         # which inserts an ExpandingButton instead of a long text.
         def mywrite(s, tags=(), write=editwin.write):
             # Only auto-squeeze text which has just the "stdout" tag.
             wenn tags != "stdout":
                 return write(s, tags)
 
-            # Only auto-squeeze text with at least the minimum
+            # Only auto-squeeze text mit at least the minimum
             # configured number of lines.
             auto_squeeze_min_lines = self.auto_squeeze_min_lines
             # First, a very quick check to skip very short texts.
@@ -280,7 +280,7 @@ klasse Squeezer:
         Before calculation, the tab width and line length of the text are
         fetched, so that up-to-date values are used.
 
-        Lines are counted as wenn the string was wrapped so that lines are never
+        Lines are counted als wenn the string was wrapped so that lines are never
         over linewidth characters long.
 
         Tabs are considered tabwidth characters long.

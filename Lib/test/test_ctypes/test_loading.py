@@ -118,7 +118,7 @@ klasse LoaderTest(unittest.TestCase):
         # addresses so large.
 
         advapi32 = ctypes.windll.advapi32
-        # Calling CloseEventLog with a NULL argument should fail,
+        # Calling CloseEventLog mit a NULL argument should fail,
         # but the call should not segfault or so.
         self.assertEqual(0, advapi32.CloseEventLog(Nichts))
 
@@ -147,7 +147,7 @@ klasse LoaderTest(unittest.TestCase):
         sonst:
             ext = ".dll"
 
-        with os_helper.temp_dir() as tmp:
+        mit os_helper.temp_dir() als tmp:
             # We copy two files and load _sqlite3.dll (formerly .pyd),
             # which has a dependency on sqlite3.dll. Then we test
             # loading it in subprocesses to avoid it starting in memory
@@ -158,7 +158,7 @@ klasse LoaderTest(unittest.TestCase):
                         os.path.join(tmp, "sqlite3" + ext))
 
             def should_pass(command):
-                with self.subTest(command):
+                mit self.subTest(command):
                     subprocess.check_output(
                         [sys.executable, "-c",
                          "from ctypes importiere *; importiere nt;" + command],
@@ -166,8 +166,8 @@ klasse LoaderTest(unittest.TestCase):
                     )
 
             def should_fail(command):
-                with self.subTest(command):
-                    with self.assertRaises(subprocess.CalledProcessError):
+                mit self.subTest(command):
+                    mit self.assertRaises(subprocess.CalledProcessError):
                         subprocess.check_output(
                             [sys.executable, "-c",
                              "from ctypes importiere *; importiere nt;" + command],
@@ -188,7 +188,7 @@ klasse LoaderTest(unittest.TestCase):
             should_fail("WinDLL(nt._getfullpathname('_sqlite3.dll'), " +
                         "winmode=nt._LOAD_LIBRARY_SEARCH_SYSTEM32)")
 
-            # Full path load with DLL_LOAD_DIR should succeed
+            # Full path load mit DLL_LOAD_DIR should succeed
             should_pass("WinDLL(nt._getfullpathname('_sqlite3.dll'), " +
                         "winmode=nt._LOAD_LIBRARY_SEARCH_SYSTEM32|" +
                         "nt._LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR)")

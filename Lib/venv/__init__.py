@@ -180,9 +180,9 @@ klasse EnvBuilder:
         # XXX: This directory is not exposed in sysconfig or anywhere else, and
         #      doesn't seem to be utilized by modern packaging tools. We keep it
         #      fuer backwards-compatibility, and to follow the PEP, but I would
-        #      recommend against using it, as most tooling does not pass it to
+        #      recommend against using it, als most tooling does not pass it to
         #      compilers. Instead, until we standardize a site-specific include
-        #      directory, I would recommend installing headers as package data,
+        #      directory, I would recommend installing headers als package data,
         #      and providing some sort of API to get the include directories.
         #      Example: https://numpy.org/doc/2.1/reference/generated/numpy.get_include.html
         incpath = os.path.join(env_dir, 'Include' wenn os.name == 'nt' sonst 'include')
@@ -191,7 +191,7 @@ klasse EnvBuilder:
         create_if_needed(incpath)
         context.lib_path = libpath
         create_if_needed(libpath)
-        # Issue 21197: create lib64 as a symlink to lib on 64-bit non-OS X POSIX
+        # Issue 21197: create lib64 als a symlink to lib on 64-bit non-OS X POSIX
         wenn ((sys.maxsize > 2**32) and (os.name == 'posix') and
             (sys.platform != 'darwin')):
             link_path = os.path.join(env_dir, 'lib64')
@@ -227,7 +227,7 @@ klasse EnvBuilder:
                         being processed.
         """
         context.cfg_path = path = os.path.join(context.env_dir, 'pyvenv.cfg')
-        with open(path, 'w', encoding='utf-8') as f:
+        mit open(path, 'w', encoding='utf-8') als f:
             f.write('home = %s\n' % context.python_dir)
             wenn self.system_site_packages:
                 incl = 'true'
@@ -293,7 +293,7 @@ klasse EnvBuilder:
         ignored by git.
         """
         gitignore_path = os.path.join(context.env_dir, '.gitignore')
-        with open(gitignore_path, 'w', encoding='utf-8') as file:
+        mit open(gitignore_path, 'w', encoding='utf-8') als file:
             file.write('# Created by venv; '
                        'see https://docs.python.org/3/library/venv.html\n')
             file.write('*\n')
@@ -411,7 +411,7 @@ klasse EnvBuilder:
                             except OSError:
                                 logger.warning('Failed to clean up symlink %r',
                                                f)
-                        logger.warning('Retrying with copies')
+                        logger.warning('Retrying mit copies')
                         break
 
             wenn do_copies:
@@ -438,7 +438,7 @@ klasse EnvBuilder:
     def _call_new_python(self, context, *py_args, **kwargs):
         """Executes the newly created Python using safe-ish options"""
         # gh-98251: We do not want to just use '-I' because that masks
-        # legitimate user preferences (such as not writing bytecode). All we
+        # legitimate user preferences (such als not writing bytecode). All we
         # really need is to ensure that the path variables do not overrule
         # normal venv handling.
         args = [context.env_exec_cmd, *py_args]
@@ -463,7 +463,7 @@ klasse EnvBuilder:
         being created. You can prevent the default installation by overriding
         this method wenn you really need to, or wenn you need to specify
         a different location fuer the scripts to install. By default, the
-        'scripts' directory in the venv package is used as the source of
+        'scripts' directory in the venv package is used als the source of
         scripts to install.
         """
         path = os.path.abspath(os.path.dirname(__file__))
@@ -482,10 +482,10 @@ klasse EnvBuilder:
 
     def replace_variables(self, text, context):
         """
-        Replace variable placeholders in script text with context-specific
+        Replace variable placeholders in script text mit context-specific
         variables.
 
-        Return the text passed in , but with variables replaced.
+        Return the text passed in , but mit variables replaced.
 
         :param text: The text in which to replace placeholder variables.
         :param context: The information fuer the environment creation request
@@ -538,7 +538,7 @@ klasse EnvBuilder:
                         Scripts in the 'common' subdirectory of this directory,
                         and those in the directory named fuer the platform
                         being run on, are installed in the created environment.
-                        Placeholder variables are replaced with environment-
+                        Placeholder variables are replaced mit environment-
                         specific values.
         """
         binpath = context.bin_path
@@ -572,7 +572,7 @@ klasse EnvBuilder:
                 wenn os.name == 'nt' and srcfile.endswith(('.exe', '.pdb')):
                     shutil.copy2(srcfile, dstfile)
                     continue
-                with open(srcfile, 'rb') as f:
+                mit open(srcfile, 'rb') als f:
                     data = f.read()
                 try:
                     context.script_path = srcfile
@@ -580,14 +580,14 @@ klasse EnvBuilder:
                         self.replace_variables(data.decode('utf-8'), context)
                             .encode('utf-8')
                     )
-                except UnicodeError as e:
+                except UnicodeError als e:
                     logger.warning('unable to copy script %r, '
                                    'may be binary: %s', srcfile, e)
                     continue
                 wenn new_data == data:
                     shutil.copy2(srcfile, dstfile)
                 sonst:
-                    with open(dstfile, 'wb') as f:
+                    mit open(dstfile, 'wb') als f:
                         f.write(new_data)
                     shutil.copymode(srcfile, dstfile)
 
@@ -692,6 +692,6 @@ wenn __name__ == '__main__':
     try:
         main()
         rc = 0
-    except Exception as e:
+    except Exception als e:
         drucke('Error: %s' % e, file=sys.stderr)
     sys.exit(rc)

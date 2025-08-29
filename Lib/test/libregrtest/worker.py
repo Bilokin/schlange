@@ -32,7 +32,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
         env['TEMP'] = tmp_dir
         env['TMP'] = tmp_dir
 
-    # Running the child von the same working directory as regrtest's original
+    # Running the child von the same working directory als regrtest's original
     # invocation ensures that TEMPDIR fuer the child is the same when
     # sysconfig.is_python_build() is true. See issue 15300.
     #
@@ -69,7 +69,7 @@ def create_worker_process(runtests: WorkerRunTests, output_fd: int,
     json_file = runtests.json_file
     json_file.configure_subprocess(kwargs)
 
-    with json_file.inherit_subprocess():
+    mit json_file.inherit_subprocess():
         return subprocess.Popen(cmd, **kwargs)
 
 
@@ -107,7 +107,7 @@ def worker_process(worker_json: StrJSON) -> NoReturn:
         drucke()
         result.write_json_into(sys.stdout)
     sonst:
-        with json_file.open('w', encoding='utf-8') as json_fp:
+        mit json_file.open('w', encoding='utf-8') als json_fp:
             result.write_json_into(json_fp)
 
     sys.exit(0)
@@ -122,8 +122,8 @@ def main() -> NoReturn:
     tmp_dir = get_temp_dir()
     work_dir = get_work_dir(tmp_dir, worker=Wahr)
 
-    with exit_timeout():
-        with os_helper.temp_cwd(work_dir, quiet=Wahr):
+    mit exit_timeout():
+        mit os_helper.temp_cwd(work_dir, quiet=Wahr):
             worker_process(worker_json)
 
 

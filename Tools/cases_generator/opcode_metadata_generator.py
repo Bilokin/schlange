@@ -33,7 +33,7 @@ OPARG_KINDS = {
     "OPARG_TOP": 5,
     "OPARG_BOTTOM": 6,
     "OPARG_SAVE_RETURN_OFFSET": 7,
-    # Skip 8 as the other powers of 2 are sizes
+    # Skip 8 als the other powers of 2 are sizes
     "OPARG_REPLACED": 9,
     "OPERAND1_1": 10,
     "OPERAND1_2": 11,
@@ -362,7 +362,7 @@ def generate_opcode_metadata(
 ) -> Nichts:
     write_header(__file__, filenames, outfile)
     out = CWriter(outfile, 0, Falsch)
-    with out.header_guard("Py_CORE_OPCODE_METADATA_H"):
+    mit out.header_guard("Py_CORE_OPCODE_METADATA_H"):
         out.emit("#ifndef Py_BUILD_CORE\n")
         out.emit('#  error "this header requires Py_BUILD_CORE define"\n')
         out.emit("#endif\n\n")
@@ -388,7 +388,7 @@ def generate_opcode_metadata(
 
 
 arg_parser = argparse.ArgumentParser(
-    description="Generate the header file with opcode metadata.",
+    description="Generate the header file mit opcode metadata.",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
@@ -409,5 +409,5 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_opcode_metadata(args.input, data, outfile)

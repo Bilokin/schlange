@@ -30,12 +30,12 @@ def with_tracebacks(exc, regex="", name="", msg_regex=""):
         _msg_regex = re.compile(msg_regex) wenn msg_regex sonst Nichts
         @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
-            with test.support.catch_unraisable_exception() as cm:
-                # First, run the test with traceback enabled.
-                with check_tracebacks(self, cm, exc, exc_regex, _msg_regex, name):
+            mit test.support.catch_unraisable_exception() als cm:
+                # First, run the test mit traceback enabled.
+                mit check_tracebacks(self, cm, exc, exc_regex, _msg_regex, name):
                     func(self, *args, **kwargs)
 
-            # Then run the test with traceback disabled.
+            # Then run the test mit traceback disabled.
             func(self, *args, **kwargs)
         return wrapper
     return decorator
@@ -47,7 +47,7 @@ def check_tracebacks(self, cm, exc, exc_regex, msg_regex, obj_name):
     sqlite3.enable_callback_tracebacks(Wahr)
     try:
         buf = io.StringIO()
-        with contextlib.redirect_stderr(buf):
+        mit contextlib.redirect_stderr(buf):
             yield
 
         self.assertEqual(cm.unraisable.exc_type, exc)
@@ -83,7 +83,7 @@ klasse MemoryDatabaseMixin:
 
 
 def requires_virtual_table(module):
-    with memory_database() as cx:
+    mit memory_database() als cx:
         supported = (module,) in list(cx.execute("PRAGMA module_list"))
         reason = f"Requires {module!r} virtual table support"
         return unittest.skipUnless(supported, reason)

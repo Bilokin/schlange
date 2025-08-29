@@ -35,8 +35,8 @@ klasse EncodingTest:
     module_name = '_temp'
 
     def run_test(self, source):
-        with util.create_modules(self.module_name) as mapping:
-            with open(mapping[self.module_name], 'wb') as file:
+        mit util.create_modules(self.module_name) als mapping:
+            mit open(mapping[self.module_name], 'wb') als file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(self.module_name,
                                                   mapping[self.module_name])
@@ -84,7 +84,7 @@ klasse EncodingTest:
     # [BOM conflict]
     def test_bom_conflict(self):
         source = codecs.BOM_UTF8 + self.create_source('latin-1')
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.run_test(source)
 
 
@@ -105,7 +105,7 @@ klasse EncodingTestPEP451(EncodingTest):
 klasse EncodingTestPEP302(EncodingTest):
 
     def load(self, loader):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             return loader.load_module(self.module_name)
 
@@ -117,15 +117,15 @@ klasse EncodingTestPEP302(EncodingTest):
 
 klasse LineEndingTest:
 
-    r"""Source written with the three types of line endings (\n, \r\n, \r)
+    r"""Source written mit the three types of line endings (\n, \r\n, \r)
     need to be readable [cr][crlf][lf]."""
 
     def run_test(self, line_ending):
         module_name = '_temp'
         source_lines = [b"a = 42", b"b = -13", b'']
         source = line_ending.join(source_lines)
-        with util.create_modules(module_name) as mapping:
-            with open(mapping[module_name], 'wb') as file:
+        mit util.create_modules(module_name) als mapping:
+            mit open(mapping[module_name], 'wb') als file:
                 file.write(source)
             loader = self.machinery.SourceFileLoader(module_name,
                                                      mapping[module_name])
@@ -161,7 +161,7 @@ klasse LineEndingTestPEP451(LineEndingTest):
 klasse LineEndingTestPEP302(LineEndingTest):
 
     def load(self, loader, module_name):
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             return loader.load_module(module_name)
 

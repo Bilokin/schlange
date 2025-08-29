@@ -12,17 +12,17 @@ importiere warnings
 
 @contextlib.contextmanager
 def deprecated():
-    with warnings.catch_warnings():
+    mit warnings.catch_warnings():
         warnings.simplefilter('ignore', DeprecationWarning)
         yield
 
 
 @contextlib.contextmanager
 def fresh(name, *, oldapi=Falsch):
-    with util.uncache(name):
-        with import_helper.frozen_modules():
+    mit util.uncache(name):
+        mit import_helper.frozen_modules():
             wenn oldapi:
-                with deprecated():
+                mit deprecated():
                     yield
             sonst:
                 yield
@@ -39,7 +39,7 @@ def resolve_stdlib_file(name, ispkg=Falsch):
 klasse ExecModuleTests(abc.LoaderTests):
 
     def exec_module(self, name, origname=Nichts):
-        with import_helper.frozen_modules():
+        mit import_helper.frozen_modules():
             is_package = self.machinery.FrozenImporter.is_package(name)
         spec = self.machinery.ModuleSpec(
             name,
@@ -55,9 +55,9 @@ klasse ExecModuleTests(abc.LoaderTests):
         module.__spec__ = spec
         assert not hasattr(module, 'initialized')
 
-        with fresh(name):
+        mit fresh(name):
             self.machinery.FrozenImporter.exec_module(module)
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             module.main()
 
         self.assertWahr(module.initialized)
@@ -90,7 +90,7 @@ klasse ExecModuleTests(abc.LoaderTests):
 
     def test_lacking_parent(self):
         name = '__phello__.spam'
-        with util.uncache('__phello__'):
+        mit util.uncache('__phello__'):
             module, output = self.exec_module(name)
         check = {'__name__': name}
         fuer attr, value in check.items():
@@ -111,9 +111,9 @@ klasse ExecModuleTests(abc.LoaderTests):
     test_state_after_failure = Nichts
 
     def test_unloadable(self):
-        with import_helper.frozen_modules():
+        mit import_helper.frozen_modules():
             assert self.machinery.FrozenImporter.find_spec('_not_real') is Nichts
-        with self.assertRaises(ImportError) as cm:
+        mit self.assertRaises(ImportError) als cm:
             self.exec_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
 
@@ -130,18 +130,18 @@ klasse InspectLoaderTests:
     def test_get_code(self):
         # Make sure that the code object is good.
         name = '__hello__'
-        with import_helper.frozen_modules():
+        mit import_helper.frozen_modules():
             code = self.machinery.FrozenImporter.get_code(name)
             mod = types.ModuleType(name)
             exec(code, mod.__dict__)
-        with captured_stdout() as stdout:
+        mit captured_stdout() als stdout:
             mod.main()
         self.assertHasAttr(mod, 'initialized')
         self.assertEqual(stdout.getvalue(), 'Hello world!\n')
 
     def test_get_source(self):
         # Should always return Nichts.
-        with import_helper.frozen_modules():
+        mit import_helper.frozen_modules():
             result = self.machinery.FrozenImporter.get_source('__hello__')
         self.assertIsNichts(result)
 
@@ -150,7 +150,7 @@ klasse InspectLoaderTests:
         test_for = (('__hello__', Falsch), ('__phello__', Wahr),
                     ('__phello__.spam', Falsch))
         fuer name, is_package in test_for:
-            with import_helper.frozen_modules():
+            mit import_helper.frozen_modules():
                 result = self.machinery.FrozenImporter.is_package(name)
             self.assertEqual(bool(result), is_package)
 
@@ -158,8 +158,8 @@ klasse InspectLoaderTests:
         # Raise ImportError fuer modules that are not frozen.
         fuer meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.FrozenImporter, meth_name)
-            with self.assertRaises(ImportError) as cm:
-                with import_helper.frozen_modules():
+            mit self.assertRaises(ImportError) als cm:
+                mit import_helper.frozen_modules():
                     method('importlib')
             self.assertEqual(cm.exception.name, 'importlib')
 

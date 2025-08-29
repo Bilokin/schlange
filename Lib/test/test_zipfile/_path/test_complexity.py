@@ -29,7 +29,7 @@ klasse TestComplexity(unittest.TestCase):
 
     def make_zip_path(self, depth=1, width=1) -> zipfile.Path:
         """
-        Construct a Path with width files at every level of depth.
+        Construct a Path mit width files at every level of depth.
         """
         zf = zipfile.ZipFile(io.BytesIO(), mode='w')
         pairs = itertools.product(self.make_deep_paths(depth), self.make_names(width))

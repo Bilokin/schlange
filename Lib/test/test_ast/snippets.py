@@ -11,35 +11,35 @@ exec_tests = [
     "'module docstring'",
     # FunctionDef
     "def f(): pass",
-    # FunctionDef with docstring
+    # FunctionDef mit docstring
     "def f(): 'function docstring'",
-    # FunctionDef with arg
+    # FunctionDef mit arg
     "def f(a): pass",
-    # FunctionDef with arg and default value
+    # FunctionDef mit arg and default value
     "def f(a=0): pass",
-    # FunctionDef with varargs
+    # FunctionDef mit varargs
     "def f(*args): pass",
-    # FunctionDef with varargs as TypeVarTuple
+    # FunctionDef mit varargs als TypeVarTuple
     "def f(*args: *Ts): pass",
-    # FunctionDef with varargs as unpacked Tuple
+    # FunctionDef mit varargs als unpacked Tuple
     "def f(*args: *tuple[int, ...]): pass",
-    # FunctionDef with varargs as unpacked Tuple *and* TypeVarTuple
+    # FunctionDef mit varargs als unpacked Tuple *and* TypeVarTuple
     "def f(*args: *tuple[int, *Ts]): pass",
-    # FunctionDef with kwargs
+    # FunctionDef mit kwargs
     "def f(**kwargs): pass",
-    # FunctionDef with all kind of args and docstring
+    # FunctionDef mit all kind of args and docstring
     "def f(a, b=1, c=Nichts, d=[], e={}, *args, f=42, **kwargs): 'doc fuer f()'",
-    # FunctionDef with type annotation on return involving unpacking
+    # FunctionDef mit type annotation on return involving unpacking
     "def f() -> tuple[*Ts]: pass",
     "def f() -> tuple[int, *Ts]: pass",
     "def f() -> tuple[int, *tuple[int, ...]]: pass",
     # ClassDef
     "class C:pass",
-    # ClassDef with docstring
+    # ClassDef mit docstring
     "class C: 'docstring fuer klasse C'",
     # ClassDef, new style class
     "class C(object): pass",
-    # Classdef with multiple bases
+    # Classdef mit multiple bases
     "class C(A, B): pass",
     # Return
     "def f():return 1",
@@ -52,7 +52,7 @@ exec_tests = [
     "(a,b) = c",
     "[a,b] = c",
     "a[b] = c",
-    # AnnAssign with unpacked types
+    # AnnAssign mit unpacked types
     "x: tuple[*Ts]",
     "x: tuple[int, *Ts]",
     "x: tuple[int, *tuple[str, ...]]",
@@ -87,9 +87,9 @@ exec_tests = [
     # With
     "with x: pass",
     "with x, y: pass",
-    "with x as y: pass",
-    "with x as y, z as q: pass",
-    "with (x as y): pass",
+    "with x als y: pass",
+    "with x als y, z als q: pass",
+    "with (x als y): pass",
     "with (x, y): pass",
     # Raise
     "raise",
@@ -98,25 +98,25 @@ exec_tests = [
     "raise Exception('string') von Nichts",
     # TryExcept
     "try:\n  pass\nexcept Exception:\n  pass",
-    "try:\n  pass\nexcept Exception as exc:\n  pass",
+    "try:\n  pass\nexcept Exception als exc:\n  pass",
     # TryFinally
     "try:\n  pass\nfinally:\n  pass",
     # TryStarExcept
     "try:\n  pass\nexcept* Exception:\n  pass",
-    "try:\n  pass\nexcept* Exception as exc:\n  pass",
+    "try:\n  pass\nexcept* Exception als exc:\n  pass",
     # TryExceptFinallyElse
     "try:\n  pass\nexcept Exception:\n  pass\nelse:  pass\nfinally:\n  pass",
-    "try:\n  pass\nexcept Exception as exc:\n  pass\nelse:  pass\nfinally:\n  pass",
-    "try:\n  pass\nexcept* Exception as exc:\n  pass\nelse:  pass\nfinally:\n  pass",
+    "try:\n  pass\nexcept Exception als exc:\n  pass\nelse:  pass\nfinally:\n  pass",
+    "try:\n  pass\nexcept* Exception als exc:\n  pass\nelse:  pass\nfinally:\n  pass",
     # Assert
     "assert v",
-    # Assert with message
+    # Assert mit message
     "assert v, 'message'",
     # Import
     "import sys",
-    "import foo as bar",
+    "import foo als bar",
     # ImportFrom
-    "from sys importiere x as y",
+    "from sys importiere x als y",
     "from sys importiere v",
     # Global
     "global v",
@@ -128,7 +128,7 @@ exec_tests = [
     "for v in v:break",
     # Continue
     "for v in v:continue",
-    # fuer statements with naked tuples (see http://bugs.python.org/issue6704)
+    # fuer statements mit naked tuples (see http://bugs.python.org/issue6704)
     "for a,b in c: pass",
     "for (a,b) in c: pass",
     "for [a,b] in c: pass",
@@ -146,22 +146,22 @@ exec_tests = [
     )""",
     # dictcomp
     "{a : b fuer w in x fuer m in p wenn g}",
-    # dictcomp with naked tuple
+    # dictcomp mit naked tuple
     "{a : b fuer v,w in x}",
     # setcomp
     "{r fuer l in x wenn g}",
-    # setcomp with naked tuple
+    # setcomp mit naked tuple
     "{r fuer l,m in x}",
     # AsyncFunctionDef
     "async def f():\n 'async function'\n await something()",
     # AsyncFor
     "async def f():\n async fuer e in i: 1\n sonst: 2",
     # AsyncWith
-    "async def f():\n async with a as b: 1",
+    "async def f():\n async mit a als b: 1",
     # PEP 448: Additional Unpacking Generalizations
     "{**{1:2}, 2:3}",
     "{*{1, 2}, 3}",
-    # Function with yield (from)
+    # Function mit yield (from)
     "def f(): yield 1",
     "def f(): yield von []",
     # Asynchronous comprehensions
@@ -172,9 +172,9 @@ exec_tests = [
     "@deco1\n@deco2()\n@deco3(1)\nasync def f(): pass",
     # Decorated ClassDef
     "@deco1\n@deco2()\n@deco3(1)\nclass C: pass",
-    # Decorator with generator argument
+    # Decorator mit generator argument
     "@deco(a fuer a in b)\ndef f(): pass",
-    # Decorator with attribute
+    # Decorator mit attribute
     "@a.b.c\ndef f(): pass",
     # Simple assignment expression
     "(a := 1)",
@@ -187,7 +187,7 @@ exec_tests = [
     "def f(a, /, c, d, e): pass",
     "def f(a, /, c, *, d, e): pass",
     "def f(a, /, c, *, d, e, **kwargs): pass",
-    # Positional-only arguments with defaults
+    # Positional-only arguments mit defaults
     "def f(a=1, /,): pass",
     "def f(a=1, /, b=2, c=4): pass",
     "def f(a=1, /, b=2, *, c=4): pass",
@@ -215,13 +215,13 @@ exec_tests = [
     "def f[T: int = 1, *Ts = 2, **P = 3](): pass",
     # Match
     "match x:\n\tcase 1:\n\t\tpass",
-    # Match with _
+    # Match mit _
     "match x:\n\tcase 1:\n\t\tpass\n\tcase _:\n\t\tpass",
 ]
 
 # These are compiled through "single"
-# because of overlap with "eval", it just tests what
-# can't be tested with "eval"
+# because of overlap mit "eval", it just tests what
+# can't be tested mit "eval"
 single_tests = [
     "1+2"
 ]
@@ -296,7 +296,7 @@ eval_tests = [
   "{a fuer b in c wenn d}",
   # DictComp
   "{k: v fuer k, v in c wenn d}",
-  # Comprehensions with multiple fuer targets
+  # Comprehensions mit multiple fuer targets
   "[(a,b) fuer a,b in c]",
   "[(a,b) fuer (a,b) in c]",
   "[(a,b) fuer [a,b] in c]",
@@ -324,9 +324,9 @@ eval_tests = [
   "f()",
   # Call
   "f(1,2,c=3,*d,**e)",
-  # Call with multi-character starred
+  # Call mit multi-character starred
   "f(*[0, 1])",
-  # Call with a generator argument
+  # Call mit a generator argument
   "f(a fuer a in b)",
   # Constant(value=int())
   "10",

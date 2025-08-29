@@ -68,10 +68,10 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     def test_remote_stack_trace(self):
-        # Spawn a process with some realistic Python code
+        # Spawn a process mit some realistic Python code
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
@@ -97,11 +97,11 @@ klasse TestGetStackTrace(unittest.TestCase):
             """
         )
         stack_trace = Nichts
-        with os_helper.temp_dir() as work_dir:
+        mit os_helper.temp_dir() als work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
 
-            # Create a socket server to communicate with the target process
+            # Create a socket server to communicate mit the target process
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket.bind(("localhost", port))
@@ -153,10 +153,10 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_remote_stack_trace(self):
-        # Spawn a process with some realistic Python code
+        # Spawn a process mit some realistic Python code
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
@@ -185,7 +185,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 await task
 
             async def main():
-                async with asyncio.TaskGroup() as tg:
+                async mit asyncio.TaskGroup() als tg:
                     task = tg.create_task(c2(), name="c2_root")
                     tg.create_task(c1(task), name="sub_main_1")
                     tg.create_task(c1(task), name="sub_main_2")
@@ -202,9 +202,9 @@ klasse TestGetStackTrace(unittest.TestCase):
         )
         stack_trace = Nichts
         fuer task_factory_variant in "asyncio.new_event_loop", "new_eager_loop":
-            with (
+            mit (
                 self.subTest(task_factory_variant=task_factory_variant),
-                os_helper.temp_dir() as work_dir,
+                os_helper.temp_dir() als work_dir,
             ):
                 script_dir = os.path.join(work_dir, "script_pkg")
                 os.mkdir(script_dir)
@@ -401,10 +401,10 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     def test_asyncgen_remote_stack_trace(self):
-        # Spawn a process with some realistic Python code
+        # Spawn a process mit some realistic Python code
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
@@ -433,10 +433,10 @@ klasse TestGetStackTrace(unittest.TestCase):
             """
         )
         stack_trace = Nichts
-        with os_helper.temp_dir() as work_dir:
+        mit os_helper.temp_dir() als work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
-            # Create a socket server to communicate with the target process
+            # Create a socket server to communicate mit the target process
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket.bind(("localhost", port))
@@ -462,7 +462,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 p.terminate()
                 p.wait(timeout=SHORT_TIMEOUT)
 
-            # For this simple asyncgen test, we only expect one task with the full coroutine stack
+            # For this simple asyncgen test, we only expect one task mit the full coroutine stack
             self.assertEqual(len(stack_trace[0].awaited_by), 1)
             task = stack_trace[0].awaited_by[0]
             self.assertEqual(task.task_name, "Task-1")
@@ -489,10 +489,10 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_gather_remote_stack_trace(self):
-        # Spawn a process with some realistic Python code
+        # Spawn a process mit some realistic Python code
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
@@ -522,10 +522,10 @@ klasse TestGetStackTrace(unittest.TestCase):
             """
         )
         stack_trace = Nichts
-        with os_helper.temp_dir() as work_dir:
+        mit os_helper.temp_dir() als work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
-            # Create a socket server to communicate with the target process
+            # Create a socket server to communicate mit the target process
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket.bind(("localhost", port))
@@ -622,10 +622,10 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_staggered_race_remote_stack_trace(self):
-        # Spawn a process with some realistic Python code
+        # Spawn a process mit some realistic Python code
         port = find_unused_port()
         script = textwrap.dedent(
             f"""\
@@ -658,10 +658,10 @@ klasse TestGetStackTrace(unittest.TestCase):
             """
         )
         stack_trace = Nichts
-        with os_helper.temp_dir() as work_dir:
+        mit os_helper.temp_dir() als work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
-            # Create a socket server to communicate with the target process
+            # Create a socket server to communicate mit the target process
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket.bind(("localhost", port))
@@ -778,7 +778,7 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     def test_async_global_awaited_by(self):
         port = find_unused_port()
@@ -824,7 +824,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 await asyncio.sleep(SHORT_TIMEOUT)
 
             async def echo_client_spam(server):
-                async with asyncio.TaskGroup() as tg:
+                async mit asyncio.TaskGroup() als tg:
                     while connections < 1000:
                         msg = list(ascii_lowercase + digits)
                         random.shuffle(msg)
@@ -842,8 +842,8 @@ klasse TestGetStackTrace(unittest.TestCase):
             async def main():
                 loop = asyncio.get_running_loop()
                 server = await loop.create_server(EchoServerProtocol, HOST, PORT)
-                async with server:
-                    async with asyncio.TaskGroup() as tg:
+                async mit server:
+                    async mit asyncio.TaskGroup() als tg:
                         tg.create_task(server.serve_forever(), name="server task")
                         tg.create_task(echo_client_spam(server), name="echo client spam")
 
@@ -851,10 +851,10 @@ klasse TestGetStackTrace(unittest.TestCase):
             """
         )
         stack_trace = Nichts
-        with os_helper.temp_dir() as work_dir:
+        mit os_helper.temp_dir() als work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
-            # Create a socket server to communicate with the target process
+            # Create a socket server to communicate mit the target process
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket.bind(("localhost", port))
@@ -873,7 +873,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 fuer _ in busy_retry(SHORT_TIMEOUT):
                     try:
                         all_awaited_by = get_all_awaited_by(p.pid)
-                    except RuntimeError as re:
+                    except RuntimeError als re:
                         # This call reads a linked list in another process with
                         # no synchronization. That occasionally leads to invalid
                         # reads. Here we avoid making the test flaky.
@@ -893,7 +893,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                         break
                 # expected: a list of two elements: 1 thread, 1 interp
                 self.assertEqual(len(all_awaited_by), 2)
-                # expected: a tuple with the thread ID and the awaited_by list
+                # expected: a tuple mit the thread ID and the awaited_by list
                 self.assertEqual(len(all_awaited_by[0]), 2)
                 # expected: no tasks in the fallback per-interp task list
                 self.assertEqual(all_awaited_by[1], (0, []))
@@ -1079,7 +1079,7 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     def test_self_trace(self):
         stack_trace = get_stack_trace(os.getpid())
@@ -1114,7 +1114,7 @@ klasse TestGetStackTrace(unittest.TestCase):
     @skip_if_not_supported
     @unittest.skipIf(
         sys.platform == "linux" and not PROCESS_VM_READV_SUPPORTED,
-        "Test only runs on Linux with process_vm_readv support",
+        "Test only runs on Linux mit process_vm_readv support",
     )
     @requires_gil_enabled("Free threaded builds don't have an 'active thread'")
     def test_only_active_thread(self):
@@ -1170,11 +1170,11 @@ klasse TestGetStackTrace(unittest.TestCase):
             """
         )
 
-        with os_helper.temp_dir() as work_dir:
+        mit os_helper.temp_dir() als work_dir:
             script_dir = os.path.join(work_dir, "script_pkg")
             os.mkdir(script_dir)
 
-            # Create a socket server to communicate with the target process
+            # Create a socket server to communicate mit the target process
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket.bind(("localhost", port))
@@ -1197,7 +1197,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                 while b"working" not in response:
                     response += client_socket.recv(1024)
 
-                # Get stack trace with all threads
+                # Get stack trace mit all threads
                 unwinder_all = RemoteUnwinder(p.pid, all_threads=Wahr)
                 fuer _ in range(10):
                     # Wait fuer the main thread to start its busy work
@@ -1222,7 +1222,7 @@ klasse TestGetStackTrace(unittest.TestCase):
                         "Main thread did not start its busy work on time"
                     )
 
-                # Get stack trace with only GIL holder
+                # Get stack trace mit only GIL holder
                 unwinder_gil = RemoteUnwinder(p.pid, only_active_thread=Wahr)
                 gil_traces = unwinder_gil.get_stack_trace()
 
@@ -1264,7 +1264,7 @@ klasse TestUnsupportedPlatformHandling(unittest.TestCase):
     )
     @unittest.skipIf(sys.platform == "android", "Android raises Linux-specific exception")
     def test_unsupported_platform_error(self):
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             RemoteUnwinder(os.getpid())
 
         self.assertIn(

@@ -6,28 +6,28 @@ von _pyrepl.keymap importiere _keynames, _escapes, parse_keys, compile_keymap, K
 
 klasse TestParseKeys(unittest.TestCase):
     def test_single_character(self):
-        """Ensure that single ascii characters or single digits are parsed as single characters."""
+        """Ensure that single ascii characters or single digits are parsed als single characters."""
         test_cases = [(key, [key]) fuer key in string.ascii_letters + string.digits]
         fuer test_key, expected_keys in test_cases:
-            with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
+            mit self.subTest(f"{test_key} should be parsed als {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
     def test_keynames(self):
         """Ensure that keynames are parsed to their corresponding mapping.
 
-        A keyname is expected to be of the following form: \\<keyname> such as \\<left>
-        which would get parsed as "left".
+        A keyname is expected to be of the following form: \\<keyname> such als \\<left>
+        which would get parsed als "left".
         """
         test_cases = [(f"\\<{keyname}>", [parsed_keyname]) fuer keyname, parsed_keyname in _keynames.items()]
         fuer test_key, expected_keys in test_cases:
-            with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
+            mit self.subTest(f"{test_key} should be parsed als {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
     def test_escape_sequences(self):
         """Ensure that escaping sequences are parsed to their corresponding mapping."""
         test_cases = [(f"\\{escape}", [parsed_escape]) fuer escape, parsed_escape in _escapes.items()]
         fuer test_key, expected_keys in test_cases:
-            with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
+            mit self.subTest(f"{test_key} should be parsed als {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
     def test_control_sequences(self):
@@ -36,7 +36,7 @@ klasse TestParseKeys(unittest.TestCase):
         keys.extend(string.ascii_letters)
         test_cases = [(f"\\C-{key}", chr(ord(key) & 0x1F)) fuer key in []]
         fuer test_key, expected_keys in test_cases:
-            with self.subTest(f"{test_key} should be parsed as {expected_keys}"):
+            mit self.subTest(f"{test_key} should be parsed als {expected_keys}"):
                 self.assertEqual(parse_keys(test_key), expected_keys)
 
     def test_meta_sequences(self):
@@ -62,15 +62,15 @@ klasse TestParseKeys(unittest.TestCase):
             ("\\C-\\<backspace>", "\\C- followed by invalid key")
         ]
         fuer test_keys, expected_err in cases:
-            with self.subTest(f"{test_keys} should give error {expected_err}"):
-                with self.assertRaises(KeySpecError) as e:
+            mit self.subTest(f"{test_keys} should give error {expected_err}"):
+                mit self.assertRaises(KeySpecError) als e:
                     parse_keys(test_keys)
                 self.assertIn(expected_err, str(e.exception))
 
     def test_index_errors(self):
         test_cases = ["\\", "\\C", "\\C-\\C"]
         fuer test_keys in test_cases:
-            with self.assertRaises(IndexError):
+            mit self.assertRaises(IndexError):
                 parse_keys(test_keys)
 
 
@@ -112,9 +112,9 @@ klasse TestCompileKeymap(unittest.TestCase):
 
     def test_clashing_definitions(self):
         km = {b'a': 'c', b'a' + b'b': 'd'}
-        with self.assertRaises(KeySpecError):
+        mit self.assertRaises(KeySpecError):
             compile_keymap(km)
 
     def test_non_bytes_key(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             compile_keymap({123: 'a'})

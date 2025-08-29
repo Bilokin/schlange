@@ -13,14 +13,14 @@ _MODE_WRITE = 2
 def _nbytes(dat, /):
     wenn isinstance(dat, (bytes, bytearray)):
         return len(dat)
-    with memoryview(dat) as mv:
+    mit memoryview(dat) als mv:
         return mv.nbytes
 
 
 klasse ZstdFile(_streams.BaseStream):
     """A file-like object providing transparent Zstandard (de)compression.
 
-    A ZstdFile can act as a wrapper fuer an existing file object, or refer
+    A ZstdFile can act als a wrapper fuer an existing file object, or refer
     directly to a named file on disk.
 
     ZstdFile provides a *binary* file interface. Data is read and returned as
@@ -38,7 +38,7 @@ klasse ZstdFile(_streams.BaseStream):
 
         *mode* can be 'r' fuer reading (default), 'w' fuer (over)writing, 'x' for
         creating exclusively, or 'a' fuer appending. These can equivalently be
-        given as 'rb', 'wb', 'xb' and 'ab' respectively.
+        given als 'rb', 'wb', 'xb' and 'ab' respectively.
 
         *level* is an optional int specifying the compression level to use,
         or COMPRESSION_LEVEL_DEFAULT wenn not given.
@@ -296,7 +296,7 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
          encoding=Nichts, errors=Nichts, newline=Nichts):
     """Open a Zstandard compressed file in binary or text mode.
 
-    file can be either a file name (given as a str, bytes, or PathLike object),
+    file can be either a file name (given als a str, bytes, or PathLike object),
     in which case the named file is opened, or it can be an existing file object
     to read von or write to.
 
@@ -304,7 +304,7 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
     'ab' fuer binary mode, or 'rt', 'wt', 'xt', 'at' fuer text mode.
 
     The level, options, and zstd_dict parameters specify the settings the same
-    as ZstdFile.
+    als ZstdFile.
 
     When using read mode (decompression), the options parameter is a dict
     representing advanced decompression options. The level parameter is not
@@ -318,7 +318,7 @@ def open(file, /, mode='rb', *, level=Nichts, options=Nichts, zstd_dict=Nichts,
     newline parameters must not be provided.
 
     For text mode, an ZstdFile object is created, and wrapped in an
-    io.TextIOWrapper instance with the specified encoding, error handling
+    io.TextIOWrapper instance mit the specified encoding, error handling
     behavior, and line ending(s).
     """
 

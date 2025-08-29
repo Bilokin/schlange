@@ -26,7 +26,7 @@ klasse HtmlTests(unittest.TestCase):
                 text = format % num
                 self.assertEqual(html.unescape(text), expected,
                                  msg=errmsg % (text, expected))
-        # check text with no character references
+        # check text mit no character references
         check('no character references', 'no character references')
         # check & followed by invalid chars
         check('&\n&\t& &&', '&\n&\t& &&')
@@ -83,7 +83,7 @@ klasse HtmlTests(unittest.TestCase):
         check('&notit;', '¬it;')
         check('&notin', '¬in')
         check('&notin;', '∉')
-        # a similar example with a long name
+        # a similar example mit a long name
         check('&notReallyAnExistingNamedCharacterReference;',
               '¬ReallyAnExistingNamedCharacterReference;')
         # longest valid name

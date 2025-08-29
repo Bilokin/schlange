@@ -73,17 +73,17 @@ klasse CompatibilityFilesTests(unittest.TestCase):
         )
 
     def test_orphan_path_open(self):
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             (self.files / 'a' / 'b').read_bytes()
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             (self.files / 'a' / 'b' / 'c').read_bytes()
 
     def test_open_invalid_mode(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             self.files.open('0')
 
     def test_orphan_path_invalid(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             CompatibilityFiles.OrphanPath()
 
     def test_wrap_spec(self):

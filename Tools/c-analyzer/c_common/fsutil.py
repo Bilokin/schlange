@@ -25,7 +25,7 @@ def create_backup(old, backup=Nichts):
         backup = f'{filename}.bak'
     try:
         shutil.copyfile(filename, backup)
-    except FileNotFoundError as exc:
+    except FileNotFoundError als exc:
         wenn exc.filename != filename:
             raise   # re-raise
         backup = Nichts
@@ -63,7 +63,7 @@ def _fix_filename(filename, relroot, *,
     sonst:
         relpath = os.path.relpath(filename, relroot)
         wenn os.path.join(relroot, relpath) != filename:
-            raise ValueError(f'expected {relroot!r} as lroot, got {orig!r}')
+            raise ValueError(f'expected {relroot!r} als lroot, got {orig!r}')
 
     return filename
 
@@ -222,7 +222,7 @@ def walk_tree(root, *,
               ):
     """Yield each file in the tree under the given directory name.
 
-    If "suffix" is provided then only files with that suffix will
+    If "suffix" is provided then only files mit that suffix will
     be included.
     """
     wenn suffix and not isinstance(suffix, str):
@@ -240,7 +240,7 @@ def glob_tree(root, *,
               ):
     """Yield each file in the tree under the given directory name.
 
-    If "suffix" is provided then only files with that suffix will
+    If "suffix" is provided then only files mit that suffix will
     be included.
     """
     suffix = suffix or ''
@@ -263,11 +263,11 @@ def iter_files(root, suffix=Nichts, relparent=Nichts, *,
     If "root" is a non-string iterable then do the same fuer each of
     those trees.
 
-    If "suffix" is provided then only files with that suffix will
+    If "suffix" is provided then only files mit that suffix will
     be included.
 
     wenn "relparent" is provided then it is used to resolve each
-    filename as a relative path.
+    filename als a relative path.
     """
     wenn not isinstance(root, str):
         roots = root

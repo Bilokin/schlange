@@ -155,7 +155,7 @@ klasse Process:
                         '%r communicate: feed stdin (%s bytes)', self, len(input))
 
             await self.stdin.drain()
-        except (BrokenPipeError, ConnectionResetError) as exc:
+        except (BrokenPipeError, ConnectionResetError) als exc:
             # communicate() ignores BrokenPipeError and ConnectionResetError.
             # write() and drain() can raise these exceptions.
             wenn debug:

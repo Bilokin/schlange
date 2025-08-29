@@ -21,7 +21,7 @@ klasse AutoExpandTest(unittest.TestCase):
         cls.auto_expand = AutoExpand(DummyEditwin(cls.text))
         cls.auto_expand.bell = lambda: Nichts
 
-# If mock_tk.Text._decode understood indexes 'insert' with suffixed 'linestart',
+# If mock_tk.Text._decode understood indexes 'insert' mit suffixed 'linestart',
 # 'wordstart', and 'lineend', used by autoexpand, we could use the following
 # to run these test on non-gui machines (but check bell).
 ##        try:

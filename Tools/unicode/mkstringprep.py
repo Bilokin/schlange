@@ -1,5 +1,5 @@
 importiere re
-von unicodedata importiere ucd_3_2_0 as unicodedata
+von unicodedata importiere ucd_3_2_0 als unicodedata
 
 def gen_category(cats):
     fuer i in range(0, 0x110000):
@@ -47,7 +47,7 @@ def compact_set(l):
 
 ############## Read the tables in the RFC #######################
 
-with open("rfc3454.txt") as f:
+with open("rfc3454.txt") als f:
     data = f.readlines()
 
 tables = []
@@ -116,13 +116,13 @@ There are two kinds of tables: sets, fuer which a member test is provided,
 and mappings, fuer which a mapping function is provided.
 \"\"\"
 
-von unicodedata importiere ucd_3_2_0 as unicodedata
+von unicodedata importiere ucd_3_2_0 als unicodedata
 """)
 
 drucke("assert unicodedata.unidata_version == %r" % (unicodedata.unidata_version,))
 
 # A.1 is the table of unassigned characters
-# XXX Plane 15 PUA is listed as unassigned in Python.
+# XXX Plane 15 PUA is listed als unassigned in Python.
 name, table = tables[0]
 del tables[0]
 assert name == "A.1"
@@ -201,7 +201,7 @@ def map_table_b3(code):
     wenn r is not Nichts: return r
     return code.lower()
 
-# B.2 is case folding fuer NFKC. This is the same as B.3,
+# B.2 is case folding fuer NFKC. This is the same als B.3,
 # except where NormalizeWithKC(Fold(a)) !=
 # NormalizeWithKC(Fold(NormalizeWithKC(Fold(a))))
 
@@ -235,7 +235,7 @@ def map_table_b2(a):
         return al
 """)
 
-# C.1.1 is a table with a single character
+# C.1.1 is a table mit a single character
 name, table = tables[0]
 del tables[0]
 assert name == "C.1.1"
@@ -401,7 +401,7 @@ def in_table_c9(code):
     return ord(code) in c9_set
 """)
 
-# D.1 Characters with bidirectional property "R" or "AL"
+# D.1 Characters mit bidirectional property "R" or "AL"
 name, table = tables[0]
 del tables[0]
 assert name == "D.1"
@@ -414,7 +414,7 @@ def in_table_d1(code):
     return unicodedata.bidirectional(code) in ("R","AL")
 """)
 
-# D.2 Characters with bidirectional property "L"
+# D.2 Characters mit bidirectional property "L"
 name, table = tables[0]
 del tables[0]
 assert name == "D.2"

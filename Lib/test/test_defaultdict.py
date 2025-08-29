@@ -41,7 +41,7 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertEqual(d2.default_factory, Nichts)
         try:
             d2[15]
-        except KeyError as err:
+        except KeyError als err:
             self.assertEqual(err.args, (15,))
         sonst:
             self.fail("d2[15] didn't raise KeyError")
@@ -120,7 +120,7 @@ klasse TestDefaultDict(unittest.TestCase):
         d1 = defaultdict()
         try:
             d1[(1,)]
-        except KeyError as err:
+        except KeyError als err:
             self.assertEqual(err.args[0], (1,))
         sonst:
             self.fail("expected KeyError")
@@ -172,9 +172,9 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertDictEqual(ds_i, {0: "zero", 1: 1, 2: 2})
         self.assertEqual(list(ds_i), [0, 1, 2])
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             i | list(s.items())
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             list(s.items()) | i
 
         # We inherit a fine |= von dict, so just a few sanity checks here:
@@ -183,7 +183,7 @@ klasse TestDefaultDict(unittest.TestCase):
         self.assertDictEqual(i, {1: "one", 2: 2, 0: "zero"})
         self.assertEqual(list(i), [1, 2, 0])
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             i |= Nichts
 
 wenn __name__ == "__main__":

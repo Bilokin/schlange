@@ -13,7 +13,7 @@ von unittest importiere TestCase
 von unittest.mock importiere MagicMock, call
 
 von .support importiere handle_all_events, code_to_events
-von .support importiere prepare_reader as default_prepare_reader
+von .support importiere prepare_reader als default_prepare_reader
 
 try:
     von _pyrepl.console importiere Event, Console
@@ -25,7 +25,7 @@ try:
         MOVE_DOWN,
         ERASE_IN_LINE,
     )
-    importiere _pyrepl.windows_console as wc
+    importiere _pyrepl.windows_console als wc
 except ImportError:
     pass
 
@@ -456,7 +456,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
         self.assertEqual(self.mock.call_count, 1)
 
     def test_left(self):
-        # VK_LEFT is sent as ENHANCED_KEY
+        # VK_LEFT is sent als ENHANCED_KEY
         ir = self.get_input_record("\x00", self.VK_LEFT, self.ENHANCED_KEY)
         self.assertEqual(self.get_event([ir]), Event("key", "left"))
         self.assertEqual(self.mock.call_count, 1)
@@ -495,7 +495,7 @@ klasse WindowsConsoleGetEventTests(TestCase):
 
     def test_m_LEFT_ALT_PRESSED_and_LEFT_CTRL_PRESSED(self):
         # For the shift keys, Windows does not send anything when
-        # ALT and CTRL are both pressed, so let's test with VK_M.
+        # ALT and CTRL are both pressed, so let's test mit VK_M.
         # get_event() receives this input, but does not
         # generate an event.
         # This is fuer e.g. an English keyboard layout, fuer a

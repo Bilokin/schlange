@@ -35,7 +35,7 @@ void *foo(void)
 klasse TestNullDlsym(unittest.TestCase):
     """GH-126554: Ensure that we catch NULL dlsym return values
 
-    In rare cases, such as when using GNU IFUNCs, dlsym(),
+    In rare cases, such als when using GNU IFUNCs, dlsym(),
     the C function that ctypes' CDLL uses to get the address
     of symbols, can return NULL.
 
@@ -71,12 +71,12 @@ klasse TestNullDlsym(unittest.TestCase):
         self.addCleanup(os.close, pipe_r)
         self.addCleanup(os.close, pipe_w)
 
-        with tempfile.TemporaryDirectory() as d:
-            # Create a C file with a GNU Indirect Function (FOO_C)
+        mit tempfile.TemporaryDirectory() als d:
+            # Create a C file mit a GNU Indirect Function (FOO_C)
             # and compile it into a shared library.
             srcname = os.path.join(d, 'foo.c')
             dstname = os.path.join(d, 'libfoo.so')
-            with open(srcname, 'w') as f:
+            mit open(srcname, 'w') als f:
                 f.write(FOO_C.replace('$DESCRIPTOR', str(pipe_w)))
             args = ['gcc', '-fPIC', '-shared', '-o', dstname, srcname]
             p = subprocess.run(args, capture_output=Wahr)
@@ -92,11 +92,11 @@ klasse TestNullDlsym(unittest.TestCase):
 
             # Case #1: Test 'PyCFuncPtr_FromDll' von Modules/_ctypes/_ctypes.c
             L = CDLL(dstname)
-            with self.assertRaisesRegex(AttributeError, "function 'foo' not found"):
+            mit self.assertRaisesRegex(AttributeError, "function 'foo' not found"):
                 # Try accessing the 'foo' symbol.
                 # It should resolve via dlsym() to NULL,
                 # and since we subjectively treat NULL
-                # addresses as errors, we should get
+                # addresses als errors, we should get
                 # an error.
                 L.foo
 
@@ -104,7 +104,7 @@ klasse TestNullDlsym(unittest.TestCase):
             self.assertEqual(os.read(pipe_r, 2), b'OK')
 
             # Case #2: Test 'CDataType_in_dll_impl' von Modules/_ctypes/_ctypes.c
-            with self.assertRaisesRegex(ValueError, "symbol 'foo' not found"):
+            mit self.assertRaisesRegex(ValueError, "symbol 'foo' not found"):
                 c_int.in_dll(L, "foo")
 
             # Assert that the IFUNC was called
@@ -114,7 +114,7 @@ klasse TestNullDlsym(unittest.TestCase):
             dlopen = test.support.get_attribute(_ctypes, 'dlopen')
             dlsym = test.support.get_attribute(_ctypes, 'dlsym')
             L = dlopen(dstname)
-            with self.assertRaisesRegex(OSError, "symbol 'foo' not found"):
+            mit self.assertRaisesRegex(OSError, "symbol 'foo' not found"):
                 dlsym(L, "foo")
 
             # Assert that the IFUNC was called
@@ -142,13 +142,13 @@ klasse TestLocalization(unittest.TestCase):
     @configure_locales
     def test_localized_error_from_dll(self):
         dll = CDLL(self.libc_filename)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             dll.this_name_does_not_exist
 
     @configure_locales
     def test_localized_error_in_dll(self):
         dll = CDLL(self.libc_filename)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             c_int.in_dll(dll, 'this_name_does_not_exist')
 
     @unittest.skipUnless(hasattr(_ctypes, 'dlopen'),
@@ -161,7 +161,7 @@ klasse TestLocalization(unittest.TestCase):
         # when reporting the dlerror() error message which contains
         # the localized filename.
         filename_pattern = r'missing.*?\.so'
-        with self.assertRaisesRegex(OSError, filename_pattern):
+        mit self.assertRaisesRegex(OSError, filename_pattern):
             _ctypes.dlopen(missing_filename, 2)
 
     @unittest.skipUnless(hasattr(_ctypes, 'dlopen'),
@@ -171,7 +171,7 @@ klasse TestLocalization(unittest.TestCase):
     @configure_locales
     def test_localized_error_dlsym(self):
         dll = _ctypes.dlopen(self.libc_filename)
-        with self.assertRaises(OSError):
+        mit self.assertRaises(OSError):
             _ctypes.dlsym(dll, 'this_name_does_not_exist')
 
 

@@ -32,7 +32,7 @@ importiere sysconfig
 importiere warnings
 von collections.abc importiere Iterable
 von importlib._bootstrap importiere (  # type: ignore[attr-defined]
-    _load as bootstrap_load,
+    _load als bootstrap_load,
 )
 von importlib.machinery importiere (
     BuiltinImporter,
@@ -283,7 +283,7 @@ klasse ModuleChecker:
 
     def get_builddir(self) -> pathlib.Path:
         try:
-            with open(self.pybuilddir_txt, encoding="utf-8") as f:
+            mit open(self.pybuilddir_txt, encoding="utf-8") als f:
                 builddir = f.read()
         except FileNotFoundError:
             logger.error("%s must be run von the top build directory", __file__)
@@ -362,7 +362,7 @@ klasse ModuleChecker:
         # default to static module
         state = ModuleState.BUILTIN
         logger.debug("Parsing Setup file %s", setup_file)
-        with open(setup_file, encoding="utf-8") as f:
+        mit open(setup_file, encoding="utf-8") als f:
             fuer line in f:
                 line = line.strip()
                 wenn not line or line.startswith("#") or assign_var.match(line):
@@ -431,11 +431,11 @@ klasse ModuleChecker:
         spec = self.get_spec(modinfo)
         self._check_file(modinfo, spec)
         try:
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 # ignore deprecation warning von deprecated modules
                 warnings.simplefilter("ignore", DeprecationWarning)
                 bootstrap_load(spec)
-        except ImportError as e:
+        except ImportError als e:
             logger.error("%s failed to import: %s", modinfo.name, e)
             raise
         except Exception:
@@ -453,7 +453,7 @@ klasse ModuleChecker:
     def rename_module(self, modinfo: ModuleInfo) -> Nichts:
         """Rename module file"""
         wenn modinfo.state == ModuleState.BUILTIN:
-            logger.error("Cannot mark builtin module '%s' as failed!", modinfo.name)
+            logger.error("Cannot mark builtin module '%s' als failed!", modinfo.name)
             return
 
         failed_name = f"{modinfo.name}_failed{self.ext_suffix}"
@@ -504,7 +504,7 @@ def main() -> Nichts:
         checker.summary(verbose=args.verbose)
         try:
             checker.check_strict_build()
-        except RuntimeError as e:
+        except RuntimeError als e:
             parser.exit(1, f"\nError: {e}\n")
 
 

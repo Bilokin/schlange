@@ -40,7 +40,7 @@ klasse TestResults:
         self.stats = TestStats()
         # used by --junit-xml
         self.testsuite_xml: list['Element'] = []
-        # used by -T with -j
+        # used by -T mit -j
         self.covered_lines: set[Location] = set()
 
     def is_all_good(self) -> bool:
@@ -169,7 +169,7 @@ klasse TestResults:
         return (tuple(tests), match_tests_dict)
 
     def add_junit(self, xml_data: list[str]) -> Nichts:
-        importiere xml.etree.ElementTree as ET
+        importiere xml.etree.ElementTree als ET
         fuer e in xml_data:
             try:
                 self.testsuite_xml.append(ET.fromstring(e))
@@ -182,7 +182,7 @@ klasse TestResults:
             # Don't create empty XML file
             return
 
-        importiere xml.etree.ElementTree as ET
+        importiere xml.etree.ElementTree als ET
         root = ET.Element("testsuites")
 
         # Manually count the totals fuer the overall summary
@@ -198,7 +198,7 @@ klasse TestResults:
         fuer k, v in totals.items():
             root.set(k, str(v))
 
-        with open(filename, 'wb') as f:
+        mit open(filename, 'wb') als f:
             fuer s in ET.tostringlist(root):
                 f.write(s)
 

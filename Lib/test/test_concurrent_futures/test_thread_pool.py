@@ -1,5 +1,5 @@
 importiere contextlib
-importiere multiprocessing as mp
+importiere multiprocessing als mp
 importiere multiprocessing.process
 importiere multiprocessing.util
 importiere os
@@ -61,11 +61,11 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
         def submit(pool):
             pool.submit(submit, pool)
 
-        with futures.ThreadPoolExecutor(1) as pool:
+        mit futures.ThreadPoolExecutor(1) als pool:
             pool.submit(submit, pool)
 
             fuer _ in range(50):
-                with futures.ProcessPoolExecutor(1, mp_context=mp.get_context('fork')) as workers:
+                mit futures.ProcessPoolExecutor(1, mp_context=mp.get_context('fork')) als workers:
                     workers.submit(tuple)
 
     @support.requires_fork()
@@ -75,15 +75,15 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
         # bpo-43944: clear concurrent.futures.thread._threads_queues after fork,
         # otherwise child process will try to join parent thread
         def fork_process_and_return_exitcode():
-            # Ignore the warning about fork with threads.
-            with self.assertWarnsRegex(DeprecationWarning,
+            # Ignore the warning about fork mit threads.
+            mit self.assertWarnsRegex(DeprecationWarning,
                                        r"use of fork\(\) may lead to deadlocks in the child"):
                 p = mp.get_context('fork').Process(target=lambda: 1)
                 p.start()
             p.join()
             return p.exitcode
 
-        with futures.ThreadPoolExecutor(1) as pool:
+        mit futures.ThreadPoolExecutor(1) als pool:
             process_exitcode = pool.submit(fork_process_and_return_exitcode).result()
 
         self.assertEqual(process_exitcode, 0)
@@ -99,19 +99,19 @@ klasse ThreadPoolExecutorTest(ThreadPoolMixin, ExecutorTest, BaseTestCase):
             finally:
                 log.append(f"{ident=} stopped")
 
-        with self.executor_type(max_workers=1) as pool:
+        mit self.executor_type(max_workers=1) als pool:
             # submit work to saturate the pool
             fut = pool.submit(log_n_wait, ident="first")
             try:
-                with contextlib.closing(
+                mit contextlib.closing(
                     pool.map(log_n_wait, ["second", "third"], timeout=0)
-                ) as gen:
-                    with self.assertRaises(TimeoutError):
+                ) als gen:
+                    mit self.assertRaises(TimeoutError):
                         next(gen)
             finally:
                 stop_event.set()
             fut.result()
-        # ident='second' is cancelled as a result of raising a TimeoutError
+        # ident='second' is cancelled als a result of raising a TimeoutError
         # ident='third' is cancelled because it remained in the collection of futures
         self.assertListEqual(log, ["ident='first' started", "ident='first' stopped"])
 

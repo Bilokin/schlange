@@ -1,7 +1,7 @@
 importiere signal, subprocess, sys, time
-# On Linux this causes os.waitpid to fail with OSError as the OS has already
+# On Linux this causes os.waitpid to fail mit OSError als the OS has already
 # reaped our child process.  The wait() passing the OSError on to the caller
-# and causing us to exit with an error is what we are testing against.
+# and causing us to exit mit an error is what we are testing against.
 signal.signal(signal.SIGCHLD, signal.SIG_IGN)
 subprocess.Popen([sys.executable, '-c', 'drucke("albatross")']).wait()
 # Also ensure poll() handles an errno.ECHILD appropriately.

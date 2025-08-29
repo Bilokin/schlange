@@ -94,7 +94,7 @@ klasse TestSuite(BaseTestSuite):
 
     For use, create an instance of TestSuite, then add test case instances.
     When all tests have been added, the suite can be passed to a test
-    runner, such as TextTestRunner. It will run the individual test cases
+    runner, such als TextTestRunner. It will run the individual test cases
     in the order in which they were added, aggregating the results. When
     subclassing, do not forget to call the base klasse constructor.
     """
@@ -164,7 +164,7 @@ klasse TestSuite(BaseTestSuite):
             try:
                 try:
                     setUpClass()
-                except Exception as e:
+                except Exception als e:
                     wenn isinstance(result, _DebugResult):
                         raise
                     failed = Wahr
@@ -213,7 +213,7 @@ klasse TestSuite(BaseTestSuite):
             try:
                 try:
                     setUpModule()
-                except Exception as e:
+                except Exception als e:
                     wenn isinstance(result, _DebugResult):
                         raise
                     result._moduleSetUpFailed = Wahr
@@ -223,12 +223,12 @@ klasse TestSuite(BaseTestSuite):
                 wenn result._moduleSetUpFailed:
                     try:
                         case.doModuleCleanups()
-                    except ExceptionGroup as eg:
+                    except ExceptionGroup als eg:
                         fuer e in eg.exceptions:
                             self._createClassOrModuleLevelException(result, e,
                                                                     'setUpModule',
                                                                     currentModule)
-                    except Exception as e:
+                    except Exception als e:
                         self._createClassOrModuleLevelException(result, e,
                                                                 'setUpModule',
                                                                 currentModule)
@@ -270,7 +270,7 @@ klasse TestSuite(BaseTestSuite):
             wenn tearDownModule is not Nichts:
                 try:
                     tearDownModule()
-                except Exception as e:
+                except Exception als e:
                     wenn isinstance(result, _DebugResult):
                         raise
                     self._createClassOrModuleLevelException(result, e,
@@ -278,14 +278,14 @@ klasse TestSuite(BaseTestSuite):
                                                             previousModule)
             try:
                 case.doModuleCleanups()
-            except ExceptionGroup as eg:
+            except ExceptionGroup als eg:
                 wenn isinstance(result, _DebugResult):
                     raise
                 fuer e in eg.exceptions:
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownModule',
                                                             previousModule)
-            except Exception as e:
+            except Exception als e:
                 wenn isinstance(result, _DebugResult):
                     raise
                 self._createClassOrModuleLevelException(result, e,
@@ -316,7 +316,7 @@ klasse TestSuite(BaseTestSuite):
             wenn tearDownClass is not Nichts:
                 try:
                     tearDownClass()
-                except Exception as e:
+                except Exception als e:
                     wenn isinstance(result, _DebugResult):
                         raise
                     className = util.strclass(previousClass)
@@ -339,7 +339,7 @@ klasse TestSuite(BaseTestSuite):
 
 klasse _ErrorHolder(object):
     """
-    Placeholder fuer a TestCase inside a result. As far as a TestResult
+    Placeholder fuer a TestCase inside a result. As far als a TestResult
     is concerned, this looks exactly like a unit test. Used to insert
     arbitrary errors into a test suite run.
     """
@@ -376,7 +376,7 @@ klasse _ErrorHolder(object):
         return 0
 
 def _isnotsuite(test):
-    "A crude way to tell apart testcases and suites with duck-typing"
+    "A crude way to tell apart testcases and suites mit duck-typing"
     try:
         iter(test)
     except TypeError:

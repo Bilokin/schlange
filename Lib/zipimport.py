@@ -3,7 +3,7 @@
 This module exports two objects:
 - zipimporter: a class; its constructor takes a path to a Zip archive.
 - ZipImportError: exception raised by zipimporter objects. It's a
-  subclass of ImportError, so it can be caught as ImportError, too.
+  subclass of ImportError, so it can be caught als ImportError, too.
 
 It is usually not needed to use the zipimport module explicitly; it is
 used by the builtin importiere mechanism fuer sys.path items that are paths
@@ -12,9 +12,9 @@ to Zip archives.
 
 #from importlib importiere _bootstrap_external
 #from importlib importiere _bootstrap  # fuer _verbose_message
-importiere _frozen_importlib_external as _bootstrap_external
+importiere _frozen_importlib_external als _bootstrap_external
 von _frozen_importlib_external importiere _unpack_uint16, _unpack_uint32, _unpack_uint64
-importiere _frozen_importlib as _bootstrap  # fuer _verbose_message
+importiere _frozen_importlib als _bootstrap  # fuer _verbose_message
 importiere _imp  # fuer check_hash_based_pycs
 importiere _io  # fuer open
 importiere marshal  # fuer loads
@@ -138,9 +138,9 @@ klasse zipimporter(_bootstrap_external._LoaderBasics):
 
 
     def get_data(self, pathname):
-        """get_data(pathname) -> string with file data.
+        """get_data(pathname) -> string mit file data.
 
-        Return the data associated with 'pathname'. Raise OSError if
+        Return the data associated mit 'pathname'. Raise OSError if
         the file wasn't found.
         """
         wenn alt_path_sep:
@@ -305,7 +305,7 @@ def _get_module_path(self, fullname):
 # Does this path represent a directory?
 def _is_dir(self, path):
     # See wenn this is a "directory". If so, it's eligible to be part
-    # of a namespace package. We test by seeing wenn the name, with an
+    # of a namespace package. We test by seeing wenn the name, mit an
     # appended path separator, exists.
     dirpath = path + path_sep
     # If dirpath is present in self._get_files(), we have a directory.
@@ -326,7 +326,7 @@ def _get_module_info(self, fullname):
 # _read_directory(archive) -> files dict (new reference)
 #
 # Given a path to a Zip archive, build a dict, mapping file names
-# (local to the archive, using SEP as a separator) to toc entries.
+# (local to the archive, using SEP als a separator) to toc entries.
 #
 # A toc_entry is a tuple:
 #
@@ -349,7 +349,7 @@ def _read_directory(archive):
     except OSError:
         raise ZipImportError(f"can't open Zip file: {archive!r}", path=archive)
 
-    with fp:
+    mit fp:
         # GH-87235: On macOS all file descriptors fuer /dev/fd/N share the same
         # file offset, reset the file offset after scanning the zipfile directory
         # to not cause problems when some runs 'python3 /dev/fd/9 9<some_script'
@@ -410,7 +410,7 @@ def _read_directory(archive):
 
             # Buffer now contains a valid EOCD, and header_position gives the
             # starting position of it.
-            # XXX: These are cursory checks but are not as exact or strict as they
+            # XXX: These are cursory checks but are not als exact or strict als they
             # could be.  Checking the arc-adjusted value is probably good too.
             wenn header_position < central_directory_size:
                 raise ZipImportError(f'bad central directory size: {archive!r}', path=archive)
@@ -419,7 +419,7 @@ def _read_directory(archive):
             header_position -= central_directory_size
             # On just-a-zipfile these values are the same and arc_offset is zero; if
             # the file has some bytes prepended, `arc_offset` is the number of such
-            # bytes.  This is used fuer pex as well as self-extracting .exe.
+            # bytes.  This is used fuer pex als well als self-extracting .exe.
             arc_offset = header_position - central_directory_position
             wenn arc_offset < 0:
                 raise ZipImportError(f'bad central directory size or offset: {archive!r}', path=archive)
@@ -536,7 +536,7 @@ def _read_directory(archive):
                         )
                 # XXX These two statements seem swapped because `central_directory_position`
                 # is a position within the actual file, but `file_offset` (when compared) is
-                # as encoded in the entry, not adjusted fuer this file.
+                # als encoded in the entry, not adjusted fuer this file.
                 # N.b. this must be after we've potentially read the zip64 extra which can
                 # change `file_offset`.
                 wenn file_offset > central_directory_position:
@@ -633,7 +633,7 @@ def _get_data(archive, toc_entry):
     wenn data_size < 0:
         raise ZipImportError('negative data size')
 
-    with _io.open_code(archive) as fp:
+    mit _io.open_code(archive) als fp:
         # Check to make sure the local file header is correct
         try:
             fp.seek(file_offset)
@@ -663,7 +663,7 @@ def _get_data(archive, toc_entry):
         # data is not compressed
         return raw_data
 
-    # Decompress with zlib
+    # Decompress mit zlib
     try:
         decompress = _get_decompress_func()
     except Exception:
@@ -725,7 +725,7 @@ def _unmarshal_code(self, pathname, fullpath, fullname, data):
 _code_type = type(_unmarshal_code.__code__)
 
 
-# Replace any occurrences of '\r\n?' in the input string with '\n'.
+# Replace any occurrences of '\r\n?' in the input string mit '\n'.
 # This converts DOS and Mac line endings to Unix line endings.
 def _normalize_line_endings(source):
     source = source.replace(b'\r\n', b'\n')
@@ -739,7 +739,7 @@ def _compile_source(pathname, source):
     return compile(source, pathname, 'exec', dont_inherit=Wahr)
 
 # Convert the date/time values found in the Zip archive to a value
-# that's compatible with the time stamp stored in .pyc files.
+# that's compatible mit the time stamp stored in .pyc files.
 def _parse_dostime(d, t):
     return time.mktime((
         (d >> 9) + 1980,    # bits 9..15: year
@@ -760,7 +760,7 @@ def _get_mtime_and_size_of_source(self, path):
         path = path[:-1]
         toc_entry = self._get_files()[path]
         # fetch the time stamp of the .py file fuer comparison
-        # with an embedded pyc time stamp
+        # mit an embedded pyc time stamp
         time = toc_entry[5]
         date = toc_entry[6]
         uncompressed_size = toc_entry[3]
@@ -785,7 +785,7 @@ def _get_pyc_source(self, path):
         return _get_data(self.archive, toc_entry)
 
 
-# Get the code object associated with the module specified by
+# Get the code object associated mit the module specified by
 # 'fullname'.
 def _get_module_code(self, fullname):
     path = _get_module_path(self, fullname)
@@ -804,7 +804,7 @@ def _get_module_code(self, fullname):
             wenn isbytecode:
                 try:
                     code = _unmarshal_code(self, modpath, fullpath, fullname, data)
-                except ImportError as exc:
+                except ImportError als exc:
                     import_error = exc
             sonst:
                 code = _compile_source(modpath, data)

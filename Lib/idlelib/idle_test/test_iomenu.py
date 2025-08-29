@@ -68,7 +68,7 @@ def _extension_in_filetypes(extension):
 klasse FiletypesTest(unittest.TestCase):
     def test_python_source_files(self):
         fuer extension in util.py_extensions:
-            with self.subTest(extension=extension):
+            mit self.subTest(extension=extension):
                 self.assertWahr(
                     _extension_in_filetypes(extension)
                 )

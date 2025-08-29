@@ -24,7 +24,7 @@ Here's a bunch of special=20
 characters... have fun!
 """
 
-# First line ends with a space
+# First line ends mit a space
 DECSAMPLE = b"Here's a bunch of special \n" + \
 b"""\
 
@@ -98,13 +98,13 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'''),
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zz'''),
         # A line of 151 characters, forcing a soft line break at position 75,
-        # with a second line of exactly 76 characters and no trailing =
+        # mit a second line of exactly 76 characters and no trailing =
         (b'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
          b'''zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz=
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'''),
         # A string containing a hard line break, but which the first line is
         # 151 characters and the second line is exactly 76 characters.  This
-        # should leave us with three lines, the first which has a soft line
+        # should leave us mit three lines, the first which has a soft line
         # break, and which the second and third do not.
         (b'''yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''',
@@ -189,8 +189,8 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         self.addCleanup(process.stdout.close)
         cout, cerr = process.communicate(p)
         # On Windows, Python will output the result to stdout using
-        # CRLF, as the mode of stdout is text mode. To compare this
-        # with the expected result, we need to do a line-by-line comparison.
+        # CRLF, als the mode of stdout is text mode. To compare this
+        # mit the expected result, we need to do a line-by-line comparison.
         cout = cout.decode('latin-1').splitlines()
         e = e.decode('latin-1').splitlines()
         assert len(cout)==len(e)

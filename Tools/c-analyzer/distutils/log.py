@@ -1,7 +1,7 @@
 """A simple log mechanism styled after PEP 282."""
 
 # The klasse here is styled after PEP 282 so that it could later be
-# replaced with a standard Python logging implementation.
+# replaced mit a standard Python logging implementation.
 
 DEBUG = 1
 INFO = 2

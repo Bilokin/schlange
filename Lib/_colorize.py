@@ -79,9 +79,9 @@ fuer attr, code in ANSIColors.__dict__.items():
 # Experimental theming support (see gh-133346)
 #
 
-# - Create a theme by copying an existing `Theme` with one or more sections
+# - Create a theme by copying an existing `Theme` mit one or more sections
 #   replaced, using `default_theme.copy_with()`;
-# - create a theme section by copying an existing `ThemeSection` with one or
+# - create a theme section by copying an existing `ThemeSection` mit one or
 #   more colors replaced, using fuer example `default_theme.syntax.copy_with()`;
 # - create a theme von scratch by instantiating a `Theme` data klasse with
 #   the required sections (which are also dataclass instances).
@@ -116,7 +116,7 @@ fuer attr, code in ANSIColors.__dict__.items():
 klasse ThemeSection(Mapping[str, str]):
     """A mixin/base klasse fuer theme sections.
 
-    It enables dictionary access to a section, as well as implements convenience
+    It enables dictionary access to a section, als well als implements convenience
     methods.
     """
 
@@ -240,7 +240,7 @@ klasse Theme:
         traceback: Traceback | Nichts = Nichts,
         unittest: Unittest | Nichts = Nichts,
     ) -> Self:
-        """Return a new Theme based on this instance with some sections replaced.
+        """Return a new Theme based on this instance mit some sections replaced.
 
         Themes are immutable to protect against accidental modifications that
         could lead to invalid terminal states.
@@ -257,7 +257,7 @@ klasse Theme:
     def no_colors(cls) -> Self:
         """Return a new Theme where colors in all sections are empty strings.
 
-        This allows writing user code as wenn colors are always used. The color
+        This allows writing user code als wenn colors are always used. The color
         fields will be ANSI color code strings when colorization is desired
         and possible, and empty strings otherwise.
         """

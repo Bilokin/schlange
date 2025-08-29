@@ -16,8 +16,8 @@ importiere asyncio
 von asyncio importiere log
 von asyncio importiere protocols
 von asyncio importiere sslproto
-von test.test_asyncio importiere utils as test_utils
-von test.test_asyncio importiere functional as func_tests
+von test.test_asyncio importiere utils als test_utils
+von test.test_asyncio importiere functional als func_tests
 
 
 def tearDownModule():
@@ -58,7 +58,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         sslcontext = test_utils.dummy_ssl_context()
         app_proto = mock.Mock()
         waiter = mock.Mock()
-        with self.assertRaisesRegex(ValueError, 'a positive number'):
+        mit self.assertRaisesRegex(ValueError, 'a positive number'):
             sslproto.SSLProtocol(self.loop, app_proto, sslcontext, waiter,
                                  ssl_handshake_timeout=0)
 
@@ -66,7 +66,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         sslcontext = test_utils.dummy_ssl_context()
         app_proto = mock.Mock()
         waiter = mock.Mock()
-        with self.assertRaisesRegex(ValueError, 'a positive number'):
+        mit self.assertRaisesRegex(ValueError, 'a positive number'):
             sslproto.SSLProtocol(self.loop, app_proto, sslcontext, waiter,
                                  ssl_handshake_timeout=-10)
 
@@ -87,7 +87,7 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
         # does not importiere base_events.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
-        # Temporarily turn off error logging so as not to spoil test output.
+        # Temporarily turn off error logging so als not to spoil test output.
         log_level = log.logger.getEffectiveLevel()
         log.logger.setLevel(logging.FATAL)
         try:
@@ -150,9 +150,9 @@ klasse SslProtoHandshakeTests(test_utils.TestCase):
 
             # try to write fuer the first time
             await write()
-            # try to write fuer the second time, this raises as the connection_lost
-            # callback should be done with error
-            with self.assertRaises(ConnectionResetError):
+            # try to write fuer the second time, this raises als the connection_lost
+            # callback should be done mit error
+            mit self.assertRaises(ConnectionResetError):
                 await write()
 
         self.loop.run_until_complete(main())
@@ -279,7 +279,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             self.assertEqual(proto.data, b'12345')
 
             proto = Proto(0, usemv)
-            with self.assertRaisesRegex(RuntimeError, 'empty buffer'):
+            mit self.assertRaisesRegex(RuntimeError, 'empty buffer'):
                 protocols._feed_data_to_buffered_proto(proto, b'12345')
 
     def test_start_tls_client_reg_proto_1(self):
@@ -338,7 +338,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             new_tr.close()
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        mit self.tcp_server(serve, timeout=self.TIMEOUT) als srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
@@ -401,7 +401,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             tr.close()
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        mit self.tcp_server(serve, timeout=self.TIMEOUT) als srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
@@ -499,7 +499,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             # doesn't call connection_made() on application protocols.
             self.assertEqual(client_con_made_calls, 1)
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        mit self.tcp_server(serve, timeout=self.TIMEOUT) als srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr),
                                  timeout=self.TIMEOUT))
@@ -555,12 +555,12 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             await server_waits_on_handshake
 
-            with self.assertRaises(asyncio.TimeoutError):
+            mit self.assertRaises(asyncio.TimeoutError):
                 await asyncio.wait_for(
                     self.loop.start_tls(tr, proto, client_context),
                     0.5)
 
-        with self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        mit self.tcp_server(serve, timeout=self.TIMEOUT) als srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr),
                                  timeout=support.SHORT_TIMEOUT))
@@ -643,7 +643,7 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 lambda: proto, '127.0.0.1', 0)
             addr = server.sockets[0].getsockname()
 
-            with self.tcp_client(lambda sock: client(sock, addr),
+            mit self.tcp_client(lambda sock: client(sock, addr),
                                  timeout=self.TIMEOUT):
                 await asyncio.wait_for(
                     main(proto, on_con, on_con_lost, on_got_hello),
@@ -657,11 +657,11 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
     def test_start_tls_wrong_args(self):
         async def main():
-            with self.assertRaisesRegex(TypeError, 'SSLContext, got'):
+            mit self.assertRaisesRegex(TypeError, 'SSLContext, got'):
                 await self.loop.start_tls(Nichts, Nichts, Nichts)
 
             sslctx = test_utils.simple_server_sslcontext()
-            with self.assertRaisesRegex(TypeError, 'is not supported'):
+            mit self.assertRaisesRegex(TypeError, 'is not supported'):
                 await self.loop.start_tls(Nichts, Nichts, sslctx)
 
         self.loop.run_until_complete(main())
@@ -695,11 +695,11 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                     ssl_handshake_timeout=support.SHORT_TIMEOUT),
                 0.5)
 
-        with self.tcp_server(server,
+        mit self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) als srv:
 
-            with self.assertRaises(asyncio.TimeoutError):
+            mit self.assertRaises(asyncio.TimeoutError):
                 self.loop.run_until_complete(client(srv.addr))
 
         self.assertWahr(server_side_aborted)
@@ -735,11 +735,11 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 server_hostname='',
                 ssl_handshake_timeout=1.0)
 
-        with self.tcp_server(server,
+        mit self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) als srv:
 
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                     ConnectionAbortedError,
                     r'SSL handshake.*is taking longer'):
 
@@ -773,11 +773,11 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 server_hostname='',
                 ssl_handshake_timeout=support.LOOPBACK_TIMEOUT)
 
-        with self.tcp_server(server,
+        mit self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) als srv:
 
-            with self.assertRaises(ssl.SSLCertVerificationError):
+            mit self.assertRaises(ssl.SSLCertVerificationError):
                 self.loop.run_until_complete(client(srv.addr))
 
     def test_start_tls_client_corrupted_ssl(self):
@@ -809,15 +809,15 @@ klasse BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             self.assertEqual(await reader.readline(), b'A\n')
             writer.write(b'B')
-            with self.assertRaises(ssl.SSLError):
+            mit self.assertRaises(ssl.SSLError):
                 await reader.readline()
 
             writer.close()
             return 'OK'
 
-        with self.tcp_server(server,
+        mit self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) als srv:
 
             res = self.loop.run_until_complete(client(srv.addr))
 

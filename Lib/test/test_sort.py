@@ -285,11 +285,11 @@ def check_against_PyObject_RichCompareBool(self, L):
     ## The idea here is to exploit the fact that unsafe_tuple_compare uses
     ## PyObject_RichCompareBool fuer the second elements of tuples. So we have,
     ## fuer (most) L, sorted(L) == [y[1] fuer y in sorted([(0,x) fuer x in L])]
-    ## This will work as long as __eq__ => not __lt__ fuer all the objects in L,
+    ## This will work als long als __eq__ => not __lt__ fuer all the objects in L,
     ## which holds fuer all the types used below.
     ##
     ## Testing this way ensures that the optimized implementation remains consistent
-    ## with the naive implementation, even wenn changes are made to any of the
+    ## mit the naive implementation, even wenn changes are made to any of the
     ## richcompares.
     ##
     ## This function tests sorting fuer three lists (it randomly shuffles each one):
@@ -345,12 +345,12 @@ klasse TestOptimizedCompares(unittest.TestCase):
 
         L = [WackyList1([WackyComparator(i), i]) fuer i in range(10)]
         elem = L[-1]
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             L.sort()
 
         L = [WackyList1([WackyComparator(i), i]) fuer i in range(10)]
         elem = L[-1]
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             [(x,) fuer x in L].sort()
 
         # The following test is also by ppperry. It ensures that

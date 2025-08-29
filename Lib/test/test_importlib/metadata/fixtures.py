@@ -21,7 +21,7 @@ try:
     getattr(resources, 'files')
     getattr(resources, 'as_file')
 except (ImportError, AttributeError):
-    importiere importlib_resources as resources  # type: ignore
+    importiere importlib_resources als resources  # type: ignore
 
 
 @contextlib.contextmanager
@@ -29,7 +29,7 @@ def tmp_path():
     """
     Like os_helper.temp_dir, but yields a pathlib.Path.
     """
-    with os_helper.temp_dir() as path:
+    mit os_helper.temp_dir() als path:
         yield pathlib.Path(path)
 
 
@@ -74,7 +74,7 @@ klasse SiteBuilder(SiteDir):
     def setUp(self):
         super().setUp()
         fuer cls in self.__class__.mro():
-            with contextlib.suppress(AttributeError):
+            mit contextlib.suppress(AttributeError):
                 build_files(cls.files, prefix=self.site_dir)
 
 
@@ -107,7 +107,7 @@ klasse DistInfoPkg(OnSysPath, SiteBuilder):
 
     def make_uppercase(self):
         """
-        Rewrite metadata with everything uppercase.
+        Rewrite metadata mit everything uppercase.
         """
         shutil.rmtree(self.site_dir / "distinfo_pkg-1.0.0.dist-info")
         files = copy.deepcopy(DistInfoPkg.files)
@@ -118,7 +118,7 @@ klasse DistInfoPkg(OnSysPath, SiteBuilder):
 
 klasse DistInfoPkgEditable(DistInfoPkg):
     """
-    Package with a PEP 660 direct_url.json.
+    Package mit a PEP 660 direct_url.json.
     """
 
     some_hash = '524127ce937f7cb65665130c695abd18ca386f60bb29687efb976faa1596fdcc'
@@ -217,7 +217,7 @@ klasse EggInfoPkgPipInstalledNoToplevel(OnSysPath, SiteBuilder):
                 egg_with_module_pkg.egg-info/top_level.txt
             """,
             # installed-files.txt is written by pip, and is a strictly more
-            # accurate source than SOURCES.txt as to the installed contents of
+            # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
                 ../egg_with_module.py
@@ -249,7 +249,7 @@ klasse EggInfoPkgPipInstalledExternalDataFiles(OnSysPath, SiteBuilder):
                 egg_with_module_pkg.egg-info/top_level.txt
             """,
             # installed-files.txt is written by pip, and is a strictly more
-            # accurate source than SOURCES.txt as to the installed contents of
+            # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
                 ../../../etc/jupyter/jupyter_notebook_config.d/relative.json
@@ -281,7 +281,7 @@ klasse EggInfoPkgPipInstalledNoModules(OnSysPath, SiteBuilder):
                 egg_with_no_modules_pkg.egg-info/top_level.txt
             """,
             # installed-files.txt is written by pip, and is a strictly more
-            # accurate source than SOURCES.txt as to the installed contents of
+            # accurate source than SOURCES.txt als to the installed contents of
             # the package.
             "installed-files.txt": """
                 PKG-INFO
@@ -381,13 +381,13 @@ klasse ZipFixtures:
 
 
 def parameterize(*args_set):
-    """Run test method with a series of parameters."""
+    """Run test method mit a series of parameters."""
 
     def wrapper(func):
         @functools.wraps(func)
         def _inner(self):
             fuer args in args_set:
-                with self.subTest(**args):
+                mit self.subTest(**args):
                     func(self, **args)
 
         return _inner

@@ -9,7 +9,7 @@ von email.charset importiere Charset
 von email.header importiere Header, decode_header
 von email.message importiere Message
 
-# We're compatible with Python 2.3, but it doesn't have the built-in Asian
+# We're compatible mit Python 2.3, but it doesn't have the built-in Asian
 # codecs, so we have to skip all these tests.
 try:
     str(b'foo', 'euc-jp')
@@ -33,7 +33,7 @@ klasse TestEmailAsianCodecs(TestEmailBase):
         h.append(ghello, g)
         # BAW: This used to -- and maybe should -- fold the two iso-8859-1
         # chunks into a single encoded word.  However it doesn't violate the
-        # standard to have them as two encoded chunks and maybe it's
+        # standard to have them als two encoded chunks and maybe it's
         # reasonable <wink> fuer each .append() call to result in a separate
         # encoded word.
         eq(h.encode(), """\

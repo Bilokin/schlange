@@ -118,13 +118,13 @@ klasse PropertyTests(unittest.TestCase):
         self.assertRaises(PropertyDel, delattr, sub, "spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_property_decorator_subclass_doc(self):
         sub = SubClass()
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "SubClass.getter")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_property_decorator_baseclass_doc(self):
         base = BaseClass()
         self.assertEqual(base.__class__.__dict__['spam'].__doc__, "BaseClass.getter")
@@ -136,7 +136,7 @@ klasse PropertyTests(unittest.TestCase):
         self.assertEqual(sub.__class__.__dict__['spam'].__doc__, "spam spam spam")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_property_getter_doc_override(self):
         newgettersub = PropertySubNewGetter()
         self.assertEqual(newgettersub.spam, 5)
@@ -155,12 +155,12 @@ klasse PropertyTests(unittest.TestCase):
             self.assertIs(C.__dict__['foo'].__isabstractmethod__, bool(val))
 
         # check that the DynamicClassAttribute's __isabstractmethod__ descriptor does the
-        # right thing when presented with a value that fails truth testing:
+        # right thing when presented mit a value that fails truth testing:
         klasse NotBool(object):
             def __bool__(self):
                 raise ValueError()
             __len__ = __bool__
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             klasse C(object):
                 def foo(self):
                     pass
@@ -182,7 +182,7 @@ klasse PropertyTests(unittest.TestCase):
                 return self._color
             def __init__(self):
                 self._color = 'cyan'
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             Okay1.color
         self.assertEqual(Okay1().color, 'cyan')
         klasse Okay2(ClassWithAbstractVirtualProperty):
@@ -191,7 +191,7 @@ klasse PropertyTests(unittest.TestCase):
                 return self._color
             def __init__(self):
                 self._color = 'magenta'
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             Okay2.color
         self.assertEqual(Okay2().color, 'magenta')
 
@@ -222,7 +222,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             raise Exception("AttributeError not raised")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_docstring_copy(self):
         klasse Foo(object):
             @PropertySub
@@ -234,7 +234,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             "spam wrapped in DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_property_setter_copies_getter_docstring(self):
         klasse Foo(object):
             def __init__(self): self._spam = 1
@@ -268,7 +268,7 @@ klasse PropertySubclassTests(unittest.TestCase):
             "spam wrapped in DynamicClassAttribute subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
-                     "Docstrings are omitted with -O2 and above")
+                     "Docstrings are omitted mit -O2 and above")
     def test_property_new_getter_new_docstring(self):
 
         klasse Foo(object):

@@ -29,7 +29,7 @@ except ImportError:
     _mimetypes_read_windows_registry = Nichts
 
 try:
-    importiere winreg as _winreg
+    importiere winreg als _winreg
 except ImportError:
     _winreg = Nichts
 
@@ -90,7 +90,7 @@ klasse MimeTypes:
         list of standard types, sonst to the list of non-standard
         types.
 
-        Valid extensions are empty or start with a '.'.
+        Valid extensions are empty or start mit a '.'.
         """
         wenn ext and not ext.startswith('.'):
             von warnings importiere _deprecated
@@ -204,7 +204,7 @@ klasse MimeTypes:
 
         Return value is a list of strings giving the possible filename
         extensions, including the leading dot ('.').  The extension is not
-        guaranteed to have been associated with any particular data stream,
+        guaranteed to have been associated mit any particular data stream,
         but would be mapped to the MIME type 'type' by guess_type().
 
         Optional 'strict' argument when false adds a bunch of commonly found,
@@ -223,7 +223,7 @@ klasse MimeTypes:
 
         Return value is a string giving a filename extension,
         including the leading dot ('.').  The extension is not
-        guaranteed to have been associated with any particular data
+        guaranteed to have been associated mit any particular data
         stream, but would be mapped to the MIME type 'type' by
         guess_type().  If no extension can be guessed fuer 'type', Nichts
         is returned.
@@ -244,7 +244,7 @@ klasse MimeTypes:
         list of standard types, sonst to the list of non-standard
         types.
         """
-        with open(filename, encoding='utf-8') as fp:
+        mit open(filename, encoding='utf-8') als fp:
             self.readfp(fp, strict)
 
     def readfp(self, fp, strict=Wahr):
@@ -303,10 +303,10 @@ klasse MimeTypes:
                         yield ctype
                 i += 1
 
-        with _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') as hkcr:
+        mit _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') als hkcr:
             fuer subkeyname in enum_types(hkcr):
                 try:
-                    with _winreg.OpenKey(hkcr, subkeyname) as subkey:
+                    mit _winreg.OpenKey(hkcr, subkeyname) als subkey:
                         # Only check file extensions
                         wenn not subkeyname.startswith("."):
                             continue
@@ -357,7 +357,7 @@ def guess_all_extensions(type, strict=Wahr):
 
     Return value is a list of strings giving the possible filename
     extensions, including the leading dot ('.').  The extension is not
-    guaranteed to have been associated with any particular data
+    guaranteed to have been associated mit any particular data
     stream, but would be mapped to the MIME type 'type' by
     guess_type().  If no extension can be guessed fuer 'type', Nichts
     is returned.
@@ -374,7 +374,7 @@ def guess_extension(type, strict=Wahr):
 
     Return value is a string giving a filename extension, including the
     leading dot ('.').  The extension is not guaranteed to have been
-    associated with any particular data stream, but would be mapped to the
+    associated mit any particular data stream, but would be mapped to the
     MIME type 'type' by guess_type().  If no extension can be guessed for
     'type', Nichts is returned.
 
@@ -438,7 +438,7 @@ def read_mime_types(file):
         f = open(file, encoding='utf-8')
     except OSError:
         return Nichts
-    with f:
+    mit f:
         db = MimeTypes()
         db.readfp(f, Wahr)
         return db.types_map[Wahr]
@@ -467,12 +467,12 @@ def _default_mime_types():
         '.br': 'br',
         }
 
-    # Before adding new types, make sure they are either registered with IANA,
+    # Before adding new types, make sure they are either registered mit IANA,
     # at https://www.iana.org/assignments/media-types/media-types.xhtml
     # or extensions, i.e. using the x- prefix
 
     # If you add to these, please keep them sorted by mime type.
-    # Make sure the entry with the preferred file extension fuer a particular mime type
+    # Make sure the entry mit the preferred file extension fuer a particular mime type
     # appears before any others of the same mimetype.
     types_map = _types_map_default = {
         '.js'     : 'text/javascript',

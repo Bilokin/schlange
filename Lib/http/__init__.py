@@ -107,7 +107,7 @@ klasse HTTPStatus:
         'URI not available in preferred format')
     PROXY_AUTHENTICATION_REQUIRED = (407,
         'Proxy Authentication Required',
-        'You must authenticate with this proxy before proceeding')
+        'You must authenticate mit this proxy before proceeding')
     REQUEST_TIMEOUT = (408, 'Request Timeout',
         'Request timed out; try again later')
     CONFLICT = 409, 'Conflict', 'Request conflict'
@@ -156,7 +156,7 @@ klasse HTTPStatus:
     UNAVAILABLE_FOR_LEGAL_REASONS = (451,
         'Unavailable For Legal Reasons',
         'The server is denying access to the '
-        'resource as a consequence of a legal demand')
+        'resource als a consequence of a legal demand')
 
     # server errors
     INTERNAL_SERVER_ERROR = (500, 'Internal Server Error',
@@ -205,9 +205,9 @@ klasse HTTPMethod:
     CONNECT = 'CONNECT', 'Establish a connection to the server.'
     DELETE = 'DELETE', 'Remove the target.'
     GET = 'GET', 'Retrieve the target.'
-    HEAD = 'HEAD', 'Same as GET, but only retrieve the status line and header section.'
+    HEAD = 'HEAD', 'Same als GET, but only retrieve the status line and header section.'
     OPTIONS = 'OPTIONS', 'Describe the communication options fuer the target.'
     PATCH = 'PATCH', 'Apply partial modifications to a target.'
-    POST = 'POST', 'Perform target-specific processing with the request payload.'
-    PUT = 'PUT', 'Replace the target with the request payload.'
+    POST = 'POST', 'Perform target-specific processing mit the request payload.'
+    PUT = 'PUT', 'Replace the target mit the request payload.'
     TRACE = 'TRACE', 'Perform a message loop-back test along the path to the target.'

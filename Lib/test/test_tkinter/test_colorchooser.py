@@ -48,7 +48,7 @@ klasse DefaultRootTest(AbstractDefaultRootTest, unittest.TestCase):
             ismapped = master.winfo_ismapped()
             raise ZeroDivisionError
 
-        with swap_attr(Dialog, '_test_callback', test_callback):
+        mit swap_attr(Dialog, '_test_callback', test_callback):
             ismapped = Nichts
             self.assertRaises(ZeroDivisionError, askcolor)
             #askcolor()

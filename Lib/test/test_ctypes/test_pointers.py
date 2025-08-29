@@ -36,13 +36,13 @@ klasse PointersTestCase(unittest.TestCase):
 
     def test_type_flags(self):
         fuer cls in _Pointer, PyCPointerType:
-            with self.subTest(cls=cls):
+            mit self.subTest(cls=cls):
                 self.assertWahr(_Pointer.__flags__ & Py_TPFLAGS_IMMUTABLETYPE)
                 self.assertFalsch(_Pointer.__flags__ & Py_TPFLAGS_DISALLOW_INSTANTIATION)
 
     def test_metaclass_details(self):
         # Cannot call the metaclass __init__ more than once
-        with self.assertRaisesRegex(SystemError, "already initialized"):
+        mit self.assertRaisesRegex(SystemError, "already initialized"):
             PyCPointerType.__init__(POINTER(c_byte), 'ptr', (), {})
 
     def test_pointer_crash(self):
@@ -111,7 +111,7 @@ klasse PointersTestCase(unittest.TestCase):
 
         dll = CDLL(_ctypes_test.__file__)
         # This function expects a function pointer,
-        # and calls this with an integer pointer as parameter.
+        # and calls this mit an integer pointer als parameter.
         # The int pointer points to a table containing the numbers 1..10
         doit = dll._testfunc_callback_with_pointer
 
@@ -123,9 +123,9 @@ klasse PointersTestCase(unittest.TestCase):
             i = ct(42)
             p = pointer(i)
             self.assertIs(type(p.contents), ct)
-            # p.contents is the same as p[0]
+            # p.contents is the same als p[0]
 
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 del p[0]
 
     def test_from_address(self):
@@ -208,12 +208,12 @@ klasse PointersTestCase(unittest.TestCase):
 
     def test_read_null_pointer(self):
         null_ptr = POINTER(c_int)()
-        with self.assertRaisesRegex(ValueError, "NULL pointer access"):
+        mit self.assertRaisesRegex(ValueError, "NULL pointer access"):
             null_ptr[0]
 
     def test_write_null_pointer(self):
         null_ptr = POINTER(c_int)()
-        with self.assertRaisesRegex(ValueError, "NULL pointer access"):
+        mit self.assertRaisesRegex(ValueError, "NULL pointer access"):
             null_ptr[0] = 1
 
     def test_set_pointer_to_null_and_read(self):
@@ -227,7 +227,7 @@ klasse PointersTestCase(unittest.TestCase):
         self.assertEqual(values, [1, 2, 3])
 
         bar.values = Nichts
-        with self.assertRaisesRegex(ValueError, "NULL pointer access"):
+        mit self.assertRaisesRegex(ValueError, "NULL pointer access"):
             bar.values[0]
 
     def test_pointers_bool(self):
@@ -249,7 +249,7 @@ klasse PointersTestCase(unittest.TestCase):
 
     def test_pointer_type_str_name(self):
         large_string = 'T' * 2 ** 25
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             P = POINTER(large_string)
         self.assertWahr(P)
 
@@ -272,17 +272,17 @@ klasse PointersTestCase(unittest.TestCase):
         self.assertIs(type(p2), t1)
 
     def test_incomplete_pointer_types_still_equal(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             t1 = POINTER("LP_C")
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             t2 = POINTER("LP_C")
 
         self.assertIs(t1, t2)
 
     def test_incomplete_pointer_types_cannot_instantiate(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             t1 = POINTER("LP_C")
-        with self.assertRaisesRegex(TypeError, "has no _type_"):
+        mit self.assertRaisesRegex(TypeError, "has no _type_"):
             t1()
 
     def test_pointer_set_type_twice(self):
@@ -320,18 +320,18 @@ klasse PointersTestCase(unittest.TestCase):
         self.assertIs(c_int.__pointer_type__, int_ptr)
 
     def test_pointer_not_ctypes_type(self):
-        with self.assertRaisesRegex(TypeError, "must have storage info"):
+        mit self.assertRaisesRegex(TypeError, "must have storage info"):
             POINTER(int)
 
-        with self.assertRaisesRegex(TypeError, "must have storage info"):
+        mit self.assertRaisesRegex(TypeError, "must have storage info"):
             pointer(int)
 
-        with self.assertRaisesRegex(TypeError, "must have storage info"):
+        mit self.assertRaisesRegex(TypeError, "must have storage info"):
             pointer(int(1))
 
     def test_pointer_set_python_type(self):
         p1 = POINTER(c_int)
-        with self.assertRaisesRegex(TypeError, "must have storage info"):
+        mit self.assertRaisesRegex(TypeError, "must have storage info"):
             p1.set_type(int)
 
     def test_pointer_type_attribute_is_none(self):
@@ -341,7 +341,7 @@ klasse PointersTestCase(unittest.TestCase):
                 ('b', c_float),
             )
 
-        with self.assertRaisesRegex(AttributeError, ".Cls'> has no attribute '__pointer_type__'"):
+        mit self.assertRaisesRegex(AttributeError, ".Cls'> has no attribute '__pointer_type__'"):
             Cls.__pointer_type__
 
         p = POINTER(Cls)
@@ -413,23 +413,23 @@ klasse PointerTypeCacheTestCase(unittest.TestCase):
         klasse C:
             pass
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             P = POINTER("C")
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIs(_pointer_type_cache["C"], P)
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             _pointer_type_cache[C] = P
         self.assertIs(C.__pointer_type__, P)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIs(_pointer_type_cache[C], P)
 
     def test_deprecated_cache_with_ints(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             _pointer_type_cache[123] = 456
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(_pointer_type_cache[123], 456)
 
     def test_deprecated_cache_with_ctypes_type(self):
@@ -439,26 +439,26 @@ klasse PointerTypeCacheTestCase(unittest.TestCase):
                         ("c", c_int)]
 
         P1 = POINTER(C)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             P2 = POINTER("C")
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             _pointer_type_cache[C] = P2
 
         self.assertIs(C.__pointer_type__, P2)
         self.assertIsNot(C.__pointer_type__, P1)
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIs(_pointer_type_cache[C], P2)
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIs(_pointer_type_cache.get(C), P2)
 
     def test_get_not_registered(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIsNichts(_pointer_type_cache.get(str))
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertIsNichts(_pointer_type_cache.get(str, Nichts))
 
     def test_repeated_set_type(self):

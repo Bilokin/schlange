@@ -20,7 +20,7 @@ requires_Decompress_copy = unittest.skipUnless(
 
 
 def _zlib_runtime_version_tuple(zlib_version=zlib.ZLIB_RUNTIME_VERSION):
-    # Register "1.2.3" as "1.2.3.0"
+    # Register "1.2.3" als "1.2.3.0"
     # or "1.2.0-linux","1.2.0.f","1.2.0.f-linux"
     v = zlib_version.split('-', 1)[0].split('.')
     wenn len(v) < 4:
@@ -34,7 +34,7 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 
 
 # bpo-46623: When a hardware accelerator is used (currently only on s390x),
-# using different ways to compress data with zlib can produce different
+# using different ways to compress data mit zlib can produce different
 # compressed data.
 # Simplified test_pair() code:
 #
@@ -49,7 +49,7 @@ ZLIB_RUNTIME_VERSION_TUPLE = _zlib_runtime_version_tuple()
 #
 # On s390x wenn zlib uses a hardware accelerator, func1() creates a single
 # "final" compressed block whereas func2() produces 3 compressed blocks (the
-# last one is a final block). On other platforms with no accelerator, func1()
+# last one is a final block). On other platforms mit no accelerator, func1()
 # and func2() produce the same compressed data made of a single (final)
 # compressed block.
 #
@@ -130,7 +130,7 @@ klasse ChecksumCombineMixin:
 
         - The default IV is returned wenn *iv* is Nichts.
         - A random IV is returned wenn *iv* is -1.
-        - Otherwise, *iv* is returned as is.
+        - Otherwise, *iv* is returned als is.
         """
         wenn iv is Nichts:
             return self.default_iv
@@ -139,7 +139,7 @@ klasse ChecksumCombineMixin:
         return iv
 
     def checksum(self, data, init=Nichts):
-        """Compute the checksum of data with a given initial value.
+        """Compute the checksum of data mit a given initial value.
 
         The *init* value is parsed by ``parse_iv``.
         """
@@ -257,28 +257,28 @@ klasse ExceptionTestCase(unittest.TestCase):
             self.assertRaises(TypeError, zlib.decompress, arg)
 
     def test_badcompressobj(self):
-        # verify failure on building compress object with bad params
+        # verify failure on building compress object mit bad params
         self.assertRaises(ValueError, zlib.compressobj, 1, zlib.DEFLATED, 0)
         # specifying total bits too large causes an error
         self.assertRaises(ValueError,
                 zlib.compressobj, 1, zlib.DEFLATED, zlib.MAX_WBITS + 1)
 
     def test_baddecompressobj(self):
-        # verify failure on building decompress object with bad params
+        # verify failure on building decompress object mit bad params
         self.assertRaises(ValueError, zlib.decompressobj, -1)
 
     def test_decompressobj_badflush(self):
-        # verify failure on calling decompressobj.flush with bad params
+        # verify failure on calling decompressobj.flush mit bad params
         self.assertRaises(ValueError, zlib.decompressobj().flush, 0)
         self.assertRaises(ValueError, zlib.decompressobj().flush, -1)
 
     @support.cpython_only
     def test_overflow(self):
-        with self.assertRaisesRegex(OverflowError, 'int too large'):
+        mit self.assertRaisesRegex(OverflowError, 'int too large'):
             zlib.decompress(b'', 15, sys.maxsize + 1)
-        with self.assertRaisesRegex(OverflowError, 'int too large'):
+        mit self.assertRaisesRegex(OverflowError, 'int too large'):
             zlib.decompressobj().decompress(b'', sys.maxsize + 1)
-        with self.assertRaisesRegex(OverflowError, 'int too large'):
+        mit self.assertRaisesRegex(OverflowError, 'int too large'):
             zlib.decompressobj().flush(sys.maxsize + 1)
 
     @support.cpython_only
@@ -327,7 +327,7 @@ klasse CompressTestCase(BaseCompressTestCase, unittest.TestCase):
     def test_keywords(self):
         x = zlib.compress(HAMLET_SCENE, level=3)
         self.assertEqual(zlib.decompress(x), HAMLET_SCENE)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             zlib.compress(data=HAMLET_SCENE, level=3)
         self.assertEqual(zlib.decompress(x,
                                          wbits=zlib.MAX_WBITS,
@@ -423,9 +423,9 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                               strategy=strategy,
                               zdict=b"")
         do = zlib.decompressobj(wbits=wbits, zdict=b"")
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             co.compress(data=HAMLET_SCENE)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             do.decompress(data=zlib.compress(HAMLET_SCENE))
         x = co.compress(HAMLET_SCENE) + co.flush()
         y = do.decompress(x, max_length=len(HAMLET_SCENE)) + do.flush()
@@ -447,7 +447,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(HAMLET_SCENE, y1 + y2)
 
     def test_compressincremental(self):
-        # compress object in steps, decompress object as one-shot
+        # compress object in steps, decompress object als one-shot
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
@@ -500,7 +500,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                                        len(dco.unconsumed_tail))
         self.assertEqual(b'', dco.unused_data)
         self.assertEqual(data, b''.join(bufs))
-        # Failure means: "decompressobj with init options failed"
+        # Failure means: "decompressobj mit init options failed"
 
     def test_decompincflush(self):
         self.test_decompinc(flush=Wahr)
@@ -508,7 +508,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
     def test_decompimax(self, source=Nichts, cx=256, dcx=64):
         # compress in steps, decompress in length-restricted steps
         source = source or HAMLET_SCENE
-        # Check a decompression object with max_length specified
+        # Check a decompression object mit max_length specified
         data = source * 128
         co = zlib.compressobj()
         bufs = []
@@ -533,7 +533,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(data, b''.join(bufs), 'Wrong data retrieved')
 
     def test_decompressmaxlen(self, flush=Falsch):
-        # Check a decompression object with max_length specified
+        # Check a decompression object mit max_length specified
         data = HAMLET_SCENE * 128
         co = zlib.compressobj()
         bufs = []
@@ -575,7 +575,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     def test_maxlen_large(self):
         # Sizes up to sys.maxsize should be accepted, although zlib is
-        # internally limited to expressing sizes with unsigned int
+        # internally limited to expressing sizes mit unsigned int
         data = HAMLET_SCENE * 10
         self.assertGreater(len(data), zlib.DEF_BUF_SIZE)
         compressed = zlib.compress(data, 1)
@@ -598,7 +598,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(dco.unconsumed_tail, b"")
 
     def test_flushes(self):
-        # Test flush() with the various options, using all the
+        # Test flush() mit the various options, using all the
         # different levels in order to provide more variations.
         sync_opt = ['Z_NO_FLUSH', 'Z_SYNC_FLUSH', 'Z_FULL_FLUSH',
                     'Z_PARTIAL_FLUSH']
@@ -613,7 +613,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
         fuer sync in sync_opt:
             fuer level in range(10):
-                with self.subTest(sync=sync, level=level):
+                mit self.subTest(sync=sync, level=level):
                     obj = zlib.compressobj( level )
                     a = obj.compress( data[:3000] )
                     b = obj.flush( sync )
@@ -666,7 +666,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # Use it to compress HAMLET.
         co = zlib.compressobj(zdict=zdict)
         cd = co.compress(h) + co.flush()
-        # Verify that it will decompress with the dictionary.
+        # Verify that it will decompress mit the dictionary.
         dco = zlib.decompressobj(zdict=zdict)
         self.assertEqual(dco.decompress(cd) + dco.flush(), h)
         # Verify that it fails when not given the dictionary.
@@ -692,7 +692,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         # For the record
         self.assertEqual(zlib.decompress(x), b'foo')
         self.assertRaises(zlib.error, zlib.decompress, x[:-5])
-        # Omitting the stream end works with decompressor objects
+        # Omitting the stream end works mit decompressor objects
         # (see issue #8672).
         dco = zlib.decompressobj()
         y = dco.decompress(x[:-5])
@@ -854,12 +854,12 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
 
     def test_compresspickle(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((TypeError, pickle.PicklingError)):
+            mit self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.compressobj(zlib.Z_BEST_COMPRESSION), proto)
 
     def test_decompresspickle(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((TypeError, pickle.PicklingError)):
+            mit self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(zlib.decompressobj(), proto)
 
     # Memory use of the following functions takes into account overallocation
@@ -926,12 +926,12 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         wenn supports_wbits_0:
             self.assertEqual(zlib.decompress(zlib15, 0), HAMLET_SCENE)
         self.assertEqual(zlib.decompress(zlib15, 32 + 15), HAMLET_SCENE)
-        with self.assertRaisesRegex(zlib.error, 'invalid window size'):
+        mit self.assertRaisesRegex(zlib.error, 'invalid window size'):
             zlib.decompress(zlib15, 14)
         dco = zlib.decompressobj(wbits=32 + 15)
         self.assertEqual(dco.decompress(zlib15), HAMLET_SCENE)
         dco = zlib.decompressobj(wbits=14)
-        with self.assertRaisesRegex(zlib.error, 'invalid window size'):
+        mit self.assertRaisesRegex(zlib.error, 'invalid window size'):
             dco.decompress(zlib15)
 
         co = zlib.compressobj(level=1, wbits=9)
@@ -965,7 +965,7 @@ klasse CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
         self.assertEqual(dco.decompress(gzip), HAMLET_SCENE)
 
         fuer wbits in (-15, 15, 31):
-            with self.subTest(wbits=wbits):
+            mit self.subTest(wbits=wbits):
                 expected = HAMLET_SCENE
                 actual = zlib.decompress(
                     zlib.compress(HAMLET_SCENE, wbits=wbits), wbits=wbits
@@ -995,20 +995,20 @@ LORD POLONIUS
 
        Yet here, Laertes! aboard, aboard, fuer shame!
        The wind sits in the shoulder of your sail,
-       And you are stay'd for. There; my blessing with thee!
+       And you are stay'd for. There; my blessing mit thee!
        And these few precepts in thy memory
        See thou character. Give thy thoughts no tongue,
        Nor any unproportioned thought his act.
        Be thou familiar, but by no means vulgar.
        Those friends thou hast, and their adoption tried,
-       Grapple them to thy soul with hoops of steel;
-       But do not dull thy palm with entertainment
+       Grapple them to thy soul mit hoops of steel;
+       But do not dull thy palm mit entertainment
        Of each new-hatch'd, unfledged comrade. Beware
        Of entrance to a quarrel, but being in,
        Bear't that the opposed may beware of thee.
        Give every man thy ear, but few thy voice;
        Take each man's censure, but reserve thy judgment.
-       Costly thy habit as thy purse can buy,
+       Costly thy habit als thy purse can buy,
        But not express'd in fancy; rich, not gaudy;
        For the apparel oft proclaims the man,
        And they in France of the best rank and station
@@ -1017,7 +1017,7 @@ LORD POLONIUS
        For loan oft loses both itself and friend,
        And borrowing dulls the edge of husbandry.
        This above all: to thine ownself be true,
-       And it must follow, as the night the day,
+       And it must follow, als the night the day,
        Thou canst not then be false to any man.
        Farewell: my blessing season this in thee!
 
@@ -1092,7 +1092,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=3.3)
     def testDecompress4G(self, size):
-        # "Test zlib._ZlibDecompressor.decompress() with >4GiB input"
+        # "Test zlib._ZlibDecompressor.decompress() mit >4GiB input"
         blocksize = min(10 * 1024 * 1024, size)
         block = random.randbytes(blocksize)
         try:
@@ -1108,7 +1108,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
 
     def testPickle(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 pickle.dumps(zlib._ZlibDecompressor(), proto)
 
     def testDecompressorChunksMaxsize(self):
@@ -1175,7 +1175,7 @@ klasse ZlibDecompressorTest(unittest.TestCase):
                                         max_length=0), b'')
         out.append(zlibd.decompress(b''))
 
-        # Fill buffer with new data
+        # Fill buffer mit new data
         out.append(zlibd.decompress(self.DATA[200:280], 2))
 
         # Append some more data, not enough to require resize

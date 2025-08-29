@@ -10,7 +10,7 @@ This iterates over the lines of all files listed in sys.argv[1:],
 defaulting to sys.stdin wenn the list is empty.  If a filename is '-' it
 is also replaced by sys.stdin and the optional arguments mode and
 openhook are ignored.  To specify an alternative list of filenames,
-pass it as the argument to input().  A single file name is also allowed.
+pass it als the argument to input().  A single file name is also allowed.
 
 Functions filename(), lineno() return the filename and cumulative line
 number of the line that has just been read; filelineno() returns its
@@ -255,7 +255,7 @@ klasse FileInput:
             wenn not self._file:
                 raise StopIteration
             self.nextfile()
-            # repeat with next file
+            # repeat mit next file
 
     def nextfile(self):
         savestdout = self._savestdout
@@ -296,7 +296,7 @@ klasse FileInput:
             wenn not self._file:
                 return line
             self.nextfile()
-            # repeat with next file
+            # repeat mit next file
 
     def _readline(self):
         wenn not self._files:

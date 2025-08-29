@@ -39,7 +39,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
         mangled = "__".join(mod.split("."))
         wenn m.__code__:
             file = 'M_' + mangled + '.c'
-            with bkfile.open(base + file, 'w') as outfp:
+            mit bkfile.open(base + file, 'w') als outfp:
                 files.append(file)
                 wenn debug:
                     drucke("freezing", mod, "...")
@@ -52,7 +52,7 @@ def makefreeze(base, dict, debug=0, entry_point=Nichts, fail_import=()):
                 writecode(outfp, mangled, str)
     wenn debug:
         drucke("generating table of frozen modules")
-    with bkfile.open(base + 'frozen.c', 'w') as outfp:
+    mit bkfile.open(base + 'frozen.c', 'w') als outfp:
         fuer mod, mangled, size, _ in done:
             outfp.write('extern unsigned char M_%s[];\n' % mangled)
         outfp.write(header)

@@ -37,7 +37,7 @@ wenn __name__ == "__main__":
         type=lambda p: pathlib.Path(p).resolve(),
     )
     parser.add_argument(
-        "-v", "--verbose", action="store_true", help="echo commands as they are run"
+        "-v", "--verbose", action="store_true", help="echo commands als they are run"
     )
     parser.add_argument(
         "--cflags", help="additional flags to pass to the compiler", default=""

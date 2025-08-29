@@ -2,7 +2,7 @@
 
 The simplest way to use this module is to call the urlopen function,
 which accepts a string containing a URL or a Request object (described
-below).  It opens the URL and returns the results as file-like
+below).  It opens the URL and returns the results als file-like
 object; the returned object has some extra methods described below.
 
 The OpenerDirector manages a collection of Handler objects that do
@@ -12,14 +12,14 @@ Handlers needed to open the requested URL.  For example, the
 HTTPHandler performs HTTP GET and POST requests and deals with
 non-error returns.  The HTTPRedirectHandler automatically deals with
 HTTP 301, 302, 303, 307, and 308 redirect errors, and the
-HTTPDigestAuthHandler deals with digest authentication.
+HTTPDigestAuthHandler deals mit digest authentication.
 
-urlopen(url, data=Nichts) -- Basic usage is the same as original
+urlopen(url, data=Nichts) -- Basic usage is the same als original
 urllib.  pass the url and optionally data to post to an HTTP URL, and
 get a file-like object back.  One difference is that you can also pass
 a Request instance instead of URL.  Raises a URLError (subclass of
 OSError); fuer HTTP errors, raises an HTTPError, which can also be
-treated as a valid response.
+treated als a valid response.
 
 build_opener -- Function that creates a new OpenerDirector instance.
 Will install the default handlers.  Accepts one or more Handlers as
@@ -27,15 +27,15 @@ arguments, either instances or Handler classes that it will
 instantiate.  If one of the argument is a subclass of the default
 handler, the argument will be installed instead of the default.
 
-install_opener -- Installs a new opener as the default opener.
+install_opener -- Installs a new opener als the default opener.
 
 objects of interest:
 
-OpenerDirector -- Sets up the User Agent as the Python-urllib client and manages
-the Handler classes, while dealing with requests and responses.
+OpenerDirector -- Sets up the User Agent als the Python-urllib client and manages
+the Handler classes, while dealing mit requests and responses.
 
 Request -- An object that encapsulates the state of a request.  The
-state can be as simple as the URL.  It can also include extra HTTP
+state can be als simple als the URL.  It can also include extra HTTP
 headers, e.g. a User-Agent.
 
 BaseHandler --
@@ -154,15 +154,15 @@ def urlopen(url, data=Nichts, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
     the various SSL options. See HTTPSConnection fuer more details.
 
 
-    This function always returns an object which can work as a
+    This function always returns an object which can work als a
     context manager and has the properties url, headers, and status.
     See urllib.response.addinfourl fuer more detail on these properties.
 
     For HTTP and HTTPS URLs, this function returns a http.client.HTTPResponse
     object slightly modified. In addition to the three new methods above, the
-    msg attribute contains the same information as the reason attribute ---
+    msg attribute contains the same information als the reason attribute ---
     the reason phrase returned by the server --- instead of the response
-    headers as it is specified in the documentation fuer HTTPResponse.
+    headers als it is specified in the documentation fuer HTTPResponse.
 
     For FTP, file, and data URLs, this function returns a
     urllib.response.addinfourl object.
@@ -205,11 +205,11 @@ def urlretrieve(url, filename=Nichts, reporthook=Nichts, data=Nichts):
     the result is a copy von local file to new file.
 
     Returns a tuple containing the path to the newly created
-    data file as well as the resulting HTTPMessage object.
+    data file als well als the resulting HTTPMessage object.
     """
     url_type, path = _splittype(url)
 
-    with contextlib.closing(urlopen(url, data)) as fp:
+    mit contextlib.closing(urlopen(url, data)) als fp:
         headers = fp.info()
 
         # Just return the local path and the "headers" fuer file://
@@ -225,7 +225,7 @@ def urlretrieve(url, filename=Nichts, reporthook=Nichts, data=Nichts):
             filename = tfp.name
             _url_tempfiles.append(filename)
 
-        with tfp:
+        mit tfp:
             result = filename, headers
             bs = 1024*8
             size = -1
@@ -267,7 +267,7 @@ def urlcleanup():
 # copied von cookielib.py
 _cut_port_re = re.compile(r":\d+$", re.ASCII)
 def request_host(request):
-    """Return request-host, as defined by RFC 2965.
+    """Return request-host, als defined by RFC 2965.
 
     Variation von RFC: returned value is lowercased, fuer convenient
     comparison.
@@ -540,7 +540,7 @@ def build_opener(*handlers):
     The opener will use several default handlers, including support
     fuer HTTP, FTP and when applicable HTTPS.
 
-    If any of the handlers passed as arguments are subclasses of the
+    If any of the handlers passed als arguments are subclasses of the
     default handlers, the default handlers will not be used.
     """
     opener = OpenerDirector()
@@ -639,9 +639,9 @@ klasse HTTPRedirectHandler(BaseHandler):
         # essentially all clients do redirect in this case, so we do
         # the same.
 
-        # Be conciliant with URIs containing a space.  This is mainly
-        # redundant with the more complete encoding done in http_error_302(),
-        # but it is kept fuer compatibility with other callers.
+        # Be conciliant mit URIs containing a space.  This is mainly
+        # redundant mit the more complete encoding done in http_error_302(),
+        # but it is kept fuer compatibility mit other callers.
         newurl = newurl.replace(' ', '%20')
 
         CONTENT_HEADERS = ("content-length", "content-type")
@@ -684,15 +684,15 @@ klasse HTTPRedirectHandler(BaseHandler):
             urlparts[2] = "/"
         newurl = urlunparse(urlparts)
 
-        # http.client.parse_headers() decodes as ISO-8859-1.  Recover the
+        # http.client.parse_headers() decodes als ISO-8859-1.  Recover the
         # original bytes and percent-encode non-ASCII bytes, and any special
-        # characters such as the space.
+        # characters such als the space.
         newurl = quote(
             newurl, encoding="iso-8859-1", safe=string.punctuation)
         newurl = urljoin(req.full_url, newurl)
 
         # XXX Probably want to forget about the state of the current
-        # request, although that might interact poorly with other
+        # request, although that might interact poorly mit other
         # handlers that also use handler-specific request attributes
         new = self.redirect_request(req, fp, code, msg, headers, newurl)
         wenn new is Nichts:
@@ -711,7 +711,7 @@ klasse HTTPRedirectHandler(BaseHandler):
         visited[newurl] = visited.get(newurl, 0) + 1
 
         # Don't close the fp until we are sure that we won't use it
-        # with HTTPError.
+        # mit HTTPError.
         fp.read()
         fp.close()
 
@@ -739,9 +739,9 @@ def _parse_proxy(proxy):
     sonst:
         # URL
         wenn not r_scheme.startswith("//"):
-            raise ValueError("proxy URL with no authority: %r" % proxy)
+            raise ValueError("proxy URL mit no authority: %r" % proxy)
         # We have an authority, so fuer RFC 3986-compliant URLs (by ss 3.
-        # and 3.3.), path is empty or starts with '/'
+        # and 3.3.), path is empty or starts mit '/'
         wenn '@' in r_scheme:
             host_separator = r_scheme.find('@')
             end = r_scheme.find("/", host_separator)
@@ -908,7 +908,7 @@ klasse HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
 klasse AbstractBasicAuthHandler:
 
     # XXX this allows fuer multiple auth-schemes, but will stupidly pick
-    # the last one with a realm specified.
+    # the last one mit a realm specified.
 
     # allow fuer double- and single-quoted realm values
     # (single quotes are a violation of the RFC, but appear in the wild)
@@ -954,7 +954,7 @@ klasse AbstractBasicAuthHandler:
             yield (scheme, Nichts)
 
     def http_error_auth_reqed(self, authreq, host, req, headers):
-        # host may be an authority (without userinfo) or a URL with an
+        # host may be an authority (without userinfo) or a URL mit an
         # authority
         headers = headers.get_all(authreq)
         wenn not headers:
@@ -1298,7 +1298,7 @@ klasse AbstractHTTPHandler(BaseHandler):
         # persistent connections?
 
         # We want to make an HTTP/1.1 request, but the addinfourl
-        # klasse isn't prepared to deal with a persistent connection.
+        # klasse isn't prepared to deal mit a persistent connection.
         # It will try to read all remaining data von the socket,
         # which will block while the server waits fuer the next request.
         # So make sure the connection gets closed after the (only)
@@ -1320,7 +1320,7 @@ klasse AbstractHTTPHandler(BaseHandler):
             try:
                 h.request(req.get_method(), req.selector, req.data, headers,
                           encode_chunked=req.has_header('Transfer-encoding'))
-            except OSError as err: # timeout error
+            except OSError als err: # timeout error
                 raise URLError(err)
             r = h.getresponse()
         except:
@@ -1336,7 +1336,7 @@ klasse AbstractHTTPHandler(BaseHandler):
 
         r.url = req.get_full_url()
         # This line replaces the .msg attribute of the HTTPResponse
-        # with .headers, because urllib clients expect the response to
+        # mit .headers, because urllib clients expect the response to
         # have the reason in .msg.  It would be good to mark this
         # attribute is deprecated and get then to use info() or
         # .headers.
@@ -1407,7 +1407,7 @@ def parse_keqv_list(l):
     return parsed
 
 def parse_http_list(s):
-    """Parse lists as described by RFC 2068 Section 2.
+    """Parse lists als described by RFC 2068 Section 2.
 
     In particular, parse comma-separated lists where the elements of
     the list may include quoted-strings.  A quoted-string could
@@ -1477,7 +1477,7 @@ klasse FileHandler(BaseHandler):
                 (mtype or 'text/plain', size, modified))
             origurl = pathname2url(localfile, add_scheme=Wahr)
             return addinfourl(open(localfile, 'rb'), headers, origurl)
-        except OSError as exp:
+        except OSError als exp:
             raise URLError(exp, exp.filename)
 
     file_open = open_local_file
@@ -1527,7 +1527,7 @@ klasse FTPHandler(BaseHandler):
 
         try:
             host = socket.gethostbyname(host)
-        except OSError as msg:
+        except OSError als msg:
             raise URLError(msg)
         path, attrs = _splitattr(req.selector)
         dirs = path.split('/')
@@ -1552,7 +1552,7 @@ klasse FTPHandler(BaseHandler):
                 headers += "Content-length: %d\n" % retrlen
             headers = email.message_from_string(headers)
             return addinfourl(fp, headers, req.full_url)
-        except ftplib.all_errors as exp:
+        except ftplib.all_errors als exp:
             raise URLError(f"ftp error: {exp}") von exp
 
     def connect_ftp(self, user, passwd, host, port, dirs, timeout):
@@ -1614,7 +1614,7 @@ klasse CacheFTPHandler(FTPHandler):
 
 klasse DataHandler(BaseHandler):
     def data_open(self, req):
-        # data URLs as specified in RFC 2397.
+        # data URLs als specified in RFC 2397.
         #
         # ignores POSTed data
         #
@@ -1651,7 +1651,7 @@ def url2pathname(url, *, require_scheme=Falsch, resolve_host=Falsch):
     The 'file:' scheme prefix must be omitted unless *require_scheme*
     is set to true.
 
-    The URL authority may be resolved with gethostbyname() if
+    The URL authority may be resolved mit gethostbyname() if
     *resolve_host* is set to true.
     """
     wenn not require_scheme:
@@ -1705,15 +1705,15 @@ def pathname2url(pathname, *, add_scheme=Falsch):
                 drive = '//' + drive[4:]
         wenn drive[1:] == ':':
             # DOS drive specified. Add three slashes to the start, producing
-            # an authority section with a zero-length authority, and a path
-            # section starting with a single slash.
+            # an authority section mit a zero-length authority, and a path
+            # section starting mit a single slash.
             drive = '///' + drive
         drive = quote(drive, encoding=encoding, errors=errors, safe='/:')
     sowenn root:
         # Add explicitly empty authority to absolute path. If the path
-        # starts with exactly one slash then this change is mostly
-        # cosmetic, but wenn it begins with two or more slashes then this
-        # avoids interpreting the path as a URL authority.
+        # starts mit exactly one slash then this change is mostly
+        # cosmetic, but wenn it begins mit two or more slashes then this
+        # avoids interpreting the path als a URL authority.
         root = '//' + root
     tail = quote(tail, encoding=encoding, errors=errors)
     return scheme + drive + root + tail
@@ -1800,11 +1800,11 @@ klasse ftpwrapper:
             self.ftp.voidcmd(cmd)
         conn = Nichts
         wenn file and not isdir:
-            # Try to retrieve as a file
+            # Try to retrieve als a file
             try:
                 cmd = 'RETR ' + file
                 conn, retrlen = self.ftp.ntransfercmd(cmd)
-            except ftplib.error_perm as reason:
+            except ftplib.error_perm als reason:
                 wenn str(reason)[:3] != '550':
                     raise URLError(f'ftp error: {reason}') von reason
         wenn not conn:
@@ -1816,7 +1816,7 @@ klasse ftpwrapper:
                 try:
                     try:
                         self.ftp.cwd(file)
-                    except ftplib.error_perm as reason:
+                    except ftplib.error_perm als reason:
                         raise URLError('ftp error: %r' % reason) von reason
                 finally:
                     self.ftp.cwd(pwd)
@@ -1880,8 +1880,8 @@ def getproxies_environment():
             environment.append((name, value, proxy_name))
             wenn value:
                 proxies[proxy_name] = value
-    # CVE-2016-1000110 - If we are running as CGI script, forget HTTP_PROXY
-    # (non-all-lowercase) as it may be set von the web server by a "Proxy:"
+    # CVE-2016-1000110 - If we are running als CGI script, forget HTTP_PROXY
+    # (non-all-lowercase) als it may be set von the web server by a "Proxy:"
     # header von the client
     # If "proxy" is lowercase, it will still be used thanks to the next block
     wenn 'REQUEST_METHOD' in os.environ:
@@ -1915,7 +1915,7 @@ def proxy_bypass_environment(host, proxies=Nichts):
     host = host.lower()
     # strip port off host
     hostonly, port = _splitport(host)
-    # check wenn the host ends with any of the DNS suffixes
+    # check wenn the host ends mit any of the DNS suffixes
     fuer name in no_proxy.split(','):
         name = name.strip()
         wenn name:
@@ -1995,7 +1995,7 @@ def _proxy_bypass_macosx_sysconf(host, proxy_settings):
     return Falsch
 
 
-# Same as _proxy_bypass_macosx_sysconf, testable on all platforms
+# Same als _proxy_bypass_macosx_sysconf, testable on all platforms
 def _proxy_bypass_winreg_override(host, override):
     """Return Wahr wenn the host should bypass the proxy server.
 
@@ -2073,7 +2073,7 @@ sowenn os.name == 'nt':
             proxyEnable = winreg.QueryValueEx(internetSettings,
                                                'ProxyEnable')[0]
             wenn proxyEnable:
-                # Returned as Unicode but problems wenn not converted to ASCII
+                # Returned als Unicode but problems wenn not converted to ASCII
                 proxyServer = str(winreg.QueryValueEx(internetSettings,
                                                        'ProxyServer')[0])
                 wenn '=' not in proxyServer and ';' not in proxyServer:
@@ -2126,7 +2126,7 @@ sowenn os.name == 'nt':
                                                'ProxyEnable')[0]
             proxyOverride = str(winreg.QueryValueEx(internetSettings,
                                                      'ProxyOverride')[0])
-            # ^^^^ Returned as Unicode but problems wenn not converted to ASCII
+            # ^^^^ Returned als Unicode but problems wenn not converted to ASCII
         except OSError:
             return Falsch
         wenn not proxyEnable or not proxyOverride:

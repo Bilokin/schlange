@@ -50,16 +50,16 @@ General notes on the underlying Mersenne Twister core generator:
 # Adrian Baddeley.  Adapted by Raymond Hettinger fuer use with
 # the Mersenne Twister  and os.urandom() core generators.
 
-von math importiere log as _log, exp as _exp, pi as _pi, e as _e, ceil as _ceil
-von math importiere sqrt as _sqrt, acos as _acos, cos as _cos, sin as _sin
-von math importiere tau as TWOPI, floor as _floor, isfinite as _isfinite
-von math importiere lgamma as _lgamma, fabs as _fabs, log2 as _log2
-von os importiere urandom as _urandom
-von _collections_abc importiere Sequence as _Sequence
-von operator importiere index as _index
-von itertools importiere accumulate as _accumulate, repeat as _repeat
-von bisect importiere bisect as _bisect
-importiere os as _os
+von math importiere log als _log, exp als _exp, pi als _pi, e als _e, ceil als _ceil
+von math importiere sqrt als _sqrt, acos als _acos, cos als _cos, sin als _sin
+von math importiere tau als TWOPI, floor als _floor, isfinite als _isfinite
+von math importiere lgamma als _lgamma, fabs als _fabs, log2 als _log2
+von os importiere urandom als _urandom
+von _collections_abc importiere Sequence als _Sequence
+von operator importiere index als _index
+von itertools importiere accumulate als _accumulate, repeat als _repeat
+von bisect importiere bisect als _bisect
+importiere os als _os
 importiere _random
 
 __all__ = [
@@ -119,7 +119,7 @@ klasse Random(_random.Random):
     def __init__(self, x=Nichts):
         """Initialize an instance.
 
-        Optional argument x controls seeding, as fuer Random.seed().
+        Optional argument x controls seeding, als fuer Random.seed().
         """
 
         self.seed(x)
@@ -157,10 +157,10 @@ klasse Random(_random.Random):
                 try:
                     # hashlib is pretty heavy to load, try lean internal
                     # module first
-                    von _sha2 importiere sha512 as _sha512
+                    von _sha2 importiere sha512 als _sha512
                 except ImportError:
                     # fallback to official implementation
-                    von hashlib importiere sha512 as _sha512
+                    von hashlib importiere sha512 als _sha512
 
             wenn isinstance(a, str):
                 a = a.encode()
@@ -185,17 +185,17 @@ klasse Random(_random.Random):
             super().setstate(internalstate)
         sowenn version == 2:
             version, internalstate, self.gauss_next = state
-            # In version 2, the state was saved as signed ints, which causes
+            # In version 2, the state was saved als signed ints, which causes
             #   inconsistencies between 32/64-bit systems. The state is
             #   really unsigned 32-bit ints, so we convert negative ints from
             #   version 2 to positive longs fuer version 3.
             try:
                 internalstate = tuple(x % (2 ** 32) fuer x in internalstate)
-            except ValueError as e:
+            except ValueError als e:
                 raise TypeError von e
             super().setstate(internalstate)
         sonst:
-            raise ValueError("state with version %s passed to "
+            raise ValueError("state mit version %s passed to "
                              "Random.setstate() of version %s" %
                              (version, self.VERSION))
 
@@ -358,7 +358,7 @@ klasse Random(_random.Random):
 
         randbelow = self._randbelow
         fuer i in reversed(range(1, len(x))):
-            # pick an element in x[:i+1] with which to exchange x[i]
+            # pick an element in x[:i+1] mit which to exchange x[i]
             j = randbelow(i + 1)
             x[i], x[j] = x[j], x[i]
 
@@ -375,7 +375,7 @@ klasse Random(_random.Random):
         population contains repeats, then each occurrence is a possible
         selection in the sample.
 
-        Repeated elements can be specified one at a time or with the optional
+        Repeated elements can be specified one at a time or mit the optional
         counts parameter.  For example:
 
             sample(['red', 'blue'], counts=[4, 2], k=5)
@@ -458,10 +458,10 @@ klasse Random(_random.Random):
         return result
 
     def choices(self, population, weights=Nichts, *, cum_weights=Nichts, k=1):
-        """Return a k sized list of population elements chosen with replacement.
+        """Return a k sized list of population elements chosen mit replacement.
 
         If the relative weights or cumulative weights are not specified,
-        the selections are made with equal probability.
+        the selections are made mit equal probability.
 
         """
         random = self.random
@@ -569,7 +569,7 @@ klasse Random(_random.Random):
         #    cos(2*pi*x)*sqrt(-2*log(1-y))
         #    sin(2*pi*x)*sqrt(-2*log(1-y))
         #
-        # are two *independent* variables with normal distribution
+        # are two *independent* variables mit normal distribution
         # (mu = 0, sigma = 1).
         # (Lambert Meertens)
         # (corrected version; bug discovered by Mike Miller, fixed by LM)
@@ -596,7 +596,7 @@ klasse Random(_random.Random):
         """Log normal distribution.
 
         If you take the natural logarithm of this distribution, you'll get a
-        normal distribution with mean mu and standard deviation sigma.
+        normal distribution mit mean mu and standard deviation sigma.
         mu can have any value, and sigma must be greater than zero.
 
         """
@@ -691,7 +691,7 @@ klasse Random(_random.Random):
         wenn alpha > 1.0:
 
             # Uses R.C.H. Cheng, "The generation of Gamma
-            # variables with non-integral shape parameters",
+            # variables mit non-integral shape parameters",
             # Applied Statistics, (1977), 26, No. 1, p71-74
 
             ainv = _sqrt(2.0 * alpha - 1.0)
@@ -790,7 +790,7 @@ klasse Random(_random.Random):
         """Binomial random variable.
 
         Gives the number of successes fuer *n* independent trials
-        with the probability of success in each trial being *p*:
+        mit the probability of success in each trial being *p*:
 
             sum(random() < p fuer i in range(n))
 
@@ -798,7 +798,7 @@ klasse Random(_random.Random):
 
             0 <= X <= n
 
-        The integer is chosen with the probability:
+        The integer is chosen mit the probability:
 
             P(X == k) = math.comb(n, k) * p ** k * (1 - p) ** (n - k)
 
@@ -829,7 +829,7 @@ klasse Random(_random.Random):
             return n - self.binomialvariate(n, 1.0 - p)
 
         wenn n * p < 10.0:
-            # BG: Geometric method by Devroye with running time of O(np).
+            # BG: Geometric method by Devroye mit running time of O(np).
             # https://dl.acm.org/doi/pdf/10.1145/42372.42381
             x = y = 0
             c = _log2(1.0 - p)
@@ -841,7 +841,7 @@ klasse Random(_random.Random):
                     return x
                 x += 1
 
-        # BTRS: Transformed rejection with squeeze method by Wolfgang Hörmann
+        # BTRS: Transformed rejection mit squeeze method by Wolfgang Hörmann
         # https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.47.8407&rep=rep1&type=pdf
         assert n*p >= 10.0 and p <= 0.5
 
@@ -888,7 +888,7 @@ klasse Random(_random.Random):
 
 klasse SystemRandom(Random):
     """Alternate random number generator using sources provided
-    by the operating system (such as /dev/urandom on Unix or
+    by the operating system (such als /dev/urandom on Unix or
     CryptGenRandom on Windows).
 
      Not available on all systems (see os.urandom() fuer details).
@@ -900,7 +900,7 @@ klasse SystemRandom(Random):
         return (int.from_bytes(_urandom(7)) >> 3) * RECIP_BPF
 
     def getrandbits(self, k):
-        """getrandbits(k) -> x.  Generates an int with k random bits."""
+        """getrandbits(k) -> x.  Generates an int mit k random bits."""
         wenn k < 0:
             raise ValueError('number of bits must be non-negative')
         numbytes = (k + 7) // 8                       # bits / 8 and rounded up
@@ -909,7 +909,7 @@ klasse SystemRandom(Random):
 
     def randbytes(self, n):
         """Generate n random bytes."""
-        # os.urandom(n) fails with ValueError fuer n < 0
+        # os.urandom(n) fails mit ValueError fuer n < 0
         # and returns an empty bytes string fuer n == 0.
         return _urandom(n)
 
@@ -925,7 +925,7 @@ klasse SystemRandom(Random):
 
 # ----------------------------------------------------------------------
 # Create one instance, seeded von current time, and export its methods
-# as module-level functions.  The functions share state across all uses
+# als module-level functions.  The functions share state across all uses
 # (both in the user's code and in the Python libraries), but that's fine
 # fuer most programs and is easier fuer the casual user than making them
 # instantiate their own Random() instance.
@@ -961,7 +961,7 @@ randbytes = _inst.randbytes
 ## ----------------- test program -----------------------
 
 def _test_generator(n, func, args):
-    von statistics importiere stdev, fmean as mean
+    von statistics importiere stdev, fmean als mean
     von time importiere perf_counter
 
     t0 = perf_counter()
@@ -1029,9 +1029,9 @@ def _parse_args(arg_list: list[str] | Nichts):
     parser.add_argument("input", nargs="*",
                         help="""\
 wenn no options given, output depends on the input
-    string or multiple: same as --choice
-    integer: same as --integer
-    float: same as --float""")
+    string or multiple: same als --choice
+    integer: same als --integer
+    float: same als --float""")
     args = parser.parse_args(arg_list)
     return args, parser.format_help()
 

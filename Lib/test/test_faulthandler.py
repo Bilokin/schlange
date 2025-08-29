@@ -68,7 +68,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         """
         Run the specified code in Python (in a new child process) and read the
         output von the standard error or von a file (if filename is set).
-        Return the output lines as a list.
+        Return the output lines als a list.
 
         Strip the reference count von the standard error fuer Python debug
         build, and replace "Current thread 0x00007f8d8fbd9700" by "Current
@@ -84,23 +84,23 @@ klasse FaultHandlerTests(unittest.TestCase):
         option = 'handle_segv=0'
         support.set_sanitizer_env_var(env, option)
 
-        with support.SuppressCrashReport():
+        mit support.SuppressCrashReport():
             process = script_helper.spawn_python('-c', code,
                                                  pass_fds=pass_fds,
                                                  env=env)
-            with process:
+            mit process:
                 output, stderr = process.communicate()
                 exitcode = process.wait()
         output = output.decode('ascii', 'backslashreplace')
         wenn filename:
             self.assertEqual(output, '')
-            with open(filename, "rb") as fp:
+            mit open(filename, "rb") als fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
         sowenn fd is not Nichts:
             self.assertEqual(output, '')
             os.lseek(fd, os.SEEK_SET, 0)
-            with open(fd, "rb", closefd=Falsch) as fp:
+            mit open(fd, "rb", closefd=Falsch) als fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
         return output.splitlines(), exitcode
@@ -279,7 +279,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is Nichts, 'need _testcapi')
     def check_fatal_error_func(self, release_gil):
         # Test that Py_FatalError() dumps a traceback
-        with support.SuppressCrashReport():
+        mit support.SuppressCrashReport():
             self.check_fatal_error(f"""
                 importiere _testcapi
                 _testcapi.fatal_error(b'xyz', {release_gil})
@@ -297,7 +297,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      "Issue #12868: sigaltstack() doesn't work on "
-                     "OpenBSD wenn Python is compiled with pthread")
+                     "OpenBSD wenn Python is compiled mit pthread")
     @unittest.skipIf(not hasattr(faulthandler, '_stack_overflow'),
                      'need faulthandler._stack_overflow()')
     def test_stack_overflow(self):
@@ -322,7 +322,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
     @skip_segfault_on_android
     def test_enable_file(self):
-        with temporary_filename() as filename:
+        mit temporary_filename() als filename:
             self.check_fatal_error("""
                 importiere faulthandler
                 output = open({filename}, 'wb')
@@ -337,7 +337,7 @@ klasse FaultHandlerTests(unittest.TestCase):
                      "subprocess doesn't support pass_fds on Windows")
     @skip_segfault_on_android
     def test_enable_fd(self):
-        with tempfile.TemporaryFile('wb+') as fp:
+        mit tempfile.TemporaryFile('wb+') als fp:
             fd = fp.fileno()
             self.check_fatal_error("""
                 importiere faulthandler
@@ -482,7 +482,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
             def funcB():
                 wenn filename:
-                    with open(filename, "wb") as fp:
+                    mit open(filename, "wb") als fp:
                         faulthandler.dump_traceback(fp, all_threads=Falsch)
                 sowenn fd is not Nichts:
                     faulthandler.dump_traceback(fd,
@@ -519,13 +519,13 @@ klasse FaultHandlerTests(unittest.TestCase):
         self.check_dump_traceback()
 
     def test_dump_traceback_file(self):
-        with temporary_filename() as filename:
+        mit temporary_filename() als filename:
             self.check_dump_traceback(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
     def test_dump_traceback_fd(self):
-        with tempfile.TemporaryFile('wb+') as fp:
+        mit tempfile.TemporaryFile('wb+') als fp:
             self.check_dump_traceback(fd=fp.fileno())
 
     def test_truncate(self):
@@ -564,7 +564,7 @@ klasse FaultHandlerTests(unittest.TestCase):
 
             def dump():
                 wenn {filename}:
-                    with open({filename}, "wb") as fp:
+                    mit open({filename}, "wb") als fp:
                         faulthandler.dump_traceback(fp, all_threads=Wahr)
                 sonst:
                     faulthandler.dump_traceback(all_threads=Wahr)
@@ -617,7 +617,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         self.check_dump_traceback_threads(Nichts)
 
     def test_dump_traceback_threads_file(self):
-        with temporary_filename() as filename:
+        mit temporary_filename() als filename:
             self.check_dump_traceback_threads(filename)
 
     def check_dump_traceback_later(self, repeat=Falsch, cancel=Falsch, loops=1,
@@ -693,13 +693,13 @@ klasse FaultHandlerTests(unittest.TestCase):
         self.check_dump_traceback_later(cancel=Wahr)
 
     def test_dump_traceback_later_file(self):
-        with temporary_filename() as filename:
+        mit temporary_filename() als filename:
             self.check_dump_traceback_later(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
     def test_dump_traceback_later_fd(self):
-        with tempfile.TemporaryFile('wb+') as fp:
+        mit tempfile.TemporaryFile('wb+') als fp:
             self.check_dump_traceback_later(fd=fp.fileno())
 
     @support.requires_resource('walltime')
@@ -796,13 +796,13 @@ klasse FaultHandlerTests(unittest.TestCase):
         self.check_register(unregister=Wahr)
 
     def test_register_file(self):
-        with temporary_filename() as filename:
+        mit temporary_filename() als filename:
             self.check_register(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
     def test_register_fd(self):
-        with tempfile.TemporaryFile('wb+') as fp:
+        mit tempfile.TemporaryFile('wb+') als fp:
             self.check_register(fd=fp.fileno())
 
     def test_register_threads(self):
@@ -817,7 +817,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         stderr = sys.stderr
         try:
             sys.stderr = Nichts
-            with self.assertRaises(RuntimeError) as cm:
+            mit self.assertRaises(RuntimeError) als cm:
                 yield
             self.assertEqual(str(cm.exception), "sys.stderr is Nichts")
         finally:
@@ -826,14 +826,14 @@ klasse FaultHandlerTests(unittest.TestCase):
     def test_stderr_Nichts(self):
         # Issue #21497: provide a helpful error wenn sys.stderr is Nichts,
         # instead of just an attribute error: "Nichts has no attribute fileno".
-        with self.check_stderr_none():
+        mit self.check_stderr_none():
             faulthandler.enable()
-        with self.check_stderr_none():
+        mit self.check_stderr_none():
             faulthandler.dump_traceback()
-        with self.check_stderr_none():
+        mit self.check_stderr_none():
             faulthandler.dump_traceback_later(1e-3)
         wenn hasattr(faulthandler, "register"):
-            with self.check_stderr_none():
+            mit self.check_stderr_none():
                 faulthandler.register(signal.SIGUSR1)
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
@@ -954,7 +954,7 @@ klasse FaultHandlerTests(unittest.TestCase):
         self.assertGreater(len(output), 0)
 
         fuer line in output:
-            with self.subTest(line=line):
+            mit self.subTest(line=line):
                 wenn line != '':  # Ignore trailing or leading newlines
                     self.assertRegex(line, C_STACK_REGEX[1])
 
@@ -972,7 +972,7 @@ klasse FaultHandlerTests(unittest.TestCase):
     def test_dump_c_stack_file(self):
         importiere tempfile
 
-        with tempfile.TemporaryFile("w+") as tmp:
+        mit tempfile.TemporaryFile("w+") als tmp:
             faulthandler.dump_c_stack(file=tmp)
             tmp.flush()  # Just in case
             tmp.seek(0)

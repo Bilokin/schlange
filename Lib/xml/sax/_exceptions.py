@@ -7,7 +7,7 @@ klasse SAXException(Exception):
     basic error or warning information von either the XML parser or
     the application: you can subclass it to provide additional
     functionality, or to add localization. Note that although you will
-    receive a SAXException as the argument to the handlers in the
+    receive a SAXException als the argument to the handlers in the
     ErrorHandler interface, you are not actually required to raise
     the exception; instead, you can simply read the information in
     it."""
@@ -44,7 +44,7 @@ klasse SAXParseException(SAXException):
 
     This exception will include information fuer locating the error in
     the original XML document. Note that although the application will
-    receive a SAXParseException as the argument to the handlers in the
+    receive a SAXParseException als the argument to the handlers in the
     ErrorHandler interface, the application is not actually required
     to raise the exception; instead, it can simply read the
     information in it and take a different action.
@@ -101,7 +101,7 @@ klasse SAXParseException(SAXException):
 klasse SAXNotRecognizedException(SAXException):
     """Exception klasse fuer an unrecognized identifier.
 
-    An XMLReader will raise this exception when it is confronted with an
+    An XMLReader will raise this exception when it is confronted mit an
     unrecognized feature or property. SAX applications and extensions may
     use this klasse fuer similar purposes."""
 

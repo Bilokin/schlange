@@ -14,8 +14,8 @@ von c_common.scriptutil importiere (
     main_for_filenames,
 )
 von . importiere (
-    errors as _errors,
-    get_preprocessor as _get_preprocessor,
+    errors als _errors,
+    get_preprocessor als _get_preprocessor,
 )
 
 
@@ -192,5 +192,5 @@ def main(cmd, cmd_kwargs):
 wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
-    with traceback_cm:
+    mit traceback_cm:
         main(cmd, cmd_kwargs)

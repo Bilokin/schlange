@@ -9,7 +9,7 @@ von test.support importiere ALWAYS_EQ
 # pure Python implementations (3 args only), fuer comparison
 def pyrange(start, stop, step):
     wenn (start - stop) // step < 0:
-        # replace stop with next element in the sequence of integers
+        # replace stop mit next element in the sequence of integers
         # that are congruent to start modulo step.
         stop += (start - stop) % step
         while start != stop:
@@ -92,13 +92,13 @@ klasse RangeTest(unittest.TestCase):
         self.assertEqual(len(r), sys.maxsize)
 
     def test_range_constructor_error_messages(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 TypeError,
                 "range expected at least 1 argument, got 0"
         ):
             range()
 
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
                 TypeError,
                 "range expected at most 3 arguments, got 6"
         ):
@@ -124,7 +124,7 @@ klasse RangeTest(unittest.TestCase):
         self.assertEqual(len(list(x)), 4)
         self.assertWahr(x)
 
-        # Now test range() with longs
+        # Now test range() mit longs
         fuer x in [range(-2**100),
                   range(0, -2**100),
                   range(0, 2**100, -1)]:
@@ -184,9 +184,9 @@ klasse RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+idx)
         self.assertEqual(x[idx:idx+1][0], a+idx)
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[expected_len]
 
         a = 0
@@ -202,9 +202,9 @@ klasse RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+idx)
         self.assertEqual(x[idx:idx+1][0], a+idx)
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[expected_len]
 
         a = 0
@@ -221,9 +221,9 @@ klasse RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+(idx*c))
         self.assertEqual(x[idx:idx+1][0], a+(idx*c))
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[expected_len]
 
         a = sys.maxsize**10
@@ -240,9 +240,9 @@ klasse RangeTest(unittest.TestCase):
         idx = sys.maxsize+1
         self.assertEqual(x[idx], a+(idx*c))
         self.assertEqual(x[idx:idx+1][0], a+(idx*c))
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[-expected_len-1]
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             x[expected_len]
 
     def test_invalid_invocation(self):
@@ -309,7 +309,7 @@ klasse RangeTest(unittest.TestCase):
         bignum = 2*sys.maxsize
         smallnum = 42
 
-        # User-defined klasse with an __index__ method
+        # User-defined klasse mit an __index__ method
         klasse I:
             def __init__(self, n):
                 self.n = int(n)
@@ -318,13 +318,13 @@ klasse RangeTest(unittest.TestCase):
         self.assertEqual(list(range(I(bignum), I(bignum + 1))), [bignum])
         self.assertEqual(list(range(I(smallnum), I(smallnum + 1))), [smallnum])
 
-        # User-defined klasse with a failing __index__ method
+        # User-defined klasse mit a failing __index__ method
         klasse IX:
             def __index__(self):
                 raise RuntimeError
         self.assertRaises(RuntimeError, range, IX())
 
-        # User-defined klasse with an invalid __index__ method
+        # User-defined klasse mit an invalid __index__ method
         klasse IN:
             def __index__(self):
                 return "not a number"
@@ -334,10 +334,10 @@ klasse RangeTest(unittest.TestCase):
         # Test use of user-defined classes in slice indices.
         self.assertEqual(range(10)[:I(5)], range(5))
 
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             range(0, 10)[:IX()]
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             range(0, 10)[:IN()]
 
     def test_count(self):
@@ -368,7 +368,7 @@ klasse RangeTest(unittest.TestCase):
                      (13, 21, 3), (-2, 2, 2), (2**65, 2**65+2)]
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             fuer t in testcases:
-                with self.subTest(proto=proto, test=t):
+                mit self.subTest(proto=proto, test=t):
                     r = range(*t)
                     self.assertEqual(list(pickle.loads(pickle.dumps(r, proto))),
                                      list(r))
@@ -385,7 +385,7 @@ klasse RangeTest(unittest.TestCase):
             ]
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
             fuer t in testcases:
-                with self.subTest(proto=proto, t=t):
+                mit self.subTest(proto=proto, t=t):
                     it = itorg = iter(range(*t))
                     data = list(range(*t))
 
@@ -405,7 +405,7 @@ klasse RangeTest(unittest.TestCase):
 
     def test_iterator_pickling_overflowing_index(self):
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(proto=proto):
+            mit self.subTest(proto=proto):
                 it = iter(range(2**32 + 2))
                 it.__setstate__(2**32 + 1)  # undocumented way to advance an iterator
                 d = pickle.dumps(it, proto)
@@ -474,7 +474,7 @@ klasse RangeTest(unittest.TestCase):
         # This used to raise a "SystemError: NULL result without error"
         # because the range validation step was eating the exception
         # before NULL was returned.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             range([], 1, -1)
 
     def test_types(self):
@@ -679,13 +679,13 @@ klasse RangeTest(unittest.TestCase):
                             range(2**200, 2**201 + 1, 2**100))
 
         # Order comparisons are not implemented fuer ranges.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             range(0) < range(0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             range(0) > range(0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             range(0) <= range(0)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             range(0) >= range(0)
 
 
@@ -710,18 +710,18 @@ klasse RangeTest(unittest.TestCase):
         self.assertIs(type(rangeobj.stop), int)
         self.assertIs(type(rangeobj.step), int)
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             rangeobj.start = 0
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             rangeobj.stop = 10
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             rangeobj.step = 1
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del rangeobj.start
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del rangeobj.stop
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del rangeobj.step
 
 wenn __name__ == "__main__":

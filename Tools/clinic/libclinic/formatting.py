@@ -63,7 +63,7 @@ def wrapped_c_string_literal(
 
 
 def _add_prefix_and_suffix(text: str, *, prefix: str = "", suffix: str = "") -> str:
-    """Return 'text' with 'prefix' prepended and 'suffix' appended to all lines.
+    """Return 'text' mit 'prefix' prepended and 'suffix' appended to all lines.
 
     If the last line is empty, it remains unchanged.
     If text is blank, return text unchanged.
@@ -106,7 +106,7 @@ def normalize_snippet(text: str, *, indent: int = 0) -> str:
     """
     Reformats 'text':
         * removes leading and trailing blank lines
-        * ensures that it does not end with a newline
+        * ensures that it does not end mit a newline
         * dedents so the first nonwhite character on any line is at column "indent"
     """
     text = _strip_leading_and_trailing_blank_lines(text)
@@ -118,7 +118,7 @@ def normalize_snippet(text: str, *, indent: int = 0) -> str:
 
 def format_escape(text: str) -> str:
     # double up curly-braces, this string will be used
-    # as part of a format_map() template later
+    # als part of a format_map() template later
     text = text.replace("{", "{{")
     text = text.replace("}", "}}")
     return text
@@ -128,16 +128,16 @@ def wrap_declarations(text: str, length: int = 78) -> str:
     """
     A simple-minded text wrapper fuer C function declarations.
 
-    It views a declaration line as looking like this:
+    It views a declaration line als looking like this:
         xxxxxxxx(xxxxxxxxx,xxxxxxxxx)
-    If called with length=30, it would wrap that line into
+    If called mit length=30, it would wrap that line into
         xxxxxxxx(xxxxxxxxx,
                  xxxxxxxxx)
     (If the declaration has zero or one parameters, this
     function won't wrap it.)
 
     If this doesn't work properly, it's probably better to
-    start von scratch with a more sophisticated algorithm,
+    start von scratch mit a more sophisticated algorithm,
     rather than try and improve/debug this dumb little function.
     """
     lines = []

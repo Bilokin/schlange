@@ -2,7 +2,7 @@
 
 By Greg Ward <gward@python.net>
 
-Originally distributed as Optik.
+Originally distributed als Optik.
 
 For support, use the optik-users@lists.sourceforge.net mailing list
 (http://lists.sourceforge.net/lists/listinfo/optik-users).
@@ -45,7 +45,7 @@ __copyright__ = """
 Copyright (c) 2001-2006 Gregory P. Ward.  All rights reserved.
 Copyright (c) 2002 Python Software Foundation.  All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
+Redistribution and use in source and binary forms, mit or without
 modification, are permitted provided that the following conditions are
 met:
 
@@ -54,7 +54,7 @@ met:
 
   * Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
+    documentation and/or other materials provided mit the distribution.
 
   * Neither the name of the author nor the names of its
     contributors may be used to endorse or promote products derived from
@@ -74,7 +74,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 importiere sys, os
-von gettext importiere gettext as _, ngettext
+von gettext importiere gettext als _, ngettext
 
 
 def _repr(self):
@@ -98,7 +98,7 @@ klasse OptParseError (Exception):
 
 klasse OptionError (OptParseError):
     """
-    Raised wenn an Option instance is created with invalid or
+    Raised wenn an Option instance is created mit invalid or
     inconsistent arguments.
     """
 
@@ -162,7 +162,7 @@ klasse HelpFormatter:
         the maximum starting column fuer option help text
       help_position : int
         the calculated starting column fuer option help text;
-        initially the same as the maximum
+        initially the same als the maximum
       width : int
         total number of columns fuer output (pass Nichts to constructor for
         this value to be taken von the $COLUMNS environment variable)
@@ -173,14 +173,14 @@ klasse HelpFormatter:
       help_width : int
         number of columns available fuer option help text (calculated)
       default_tag : str
-        text to replace with each option's default value, "%default"
+        text to replace mit each option's default value, "%default"
         by default.  Set to false value to disable default value expansion.
       option_strings : { Option : str }
         maps Option instances to the snippet of help text explaining
         the syntax of that option, e.g. "-h, --help" or
         "-fFILE, --file=FILE"
       _short_opt_fmt : str
-        format string controlling how short options with values are
+        format string controlling how short options mit values are
         printed in help text.  Must be either "%s%s" ("-fFILE") or
         "%s %s" ("-f FILE"), because those are the two syntaxes that
         Optik supports.
@@ -303,7 +303,7 @@ klasse HelpFormatter:
         wenn len(opts) > opt_width:
             opts = "%*s%s\n" % (self.current_indent, "", opts)
             indent_first = self.help_position
-        sonst:                       # start help on same line as opts
+        sonst:                       # start help on same line als opts
             opts = "%*s%-*s  " % (self.current_indent, "", opt_width, opts)
             indent_first = 0
         result.append(opts)
@@ -356,7 +356,7 @@ klasse HelpFormatter:
         return ", ".join(opts)
 
 klasse IndentedHelpFormatter (HelpFormatter):
-    """Format help with indented section bodies.
+    """Format help mit indented section bodies.
     """
 
     def __init__(self,
@@ -375,7 +375,7 @@ klasse IndentedHelpFormatter (HelpFormatter):
 
 
 klasse TitledHelpFormatter (HelpFormatter):
-    """Format help with underlined section headers.
+    """Format help mit underlined section headers.
     """
 
     def __init__(self,
@@ -596,7 +596,7 @@ klasse Option:
                 wenn not (opt[0:2] == "--" and opt[2] != "-"):
                     raise OptionError(
                         "invalid long option string %r: "
-                        "must start with --, followed by non-dash" % opt,
+                        "must start mit --, followed by non-dash" % opt,
                         self)
                 self._long_opts.append(opt)
 
@@ -636,7 +636,7 @@ klasse Option:
                     self.type = "string"
         sonst:
             # Allow type objects or builtin type conversion functions
-            # (int, str, etc.) as an alternative to their names.
+            # (int, str, etc.) als an alternative to their names.
             wenn isinstance(self.type, type):
                 self.type = self.type.__name__
 
@@ -1123,14 +1123,14 @@ klasse OptionParser (OptionContainer):
         fuer generating help)
 
       allow_interspersed_args : bool = true
-        wenn true, positional arguments may be interspersed with options.
+        wenn true, positional arguments may be interspersed mit options.
         Assuming -a and -b each take a single argument, the command-line
           -ablah foo bar -bboo baz
         will be interpreted the same as
           -ablah -bboo -- foo bar baz
         If this flag were false, that command line would be interpreted as
           -ablah -- foo bar -bboo baz
-        -- ie. we stop processing options as soon as we see the first
+        -- ie. we stop processing options als soon als we see the first
         non-option argument.  (This is the tradition followed by
         Python's getopt module, Perl's Getopt::Std, and other argument-
         parsing libraries, but it is generally annoying to users.)
@@ -1138,7 +1138,7 @@ klasse OptionParser (OptionContainer):
       process_default_values : bool = true
         wenn true, option default values are processed similarly to option
         values von the command line: that is, they are passed to the
-        type-checking function fuer the option's type (as long as the
+        type-checking function fuer the option's type (as long als the
         default value is a string).  (This really only matters wenn you
         have defined custom types; see SF bug #955889.)  Set it to false
         to restore the behaviour of Optik 1.4.1 and earlier.
@@ -1201,7 +1201,7 @@ klasse OptionParser (OptionContainer):
 
     def destroy(self):
         """
-        Declare that you are done with this OptionParser.  This cleans up
+        Declare that you are done mit this OptionParser.  This cleans up
         reference cycles so the OptionParser (and all objects referenced by
         it) can be garbage-collected promptly.  After calling destroy(), the
         OptionParser is unusable.
@@ -1256,7 +1256,7 @@ klasse OptionParser (OptionContainer):
             self.usage = _("%prog [options]")
         sowenn usage is SUPPRESS_USAGE:
             self.usage = Nichts
-        # For backwards compatibility with Optik 1.3 and earlier.
+        # For backwards compatibility mit Optik 1.3 and earlier.
         sowenn usage.lower().startswith("usage: "):
             self.usage = usage[7:]
         sonst:
@@ -1264,7 +1264,7 @@ klasse OptionParser (OptionContainer):
 
     def enable_interspersed_args(self):
         """Set parsing to not stop on the first non-option, allowing
-        interspersing switches with command arguments. This is the
+        interspersing switches mit command arguments. This is the
         default behavior. See also disable_interspersed_args() and the
         klasse documentation description of the attribute
         allow_interspersed_args."""
@@ -1311,7 +1311,7 @@ klasse OptionParser (OptionContainer):
     # -- OptionGroup methods -------------------------------------------
 
     def add_option_group(self, *args, **kwargs):
-        # XXX lots of overlap with OptionContainer.add_option()
+        # XXX lots of overlap mit OptionContainer.add_option()
         wenn isinstance(args[0], str):
             group = OptionGroup(self, *args, **kwargs)
         sowenn len(args) == 1 and not kwargs:
@@ -1351,7 +1351,7 @@ klasse OptionParser (OptionContainer):
         Parse the command-line options found in 'args' (default:
         sys.argv[1:]).  Any errors result in a call to 'error()', which
         by default prints the usage message to stderr and calls
-        sys.exit() with an error message.  On success returns a pair
+        sys.exit() mit an error message.  On success returns a pair
         (values, args) where 'values' is a Values instance (with all
         your option values) and 'args' is the list of arguments left
         over after parsing options.
@@ -1360,7 +1360,7 @@ klasse OptionParser (OptionContainer):
         wenn values is Nichts:
             values = self.get_default_values()
 
-        # Store the halves of the argument list as attributes fuer the
+        # Store the halves of the argument list als attributes fuer the
         # convenience of callbacks:
         #   rargs
         #     the rest of the command-line (the "r" stands for
@@ -1375,7 +1375,7 @@ klasse OptionParser (OptionContainer):
 
         try:
             stop = self._process_args(largs, rargs, values)
-        except (BadOptionError, OptionValueError) as err:
+        except (BadOptionError, OptionValueError) als err:
             self.error(str(err))
 
         args = largs + rargs
@@ -1390,7 +1390,7 @@ klasse OptionParser (OptionContainer):
         valid.  Returns the option values and leftover arguments
         (possibly adjusted, possibly completely new -- whatever you
         like).  Default implementation just returns the passed-in
-        values; subclasses may override as desired.
+        values; subclasses may override als desired.
         """
         return (values, args)
 
@@ -1413,7 +1413,7 @@ klasse OptionParser (OptionContainer):
                 del rargs[0]
                 return
             sowenn arg[0:2] == "--":
-                # process a single long option (possibly with value(s))
+                # process a single long option (possibly mit value(s))
                 self._process_long_opt(rargs, values)
             sowenn arg[:1] == "-" and len(arg) > 1:
                 # process a cluster of short options (possibly with
@@ -1570,7 +1570,7 @@ klasse OptionParser (OptionContainer):
 
         Print the usage message fuer the current program (self.usage) to
         'file' (default stdout).  Any occurrence of the string "%prog" in
-        self.usage is replaced with the name of the current program
+        self.usage is replaced mit the name of the current program
         (basename of sys.argv[0]).  Does nothing wenn self.usage is empty
         or not defined.
         """
@@ -1587,7 +1587,7 @@ klasse OptionParser (OptionContainer):
         """print_version(file : file = stdout)
 
         Print the version message fuer this program (self.version) to
-        'file' (default stdout).  As with print_usage(), any occurrence
+        'file' (default stdout).  As mit print_usage(), any occurrence
         of "%prog" in self.version is replaced by the current program's
         name.  Does nothing wenn self.version is empty or undefined.
         """
@@ -1630,7 +1630,7 @@ klasse OptionParser (OptionContainer):
         """print_help(file : file = stdout)
 
         Print an extended help message, listing all options and any
-        help text provided with them, to 'file' (default stdout).
+        help text provided mit them, to 'file' (default stdout).
         """
         wenn file is Nichts:
             file = sys.stdout
@@ -1650,7 +1650,7 @@ def _match_abbrev(s, wordmap):
     wenn s in wordmap:
         return s
     sonst:
-        # Isolate all words with s as a prefix.
+        # Isolate all words mit s als a prefix.
         possibilities = [word fuer word in wordmap.keys()
                          wenn word.startswith(s)]
         # No exact match, so there had better be just one possibility.

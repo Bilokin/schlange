@@ -16,12 +16,12 @@ importiere pickle
 von pickle importiere dumps, loads
 F = fractions.Fraction
 
-#locate file with float format test values
+#locate file mit float format test values
 test_dir = os.path.dirname(__file__) or os.curdir
 format_testfile = os.path.join(test_dir, 'mathdata', 'formatfloat_testcases.txt')
 
 klasse DummyFloat(object):
-    """Dummy float klasse fuer testing comparisons with Fractions"""
+    """Dummy float klasse fuer testing comparisons mit Fractions"""
 
     def __init__(self, value):
         wenn not isinstance(value, float):
@@ -53,7 +53,7 @@ klasse DummyFloat(object):
 
 
 klasse DummyRational(object):
-    """Test comparison of Fraction with a naive rational implementation."""
+    """Test comparison of Fraction mit a naive rational implementation."""
 
     def __init__(self, num, den):
         g = math.gcd(num, den)
@@ -307,7 +307,7 @@ klasse FractionTest(unittest.TestCase):
         """Asserts that callable(*args, **kwargs) raises exc_type(message)."""
         try:
             callable(*args, **kwargs)
-        except exc_type as e:
+        except exc_type als e:
             self.assertEqual(message, str(e))
         sonst:
             self.fail("%s not raised" % exc_type.__name__)
@@ -343,7 +343,7 @@ klasse FractionTest(unittest.TestCase):
         self.assertEqual((0, 1), _components(F(-0.0)))
         self.assertEqual((3602879701896397, 36028797018963968),
                          _components(F(0.1)))
-        # bug 16469: error types should be consistent with float -> int
+        # bug 16469: error types should be consistent mit float -> int
         self.assertRaises(ValueError, F, float('nan'))
         self.assertRaises(OverflowError, F, float('inf'))
         self.assertRaises(OverflowError, F, float('-inf'))
@@ -355,7 +355,7 @@ klasse FractionTest(unittest.TestCase):
                          _components(F(Decimal('3.5e-2'))))
         self.assertEqual((0, 1),
                          _components(F(Decimal('.000e20'))))
-        # bug 16469: error types should be consistent with decimal -> int
+        # bug 16469: error types should be consistent mit decimal -> int
         self.assertRaises(ValueError, F, Decimal('nan'))
         self.assertRaises(ValueError, F, Decimal('snan'))
         self.assertRaises(OverflowError, F, Decimal('inf'))
@@ -434,7 +434,7 @@ klasse FractionTest(unittest.TestCase):
         # Imitate float's parsing.
         check_invalid("+ 3/2")
         check_invalid("- 3/2")
-        # Avoid treating '.' as a regex special character.
+        # Avoid treating '.' als a regex special character.
         check_invalid("3a2")
         # Don't accept combinations of decimals and rationals.
         check_invalid("3/7.2")
@@ -499,7 +499,7 @@ klasse FractionTest(unittest.TestCase):
 
     def test_limit_int(self):
         maxdigits = 5000
-        with adjust_int_max_str_digits(maxdigits):
+        mit adjust_int_max_str_digits(maxdigits):
             msg = 'Exceeds the limit'
             val = '1' * maxdigits
             num = (10**maxdigits - 1)//9
@@ -551,7 +551,7 @@ klasse FractionTest(unittest.TestCase):
 
         inf = 1e1000
         nan = inf - inf
-        # bug 16469: error types should be consistent with float -> int
+        # bug 16469: error types should be consistent mit float -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
             F.from_float, inf)
@@ -572,7 +572,7 @@ klasse FractionTest(unittest.TestCase):
         self.assertEqual(1 - F(1, 10**30),
                          F.from_decimal(Decimal("0." + "9" * 30)))
 
-        # bug 16469: error types should be consistent with decimal -> int
+        # bug 16469: error types should be consistent mit decimal -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
             F.from_decimal, Decimal("inf"))
@@ -688,8 +688,8 @@ klasse FractionTest(unittest.TestCase):
 
         klasse CustomInt(int):
             """
-            Subclass of int with just enough machinery to convince the Fraction
-            constructor to produce something with CustomInt numerator and
+            Subclass of int mit just enough machinery to convince the Fraction
+            constructor to produce something mit CustomInt numerator and
             denominator.
             """
 
@@ -1094,7 +1094,7 @@ klasse FractionTest(unittest.TestCase):
         self.assertFalsch(F(144, -89) <= float('nan'))
 
     def testBigFloatComparisons(self):
-        # Because 10**23 can't be represented exactly as a float:
+        # Because 10**23 can't be represented exactly als a float:
         self.assertFalsch(F(10**23) == float(10**23))
         # The first test demonstrates why these are important.
         self.assertFalsch(1e23 < float(F(math.trunc(1e23) + 1)))
@@ -1151,8 +1151,8 @@ klasse FractionTest(unittest.TestCase):
         self.assertEqual(hash(10**50), hash(F(10**50)))
         self.assertNotEqual(hash(float(10**23)), hash(F(10**23)))
         self.assertEqual(hinf, hash(F(1, hmod)))
-        # Check that __hash__ produces the same value as hash(), for
-        # consistency with int and Decimal.  (See issue #10356.)
+        # Check that __hash__ produces the same value als hash(), for
+        # consistency mit int and Decimal.  (See issue #10356.)
         self.assertEqual(hash(F(-1)), F(-1).__hash__())
 
     def testApproximatePi(self):
@@ -1268,7 +1268,7 @@ klasse FractionTest(unittest.TestCase):
             (F(0), '#', '0/1'),
         ]
         fuer fraction, spec, expected in testcases:
-            with self.subTest(fraction=fraction, spec=spec):
+            mit self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
     def test_format_e_presentation_type(self):
@@ -1328,7 +1328,7 @@ klasse FractionTest(unittest.TestCase):
             (F(-1, 7**100), 'z.6e', '-3.091690e-85'),
         ]
         fuer fraction, spec, expected in testcases:
-            with self.subTest(fraction=fraction, spec=spec):
+            mit self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
     def test_format_f_presentation_type(self):
@@ -1434,7 +1434,7 @@ klasse FractionTest(unittest.TestCase):
             (F(2, 3), '+07.2f', '+000.67'),
             (F(2, 3), ' 07.2f', ' 000.67'),
             # An isolated zero is a minimum width, not a zero-pad flag.
-            # So unlike zero-padding, it's legal in combination with alignment.
+            # So unlike zero-padding, it's legal in combination mit alignment.
             (F(2, 3), '0.2f', '0.67'),
             (F(2, 3), '>0.2f', '0.67'),
             (F(2, 3), '<0.2f', '0.67'),
@@ -1455,7 +1455,7 @@ klasse FractionTest(unittest.TestCase):
             (F('123456.789123123'), '.9_f', '123456.789_123_123'),
             (F('123456.789123123'), '.,f', '123456.789,123'),
             (F('123456.789123123'), '_.,f', '123_456.789,123'),
-            # Underscore as thousands separator
+            # Underscore als thousands separator
             (F(2, 3), '_.2f', '0.67'),
             (F(2, 3), '_.7f', '0.6666667'),
             (F('123456.789'), '_.2f', '123_456.79'),
@@ -1527,7 +1527,7 @@ klasse FractionTest(unittest.TestCase):
             (F(22, 7), '005.02f', '03.14'),
         ]
         fuer fraction, spec, expected in testcases:
-            with self.subTest(fraction=fraction, spec=spec):
+            mit self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
     def test_format_g_presentation_type(self):
@@ -1575,7 +1575,7 @@ klasse FractionTest(unittest.TestCase):
             (F('1234567.8'), '.6G', '1.23457E+06'),
             # Default precision is 6 significant figures
             (F('3.1415926535'), 'g', '3.14159'),
-            # Precision 0 is treated the same as precision 1.
+            # Precision 0 is treated the same als precision 1.
             (F('0.000031415'), '.0g', '3e-05'),
             (F('0.00031415'), '.0g', '0.0003'),
             (F('0.31415'), '.0g', '0.3'),
@@ -1591,16 +1591,16 @@ klasse FractionTest(unittest.TestCase):
             (F('31.415'), '.1g', '3e+01'),
             # Thousands separator
             (F(2**64), '_.25g', '18_446_744_073_709_551_616'),
-            # As with 'e' format, z flag is legal, but has no effect
+            # As mit 'e' format, z flag is legal, but has no effect
             (F(-1, 7**100), 'zg', '-3.09169e-85'),
         ]
         fuer fraction, spec, expected in testcases:
-            with self.subTest(fraction=fraction, spec=spec):
+            mit self.subTest(fraction=fraction, spec=spec):
                 self.assertEqual(format(fraction, spec), expected)
 
     def test_invalid_formats(self):
         fraction = F(2, 3)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             format(fraction, Nichts)
 
         invalid_specs = [
@@ -1641,13 +1641,13 @@ klasse FractionTest(unittest.TestCase):
             '05',
         ]
         fuer spec in invalid_specs:
-            with self.subTest(spec=spec):
-                with self.assertRaises(ValueError):
+            mit self.subTest(spec=spec):
+                mit self.assertRaises(ValueError):
                     format(fraction, spec)
 
     @requires_IEEE_754
     def test_float_format_testfile(self):
-        with open(format_testfile, encoding="utf-8") as testfile:
+        mit open(format_testfile, encoding="utf-8") als testfile:
             fuer line in testfile:
                 wenn line.startswith('--'):
                     continue
@@ -1660,7 +1660,7 @@ klasse FractionTest(unittest.TestCase):
                 wenn fmt == '%r':
                     continue
                 fmt2 = fmt[1:]
-                with self.subTest(fmt=fmt, arg=arg):
+                mit self.subTest(fmt=fmt, arg=arg):
                     f = F(float(arg))
                     self.assertEqual(format(f, fmt2), rhs)
                     wenn f:  # skip negative zero

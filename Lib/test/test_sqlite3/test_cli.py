@@ -6,7 +6,7 @@ importiere unittest
 importiere unittest.mock
 importiere os
 
-von sqlite3.__main__ importiere main as cli
+von sqlite3.__main__ importiere main als cli
 von test.support.import_helper importiere import_module
 von test.support.os_helper importiere TESTFN, unlink
 von test.support.pty_helper importiere run_pty
@@ -24,10 +24,10 @@ von test.support importiere (
 klasse CommandLineInterface(unittest.TestCase):
 
     def _do_test(self, *args, expect_success=Wahr):
-        with (
-            captured_stdout() as out,
-            captured_stderr() as err,
-            self.assertRaises(SystemExit) as cm
+        mit (
+            captured_stdout() als out,
+            captured_stderr() als err,
+            self.assertRaises(SystemExit) als cm
         ):
             cli(args)
         return out.getvalue(), err.getvalue(), cm.exception.code
@@ -84,11 +84,11 @@ klasse InteractiveSession(unittest.TestCase):
     PS2 = "... "
 
     def run_cli(self, *args, commands=()):
-        with (
-            captured_stdin() as stdin,
-            captured_stdout() as stdout,
-            captured_stderr() as stderr,
-            self.assertRaises(SystemExit) as cm
+        mit (
+            captured_stdin() als stdin,
+            captured_stdout() als stdout,
+            captured_stderr() als stderr,
+            self.assertRaises(SystemExit) als cm
         ):
             fuer cmd in commands:
                 stdin.write(cmd + "\n")
@@ -200,7 +200,7 @@ klasse InteractiveSession(unittest.TestCase):
         self.assertIn("(0,)\n", out)
 
     def test_color(self):
-        with unittest.mock.patch("_colorize.can_colorize", return_value=Wahr):
+        mit unittest.mock.patch("_colorize.can_colorize", return_value=Wahr):
             out, err = self.run_cli(commands="TEXT\n")
             self.assertIn("\x1b[1;35msqlite> \x1b[0m", out)
             self.assertIn("\x1b[1;35m    ... \x1b[0m\x1b", out)
@@ -235,7 +235,7 @@ klasse Completion(unittest.TestCase):
         return run_pty(script, input_, env)
 
     def test_complete_sql_keywords(self):
-        # List candidates starting with 'S', there should be multiple matches.
+        # List candidates starting mit 'S', there should be multiple matches.
         input_ = b"S\t\tEL\t 1;\n.quit\n"
         output = self.write_input(input_)
         self.assertIn(b"SELECT", output)

@@ -15,8 +15,8 @@ von idlelib.idle_test.mock_idle importiere Func
 
 # Tests should not depend on fortuitous user configurations.
 # They must not affect actual user .cfg files.
-# Replace user parsers with empty parsers that cannot be saved
-# due to getting '' as the filename when created.
+# Replace user parsers mit empty parsers that cannot be saved
+# due to getting '' als the filename when created.
 
 idleConf = config.idleConf
 usercfg = idleConf.userCfg
@@ -55,7 +55,7 @@ klasse IdleConfParserTest(unittest.TestCase):
         parser.read_string(self.config)
         eq = self.assertEqual
 
-        # Test with type argument.
+        # Test mit type argument.
         self.assertIs(parser.Get('one', 'one', type='bool'), Falsch)
         self.assertIs(parser.Get('one', 'two', type='bool'), Wahr)
         eq(parser.Get('one', 'three', type='int'), 10)
@@ -105,9 +105,9 @@ klasse IdleUserConfParserTest(unittest.TestCase):
         parser.add_section('Foo')
         # Setting new option in existing section should return Wahr.
         self.assertWahr(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting existing option with same value should return Falsch.
+        # Setting existing option mit same value should return Falsch.
         self.assertFalsch(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting exiting option with new value should return Wahr.
+        # Setting exiting option mit new value should return Wahr.
         self.assertWahr(parser.SetOption('Foo', 'bar', 'false'))
         self.assertEqual(parser.Get('Foo', 'bar'), 'false')
 
@@ -160,7 +160,7 @@ klasse IdleUserConfParserTest(unittest.TestCase):
         self.assertCountEqual(parser.sections(), ['Foo'])
 
     def test_save(self):
-        with tempfile.TemporaryDirectory() as tdir:
+        mit tempfile.TemporaryDirectory() als tdir:
             path = os.path.join(tdir, 'test.cfg')
             parser = self.new_parser(path)
             parser.AddSection('Foo')
@@ -191,7 +191,7 @@ klasse IdleConfTest(unittest.TestCase):
             idle_dir = os.path.abspath(sys.path[0])
         fuer ctype in conf.config_types:
             config_path = os.path.join(idle_dir, '../config-%s.def' % ctype)
-            with open(config_path) as f:
+            mit open(config_path) als f:
                 cls.config_string[ctype] = f.read()
 
         cls.orig_warn = config._warn
@@ -224,21 +224,21 @@ klasse IdleConfTest(unittest.TestCase):
         conf = self.new_config(_utest=Wahr)
 
         # Check normal way should success
-        with mock.patch('os.path.expanduser', return_value='/home/foo'):
-            with mock.patch('os.path.exists', return_value=Wahr):
+        mit mock.patch('os.path.expanduser', return_value='/home/foo'):
+            mit mock.patch('os.path.exists', return_value=Wahr):
                 self.assertEqual(conf.GetUserCfgDir(), '/home/foo/.idlerc')
 
         # Check os.getcwd should success
-        with mock.patch('os.path.expanduser', return_value='~'):
-            with mock.patch('os.getcwd', return_value='/home/foo/cpython'):
-                with mock.patch('os.mkdir'):
+        mit mock.patch('os.path.expanduser', return_value='~'):
+            mit mock.patch('os.getcwd', return_value='/home/foo/cpython'):
+                mit mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      '/home/foo/cpython/.idlerc')
 
         # Check user dir not exists and created failed should raise SystemExit
-        with mock.patch('os.path.join', return_value='/path/not/exists'):
-            with self.assertRaises(SystemExit):
-                with self.assertRaises(FileNotFoundError):
+        mit mock.patch('os.path.join', return_value='/path/not/exists'):
+            mit self.assertRaises(SystemExit):
+                mit self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
     @unittest.skipIf(not sys.platform.startswith('win'), 'this is test fuer Windows system')
@@ -247,21 +247,21 @@ klasse IdleConfTest(unittest.TestCase):
         conf = self.new_config(_utest=Wahr)
 
         # Check normal way should success
-        with mock.patch('os.path.expanduser', return_value='C:\\foo'):
-            with mock.patch('os.path.exists', return_value=Wahr):
+        mit mock.patch('os.path.expanduser', return_value='C:\\foo'):
+            mit mock.patch('os.path.exists', return_value=Wahr):
                 self.assertEqual(conf.GetUserCfgDir(), 'C:\\foo\\.idlerc')
 
         # Check os.getcwd should success
-        with mock.patch('os.path.expanduser', return_value='~'):
-            with mock.patch('os.getcwd', return_value='C:\\foo\\cpython'):
-                with mock.patch('os.mkdir'):
+        mit mock.patch('os.path.expanduser', return_value='~'):
+            mit mock.patch('os.getcwd', return_value='C:\\foo\\cpython'):
+                mit mock.patch('os.mkdir'):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      'C:\\foo\\cpython\\.idlerc')
 
         # Check user dir not exists and created failed should raise SystemExit
-        with mock.patch('os.path.join', return_value='/path/not/exists'):
-            with self.assertRaises(SystemExit):
-                with self.assertRaises(FileNotFoundError):
+        mit mock.patch('os.path.join', return_value='/path/not/exists'):
+            mit self.assertRaises(SystemExit):
+                mit self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
     def test_create_config_handlers(self):
@@ -269,8 +269,8 @@ klasse IdleConfTest(unittest.TestCase):
 
         # Mock out idle_dir
         idle_dir = '/home/foo'
-        with mock.patch.dict({'__name__': '__foo__'}):
-            with mock.patch('os.path.dirname', return_value=idle_dir):
+        mit mock.patch.dict({'__name__': '__foo__'}):
+            mit mock.patch('os.path.dirname', return_value=idle_dir):
                 conf.CreateConfigHandlers()
 
         # Check keys are equal
@@ -315,7 +315,7 @@ klasse IdleConfTest(unittest.TestCase):
     def test_save_user_cfg_files(self):
         conf = self.mock_config()
 
-        with mock.patch('idlelib.config.IdleUserConfParser.Save') as m:
+        mit mock.patch('idlelib.config.IdleUserConfParser.Save') als m:
             conf.SaveUserCfgFiles()
             self.assertEqual(m.call_count, len(conf.userCfg))
 
@@ -325,7 +325,7 @@ klasse IdleConfTest(unittest.TestCase):
         eq = self.assertEqual
         eq(conf.GetOption('main', 'EditorWindow', 'width'), '80')
         eq(conf.GetOption('main', 'EditorWindow', 'width', type='int'), 80)
-        with mock.patch('idlelib.config._warn') as _warn:
+        mit mock.patch('idlelib.config._warn') als _warn:
             eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), Nichts)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), Nichts)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists', default='NE'), 'NE')
@@ -349,9 +349,9 @@ klasse IdleConfTest(unittest.TestCase):
             ['General', 'EditorWindow', 'PyShell', 'Indent', 'Theme',
              'Keys', 'History', 'HelpFiles'])
 
-        with self.assertRaises(config.InvalidConfigSet):
+        mit self.assertRaises(config.InvalidConfigSet):
             conf.GetSectionList('foobar', 'main')
-        with self.assertRaises(config.InvalidConfigType):
+        mit self.assertRaises(config.InvalidConfigType):
             conf.GetSectionList('default', 'notexists')
 
     def test_get_highlight(self):
@@ -368,7 +368,7 @@ klasse IdleConfTest(unittest.TestCase):
         # Test get user themes
         conf.SetOption('highlight', 'Foobar', 'normal-foreground', '#747474')
         conf.SetOption('highlight', 'Foobar', 'normal-background', '#171717')
-        with mock.patch('idlelib.config._warn'):
+        mit mock.patch('idlelib.config._warn'):
             eq(conf.GetHighlight('Foobar', 'normal'), {'foreground': '#747474',
                                                        'background': '#171717'})
 
@@ -381,7 +381,7 @@ klasse IdleConfTest(unittest.TestCase):
             conf.GetThemeDict('default', 'IDLE Classic'),
             conf.GetThemeDict('user', 'IDLE Classic'))
 
-        with self.assertRaises(config.InvalidTheme):
+        mit self.assertRaises(config.InvalidTheme):
             conf.GetThemeDict('bad', 'IDLE Classic')
 
     def test_get_current_theme_and_keys(self):
@@ -508,7 +508,7 @@ klasse IdleConfTest(unittest.TestCase):
     def test_get_keyset(self):
         conf = self.mock_config()
 
-        # Conflict with key set, should be disable to ''
+        # Conflict mit key set, should be disable to ''
         conf.defaultCfg['extensions'].add_section('Foobar')
         conf.defaultCfg['extensions'].add_section('Foobar_cfgBindings')
         conf.defaultCfg['extensions'].set('Foobar', 'enable', 'Wahr')
@@ -529,10 +529,10 @@ klasse IdleConfTest(unittest.TestCase):
         # place to prevent prepare input data twice.
         conf = self.mock_config()
 
-        # Test default with no extra help source
+        # Test default mit no extra help source
         self.assertEqual(conf.GetExtraHelpSourceList('default'), [])
         self.assertEqual(conf.GetExtraHelpSourceList('user'), [])
-        with self.assertRaises(config.InvalidConfigSet):
+        mit self.assertRaises(config.InvalidConfigSet):
             self.assertEqual(conf.GetExtraHelpSourceList('bad'), [])
         self.assertCountEqual(
             conf.GetAllExtraHelpSourcesList(),
@@ -587,7 +587,7 @@ klasse IdleConfTest(unittest.TestCase):
 
 
 klasse CurrentColorKeysTest(unittest.TestCase):
-    """ Test colorkeys function with user config [Theme] and [Keys] patterns.
+    """ Test colorkeys function mit user config [Theme] and [Keys] patterns.
 
         colorkeys = config.IdleConf.current_colors_and_keys
         Test all patterns written by IDLE and some errors
@@ -639,7 +639,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name = Custom Dark
             ''')
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
-        # Custom name is valid with matching Section name.
+        # Custom name is valid mit matching Section name.
         userhigh.read_string('[Custom Dark]\na=b')
         self.assertEqual(self.colorkeys('Theme'), 'Custom Dark')
         # Name2 is ignored.
@@ -687,7 +687,7 @@ klasse CurrentColorKeysTest(unittest.TestCase):
             name = Custom Keys
             ''')
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
-        # Custom name is valid with matching Section name.
+        # Custom name is valid mit matching Section name.
         userkeys.read_string('[Custom Keys]\na=b')
         self.assertEqual(self.colorkeys('Keys'), 'Custom Keys')
         # Name2 is ignored.
@@ -772,7 +772,7 @@ klasse ChangesTest(unittest.TestCase):
         fuer cfgtype, section in (('main', 'Msec'), ('keys', 'Ksec')):
             testcfg[cfgtype].SetOption(section, 'name', 'value')
             changes.delete_section(cfgtype, section)
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 changes[cfgtype][section]  # Test section gone von changes
                 testcfg[cfgtype][section]  # and von mock userCfg.
         # TODO test fuer save call.
@@ -788,14 +788,14 @@ klasse WarningTest(unittest.TestCase):
     def test_warn(self):
         Equal = self.assertEqual
         config._warned = set()
-        with captured_stderr() as stderr:
+        mit captured_stderr() als stderr:
             config._warn('warning', 'key')
         Equal(config._warned, {('warning','key')})
         Equal(stderr.getvalue(), 'warning'+'\n')
-        with captured_stderr() as stderr:
+        mit captured_stderr() als stderr:
             config._warn('warning', 'key')
         Equal(stderr.getvalue(), '')
-        with captured_stderr() as stderr:
+        mit captured_stderr() als stderr:
             config._warn('warn2', 'yek')
         Equal(config._warned, {('warning','key'), ('warn2','yek')})
         Equal(stderr.getvalue(), 'warn2'+'\n')

@@ -220,7 +220,7 @@ try:
     importiere _testinternalcapi
 except ModuleNotFoundError:
     _testinternalcapi = Nichts
-importiere test._code_definitions as defs
+importiere test._code_definitions als defs
 
 COPY_FREE_VARS = opmap['COPY_FREE_VARS']
 
@@ -258,7 +258,7 @@ klasse CodeTest(unittest.TestCase):
         self.assertEqual(co.co_name, "funcname")
         self.assertEqual(co.co_firstlineno, 15)
         #Empty code object should raise, but not crash the VM
-        with self.assertRaises(Exception):
+        mit self.assertRaises(Exception):
             exec(co)
 
     @cpython_only
@@ -270,7 +270,7 @@ klasse CodeTest(unittest.TestCase):
             return (lambda: __class__).__closure__
 
         def new_code(c):
-            '''A new code object with a __class__ cell added to freevars'''
+            '''A new code object mit a __class__ cell added to freevars'''
             return c.replace(co_freevars=c.co_freevars + ('__class__',), co_code=bytes([COPY_FREE_VARS, 1])+c.co_code)
 
         def add_foreign_method(cls, name, f):
@@ -357,7 +357,7 @@ klasse CodeTest(unittest.TestCase):
             ("co_name", "newname"),
             ("co_linetable", code2.co_linetable),
         ):
-            with self.subTest(attr=attr, value=value):
+            mit self.subTest(attr=attr, value=value):
                 new_code = code.replace(**{attr: value})
                 self.assertEqual(getattr(new_code, attr), value)
                 new_code = copy.replace(code, **{attr: value})
@@ -382,7 +382,7 @@ klasse CodeTest(unittest.TestCase):
         # First we try the constructor.
         CodeType = type(co)
         fuer diff in (-1, 1):
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 CodeType(co.co_argcount,
                          co.co_posonlyargcount,
                          co.co_kwonlyargcount,
@@ -404,9 +404,9 @@ klasse CodeTest(unittest.TestCase):
                          co.co_cellvars,
                          )
         # Then we try the replace method.
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             co.replace(co_nlocals=co.co_nlocals - 1)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             co.replace(co_nlocals=co.co_nlocals + 1)
 
     def test_shrinking_localsplus(self):
@@ -428,7 +428,7 @@ klasse CodeTest(unittest.TestCase):
         def func():
             pass
 
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             func.__code__.co_lnotab
 
     @unittest.skipIf(_testinternalcapi is Nichts, '_testinternalcapi is missing')
@@ -458,7 +458,7 @@ klasse CodeTest(unittest.TestCase):
             spam5,
             lambda1,
         ]:
-            with self.subTest(func):
+            mit self.subTest(func):
                 res = _testinternalcapi.code_returns_only_none(func.__code__)
                 self.assertWahr(res)
 
@@ -482,7 +482,7 @@ klasse CodeTest(unittest.TestCase):
             spam9,
             lambda2,
         ]:
-            with self.subTest(func):
+            mit self.subTest(func):
                 res = _testinternalcapi.code_returns_only_none(func.__code__)
                 self.assertFalsch(res)
 
@@ -498,7 +498,7 @@ klasse CodeTest(unittest.TestCase):
             co_code=b'\x7f' + foo.__code__.co_code[1:])
 
         msg = "unknown opcode 127"
-        with self.assertRaisesRegex(SystemError, msg):
+        mit self.assertRaisesRegex(SystemError, msg):
             foo()
 
     @requires_debug_ranges()
@@ -509,7 +509,7 @@ klasse CodeTest(unittest.TestCase):
         exec(textwrap.dedent("""\
         try:
             1/0
-        except Exception as e:
+        except Exception als e:
             exc = e
         """), namespace)
 
@@ -522,7 +522,7 @@ klasse CodeTest(unittest.TestCase):
             dis.get_instructions(code), code.co_positions()
         ):
             # If any of the positions is Nichts, then all have to
-            # be Nichts as well fuer the case above. There are still
+            # be Nichts als well fuer the case above. There are still
             # some places in the compiler, where the artificial instructions
             # get assigned the first_lineno but they don't have other positions.
             # There is no easy way of inferring them at that stage, so fuer now
@@ -565,7 +565,7 @@ klasse CodeTest(unittest.TestCase):
         assert_python_ok('-X', 'no_debug_ranges', '-c', code)
 
     def test_endline_and_columntable_none_when_no_debug_ranges_env(self):
-        # Same as above but using the environment variable opt out.
+        # Same als above but using the environment variable opt out.
         code = textwrap.dedent("""
             def f():
                 pass
@@ -846,7 +846,7 @@ klasse CodeTest(unittest.TestCase):
         }
         assert len(funcs) == len(defs.FUNCTIONS)
         fuer func in defs.FUNCTIONS:
-            with self.subTest(func):
+            mit self.subTest(func):
                 expected = funcs[func]
                 kinds = _testinternalcapi.get_co_localskinds(func.__code__)
                 self.assertEqual(kinds, expected)
@@ -1089,13 +1089,13 @@ klasse CodeTest(unittest.TestCase):
         }
         assert len(funcs) == len(defs.FUNCTIONS), (len(funcs), len(defs.FUNCTIONS))
         fuer func in defs.FUNCTIONS:
-            with self.subTest(func):
+            mit self.subTest(func):
                 expected = funcs[func]
                 counts = _testinternalcapi.get_code_var_counts(func.__code__)
                 self.assertEqual(counts, expected)
 
         func = defs.spam_with_globals_and_builtins
-        with self.subTest(f'{func} code'):
+        mit self.subTest(f'{func} code'):
             expected = new_var_counts(
                 purelocals=5,
                 globalvars=6,
@@ -1103,7 +1103,7 @@ klasse CodeTest(unittest.TestCase):
             counts = _testinternalcapi.get_code_var_counts(func.__code__)
             self.assertEqual(counts, expected)
 
-        with self.subTest(f'{func} with own globals and builtins'):
+        mit self.subTest(f'{func} mit own globals and builtins'):
             expected = new_var_counts(
                 purelocals=5,
                 globalvars=(2, 4),
@@ -1111,7 +1111,7 @@ klasse CodeTest(unittest.TestCase):
             counts = _testinternalcapi.get_code_var_counts(func)
             self.assertEqual(counts, expected)
 
-        with self.subTest(f'{func} without globals'):
+        mit self.subTest(f'{func} without globals'):
             expected = new_var_counts(
                 purelocals=5,
                 globalvars=(0, 4, 2),
@@ -1119,7 +1119,7 @@ klasse CodeTest(unittest.TestCase):
             counts = _testinternalcapi.get_code_var_counts(func, globalsns={})
             self.assertEqual(counts, expected)
 
-        with self.subTest(f'{func} without both'):
+        mit self.subTest(f'{func} without both'):
             expected = new_var_counts(
                 purelocals=5,
                 globalvars=6,
@@ -1128,7 +1128,7 @@ klasse CodeTest(unittest.TestCase):
                   builtinsns={})
             self.assertEqual(counts, expected)
 
-        with self.subTest(f'{func} without builtins'):
+        mit self.subTest(f'{func} without builtins'):
             expected = new_var_counts(
                 purelocals=5,
                 globalvars=(2, 0, 4),
@@ -1142,26 +1142,26 @@ klasse CodeTest(unittest.TestCase):
 
         STATELESS_FUNCTIONS = [
             *defs.STATELESS_FUNCTIONS,
-            # stateless with defaults
+            # stateless mit defaults
             defs.spam_full_args_with_defaults,
         ]
 
         fuer func in defs.STATELESS_CODE:
-            with self.subTest((func, '(code)')):
+            mit self.subTest((func, '(code)')):
                 _testinternalcapi.verify_stateless_code(func.__code__)
         fuer func in STATELESS_FUNCTIONS:
-            with self.subTest((func, '(func)')):
+            mit self.subTest((func, '(func)')):
                 _testinternalcapi.verify_stateless_code(func)
 
         fuer func in defs.FUNCTIONS:
             wenn func not in defs.STATELESS_CODE:
-                with self.subTest((func, '(code)')):
-                    with self.assertRaises(Exception):
+                mit self.subTest((func, '(code)')):
+                    mit self.assertRaises(Exception):
                         _testinternalcapi.verify_stateless_code(func.__code__)
 
             wenn func not in STATELESS_FUNCTIONS:
-                with self.subTest((func, '(func)')):
-                    with self.assertRaises(Exception):
+                mit self.subTest((func, '(func)')):
+                    mit self.assertRaises(Exception):
                         _testinternalcapi.verify_stateless_code(func)
 
 
@@ -1236,7 +1236,7 @@ klasse CodeConstsTest(unittest.TestCase):
 
     @cpython_only
     def test_unusual_constants(self):
-        # gh-130851: Code objects constructed with constants that are not
+        # gh-130851: Code objects constructed mit constants that are not
         # types generated by the bytecode compiler should not crash the
         # interpreter.
         klasse Unhashable:

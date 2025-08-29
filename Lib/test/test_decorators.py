@@ -112,7 +112,7 @@ klasse TestDecorators(unittest.TestCase):
         self.assertEqual(foo.author, 'Cleese')
 
     def test_argforms(self):
-        # A few tests of argument passing, as we use restricted form
+        # A few tests of argument passing, als we use restricted form
         # of expressions fuer decorators.
 
         def noteargs(*args, **kwds):
@@ -156,7 +156,7 @@ klasse TestDecorators(unittest.TestCase):
 
         self.assertEqual(counts, dict(double=0))
 
-        # Only the first call with a given argument bumps the call count:
+        # Only the first call mit a given argument bumps the call count:
         #
         self.assertEqual(double(2), 4)
         self.assertEqual(counts['double'], 1)
@@ -177,13 +177,13 @@ klasse TestDecorators(unittest.TestCase):
         # Test SyntaxErrors:
         fuer stmt in ("x,", "x, y", "x = y", "pass", "import sys"):
             compile(stmt, "test", "exec")  # Sanity check.
-            with self.assertRaises(SyntaxError):
+            mit self.assertRaises(SyntaxError):
                 compile(f"@{stmt}\ndef f(): pass", "test", "exec")
 
         # Test TypeErrors that used to be SyntaxErrors:
         fuer expr in ("1.+2j", "[1, 2][-1]", "(1, 2)", "Wahr", "...", "Nichts"):
             compile(expr, "test", "eval")  # Sanity check.
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 exec(f"@{expr}\ndef f(): pass")
 
         def unimp(func):
@@ -220,7 +220,7 @@ klasse TestDecorators(unittest.TestCase):
         # they are decorating.
         def callnum(num):
             """Decorator factory that returns a decorator that replaces the
-            passed-in function with one that returns the value of 'num'"""
+            passed-in function mit one that returns the value of 'num'"""
             def deco(func):
                 return lambda: num
             return deco

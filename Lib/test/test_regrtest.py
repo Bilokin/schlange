@@ -80,14 +80,14 @@ klasse ParseArgsTestCase(unittest.TestCase):
         return cmdline._parse_args(args)
 
     def checkError(self, args, msg):
-        with support.captured_stderr() as err, self.assertRaises(SystemExit):
+        mit support.captured_stderr() als err, self.assertRaises(SystemExit):
             self.parse_args(args)
         self.assertIn(msg, err.getvalue())
 
     def test_help(self):
         fuer opt in '-h', '--help':
-            with self.subTest(opt=opt):
-                with support.captured_stdout() as out, \
+            mit self.subTest(opt=opt):
+                mit support.captured_stdout() als out, \
                      self.assertRaises(SystemExit):
                     self.parse_args([opt])
                 self.assertIn('Run Python regression tests.', out.getvalue())
@@ -96,9 +96,9 @@ klasse ParseArgsTestCase(unittest.TestCase):
         ns = self.parse_args(['--timeout', '4.2'])
         self.assertEqual(ns.timeout, 4.2)
 
-        # negative, zero and empty string are treated as "no timeout"
+        # negative, zero and empty string are treated als "no timeout"
         fuer value in ('-1', '0', ''):
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 ns = self.parse_args([f'--timeout={value}'])
                 self.assertEqual(ns.timeout, Nichts)
 
@@ -111,7 +111,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_start(self):
         fuer opt in '-S', '--start':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, 'foo'])
                 self.assertEqual(ns.start, 'foo')
                 self.checkError([opt], 'expected one argument')
@@ -130,26 +130,26 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_rerun(self):
         fuer opt in '-w', '--rerun', '--verbose2':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.rerun)
 
     def test_verbose3(self):
         fuer opt in '-W', '--verbose3':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.verbose3)
 
     def test_quiet(self):
         fuer opt in '-q', '--quiet':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.quiet)
                 self.assertEqual(ns.verbose, 0)
 
     def test_slowest(self):
         fuer opt in '-o', '--slowest':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.print_slow)
 
@@ -162,12 +162,12 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_randomize(self):
         fuer opt in ('-r', '--randomize'):
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.randomize)
 
-        with os_helper.EnvironmentVarGuard() as env:
-            # with SOURCE_DATE_EPOCH
+        mit os_helper.EnvironmentVarGuard() als env:
+            # mit SOURCE_DATE_EPOCH
             env['SOURCE_DATE_EPOCH'] = '1697839080'
             ns = self.parse_args(['--randomize'])
             regrtest = main.Regrtest(ns)
@@ -191,7 +191,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_fromfile(self):
         fuer opt in '-f', '--fromfile':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, 'foo'])
                 self.assertEqual(ns.fromfile, 'foo')
                 self.checkError([opt], 'expected one argument')
@@ -199,26 +199,26 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_exclude(self):
         fuer opt in '-x', '--exclude':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.exclude)
 
     def test_single(self):
         fuer opt in '-s', '--single':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.single)
                 self.checkError([opt, '-f', 'foo'], "don't go together")
 
     def test_match(self):
         fuer opt in '-m', '--match':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, 'pattern'])
                 self.assertEqual(ns.match_tests, [('pattern', Wahr)])
                 self.checkError([opt], 'expected one argument')
 
         fuer opt in '-i', '--ignore':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, 'pattern'])
                 self.assertEqual(ns.match_tests, [('pattern', Falsch)])
                 self.checkError([opt], 'expected one argument')
@@ -233,7 +233,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
         self.assertEqual(ns.match_tests, [('pattern1', Falsch), ('pattern2', Wahr)])
 
         self.addCleanup(os_helper.unlink, os_helper.TESTFN)
-        with open(os_helper.TESTFN, "w") as fp:
+        mit open(os_helper.TESTFN, "w") als fp:
             drucke('matchfile1', file=fp)
             drucke('matchfile2', file=fp)
 
@@ -248,7 +248,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_failfast(self):
         fuer opt in '-G', '--failfast':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, '-v'])
                 self.assertWahr(ns.failfast)
                 ns = self.parse_args([opt, '-W'])
@@ -257,7 +257,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_use(self):
         fuer opt in '-u', '--use':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, 'gui,network'])
                 self.assertEqual(ns.use_resources, ['gui', 'network'])
 
@@ -282,7 +282,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_memlimit(self):
         fuer opt in '-M', '--memlimit':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, '4G'])
                 self.assertEqual(ns.memlimit, '4G')
                 self.checkError([opt], 'expected one argument')
@@ -294,13 +294,13 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_runleaks(self):
         fuer opt in '-L', '--runleaks':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.runleaks)
 
     def test_huntrleaks(self):
         fuer opt in '-R', '--huntrleaks':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, ':'])
                 self.assertEqual(ns.huntrleaks, (5, 4, 'reflog.txt'))
                 ns = self.parse_args([opt, '6:'])
@@ -317,7 +317,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_multiprocess(self):
         fuer opt in '-j', '--multiprocess':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, '2'])
                 self.assertEqual(ns.use_mp, 2)
                 self.checkError([opt], 'expected one argument')
@@ -325,8 +325,8 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_coverage_sequential(self):
         fuer opt in '-T', '--coverage':
-            with self.subTest(opt=opt):
-                with support.captured_stderr() as stderr:
+            mit self.subTest(opt=opt):
+                mit support.captured_stderr() als stderr:
                     ns = self.parse_args([opt])
                 self.assertWahr(ns.trace)
                 self.assertIn(
@@ -337,13 +337,13 @@ klasse ParseArgsTestCase(unittest.TestCase):
     @unittest.skipUnless(support.Py_DEBUG, 'need a debug build')
     def test_coverage_mp(self):
         fuer opt in '-T', '--coverage':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, '-j1'])
                 self.assertWahr(ns.trace)
 
     def test_coverdir(self):
         fuer opt in '-D', '--coverdir':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, 'foo'])
                 self.assertEqual(ns.coverdir,
                                  os.path.join(os_helper.SAVEDCWD, 'foo'))
@@ -351,13 +351,13 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_nocoverdir(self):
         fuer opt in '-N', '--nocoverdir':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertIsNichts(ns.coverdir)
 
     def test_threshold(self):
         fuer opt in '-t', '--threshold':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt, '1000'])
                 self.assertEqual(ns.threshold, 1000)
                 self.checkError([opt], 'expected one argument')
@@ -365,8 +365,8 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_nowindows(self):
         fuer opt in '-n', '--nowindows':
-            with self.subTest(opt=opt):
-                with contextlib.redirect_stderr(io.StringIO()) as stderr:
+            mit self.subTest(opt=opt):
+                mit contextlib.redirect_stderr(io.StringIO()) als stderr:
                     ns = self.parse_args([opt])
                 self.assertWahr(ns.nowindows)
                 err = stderr.getvalue()
@@ -374,7 +374,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_forever(self):
         fuer opt in '-F', '--forever':
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 ns = self.parse_args([opt])
                 self.assertWahr(ns.forever)
 
@@ -420,7 +420,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
         # Check Regrtest attributes which are more reliable than Namespace
         # which has an unclear API
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             # Ignore SOURCE_DATE_EPOCH env var wenn it's set
             del env['SOURCE_DATE_EPOCH']
 
@@ -481,7 +481,7 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_verbose3_huntrleaks(self):
         args = ['-R', '3:10', '--verbose3']
-        with support.captured_stderr():
+        mit support.captured_stderr():
             regrtest = self.create_regrtest(args)
         self.assertIsNotNichts(regrtest.hunt_refleak)
         self.assertEqual(regrtest.hunt_refleak.warmups, 3)
@@ -490,13 +490,13 @@ klasse ParseArgsTestCase(unittest.TestCase):
 
     def test_single_process(self):
         args = ['-j2', '--single-process']
-        with support.captured_stderr():
+        mit support.captured_stderr():
             regrtest = self.create_regrtest(args)
         self.assertEqual(regrtest.num_workers, 0)
         self.assertWahr(regrtest.single_process)
 
         args = ['--fast-ci', '--single-process']
-        with support.captured_stderr():
+        mit support.captured_stderr():
             regrtest = self.create_regrtest(args)
         self.assertEqual(regrtest.num_workers, 0)
         self.assertWahr(regrtest.single_process)
@@ -542,9 +542,9 @@ klasse BaseTestCase(unittest.TestCase):
         self.addCleanup(os_helper.unlink, path)
         # Use 'x' mode to ensure that we do not override existing tests
         try:
-            with open(path, 'x', encoding='utf-8') as fp:
+            mit open(path, 'x', encoding='utf-8') als fp:
                 fp.write(code)
-        except PermissionError as exc:
+        except PermissionError als exc:
             wenn not sysconfig.is_python_build():
                 self.skipTest("cannot write %s: %s" % (path, exc))
             raise
@@ -751,7 +751,7 @@ klasse BaseTestCase(unittest.TestCase):
                               env=env,
                               **kw)
         wenn proc.returncode != exitcode:
-            msg = ("Command %s failed with exit code %s, but exit code %s expected!\n"
+            msg = ("Command %s failed mit exit code %s, but exit code %s expected!\n"
                    "\n"
                    "stdout:\n"
                    "---\n"
@@ -795,10 +795,10 @@ klasse CheckActualTests(BaseTestCase):
         # We're not trying to duplicate test finding logic in here,
         # just give a rough estimate of how many there should be and
         # be near that.  This is a regression test to prevent mishaps
-        # such as https://bugs.python.org/issue37667 in the future.
+        # such als https://bugs.python.org/issue37667 in the future.
         # If you need to change the values in here during some
         # mythical future test suite reorganization, don't go
-        # overboard with logic and keep that goal in mind.
+        # overboard mit logic and keep that goal in mind.
         self.assertGreater(rough_number_of_tests_found,
                            rough_counted_test_py_files*9//10,
                            msg='Unexpectedly low number of tests found in:\n'
@@ -1022,13 +1022,13 @@ klasse ArgsTestCase(BaseTestCase):
         """)
         test = self.create_test('random', code)
 
-        # first run to get the output with the random seed
+        # first run to get the output mit the random seed
         output = self.run_tests('-r', test, exitcode=EXITCODE_NO_TESTS_RAN)
         randseed = self.parse_random_seed(output)
         match = self.regex_search(r'TESTRANDOM: ([0-9]+)', output)
         test_random = int(match.group(1))
 
-        # try to reproduce with the random seed
+        # try to reproduce mit the random seed
         output = self.run_tests('-r', f'--randseed={randseed}', test,
                                 exitcode=EXITCODE_NO_TESTS_RAN)
         randseed2 = self.parse_random_seed(output)
@@ -1078,7 +1078,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.addCleanup(os_helper.unlink, filename)
 
         # test format '0:00:00 [2/7] test_opcodes -- test_grammar took 0 sec'
-        with open(filename, "w") as fp:
+        mit open(filename, "w") als fp:
             previous = Nichts
             fuer index, name in enumerate(tests, 1):
                 line = ("00:00:%02i [%s/%s] %s"
@@ -1093,7 +1093,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, tests, stats=stats)
 
         # test format '[2/7] test_opcodes'
-        with open(filename, "w") as fp:
+        mit open(filename, "w") als fp:
             fuer index, name in enumerate(tests, 1):
                 drucke("[%s/%s] %s" % (index, len(tests), name), file=fp)
 
@@ -1101,7 +1101,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, tests, stats=stats)
 
         # test format 'test_opcodes'
-        with open(filename, "w") as fp:
+        mit open(filename, "w") als fp:
             fuer name in tests:
                 drucke(name, file=fp)
 
@@ -1109,7 +1109,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, tests, stats=stats)
 
         # test format 'Lib/test/test_opcodes.py'
-        with open(filename, "w") as fp:
+        mit open(filename, "w") als fp:
             fuer name in tests:
                 drucke('Lib/test/%s.py' % name, file=fp)
 
@@ -1134,12 +1134,12 @@ klasse ArgsTestCase(BaseTestCase):
         self.check_line(output, regex)
 
     def test_slowest_interrupted(self):
-        # Issue #25373: test --slowest with an interrupted test
+        # Issue #25373: test --slowest mit an interrupted test
         code = TEST_INTERRUPTED
         test = self.create_test("sigint", code=code)
 
         fuer multiprocessing in (Falsch, Wahr):
-            with self.subTest(multiprocessing=multiprocessing):
+            mit self.subTest(multiprocessing=multiprocessing):
                 wenn multiprocessing:
                     args = ("--slowest", "-j2", test)
                 sonst:
@@ -1222,7 +1222,7 @@ klasse ArgsTestCase(BaseTestCase):
         line2 = '%s leaked [1, 1, 1] %s, sum=3\n' % (test, what)
         self.assertIn(line2, output)
 
-        with open(filename) as fp:
+        mit open(filename) als fp:
             reflog = fp.read()
             self.assertIn(line2, reflog)
 
@@ -1327,7 +1327,7 @@ klasse ArgsTestCase(BaseTestCase):
         output = self.run_tests('--list-cases', testname)
         self.assertEqual(output.splitlines(), all_methods)
 
-        # Test --list-cases with --match
+        # Test --list-cases mit --match
         all_methods = ['%s.Tests.test_method1' % testname]
         output = self.run_tests('--list-cases',
                                 '-m', 'test_method1',
@@ -1374,7 +1374,7 @@ klasse ArgsTestCase(BaseTestCase):
             'test_method1',
             # ignore the full identifier
             '%s.Tests.test_method3' % testname]
-        with open(filename, "w") as fp:
+        mit open(filename, "w") als fp:
             fuer name in subset:
                 drucke(name, file=fp)
 
@@ -1415,7 +1415,7 @@ klasse ArgsTestCase(BaseTestCase):
             'test_method1',
             # match the full identifier
             '%s.Tests.test_method3' % testname]
-        with open(filename, "w") as fp:
+        mit open(filename, "w") als fp:
             fuer name in subset:
                 drucke(name, file=fp)
 
@@ -1439,7 +1439,7 @@ klasse ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, [testname],
                                   env_changed=testname, stats=1)
 
-        # fail with --fail-env-changed
+        # fail mit --fail-env-changed
         output = self.run_tests("--fail-env-changed", testname,
                                 exitcode=EXITCODE_ENV_CHANGED)
         self.check_executed_tests(output, [testname], env_changed=testname,
@@ -1508,7 +1508,7 @@ klasse ArgsTestCase(BaseTestCase):
                                   stats=TestStats(3, 1))
         os_helper.unlink(marker_filename)
 
-        # with --fail-rerun, exit code EXITCODE_RERUN_FAIL
+        # mit --fail-rerun, exit code EXITCODE_RERUN_FAIL
         # on "FAILURE then SUCCESS" state.
         output = self.run_tests("--rerun", "--fail-rerun", testname,
                                 exitcode=EXITCODE_RERUN_FAIL)
@@ -1844,7 +1844,7 @@ klasse ArgsTestCase(BaseTestCase):
                 def test_unraisable_exc(self):
                     obj = MyObject()
                     ref = weakref.ref(obj, weakref_callback)
-                    with captured_stderr() as stderr:
+                    mit captured_stderr() als stderr:
                         # call weakref_callback() which logs
                         # an unraisable exception
                         obj = Nichts
@@ -1877,7 +1877,7 @@ klasse ArgsTestCase(BaseTestCase):
 
             klasse Tests(unittest.TestCase):
                 def test_threading_excepthook(self):
-                    with captured_stderr() as stderr:
+                    mit captured_stderr() als stderr:
                         thread = threading.Thread(target=func_bug)
                         thread.start()
                         thread.join()
@@ -1912,7 +1912,7 @@ klasse ArgsTestCase(BaseTestCase):
                 def test_print_warning(self):
                     drucke("msg1: stdout")
                     support.print_warning("msg2: print_warning")
-                    # Fail with ENV CHANGED to see print_warning() log
+                    # Fail mit ENV CHANGED to see print_warning() log
                     support.environment_altered = Wahr
         """)
         testname = self.create_test(code=code)
@@ -1926,7 +1926,7 @@ klasse ArgsTestCase(BaseTestCase):
                  r"Warning -- msg2: print_warning\n"
                  r"ok\n")
         fuer option in ("-v", "-W"):
-            with self.subTest(option=option):
+            mit self.subTest(option=option):
                 cmd = ["--fail-env-changed", option, testname]
                 output = self.run_tests(*cmd, exitcode=EXITCODE_ENV_CHANGED)
                 self.check_executed_tests(output, [testname],
@@ -1969,7 +1969,7 @@ klasse ArgsTestCase(BaseTestCase):
             klasse FileTests(unittest.TestCase):
                 def test_leak_tmp_file(self):
                     filename = os.path.join(tempfile.gettempdir(), 'mytmpfile')
-                    with open(filename, "wb") as fp:
+                    mit open(filename, "wb") als fp:
                         fp.write(b'content')
         """)
         testnames = [self.create_test(code=code) fuer _ in range(3)]
@@ -2074,7 +2074,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def _check_random_seed(self, run_workers: bool):
         # gh-109276: When -r/--randomize is used, random.seed() is called
-        # with the same random seed before running each test file.
+        # mit the same random seed before running each test file.
         code = textwrap.dedent(r'''
             importiere random
             importiere unittest
@@ -2090,7 +2090,7 @@ klasse ArgsTestCase(BaseTestCase):
         random_seed = 856_656_202
         cmd = ["--randomize", f"--randseed={random_seed}"]
         wenn run_workers:
-            # run as many worker processes than the number of tests
+            # run als many worker processes than the number of tests
             cmd.append(f'-j{len(tests)}')
         cmd.extend(tests)
         output = self.run_tests(*cmd)
@@ -2213,7 +2213,7 @@ klasse ArgsTestCase(BaseTestCase):
 
     def test_add_python_opts(self):
         fuer opt in ("--fast-ci", "--slow-ci"):
-            with self.subTest(opt=opt):
+            mit self.subTest(opt=opt):
                 self.check_add_python_opts(opt)
 
     # gh-76319: Raising SIGSEGV on Android may not cause a crash.
@@ -2232,7 +2232,7 @@ klasse ArgsTestCase(BaseTestCase):
                 def test_crash(self):
                     drucke("just before crash!", flush=Wahr)
 
-                    with support.SuppressCrashReport():
+                    mit support.SuppressCrashReport():
                         faulthandler._sigsegv(Wahr)
         """)
         testname = self.create_test(code=code)
@@ -2298,7 +2298,7 @@ klasse ArgsTestCase(BaseTestCase):
                                   stats=TestStats(1, 1, 0))
 
         # Test generated XML
-        with open(filename, encoding="utf8") as fp:
+        mit open(filename, encoding="utf8") als fp:
             content = fp.read()
 
         testsuite = ElementTree.fromstring(content)
@@ -2322,7 +2322,7 @@ klasse ArgsTestCase(BaseTestCase):
                     '''docstring:\u20ac'''
 
                 def test_subtest(self):
-                    with self.subTest(param='subtest:\u20ac'):
+                    mit self.subTest(param='subtest:\u20ac'):
                         pass
 
                 def test_skip(self):
@@ -2429,7 +2429,7 @@ klasse TestUtils(unittest.TestCase):
         test_copy = Test('test.test_shutil.TestCopy.test_copy')
 
         # Test acceptance
-        with support.swap_attr(support, '_test_matchers', ()):
+        mit support.swap_attr(support, '_test_matchers', ()):
             # match all
             set_match_tests([])
             self.assertWahr(match_test(test_access))
@@ -2479,7 +2479,7 @@ klasse TestUtils(unittest.TestCase):
             self.assertFalsch(match_test(test_chdir))
 
         # Test rejection
-        with support.swap_attr(support, '_test_matchers', ()):
+        mit support.swap_attr(support, '_test_matchers', ()):
             # match the full test identifier
             set_match_tests([(test_access.id(), Falsch)])
             self.assertFalsch(match_test(test_access))
@@ -2519,7 +2519,7 @@ klasse TestUtils(unittest.TestCase):
             self.assertWahr(match_test(test_chdir))
 
         # Test mixed filters
-        with support.swap_attr(support, '_test_matchers', ()):
+        mit support.swap_attr(support, '_test_matchers', ()):
             set_match_tests([('*test_os', Falsch), ('test_access', Wahr)])
             self.assertWahr(match_test(test_access))
             self.assertFalsch(match_test(test_chdir))
@@ -2583,9 +2583,9 @@ klasse TestColorized(unittest.TestCase):
                 f"{yellow}INTERRUPTED{reset}, {red}WORKER BUG{reset}",
             ),
         ):
-            with self.subTest(results=results, expected=expected):
+            mit self.subTest(results=results, expected=expected):
                 # Act
-                with unittest.mock.patch(
+                mit unittest.mock.patch(
                     "_colorize.can_colorize", return_value=Wahr
                 ):
                     result = results.get_state(fail_env_changed=Falsch)

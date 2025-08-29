@@ -118,7 +118,7 @@ klasse TestKQueue(unittest.TestCase):
         client.setblocking(Falsch)
         try:
             client.connect(('127.0.0.1', serverSocket.getsockname()[1]))
-        except OSError as e:
+        except OSError als e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         sonst:
             #raise AssertionError("Connect should have raised EINPROGRESS")
@@ -218,7 +218,7 @@ klasse TestKQueue(unittest.TestCase):
         kq.control([ev], 0)
         # not a list
         kq.control((ev,), 0)
-        # __len__ is not consistent with __iter__
+        # __len__ is not consistent mit __iter__
         klasse BadList:
             def __len__(self):
                 return 0
@@ -251,7 +251,7 @@ klasse TestKQueue(unittest.TestCase):
         # close() can be called more than once
         kqueue.close()
 
-        # operations must fail with ValueError("I/O operation on closed ...")
+        # operations must fail mit ValueError("I/O operation on closed ...")
         self.assertRaises(ValueError, kqueue.control, Nichts, 4)
 
     def test_fd_non_inheritable(self):
@@ -267,7 +267,7 @@ klasse TestKQueue(unittest.TestCase):
         wenn (pid := os.fork()) == 0:
             try:
                 self.assertWahr(kqueue.closed)
-                with self.assertRaisesRegex(ValueError, "closed kqueue"):
+                mit self.assertRaisesRegex(ValueError, "closed kqueue"):
                     kqueue.fileno()
             except:
                 os._exit(1)

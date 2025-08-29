@@ -109,7 +109,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 dname = os.path.dirname(path)
                 wenn not os.path.isdir(dname):
                     os.makedirs(dname)
-                with open(path, 'wb') as fp:
+                mit open(path, 'wb') als fp:
                     fp.write(data)
 
     def makeZip(self, files, zipName=TEMP_ZIP, *,
@@ -119,16 +119,16 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # If stuff is not Nichts, it is prepended to the archive.
         self.addCleanup(os_helper.unlink, zipName)
 
-        with ZipFile(zipName, "w", compression=self.compression) as z:
+        mit ZipFile(zipName, "w", compression=self.compression) als z:
             self.writeZip(z, files, file_comment=file_comment, prefix=prefix)
             wenn comment is not Nichts:
                 z.comment = comment
 
         wenn stuff is not Nichts:
             # Prepend 'stuff' to the start of the zipfile
-            with open(zipName, "rb") as f:
+            mit open(zipName, "rb") als f:
                 data = f.read()
-            with open(zipName, "wb") as f:
+            mit open(zipName, "wb") als f:
                 f.write(stuff)
                 f.write(data)
 
@@ -270,13 +270,13 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         try:
             self.doTest(".py", files, TESTMOD)
             self.fail("This should not be reached")
-        except zipimport.ZipImportError as exc:
+        except zipimport.ZipImportError als exc:
             self.assertIsInstance(exc.__cause__, ImportError)
             self.assertIn("magic number", exc.__cause__.msg)
 
     def testBadMTime(self):
         badtime_pyc = bytearray(test_pyc)
-        # flip the second bit -- not the first as that one isn't stored in the
+        # flip the second bit -- not the first als that one isn't stored in the
         # .py's mtime in the zip archive.
         badtime_pyc[11] ^= 0x02
         files = {TESTMOD + ".py": test_src,
@@ -319,9 +319,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.doTest(pyc_ext, files, TESTPACK, TESTPACK2, TESTMOD)
 
     def testPackageExplicitDirectories(self):
-        # Test explicit namespace packages with explicit directory entries.
+        # Test explicit namespace packages mit explicit directory entries.
         self.addCleanup(os_helper.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, 'w', compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, 'w', compression=self.compression) als z:
             z.mkdir('a')
             z.writestr('a/__init__.py', test_src)
             z.mkdir('a/b')
@@ -334,7 +334,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def testPackageImplicitDirectories(self):
         # Test explicit namespace packages without explicit directory entries.
         self.addCleanup(os_helper.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, 'w', compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, 'w', compression=self.compression) als z:
             z.writestr('a/__init__.py', test_src)
             z.writestr('a/b/__init__.py', test_src)
             z.writestr('a/b/c/__init__.py', test_src)
@@ -342,9 +342,9 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self._testPackage(initfile='__init__.py')
 
     def testNamespacePackageExplicitDirectories(self):
-        # Test implicit namespace packages with explicit directory entries.
+        # Test implicit namespace packages mit explicit directory entries.
         self.addCleanup(os_helper.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, 'w', compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, 'w', compression=self.compression) als z:
             z.mkdir('a')
             z.mkdir('a/b')
             z.mkdir('a/b/c')
@@ -354,7 +354,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def testNamespacePackageImplicitDirectories(self):
         # Test implicit namespace packages without explicit directory entries.
         self.addCleanup(os_helper.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, 'w', compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, 'w', compression=self.compression) als z:
             z.writestr('a/b/c/d.py', test_src)
         self._testPackage(initfile=Nichts)
 
@@ -424,7 +424,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # wenn TESTPACK is functioning as a namespace pkg then
+        # wenn TESTPACK is functioning als a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 and second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -432,7 +432,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(os.path.basename(TEMP_DIR), p1.split(os.sep)[-2])
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
-        # packdir3 should importiere as a namespace package.
+        # packdir3 should importiere als a namespace package.
         # Its __path__ is an iterable of 1 element von zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
@@ -500,7 +500,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # wenn TESTPACK is functioning as a namespace pkg then
+        # wenn TESTPACK is functioning als a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 and second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -508,7 +508,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual("path2.zip", p1.split(os.sep)[-2])
         self.assertEqual("path1.zip", p2.split(os.sep)[-2])
 
-        # packdir3 should importiere as a namespace package.
+        # packdir3 should importiere als a namespace package.
         # Tts __path__ is an iterable of 1 element von zip1.
         mod = importlib.import_module(packdir3.replace(os.sep, '.')[:-1])
         self.assertEqual(1, len(mod.__path__))
@@ -557,7 +557,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertWahr(zi.is_package(TESTPACK))
 
         # PEP 302
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
 
             mod = zi.load_module(TESTPACK)
@@ -621,7 +621,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # Add a new file to the ZIP archive
         newfile = {"spam2" + pyc_ext: test_pyc}
         files.update(newfile)
-        with ZipFile(TEMP_ZIP, "a", compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, "a", compression=self.compression) als z:
             self.writeZip(z, newfile, file_comment=b"spam")
         # Check that we can detect the new file after invalidating the cache
         zi.invalidate_caches()
@@ -654,7 +654,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # Add a new file to the ZIP archive to make the cache wrong.
         newfile = {"spam2" + pyc_ext: test_pyc}
         files.update(newfile)
-        with ZipFile(TEMP_ZIP, "a", compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, "a", compression=self.compression) als z:
             self.writeZip(z, newfile, file_comment=b"spam")
         # Invalidate the cache of the first zipimporter.
         zi.invalidate_caches()
@@ -676,7 +676,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(zi.prefix, packdir)
         self.assertWahr(zi.is_package(TESTPACK2))
         # PEP 302
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             mod = zi.load_module(TESTPACK2)
             self.assertEqual(zi.get_filename(TESTPACK2), mod.__file__)
@@ -717,7 +717,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def testGetDataExplicitDirectories(self):
         self.addCleanup(os_helper.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, 'w', compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, 'w', compression=self.compression) als z:
             z.mkdir('a')
             z.mkdir('a/b')
             z.mkdir('a/b/c')
@@ -727,7 +727,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     def testGetDataImplicitDirectories(self):
         self.addCleanup(os_helper.unlink, TEMP_ZIP)
-        with ZipFile(TEMP_ZIP, 'w', compression=self.compression) as z:
+        mit ZipFile(TEMP_ZIP, 'w', compression=self.compression) als z:
             data = bytes(range(256))
             z.writestr('a/b/c/testdata.dat', data)
         self._testGetData()
@@ -824,7 +824,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     def doTraceback(self, module):
         try:
             module.do_raise()
-        except Exception as e:
+        except Exception als e:
             tb = e.__traceback__.tb_next
 
             f,lno,n,line = extract_tb(tb, 1)[0]
@@ -861,11 +861,11 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.makeZip({TESTMOD + ".py": test_src}, filename)
 
         zipimport.zipimporter(filename)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             zipimport.zipimporter(os.fsencode(filename))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             zipimport.zipimporter(bytearray(os.fsencode(filename)))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             zipimport.zipimporter(memoryview(os.fsencode(filename)))
 
     def testComment(self):
@@ -901,7 +901,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # and reconstruct a sparse zip on systems that support sparse files.
         # Instead of creating a ~8GB zip file mainly consisting of null bytes
         # fuer every run of the test, we create the zip once and save off the
-        # non-null portions of the resulting file as data blobs with offsets
+        # non-null portions of the resulting file als data blobs mit offsets
         # that allow re-creating the zip file sparsely. This drops disk space
         # usage to ~9KB fuer the ZIP_STORED case and drops that test time by ~2
         # orders of magnitude. For the ZIP_DEFLATED case, however, we bite the
@@ -920,18 +920,18 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                     "test requires a lot of CPU fuer compression."
                 )
             self.addCleanup(os_helper.unlink, os_helper.TESTFN)
-            with open(os_helper.TESTFN, "wb") as f:
+            mit open(os_helper.TESTFN, "wb") als f:
                 f.write(b"data")
                 f.write(os.linesep.encode())
                 f.seek(0xffff_ffff, os.SEEK_CUR)
                 f.write(os.linesep.encode())
             os.utime(os_helper.TESTFN, (0.0, 0.0))
-            with ZipFile(
+            mit ZipFile(
                 TEMP_ZIP,
                 "w",
                 compression=self.compression,
                 strict_timestamps=Falsch
-            ) as z:
+            ) als z:
                 z.write(os_helper.TESTFN, "data1")
                 z.writestr(
                     ZipInfo("module.py", (1980, 1, 1, 0, 0, 0)), test_src
@@ -943,7 +943,7 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             # the correct length file.
             def make_sparse_zip_parts(name):
                 empty_page = b"\0" * 4096
-                with open(name, "rb") as f:
+                mit open(name, "rb") als f:
                     part = Nichts
                     try:
                         while Wahr:
@@ -983,13 +983,13 @@ klasse UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                     return int(m.group(1), base=16)
                 raise ValueError(f"{name=} does not fit expected pattern.")
             offset_parts = [(extract_offset(n), n) fuer n in pre_built_zip_parts]
-            with open(TEMP_ZIP, "wb") as f:
+            mit open(TEMP_ZIP, "wb") als f:
                 fuer offset, part_fn in sorted(offset_parts):
-                    with open(part_fn, "rb") as part:
+                    mit open(part_fn, "rb") als part:
                         f.seek(offset, os.SEEK_SET)
                         f.write(part.read())
             # Confirm that the reconstructed zip file works and looks right.
-            with ZipFile(TEMP_ZIP, "r") as z:
+            mit ZipFile(TEMP_ZIP, "r") als z:
                 self.assertEqual(
                     z.getinfo("module.py").date_time, (1980, 1, 1, 0, 0, 0)
                 )
@@ -1044,7 +1044,7 @@ klasse BadFileZipImportTestCase(unittest.TestCase):
         try:
             os.close(fd)
 
-            with self.assertRaises(zipimport.ZipImportError) as cm:
+            mit self.assertRaises(zipimport.ZipImportError) als cm:
                 zipimport.zipimporter(TESTMOD)
         finally:
             # If we leave "the read-only bit" set on Windows, nothing can
@@ -1069,7 +1069,7 @@ klasse BadFileZipImportTestCase(unittest.TestCase):
         z = zipimport.zipimporter(TESTMOD)
 
         try:
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 warnings.simplefilter("ignore", DeprecationWarning)
                 self.assertRaises(TypeError, z.load_module, Nichts)
             self.assertRaises(TypeError, z.find_module, Nichts)
@@ -1083,7 +1083,7 @@ klasse BadFileZipImportTestCase(unittest.TestCase):
             error = zipimport.ZipImportError
             self.assertIsNichts(z.find_spec('abc'))
 
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 warnings.simplefilter("ignore", DeprecationWarning)
                 self.assertRaises(error, z.load_module, 'abc')
             self.assertRaises(error, z.get_code, 'abc')

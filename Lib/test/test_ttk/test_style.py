@@ -39,7 +39,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         # Single state
         fuer states in ['active'], [('active',)]:
-            with self.subTest(states=states):
+            mit self.subTest(states=states):
                 style.map('TButton', background=[(*states, 'white')])
                 expected = [('active', 'white')]
                 self.assertEqual(style.map('TButton', 'background'), expected)
@@ -49,7 +49,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         # Multiple states
         fuer states in ['pressed', '!disabled'], ['pressed !disabled'], [('pressed', '!disabled')]:
-            with self.subTest(states=states):
+            mit self.subTest(states=states):
                 style.map('TButton', background=[(*states, 'black')])
                 expected = [('pressed', '!disabled', 'black')]
                 self.assertEqual(style.map('TButton', 'background'), expected)
@@ -59,7 +59,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
         # Default state
         fuer states in [], [''], [()]:
-            with self.subTest(states=states):
+            mit self.subTest(states=states):
                 style.map('TButton', background=[(*states, 'grey')])
                 expected = [('grey',)]
                 self.assertEqual(style.map('TButton', 'background'), expected)
@@ -98,7 +98,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
         # should return a list
         self.assertIsInstance(style.layout('TButton'), list)
 
-        # correct layout, but "option" doesn't exist as option
+        # correct layout, but "option" doesn't exist als option
         self.assertRaises(tkinter.TclError, style.layout, 'Treeview',
             [('name', {'option': 'inexistent'})])
 
@@ -115,7 +115,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                 self.style.theme_use(theme)
                 break
         sonst:
-            # just one theme available, can't go on with tests
+            # just one theme available, can't go on mit tests
             return
 
         self.assertFalsch(curr_theme == new_theme)
@@ -134,7 +134,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                 default = style.configure(name)
                 wenn not default:
                     continue
-                with self.subTest(theme=theme, name=name):
+                mit self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
                         drucke('configure', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
@@ -160,7 +160,7 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
                 default = style.map(name)
                 wenn not default:
                     continue
-                with self.subTest(theme=theme, name=name):
+                mit self.subTest(theme=theme, name=name):
                     wenn support.verbose >= 2:
                         drucke('map', theme, name, default)
                     wenn (theme in ('vista', 'xpnative')
@@ -189,9 +189,9 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
     def test_element_create_errors(self):
         style = self.style
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             style.element_create('plain.newelem')
-        with self.assertRaisesRegex(TclError, 'No such element type spam'):
+        mit self.assertRaisesRegex(TclError, 'No such element type spam'):
             style.element_create('plain.newelem', 'spam')
 
     def test_element_create_from(self):
@@ -203,9 +203,9 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
 
     def test_element_create_from_errors(self):
         style = self.style
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             style.element_create('plain.newelem', 'from')
-        with self.assertRaisesRegex(TclError,
+        mit self.assertRaisesRegex(TclError,
             'theme "spam" (does not|doesn\'t) exist'):
             style.element_create('plain.newelem', 'from', 'spam')
 
@@ -242,21 +242,21 @@ klasse StyleTest(AbstractTkTest, unittest.TestCase):
     def test_element_create_image_errors(self):
         style = self.style
         image = tkinter.PhotoImage(master=self.root, width=10, height=10)
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             style.element_create('block2', 'image')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             style.element_create('block2', 'image', image, 1)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             style.element_create('block2', 'image', image, ())
-        with self.assertRaisesRegex(TclError, 'Invalid state name'):
+        mit self.assertRaisesRegex(TclError, 'Invalid state name'):
             style.element_create('block2', 'image', image, ('spam', image))
-        with self.assertRaisesRegex(TclError, 'Invalid state name'):
+        mit self.assertRaisesRegex(TclError, 'Invalid state name'):
             style.element_create('block2', 'image', image, (1, image))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             style.element_create('block2', 'image', image, ('pressed', 1, image))
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             style.element_create('block2', 'image', image, (1, 'selected', image))
-        with self.assertRaisesRegex(TclError, 'bad option'):
+        mit self.assertRaisesRegex(TclError, 'bad option'):
             style.element_create('block2', 'image', image, spam=1)
 
     def test_element_create_vsapi_1(self):

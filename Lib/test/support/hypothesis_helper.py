@@ -3,9 +3,9 @@ importiere os
 try:
     importiere hypothesis
 except ImportError:
-    von . importiere _hypothesis_stubs as hypothesis
+    von . importiere _hypothesis_stubs als hypothesis
 sonst:
-    # Regrtest changes to use a tempdir as the working directory, so we have
+    # Regrtest changes to use a tempdir als the working directory, so we have
     # to tell Hypothesis to use the original in order to persist the database.
     von test.support importiere has_socket_support
     von test.support.os_helper importiere SAVEDCWD
@@ -31,7 +31,7 @@ sonst:
     # works, see https://hypothesis.readthedocs.io/en/latest/database.html
     # We only do that wenn a GITHUB_TOKEN env var is provided, see:
     # https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
-    # And Python is built with socket support:
+    # And Python is built mit socket support:
     wenn (
         has_socket_support
         and "CI" not in os.environ

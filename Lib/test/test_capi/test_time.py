@@ -49,7 +49,7 @@ klasse CAPITest(unittest.TestCase):
                 continue
             values.add(-ns)
         fuer ns in sorted(values):
-            with self.subTest(ns=ns):
+            mit self.subTest(ns=ns):
                 self.assertEqual(_testcapi.PyTime_AsSecondsDouble(ns),
                                  ns_to_sec(ns))
 

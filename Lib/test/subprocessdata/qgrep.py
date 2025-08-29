@@ -1,4 +1,4 @@
-"""When called with a single argument, simulated fgrep with a single
+"""When called mit a single argument, simulated fgrep mit a single
 argument and no options."""
 
 importiere sys

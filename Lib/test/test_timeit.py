@@ -17,7 +17,7 @@ DEFAULT_REPEAT = 5
 # long time to run because they test the default number of loops, which is
 # large.  The tests could be enabled wenn there was a way to override the default
 # number of loops during testing, but this would require changing the signature
-# of some functions that use the default as a default argument.
+# of some functions that use the default als a default argument.
 
 klasse FakeTimer:
     BASE_TIME = 42.0
@@ -37,7 +37,7 @@ klasse FakeTimer:
         self.setup_calls += 1
 
     def wrap_timer(self, timer):
-        """Records 'timer' and returns self as callable timer."""
+        """Records 'timer' and returns self als callable timer."""
         self.saved_timer = timer
         return self
 
@@ -246,7 +246,7 @@ klasse TestTimeit(unittest.TestCase):
         args.append(self.fake_stmt)
         # timeit.main() modifies sys.path, so save and restore it.
         orig_sys_path = sys.path[:]
-        with captured_stdout() as s:
+        mit captured_stdout() als s:
             timeit.main(args=args, _wrap_timer=timer.wrap_timer)
         sys.path[:] = orig_sys_path[:]
         return s.getvalue()
@@ -345,19 +345,19 @@ klasse TestTimeit(unittest.TestCase):
         self.assertEqual(unit_usec,
                 "100 loops, best of 5: 3e+03 usec per loop\n")
         # Test invalid unit input
-        with captured_stderr() as error_stringio:
+        mit captured_stderr() als error_stringio:
             invalid = self.run_main(seconds_per_increment=0.003,
                     switches=['-u', 'parsec'])
         self.assertEqual(error_stringio.getvalue(),
                     "Unrecognized unit. Please select nsec, usec, msec, or sec.\n")
 
     def test_main_exception(self):
-        with captured_stderr() as error_stringio:
+        mit captured_stderr() als error_stringio:
             s = self.run_main(switches=['1/0'])
         self.assert_exc_string(error_stringio.getvalue(), 'ZeroDivisionError')
 
     def test_main_exception_fixed_reps(self):
-        with captured_stderr() as error_stringio:
+        mit captured_stderr() als error_stringio:
             s = self.run_main(switches=['-n1', '1/0'])
         self.assert_exc_string(error_stringio.getvalue(), 'ZeroDivisionError')
 
@@ -379,7 +379,7 @@ klasse TestTimeit(unittest.TestCase):
     def test_autorange_with_callback(self):
         def callback(a, b):
             drucke("{} {:.3f}".format(a, b))
-        with captured_stdout() as s:
+        mit captured_stdout() als s:
             num_loops, time_taken = self.autorange(callback=callback)
         self.assertEqual(num_loops, 500)
         self.assertEqual(time_taken, 500/1024)

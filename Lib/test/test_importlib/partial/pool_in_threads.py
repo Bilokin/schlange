@@ -6,7 +6,7 @@ importiere traceback
 
 def t():
     try:
-        with multiprocessing.Pool(1):
+        mit multiprocessing.Pool(1):
             pass
     except Exception:
         traceback.print_exc()

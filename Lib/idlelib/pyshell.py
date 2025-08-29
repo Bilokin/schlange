@@ -51,11 +51,11 @@ use_subprocess = Falsch
 HOST = '127.0.0.1' # python execution server on localhost loopback
 PORT = 0  # someday pass in host, port fuer remote debug capability
 
-try:  # In case IDLE started with -n.
+try:  # In case IDLE started mit -n.
     eof = 'Ctrl-D (end-of-file)'
     exit.eof = eof
     quit.eof = eof
-except NameError: # In case python started with -S.
+except NameError: # In case python started mit -S.
     pass
 
 # Override warnings module to write to warning_stream.  Initialize to send IDLE
@@ -84,7 +84,7 @@ def idle_showwarning(
 _warnings_showwarning = Nichts
 
 def capture_warnings(capture):
-    "Replace warning.showwarning with idle_showwarning, or reverse."
+    "Replace warning.showwarning mit idle_showwarning, or reverse."
 
     global _warnings_showwarning
     wenn capture:
@@ -231,24 +231,24 @@ klasse PyShellEditorWindow(EditorWindow):
         #     temp file is created may differ von the breaks at the last
         #     permanent save of the file.  Currently, a break introduced
         #     after a save will be effective, but not persistent.
-        #     This is necessary to keep the saved breaks synched with the
+        #     This is necessary to keep the saved breaks synched mit the
         #     saved file.
         #
-        #     Breakpoints are set as tagged ranges in the text.
+        #     Breakpoints are set als tagged ranges in the text.
         #     Since a modified file has to be saved before it is
         #     run, and since self.breakpoints (from which the subprocess
         #     debugger is loaded) is updated during the save, the visible
-        #     breaks stay synched with the subprocess even wenn one of these
+        #     breaks stay synched mit the subprocess even wenn one of these
         #     unexpected breakpoint deletions occurs.
         breaks = self.breakpoints
         filename = self.io.filename
         try:
-            with open(self.breakpointPath) as fp:
+            mit open(self.breakpointPath) als fp:
                 lines = fp.readlines()
         except OSError:
             lines = []
         try:
-            with open(self.breakpointPath, "w") as new_file:
+            mit open(self.breakpointPath, "w") als new_file:
                 fuer line in lines:
                     wenn not line.startswith(filename + '='):
                         new_file.write(line)
@@ -256,7 +256,7 @@ klasse PyShellEditorWindow(EditorWindow):
                 breaks = self.breakpoints
                 wenn breaks:
                     new_file.write(filename + '=' + str(breaks) + '\n')
-        except OSError as err:
+        except OSError als err:
             wenn not getattr(self.root, "breakpoint_error_displayed", Falsch):
                 self.root.breakpoint_error_displayed = Wahr
                 messagebox.showerror(title='IDLE Error',
@@ -273,7 +273,7 @@ klasse PyShellEditorWindow(EditorWindow):
         wenn filename is Nichts:
             return
         wenn os.path.isfile(self.breakpointPath):
-            with open(self.breakpointPath) as fp:
+            mit open(self.breakpointPath) als fp:
                 lines = fp.readlines()
             fuer line in lines:
                 wenn line.startswith(filename + '='):
@@ -379,7 +379,7 @@ klasse ModifiedUndoDelegator(UndoDelegator):
 
 
 klasse UserInputTaggingDelegator(Delegator):
-    """Delegator used to tag user input with "stdin"."""
+    """Delegator used to tag user input mit "stdin"."""
     def insert(self, index, chars, tags=Nichts):
         wenn tags is Nichts:
             tags = "stdin"
@@ -393,10 +393,10 @@ klasse MyRPCClient(rpc.RPCClient):
         raise EOFError
 
 def restart_line(width, filename):  # See bpo-38141.
-    """Return width long restart line formatted with filename.
+    """Return width long restart line formatted mit filename.
 
-    Fill line with balanced '='s, with any extras and at least one at
-    the beginning.  Do not end with a trailing space.
+    Fill line mit balanced '='s, mit any extras and at least one at
+    the beginning.  Do not end mit a trailing space.
     """
     tag = f"= RESTART: {filename or 'Shell'} ="
     wenn width >= len(tag):
@@ -455,7 +455,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             return Nichts
         # wenn PORT was 0, system will assign an 'ephemeral' port. Find it out:
         self.port = self.rpcclt.listening_sock.getsockname()[1]
-        # wenn PORT was not 0, probably working with a remote execution server
+        # wenn PORT was not 0, probably working mit a remote execution server
         wenn PORT != 0:
             # To allow reconnection within the 2MSL wait (cf. Stevens TCP
             # V1, 18.6),  set SO_REUSEADDR.  Note that this can be problematic
@@ -569,7 +569,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
             path = sys.path
 
         self.runcommand("""if 1:
-        importiere sys as _sys
+        importiere sys als _sys
         _sys.path = {!r}
         del _sys
         \n""".format(path))
@@ -662,7 +662,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
     def execfile(self, filename, source=Nichts):
         "Execute an existing file"
         wenn source is Nichts:
-            with tokenize.open(filename) as fp:
+            mit tokenize.open(filename) als fp:
                 source = fp.read()
                 wenn use_subprocess:
                     source = (f"__file__ = r'''{os.path.abspath(filename)}'''\n"
@@ -697,11 +697,11 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         return filename
 
     def prepend_syspath(self, filename):
-        "Prepend sys.path with file's directory wenn not already included"
+        "Prepend sys.path mit file's directory wenn not already included"
         self.runcommand("""if 1:
             _filename = {!r}
-            importiere sys as _sys
-            von os.path importiere dirname as _dirname
+            importiere sys als _sys
+            von os.path importiere dirname als _dirname
             _dir = _dirname(_filename)
             wenn not _dir in _sys.path:
                 _sys.path.insert(0, _dir)
@@ -712,7 +712,7 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         """Override Interactive Interpreter method: Use Colorizing
 
         Color the offending position instead of printing it and pointing at it
-        with a caret.
+        mit a caret.
 
         """
         tkconsole = self.tkconsole
@@ -815,9 +815,9 @@ klasse ModifiedInterpreter(InteractiveInterpreter):
         messagebox.showerror(
             "Port Binding Error",
             "IDLE can't bind to a TCP/IP port, which is necessary to "
-            "communicate with its Python execution server.  This might be "
+            "communicate mit its Python execution server.  This might be "
             "because no networking is installed on this computer.  "
-            "Run IDLE with the -n command line switch to start without a "
+            "Run IDLE mit the -n command line switch to start without a "
             "subprocess and refer to Help/IDLE Help 'Running without a "
             "subprocess' fuer further details.",
             parent=self.tkconsole.text)
@@ -864,7 +864,7 @@ klasse PyShell(OutputWindow):
     _idx = 1 + len(list(itertools.takewhile(
         lambda rmenu_item: rmenu_item[0] != "Copy", rmenu_specs)
     ))
-    rmenu_specs.insert(_idx, ("Copy with prompts",
+    rmenu_specs.insert(_idx, ("Copy mit prompts",
                               "<<copy-with-prompts>>",
                               "rmenu_check_copy"))
     del _idx
@@ -988,7 +988,7 @@ klasse PyShell(OutputWindow):
         return idleConf.GetExtensions(shell_only=Wahr)
 
     def get_prompt_text(self, first, last):
-        """Return text between first and last with prompts added."""
+        """Return text between first and last mit prompts added."""
         text = self.text.get(first, last)
         lineno_range = range(
             int(float(first)),
@@ -1005,7 +1005,7 @@ klasse PyShell(OutputWindow):
 
 
     def copy_with_prompts_callback(self, event=Nichts):
-        """Copy selected lines to the clipboard, with prompts.
+        """Copy selected lines to the clipboard, mit prompts.
 
         This makes the copied text useful fuer doc-tests and interactive
         shell code examples.
@@ -1182,7 +1182,7 @@ klasse PyShell(OutputWindow):
             self._stop_readline_flag = Falsch
             return ""
         line = self.text.get("iomark", "end-1c")
-        wenn len(line) == 0:  # may be EOF wenn we quit our mainloop with Ctrl-C
+        wenn len(line) == 0:  # may be EOF wenn we quit our mainloop mit Ctrl-C
             line = "\n"
         self.resetoutput()
         wenn self.canceled:
@@ -1342,7 +1342,7 @@ klasse PyShell(OutputWindow):
                 new_base_indent  = re.search(r'^([ \t]*)', prefix).group(0)
                 fuer line in lines[1:]:
                     wenn line.startswith(orig_base_indent):
-                        # replace orig base indentation with new indentation
+                        # replace orig base indentation mit new indentation
                         line = new_base_indent + line[len(orig_base_indent):]
                     self.text.insert('insert', '\n' + line.rstrip(),
                                      self.user_input_insert_tags)
@@ -1497,11 +1497,11 @@ idle
         Open an edit window or shell depending on IDLE's configuration.
 
 idle foo.py foobar.py
-        Edit the files, also open a shell wenn configured to start with shell.
+        Edit the files, also open a shell wenn configured to start mit shell.
 
 idle -est "Baz" foo.py
         Run $IDLESTARTUP or $PYTHONSTARTUP, edit foo.py, and open a shell
-        window with the title "Baz".
+        window mit the title "Baz".
 
 idle -c "import sys; drucke(sys.argv)" "foo"
         Open a shell window and run the command, passing "-c" in sys.argv[0]
@@ -1535,7 +1535,7 @@ def main():
     startup = Falsch
     try:
         opts, args = getopt.getopt(sys.argv[1:], "c:deihnr:st:")
-    except getopt.error as msg:
+    except getopt.error als msg:
         drucke(f"Error: {msg}\n{usage_msg}", file=sys.stderr)
         sys.exit(2)
     fuer o, a in opts:
@@ -1667,7 +1667,7 @@ def main():
             shell.interp.execfile(filename)
     wenn cmd or script:
         shell.interp.runcommand("""if 1:
-            importiere sys as _sys
+            importiere sys als _sys
             _sys.argv = {!r}
             del _sys
             \n""".format(sys.argv))

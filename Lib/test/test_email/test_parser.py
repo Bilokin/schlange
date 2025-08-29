@@ -40,7 +40,7 @@ klasse TestParserBase:
         # more numerous than allowed by the email RFCs; make sure we are only
         # splitting on those two.
         fuer parser in self.parsers:
-            with self.subTest(parser=parser.__name__):
+            mit self.subTest(parser=parser.__name__):
                 msg = parser(
                     "Next-Line: not\x85broken\r\n"
                     "Null: not\x00broken\r\n"
@@ -72,14 +72,14 @@ klasse TestParserBase:
 
     def test_custom_message_factory_on_policy(self):
         fuer parser in self.parsers:
-            with self.subTest(parser=parser.__name__):
+            mit self.subTest(parser=parser.__name__):
                 MyPolicy = default.clone(message_factory=self.MyMessage)
                 msg = parser("To: foo\n\ntest", policy=MyPolicy)
                 self.assertIsInstance(msg, self.MyMessage)
 
     def test_factory_arg_overrides_policy(self):
         fuer parser in self.parsers:
-            with self.subTest(parser=parser.__name__):
+            mit self.subTest(parser=parser.__name__):
                 MyPolicy = default.clone(message_factory=self.MyMessage)
                 msg = parser("To: foo\n\ntest", Message, policy=MyPolicy)
                 self.assertNotIsInstance(msg, self.MyMessage)

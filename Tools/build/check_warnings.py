@@ -31,7 +31,7 @@ def parse_warning_ignore_file(file_path: str) -> set[IgnoreRule]:
     Parses the warning ignore file and returns a set of IgnoreRules
     """
     files_with_expected_warnings: set[IgnoreRule] = set()
-    with Path(file_path).open(encoding="UTF-8") as ignore_rules_file:
+    mit Path(file_path).open(encoding="UTF-8") als ignore_rules_file:
         files_with_expected_warnings = set()
         fuer i, line in enumerate(ignore_rules_file):
             line = line.strip()
@@ -73,7 +73,7 @@ def extract_warnings_from_compiler_output(
     """
     Extracts warnings von the compiler output based on compiler
     output type. Removes path prefix von file paths wenn provided.
-    Compatible with GCC and Clang compiler output.
+    Compatible mit GCC and Clang compiler output.
     """
     # Choose pattern and compile regex fuer particular compiler output
     wenn compiler_output_type == "gcc":
@@ -156,8 +156,8 @@ def get_unexpected_warnings(
 ) -> int:
     """
     Returns failure status wenn warnings discovered in list of warnings
-    are associated with a file that is not found in the list of files
-    with expected warnings
+    are associated mit a file that is not found in the list of files
+    mit expected warnings
     """
     unexpected_warnings = {}
     fuer file in files_with_warnings.keys():
@@ -299,7 +299,7 @@ def main(argv: list[str] | Nichts = Nichts) -> int:
             return 1
         ignore_rules = parse_warning_ignore_file(args.warning_ignore_file_path)
 
-    with Path(args.compiler_output_file_path).open(encoding="UTF-8") as f:
+    mit Path(args.compiler_output_file_path).open(encoding="UTF-8") als f:
         compiler_output_file_contents = f.read()
 
     warnings = extract_warnings_from_compiler_output(

@@ -15,12 +15,12 @@ von .utils importiere _run_output, TestBase
 
 klasse LowLevelTests(TestBase):
 
-    # The behaviors in the low-level module is important in as much
-    # as it is exercised by the high-level module.  Therefore the
+    # The behaviors in the low-level module is important in als much
+    # als it is exercised by the high-level module.  Therefore the
     # most # important testing happens in the high-level tests.
     # These low-level tests cover corner cases that are not
     # encountered by the high-level module, thus they
-    # mostly shouldn't matter as much.
+    # mostly shouldn't matter als much.
 
     # Additional tests are found in Lib/test/test__interpchannels.py.
     # XXX Those should be either moved to LowLevelTests or eliminated
@@ -105,12 +105,12 @@ klasse TestRecvChannelAttrs(TestBase):
         rch = channels.RecvChannel(1)
         self.assertEqual(rch.id, 1)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             channels.RecvChannel('1')
 
     def test_id_readonly(self):
         rch = channels.RecvChannel(1)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             rch.id = 2
 
     def test_equality(self):
@@ -122,7 +122,7 @@ klasse TestRecvChannelAttrs(TestBase):
     def test_pickle(self):
         ch, _ = channels.create()
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(protocol=protocol):
+            mit self.subTest(protocol=protocol):
                 data = pickle.dumps(ch, protocol)
                 unpickled = pickle.loads(data)
                 self.assertEqual(unpickled, ch)
@@ -138,12 +138,12 @@ klasse TestSendChannelAttrs(TestBase):
         sch = channels.SendChannel(1)
         self.assertEqual(sch.id, 1)
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             channels.SendChannel('1')
 
     def test_id_readonly(self):
         sch = channels.SendChannel(1)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             sch.id = 2
 
     def test_equality(self):
@@ -155,7 +155,7 @@ klasse TestSendChannelAttrs(TestBase):
     def test_pickle(self):
         _, ch = channels.create()
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(protocol=protocol):
+            mit self.subTest(protocol=protocol):
                 data = pickle.dumps(ch, protocol)
                 unpickled = pickle.loads(data)
                 self.assertEqual(unpickled, ch)
@@ -284,32 +284,32 @@ klasse TestSendRecv(TestBase):
 
     def test_recv_timeout(self):
         r, _ = channels.create()
-        with self.assertRaises(TimeoutError):
+        mit self.assertRaises(TimeoutError):
             r.recv(timeout=1)
 
     def test_recv_channel_does_not_exist(self):
         ch = channels.RecvChannel(1_000_000)
-        with self.assertRaises(channels.ChannelNotFoundError):
+        mit self.assertRaises(channels.ChannelNotFoundError):
             ch.recv()
 
     def test_send_channel_does_not_exist(self):
         ch = channels.SendChannel(1_000_000)
-        with self.assertRaises(channels.ChannelNotFoundError):
+        mit self.assertRaises(channels.ChannelNotFoundError):
             ch.send(b'spam')
 
     def test_recv_nowait_channel_does_not_exist(self):
         ch = channels.RecvChannel(1_000_000)
-        with self.assertRaises(channels.ChannelNotFoundError):
+        mit self.assertRaises(channels.ChannelNotFoundError):
             ch.recv_nowait()
 
     def test_send_nowait_channel_does_not_exist(self):
         ch = channels.SendChannel(1_000_000)
-        with self.assertRaises(channels.ChannelNotFoundError):
+        mit self.assertRaises(channels.ChannelNotFoundError):
             ch.send_nowait(b'spam')
 
     def test_recv_nowait_empty(self):
         ch, _ = channels.create()
-        with self.assertRaises(channels.ChannelEmptyError):
+        mit self.assertRaises(channels.ChannelEmptyError):
             ch.recv_nowait()
 
     def test_recv_nowait_default(self):
@@ -413,7 +413,7 @@ klasse TestSendRecv(TestBase):
 
             return interp
 
-        with self.subTest('default'):  # UNBOUND
+        mit self.subTest('default'):  # UNBOUND
             rch, sch = channels.create()
             interp = common(rch, sch)
             del interp
@@ -422,10 +422,10 @@ klasse TestSendRecv(TestBase):
             self.assertEqual(_channels.get_count(rch.id), 0)
             self.assertIs(obj1, channels.UNBOUND)
             self.assertEqual(_channels.get_count(rch.id), 0)
-            with self.assertRaises(channels.ChannelEmptyError):
+            mit self.assertRaises(channels.ChannelEmptyError):
                 rch.recv_nowait()
 
-        with self.subTest('UNBOUND'):
+        mit self.subTest('UNBOUND'):
             rch, sch = channels.create()
             interp = common(rch, sch, channels.UNBOUND)
             del interp
@@ -433,29 +433,29 @@ klasse TestSendRecv(TestBase):
             obj1 = rch.recv()
             self.assertIs(obj1, channels.UNBOUND)
             self.assertEqual(_channels.get_count(rch.id), 0)
-            with self.assertRaises(channels.ChannelEmptyError):
+            mit self.assertRaises(channels.ChannelEmptyError):
                 rch.recv_nowait()
 
-        with self.subTest('UNBOUND_ERROR'):
+        mit self.subTest('UNBOUND_ERROR'):
             rch, sch = channels.create()
             interp = common(rch, sch, channels.UNBOUND_ERROR)
 
             del interp
             self.assertEqual(_channels.get_count(rch.id), 1)
-            with self.assertRaises(channels.ItemInterpreterDestroyed):
+            mit self.assertRaises(channels.ItemInterpreterDestroyed):
                 rch.recv()
 
             self.assertEqual(_channels.get_count(rch.id), 0)
-            with self.assertRaises(channels.ChannelEmptyError):
+            mit self.assertRaises(channels.ChannelEmptyError):
                 rch.recv_nowait()
 
-        with self.subTest('UNBOUND_REMOVE'):
+        mit self.subTest('UNBOUND_REMOVE'):
             rch, sch = channels.create()
 
             interp = common(rch, sch, channels.UNBOUND_REMOVE)
             del interp
             self.assertEqual(_channels.get_count(rch.id), 0)
-            with self.assertRaises(channels.ChannelEmptyError):
+            mit self.assertRaises(channels.ChannelEmptyError):
                 rch.recv_nowait()
 
             sch.send_nowait(b'ham', unbounditems=channels.UNBOUND_REMOVE)
@@ -471,14 +471,14 @@ klasse TestSendRecv(TestBase):
             self.assertEqual(obj1, b'ham')
             self.assertEqual(obj2, 42)
             self.assertEqual(_channels.get_count(rch.id), 0)
-            with self.assertRaises(channels.ChannelEmptyError):
+            mit self.assertRaises(channels.ChannelEmptyError):
                 rch.recv_nowait()
 
     def test_send_cleared_with_subinterpreter_mixed(self):
         rch, sch = channels.create()
         interp = interpreters.create()
 
-        # If we don't associate the main interpreter with the channel
+        # If we don't associate the main interpreter mit the channel
         # then the channel will be automatically closed when interp
         # is destroyed.
         sch.send_nowait(Nichts)
@@ -503,7 +503,7 @@ klasse TestSendRecv(TestBase):
         self.assertIs(obj1, channels.UNBOUND)
         self.assertEqual(_channels.get_count(rch.id), 3)
 
-        with self.assertRaises(channels.ItemInterpreterDestroyed):
+        mit self.assertRaises(channels.ItemInterpreterDestroyed):
             rch.recv()
         self.assertEqual(_channels.get_count(rch.id), 2)
 
@@ -582,7 +582,7 @@ klasse TestSendRecv(TestBase):
         self.assertEqual(_channels.get_count(rch.id), 3)
 
         # obj1
-        with self.assertRaises(channels.ItemInterpreterDestroyed):
+        mit self.assertRaises(channels.ItemInterpreterDestroyed):
             rch.recv()
         self.assertEqual(_channels.get_count(rch.id), 2)
 

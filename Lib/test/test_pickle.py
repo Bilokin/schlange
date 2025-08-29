@@ -250,7 +250,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
         klasse PersUnpickler(self.unpickler):
             def persistent_load(subself, pid):
                 called.append(pid)
-                with self.assertRaises(self.persistent_load_error):
+                mit self.assertRaises(self.persistent_load_error):
                     super().persistent_load(pid)
                 return pid
 
@@ -322,7 +322,7 @@ klasse PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
                 raise AssertionError('should never be called')
             def _persistent_load(subself, pid):
                 called.append(pid)
-                with self.assertRaises(self.persistent_load_error):
+                mit self.assertRaises(self.persistent_load_error):
                     super().persistent_load(pid)
                 return pid
 
@@ -406,10 +406,10 @@ wenn has_c_implementation:
 
         def test_issue18339(self):
             unpickler = self.unpickler_class(io.BytesIO())
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 unpickler.memo = object
             # used to cause a segfault
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 unpickler.memo = {-1: Nichts}
             unpickler.memo = {1: Nichts}
 
@@ -447,13 +447,13 @@ wenn has_c_implementation:
         def test_have_gc(self):
             importiere gc
             fuer tp in self._types:
-                with self.subTest(tp=tp):
+                mit self.subTest(tp=tp):
                     self.assertWahr(gc.is_tracked(tp))
 
         def test_immutable(self):
             fuer tp in self._types:
-                with self.subTest(tp=tp):
-                    with self.assertRaisesRegex(TypeError, "immutable"):
+                mit self.subTest(tp=tp):
+                    mit self.assertRaisesRegex(TypeError, "immutable"):
                         tp.foo = "bar"
 
     @support.cpython_only
@@ -557,15 +557,15 @@ def getmodule(module):
         return sys.modules[module]
     except KeyError:
         try:
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 action = 'always' wenn support.verbose sonst 'ignore'
                 warnings.simplefilter(action, DeprecationWarning)
                 __import__(module)
-        except AttributeError as exc:
+        except AttributeError als exc:
             wenn support.verbose:
                 drucke("Can't importiere module %r: %s" % (module, exc))
             raise ImportError
-        except ImportError as exc:
+        except ImportError als exc:
             wenn support.verbose:
                 drucke(exc)
             raise
@@ -597,7 +597,7 @@ klasse CompatPickleTests(unittest.TestCase):
 
     def test_import_mapping(self):
         fuer module3, module2 in REVERSE_IMPORT_MAPPING.items():
-            with self.subTest((module3, module2)):
+            mit self.subTest((module3, module2)):
                 try:
                     getmodule(module3)
                 except ImportError:
@@ -608,7 +608,7 @@ klasse CompatPickleTests(unittest.TestCase):
 
     def test_name_mapping(self):
         fuer (module3, name3), (module2, name2) in REVERSE_NAME_MAPPING.items():
-            with self.subTest(((module3, name3), (module2, name2))):
+            mit self.subTest(((module3, name3), (module2, name2))):
                 wenn (module2, name2) == ('exceptions', 'OSError'):
                     attr = getattribute(module3, name3)
                     self.assertIsSubclass(attr, OSError)
@@ -628,10 +628,10 @@ klasse CompatPickleTests(unittest.TestCase):
 
     def test_reverse_import_mapping(self):
         fuer module2, module3 in IMPORT_MAPPING.items():
-            with self.subTest((module2, module3)):
+            mit self.subTest((module2, module3)):
                 try:
                     getmodule(module3)
-                except ImportError as exc:
+                except ImportError als exc:
                     wenn support.verbose:
                         drucke(exc)
                 wenn ((module2, module3) not in ALT_IMPORT_MAPPING and
@@ -648,7 +648,7 @@ klasse CompatPickleTests(unittest.TestCase):
 
     def test_reverse_name_mapping(self):
         fuer (module2, name2), (module3, name3) in NAME_MAPPING.items():
-            with self.subTest(((module2, name2), (module3, name3))):
+            mit self.subTest(((module2, name2), (module3, name3))):
                 try:
                     attr = getattribute(module3, name3)
                 except ImportError:
@@ -672,7 +672,7 @@ klasse CompatPickleTests(unittest.TestCase):
                          ('exceptions', 'OSError'))
 
         fuer name, exc in get_exceptions(builtins):
-            with self.subTest(name):
+            mit self.subTest(name):
                 wenn exc in (BlockingIOError,
                            ResourceWarning,
                            StopAsyncIteration,
@@ -702,7 +702,7 @@ klasse CompatPickleTests(unittest.TestCase):
         fuer name, exc in get_exceptions(module):
             wenn issubclass(exc, Warning):
                 continue
-            with self.subTest(name):
+            mit self.subTest(name):
                 self.assertEqual(reverse_mapping('multiprocessing.context', name),
                                  ('multiprocessing', name))
                 self.assertEqual(mapping('multiprocessing', name),
@@ -724,12 +724,12 @@ klasse CommandLineTest(unittest.TestCase):
         return dedent(string).strip()
 
     def set_pickle_data(self, data):
-        with open(self.filename, 'wb') as f:
+        mit open(self.filename, 'wb') als f:
             pickle.dump(data, f)
 
     def invoke_pickle(self, *flags):
         output = io.StringIO()
-        with contextlib.redirect_stdout(output):
+        mit contextlib.redirect_stdout(output):
             pickle._main(args=[*flags, self.filename])
         return self.text_normalize(output.getvalue())
 
@@ -747,7 +747,7 @@ klasse CommandLineTest(unittest.TestCase):
         '''
         self.set_pickle_data(data)
 
-        with self.subTest(data=data):
+        mit self.subTest(data=data):
             res = self.invoke_pickle()
             expect = self.text_normalize(expect)
             self.assertListEqual(res.splitlines(), expect.splitlines())
@@ -755,9 +755,9 @@ klasse CommandLineTest(unittest.TestCase):
     @support.force_not_colorized
     def test_unknown_flag(self):
         stderr = io.StringIO()
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             # check that the parser help is shown
-            with contextlib.redirect_stderr(stderr):
+            mit contextlib.redirect_stderr(stderr):
                 _ = self.invoke_pickle('--unknown')
         self.assertStartsWith(stderr.getvalue(), 'usage: ')
 

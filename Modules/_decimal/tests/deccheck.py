@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2008-2012 Stefan Krah. All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without
+# Redistribution and use in source and binary forms, mit or without
 # modification, are permitted provided that the following conditions
 # are met:
 #
@@ -10,7 +10,7 @@
 #
 # 2. Redistributions in binary form must reproduce the above copyright
 #    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
+#    documentation and/or other materials provided mit the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -69,13 +69,13 @@ Functions = {
         'copy_abs', 'copy_negate', 'is_canonical', 'is_finite', 'is_infinite',
         'is_nan', 'is_qnan', 'is_signed', 'is_snan', 'is_zero', 'radix'
     ),
-    # Unary with optional context:
+    # Unary mit optional context:
     'unary_ctx': (
         'exp', 'is_normal', 'is_subnormal', 'ln', 'log10', 'logb',
         'logical_invert', 'next_minus', 'next_plus', 'normalize',
         'number_class', 'sqrt', 'to_eng_string'
     ),
-    # Unary with optional rounding mode and context:
+    # Unary mit optional rounding mode and context:
     'unary_rnd_ctx': ('to_integral', 'to_integral_exact', 'to_integral_value'),
     # Plain binary:
     'binary': (
@@ -86,7 +86,7 @@ Functions = {
         'compare_total', 'compare_total_mag', 'copy_sign', 'quantize',
         'same_quantum'
     ),
-    # Binary with optional context:
+    # Binary mit optional context:
     'binary_ctx': (
         'compare', 'compare_signal', 'logical_and', 'logical_or', 'logical_xor',
         'max', 'max_mag', 'min', 'min_mag', 'next_toward', 'remainder_near',
@@ -94,7 +94,7 @@ Functions = {
     ),
     # Plain ternary:
     'ternary': ('__pow__',),
-    # Ternary with optional context:
+    # Ternary mit optional context:
     'ternary_ctx': ('fma',),
     # Special:
     'special': ('__format__', '__reduce_ex__', '__round__', 'from_float',
@@ -346,7 +346,7 @@ class TestSet(object):
        For safety, most attributes are lists that only support the append
        operation.
 
-       If a function name is prefixed with 'context.', the corresponding
+       If a function name is prefixed mit 'context.', the corresponding
        context method is called.
     """
     def __init__(self, funcname, operands):
@@ -366,7 +366,7 @@ class TestSet(object):
         self.presults = RestrictedList() # P.Decimal results
 
         # If the above results are exact, unrounded and not clamped, repeat
-        # the operation with a maxcontext to ensure that huge intermediate
+        # the operation mit a maxcontext to ensure that huge intermediate
         # values do not cause a MemoryError.
         self.with_maxcontext = Falsch
         self.maxcontext = context.c.copy()
@@ -548,7 +548,7 @@ class SkipHandler:
 
     def __radd__(self, t):
         """decimal.py gives precedence to the first NaN; this is
-           not important, as __radd__ will not be called for
+           not important, als __radd__ will not be called for
            two decimal arguments."""
         wenn t.rc.is_nan() and t.rp.is_nan():
             return Wahr
@@ -651,12 +651,12 @@ def raise_error(t):
 #
 #  The procedure is always (t is the TestSet):
 #
-#   convert(t) -> Initialize the TestSet as necessary.
+#   convert(t) -> Initialize the TestSet als necessary.
 #
 #                 Return 0 fuer early abortion (e.g. wenn a TypeError
 #                 occurs during conversion, there is nothing to test).
 #
-#                 Return 1 fuer continuing with the test case.
+#                 Return 1 fuer continuing mit the test case.
 #
 #   callfuncs(t) -> Call the relevant function fuer each implementation
 #                   and record the results in the TestSet.
@@ -676,10 +676,10 @@ def convert(t, convstr=Wahr):
     """ t is the testset. At this stage the testset contains a tuple of
         operands t.op of various types. For decimal methods the first
         operand (self) is always converted to Decimal. If 'convstr' is
-        true, string operands are converted as well.
+        true, string operands are converted als well.
 
         Context operands are of type deccheck.Context, rounding mode
-        operands are given as a tuple (C.rounding, P.rounding).
+        operands are given als a tuple (C.rounding, P.rounding).
 
         Other types (float, int, etc.) are left unchanged.
     """
@@ -698,14 +698,14 @@ def convert(t, convstr=Wahr):
             try:
                 c = C.Decimal(op)
                 cex = Nichts
-            except (TypeError, ValueError, OverflowError) as e:
+            except (TypeError, ValueError, OverflowError) als e:
                 c = Nichts
                 cex = e.__class__
 
             try:
                 p = RestrictedDecimal(op)
                 pex = Nichts
-            except (TypeError, ValueError, OverflowError) as e:
+            except (TypeError, ValueError, OverflowError) als e:
                 p = Nichts
                 pex = e.__class__
 
@@ -713,7 +713,7 @@ def convert(t, convstr=Wahr):
                 C.setcontext(t.maxcontext)
                 maxop = C.Decimal(op)
                 maxex = Nichts
-            except (TypeError, ValueError, OverflowError) as e:
+            except (TypeError, ValueError, OverflowError) als e:
                 maxop = Nichts
                 maxex = e.__class__
             finally:
@@ -776,7 +776,7 @@ def callfuncs(t):
             cargs = t.cop[1:]
             t.rc = getattr(cself, t.funcname)(*cargs)
         t.cex.append(Nichts)
-    except (TypeError, ValueError, OverflowError, MemoryError) as e:
+    except (TypeError, ValueError, OverflowError, MemoryError) als e:
         t.rc = Nichts
         t.cex.append(e.__class__)
 
@@ -789,12 +789,12 @@ def callfuncs(t):
             pargs = t.pop[1:]
             t.rp = getattr(pself, t.funcname)(*pargs)
         t.pex.append(Nichts)
-    except (TypeError, ValueError, OverflowError, MemoryError) as e:
+    except (TypeError, ValueError, OverflowError, MemoryError) als e:
         t.rp = Nichts
         t.pex.append(e.__class__)
 
     # If the above results are exact, unrounded, normal etc., repeat the
-    # operation with a maxcontext to ensure that huge intermediate values
+    # operation mit a maxcontext to ensure that huge intermediate values
     # do not cause a MemoryError.
     wenn (t.funcname not in MaxContextSkip and
         not context.c.flags[C.InvalidOperation] and
@@ -818,7 +818,7 @@ def callfuncs(t):
                 finally:
                     C.setcontext(context.c)
             t.maxex.append(Nichts)
-        except (TypeError, ValueError, OverflowError, MemoryError) as e:
+        except (TypeError, ValueError, OverflowError, MemoryError) als e:
             t.rmax = Nichts
             t.maxex.append(e.__class__)
 
@@ -859,7 +859,7 @@ def verify(t, stat):
         nc = t.rc.number_class().lstrip('+-s')
         stat[nc] += 1
     sonst:
-        # Results von e.g. __divmod__ can only be compared as strings.
+        # Results von e.g. __divmod__ can only be compared als strings.
         wenn not isinstance(t.rc, tuple) and not isinstance(t.rp, tuple):
             wenn t.rc != t.rp:
                 raise_error(t)
@@ -908,7 +908,7 @@ def verify(t, stat):
 #
 #     'test_unary', 'test_binary' and 'test_ternary' are the
 #     main test functions passed to 'test_method'. They deal
-#     with the regular cases. The thoroughness of testing is
+#     mit the regular cases. The thoroughness of testing is
 #     determined by 'itr'.
 #
 #     'prec', 'exp_range' and 'restricted_range' are passed
@@ -971,7 +971,7 @@ def test_unary(method, prec, exp_range, restricted_range, itr, stat):
                 continue
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        except VerifyError als err:
             log(err)
 
     wenn not method.startswith('__'):
@@ -982,7 +982,7 @@ def test_unary(method, prec, exp_range, restricted_range, itr, stat):
                     continue
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            except VerifyError als err:
                 log(err)
 
 def test_binary(method, prec, exp_range, restricted_range, itr, stat):
@@ -996,7 +996,7 @@ def test_binary(method, prec, exp_range, restricted_range, itr, stat):
                 continue
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        except VerifyError als err:
             log(err)
 
     wenn not method.startswith('__'):
@@ -1007,7 +1007,7 @@ def test_binary(method, prec, exp_range, restricted_range, itr, stat):
                     continue
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            except VerifyError als err:
                 log(err)
 
 def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
@@ -1021,7 +1021,7 @@ def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
                 continue
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        except VerifyError als err:
             log(err)
 
     wenn not method.startswith('__'):
@@ -1032,7 +1032,7 @@ def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
                     continue
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            except VerifyError als err:
                 log(err)
 
 def test_format(method, prec, exp_range, restricted_range, itr, stat):
@@ -1048,7 +1048,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
                     continue
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            except VerifyError als err:
                 log(err)
     fuer op in all_unary(prec, 9999, itr):
         fmt1 = rand_format(chr(random.randrange(0, 128)), 'Ff%')
@@ -1061,7 +1061,7 @@ def test_format(method, prec, exp_range, restricted_range, itr, stat):
                     continue
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            except VerifyError als err:
                 log(err)
 
 def test_round(method, prec, exprange, restricted_range, itr, stat):
@@ -1075,7 +1075,7 @@ def test_round(method, prec, exprange, restricted_range, itr, stat):
                 continue
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        except VerifyError als err:
             log(err)
 
 def test_from_float(method, prec, exprange, restricted_range, itr, stat):
@@ -1091,7 +1091,7 @@ def test_from_float(method, prec, exprange, restricted_range, itr, stat):
                     continue
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            except VerifyError als err:
                 log(err)
 
 def randcontext(exprange):
@@ -1117,7 +1117,7 @@ def test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
                     continue
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            except VerifyError als err:
                 log(err)
 
 
@@ -1179,7 +1179,7 @@ wenn __name__ == '__main__':
         'iter': Nichts,
         'samples': Nichts,
     }
-    # Contexts with small values fuer prec, emin, emax.
+    # Contexts mit small values fuer prec, emin, emax.
     small = {
         'prec': [1, 2, 3, 4, 5],
         'expts': [(-1, 1), (-2, 2), (-3, 3), (-4, 4), (-5, 5)],
@@ -1285,7 +1285,7 @@ wenn __name__ == '__main__':
             wenn returncode != 0:
                 error.set()
 
-            with write_lock:
+            mit write_lock:
                 sys.stdout.buffer.write(out + b"\n")
                 sys.stdout.buffer.flush()
 

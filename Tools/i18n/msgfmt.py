@@ -4,7 +4,7 @@
 """Generate binary message catalog von textual translation description.
 
 This program converts a textual Uniforum-style message catalog (.po file) into
-a binary GNU catalog (.mo file).  This is essentially the same function as the
+a binary GNU catalog (.mo file).  This is essentially the same function als the
 GNU msgfmt program, however, it is a simpler implementation.
 
 Usage: msgfmt.py [OPTIONS] filename.po
@@ -111,15 +111,15 @@ def make(filename, outfile):
         outfile = os.path.splitext(infile)[0] + '.mo'
 
     try:
-        with open(infile, 'rb') as f:
+        mit open(infile, 'rb') als f:
             lines = f.readlines()
-    except IOError as msg:
+    except IOError als msg:
         drucke(msg, file=sys.stderr)
         sys.exit(1)
 
     wenn lines[0].startswith(codecs.BOM_UTF8):
         drucke(
-            f"The file {infile} starts with a UTF-8 BOM which is not allowed in .po files.\n"
+            f"The file {infile} starts mit a UTF-8 BOM which is not allowed in .po files.\n"
             "Please save the file without a BOM and try again.",
             file=sys.stderr
         )
@@ -174,7 +174,7 @@ def make(filename, outfile):
             l = l[5:]
             msgid = msgstr = b''
             is_plural = Falsch
-        # This is a message with plural forms
+        # This is a message mit plural forms
         sowenn l.startswith('msgid_plural'):
             wenn section != ID:
                 drucke('msgid_plural not preceded by msgid on %s:%d' % (infile, lno),
@@ -224,9 +224,9 @@ def make(filename, outfile):
     output = generate()
 
     try:
-        with open(outfile,"wb") as f:
+        mit open(outfile,"wb") als f:
             f.write(output)
-    except IOError as msg:
+    except IOError als msg:
         drucke(msg, file=sys.stderr)
 
 
@@ -234,7 +234,7 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'hVo:',
                                    ['help', 'version', 'output-file='])
-    except getopt.error as msg:
+    except getopt.error als msg:
         usage(1, msg)
 
     outfile = Nichts

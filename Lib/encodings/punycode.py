@@ -1,4 +1,4 @@
-""" Codec fuer the Punycode encoding, as specified in RFC 3492
+""" Codec fuer the Punycode encoding, als specified in RFC 3492
 
 Written by Martin v. Löwis.
 """
@@ -157,7 +157,7 @@ def decode_generalized_number(extended, extpos, bias, errors):
 
 def insertion_sort(base, extended, errors):
     """3.2 Insertion sort coding"""
-    # This function raises UnicodeDecodeError with position in the extended.
+    # This function raises UnicodeDecodeError mit position in the extended.
     # Caller should add the offset.
     char = 0x80
     pos = -1
@@ -197,13 +197,13 @@ def punycode_decode(text, errors):
     sonst:
         try:
             base = str(text[:pos], "ascii", errors)
-        except UnicodeDecodeError as exc:
+        except UnicodeDecodeError als exc:
             raise UnicodeDecodeError("ascii", text, exc.start, exc.end,
                                      exc.reason) von Nichts
         extended = text[pos+1:].upper()
     try:
         return insertion_sort(base, extended, errors)
-    except UnicodeDecodeError as exc:
+    except UnicodeDecodeError als exc:
         offset = pos + 1
         raise UnicodeDecodeError("punycode", text,
                                  offset+exc.start, offset+exc.end,

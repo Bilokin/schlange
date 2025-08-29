@@ -35,7 +35,7 @@ klasse TextWrapper:
       expand_tabs (default: true)
         Expand tabs in input text to spaces before further processing.
         Each tab will become 0 .. 'tabsize' spaces, depending on its position
-        in its line.  If false, each tab is treated as a single character.
+        in its line.  If false, each tab is treated als a single character.
       tabsize (default: 8)
         Expand tabs in input text to 0 .. 'tabsize' spaces, unless
         'expand_tabs' is false.
@@ -158,7 +158,7 @@ klasse TextWrapper:
         """_split(text : string) -> [string]
 
         Split the text to wrap into indivisible chunks.  Chunks are
-        not quite the same as words; see _wrap_chunks() fuer full
+        not quite the same als words; see _wrap_chunks() fuer full
         details.  As an example, the text
           Look, goof-ball -- use the -b option!
         breaks into the following chunks:
@@ -209,8 +209,8 @@ klasse TextWrapper:
         sonst:
             space_left = width - cur_len
 
-        # If we're allowed to break long words, then do so: put as much
-        # of the next chunk onto the current line as will fit.
+        # If we're allowed to break long words, then do so: put als much
+        # of the next chunk onto the current line als will fit.
         wenn self.break_long_words:
             end = space_left
             chunk = reversed_chunks[-1]
@@ -349,7 +349,7 @@ klasse TextWrapper:
 
         Reformat the single paragraph in 'text' so it fits in lines of
         no more than 'self.width' columns, and return a list of wrapped
-        lines.  Tabs in 'text' are expanded with string.expandtabs(),
+        lines.  Tabs in 'text' are expanded mit string.expandtabs(),
         and all other whitespace characters (including newline) are
         converted to space.
         """
@@ -375,7 +375,7 @@ def wrap(text, width=70, **kwargs):
 
     Reformat the single paragraph in 'text' so it fits in lines of no
     more than 'width' columns, and return a list of wrapped lines.  By
-    default, tabs in 'text' are expanded with string.expandtabs(), and
+    default, tabs in 'text' are expanded mit string.expandtabs(), and
     all other whitespace characters (including newline) are converted to
     space.  See TextWrapper klasse fuer available keyword args to customize
     wrapping behaviour.
@@ -388,7 +388,7 @@ def fill(text, width=70, **kwargs):
 
     Reformat the single paragraph in 'text' to fit in lines of no more
     than 'width' columns, and return a new string containing the entire
-    wrapped paragraph.  As with wrap(), tabs are expanded and other
+    wrapped paragraph.  As mit wrap(), tabs are expanded and other
     whitespace characters converted to space.  See TextWrapper klasse for
     available keyword args to customize wrapping behaviour.
     """
@@ -399,8 +399,8 @@ def shorten(text, width, **kwargs):
     """Collapse and truncate the given text to fit in the given width.
 
     The text first has its whitespace collapsed.  If it then fits in
-    the *width*, it is returned as is.  Otherwise, as many words
-    as possible are joined and then the placeholder is appended::
+    the *width*, it is returned als is.  Otherwise, als many words
+    als possible are joined and then the placeholder is appended::
 
         >>> textwrap.shorten("Hello  world!", width=12)
         'Hello world!'
@@ -416,11 +416,11 @@ def shorten(text, width, **kwargs):
 def dedent(text):
     """Remove any common leading whitespace von every line in `text`.
 
-    This can be used to make triple-quoted strings line up with the left
+    This can be used to make triple-quoted strings line up mit the left
     edge of the display, while still presenting them in the source code
     in indented form.
 
-    Note that tabs and spaces are both treated as whitespace, but they
+    Note that tabs and spaces are both treated als whitespace, but they
     are not equal: the lines "  hello" and "\\thello" are
     considered to have no common leading whitespace.
 

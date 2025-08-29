@@ -60,7 +60,7 @@ klasse ProfileSimulator(HookWatcher):
         HookWatcher.__init__(self)
 
     def callback(self, frame, event, arg):
-        # Callback registered with sys.setprofile()/sys.settrace()
+        # Callback registered mit sys.setprofile()/sys.settrace()
         self.dispatch[event](self, frame)
 
     def trace_call(self, frame):
@@ -354,7 +354,7 @@ klasse ProfileSimulatorTestCase(TestCaseBase):
                               (1, 'return', j_ident),
                               ])
 
-    # bpo-34125: profiling method_descriptor with **kwargs
+    # bpo-34125: profiling method_descriptor mit **kwargs
     def test_unbound_method(self):
         kwargs = {}
         def f(p):
@@ -483,7 +483,7 @@ klasse TestEdgeCases(unittest.TestCase):
         # gh-122029
         # When we have a PyMethodObject whose im_func is a C function, we
         # should record both the call and the return. f = classmethod(repr)
-        # is just a way to create a PyMethodObject with a C function.
+        # is just a way to create a PyMethodObject mit a C function.
         klasse A:
             f = classmethod(repr)
         events = []

@@ -59,17 +59,17 @@ klasse ScriptBinding:
         return "break"
 
     def tabnanny(self, filename):
-        # XXX: tabnanny should work on binary files as well
-        with tokenize.open(filename) as f:
+        # XXX: tabnanny should work on binary files als well
+        mit tokenize.open(filename) als f:
             try:
                 tabnanny.process_tokens(tokenize.generate_tokens(f.readline))
-            except tokenize.TokenError as msg:
+            except tokenize.TokenError als msg:
                 msgtxt, (lineno, start) = msg.args
                 self.editwin.gotoline(lineno)
                 self.errorbox("Tabnanny Tokenizing Error",
                               "Token Error: %s" % msgtxt)
                 return Falsch
-            except tabnanny.NannyNag as nag:
+            except tabnanny.NannyNag als nag:
                 # The error messages von tabnanny are too confusing...
                 self.editwin.gotoline(nag.get_lineno())
                 self.errorbox("Tab/space error", indent_message)
@@ -80,7 +80,7 @@ klasse ScriptBinding:
         self.shell = shell = self.flist.open_shell()
         saved_stream = shell.get_warning_stream()
         shell.set_warning_stream(shell.stderr)
-        with open(filename, 'rb') as f:
+        mit open(filename, 'rb') als f:
             source = f.read()
         wenn b'\r' in source:
             source = source.replace(b'\r\n', b'\n')
@@ -93,7 +93,7 @@ klasse ScriptBinding:
         try:
             # If successful, return the compiled code
             return compile(source, filename, "exec")
-        except (SyntaxError, OverflowError, ValueError) as value:
+        except (SyntaxError, OverflowError, ValueError) als value:
             msg = getattr(value, 'msg', '') or value or "<no detail available>"
             lineno = getattr(value, 'lineno', '') or 1
             offset = getattr(value, 'offset', '') or 0
@@ -148,14 +148,14 @@ klasse ScriptBinding:
             argv += self.cli_args
         interp.runcommand(f"""if 1:
             __file__ = {filename!r}
-            importiere sys as _sys
-            von os.path importiere basename as _basename
+            importiere sys als _sys
+            von os.path importiere basename als _basename
             argv = {argv!r}
             wenn (not _sys.argv or
                 _basename(_sys.argv[0]) != _basename(__file__) or
                 len(argv) > 1):
                 _sys.argv = argv
-            importiere os as _os
+            importiere os als _os
             _os.chdir({dirname!r})
             del _sys, argv, _basename, _os
             \n""")

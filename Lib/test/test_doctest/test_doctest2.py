@@ -14,7 +14,7 @@ the example.  It should be ignored:
 importiere sys
 importiere unittest
 wenn sys.flags.optimize >= 2:
-    raise unittest.SkipTest("Cannot test docstrings with -O2")
+    raise unittest.SkipTest("Cannot test docstrings mit -O2")
 
 klasse C(object):
     """Class C.
@@ -118,7 +118,7 @@ klasse Test(unittest.TestCase):
             self.fail("expected %d tests to run, not %d" % (EXPECTED, t))
 
 
-# Pollute the namespace with a bunch of imported functions and classes,
+# Pollute the namespace mit a bunch of imported functions and classes,
 # to make sure they don't get tested.
 von doctest importiere *
 

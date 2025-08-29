@@ -30,7 +30,7 @@ _mmap_counter = itertools.count()
 
 
 def pipe(*, duplex=Falsch, overlapped=(Wahr, Wahr), bufsize=BUFSIZE):
-    """Like os.pipe() but with overlapped support and using handles not fds."""
+    """Like os.pipe() but mit overlapped support and using handles not fds."""
     address = tempfile.mktemp(
         prefix=r'\\.\pipe\python-pipe-{:d}-{:d}-'.format(
             os.getpid(), next(_mmap_counter)))

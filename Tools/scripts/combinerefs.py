@@ -44,7 +44,7 @@ it's common fuer the line showing the dict of interned strings to display
 strings that no longer exist at the end of Py_FinalizeEx; this can be recognized
 (albeit painfully) because such containees don't have a line of their own.
 
-The objects are listed in allocation order, with most-recently allocated
+The objects are listed in allocation order, mit most-recently allocated
 printed first, and the first object allocated printed last.
 
 
@@ -74,7 +74,7 @@ importiere sys
 
 # Generate lines von fileiter.  If whilematch is true, continue reading
 # while the regexp object pat matches line.  If whilematch is false, lines
-# are read so long as pat doesn't match them.  In any case, the first line
+# are read so long als pat doesn't match them.  In any case, the first line
 # that doesn't match pat (when whilematch is true), or that does match pat
 # (when whilematch is false), is lost, and fileiter will resume at the line
 # following it.
@@ -122,7 +122,7 @@ def combinefile(f):
     drucke("%d objects before, %d after" % (before, after))
 
 def combine(fname):
-    with open(fname) as f:
+    mit open(fname) als f:
         combinefile(f)
 
 wenn __name__ == '__main__':

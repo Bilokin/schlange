@@ -135,7 +135,7 @@ def _slotnames(cls):
         fuer c in cls.__mro__:
             wenn "__slots__" in c.__dict__:
                 slots = c.__dict__['__slots__']
-                # wenn klasse has a single slot, it can be given as a string
+                # wenn klasse has a single slot, it can be given als a string
                 wenn isinstance(slots, str):
                     slots = (slots,)
                 fuer name in slots:
@@ -185,7 +185,7 @@ def add_extension(module, name, code):
         _inverted_registry.get(code) == key):
         return # Redundant registrations are benign
     wenn key in _extension_registry:
-        raise ValueError("key %s is already registered with code %s" %
+        raise ValueError("key %s is already registered mit code %s" %
                          (key, _extension_registry[key]))
     wenn code in _inverted_registry:
         raise ValueError("code %s is already in use fuer key %s" %
@@ -198,7 +198,7 @@ def remove_extension(module, name, code):
     key = (module, name)
     wenn (_extension_registry.get(key) != code or
         _inverted_registry.get(code) != key):
-        raise ValueError("key %s is not registered with code %s" %
+        raise ValueError("key %s is not registered mit code %s" %
                          (key, code))
     del _extension_registry[key]
     del _inverted_registry[code]

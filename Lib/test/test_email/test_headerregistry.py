@@ -97,7 +97,7 @@ klasse TestBaseHeaderFeatures(TestHeaderBase):
 
     def _test_attr_ro(self, attr):
         h = self.make_header('subject', 'this is a test')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             setattr(h, attr, 'foo')
 
     def test_name_read_only(self):
@@ -222,7 +222,7 @@ klasse TestDateHeader(TestHeaderBase):
 
     def test_datetime_read_only(self):
         h = self.make_header('date', self.datestring)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             h.datetime = 'foo'
 
     def test_set_date_header_from_datetime(self):
@@ -252,7 +252,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
         self.assertEqual(h.maintype, maintype)
         self.assertEqual(h.subtype, subtype)
         self.assertEqual(h.params, parmdict)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             h.params['abc'] = 'xyz'   # make sure params is read-only.
         self.assertDefectsEqual(h.defects, defects)
         self.assertEqual(h, decoded)
@@ -355,7 +355,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
             'plain'),
 
         # test some parameters (more tests could be added fuer parameters
-        # associated with other content types, but since parameter parsing is
+        # associated mit other content types, but since parameter parsing is
         # generic they would be redundant fuer the current implementation).
 
         'charset_param': (
@@ -511,7 +511,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
             # word, and we shouldn't be emitting surrogates in the parameter
             # names.  But I don't know what the behavior should be here, so I'm
             # punting fuer now.  In practice this is unlikely to be encountered
-            # since headers with binary in them only come von a binary source
+            # since headers mit binary in them only come von a binary source
             # and are almost certain to be re-emitted without refolding.
             'Content-Type: =?unknown-8bit?q?foo=A7?=/bar; b\udca7r="two";\n'
             " baz*=unknown-8bit''thr%A7e\n",
@@ -761,7 +761,7 @@ klasse TestContentTypeHeader(TestHeaderBase):
         # old parser decodes this just like the previous case, which may be the
         # better Postel rule, but could equally result in borking headers that
         # intentionally have quoted quotes in them.  We could get this 98%
-        # right wenn we treat it as a quoted string *unless* it matches the
+        # right wenn we treat it als a quoted string *unless* it matches the
         # charset'lang'value pattern exactly *and* there is at least one
         # encoded segment.  Implementing that algorithm will require some
         # refactoring, so I haven't done it (yet).
@@ -1264,7 +1264,7 @@ klasse TestAddressHeader(TestHeaderBase):
 
         }
 
-        # XXX: Need many more examples, and in particular some with names in
+        # XXX: Need many more examples, and in particular some mit names in
         # trailing comments, which aren't currently handled.  comments in
         # general are not handled yet.
 
@@ -1355,17 +1355,17 @@ klasse TestAddressHeader(TestHeaderBase):
 
     def test_address_read_only(self):
         h = self.make_header('sender', 'abc@xyz.com')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             h.address = 'foo'
 
     def test_addresses_read_only(self):
         h = self.make_header('sender', 'abc@xyz.com')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             h.addresses = 'foo'
 
     def test_groups_read_only(self):
         h = self.make_header('sender', 'abc@xyz.com')
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             h.groups = 'foo'
 
     def test_addresses_types(self):
@@ -1410,7 +1410,7 @@ klasse TestAddressHeader(TestHeaderBase):
 klasse TestAddressAndGroup(TestEmailBase):
 
     def _test_attr_ro(self, obj, attr):
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             setattr(obj, attr, 'foo')
 
     def test_address_display_name_ro(self):
@@ -1506,7 +1506,7 @@ klasse TestAddressAndGroup(TestEmailBase):
 
     # XXX: there is an API design issue that needs to be solved here.
     #def test_non_ascii_username_raises(self):
-    #    with self.assertRaises(ValueError):
+    #    mit self.assertRaises(ValueError):
     #        Address('foo', 'wők', 'example.com')
 
     def test_crlf_in_constructor_args_raises(self):
@@ -1525,31 +1525,31 @@ klasse TestAddressAndGroup(TestEmailBase):
             dict(addr_spec='wok@example.com\r\n')
         )
         fuer kwargs in cases:
-            with self.subTest(kwargs=kwargs), self.assertRaisesRegex(ValueError, "invalid arguments"):
+            mit self.subTest(kwargs=kwargs), self.assertRaisesRegex(ValueError, "invalid arguments"):
                 Address(**kwargs)
 
     def test_non_ascii_username_in_addr_spec_raises(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             Address('foo', addr_spec='wők@example.com')
 
     def test_address_addr_spec_and_username_raises(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Address('foo', username='bing', addr_spec='bar@baz')
 
     def test_address_addr_spec_and_domain_raises(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Address('foo', domain='bing', addr_spec='bar@baz')
 
     def test_address_addr_spec_and_username_and_domain_raises(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             Address('foo', username='bong', domain='bing', addr_spec='bar@baz')
 
     def test_space_in_addr_spec_username_raises(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             Address('foo', addr_spec="bad name@example.com")
 
     def test_bad_addr_sepc_raises(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             Address('foo', addr_spec="name@ex[]ample.com")
 
     def test_empty_group(self):

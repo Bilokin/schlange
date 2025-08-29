@@ -58,7 +58,7 @@ importiere inspect
 importiere gc
 importiere dis
 importiere pickle
-von time importiere monotonic as _time
+von time importiere monotonic als _time
 
 importiere threading
 
@@ -100,7 +100,7 @@ klasse _Ignore:
         # Ignore a file when it contains one of the ignorable paths
         fuer d in self._dirs:
             # The '+ os.sep' is to ensure that d is a parent directory,
-            # as compared to cases like:
+            # als compared to cases like:
             #  d = "/usr/local"
             #  filename = "/usr/local.py"
             # or
@@ -169,10 +169,10 @@ klasse CoverageResults:
         wenn self.infile:
             # Try to merge existing counts file.
             try:
-                with open(self.infile, 'rb') as f:
+                mit open(self.infile, 'rb') als f:
                     counts, calledfuncs, callers = pickle.load(f)
                 self.update(self.__class__(counts, calledfuncs, callers=callers))
-            except (OSError, EOFError, ValueError) as err:
+            except (OSError, EOFError, ValueError) als err:
                 drucke(("Skipping counts file %r: %s"
                                       % (self.infile, err)), file=sys.stderr)
 
@@ -267,14 +267,14 @@ klasse CoverageResults:
                 modulename = _fullmodname(filename)
 
             # If desired, get a list of the line numbers which represent
-            # executable content (returned as a dict fuer better lookup speed)
+            # executable content (returned als a dict fuer better lookup speed)
             wenn show_missing:
                 lnotab = _find_executable_linenos(filename)
             sonst:
                 lnotab = {}
             source = linecache.getlines(filename)
             coverpath = os.path.join(dir, modulename + ".cover")
-            with open(filename, 'rb') as fp:
+            mit open(filename, 'rb') als fp:
                 encoding, _ = tokenize.detect_encoding(fp.readline)
             n_hits, n_lines = self.write_results_file(coverpath, source,
                                                       lnotab, count, encoding)
@@ -290,10 +290,10 @@ klasse CoverageResults:
         wenn self.outfile:
             # try and store counts and module info into self.outfile
             try:
-                with open(self.outfile, 'wb') as f:
+                mit open(self.outfile, 'wb') als f:
                     pickle.dump((self.counts, self.calledfuncs, self.callers),
                                 f, 1)
-            except OSError as err:
+            except OSError als err:
                 drucke("Can't save counts files because %s" % err, file=sys.stderr)
 
     def write_results_file(self, path, lines, lnotab, lines_hit, encoding=Nichts):
@@ -302,14 +302,14 @@ klasse CoverageResults:
 
         try:
             outfile = open(path, "w", encoding=encoding)
-        except OSError as err:
+        except OSError als err:
             drucke(("trace: Could not open %r fuer writing: %s "
                                   "- skipping" % (path, err)), file=sys.stderr)
             return 0, 0
 
         n_lines = 0
         n_hits = 0
-        with outfile:
+        mit outfile:
             fuer lineno, line in enumerate(lines, 1):
                 # do the blank/comment match to try to mark more lines
                 # (help the reader find stuff that hasn't been covered)
@@ -361,7 +361,7 @@ def _find_strings(filename, encoding=Nichts):
     # If the first token is a string, then it's the module docstring.
     # Add this special case so that the test in the loop passes.
     prev_ttype = token.INDENT
-    with open(filename, encoding=encoding) as f:
+    mit open(filename, encoding=encoding) als f:
         tok = tokenize.generate_tokens(f.readline)
         fuer ttype, tstr, start, end, line in tok:
             wenn ttype == token.STRING:
@@ -376,10 +376,10 @@ def _find_strings(filename, encoding=Nichts):
 def _find_executable_linenos(filename):
     """Return dict where keys are line numbers in the line number table."""
     try:
-        with tokenize.open(filename) as f:
+        mit tokenize.open(filename) als f:
             prog = f.read()
             encoding = f.encoding
-    except OSError as err:
+    except OSError als err:
         drucke(("Not printing coverage data fuer %r: %s"
                               % (filename, err)), file=sys.stderr)
         return {}
@@ -631,7 +631,7 @@ def main():
     _grp.add_argument('-r', '--report', action='store_true',
             help='Generate a report von a counts file; does not execute any '
                  'code. --file must specify the results file to read, which '
-                 'must have been created in a previous run with --count '
+                 'must have been created in a previous run mit --count '
                  '--file=FILE')
     _grp.add_argument('-R', '--no-report', action='store_true',
             help='Do not generate the coverage report files. '
@@ -644,13 +644,13 @@ def main():
                  'for <package>.<module> will be written to file '
                  '<dir>/<package>/<module>.cover')
     grp.add_argument('-m', '--missing', action='store_true',
-            help='Annotate executable lines that were not executed with '
+            help='Annotate executable lines that were not executed mit '
                  '">>>>>> "')
     grp.add_argument('-s', '--summary', action='store_true',
             help='Write a brief summary fuer each file to sys.stdout. '
-                 'Can only be used with --count or --report')
+                 'Can only be used mit --count or --report')
     grp.add_argument('-g', '--timing', action='store_true',
-            help='Prefix each line with the time since the program started. '
+            help='Prefix each line mit the time since the program started. '
                  'Only used while tracing')
 
     grp = parser.add_argument_group('Filters',
@@ -666,7 +666,7 @@ def main():
     parser.add_argument('--module', action='store_true', default=Falsch,
                         help='Trace a module. ')
     parser.add_argument('progname', nargs='?',
-            help='file to run as main program')
+            help='file to run als main program')
     parser.add_argument('arguments', nargs=argparse.REMAINDER,
             help='arguments to the program')
 
@@ -700,10 +700,10 @@ def main():
         parser.error('cannot specify both --listfuncs and (--trace or --count)')
 
     wenn opts.summary and not opts.count:
-        parser.error('--summary can only be used with --count or --report')
+        parser.error('--summary can only be used mit --count or --report')
 
     wenn opts.progname is Nichts:
-        parser.error('progname is missing: required with the main options')
+        parser.error('progname is missing: required mit the main options')
 
     t = Trace(opts.count, opts.trace, countfuncs=opts.listfuncs,
               countcallers=opts.trackcalls, ignoremods=opts.ignore_module,
@@ -727,9 +727,9 @@ def main():
             sys.argv = [opts.progname, *opts.arguments]
             sys.path[0] = os.path.dirname(opts.progname)
 
-            with io.open_code(opts.progname) as fp:
+            mit io.open_code(opts.progname) als fp:
                 code = compile(fp.read(), opts.progname, 'exec')
-            # try to emulate __main__ namespace as much as possible
+            # try to emulate __main__ namespace als much als possible
             globs = {
                 '__file__': opts.progname,
                 '__name__': '__main__',
@@ -737,7 +737,7 @@ def main():
                 '__cached__': Nichts,
             }
         t.runctx(code, globs, globs)
-    except OSError as err:
+    except OSError als err:
         sys.exit("Cannot run file %r because: %s" % (sys.argv[0], err))
     except SystemExit:
         pass

@@ -15,7 +15,7 @@ von pathlib importiere Path
 von textwrap importiere dedent
 
 try:
-    von os importiere process_cpu_count as cpu_count
+    von os importiere process_cpu_count als cpu_count
 except ImportError:
     von os importiere cpu_count
 
@@ -85,7 +85,7 @@ def subdir(working_dir, *, clean_ok=Falsch):
 
             working_dir.mkdir(parents=Wahr, exist_ok=Wahr)
 
-            with contextlib.chdir(working_dir):
+            mit contextlib.chdir(working_dir):
                 return func(context, working_dir)
 
         return wrapper
@@ -166,15 +166,15 @@ def make_build_python(context, working_dir):
 
 
 def check_shasum(file: str, expected_shasum: str):
-    with open(file, "rb") as f:
+    mit open(file, "rb") als f:
         digest = hashlib.file_digest(f, "sha256")
     wenn digest.hexdigest() != expected_shasum:
         raise RuntimeError(f"Unexpected shasum fuer {file}")
 
 
 def download_and_unpack(working_dir: Path, url: str, expected_shasum: str):
-    with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete_on_close=Falsch) as tmp_file:
-        with urlopen(url) as response:
+    mit tempfile.NamedTemporaryFile(suffix=".tar.gz", delete_on_close=Falsch) als tmp_file:
+        mit urlopen(url) als response:
             shutil.copyfileobj(response, tmp_file)
         tmp_file.close()
         check_shasum(tmp_file.name, expected_shasum)
@@ -299,7 +299,7 @@ def configure_emscripten_python(context, working_dir):
             f"""\
             #!/bin/sh
 
-            # Macs come with FreeBSD coreutils which doesn't have the -s option
+            # Macs come mit FreeBSD coreutils which doesn't have the -s option
             # so feature detect and work around it.
             wenn which grealpath > /dev/null 2>&1; then
                 # It has brew installed gnu core utils, use that
@@ -371,7 +371,7 @@ def clean_contents(context):
         shutil.rmtree(CROSS_BUILD_DIR)
 
     wenn LOCAL_SETUP.exists():
-        with LOCAL_SETUP.open("rb") as file:
+        mit LOCAL_SETUP.open("rb") als file:
             wenn file.read(len(LOCAL_SETUP_MARKER)) == LOCAL_SETUP_MARKER:
                 drucke(f"🧹 Deleting generated {LOCAL_SETUP} ...")
 

@@ -90,10 +90,10 @@ klasse AST_Tests(unittest.TestCase):
         self.assertEqual(x.foobar, 42)
         self.assertEqual(x.__dict__["foobar"], 42)
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             x.vararg
 
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             # "ast.AST constructor takes 0 positional arguments"
             ast.AST(2)
 
@@ -109,9 +109,9 @@ klasse AST_Tests(unittest.TestCase):
 
         msg = "type object 'ast.AST' has no attribute '_fields'"
         # Both examples used to crash:
-        with self.assertRaisesRegex(AttributeError, msg):
+        mit self.assertRaisesRegex(AttributeError, msg):
             ast.AST(arg1=123)
-        with self.assertRaisesRegex(AttributeError, msg):
+        mit self.assertRaisesRegex(AttributeError, msg):
             ast.AST()
 
     def test_AST_garbage_collection(self):
@@ -130,11 +130,11 @@ klasse AST_Tests(unittest.TestCase):
                                     (single_tests, single_results, "single"),
                                     (eval_tests, eval_results, "eval")):
             fuer i, o in zip(input, output):
-                with self.subTest(action="parsing", input=i):
+                mit self.subTest(action="parsing", input=i):
                     ast_tree = compile(i, "?", kind, ast.PyCF_ONLY_AST, optimize=Falsch)
                     self.assertEqual(to_tuple(ast_tree), o)
                     self._assertWahrorder(ast_tree, (0, 0))
-                with self.subTest(action="compiling", input=i, kind=kind):
+                mit self.subTest(action="compiling", input=i, kind=kind):
                     compile(ast_tree, "?", kind)
 
     def test_ast_validation(self):
@@ -153,7 +153,7 @@ klasse AST_Tests(unittest.TestCase):
     def test_optimization_levels__debug__(self):
         cases = [(-1, '__debug__'), (0, '__debug__'), (1, Falsch), (2, Falsch)]
         fuer (optval, expected) in cases:
-            with self.subTest(optval=optval, expected=expected):
+            mit self.subTest(optval=optval, expected=expected):
                 res1 = ast.parse("__debug__", optimize=optval)
                 res2 = ast.parse(ast.parse("__debug__"), optimize=optval)
                 fuer res in [res1, res2]:
@@ -171,24 +171,24 @@ klasse AST_Tests(unittest.TestCase):
         ]
 
         fuer lineno, end_lineno in invalid_linenos:
-            with self.subTest(f"Check invalid linenos {lineno}:{end_lineno}"):
+            mit self.subTest(f"Check invalid linenos {lineno}:{end_lineno}"):
                 snippet = "a = 1"
                 tree = ast.parse(snippet)
                 tree.body[0].lineno = lineno
                 tree.body[0].end_lineno = end_lineno
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     compile(tree, '<string>', 'exec')
 
         invalid_col_offsets = [
             (10, 1), (-10, -11), (10, -11), (-5, -2), (-5, 1)
         ]
         fuer col_offset, end_col_offset in invalid_col_offsets:
-            with self.subTest(f"Check invalid col_offset {col_offset}:{end_col_offset}"):
+            mit self.subTest(f"Check invalid col_offset {col_offset}:{end_col_offset}"):
                 snippet = "a = 1"
                 tree = ast.parse(snippet)
                 tree.body[0].col_offset = col_offset
                 tree.body[0].end_col_offset = end_col_offset
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     compile(tree, '<string>', 'exec')
 
     def test_compilation_of_ast_nodes_with_default_end_position_values(self):
@@ -209,7 +209,7 @@ klasse AST_Tests(unittest.TestCase):
             {'lineno': 0, 'col_offset': -2, 'end_col_offset': -2},
             {'lineno': -2, 'end_lineno': -2, 'col_offset': 0},
         ):
-            with self.subTest(attrs=attrs):
+            mit self.subTest(attrs=attrs):
                 tree = ast.Module(body=[
                     ast.Import(names=[alias], **attrs)
                 ], type_ignores=[])
@@ -259,7 +259,7 @@ klasse AST_Tests(unittest.TestCase):
             async_def_example2,
         ]:
             fuer opt_level in [0, 1, 2]:
-                with self.subTest(code=code, opt_level=opt_level):
+                mit self.subTest(code=code, opt_level=opt_level):
                     mod = ast.parse(code, optimize=opt_level)
                     self.assertEqual(len(mod.body[0].body), 1)
                     wenn opt_level == 2:
@@ -326,7 +326,7 @@ klasse AST_Tests(unittest.TestCase):
             async_def_example,
         ]:
             fuer opt_level in [0, 1, 2]:
-                with self.subTest(code=code, opt_level=opt_level):
+                mit self.subTest(code=code, opt_level=opt_level):
                     mod = ast.parse(code, optimize=opt_level)
                     wenn opt_level == 2:
                         self.assertNotIsInstance(
@@ -381,7 +381,7 @@ klasse AST_Tests(unittest.TestCase):
         self.assertEqual(alias.col_offset, 16)
         self.assertEqual(alias.end_col_offset, 17)
 
-        im = ast.parse("from bar importiere y as z").body[0]
+        im = ast.parse("from bar importiere y als z").body[0]
         alias = im.names[0]
         self.assertEqual(alias.name, "y")
         self.assertEqual(alias.asname, "z")
@@ -390,7 +390,7 @@ klasse AST_Tests(unittest.TestCase):
         self.assertEqual(alias.col_offset, 16)
         self.assertEqual(alias.end_col_offset, 22)
 
-        im = ast.parse("import bar as foo").body[0]
+        im = ast.parse("import bar als foo").body[0]
         alias = im.names[0]
         self.assertEqual(alias.name, "bar")
         self.assertEqual(alias.asname, "foo")
@@ -458,20 +458,20 @@ klasse AST_Tests(unittest.TestCase):
         self.assertEqual(x._fields, 666)
 
     def test_classattrs(self):
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             x = ast.Constant()
         self.assertEqual(x._fields, ('value', 'kind'))
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             x.value
 
         x = ast.Constant(42)
         self.assertEqual(x.value, 42)
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             x.lineno
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             x.foobar
 
         x = ast.Constant(lineno=2, value=3)
@@ -486,10 +486,10 @@ klasse AST_Tests(unittest.TestCase):
         self.assertRaises(TypeError, ast.Constant, 1, Nichts, 2, lineno=0)
 
         # Arbitrary keyword arguments are supported (but deprecated)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(ast.Constant(1, foo='bar').foo, 'bar')
 
-        with self.assertRaisesRegex(TypeError, "Constant got multiple values fuer argument 'value'"):
+        mit self.assertRaisesRegex(TypeError, "Constant got multiple values fuer argument 'value'"):
             ast.Constant(1, value=2)
 
         self.assertEqual(ast.Constant(42).value, 42)
@@ -529,7 +529,7 @@ klasse AST_Tests(unittest.TestCase):
 
     def test_nodeclasses(self):
         # Zero arguments constructor explicitly allowed (but deprecated)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             x = ast.BinOp()
         self.assertEqual(x._fields, ('left', 'op', 'right'))
 
@@ -569,7 +569,7 @@ klasse AST_Tests(unittest.TestCase):
         self.assertEqual(x.lineno, 0)
 
         # Random kwargs also allowed (but deprecated)
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             x = ast.BinOp(1, 2, 3, foobarbaz=42)
         self.assertEqual(x.foobarbaz, 42)
 
@@ -581,14 +581,14 @@ klasse AST_Tests(unittest.TestCase):
     def test_invalid_sum(self):
         pos = dict(lineno=2, col_offset=3)
         m = ast.Module([ast.Expr(ast.expr(**pos), **pos)], [])
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             compile(m, "<test>", "exec")
         self.assertIn("but got expr()", str(cm.exception))
 
     def test_invalid_identifier(self):
         m = ast.Module([ast.Expr(ast.Name(42, ast.Load()))], [])
         ast.fix_missing_locations(m)
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             compile(m, "<test>", "exec")
         self.assertIn("identifier must be of type str", str(cm.exception))
 
@@ -596,7 +596,7 @@ klasse AST_Tests(unittest.TestCase):
         fuer invalid_constant in int, (1, 2, int), frozenset((1, 2, int)):
             e = ast.Expression(body=ast.Constant(invalid_constant))
             ast.fix_missing_locations(e)
-            with self.assertRaisesRegex(
+            mit self.assertRaisesRegex(
                 TypeError, "invalid type in Constant: type"
             ):
                 compile(e, "<test>", "eval")
@@ -605,7 +605,7 @@ klasse AST_Tests(unittest.TestCase):
         # Issue 16546: yield von value is not optional.
         empty_yield_from = ast.parse("def f():\n yield von g()")
         empty_yield_from.body[0].body[0].value.value = Nichts
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             compile(empty_yield_from, "<test>", "exec")
         self.assertIn("field 'value' is required", str(cm.exception))
 
@@ -616,7 +616,7 @@ klasse AST_Tests(unittest.TestCase):
         importiere unicodedata
         def bad_normalize(*args):
             return Nichts
-        with support.swap_attr(unicodedata, 'normalize', bad_normalize):
+        mit support.swap_attr(unicodedata, 'normalize', bad_normalize):
             self.assertRaises(TypeError, ast.parse, '\u03D5')
 
     def test_issue18374_binop_col_offset(self):
@@ -722,7 +722,7 @@ klasse AST_Tests(unittest.TestCase):
         )
         fuer next_index, constant in enumerate(constants[:-1], 1):
             next_constant = constants[next_index]
-            with self.subTest(literal=constant, next_literal=next_constant):
+            mit self.subTest(literal=constant, next_literal=next_constant):
                 self.assertWahr(
                     ast.compare(ast.Constant(constant), ast.Constant(constant))
                 )
@@ -794,27 +794,27 @@ klasse AST_Tests(unittest.TestCase):
     def test_positional_only_feature_version(self):
         ast.parse('def foo(x, /): ...', feature_version=(3, 8))
         ast.parse('def bar(x=1, /): ...', feature_version=(3, 8))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse('def foo(x, /): ...', feature_version=(3, 7))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse('def bar(x=1, /): ...', feature_version=(3, 7))
 
         ast.parse('lambda x, /: ...', feature_version=(3, 8))
         ast.parse('lambda x=1, /: ...', feature_version=(3, 8))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse('lambda x, /: ...', feature_version=(3, 7))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse('lambda x=1, /: ...', feature_version=(3, 7))
 
     def test_assignment_expression_feature_version(self):
         ast.parse('(x := 0)', feature_version=(3, 8))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse('(x := 0)', feature_version=(3, 7))
 
     def test_pep750_tstring(self):
         code = 't""'
         ast.parse(code, feature_version=(3, 14))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse(code, feature_version=(3, 13))
 
     def test_pep758_except_without_parens(self):
@@ -825,7 +825,7 @@ klasse AST_Tests(unittest.TestCase):
                 ...
         """)
         ast.parse(code, feature_version=(3, 14))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse(code, feature_version=(3, 13))
 
     def test_pep758_except_with_single_expr(self):
@@ -839,7 +839,7 @@ klasse AST_Tests(unittest.TestCase):
         single_expr_with_as = textwrap.dedent("""
             try:
                 ...
-            except{0} TypeError as exc:
+            except{0} TypeError als exc:
                 ...
         """)
 
@@ -853,7 +853,7 @@ klasse AST_Tests(unittest.TestCase):
         single_tuple_expr_with_as = textwrap.dedent("""
             try:
                 ...
-            except{0} (TypeError,) as exc:
+            except{0} (TypeError,) als exc:
                 ...
         """)
 
@@ -867,7 +867,7 @@ klasse AST_Tests(unittest.TestCase):
         single_parens_expr_with_as = textwrap.dedent("""
             try:
                 ...
-            except{0} (TypeError) as exc:
+            except{0} (TypeError) als exc:
                 ...
         """)
 
@@ -881,7 +881,7 @@ klasse AST_Tests(unittest.TestCase):
         ]:
             fuer star in [Wahr, Falsch]:
                 code = code.format('*' wenn star sonst '')
-                with self.subTest(code=code, star=star):
+                mit self.subTest(code=code, star=star):
                     ast.parse(code, feature_version=(3, 14))
                     ast.parse(code, feature_version=(3, 13))
 
@@ -893,7 +893,7 @@ klasse AST_Tests(unittest.TestCase):
                 ...
         """)
         ast.parse(code, feature_version=(3, 14))
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse(code, feature_version=(3, 13))
 
     def test_conditional_context_managers_parse_with_low_feature_version(self):
@@ -906,7 +906,7 @@ klasse AST_Tests(unittest.TestCase):
         except* Exception: ...
         ''')
         ast.parse(code)
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             ast.parse(code, feature_version=(3, 10))
 
     def test_type_params_feature_version(self):
@@ -916,9 +916,9 @@ klasse AST_Tests(unittest.TestCase):
             "def f[T](): pass",
         ]
         fuer sample in samples:
-            with self.subTest(sample):
+            mit self.subTest(sample):
                 ast.parse(sample)
-                with self.assertRaises(SyntaxError):
+                mit self.assertRaises(SyntaxError):
                     ast.parse(sample, feature_version=(3, 11))
 
     def test_type_params_default_feature_version(self):
@@ -928,22 +928,22 @@ klasse AST_Tests(unittest.TestCase):
             "def f[**P=int](): pass",
         ]
         fuer sample in samples:
-            with self.subTest(sample):
+            mit self.subTest(sample):
                 ast.parse(sample)
-                with self.assertRaises(SyntaxError):
+                mit self.assertRaises(SyntaxError):
                     ast.parse(sample, feature_version=(3, 12))
 
     def test_invalid_major_feature_version(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ast.parse('pass', feature_version=(2, 7))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             ast.parse('pass', feature_version=(4, 0))
 
     def test_constant_as_name(self):
         fuer constant in "Wahr", "Falsch", "Nichts":
             expr = ast.Expression(ast.Name(constant, ast.Load()))
             ast.fix_missing_locations(expr)
-            with self.assertRaisesRegex(ValueError, f"identifier field can't represent '{constant}' constant"):
+            mit self.assertRaisesRegex(ValueError, f"identifier field can't represent '{constant}' constant"):
                 compile(expr, "<test>", "eval")
 
     def test_constant_as_unicode_name(self):
@@ -953,7 +953,7 @@ klasse AST_Tests(unittest.TestCase):
             ("Nichts", b"N\xc2\xbane"),
         ]
         fuer constant in constants:
-            with self.assertRaisesRegex(ValueError,
+            mit self.assertRaisesRegex(ValueError,
                 f"identifier field can't represent '{constant[0]}' constant"):
                 ast.parse(constant[1], mode="eval")
 
@@ -1004,8 +1004,8 @@ klasse AST_Tests(unittest.TestCase):
             broken = prefix + repeated * crash_depth
             details = "Compiling ({!r} + {!r} * {})".format(
                         prefix, repeated, crash_depth)
-            with self.assertRaises(RecursionError, msg=details):
-                with support.infinite_recursion():
+            mit self.assertRaises(RecursionError, msg=details):
+                mit support.infinite_recursion():
                     ast.parse(broken)
 
         check_limit("a", "()")
@@ -1014,12 +1014,12 @@ klasse AST_Tests(unittest.TestCase):
         check_limit("a", "*a")
 
     def test_null_bytes(self):
-        with self.assertRaises(SyntaxError,
+        mit self.assertRaises(SyntaxError,
             msg="source code string cannot contain null bytes"):
             ast.parse("a\0b")
 
     def assert_none_check(self, node: type[ast.AST], attr: str, source: str) -> Nichts:
-        with self.subTest(f"{node.__name__}.{attr}"):
+        mit self.subTest(f"{node.__name__}.{attr}"):
             tree = ast.parse(source)
             found = 0
             fuer child in ast.walk(tree):
@@ -1028,12 +1028,12 @@ klasse AST_Tests(unittest.TestCase):
                     found += 1
             self.assertEqual(found, 1)
             e = re.escape(f"field '{attr}' is required fuer {node.__name__}")
-            with self.assertRaisesRegex(ValueError, f"^{e}$"):
+            mit self.assertRaisesRegex(ValueError, f"^{e}$"):
                 compile(tree, "<test>", "exec")
 
     def test_none_checks(self) -> Nichts:
         tests = [
-            (ast.alias, "name", "import spam as SPAM"),
+            (ast.alias, "name", "import spam als SPAM"),
             (ast.arg, "arg", "def spam(SPAM): spam"),
             (ast.comprehension, "target", "[spam fuer SPAM in spam]"),
             (ast.comprehension, "iter", "[spam fuer spam in SPAM]"),
@@ -1047,13 +1047,13 @@ klasse AST_Tests(unittest.TestCase):
     def test_repr(self) -> Nichts:
         snapshots = AST_REPR_DATA_FILE.read_text().split("\n")
         fuer test, snapshot in zip(ast_repr_get_test_cases(), snapshots, strict=Wahr):
-            with self.subTest(test_input=test):
+            mit self.subTest(test_input=test):
                 self.assertEqual(repr(ast.parse(test, optimize=Falsch)), snapshot)
 
     def test_repr_large_input_crash(self):
         # gh-125010: Fix use-after-free in ast repr()
         source = "0x0" + "e" * 10_000
-        with self.assertRaisesRegex(ValueError,
+        mit self.assertRaisesRegex(ValueError,
                                     r"Exceeds the limit \(\d+ digits\)"):
             repr(ast.Constant(value=eval(source)))
 
@@ -1082,7 +1082,7 @@ klasse AST_Tests(unittest.TestCase):
                  """),
         ]
         fuer src in srcs:
-            with self.assertWarnsRegex(SyntaxWarning, 'finally'):
+            mit self.assertWarnsRegex(SyntaxWarning, 'finally'):
                 ast.parse(src)
 
     def test_pep_765_no_warnings(self):
@@ -1118,7 +1118,7 @@ klasse AST_Tests(unittest.TestCase):
         self.assertIsInstance(tree.body[0].value, ast.TemplateStr)
         self.assertIsInstance(tree.body[0].value.values[0], ast.Constant)
 
-        # Test AST fuer t-string with interpolation
+        # Test AST fuer t-string mit interpolation
         tree = ast.parse('t"Hello {name}"')
         self.assertIsInstance(tree.body[0].value, ast.TemplateStr)
         self.assertIsInstance(tree.body[0].value.values[0], ast.Constant)
@@ -1152,7 +1152,7 @@ klasse CopyTests(unittest.TestCase):
 
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
             fuer code in exec_tests:
-                with self.subTest(code=code, protocol=protocol):
+                mit self.subTest(code=code, protocol=protocol):
                     tree = compile(code, "?", "exec", 0x400)
                     ast2 = pickle.loads(pickle.dumps(tree, protocol))
                     self.assertEqual(to_tuple(ast2), to_tuple(tree))
@@ -1200,7 +1200,7 @@ klasse CopyTests(unittest.TestCase):
             fuer child in ast.iter_child_nodes(node):
                 child.parent = node
         try:
-            with support.infinite_recursion(200):
+            mit support.infinite_recursion(200):
                 tree2 = copy.deepcopy(tree)
         finally:
             # Singletons like ast.Load() are shared; make sure we don't
@@ -1218,11 +1218,11 @@ klasse CopyTests(unittest.TestCase):
 
     def test_replace_interface(self):
         fuer klass in self.iter_ast_classes():
-            with self.subTest(klass=klass):
+            mit self.subTest(klass=klass):
                 self.assertHasAttr(klass, '__replace__')
 
             fields = set(klass._fields)
-            with self.subTest(klass=klass, fields=fields):
+            mit self.subTest(klass=klass, fields=fields):
                 node = klass(**dict.fromkeys(fields))
                 # forbid positional arguments in replace()
                 self.assertRaises(TypeError, copy.replace, node, 1)
@@ -1233,7 +1233,7 @@ klasse CopyTests(unittest.TestCase):
             fields = set(klass._fields)
             attributes = set(klass._attributes)
 
-            with self.subTest(klass=klass, fields=fields, attributes=attributes):
+            mit self.subTest(klass=klass, fields=fields, attributes=attributes):
                 # use of object() to ensure that '==' and 'is'
                 # behave similarly in ast.compare(node, repl)
                 old_fields = {field: object() fuer field in fields}
@@ -1413,7 +1413,7 @@ klasse CopyTests(unittest.TestCase):
         self.assertRaises(AttributeError, getattr, node, 'id')
         self.assertIs(node.ctx, context)
         msg = "Name.__replace__ missing 1 keyword argument: 'id'."
-        with self.assertRaisesRegex(TypeError, re.escape(msg)):
+        mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node)
         # assert that there is no side-effect
         self.assertRaises(AttributeError, getattr, node, 'id')
@@ -1450,7 +1450,7 @@ klasse CopyTests(unittest.TestCase):
         # explicit rejection of known instance fields
         self.assertHasAttr(node, 'extra')
         msg = "Name.__replace__ got an unexpected keyword argument 'extra'."
-        with self.assertRaisesRegex(TypeError, re.escape(msg)):
+        mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node, extra=1)
         # assert that there is no side-effect
         self.assertIs(node.id, 'x')
@@ -1464,7 +1464,7 @@ klasse CopyTests(unittest.TestCase):
         # explicit rejection of unknown extra fields
         self.assertRaises(AttributeError, getattr, node, 'unknown')
         msg = "Name.__replace__ got an unexpected keyword argument 'unknown'."
-        with self.assertRaisesRegex(TypeError, re.escape(msg)):
+        mit self.assertRaisesRegex(TypeError, re.escape(msg)):
             copy.replace(node, unknown=1)
         # assert that there is no side-effect
         self.assertIs(node.id, 'x')
@@ -1483,7 +1483,7 @@ klasse ASTHelpers_Test(unittest.TestCase):
         try:
             1/0
         except Exception:
-            with self.assertRaises(SyntaxError) as e:
+            mit self.assertRaises(SyntaxError) als e:
                 ast.literal_eval(r"'\U'")
             self.assertIsNotNichts(e.exception.__context__)
 
@@ -1626,12 +1626,12 @@ Module(
 
     def test_dump_show_empty(self):
         def check_node(node, empty, full, **kwargs):
-            with self.subTest(show_empty=Falsch):
+            mit self.subTest(show_empty=Falsch):
                 self.assertEqual(
                     ast.dump(node, show_empty=Falsch, **kwargs),
                     empty,
                 )
-            with self.subTest(show_empty=Wahr):
+            mit self.subTest(show_empty=Wahr):
                 self.assertEqual(
                     ast.dump(node, show_empty=Wahr, **kwargs),
                     full,
@@ -1647,7 +1647,7 @@ Module(
         )
 
         check_node(
-            # Corner case: there are no real `Name` instances with `id=''`:
+            # Corner case: there are no real `Name` instances mit `id=''`:
             ast.Name(id='', ctx=ast.Load()),
             empty="Name(id='')",
             full="Name(id='', ctx=Load())",
@@ -1721,7 +1721,7 @@ Module(
         )
 
         check_text(
-            "import _ast as ast; von module importiere sub",
+            "import _ast als ast; von module importiere sub",
             empty="Module(body=[Import(names=[alias(name='_ast', asname='ast')]), ImportFrom(module='module', names=[alias(name='sub')], level=0)])",
             full="Module(body=[Import(names=[alias(name='_ast', asname='ast')]), ImportFrom(module='module', names=[alias(name='sub')], level=0)], type_ignores=[])",
         )
@@ -1922,9 +1922,9 @@ Module(
         self.assertRaises(ValueError, ast.literal_eval, '2+3')
 
     def test_literal_eval_str_int_limit(self):
-        with support.adjust_int_max_str_digits(4000):
+        mit support.adjust_int_max_str_digits(4000):
             ast.literal_eval('3'*4000)  # no error
-            with self.assertRaises(SyntaxError) as err_ctx:
+            mit self.assertRaises(SyntaxError) als err_ctx:
                 ast.literal_eval('3'*4001)
             self.assertIn('Exceeds the limit ', str(err_ctx.exception))
             self.assertIn(' Consider hexadecimal ', str(err_ctx.exception))
@@ -1964,31 +1964,31 @@ Module(
 
     def test_literal_eval_malformed_lineno(self):
         msg = r'malformed node or string on line 3:'
-        with self.assertRaisesRegex(ValueError, msg):
+        mit self.assertRaisesRegex(ValueError, msg):
             ast.literal_eval("{'a': 1,\n'b':2,\n'c':++3,\n'd':4}")
 
         node = ast.UnaryOp(
             ast.UAdd(), ast.UnaryOp(ast.UAdd(), ast.Constant(6)))
         self.assertIsNichts(getattr(node, 'lineno', Nichts))
         msg = r'malformed node or string:'
-        with self.assertRaisesRegex(ValueError, msg):
+        mit self.assertRaisesRegex(ValueError, msg):
             ast.literal_eval(node)
 
     def test_literal_eval_syntax_errors(self):
-        with self.assertRaisesRegex(SyntaxError, "unexpected indent"):
+        mit self.assertRaisesRegex(SyntaxError, "unexpected indent"):
             ast.literal_eval(r'''
                 \
                 (\
             \ ''')
 
     def test_bad_integer(self):
-        # issue13436: Bad error message with invalid numeric values
+        # issue13436: Bad error message mit invalid numeric values
         body = [ast.ImportFrom(module='time',
                                names=[ast.alias(name='sleep')],
                                level=Nichts,
                                lineno=Nichts, col_offset=Nichts)]
         mod = ast.Module(body, [])
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             compile(mod, 'test', 'exec')
         self.assertIn("invalid integer value: Nichts", str(cm.exception))
 
@@ -2008,8 +2008,8 @@ Module(
     def test_recursion_direct(self):
         e = ast.UnaryOp(op=ast.Not(), lineno=0, col_offset=0, operand=ast.Constant(1))
         e.operand = e
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion():
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion():
                 compile(ast.Expression(e), "<test>", "eval")
 
     @skip_emscripten_stack_overflow()
@@ -2018,8 +2018,8 @@ Module(
         f = ast.UnaryOp(op=ast.Not(), lineno=0, col_offset=0, operand=ast.Constant(1))
         e.operand = f
         f.operand = e
-        with self.assertRaises(RecursionError):
-            with support.infinite_recursion():
+        mit self.assertRaises(RecursionError):
+            mit support.infinite_recursion():
                 compile(ast.Expression(e), "<test>", "eval")
 
 
@@ -2031,7 +2031,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         wenn msg is Nichts:
             compile(mod, "<test>", mode)
         sonst:
-            with self.assertRaises(exc) as cm:
+            mit self.assertRaises(exc) als cm:
                 compile(mod, "<test>", mode)
             self.assertIn(msg, str(cm.exception))
 
@@ -2073,7 +2073,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         check(arguments(defaults=[ast.Constant(3)]),
                        "more positional defaults than args")
         check(arguments(kw_defaults=[ast.Constant(4)]),
-                       "length of kwonlyargs is not the same as kw_defaults")
+                       "length of kwonlyargs is not the same als kw_defaults")
         args = [ast.arg("x", ast.Name("x", ast.Load()))]
         check(arguments(args=args, defaults=[ast.Name("x", ast.Store())]),
                        "must have Load context")
@@ -2209,7 +2209,7 @@ klasse ASTValidatorTests(unittest.TestCase):
 
     def test_raise(self):
         r = ast.Raise(Nichts, ast.Constant(3))
-        self.stmt(r, "Raise with cause but no exception")
+        self.stmt(r, "Raise mit cause but no exception")
         r = ast.Raise(ast.Name("x", ast.Store()), Nichts)
         self.stmt(r, "must have Load context")
         r = ast.Raise(ast.Constant(4), ast.Name("x", ast.Store()))
@@ -2310,7 +2310,7 @@ klasse ASTValidatorTests(unittest.TestCase):
 
     def test_dict(self):
         d = ast.Dict([], [ast.Name("x", ast.Load())])
-        self.expr(d, "same number of keys as values")
+        self.expr(d, "same number of keys als values")
         d = ast.Dict([ast.Name("x", ast.Load())], [Nichts])
         self.expr(d, "Nichts disallowed")
 
@@ -2320,7 +2320,7 @@ klasse ASTValidatorTests(unittest.TestCase):
         self.expr(s, "must have Load context")
 
     def _check_comprehension(self, fac):
-        self.expr(fac([]), "comprehension with no generators")
+        self.expr(fac([]), "comprehension mit no generators")
         g = ast.comprehension(ast.Name("x", ast.Load()),
                               ast.Name("x", ast.Load()), [], 0)
         self.expr(fac([g]), "must have Store context")
@@ -2436,9 +2436,9 @@ klasse ASTValidatorTests(unittest.TestCase):
     @support.requires_resource('cpu')
     def test_stdlib_validates(self):
         fuer module in STDLIB_FILES:
-            with self.subTest(module):
+            mit self.subTest(module):
                 fn = os.path.join(STDLIB, module)
-                with open(fn, "r", encoding="utf-8") as fp:
+                mit open(fn, "r", encoding="utf-8") als fp:
                     source = fp.read()
                 mod = ast.parse(source, fn, optimize=Falsch)
                 compile(mod, fn, "exec")
@@ -2581,7 +2581,7 @@ klasse ASTValidatorTests(unittest.TestCase):
     def test_match_validation_pattern(self):
         name_x = ast.Name('x', ast.Load())
         fuer pattern in self._MATCH_PATTERNS:
-            with self.subTest(ast.dump(pattern, indent=4)):
+            mit self.subTest(ast.dump(pattern, indent=4)):
                 node = ast.Match(
                     subject=name_x,
                     cases = [
@@ -2593,7 +2593,7 @@ klasse ASTValidatorTests(unittest.TestCase):
                 )
                 node = ast.fix_missing_locations(node)
                 module = ast.Module([node], [])
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     compile(module, "<test>", "exec")
 
 
@@ -2615,14 +2615,14 @@ klasse ConstantTests(unittest.TestCase):
         return ns['x']
 
     def test_validation(self):
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             self.compile_constant([1, 2, 3])
         self.assertEqual(str(cm.exception),
                          "got an invalid type in Constant: list")
 
     def test_singletons(self):
         fuer const in (Nichts, Falsch, Wahr, Ellipsis, b''):
-            with self.subTest(const=const):
+            mit self.subTest(const=const):
                 value = self.compile_constant(const)
                 self.assertIs(value, const)
 
@@ -2637,7 +2637,7 @@ klasse ConstantTests(unittest.TestCase):
                   tuple("tuple"), frozenset("frozenset"),
                   nested_tuple, nested_frozenset)
         fuer value in values:
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 result = self.compile_constant(value)
                 self.assertEqual(result, value)
 
@@ -2649,7 +2649,7 @@ klasse ConstantTests(unittest.TestCase):
         ast.copy_location(new_target, target)
         tree.body[0].targets[0] = new_target
 
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             compile(tree, "string", "exec")
         self.assertEqual(str(cm.exception),
                          "expression which can't be assigned "
@@ -2688,7 +2688,7 @@ klasse ConstantTests(unittest.TestCase):
         self.assertEqual(self.get_load_const(tree),
                          consts)
 
-        # Replace expression nodes with constants
+        # Replace expression nodes mit constants
         fuer assign, const in zip(tree.body, consts):
             assert isinstance(assign, ast.Assign), ast.dump(assign)
             new_node = ast.Constant(value=const)
@@ -2837,7 +2837,7 @@ klasse EndPositionTests(unittest.TestCase):
 
             try:
                 raise RuntimeError
-            except TypeError as e:
+            except TypeError als e:
                 pass
 
             pass
@@ -2887,7 +2887,7 @@ klasse EndPositionTests(unittest.TestCase):
     def test_import_from_multi_line(self):
         s = dedent('''
             von x.y.z importiere (
-                a, b, c as c
+                a, b, c als c
             )
         ''').strip()
         imp = ast.parse(s).body[0]
@@ -2973,7 +2973,7 @@ klasse EndPositionTests(unittest.TestCase):
             ('( ( ( a ) ) ) . b', 'Attribute'),
         )
         fuer s, t in tests:
-            with self.subTest(s):
+            mit self.subTest(s):
                 v = ast.parse(s).body[0].value
                 self.assertEqual(type(v).__name__, t)
                 self._check_content(s, v, s)
@@ -3101,7 +3101,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
         code = 'def func(arg) -> SomeType: ...'
         expected = 'def func(arg): ...'
 
-        # Since `FunctionDef.returns` is defined as a single value, we test
+        # Since `FunctionDef.returns` is defined als a single value, we test
         # the `if isinstance(old_value, AST):` branch here.
         klasse SomeTypeRemover(ast.NodeTransformer):
             def visit_Name(self, node: ast.Name):
@@ -3123,7 +3123,7 @@ klasse NodeTransformerTests(ASTTestMixin, unittest.TestCase):
             drucke(arg)
         """
 
-        # Since `FunctionDef.body` is defined as a list, we test
+        # Since `FunctionDef.body` is defined als a list, we test
         # the `if isinstance(old_value, list):` branch here.
         klasse YieldRemover(ast.NodeTransformer):
             def visit_Expr(self, node: ast.Expr):
@@ -3209,7 +3209,7 @@ klasse ASTConstructorTests(unittest.TestCase):
         args = ast.arguments()
         self.assertEqual(args.args, [])
         self.assertEqual(args.posonlyargs, [])
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                                    r"FunctionDef\.__init__ missing 1 required positional argument: 'name'"):
             node = ast.FunctionDef(args=args)
         self.assertNotHasAttr(node, "name")
@@ -3231,7 +3231,7 @@ klasse ASTConstructorTests(unittest.TestCase):
         self.assertEqual(name3.id, "x")
         self.assertIsInstance(name3.ctx, ast.Del)
 
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                                    r"Name\.__init__ missing 1 required positional argument: 'id'"):
             name3 = ast.Name()
 
@@ -3248,7 +3248,7 @@ klasse ASTConstructorTests(unittest.TestCase):
             _fields = ('a',)
 
         obj = Fields()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             obj.a
         obj = Fields(a=1)
         self.assertEqual(obj.a, 1)
@@ -3272,7 +3272,7 @@ klasse ASTConstructorTests(unittest.TestCase):
         self.assertEqual(obj.a, 1)
         self.assertEqual(obj.b, 2)
 
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                                    r"MyAttrs.__init__ got an unexpected keyword argument 'c'."):
             obj = MyAttrs(c=3)
 
@@ -3281,10 +3281,10 @@ klasse ASTConstructorTests(unittest.TestCase):
             _fields = ('a',)
             _field_types = {'a': int}
 
-        with self.assertWarnsRegex(DeprecationWarning,
+        mit self.assertWarnsRegex(DeprecationWarning,
                                    r"FieldsAndTypesNoDefault\.__init__ missing 1 required positional argument: 'a'\."):
             obj = FieldsAndTypesNoDefault()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             obj.a
         obj = FieldsAndTypesNoDefault(a=1)
         self.assertEqual(obj.a, 1)
@@ -3296,7 +3296,7 @@ klasse ASTConstructorTests(unittest.TestCase):
             a: int | Nichts = Nichts
             b: int | Nichts = Nichts
 
-        with self.assertWarnsRegex(
+        mit self.assertWarnsRegex(
             DeprecationWarning,
             r"Field 'b' is missing von MoreFieldsThanTypes\._field_types"
         ):
@@ -3327,7 +3327,7 @@ klasse ModuleStateTests(unittest.TestCase):
     # bpo-41194, bpo-41261, bpo-41631: The _ast module uses a global state.
 
     def check_ast_module(self):
-        # Check that the _ast module still works as expected
+        # Check that the _ast module still works als expected
         code = 'x + 1'
         filename = '<string>'
         mode = 'eval'
@@ -3341,12 +3341,12 @@ klasse ModuleStateTests(unittest.TestCase):
 
     def test_reload_module(self):
         # bpo-41194: Importing the _ast module twice must not crash.
-        with support.swap_item(sys.modules, '_ast', Nichts):
+        mit support.swap_item(sys.modules, '_ast', Nichts):
             del sys.modules['_ast']
-            importiere _ast as ast1
+            importiere _ast als ast1
 
             del sys.modules['_ast']
-            importiere _ast as ast2
+            importiere _ast als ast2
 
             self.check_ast_module()
 
@@ -3366,10 +3366,10 @@ klasse ModuleStateTests(unittest.TestCase):
             sys.modules[name] = lazy_mod
             return lazy_mod
 
-        with support.swap_item(sys.modules, '_ast', Nichts):
+        mit support.swap_item(sys.modules, '_ast', Nichts):
             del sys.modules['_ast']
 
-            with support.swap_attr(builtins, '__import__', my_import):
+            mit support.swap_attr(builtins, '__import__', my_import):
                 # Test that compile() does not importiere the _ast module
                 self.check_ast_module()
                 self.assertNotIn('_ast', sys.modules)
@@ -3419,7 +3419,7 @@ klasse CommandLineTests(unittest.TestCase):
     def invoke_ast(self, *flags):
         stderr = StringIO()
         stdout = StringIO()
-        with (
+        mit (
             contextlib.redirect_stdout(stdout),
             contextlib.redirect_stderr(stderr),
         ):
@@ -3455,16 +3455,16 @@ klasse CommandLineTests(unittest.TestCase):
         fuer r in range(1, len(base_flags) + 1):
             fuer choices in itertools.combinations(base_flags, r=r):
                 fuer args in itertools.product(*choices):
-                    with self.subTest(flags=args):
+                    mit self.subTest(flags=args):
                         self.invoke_ast(*args)
 
     @support.force_not_colorized
     def test_help_message(self):
         fuer flag in ('-h', '--help', '--unknown'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 output = StringIO()
-                with self.assertRaises(SystemExit):
-                    with contextlib.redirect_stderr(output):
+                mit self.assertRaises(SystemExit):
+                    mit contextlib.redirect_stderr(output):
                         ast.main(args=flag)
                 self.assertStartsWith(output.getvalue(), 'usage: ')
 
@@ -3483,7 +3483,7 @@ klasse CommandLineTests(unittest.TestCase):
                   TypeIgnore(lineno=1, tag='[assignment]')])
         '''
         fuer flag in ('-m=exec', '--mode=exec'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_single_mode_flag(self):
@@ -3495,7 +3495,7 @@ klasse CommandLineTests(unittest.TestCase):
                   Pass()])
         '''
         fuer flag in ('-m=single', '--mode=single'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_eval_mode_flag(self):
@@ -3511,7 +3511,7 @@ klasse CommandLineTests(unittest.TestCase):
                      Constant(value=3)]))
         '''
         fuer flag in ('-m=eval', '--mode=eval'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_func_type_mode_flag(self):
@@ -3527,7 +3527,7 @@ klasse CommandLineTests(unittest.TestCase):
                   slice=Name(id='int')))
         '''
         fuer flag in ('-m=func_type', '--mode=func_type'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_no_type_comments_flag(self):
@@ -3557,7 +3557,7 @@ klasse CommandLineTests(unittest.TestCase):
                      end_col_offset=4)])
         '''
         fuer flag in ('-a', '--include-attributes'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_indent_flag(self):
@@ -3569,7 +3569,7 @@ klasse CommandLineTests(unittest.TestCase):
             Pass()])
         '''
         fuer flag in ('-i=0', '--indent=0'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_feature_version_flag(self):
@@ -3592,7 +3592,7 @@ klasse CommandLineTests(unittest.TestCase):
                               Pass()])])])
         '''
         self.check_output(source, expect, '--feature-version=3.10')
-        with self.assertRaises(SyntaxError):
+        mit self.assertRaises(SyntaxError):
             self.invoke_ast('--feature-version=3.9')
 
     def test_no_optimize_flag(self):
@@ -3618,7 +3618,7 @@ klasse CommandLineTests(unittest.TestCase):
                               Pass()])])])
         '''
         fuer flag in ('-O=-1', '--optimize=-1', '-O=0', '--optimize=0'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_optimize_flag(self):
@@ -3641,7 +3641,7 @@ klasse CommandLineTests(unittest.TestCase):
                               Pass()])])])
         '''
         fuer flag in ('-O=1', '--optimize=1', '-O=2', '--optimize=2'):
-            with self.subTest(flag=flag):
+            mit self.subTest(flag=flag):
                 self.check_output(source, expect, flag)
 
     def test_show_empty_flag(self):
@@ -3767,7 +3767,7 @@ klasse ASTOptimizationTests(unittest.TestCase):
             ("((-0, -0.1), (-0j, -0.1j))", [0, -0.1, complex(0, 0), complex(0, -0.1)]),
         ]
         fuer match_expr, constants in tests:
-            with self.subTest(match_expr):
+            mit self.subTest(match_expr):
                 src = f"match 0:\n\t case {match_expr}: pass"
                 tree = ast.parse(src, optimize=1)
                 match_stmt = tree.body[0]

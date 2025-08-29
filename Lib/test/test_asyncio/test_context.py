@@ -7,12 +7,12 @@ def tearDownModule():
     asyncio.events._set_event_loop_policy(Nichts)
 
 
-@unittest.skipUnless(decimal.HAVE_CONTEXTVAR, "decimal is built with a thread-local context")
+@unittest.skipUnless(decimal.HAVE_CONTEXTVAR, "decimal is built mit a thread-local context")
 klasse DecimalContextTest(unittest.TestCase):
 
     def test_asyncio_task_decimal_context(self):
         async def fractions(t, precision, x, y):
-            with decimal.localcontext() as ctx:
+            mit decimal.localcontext() als ctx:
                 ctx.prec = precision
                 a = decimal.Decimal(x) / decimal.Decimal(y)
                 await asyncio.sleep(t)

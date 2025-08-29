@@ -29,31 +29,31 @@ klasse MiscTests(unittest.TestCase):
         element = cET.Element('tag')
 
         element.tag = 'TAG'
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del element.tag
         self.assertEqual(element.tag, 'TAG')
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del element.text
         self.assertIsNichts(element.text)
         element.text = 'TEXT'
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del element.text
         self.assertEqual(element.text, 'TEXT')
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del element.tail
         self.assertIsNichts(element.tail)
         element.tail = 'TAIL'
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del element.tail
         self.assertEqual(element.tail, 'TAIL')
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del element.attrib
         self.assertEqual(element.attrib, {})
         element.attrib = {'A': 'B', 'C': 'D'}
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del element.attrib
         self.assertEqual(element.attrib, {'A': 'B', 'C': 'D'})
 
@@ -69,7 +69,7 @@ klasse MiscTests(unittest.TestCase):
         support.gc_collect()
 
     def test_parser_ref_cycle(self):
-        # bpo-31499: xmlparser_dealloc() crashed with a segmentation fault when
+        # bpo-31499: xmlparser_dealloc() crashed mit a segmentation fault when
         # xmlparser_gc_clear() was called previously by the garbage collector,
         # when the parser was part of a reference cycle.
 
@@ -79,7 +79,7 @@ klasse MiscTests(unittest.TestCase):
             # alive, so the parser will be destroyed by the garbage collector
             try:
                 raise ValueError
-            except ValueError as exc:
+            except ValueError als exc:
                 err = exc
 
         # Create a parser part of reference cycle
@@ -193,8 +193,8 @@ klasse MiscTests(unittest.TestCase):
             type(root.iter()),
         )
         fuer tp in dataset:
-            with self.subTest(tp=tp):
-                with self.assertRaisesRegex(TypeError, "immutable"):
+            mit self.subTest(tp=tp):
+                mit self.assertRaisesRegex(TypeError, "immutable"):
                     tp.foo = 1
 
     @support.cpython_only
@@ -215,9 +215,9 @@ klasse TestAliasWorking(unittest.TestCase):
 @unittest.skipUnless(cET, 'requires _elementtree')
 @support.cpython_only
 klasse TestAcceleratorImported(unittest.TestCase):
-    # Test that the C accelerator was imported, as expected
+    # Test that the C accelerator was imported, als expected
     def test_correct_import_cET(self):
-        # SubElement is a function so it retains _elementtree as its module.
+        # SubElement is a function so it retains _elementtree als its module.
         self.assertEqual(cET.SubElement.__module__, '_elementtree')
 
     def test_correct_import_cET_alias(self):

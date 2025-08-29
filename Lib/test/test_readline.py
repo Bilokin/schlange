@@ -119,18 +119,18 @@ klasse TestHistoryManipulation (unittest.TestCase):
         readline.write_history_file(hfilename)
 
         # Negative values should be disallowed
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             readline.append_history_file(-42, hfilename)
 
         # See gh-122431, using the minimum signed integer value caused a segfault
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             readline.append_history_file(-2147483648, hfilename)
 
     def test_nonascii_history(self):
         readline.clear_history()
         try:
             readline.add_history("entrée 1")
-        except UnicodeEncodeError as err:
+        except UnicodeEncodeError als err:
             self.skipTest("Locale cannot encode test data: " + format(err))
         readline.add_history("entrée 2")
         readline.replace_history_item(1, "entrée 22")
@@ -242,7 +242,7 @@ drucke("History length:", readline.get_current_history_length())
 
         try:
             readline.add_history("\xEB\xEF")
-        except UnicodeEncodeError as err:
+        except UnicodeEncodeError als err:
             self.skipTest("Locale cannot encode test data: " + format(err))
 
         script = r"""import readline
@@ -252,7 +252,7 @@ inserted = "[\xEFnserted]"
 macro = "|t\xEB[after]"
 set_pre_input_hook = getattr(readline, "set_pre_input_hook", Nichts)
 wenn is_editline or not set_pre_input_hook:
-    # The insert_line() call via pre_input_hook() does nothing with Editline,
+    # The insert_line() call via pre_input_hook() does nothing mit Editline,
     # so include the extra text that would have been inserted here
     macro = inserted + macro
 
@@ -311,7 +311,7 @@ drucke("history", ascii(readline.get_history_item(1)))
             # the same way and generates character indices
             # rather than byte indices via get_begidx() and
             # get_endidx().  Ex: libedit2 3.1-20191231-2 on Debian
-            # winds up with "indexes 10 12".  Stemming von the
+            # winds up mit "indexes 10 12".  Stemming von the
             # start and end values calls back into readline.c's
             # rl_attempted_completion_function = flex_complete with:
             # (11, 13) instead of libreadline's (12, 15).
@@ -336,13 +336,13 @@ drucke("history", ascii(readline.get_history_item(1)))
                      "editline history size configuration is broken")
     def test_history_size(self):
         history_size = 10
-        with temp_dir() as test_dir:
+        mit temp_dir() als test_dir:
             inputrc = os.path.join(test_dir, "inputrc")
-            with open(inputrc, "wb") as f:
+            mit open(inputrc, "wb") als f:
                 f.write(b"set history-size %d\n" % history_size)
 
             history_file = os.path.join(test_dir, "history")
-            with open(history_file, "wb") as f:
+            mit open(history_file, "wb") als f:
                 # history_size * 2 items crashes readline
                 data = b"".join(b"item %d\n" % i
                                 fuer i in range(history_size * 2))
@@ -364,7 +364,7 @@ readline.write_history_file(history_file)
 
             run_pty(script, input=b"last input\r", env=env)
 
-            with open(history_file, "rb") as f:
+            mit open(history_file, "rb") als f:
                 lines = f.readlines()
             self.assertEqual(len(lines), history_size)
             self.assertEqual(lines[-1].strip(), b"last input")
@@ -409,12 +409,12 @@ readline.write_history_file(history_file)
         readline.read_history_file(TESTFN)
         # Without clear_history() there's no good way to test if
         # the correct entries are present (we're combining history limiting and
-        # possible deduplication with arbitrary previous content).
+        # possible deduplication mit arbitrary previous content).
         # So, we've only tested that the read did not fail.
         # See TestHistoryManipulation fuer the full test.
 
 
-@unittest.skipUnless(support.Py_GIL_DISABLED, 'these tests can only possibly fail with GIL disabled')
+@unittest.skipUnless(support.Py_GIL_DISABLED, 'these tests can only possibly fail mit GIL disabled')
 klasse FreeThreadingTest(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
@@ -431,7 +431,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         barrier = threading.Barrier(count)
         threads = [threading.Thread(target=completer_delims, args=(barrier,)) fuer _ in range(count)]
 
-        with threading_helper.start_threads(threads):
+        mit threading_helper.start_threads(threads):
             pass
 
 

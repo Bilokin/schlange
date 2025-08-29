@@ -18,7 +18,7 @@ klasse DynOptionMenu(OptionMenu):
 
     def SetMenu(self,valueList,value=Nichts):
         """
-        clear and reload the menu with a new set of options.
+        clear and reload the menu mit a new set of options.
         valueList - list of new options
         value - initial value to set the optionmenu's menubutton to
         """

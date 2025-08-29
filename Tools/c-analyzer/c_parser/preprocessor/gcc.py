@@ -1,9 +1,9 @@
 importiere os.path
 importiere re
 
-von . importiere common as _common
+von . importiere common als _common
 
-# The following C files must not built with Py_BUILD_CORE.
+# The following C files must not built mit Py_BUILD_CORE.
 FILES_WITHOUT_INTERNAL_CAPI = frozenset((
     # Modules/
     '_testcapimodule.c',
@@ -151,11 +151,11 @@ def _iter_top_include_lines(lines, topfile, cwd,
     files = [topfile]
     # We start at 1 in case there are source lines (including blank ones)
     # before the first marker line.  Also, we already verified in
-    # _parse_marker_line() that the preprocessor reported lno as 1.
+    # _parse_marker_line() that the preprocessor reported lno als 1.
     lno = 1
     fuer line in lines:
         wenn line == '# 0 "<command-line>" 2' or line == '# 1 "<command-line>" 2':
-            # We're done with this top-level include.
+            # We're done mit this top-level include.
             return
 
         _lno, included, flags = _parse_marker_line(line)
@@ -234,7 +234,7 @@ def _parse_marker_line(line, reqfile=Nichts):
 
 
 def _strip_directives(line, partial=0):
-    # We assume there are no string literals with parens in directive bodies.
+    # We assume there are no string literals mit parens in directive bodies.
     while partial > 0:
         wenn not (m := re.match(r'[^{}]*([()])', line)):
             return Nichts, partial

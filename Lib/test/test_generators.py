@@ -41,7 +41,7 @@ klasse SignalAndYieldFromTest(unittest.TestCase):
         gen.send(Nichts)
         try:
             _testcapi.raise_SIGINT_then_send_Nichts(gen)
-        except BaseException as _exc:
+        except BaseException als _exc:
             exc = _exc
         self.assertIs(type(exc), StopIteration)
         self.assertEqual(exc.value, "PASSED")
@@ -109,7 +109,7 @@ klasse FinalizationTest(unittest.TestCase):
         fuer gen_fun in (f, g, f2, g2, f3, g3):
             gen = gen_fun()
             self.assertEqual(next(gen), 1)
-            with self.assertRaises(StopIteration) as cm:
+            mit self.assertRaises(StopIteration) als cm:
                 gen.send(2)
             self.assertEqual(cm.exception.value, 2)
 
@@ -177,7 +177,7 @@ klasse GeneratorTest(unittest.TestCase):
         def f():
             yield 1
         g = f()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             copy.copy(g)
 
     def test_pickle(self):
@@ -185,14 +185,14 @@ klasse GeneratorTest(unittest.TestCase):
             yield 1
         g = f()
         fuer proto in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.assertRaises((TypeError, pickle.PicklingError)):
+            mit self.assertRaises((TypeError, pickle.PicklingError)):
                 pickle.dumps(g, proto)
 
     def test_send_non_none_to_new_gen(self):
         def f():
             yield 1
         g = f()
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             g.send(0)
         self.assertEqual(next(g), 1)
 
@@ -321,17 +321,17 @@ klasse ModifyUnderlyingIterableTest(unittest.TestCase):
     def process_tests(self, get_generator):
         fuer obj in self.iterables:
             g_obj = get_generator(obj)
-            with self.subTest(g_obj=g_obj, obj=obj):
+            mit self.subTest(g_obj=g_obj, obj=obj):
                 self.assertListEqual(list(g_obj), list(obj))
 
             g_iter = get_generator(iter(obj))
-            with self.subTest(g_iter=g_iter, obj=obj):
+            mit self.subTest(g_iter=g_iter, obj=obj):
                 self.assertListEqual(list(g_iter), list(obj))
 
         err_regex = "'.*' object is not iterable"
         fuer obj in self.non_iterables:
             g_obj = get_generator(obj)
-            with self.subTest(g_obj=g_obj):
+            mit self.subTest(g_obj=g_obj):
                 self.assertRaisesRegex(TypeError, err_regex, list, g_obj)
 
     def test_modify_f_locals(self):
@@ -372,7 +372,7 @@ klasse ExceptionTest(unittest.TestCase):
             try:
                 self.assertIsNichts(sys.exception())
                 yield
-            except Exception as exc:
+            except Exception als exc:
                 # exception raised by gen.throw(exc)
                 self.assertIsInstance(sys.exception(), ValueError)
                 self.assertIsNichts(exc.__context__)
@@ -390,14 +390,14 @@ klasse ExceptionTest(unittest.TestCase):
 
         try:
             raise ValueError()
-        except Exception as exc:
+        except Exception als exc:
             try:
                 make.throw(exc)
             except Exception:
                 pass
 
         next(make)
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             next(make)
         self.assertIsNichts(cm.exception.__context__)
 
@@ -423,7 +423,7 @@ klasse ExceptionTest(unittest.TestCase):
                 # we are called von "except ValueError:", TypeError must
                 # inherit ValueError in its context
                 raise TypeError()
-            except TypeError as exc:
+            except TypeError als exc:
                 self.assertIsInstance(sys.exception(), TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
             # here we are still called von the "except ValueError:"
@@ -472,7 +472,7 @@ klasse ExceptionTest(unittest.TestCase):
                     # we are called von "except ValueError:"
                     self.assertIsInstance(sys.exception(), ValueError)
                     raise TypeError()
-            except Exception as exc:
+            except Exception als exc:
                 self.assertIsInstance(sys.exception(), TypeError)
                 self.assertEqual(type(exc.__context__), ValueError)
             # we are still called von "except ValueError:"
@@ -485,7 +485,7 @@ klasse ExceptionTest(unittest.TestCase):
         next(g)
         try:
             raise ValueError
-        except Exception as exc:
+        except Exception als exc:
             g.throw(exc)
 
         self.assertEqual(next(g), "done")
@@ -503,18 +503,18 @@ klasse ExceptionTest(unittest.TestCase):
 
         err_msg = 'should have returned an instance of BaseException'
 
-        with self.assertRaisesRegex(TypeError, err_msg):
+        mit self.assertRaisesRegex(TypeError, err_msg):
             gen.throw(E)
 
         self.assertRaises(StopIteration, next, gen)
 
         def generator():
-            with self.assertRaisesRegex(TypeError, err_msg):
+            mit self.assertRaisesRegex(TypeError, err_msg):
                 yield
 
         gen = generator()
         next(gen)
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             gen.throw(E)
 
     def test_gen_3_arg_deprecation_warning(self):
@@ -522,8 +522,8 @@ klasse ExceptionTest(unittest.TestCase):
             yield 42
 
         gen = g()
-        with self.assertWarns(DeprecationWarning):
-            with self.assertRaises(TypeError):
+        mit self.assertWarns(DeprecationWarning):
+            mit self.assertRaises(TypeError):
                 gen.throw(TypeError, TypeError(24), Nichts)
 
     def test_stopiteration_error(self):
@@ -533,7 +533,7 @@ klasse ExceptionTest(unittest.TestCase):
             raise StopIteration
             yield
 
-        with self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
+        mit self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
             next(gen())
 
     def test_tutorial_stopiteration(self):
@@ -547,7 +547,7 @@ klasse ExceptionTest(unittest.TestCase):
         g = f()
         self.assertEqual(next(g), 1)
 
-        with self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
+        mit self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
             next(g)
 
     def test_return_tuple(self):
@@ -556,7 +556,7 @@ klasse ExceptionTest(unittest.TestCase):
 
         gen = g()
         self.assertEqual(next(gen), 1)
-        with self.assertRaises(StopIteration) as cm:
+        mit self.assertRaises(StopIteration) als cm:
             gen.send((2,))
         self.assertEqual(cm.exception.value, (2,))
 
@@ -566,7 +566,7 @@ klasse ExceptionTest(unittest.TestCase):
 
         gen = g()
         self.assertEqual(next(gen), 1)
-        with self.assertRaises(StopIteration) as cm:
+        mit self.assertRaises(StopIteration) als cm:
             gen.send(StopIteration(2))
         self.assertIsInstance(cm.exception.value, StopIteration)
         self.assertEqual(cm.exception.value.value, 2)
@@ -624,7 +624,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
         gen = f()
         next(gen)
-        with self.assertRaises(StopIteration):
+        mit self.assertRaises(StopIteration):
             next(gen)
         self.assertIsNichts(gen.close())
 
@@ -650,7 +650,7 @@ klasse GeneratorCloseTest(unittest.TestCase):
 
         gen = f()
         gen.send(Nichts)
-        with self.assertRaises(RuntimeError):
+        mit self.assertRaises(RuntimeError):
             gen.close()
 
     def test_close_releases_frame_locals(self):
@@ -709,7 +709,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
                 return Nichts
 
         fuer index in (1, 2, 3):
-            with self.subTest(index=index):
+            mit self.subTest(index=index):
                 frame = get_frame(index)
                 frame_locals = frame.f_locals
                 self.assertIn('a', frame_locals)
@@ -739,7 +739,7 @@ klasse GeneratorDeallocTest(unittest.TestCase):
                 return Nichts
 
         fuer index in (1, 2):
-            with self.subTest(index=index):
+            mit self.subTest(index=index):
                 frame_locals = get_frame_locals(index)
                 self.assertIn('a', frame_locals)
                 self.assertEqual(frame_locals['a'], 42)
@@ -768,21 +768,21 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
         gen = f()
         gen.send(Nichts)
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             gen.throw(ValueError)
         context = cm.exception.__context__
         self.assertEqual((type(context), context.args), (KeyError, ('a',)))
 
     def test_exception_context_with_yield_inside_generator(self):
         # Check that the context is also available von inside the generator
-        # with yield, as opposed to outside.
+        # mit yield, als opposed to outside.
         def f():
             try:
                 raise KeyError('a')
             except Exception:
                 try:
                     yield
-                except Exception as exc:
+                except Exception als exc:
                     self.assertEqual(type(exc), ValueError)
                     context = exc.__context__
                     self.assertEqual((type(context), context.args),
@@ -807,7 +807,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
         gen = g()
         gen.send(Nichts)
-        with self.assertRaises(ValueError) as cm:
+        mit self.assertRaises(ValueError) als cm:
             gen.throw(ValueError)
         context = cm.exception.__context__
         self.assertEqual((type(context), context.args), (KeyError, ('a',)))
@@ -827,7 +827,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
             except Exception:
                 try:
                     yield von f()
-                except Exception as exc:
+                except Exception als exc:
                     has_cycle = (exc is exc.__context__)
             yield
 
@@ -852,7 +852,7 @@ klasse GeneratorThrowTest(unittest.TestCase):
 
         gen = g()
         gen.send(Nichts)
-        with self.assertRaises(RuntimeError) as cm:
+        mit self.assertRaises(RuntimeError) als cm:
             gen.throw(ValueError)
 
 
@@ -1033,7 +1033,7 @@ This may be surprising at first:
     >>> list(g3())
     [1]
 
-Let's create an alternate range() function implemented as a generator:
+Let's create an alternate range() function implemented als a generator:
 
     >>> def yrange(n):
     ...     fuer i in range(n):
@@ -1105,7 +1105,7 @@ Specification: Return
         >>> drucke(list(f1()))
         []
 
-    because, as in any function, return simply exits, but
+    because, als in any function, return simply exits, but
 
         >>> def f2():
         ...     try:
@@ -1115,7 +1115,7 @@ Specification: Return
         >>> drucke(list(f2()))
         [42]
 
-    because StopIteration is captured by a bare "except", as is any
+    because StopIteration is captured by a bare "except", als is any
     exception.
 
 Specification: Generators and Exception Propagation
@@ -1523,10 +1523,10 @@ address space, and it *looked* like a very slow leak.
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
 
-Heh.  Here's one way to get a shared list, complete with an excruciating
+Heh.  Here's one way to get a shared list, complete mit an excruciating
 namespace renaming trick.  The *pretty* part is that the times() and merge()
 functions can be reused as-is, because they only assume their stream
-arguments are iterable -- a LazyList is the same as a generator to times().
+arguments are iterable -- a LazyList is the same als a generator to times().
 
 >>> klasse LazyList:
 ...     def __init__(self, g):
@@ -1550,7 +1550,7 @@ arguments are iterable -- a LazyList is the same as a generator to times().
 ...                    me_times5):
 ...         yield i
 
-Print as many of these as you like -- *this* implementation is memory-
+Print als many of these als you like -- *this* implementation is memory-
 efficient.
 
 >>> m235 = LazyList(m235())
@@ -1586,12 +1586,12 @@ Ye olde Fibonacci generator, LazyList style.
 [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]
 
 
-Running after your tail with itertools.tee (new in version 2.4)
+Running after your tail mit itertools.tee (new in version 2.4)
 
 The algorithms "m235" (Hamming) and Fibonacci presented above are both
 examples of a whole family of FP (functional programming) algorithms
 where a function produces and returns a list while the production algorithm
-suppose the list as already produced by recursively calling itself.
+suppose the list als already produced by recursively calling itself.
 For these algorithms to work, they must:
 
 - produce at least a first element without presupposing the existence of
@@ -1599,14 +1599,14 @@ For these algorithms to work, they must:
 - produce their elements in a lazy manner
 
 To work efficiently, the beginning of the list must not be recomputed over
-and over again. This is ensured in most FP languages as a built-in feature.
+and over again. This is ensured in most FP languages als a built-in feature.
 In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
-This is what had been attempted above with the LazyList class. One problem
+This is what had been attempted above mit the LazyList class. One problem
 with that klasse is that it keeps a list of all of the generated results and
 therefore continually grows. This partially defeats the goal of the generator
-concept, viz. produce the results only as needed instead of producing them
+concept, viz. produce the results only als needed instead of producing them
 all and thereby wasting memory.
 
 Thanks to itertools.tee, it is now clear "how to get the internal uses of
@@ -1634,12 +1634,12 @@ m235 to share a single generator".
 [400, 405, 432, 450, 480, 486, 500, 512, 540, 576, 600, 625, 640, 648, 675]
 
 The "tee" function does just what we want. It internally keeps a generated
-result fuer as long as it has not been "consumed" von all of the duplicated
+result fuer als long als it has not been "consumed" von all of the duplicated
 iterators, whereupon it is deleted. You can therefore print the hamming
 sequence during hours without increasing memory usage, or very little.
 
 The beauty of it is that recursive running-after-their-tail FP algorithms
-are quite straightforwardly expressed with this Python idiom.
+are quite straightforwardly expressed mit this Python idiom.
 
 Ye olde Fibonacci generator, tee style.
 
@@ -1665,7 +1665,7 @@ Ye olde Fibonacci generator, tee style.
 
 """
 
-# syntax_tests mostly provokes SyntaxErrors.  Also fiddling with #if 0
+# syntax_tests mostly provokes SyntaxErrors.  Also fiddling mit #if 0
 # hackery.
 
 syntax_tests = """
@@ -1942,12 +1942,12 @@ def conjoin(gs):
 # needs 10,000 levels).  In such cases Python is likely to run out of
 # stack space due to recursion.  So here's a recursion-free version of
 # conjoin too.
-# NOTE WELL:  This allows large problems to be solved with only trivial
+# NOTE WELL:  This allows large problems to be solved mit only trivial
 # demands on stack space.  Without explicitly resumable generators, this is
 # much harder to achieve.  OTOH, this is much slower (up to a factor of 2)
 # than the fancy unrolled recursive conjoin.
 
-def flat_conjoin(gs):  # rename to conjoin to run tests with this instead
+def flat_conjoin(gs):  # rename to conjoin to run tests mit this instead
     n = len(gs)
     values = [Nichts] * n
     iters  = [Nichts] * n
@@ -2034,7 +2034,7 @@ klasse Queens:
             drucke(sep)
 
 # A conjoin-based Knight's Tour solver.  This is pretty sophisticated
-# (e.g., when used with flat_conjoin above, and passing hard=1 to the
+# (e.g., when used mit flat_conjoin above, and passing hard=1 to the
 # constructor, a 200x200 Knight's Tour was found quickly -- note that we're
 # creating 10s of thousands of generators then!), and is lengthy.
 
@@ -2053,10 +2053,10 @@ klasse Knights:
         def remove_from_successors(i0, len=len):
             # If we remove all exits von a free square, we're dead:
             # even wenn we move to it next, we can't leave it again.
-            # If we create a square with one exit, we must visit it next;
+            # If we create a square mit one exit, we must visit it next;
             # sonst somebody sonst will have to visit it, and since there's
             # only one adjacent, there won't be a way to leave it again.
-            # Finally, wenn we create more than one free square with a
+            # Finally, wenn we create more than one free square mit a
             # single exit, we can only move to one of them next, leaving
             # the other one a dead end.
             ne0 = ne1 = 0
@@ -2099,7 +2099,7 @@ klasse Knights:
             assert self.coords2index(1, 2) in succs[corner]
             assert self.coords2index(2, 1) in succs[corner]
             # Only two choices.  Whichever we pick, the other must be the
-            # square picked on move m*n, as it's the only way to get back
+            # square picked on move m*n, als it's the only way to get back
             # to (0, 0).  Save its index in self.final so that moves before
             # the last know it must be kept free.
             fuer i, j in (1, 2), (2, 1):
@@ -2117,7 +2117,7 @@ klasse Knights:
         # Generate moves 3 through m*n-1.
         def advance(len=len):
             # If some successor has only one exit, must take it.
-            # Else favor successors with fewer exits.
+            # Else favor successors mit fewer exits.
             candidates = []
             fuer i in succs[self.lastij]:
                 e = len(succs[i])
@@ -2143,7 +2143,7 @@ klasse Knights:
         # matters a lot is 52x52.
         def advance_hard(vmid=(m-1)/2.0, hmid=(n-1)/2.0, len=len):
             # If some successor has only one exit, must take it.
-            # Else favor successors with fewer exits.
+            # Else favor successors mit fewer exits.
             # Break ties via max distance von board centerpoint (favor
             # corners and edges whenever possible).
             candidates = []
@@ -2388,7 +2388,7 @@ Generators are weakly referencable:
 Wahr
 >>> p = weakref.proxy(gen)
 
-Generator-iterators are weakly referencable as well:
+Generator-iterators are weakly referencable als well:
 
 >>> gi = gen()
 >>> wr = weakref.ref(gi)
@@ -2437,7 +2437,7 @@ Yield is allowed only in the outermost iterable in generator expression:
 <class 'generator'>
 
 
-A yield expression with augmented assignment.
+A yield expression mit augmented assignment.
 
 >>> def coroutine(seq):
 ...     count = 0
@@ -2499,7 +2499,7 @@ Now check some throw() conditions:
 ...     while Wahr:
 ...         try:
 ...             drucke((yield))
-...         except ValueError as v:
+...         except ValueError als v:
 ...             drucke("caught ValueError (%s)" % (v))
 >>> importiere sys
 >>> g = f()
@@ -2557,7 +2557,7 @@ TypeError: exceptions must be classes or instances deriving von BaseException, n
 ...         raise exc
 ...     except:
 ...         g.throw(*sys.exc_info())
->>> throw(g,ValueError) # do it with traceback included
+>>> throw(g,ValueError) # do it mit traceback included
 caught ValueError ()
 
 >>> g.send(1)
@@ -2605,10 +2605,10 @@ The traceback should have 3 levels:
 >>> g = f()
 >>> try:
 ...     1/0
-... except ZeroDivisionError as v:
+... except ZeroDivisionError als v:
 ...     try:
 ...         g.throw(v)
-...     except Exception as w:
+...     except Exception als w:
 ...         tb = w.__traceback__
 >>> levels = 0
 >>> while tb:
@@ -2683,7 +2683,7 @@ RuntimeError: generator ignored GeneratorExit
 
 Our ill-behaved code should be invoked during GC:
 
->>> with support.catch_unraisable_exception() as cm:
+>>> mit support.catch_unraisable_exception() als cm:
 ...     g = f()
 ...     next(g)
 ...     gen_repr = repr(g)
@@ -2801,7 +2801,7 @@ to test.
 ...             raise RuntimeError(message)
 ...         invoke("del failed")
 ...
->>> with support.catch_unraisable_exception() as cm:
+>>> mit support.catch_unraisable_exception() als cm:
 ...     leaker = Leaker()
 ...     del_repr = repr(type(leaker).__del__)
 ...     del leaker

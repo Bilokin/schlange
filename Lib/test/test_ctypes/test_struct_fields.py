@@ -12,7 +12,7 @@ klasse FieldsTestBase(StructCheckMixin):
     #
     # 1. _fields_ is set.
     # 2. An instance is created.
-    # 3. The type is used as field of another Structure/Union.
+    # 3. The type is used als field of another Structure/Union.
     # 4. The type is subclassed
     #
     # When they are finalized, assigning _fields_ is no longer allowed.
@@ -71,12 +71,12 @@ klasse FieldsTestBase(StructCheckMixin):
             def __init_subclass__(cls, **kwargs):
                 cls._fields_ = []  # This line will fail, `stginfo` is not ready
 
-        with self.assertRaisesRegex(TypeError,
+        mit self.assertRaisesRegex(TypeError,
                                     'ctypes state is not initialized'):
             klasse Subclass(BrokenStructure): ...
 
     def test_invalid_byte_size_raises_gh132470(self):
-        with self.assertRaisesRegex(ValueError, r"does not match type size"):
+        mit self.assertRaisesRegex(ValueError, r"does not match type size"):
             CField(
                 name="a",
                 type=c_byte,
@@ -114,10 +114,10 @@ klasse FieldsTestBase(StructCheckMixin):
         self.assertEqual(sizeof(Y), max_field_size)
         self.assertEqual(sizeof(Z), max_field_size)
 
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             klasse TooBig(Structure):
                 _fields_ = [('largeField', X * (max_field_size + 1))]
-        with self.assertRaises(OverflowError):
+        mit self.assertRaises(OverflowError):
             klasse TooBig(Structure):
                 _fields_ = [('largeField', c_char * (max_field_size + 1))]
 

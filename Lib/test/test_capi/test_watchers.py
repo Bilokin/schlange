@@ -13,7 +13,7 @@ _testcapi = import_helper.import_module('_testcapi')
 
 klasse TestDictWatchers(unittest.TestCase):
     # types of watchers testcapimodule can add:
-    EVENTS = 0   # appends dict events as strings to global event list
+    EVENTS = 0   # appends dict events als strings to global event list
     ERROR = 1    # unconditionally sets and signals a RuntimeException
     SECOND = 2   # always appends "second" to global event list
 
@@ -43,14 +43,14 @@ klasse TestDictWatchers(unittest.TestCase):
 
     def test_set_new_item(self):
         d = {}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             d["foo"] = "bar"
             self.assert_events(["new:foo:bar"])
 
     def test_set_existing_item(self):
         d = {"foo": "bar"}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             d["foo"] = "baz"
             self.assert_events(["mod:foo:baz"])
@@ -58,41 +58,41 @@ klasse TestDictWatchers(unittest.TestCase):
     def test_clone(self):
         d = {}
         d2 = {"foo": "bar"}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             d.update(d2)
             self.assert_events(["clone"])
 
     def test_no_event_if_not_watched(self):
         d = {}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             d["foo"] = "bar"
             self.assert_events([])
 
     def test_del(self):
         d = {"foo": "bar"}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             del d["foo"]
             self.assert_events(["del:foo"])
 
     def test_pop(self):
         d = {"foo": "bar"}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             d.pop("foo")
             self.assert_events(["del:foo"])
 
     def test_clear(self):
         d = {"foo": "bar"}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             d.clear()
             self.assert_events(["clear"])
 
     def test_dealloc(self):
         d = {"foo": "bar"}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             del d
             self.assert_events(["dealloc"])
@@ -101,14 +101,14 @@ klasse TestDictWatchers(unittest.TestCase):
         klasse MyObj: pass
         o = MyObj()
 
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, o.__dict__)
             o.foo = "bar"
             o.foo = "baz"
             del o.foo
             self.assert_events(["new:foo:bar", "mod:foo:baz", "del:foo"])
 
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, o.__dict__)
             fuer _ in range(100):
                 o.foo = "bar"
@@ -116,7 +116,7 @@ klasse TestDictWatchers(unittest.TestCase):
 
     def test_unwatch(self):
         d = {}
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, d)
             d["foo"] = "bar"
             self.unwatch(wid, d)
@@ -125,9 +125,9 @@ klasse TestDictWatchers(unittest.TestCase):
 
     def test_error(self):
         d = {}
-        with self.watcher(kind=self.ERROR) as wid:
+        mit self.watcher(kind=self.ERROR) als wid:
             self.watch(wid, d)
-            with catch_unraisable_exception() as cm:
+            mit catch_unraisable_exception() als cm:
                 d["foo"] = "bar"
                 self.assertIn(
                     "Exception ignored in "
@@ -140,17 +140,17 @@ klasse TestDictWatchers(unittest.TestCase):
 
     def test_dealloc_error(self):
         d = {}
-        with self.watcher(kind=self.ERROR) as wid:
+        mit self.watcher(kind=self.ERROR) als wid:
             self.watch(wid, d)
-            with catch_unraisable_exception() as cm:
+            mit catch_unraisable_exception() als cm:
                 del d
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
 
     def test_two_watchers(self):
         d1 = {}
         d2 = {}
-        with self.watcher() as wid1:
-            with self.watcher(kind=self.SECOND) as wid2:
+        mit self.watcher() als wid1:
+            mit self.watcher(kind=self.SECOND) als wid2:
                 self.watch(wid1, d1)
                 self.watch(wid2, d2)
                 d1["foo"] = "bar"
@@ -158,47 +158,47 @@ klasse TestDictWatchers(unittest.TestCase):
                 self.assert_events(["new:foo:bar", "second"])
 
     def test_watch_non_dict(self):
-        with self.watcher() as wid:
-            with self.assertRaisesRegex(ValueError, r"Cannot watch non-dictionary"):
+        mit self.watcher() als wid:
+            mit self.assertRaisesRegex(ValueError, r"Cannot watch non-dictionary"):
                 self.watch(wid, 1)
 
     def test_watch_out_of_range_watcher_id(self):
         d = {}
-        with self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID -1"):
             self.watch(-1, d)
-        with self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID 8"):
             self.watch(8, d)  # DICT_MAX_WATCHERS = 8
 
     def test_watch_unassigned_watcher_id(self):
         d = {}
-        with self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
+        mit self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
             self.watch(3, d)
 
     def test_unwatch_non_dict(self):
-        with self.watcher() as wid:
-            with self.assertRaisesRegex(ValueError, r"Cannot watch non-dictionary"):
+        mit self.watcher() als wid:
+            mit self.assertRaisesRegex(ValueError, r"Cannot watch non-dictionary"):
                 self.unwatch(wid, 1)
 
     def test_unwatch_out_of_range_watcher_id(self):
         d = {}
-        with self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID -1"):
             self.unwatch(-1, d)
-        with self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID 8"):
             self.unwatch(8, d)  # DICT_MAX_WATCHERS = 8
 
     def test_unwatch_unassigned_watcher_id(self):
         d = {}
-        with self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
+        mit self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
             self.unwatch(3, d)
 
     def test_clear_out_of_range_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID -1"):
             self.clear_watcher(-1)
-        with self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid dict watcher ID 8"):
             self.clear_watcher(8)  # DICT_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
+        mit self.assertRaisesRegex(ValueError, r"No dict watcher set fuer ID 3"):
             self.clear_watcher(3)
 
 
@@ -237,14 +237,14 @@ klasse TestTypeWatchers(unittest.TestCase):
 
     def test_watch_type(self):
         klasse C: pass
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, C)
             C.foo = "bar"
             self.assert_events([C])
 
     def test_event_aggregation(self):
         klasse C: pass
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, C)
             C.foo = "bar"
             C.bar = "baz"
@@ -253,7 +253,7 @@ klasse TestTypeWatchers(unittest.TestCase):
 
     def test_lookup_resets_aggregation(self):
         klasse C: pass
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, C)
             C.foo = "bar"
             # lookup resets type version tag
@@ -264,7 +264,7 @@ klasse TestTypeWatchers(unittest.TestCase):
 
     def test_unwatch_type(self):
         klasse C: pass
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, C)
             C.foo = "bar"
             self.assertEqual(C.foo, "bar")
@@ -276,8 +276,8 @@ klasse TestTypeWatchers(unittest.TestCase):
     def test_clear_watcher(self):
         klasse C: pass
         # outer watcher is unused, it's just to keep events list alive
-        with self.watcher() as _:
-            with self.watcher() as wid:
+        mit self.watcher() als _:
+            mit self.watcher() als wid:
                 self.watch(wid, C)
                 C.foo = "bar"
                 self.assertEqual(C.foo, "bar")
@@ -289,16 +289,16 @@ klasse TestTypeWatchers(unittest.TestCase):
     def test_watch_type_subclass(self):
         klasse C: pass
         klasse D(C): pass
-        with self.watcher() as wid:
+        mit self.watcher() als wid:
             self.watch(wid, D)
             C.foo = "bar"
             self.assert_events([D])
 
     def test_error(self):
         klasse C: pass
-        with self.watcher(kind=self.ERROR) as wid:
+        mit self.watcher(kind=self.ERROR) als wid:
             self.watch(wid, C)
-            with catch_unraisable_exception() as cm:
+            mit catch_unraisable_exception() als cm:
                 C.foo = "bar"
                 self.assertEqual(
                     cm.unraisable.err_msg,
@@ -311,8 +311,8 @@ klasse TestTypeWatchers(unittest.TestCase):
     def test_two_watchers(self):
         klasse C1: pass
         klasse C2: pass
-        with self.watcher() as wid1:
-            with self.watcher(kind=self.WRAP) as wid2:
+        mit self.watcher() als wid1:
+            mit self.watcher(kind=self.WRAP) als wid2:
                 self.assertNotEqual(wid1, wid2)
                 self.watch(wid1, C1)
                 self.watch(wid2, C2)
@@ -322,7 +322,7 @@ klasse TestTypeWatchers(unittest.TestCase):
 
     def test_all_watchers(self):
         klasse C: pass
-        with ExitStack() as stack:
+        mit ExitStack() als stack:
             last_wid = -1
             # don't make assumptions about how many watchers are already
             # registered, just go until we reach the max ID
@@ -333,52 +333,52 @@ klasse TestTypeWatchers(unittest.TestCase):
             self.assert_events([C])
 
     def test_watch_non_type(self):
-        with self.watcher() as wid:
-            with self.assertRaisesRegex(ValueError, r"Cannot watch non-type"):
+        mit self.watcher() als wid:
+            mit self.assertRaisesRegex(ValueError, r"Cannot watch non-type"):
                 self.watch(wid, 1)
 
     def test_watch_out_of_range_watcher_id(self):
         klasse C: pass
-        with self.assertRaisesRegex(ValueError, r"Invalid type watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid type watcher ID -1"):
             self.watch(-1, C)
-        with self.assertRaisesRegex(ValueError, r"Invalid type watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid type watcher ID 8"):
             self.watch(self.TYPE_MAX_WATCHERS, C)
 
     def test_watch_unassigned_watcher_id(self):
         klasse C: pass
-        with self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
+        mit self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
             self.watch(1, C)
 
     def test_unwatch_non_type(self):
-        with self.watcher() as wid:
-            with self.assertRaisesRegex(ValueError, r"Cannot watch non-type"):
+        mit self.watcher() als wid:
+            mit self.assertRaisesRegex(ValueError, r"Cannot watch non-type"):
                 self.unwatch(wid, 1)
 
     def test_unwatch_out_of_range_watcher_id(self):
         klasse C: pass
-        with self.assertRaisesRegex(ValueError, r"Invalid type watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid type watcher ID -1"):
             self.unwatch(-1, C)
-        with self.assertRaisesRegex(ValueError, r"Invalid type watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid type watcher ID 8"):
             self.unwatch(self.TYPE_MAX_WATCHERS, C)
 
     def test_unwatch_unassigned_watcher_id(self):
         klasse C: pass
-        with self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
+        mit self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
             self.unwatch(1, C)
 
     def test_clear_out_of_range_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"Invalid type watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid type watcher ID -1"):
             self.clear_watcher(-1)
-        with self.assertRaisesRegex(ValueError, r"Invalid type watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid type watcher ID 8"):
             self.clear_watcher(self.TYPE_MAX_WATCHERS)
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
+        mit self.assertRaisesRegex(ValueError, r"No type watcher set fuer ID 1"):
             self.clear_watcher(1)
 
     def test_no_more_ids_available(self):
-        with self.assertRaisesRegex(RuntimeError, r"no more type watcher IDs"):
-            with ExitStack() as stack:
+        mit self.assertRaisesRegex(RuntimeError, r"no more type watcher IDs"):
+            mit ExitStack() als stack:
                 fuer _ in range(self.TYPE_MAX_WATCHERS + 1):
                     stack.enter_context(self.watcher())
 
@@ -409,22 +409,22 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
         self.assert_event_counts(0, 0, 0, 0)
 
         # verify that all counts remain zero when a code object is
-        # created and destroyed with no watchers registered
+        # created and destroyed mit no watchers registered
         co1 = _testcapi.code_newempty("test_watchers", "dummy1", 0)
         self.assert_event_counts(0, 0, 0, 0)
         del co1
         self.assert_event_counts(0, 0, 0, 0)
 
-        # verify counts are as expected when first watcher is registered
-        with self.code_watcher(0):
+        # verify counts are als expected when first watcher is registered
+        mit self.code_watcher(0):
             self.assert_event_counts(0, 0, 0, 0)
             co2 = _testcapi.code_newempty("test_watchers", "dummy2", 0)
             self.assert_event_counts(1, 0, 0, 0)
             del co2
             self.assert_event_counts(1, 1, 0, 0)
 
-            # again with second watcher registered
-            with self.code_watcher(1):
+            # again mit second watcher registered
+            mit self.code_watcher(1):
                 self.assert_event_counts(1, 1, 0, 0)
                 co3 = _testcapi.code_newempty("test_watchers", "dummy3", 0)
                 self.assert_event_counts(2, 1, 1, 0)
@@ -438,8 +438,8 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
         self.assert_event_counts(0, 0, 0, 0)
 
     def test_error(self):
-        with self.code_watcher(2):
-            with catch_unraisable_exception() as cm:
+        mit self.code_watcher(2):
+            mit catch_unraisable_exception() als cm:
                 co = _testcapi.code_newempty("test_watchers", "dummy0", 0)
 
                 self.assertEqual(
@@ -452,25 +452,25 @@ klasse TestCodeObjectWatchers(unittest.TestCase):
 
     def test_dealloc_error(self):
         co = _testcapi.code_newempty("test_watchers", "dummy0", 0)
-        with self.code_watcher(2):
-            with catch_unraisable_exception() as cm:
+        mit self.code_watcher(2):
+            mit catch_unraisable_exception() als cm:
                 del co
                 gc_collect()
 
                 self.assertEqual(str(cm.unraisable.exc_value), "boom!")
 
     def test_clear_out_of_range_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"Invalid code watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid code watcher ID -1"):
             _testcapi.clear_code_watcher(-1)
-        with self.assertRaisesRegex(ValueError, r"Invalid code watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid code watcher ID 8"):
             _testcapi.clear_code_watcher(8)  # CODE_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No code watcher set fuer ID 1"):
+        mit self.assertRaisesRegex(ValueError, r"No code watcher set fuer ID 1"):
             _testcapi.clear_code_watcher(1)
 
     def test_allocate_too_many_watchers(self):
-        with self.assertRaisesRegex(RuntimeError, r"no more code watcher IDs available"):
+        mit self.assertRaisesRegex(RuntimeError, r"no more code watcher IDs available"):
             _testcapi.allocate_too_many_code_watchers()
 
 
@@ -488,7 +488,7 @@ klasse TestFuncWatchers(unittest.TestCase):
         def watcher(*args):
             events.append(args)
 
-        with self.add_watcher(watcher):
+        mit self.add_watcher(watcher):
             def myfunc():
                 pass
             self.assertIn((_testcapi.PYFUNC_EVENT_CREATE, myfunc, Nichts), events)
@@ -528,8 +528,8 @@ klasse TestFuncWatchers(unittest.TestCase):
         def second_watcher(*args):
             events1.append(args)
 
-        with self.add_watcher(first_watcher):
-            with self.add_watcher(second_watcher):
+        mit self.add_watcher(first_watcher):
+            mit self.add_watcher(second_watcher):
                 def myfunc():
                     pass
 
@@ -544,8 +544,8 @@ klasse TestFuncWatchers(unittest.TestCase):
         def watcher(*args):
             raise MyError("testing 123")
 
-        with self.add_watcher(watcher):
-            with catch_unraisable_exception() as cm:
+        mit self.add_watcher(watcher):
+            mit catch_unraisable_exception() als cm:
                 def myfunc():
                     pass
 
@@ -566,24 +566,24 @@ klasse TestFuncWatchers(unittest.TestCase):
         def myfunc():
             pass
 
-        with self.add_watcher(watcher):
-            with catch_unraisable_exception() as cm:
+        mit self.add_watcher(watcher):
+            mit catch_unraisable_exception() als cm:
                 del myfunc
 
                 self.assertIsInstance(cm.unraisable.exc_value, MyError)
 
     def test_clear_out_of_range_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"invalid func watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"invalid func watcher ID -1"):
             _testcapi.clear_func_watcher(-1)
-        with self.assertRaisesRegex(ValueError, r"invalid func watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"invalid func watcher ID 8"):
             _testcapi.clear_func_watcher(8)  # FUNC_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"no func watcher set fuer ID 1"):
+        mit self.assertRaisesRegex(ValueError, r"no func watcher set fuer ID 1"):
             _testcapi.clear_func_watcher(1)
 
     def test_allocate_too_many_watchers(self):
-        with self.assertRaisesRegex(RuntimeError, r"no more func watcher IDs"):
+        mit self.assertRaisesRegex(RuntimeError, r"no more func watcher IDs"):
             _testcapi.allocate_too_many_func_watchers()
 
 
@@ -609,19 +609,19 @@ klasse TestContextObjectWatchers(unittest.TestCase):
         self.assert_event_counts(0, 0)
 
         # verify that all counts remain zero when a context object is
-        # entered and exited with no watchers registered
+        # entered and exited mit no watchers registered
         ctx = contextvars.copy_context()
         ctx.run(self.assert_event_counts, 0, 0)
         self.assert_event_counts(0, 0)
 
-        # verify counts are as expected when first watcher is registered
-        with self.context_watcher(0):
+        # verify counts are als expected when first watcher is registered
+        mit self.context_watcher(0):
             self.assert_event_counts(0, 0)
             ctx.run(self.assert_event_counts, 1, 0)
             self.assert_event_counts(2, 0)
 
-            # again with second watcher registered
-            with self.context_watcher(1):
+            # again mit second watcher registered
+            mit self.context_watcher(1):
                 self.assert_event_counts(2, 0)
                 ctx.run(self.assert_event_counts, 3, 1)
                 self.assert_event_counts(4, 2)
@@ -636,8 +636,8 @@ klasse TestContextObjectWatchers(unittest.TestCase):
         unraisables = []
 
         def _in_outer():
-            with self.context_watcher(2):
-                with catch_unraisable_exception() as cm:
+            mit self.context_watcher(2):
+                mit catch_unraisable_exception() als cm:
                     ctx_inner.run(lambda: unraisables.append(cm.unraisable))
                     unraisables.append(cm.unraisable)
 
@@ -654,23 +654,23 @@ klasse TestContextObjectWatchers(unittest.TestCase):
             unraisables = Nichts
 
     def test_clear_out_of_range_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"Invalid context watcher ID -1"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid context watcher ID -1"):
             _testcapi.clear_context_watcher(-1)
-        with self.assertRaisesRegex(ValueError, r"Invalid context watcher ID 8"):
+        mit self.assertRaisesRegex(ValueError, r"Invalid context watcher ID 8"):
             _testcapi.clear_context_watcher(8)  # CONTEXT_MAX_WATCHERS = 8
 
     def test_clear_unassigned_watcher_id(self):
-        with self.assertRaisesRegex(ValueError, r"No context watcher set fuer ID 1"):
+        mit self.assertRaisesRegex(ValueError, r"No context watcher set fuer ID 1"):
             _testcapi.clear_context_watcher(1)
 
     def test_allocate_too_many_watchers(self):
-        with self.assertRaisesRegex(RuntimeError, r"no more context watcher IDs available"):
+        mit self.assertRaisesRegex(RuntimeError, r"no more context watcher IDs available"):
             _testcapi.allocate_too_many_context_watchers()
 
     def test_exit_base_context(self):
         ctx = contextvars.Context()
         _testcapi.clear_context_stack()
-        with self.context_watcher(0) as switches:
+        mit self.context_watcher(0) als switches:
             ctx.run(lambda: Nichts)
         self.assertEqual(switches, [ctx, Nichts])
 

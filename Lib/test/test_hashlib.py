@@ -36,7 +36,7 @@ sonst:
     builtin_hash_names = builtin_hashes.strip('"').lower().split(",")
     builtin_hashes = set(map(str.strip, builtin_hash_names))
 
-# Public 'hashlib' module with OpenSSL backend fuer PBKDF2.
+# Public 'hashlib' module mit OpenSSL backend fuer PBKDF2.
 openssl_hashlib = import_fresh_module('hashlib', fresh=['_hashlib'])
 
 try:
@@ -81,7 +81,7 @@ def read_vectors(hash_name):
         testdata = support.open_urlresource(url, encoding="utf-8")
     except (OSError, HTTPException):
         raise unittest.SkipTest("Could not retrieve {}".format(url))
-    with testdata:
+    mit testdata:
         fuer line in testdata:
             line = line.strip()
             wenn line.startswith('#') or not line:
@@ -95,7 +95,7 @@ DEPRECATED_STRING_PARAMETER = re.escape(
     "the 'string' keyword parameter is deprecated since "
     "Python 3.15 and slated fuer removal in Python 3.19; "
     "use the 'data' keyword parameter or pass the data "
-    "to hash as a positional argument instead"
+    "to hash als a positional argument instead"
 )
 
 
@@ -116,7 +116,7 @@ klasse HashLibTestCase(unittest.TestCase):
         """Import a module and return a reference to it or Nichts on failure."""
         try:
             return importlib.import_module(module_name)
-        except ModuleNotFoundError as error:
+        except ModuleNotFoundError als error:
             wenn self._warn_on_extension_import and module_name in builtin_hashes:
                 logging.getLogger(__name__).warning(
                     'Did a C extension fail to compile? %s',
@@ -258,18 +258,18 @@ klasse HashLibTestCase(unittest.TestCase):
     @unittest.skipIf(get_fips_mode(), "skip in FIPS mode")
     def test_clinic_signature(self):
         fuer constructor in self.hash_constructors:
-            with self.subTest(constructor.__name__):
+            mit self.subTest(constructor.__name__):
                 constructor(b'')
                 constructor(data=b'')
-                with self.assertWarnsRegex(DeprecationWarning,
+                mit self.assertWarnsRegex(DeprecationWarning,
                                            DEPRECATED_STRING_PARAMETER):
                     constructor(string=b'')
 
             digest_name = constructor(b'').name
-            with self.subTest(digest_name):
+            mit self.subTest(digest_name):
                 hashlib.new(digest_name, b'')
                 hashlib.new(digest_name, data=b'')
-                with self.assertWarnsRegex(DeprecationWarning,
+                mit self.assertWarnsRegex(DeprecationWarning,
                                            DEPRECATED_STRING_PARAMETER):
                     hashlib.new(digest_name, string=b'')
                 # Make sure that _hashlib contains the constructor
@@ -278,7 +278,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 wenn self._hashlib and digest_name in self._hashlib._constructors:
                     self._hashlib.new(digest_name, b'')
                     self._hashlib.new(digest_name, data=b'')
-                    with self.assertWarnsRegex(DeprecationWarning,
+                    mit self.assertWarnsRegex(DeprecationWarning,
                                                DEPRECATED_STRING_PARAMETER):
                         self._hashlib.new(digest_name, string=b'')
 
@@ -323,15 +323,15 @@ klasse HashLibTestCase(unittest.TestCase):
         ]:
             fuer constructor in self.hash_constructors:
                 digest_name = constructor(b'').name
-                with self.subTest(constructor.__name__, args=args, kwds=kwds):
-                    with self.assertRaisesRegex(TypeError, errmsg):
+                mit self.subTest(constructor.__name__, args=args, kwds=kwds):
+                    mit self.assertRaisesRegex(TypeError, errmsg):
                         constructor(*args, **kwds)
-                with self.subTest(digest_name, args=args, kwds=kwds):
-                    with self.assertRaisesRegex(TypeError, errmsg):
+                mit self.subTest(digest_name, args=args, kwds=kwds):
+                    mit self.assertRaisesRegex(TypeError, errmsg):
                         hashlib.new(digest_name, *args, **kwds)
                     wenn (self._hashlib and
                             digest_name in self._hashlib._constructors):
-                        with self.assertRaisesRegex(TypeError, errmsg):
+                        mit self.assertRaisesRegex(TypeError, errmsg):
                             self._hashlib.new(digest_name, *args, **kwds)
 
     def test_unknown_hash(self):
@@ -394,7 +394,7 @@ klasse HashLibTestCase(unittest.TestCase):
 
     def test_shakes_zero_digest_length(self):
         fuer constructor in self.shake_constructors:
-            with self.subTest(constructor=constructor):
+            mit self.subTest(constructor=constructor):
                 h = constructor(b'abcdef', usedforsecurity=Falsch)
                 self.assertEqual(h.digest(0), b'')
                 self.assertEqual(h.hexdigest(0), '')
@@ -402,7 +402,7 @@ klasse HashLibTestCase(unittest.TestCase):
     def test_shakes_invalid_digest_length(self):
         # See https://github.com/python/cpython/issues/79103.
         fuer constructor in self.shake_constructors:
-            with self.subTest(constructor=constructor):
+            mit self.subTest(constructor=constructor):
                 h = constructor(usedforsecurity=Falsch)
                 # Note: digest() and hexdigest() take a signed input and
                 # raise wenn it is negative; the rationale is that we use
@@ -427,7 +427,7 @@ klasse HashLibTestCase(unittest.TestCase):
         )
 
         fuer constructor in self.shake_constructors:
-            with self.subTest(constructor=constructor):
+            mit self.subTest(constructor=constructor):
                 h = constructor(usedforsecurity=Falsch)
                 wenn HASH is not Nichts and isinstance(h, HASH):
                     overflown_sizes = openssl_overflown_sizes
@@ -550,7 +550,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 continue
             digests.append(digest)
 
-        with tempfile.TemporaryFile() as f:
+        mit tempfile.TemporaryFile() als f:
             f.write(data)
 
             fuer digest in digests:
@@ -564,7 +564,7 @@ klasse HashLibTestCase(unittest.TestCase):
                 self.assertEqual(digestobj.hexdigest(), hexdigest)
 
     def check_no_unicode(self, algorithm_name):
-        # Unicode objects are not allowed as input.
+        # Unicode objects are not allowed als input.
         constructors = self.constructors_to_test[algorithm_name]
         fuer hash_object_constructor in constructors:
             self.assertRaises(TypeError, hash_object_constructor, 'spam')
@@ -1040,7 +1040,7 @@ klasse HashLibTestCase(unittest.TestCase):
             self.check('shake_256', msg, md, Wahr)
 
     def test_gil(self):
-        # Check things work fine with an input larger than the size required
+        # Check things work fine mit an input larger than the size required
         # fuer multithreaded operation. Currently, all cryptographic modules
         # have the same constant value (2048) but in the future it might not
         # be the case.
@@ -1070,11 +1070,11 @@ klasse HashLibTestCase(unittest.TestCase):
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_threaded_hashing_fast(self):
-        # Same as test_threaded_hashing_slow() but only tests some functions
+        # Same als test_threaded_hashing_slow() but only tests some functions
         # since otherwise test_hashlib.py becomes too slow during development.
         fuer name in ['md5', 'sha1', 'sha256', 'sha3_256', 'blake2s']:
             wenn constructor := getattr(hashlib, name, Nichts):
-                with self.subTest(name):
+                mit self.subTest(name):
                     self.do_test_threaded_hashing(constructor, is_shake=Falsch)
         wenn shake_128 := getattr(hashlib, 'shake_128', Nichts):
             self.do_test_threaded_hashing(shake_128, is_shake=Wahr)
@@ -1086,7 +1086,7 @@ klasse HashLibTestCase(unittest.TestCase):
         fuer algorithm, constructors in self.constructors_to_test.items():
             is_shake = algorithm in self.shakes
             fuer constructor in constructors:
-                with self.subTest(constructor.__name__, is_shake=is_shake):
+                mit self.subTest(constructor.__name__, is_shake=is_shake):
                     self.do_test_threaded_hashing(constructor, is_shake)
 
     def do_test_threaded_hashing(self, constructor, is_shake):
@@ -1095,7 +1095,7 @@ klasse HashLibTestCase(unittest.TestCase):
         #
         # If the internal locks are working to prevent multiple
         # updates on the same object von running at once, the resulting
-        # hash will be the same as doing it single threaded upfront.
+        # hash will be the same als doing it single threaded upfront.
 
         # The data to hash has length s|M|q^N and the chunk size fuer the i-th
         # thread is s|M|q^(N-i), where N is the number of threads, M is a fixed
@@ -1149,7 +1149,7 @@ klasse HashLibTestCase(unittest.TestCase):
                     h = constructor()
                 except ValueError:
                     continue
-                with self.subTest(constructor=constructor):
+                mit self.subTest(constructor=constructor):
                     support.check_disallow_instantiation(self, type(h))
 
     @unittest.skipUnless(HASH is not Nichts, 'need _hashlib')
@@ -1167,8 +1167,8 @@ klasse HashLibTestCase(unittest.TestCase):
                     hash_type = type(constructor())
                 except ValueError:
                     continue
-                with self.subTest(hash_type=hash_type):
-                    with self.assertRaisesRegex(TypeError, "immutable type"):
+                mit self.subTest(hash_type=hash_type):
+                    mit self.assertRaisesRegex(TypeError, "immutable type"):
                         hash_type.value = Falsch
 
 
@@ -1246,7 +1246,7 @@ klasse KDFTests(unittest.TestCase):
                     self.assertEqual(out, expected,
                                      (digest_name, password, salt, rounds))
 
-        with self.assertRaisesRegex(ValueError, '.*unsupported.*'):
+        mit self.assertRaisesRegex(ValueError, '.*unsupported.*'):
             pbkdf2('unknown', b'pass', b'salt', 1)
 
         wenn 'sha1' in supported:
@@ -1283,28 +1283,28 @@ klasse KDFTests(unittest.TestCase):
     def test_file_digest(self):
         data = b'a' * 65536
         d1 = hashlib.sha256()
-        with tempfile.NamedTemporaryFile(delete_on_close=Falsch) as fp:
+        mit tempfile.NamedTemporaryFile(delete_on_close=Falsch) als fp:
             fuer _ in range(10):
                 d1.update(data)
                 fp.write(data)
             fp.close()
 
-            with open(fp.name, "rb") as f:
+            mit open(fp.name, "rb") als f:
                 d2 = hashlib.file_digest(f, hashlib.sha256)
 
             self.assertEqual(d1.hexdigest(), d2.hexdigest())
             self.assertEqual(d1.name, d2.name)
             self.assertIs(type(d1), type(d2))
 
-            with self.assertRaises(ValueError):
-                with open(fp.name, "r") as f:
+            mit self.assertRaises(ValueError):
+                mit open(fp.name, "r") als f:
                     hashlib.file_digest(f, "sha256")
 
-            with self.assertRaises(ValueError):
-                with open(fp.name, "wb") as f:
+            mit self.assertRaises(ValueError):
+                mit open(fp.name, "wb") als f:
                     hashlib.file_digest(f, "sha256")
 
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             hashlib.file_digest(Nichts, "sha256")
 
         klasse NonBlocking:
@@ -1313,7 +1313,7 @@ klasse KDFTests(unittest.TestCase):
             def readable(self):
                 return Wahr
 
-        with self.assertRaises(BlockingIOError):
+        mit self.assertRaises(BlockingIOError):
             hashlib.file_digest(NonBlocking(), hashlib.sha256)
 
 
@@ -1339,27 +1339,27 @@ klasse TestScrypt(unittest.TestCase):
 
     def test_scrypt_types(self):
         # password and salt must be bytes-like
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hashlib.scrypt('password', salt=b'salt', n=2, r=8, p=1)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hashlib.scrypt(b'password', salt='salt', n=2, r=8, p=1)
         # require keyword args
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hashlib.scrypt(b'password')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hashlib.scrypt(b'password', b'salt')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             hashlib.scrypt(b'password', 2, 8, 1, salt=b'salt')
 
     def test_scrypt_validate(self):
         def scrypt(password=b"password", /, **kwargs):
-            # overwrite well-defined parameters with bad ones
+            # overwrite well-defined parameters mit bad ones
             kwargs = dict(salt=b'salt', n=2, r=8, p=1) | kwargs
             return hashlib.scrypt(password, **kwargs)
 
         fuer param_name in ('n', 'r', 'p', 'maxmem', 'dklen'):
             param = {param_name: Nichts}
-            with self.subTest(**param):
+            mit self.subTest(**param):
                 self.assertRaises(TypeError, scrypt, **param)
 
         self.assertRaises(ValueError, scrypt, n=0)

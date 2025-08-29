@@ -64,8 +64,8 @@ klasse ForkWait(unittest.TestCase):
 
         prefork_lives = self.alive.copy()
 
-        # Ignore the warning about fork with threads.
-        with warnings.catch_warnings(category=DeprecationWarning,
+        # Ignore the warning about fork mit threads.
+        mit warnings.catch_warnings(category=DeprecationWarning,
                                      action="ignore"):
             wenn (cpid := os.fork()) == 0:
                 # Child

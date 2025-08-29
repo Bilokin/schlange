@@ -6,7 +6,7 @@ sort, selection sort and quicksort.
 
 Shelves are implemented using builtin lists.
 
-Blocks are turtles with shape "square", but
+Blocks are turtles mit shape "square", but
 stretched to rectangles by shapesize()
 """
 von turtle importiere *

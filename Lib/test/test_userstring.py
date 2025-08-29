@@ -14,12 +14,12 @@ klasse UserStringTest(
     type2test = UserString
 
     # Overwrite the three testing methods, because UserString
-    # can't cope with arguments propagated to UserString
-    # (and we don't test with subclasses)
+    # can't cope mit arguments propagated to UserString
+    # (and we don't test mit subclasses)
     def checkequal(self, result, object, methodname, *args, **kwargs):
         result = self.fixtype(result)
         object = self.fixtype(object)
-        # we don't fix the arguments, because UserString can't cope with it
+        # we don't fix the arguments, because UserString can't cope mit it
         realresult = getattr(object, methodname)(*args, **kwargs)
         self.assertEqual(
             result,
@@ -28,8 +28,8 @@ klasse UserStringTest(
 
     def checkraises(self, exc, obj, methodname, *args, expected_msg=Nichts):
         obj = self.fixtype(obj)
-        # we don't fix the arguments, because UserString can't cope with it
-        with self.assertRaises(exc) as cm:
+        # we don't fix the arguments, because UserString can't cope mit it
+        mit self.assertRaises(exc) als cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
         wenn expected_msg is not Nichts:
@@ -37,7 +37,7 @@ klasse UserStringTest(
 
     def checkcall(self, object, methodname, *args):
         object = self.fixtype(object)
-        # we don't fix the arguments, because UserString can't cope with it
+        # we don't fix the arguments, because UserString can't cope mit it
         getattr(object, methodname)(*args)
 
     def test_rmod(self):

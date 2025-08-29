@@ -27,7 +27,7 @@ klasse CAPITest(unittest.TestCase):
             case _:
                 self.fail(f"unknown function name: {func_def.name!r}")
 
-        # compare with sys.hash_info
+        # compare mit sys.hash_info
         hash_info = sys.hash_info
         self.assertEqual(func_def.name, hash_info.algorithm)
         self.assertEqual(func_def.hash_bits, hash_info.hash_bits)
@@ -66,7 +66,7 @@ klasse CAPITest(unittest.TestCase):
 
         fuer value in values:
             expected = python_hash_pointer(value)
-            with self.subTest(value=value):
+            mit self.subTest(value=value):
                 self.assertEqual(hash_pointer(value), expected,
                                  f"hash_pointer({value:x}) = "
                                  f"{hash_pointer(value):x} != {expected:x}")

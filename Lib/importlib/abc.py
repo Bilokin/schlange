@@ -3,7 +3,7 @@ von . importiere _bootstrap_external
 von . importiere machinery
 try:
     importiere _frozen_importlib
-except ImportError as exc:
+except ImportError als exc:
     wenn exc.name != '_frozen_importlib':
         raise
     _frozen_importlib = Nichts
@@ -69,7 +69,7 @@ klasse ResourceLoader(Loader):
     This ABC represents one of the optional protocols specified by PEP 302.
 
     For directly loading resources, use TraversableResources instead. This class
-    primarily exists fuer backwards compatibility with other ABCs in this module.
+    primarily exists fuer backwards compatibility mit other ABCs in this module.
 
     """
 
@@ -136,7 +136,7 @@ _register(InspectLoader, machinery.BuiltinImporter, machinery.FrozenImporter, ma
 klasse ExecutionLoader(InspectLoader):
 
     """Abstract base klasse fuer loaders that wish to support the execution of
-    modules as scripts.
+    modules als scripts.
 
     This ABC represents one of the optional protocols specified in PEP 302.
 
@@ -224,7 +224,7 @@ klasse SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionL
     def set_data(self, path, data):
         """Write the bytes to the path (if possible).
 
-        Accepts a str path and data as bytes.
+        Accepts a str path and data als bytes.
 
         Any needed intermediary directories are to be created. If fuer some
         reason the file cannot be written because of permissions, fail

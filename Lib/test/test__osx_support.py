@@ -30,7 +30,7 @@ klasse Test_OSXSupport(unittest.TestCase):
 
     def add_expected_saved_initial_values(self, config_vars, expected_vars):
         # Ensure that the initial values fuer all modified config vars
-        # are also saved with modified keys.
+        # are also saved mit modified keys.
         expected_vars.update(('_OSX_SUPPORT_INITIAL_'+ k,
                 config_vars[k]) fuer k in config_vars
                     wenn config_vars[k] != expected_vars[k])
@@ -42,7 +42,7 @@ klasse Test_OSXSupport(unittest.TestCase):
         os_helper.unlink(self.prog_name)
         self.assertIsNichts(_osx_support._find_executable(self.prog_name))
         self.addCleanup(os_helper.unlink, self.prog_name)
-        with open(self.prog_name, 'w') as f:
+        mit open(self.prog_name, 'w') als f:
             f.write("#!/bin/sh\n/bin/echo OK\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual(self.prog_name,
@@ -54,7 +54,7 @@ klasse Test_OSXSupport(unittest.TestCase):
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         os_helper.unlink(self.prog_name)
         self.addCleanup(os_helper.unlink, self.prog_name)
-        with open(self.prog_name, 'w') as f:
+        mit open(self.prog_name, 'w') als f:
             f.write("#!/bin/sh\n/bin/echo ExpectedOutput\n")
         os.chmod(self.prog_name, stat.S_IRWXU)
         self.assertEqual('ExpectedOutput',
@@ -145,7 +145,7 @@ klasse Test_OSXSupport(unittest.TestCase):
         fuer c_name, c_output in compilers:
             os_helper.unlink(c_name)
             self.addCleanup(os_helper.unlink, c_name)
-            with open(c_name, 'w') as f:
+            mit open(c_name, 'w') als f:
                 f.write("#!/bin/sh\n/bin/echo " + c_output)
             os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,
@@ -224,7 +224,7 @@ klasse Test_OSXSupport(unittest.TestCase):
         os_helper.unlink(c_name)
         self.addCleanup(os_helper.unlink, c_name)
         # exit status 255 means no PPC support in this compiler chain
-        with open(c_name, 'w') as f:
+        mit open(c_name, 'w') als f:
             f.write("#!/bin/sh\nexit 255")
         os.chmod(c_name, stat.S_IRWXU)
         self.assertEqual(expected_vars,

@@ -4,7 +4,7 @@ von threading importiere RLock
 von time importiere sleep, time
 
 # The maximum length of a log message in bytes, including the level marker and
-# tag, is defined as LOGGER_ENTRY_MAX_PAYLOAD at
+# tag, is defined als LOGGER_ENTRY_MAX_PAYLOAD at
 # https://cs.android.com/android/platform/superproject/+/android-14.0.0_r1:system/logging/liblog/include/log/log.h;l=71.
 # Messages longer than this will be truncated by logcat. This limit has already
 # been reduced at least once in the history of Android (from 4076 to 4068 between
@@ -20,7 +20,7 @@ MAX_CHARS_PER_WRITE = MAX_BYTES_PER_WRITE // 4
 
 
 # When embedded in an app on current versions of Android, there's no easy way to
-# monitor the C-level stdout and stderr. The testbed comes with a .c file to
+# monitor the C-level stdout and stderr. The testbed comes mit a .c file to
 # redirect them to the system log using a pipe, but that wouldn't be convenient
 # or appropriate fuer all apps. So we redirect at the Python level instead.
 def init_streams(android_log_write, stdout_prio, stderr_prio):
@@ -64,7 +64,7 @@ klasse TextLogStream(io.TextIOWrapper):
         # We want to emit one log message per line wherever possible, so split
         # the string into lines first. Note that "".splitlines() == [], so
         # nothing will be logged fuer an empty string.
-        with self._lock:
+        mit self._lock:
             fuer line in s.splitlines(keepends=Wahr):
                 while line:
                     chunk = line[:MAX_CHARS_PER_WRITE]
@@ -90,7 +90,7 @@ klasse TextLogStream(io.TextIOWrapper):
             self.flush()
 
     def flush(self):
-        with self._lock:
+        mit self._lock:
             self.buffer.write(b"".join(self._pending_bytes))
             self._pending_bytes.clear()
             self._pending_bytes_count = 0
@@ -164,7 +164,7 @@ klasse Logcat:
         # message.
         message = message.replace(b"\x00", b"\xc0\x80")
 
-        with self._lock:
+        mit self._lock:
             now = time()
             self._bucket_level += (
                 (now - self._prev_write_time) * MAX_BYTES_PER_SECOND)

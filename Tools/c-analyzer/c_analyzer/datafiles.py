@@ -1,11 +1,11 @@
 importiere os.path
 
 von c_common importiere fsutil
-importiere c_common.tables as _tables
-importiere c_parser.info as _info
-importiere c_parser.match as _match
-importiere c_parser.datafiles as _parser
-von . importiere analyze as _analyze
+importiere c_common.tables als _tables
+importiere c_parser.info als _info
+importiere c_parser.match als _match
+importiere c_parser.datafiles als _parser
+von . importiere analyze als _analyze
 
 
 #############################
@@ -106,7 +106,7 @@ def _iter_ignored(infile, relroot):
             reason = Nichts
         try:
             varid = _info.DeclID.from_row(varidinfo)
-        except BaseException as e:
+        except BaseException als e:
             e.add_note(f"Error occurred when processing row {varidinfo} in {infile}.")
             e.add_note(f"Could it be that you added a row which is not tab-delimited?")
             raise e

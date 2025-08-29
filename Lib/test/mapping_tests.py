@@ -20,7 +20,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         """Return an empty mapping object"""
         return self.type2test()
     def _full_mapping(self, data):
-        """Return a mapping object with the value contained in data
+        """Return a mapping object mit the value contained in data
         dictionary"""
         x = self._empty_mapping()
         fuer key, value in data.items():
@@ -191,7 +191,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
         d.update(self.other.items())
         self.assertEqual(list(d.items()), list(self.other.items()))
 
-        # FIXME: Doesn't work with UserDict
+        # FIXME: Doesn't work mit UserDict
         # self.assertRaises((TypeError, AttributeError), d.update, Nichts)
         self.assertRaises((TypeError, AttributeError), d.update, 42)
 
@@ -265,7 +265,7 @@ klasse BasicTestMappingProtocol(unittest.TestCase):
 
         self.assertRaises(ValueError, d.update, [(1, 2, 3)])
 
-    # no test_fromkeys or test_copy as both os.environ and selves don't support it
+    # no test_fromkeys or test_copy als both os.environ and selves don't support it
 
     def test_get(self):
         d = self._empty_mapping()
@@ -500,7 +500,7 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
     def test_popitem(self):
         BasicTestMappingProtocol.test_popitem(self)
         fuer copymode in -1, +1:
-            # -1: b has same structure as a
+            # -1: b has same structure als a
             # +1: b is a.copy()
             fuer log2size in range(12):
                 size = 2**log2size
@@ -524,7 +524,7 @@ klasse TestMappingProtocol(BasicTestMappingProtocol):
     def test_pop(self):
         BasicTestMappingProtocol.test_pop(self)
 
-        # Tests fuer pop with specified key
+        # Tests fuer pop mit specified key
         d = self._empty_mapping()
         k, v = 'abc', 'def'
 

@@ -89,12 +89,12 @@ klasse FindLibraryLinux(unittest.TestCase):
             out, _ = p.communicate()
         except OSError:
             raise unittest.SkipTest('gcc, needed fuer test, not available')
-        with tempfile.TemporaryDirectory() as d:
+        mit tempfile.TemporaryDirectory() als d:
             # create an empty temporary file
             srcname = os.path.join(d, 'dummy.c')
             libname = 'py_ctypes_test_dummy'
             dstname = os.path.join(d, 'lib%s.so' % libname)
-            with open(srcname, 'wb') as f:
+            mit open(srcname, 'wb') als f:
                 pass
             self.assertWahr(os.path.exists(srcname))
             # compile the file to a shared library
@@ -106,7 +106,7 @@ klasse FindLibraryLinux(unittest.TestCase):
             # LD_LIBRARY_PATH)
             self.assertIsNichts(find_library(libname))
             # now add the location to LD_LIBRARY_PATH
-            with os_helper.EnvironmentVarGuard() as env:
+            mit os_helper.EnvironmentVarGuard() als env:
                 KEY = 'LD_LIBRARY_PATH'
                 wenn KEY not in env:
                     v = d
@@ -118,11 +118,11 @@ klasse FindLibraryLinux(unittest.TestCase):
                 self.assertEqual(find_library(libname), 'lib%s.so' % libname)
 
     def test_find_library_with_gcc(self):
-        with unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: Nichts):
+        mit unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: Nichts):
             self.assertNotEqual(find_library('c'), Nichts)
 
     def test_find_library_with_ld(self):
-        with unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: Nichts), \
+        mit unittest.mock.patch("ctypes.util._findSoname_ldconfig", lambda *args: Nichts), \
              unittest.mock.patch("ctypes.util._findLib_gcc", lambda *args: Nichts):
             self.assertNotEqual(find_library('c'), Nichts)
 
@@ -138,7 +138,7 @@ klasse FindLibraryAndroid(unittest.TestCase):
             "z",  # Non-POSIX, but present on Linux
             "log",  # Not present on Linux
         ]:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 path = find_library(name)
                 self.assertIsInstance(path, str)
                 self.assertEqual(
@@ -149,7 +149,7 @@ klasse FindLibraryAndroid(unittest.TestCase):
                 self.assertWahr(os.path.isfile(path), path)
 
         fuer name in ["libc", "nonexistent"]:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertIsNichts(find_library(name))
 
 

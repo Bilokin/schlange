@@ -32,7 +32,7 @@ klasse FixUpModuleTests:
         expected = {"__file__": path, "__cached__": path}
 
         fuer key, val in expected.items():
-            with self.subTest(f"{key}: {val}"):
+            mit self.subTest(f"{key}: {val}"):
                 self.assertEqual(ns[key], val)
 
         spec = ns["__spec__"]
@@ -54,7 +54,7 @@ klasse FixUpModuleTests:
         expected = {"__file__": path, "__cached__": Nichts}
 
         fuer key, val in expected.items():
-            with self.subTest(f"{key}: {val}"):
+            mit self.subTest(f"{key}: {val}"):
                 self.assertEqual(ns[key], val)
 
         spec = ns["__spec__"]
@@ -80,10 +80,10 @@ klasse TestBlessMyLoader(unittest.TestCase):
         bar = ModuleType('bar')
         del bar.__loader__
         del bar.__spec__
-        # 2022-10-06(warsaw): For backward compatibility with the
+        # 2022-10-06(warsaw): For backward compatibility mit the
         # implementation in _warnings.c, this can't raise an
         # AttributeError.  See _bless_my_loader() in _bootstrap_external.py
-        # If working with a module:
+        # If working mit a module:
         ## self.assertRaises(
         ##     AttributeError, _bootstrap_external._bless_my_loader,
         ##     bar.__dict__)
@@ -93,10 +93,10 @@ klasse TestBlessMyLoader(unittest.TestCase):
         bar = ModuleType('bar')
         bar.__loader__ = Nichts
         del bar.__spec__
-        # 2022-10-06(warsaw): For backward compatibility with the
+        # 2022-10-06(warsaw): For backward compatibility mit the
         # implementation in _warnings.c, this can't raise an
         # AttributeError.  See _bless_my_loader() in _bootstrap_external.py
-        # If working with a module:
+        # If working mit a module:
         ## self.assertRaises(
         ##     AttributeError, _bootstrap_external._bless_my_loader,
         ##     bar.__dict__)
@@ -130,7 +130,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
         bar = ModuleType('bar')
         bar.__loader__ = object()
         del bar.__spec__
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             self.assertWarns(
                 DeprecationWarning,
                 _bootstrap_external._bless_my_loader, bar.__dict__)
@@ -139,7 +139,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
         bar = ModuleType('bar')
         bar.__loader__ = object()
         bar.__spec__ = Nichts
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             self.assertWarns(
                 DeprecationWarning,
                 _bootstrap_external._bless_my_loader, bar.__dict__)
@@ -148,7 +148,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
         bar = ModuleType('bar')
         bar.__loader__ = object()
         bar.__spec__ = SimpleNamespace()
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             self.assertWarns(
                 DeprecationWarning,
                 _bootstrap_external._bless_my_loader, bar.__dict__)
@@ -157,7 +157,7 @@ klasse TestBlessMyLoader(unittest.TestCase):
         bar = ModuleType('bar')
         bar.__loader__ = object()
         bar.__spec__ = SimpleNamespace(loader=object())
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             self.assertWarns(
                 DeprecationWarning,
                 _bootstrap_external._bless_my_loader, bar.__dict__)

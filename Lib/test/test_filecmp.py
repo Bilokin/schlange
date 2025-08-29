@@ -10,9 +10,9 @@ von test.support importiere os_helper
 
 
 def _create_file_shallow_equal(template_path, new_path):
-    """create a file with the same size and mtime but different content."""
+    """create a file mit the same size and mtime but different content."""
     shutil.copy2(template_path, new_path)
-    with open(new_path, 'r+b') as f:
+    mit open(new_path, 'r+b') als f:
         next_char = bytearray(f.read(1))
         next_char[0] = (next_char[0] + 1) % 256
         f.seek(0)
@@ -29,10 +29,10 @@ klasse FileCompareTestCase(unittest.TestCase):
         self.name_same_shallow = os_helper.TESTFN + '-same-shallow'
         data = 'Contents of file go here.\n'
         fuer name in [self.name, self.name_same, self.name_diff]:
-            with open(name, 'w', encoding="utf-8") as output:
+            mit open(name, 'w', encoding="utf-8") als output:
                 output.write(data)
 
-        with open(self.name_diff, 'a+', encoding="utf-8") as output:
+        mit open(self.name_diff, 'a+', encoding="utf-8") als output:
             output.write('An extra line.\n')
 
         fuer name in [self.name_same, self.name_diff]:
@@ -62,12 +62,12 @@ klasse FileCompareTestCase(unittest.TestCase):
 
     def test_different(self):
         self.assertFalsch(filecmp.cmp(self.name, self.name_diff),
-                    "Mismatched files compare as equal")
+                    "Mismatched files compare als equal")
         self.assertFalsch(filecmp.cmp(self.name, self.dir),
-                    "File and directory compare as equal")
+                    "File and directory compare als equal")
         self.assertFalsch(filecmp.cmp(self.name, self.name_same_shallow,
                                      shallow=Falsch),
-                        "Mismatched file to shallow identical file compares as equal")
+                        "Mismatched file to shallow identical file compares als equal")
 
     def test_cache_clear(self):
         first_compare = filecmp.cmp(self.name, self.name_same, shallow=Falsch)
@@ -97,7 +97,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         subdir_path = os.path.join(self.dir, 'subdir')
         os.mkdir(subdir_path)
         dir_file_path = os.path.join(self.dir, "file")
-        with open(dir_file_path, 'w', encoding="utf-8") as output:
+        mit open(dir_file_path, 'w', encoding="utf-8") als output:
             output.write(data)
 
         fuer dir in (self.dir_same, self.dir_same_shallow,
@@ -118,11 +118,11 @@ klasse DirCompareTestCase(unittest.TestCase):
             sonst:
                 shutil.copy2(dir_file_path, file_path)
 
-        with open(os.path.join(self.dir_diff, 'file2'), 'w', encoding="utf-8") as output:
+        mit open(os.path.join(self.dir_diff, 'file2'), 'w', encoding="utf-8") als output:
             output.write('An extra file.\n')
 
-        # Add different file2 with respect to dir_diff
-        with open(os.path.join(self.dir_diff_file, 'file2'), 'w', encoding="utf-8") as output:
+        # Add different file2 mit respect to dir_diff
+        mit open(os.path.join(self.dir_diff_file, 'file2'), 'w', encoding="utf-8") als output:
             output.write('Different contents.\n')
 
 
@@ -142,7 +142,7 @@ klasse DirCompareTestCase(unittest.TestCase):
                         (['file'], [], []),
                         "Comparing directory to same fails")
 
-        # Try it with shallow=Falsch
+        # Try it mit shallow=Falsch
         self.assertWahr(filecmp.cmpfiles(self.dir, self.dir, ['file'],
                                          shallow=Falsch) ==
                         (['file'], [], []),
@@ -160,19 +160,19 @@ klasse DirCompareTestCase(unittest.TestCase):
         # See https://github.com/python/cpython/issues/122400.
         fuer file, desc in [
             ('\x00', 'NUL bytes filename'),
-            (__file__ + '\x00', 'filename with embedded NUL bytes'),
+            (__file__ + '\x00', 'filename mit embedded NUL bytes'),
             ("\uD834\uDD1E.py", 'surrogate codes (MUSICAL SYMBOL G CLEF)'),
             ('a' * 1_000_000, 'very long filename'),
         ]:
             fuer other_dir in [self.dir, self.dir_same, self.dir_diff]:
-                with self.subTest(f'cmpfiles: {desc}', other_dir=other_dir):
+                mit self.subTest(f'cmpfiles: {desc}', other_dir=other_dir):
                     res = filecmp.cmpfiles(self.dir, other_dir, [file])
                     self.assertTupleEqual(res, ([], [], [file]))
 
     def test_dircmp_invalid_names(self):
         fuer bad_dir, desc in [
             ('\x00', 'NUL bytes dirname'),
-            (f'Top{os.sep}Mid\x00', 'dirname with embedded NUL bytes'),
+            (f'Top{os.sep}Mid\x00', 'dirname mit embedded NUL bytes'),
             ("\uD834\uDD1E", 'surrogate codes (MUSICAL SYMBOL G CLEF)'),
             ('a' * 1_000_000, 'very long dirname'),
         ]:
@@ -183,11 +183,11 @@ klasse DirCompareTestCase(unittest.TestCase):
                 'left_list', 'right_list',
                 'left_only', 'right_only', 'common',
             ]:
-                with self.subTest(f'dircmp(ok, bad): {desc}', target=target):
-                    with self.assertRaises((OSError, ValueError)):
+                mit self.subTest(f'dircmp(ok, bad): {desc}', target=target):
+                    mit self.assertRaises((OSError, ValueError)):
                         getattr(d1, target)
-                with self.subTest(f'dircmp(bad, ok): {desc}', target=target):
-                    with self.assertRaises((OSError, ValueError)):
+                mit self.subTest(f'dircmp(bad, ok): {desc}', target=target):
+                    mit self.assertRaises((OSError, ValueError)):
                         getattr(d2, target)
 
     def _assert_lists(self, actual, expected):
@@ -312,7 +312,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self._assert_report(d.report, expected_report)
 
     def test_dircmp_shallow_is_keyword_only(self):
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             TypeError,
             re.escape("dircmp.__init__() takes von 3 to 5 positional arguments but 6 were given"),
         ):
@@ -361,7 +361,7 @@ klasse DirCompareTestCase(unittest.TestCase):
         self._assert_report(d.report_full_closure, expected_report)
 
     def _assert_report(self, dircmp_report, expected_report_lines):
-        with support.captured_stdout() as stdout:
+        mit support.captured_stdout() als stdout:
             dircmp_report()
             report_lines = stdout.getvalue().strip().split('\n')
             self.assertEqual(report_lines, expected_report_lines)

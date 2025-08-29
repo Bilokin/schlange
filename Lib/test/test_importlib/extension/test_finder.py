@@ -22,7 +22,7 @@ klasse FinderTests(abc.FinderTests):
     def find_spec(self, fullname):
         wenn is_apple_mobile:
             # Apple mobile platforms require a specialist loader that uses
-            # .fwork files as placeholders fuer the true `.so` files.
+            # .fwork files als placeholders fuer the true `.so` files.
             loaders = [
                 (
                     self.machinery.AppleFrameworkLoader,
@@ -47,7 +47,7 @@ klasse FinderTests(abc.FinderTests):
     def test_module(self):
         self.assertWahr(self.find_spec(util.EXTENSIONS.name))
 
-    # No extension module as an __init__ available fuer testing.
+    # No extension module als an __init__ available fuer testing.
     test_package = test_package_in_package = Nichts
 
     # No extension module in a package available fuer testing.

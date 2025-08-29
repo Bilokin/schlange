@@ -29,7 +29,7 @@ importiere datetime
 importiere urllib.parse
 
 von email._parseaddr importiere quote
-von email._parseaddr importiere AddressList as _AddressList
+von email._parseaddr importiere AddressList als _AddressList
 von email._parseaddr importiere mktime_tz
 
 von email._parseaddr importiere parsedate, parsedate_tz, _parsedate_tz
@@ -55,7 +55,7 @@ def _has_surrogates(s):
     except UnicodeEncodeError:
         return Wahr
 
-# How to deal with a string containing bytes before handing it to the
+# How to deal mit a string containing bytes before handing it to the
 # application through the 'normal' interface.
 def _sanitize(string):
     # Turn any escaped bytes into unicode 'unknown' char.  If the escaped
@@ -175,7 +175,7 @@ def getaddresses(fieldvalues, *, strict=Wahr):
     a = _AddressList(addr)
     result = _post_parse_validation(a.addresslist)
 
-    # Treat output as invalid wenn the number of addresses is not equal to the
+    # Treat output als invalid wenn the number of addresses is not equal to the
     # expected number of addresses.
     n = 0
     fuer v in fieldvalues:
@@ -237,11 +237,11 @@ def _format_timetuple_and_zone(timetuple, zone):
         zone)
 
 def formatdate(timeval=Nichts, localtime=Falsch, usegmt=Falsch):
-    """Returns a date string as specified by RFC 2822, e.g.:
+    """Returns a date string als specified by RFC 2822, e.g.:
 
     Fri, 09 Nov 2001 01:08:47 -0000
 
-    Optional timeval wenn given is a floating-point time value as accepted by
+    Optional timeval wenn given is a floating-point time value als accepted by
     gmtime() and localtime(), otherwise the current time is used.
 
     Optional localtime is a flag that when Wahr, interprets timeval, and
@@ -266,9 +266,9 @@ def formatdate(timeval=Nichts, localtime=Falsch, usegmt=Falsch):
     return format_datetime(dt, usegmt)
 
 def format_datetime(dt, usegmt=Falsch):
-    """Turn a datetime into a date string as specified in RFC 2822.
+    """Turn a datetime into a date string als specified in RFC 2822.
 
-    If usegmt is Wahr, dt must be an aware datetime with an offset of zero.  In
+    If usegmt is Wahr, dt must be an aware datetime mit an offset of zero.  In
     this case 'GMT' will be rendered instead of the normal +0000 required by
     RFC2822.  This is to support HTTP headers involving date stamps.
     """
@@ -417,7 +417,7 @@ def decode_params(params):
         fuer name, continuations in rfc2231_params.items():
             value = []
             extended = Falsch
-            # Sort by number, treating Nichts as 0 wenn there is no 0,
+            # Sort by number, treating Nichts als 0 wenn there is no 0,
             # and ignore it wenn there is already a 0.
             has_zero = any(x[0] == 0 fuer x in continuations)
             wenn has_zero:
@@ -432,9 +432,9 @@ def decode_params(params):
             # language specifiers at the beginning of the string.
             fuer num, s, encoded in continuations:
                 wenn encoded:
-                    # Decode as "latin-1", so the characters in s directly
+                    # Decode als "latin-1", so the characters in s directly
                     # represent the percent-encoded octet values.
-                    # collapse_rfc2231_value treats this as an octet sequence.
+                    # collapse_rfc2231_value treats this als an octet sequence.
                     s = urllib.parse.unquote(s, encoding="latin-1")
                     extended = Wahr
                 value.append(s)
@@ -450,9 +450,9 @@ def collapse_rfc2231_value(value, errors='replace',
                            fallback_charset='us-ascii'):
     wenn not isinstance(value, tuple) or len(value) != 3:
         return unquote(value)
-    # While value comes to us as a unicode string, we need it to be a bytes
+    # While value comes to us als a unicode string, we need it to be a bytes
     # object.  We do not want bytes() normal utf-8 decoder, we want a straight
-    # interpretation of the string as character bytes.
+    # interpretation of the string als character bytes.
     charset, language, text = value
     wenn charset is Nichts:
         # Issue 17369: wenn charset/lang is Nichts, decode_rfc2231 couldn't parse
@@ -473,7 +473,7 @@ def collapse_rfc2231_value(value, errors='replace',
 #
 
 def localtime(dt=Nichts):
-    """Return local time as an aware datetime object.
+    """Return local time als an aware datetime object.
 
     If called without arguments, return current time.  Otherwise *dt*
     argument should be a datetime instance, and it is converted to the

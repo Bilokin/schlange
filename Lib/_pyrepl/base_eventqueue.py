@@ -92,7 +92,7 @@ klasse BaseEventQueue:
 
         sowenn self.buf and self.buf[0] == 27:  # escape
             # escape sequence not recognized by our keymap: propagate it
-            # outside so that i can be recognized as an M-... key (see also
+            # outside so that i can be recognized als an M-... key (see also
             # the docstring in keymap.py
             trace('unrecognized escape sequence, propagating...')
             self.keymap = self.compiled_keymap

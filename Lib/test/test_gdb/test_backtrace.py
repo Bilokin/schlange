@@ -12,7 +12,7 @@ def setUpModule():
 
 klasse PyBtTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_bt(self):
         'Verify that the "py-bt" command works'
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
@@ -32,7 +32,7 @@ Traceback \(most recent call first\):
 ''')
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_bt_full(self):
         'Verify that the "py-bt-full" command works'
         bt = self.get_stack_trace(script=SAMPLE_SCRIPT,
@@ -48,7 +48,7 @@ Traceback \(most recent call first\):
 ''')
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     @support.requires_gil_enabled()
     @support.requires_resource('cpu')
     def test_threads(self):
@@ -57,7 +57,7 @@ Traceback \(most recent call first\):
 von threading importiere Thread
 
 klasse TestThread(Thread):
-    # These threads would run forever, but we'll interrupt things with the
+    # These threads would run forever, but we'll interrupt things mit the
     # debugger
     def run(self):
         i = 0
@@ -73,21 +73,21 @@ fuer i in range(4):
 id(42)
 
 '''
-        # Verify with "py-bt":
+        # Verify mit "py-bt":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_breakpoint=['thread apply all py-bt'])
         self.assertIn('Waiting fuer the GIL', gdb_output)
 
-        # Verify with "py-bt-full":
+        # Verify mit "py-bt-full":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_breakpoint=['thread apply all py-bt-full'])
         self.assertIn('Waiting fuer the GIL', gdb_output)
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
-    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
+    # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 als a workaround
     def test_gc(self):
         'Verify that "py-bt" indicates wenn a thread is garbage-collecting'
         cmd = ('from gc importiere collect\n'
@@ -97,20 +97,20 @@ id(42)
                'def bar():\n'
                '    foo()\n'
                'bar()\n')
-        # Verify with "py-bt":
+        # Verify mit "py-bt":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_breakpoint=['break update_refs', 'continue', 'py-bt'],
                                           )
         self.assertIn('Garbage-collecting', gdb_output)
 
-        # Verify with "py-bt-full":
+        # Verify mit "py-bt-full":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_breakpoint=['break update_refs', 'continue', 'py-bt-full'],
                                           )
         self.assertIn('Garbage-collecting', gdb_output)
 
     @unittest.skipIf(python_is_optimized(),
-                     "Python was compiled with optimizations")
+                     "Python was compiled mit optimizations")
     def test_wrapper_call(self):
         cmd = textwrap.dedent('''
             klasse MyList(list):
@@ -122,13 +122,13 @@ id(42)
         ''')
         cmds_after_breakpoint = ['break wrapper_call', 'continue']
         wenn CET_PROTECTION:
-            # bpo-32962: same case as in get_stack_trace():
+            # bpo-32962: same case als in get_stack_trace():
             # we need an additional 'next' command in order to read
             # arguments of the innermost function of the call stack.
             cmds_after_breakpoint.append('next')
         cmds_after_breakpoint.append('py-bt')
 
-        # Verify with "py-bt":
+        # Verify mit "py-bt":
         gdb_output = self.get_stack_trace(cmd,
                                           cmds_after_breakpoint=cmds_after_breakpoint)
         self.assertRegex(gdb_output,

@@ -12,10 +12,10 @@ SYMBOL = 'M___hello__'
 
 
 def get_module_code(filename):
-    """Compile 'filename' and return the module code as a marshalled byte
+    """Compile 'filename' and return the module code als a marshalled byte
     string.
     """
-    with open(filename, 'r') as fp:
+    mit open(filename, 'r') als fp:
         src = fp.read()
     co = compile(src, 'none', 'exec')
     co_bytes = marshal.dumps(co)
@@ -27,7 +27,7 @@ def gen_c_code(fp, co_bytes):
     """
     def write(*args, **kwargs):
         drucke(*args, **kwargs, file=fp)
-    write('/* Generated with Tools/freeze/regen_frozen.py */')
+    write('/* Generated mit Tools/freeze/regen_frozen.py */')
     write('static unsigned char %s[] = {' % SYMBOL, end='')
     bytes_per_row = 13
     fuer i, opcode in enumerate(co_bytes):
@@ -43,7 +43,7 @@ def gen_c_code(fp, co_bytes):
 def main():
     out_filename = sys.argv[1]
     co_bytes = get_module_code(FILE)
-    with open(out_filename, 'w') as fp:
+    mit open(out_filename, 'w') als fp:
         gen_c_code(fp, co_bytes)
 
 

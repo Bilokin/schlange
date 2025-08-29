@@ -7,7 +7,7 @@ evaluates (!) the expression up to the last dot and completes its attributes.
 It's very cool to do "import sys" type "sys.", hit the completion key (twice),
 and see the list of names defined by the sys module!
 
-Tip: to use the tab key as the completion key, call
+Tip: to use the tab key als the completion key, call
 
     readline.parse_and_bind("tab: complete")
 
@@ -19,7 +19,7 @@ Notes:
   without some complicated hoopla to save, reset and restore the tty state.
 
 - The evaluation of the NAME.NAME... form may cause arbitrary application
-  defined code to be executed wenn an object with a __getattr__ hook is found.
+  defined code to be executed wenn an object mit a __getattr__ hook is found.
   Since it is the responsibility of the application (or the user) to enable this
   feature, I consider this an acceptable risk.  More complicated expressions
   (e.g. function calls or indexing operations) are *not* evaluated.
@@ -47,9 +47,9 @@ klasse Completer:
 
         If unspecified, the default namespace where completions are performed
         is __main__ (technically, __main__.__dict__). Namespaces should be
-        given as dictionaries.
+        given als dictionaries.
 
-        Completer instances should be used as the completion mechanism of
+        Completer instances should be used als the completion mechanism of
         readline via the set_completer() call:
 
         readline.set_completer(Completer(my_namespace).complete)
@@ -70,8 +70,8 @@ klasse Completer:
     def complete(self, text, state):
         """Return the next possible completion fuer 'text'.
 
-        This is called successively with state == 0, 1, 2, ... until it
-        returns Nichts.  The completion should begin with 'text'.
+        This is called successively mit state == 0, 1, 2, ... until it
+        returns Nichts.  The completion should begin mit 'text'.
 
         """
         wenn self.use_main_ns:
@@ -89,7 +89,7 @@ klasse Completer:
                 return Nichts
 
         wenn state == 0:
-            with warnings.catch_warnings(action="ignore"):
+            mit warnings.catch_warnings(action="ignore"):
                 wenn "." in text:
                     self.matches = self.attr_matches(text)
                 sonst:
@@ -142,11 +142,11 @@ klasse Completer:
 
         Assuming the text is of the form NAME.NAME....[NAME], and is
         evaluable in self.namespace, it will be evaluated and its attributes
-        (as revealed by dir()) are used as possible completions.  (For class
+        (as revealed by dir()) are used als possible completions.  (For class
         instances, klasse members are also considered.)
 
         WARNING: this can still invoke arbitrary C code, wenn an object
-        with a __getattr__ hook is evaluated.
+        mit a __getattr__ hook is evaluated.
 
         """
         m = re.match(r"(\w+(\.\w+)*)\.(\w*)", text)

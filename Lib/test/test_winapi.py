@@ -15,7 +15,7 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
     def _events_waitall_test(self, n):
         evts = [_winapi.CreateEventW(0, Falsch, Falsch, Nichts) fuer _ in range(n)]
 
-        with self.assertRaises(TimeoutError):
+        mit self.assertRaises(TimeoutError):
             _winapi.BatchedWaitForMultipleObjects(evts, Wahr, 100)
 
         # Ensure no errors raised when all are triggered
@@ -30,11 +30,11 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
         # we don't always have them in the first chunk
         chosen = [i * (len(evts) // 8) fuer i in range(8)]
 
-        # Replace events with invalid handles to make sure we fail
+        # Replace events mit invalid handles to make sure we fail
         fuer i in chosen:
             old_evt = evts[i]
             evts[i] = -1
-            with self.assertRaises(OSError):
+            mit self.assertRaises(OSError):
                 _winapi.BatchedWaitForMultipleObjects(evts, Wahr, 100)
             evts[i] = old_evt
 
@@ -42,7 +42,7 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
     def _events_waitany_test(self, n):
         evts = [_winapi.CreateEventW(0, Falsch, Falsch, Nichts) fuer _ in range(n)]
 
-        with self.assertRaises(TimeoutError):
+        mit self.assertRaises(TimeoutError):
             _winapi.BatchedWaitForMultipleObjects(evts, Falsch, 100)
 
         # Choose 8 events to set, distributed throughout the list, to make sure
@@ -51,7 +51,7 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
 
         # Trigger one by one. They are auto-reset events, so will only trigger once
         fuer i in chosen:
-            with self.subTest(f"trigger event {i} of {len(evts)}"):
+            mit self.subTest(f"trigger event {i} of {len(evts)}"):
                 _winapi.SetEvent(evts[i])
                 triggered = _winapi.BatchedWaitForMultipleObjects(evts, Falsch, 10000)
                 self.assertSetEqual(set(triggered), {i})
@@ -64,12 +64,12 @@ klasse WinAPIBatchedWaitForMultipleObjectsTests(unittest.TestCase):
             triggered.update(_winapi.BatchedWaitForMultipleObjects(evts, Falsch, 10000))
         self.assertSetEqual(triggered, set(chosen))
 
-        # Replace events with invalid handles to make sure we fail
+        # Replace events mit invalid handles to make sure we fail
         fuer i in chosen:
-            with self.subTest(f"corrupt event {i} of {len(evts)}"):
+            mit self.subTest(f"corrupt event {i} of {len(evts)}"):
                 old_evt = evts[i]
                 evts[i] = -1
-                with self.assertRaises(OSError):
+                mit self.assertRaises(OSError):
                     _winapi.BatchedWaitForMultipleObjects(evts, Falsch, 100)
                 evts[i] = old_evt
 
@@ -101,7 +101,7 @@ klasse WinAPITests(unittest.TestCase):
             raise unittest.SkipTest("require x:\\PROGRA~1 to test")
 
         # pathlib.Path will be rejected - only str is accepted
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _winapi.GetLongPathName(testfn)
 
         actual = _winapi.GetLongPathName(os.fsdecode(testfn))
@@ -117,7 +117,7 @@ klasse WinAPITests(unittest.TestCase):
             raise unittest.SkipTest("require '%ProgramFiles%' to test")
 
         # pathlib.Path will be rejected - only str is accepted
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             _winapi.GetShortPathName(testfn)
 
         actual = _winapi.GetShortPathName(os.fsdecode(testfn))
@@ -129,7 +129,7 @@ klasse WinAPITests(unittest.TestCase):
         pipe_name = rf"\\.\pipe\LOCAL\{os_helper.TESTFN}"
 
         # Pipe does not exist, so this raises
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             _winapi.WaitNamedPipe(pipe_name, 0)
 
         pipe = _winapi.CreateNamedPipe(
@@ -143,10 +143,10 @@ klasse WinAPITests(unittest.TestCase):
         # Pipe instance is available, so this passes
         _winapi.WaitNamedPipe(pipe_name, 0)
 
-        with open(pipe_name, 'w+b') as pipe2:
+        mit open(pipe_name, 'w+b') als pipe2:
             # No instances available, so this times out
             # (WinError 121 does not get mapped to TimeoutError)
-            with self.assertRaises(OSError):
+            mit self.assertRaises(OSError):
                 _winapi.WaitNamedPipe(pipe_name, 0)
 
             _winapi.WriteFile(pipe, b'testdata')

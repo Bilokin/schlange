@@ -1,4 +1,4 @@
-importiere gettext as _
+importiere gettext als _
 
 
 # Special characters that are always escaped in the POT file
@@ -19,5 +19,5 @@ _('\x7f')
 # some characters in the 128-255 range
 _('\x80 \xa0 ÿ')
 
-# some characters >= 256 encoded as 2, 3 and 4 bytes, respectively
+# some characters >= 256 encoded als 2, 3 and 4 bytes, respectively
 _('α ㄱ 𓂀')

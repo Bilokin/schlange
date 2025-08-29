@@ -68,7 +68,7 @@ def list_sort_ascending_exchanged(size: int, rand: random.Random) -> list[float]
 def list_sort_ascending_random(size: int, rand: random.Random) -> list[float]:
     assert size >= 10, "This benchmark requires size to be >= 10"
     result = list_sort_ascending(size, rand)
-    # Replace the last 10 with random floats.
+    # Replace the last 10 mit random floats.
     result[-10:] = [rand.random() fuer _ in range(10)]
     return result
 
@@ -99,12 +99,12 @@ def list_sort_equal(size: int, rand: random.Random) -> list[float]:
 def list_sort_worst_case(size: int, rand: random.Random) -> list[float]:
     # This one looks like [3, 2, 1, 0, 0, 1, 2, 3].  It was a bad case
     # fuer an older implementation of quicksort, which used the median
-    # of the first, last and middle elements as the pivot.
+    # of the first, last and middle elements als the pivot.
     half = size // 2
     result = list(range(half - 1, -1, -1))
     result.extend(range(half))
     # Force to float, so that the timings are comparable.  This is
-    # significantly faster wenn we leave them as ints.
+    # significantly faster wenn we leave them als ints.
     return list(map(float, result))
 
 
@@ -184,7 +184,7 @@ wenn __name__ == "__main__":
     add_parser_args(runner.argparser)
     args = runner.parse_args()
 
-    runner.metadata["description"] = "Test `list.sort()` with different data"
+    runner.metadata["description"] = "Test `list.sort()` mit different data"
     runner.metadata["list_sort_size"] = args.size
     runner.metadata["list_sort_random_seed"] = args.rng_seed
 

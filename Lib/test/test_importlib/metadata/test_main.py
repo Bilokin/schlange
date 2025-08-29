@@ -6,9 +6,9 @@ importiere importlib.metadata
 von test.support importiere os_helper
 
 try:
-    importiere pyfakefs.fake_filesystem_unittest as ffs
+    importiere pyfakefs.fake_filesystem_unittest als ffs
 except ImportError:
-    von .stubs importiere fake_filesystem_unittest as ffs
+    von .stubs importiere fake_filesystem_unittest als ffs
 
 von . importiere fixtures
 von ._path importiere Symlink
@@ -34,7 +34,7 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
         assert re.match(self.version_pattern, dist.version)
 
     def test_for_name_does_not_exist(self):
-        with self.assertRaises(PackageNotFoundError):
+        mit self.assertRaises(PackageNotFoundError):
             Distribution.from_name('does-not-exist')
 
     def test_package_not_found_mentions_metadata(self):
@@ -44,13 +44,13 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
         metadata. Ensure the exception mentions metadata to help
         guide users toward the cause. See #124.
         """
-        with self.assertRaises(PackageNotFoundError) as ctx:
+        mit self.assertRaises(PackageNotFoundError) als ctx:
             Distribution.from_name('does-not-exist')
 
         assert "metadata" in str(ctx.exception)
 
     def test_abc_enforced(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             type('DistributionSubclass', (Distribution,), {})()
 
     @fixtures.parameterize(
@@ -58,7 +58,7 @@ klasse BasicTests(fixtures.DistInfoPkg, unittest.TestCase):
         dict(name=''),
     )
     def test_invalid_inputs_to_from_name(self, name):
-        with self.assertRaises(Exception):
+        mit self.assertRaises(Exception):
             Distribution.from_name(name)
 
 
@@ -66,7 +66,7 @@ klasse ImportTests(fixtures.DistInfoPkg, unittest.TestCase):
     def test_import_nonexistent_module(self):
         # Ensure that the MetadataPathFinder does not crash an importiere of a
         # non-existent module.
-        with self.assertRaises(ImportError):
+        mit self.assertRaises(ImportError):
             importlib.import_module('does_not_exist')
 
     def test_resolve(self):
@@ -101,7 +101,7 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
 
     def test_dashes_in_dist_name_found_as_underscores(self):
         """
-        For a package with a dash in the name, the dist-info metadata
+        For a package mit a dash in the name, the dist-info metadata
         uses underscores in the name. Ensure the metadata loads.
         """
         fixtures.build_files(self.make_pkg('my_pkg'), self.site_dir)
@@ -109,7 +109,7 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
 
     def test_dist_name_found_as_any_case(self):
         """
-        Ensure the metadata loads when queried with any case.
+        Ensure the metadata loads when queried mit any case.
         """
         pkg_name = 'CherryPy'
         fixtures.build_files(self.make_pkg(pkg_name), self.site_dir)
@@ -120,7 +120,7 @@ klasse NameNormalizationTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.Tes
     def test_unique_distributions(self):
         """
         Two distributions varying only by non-normalized name on
-        the file system should resolve as the same.
+        the file system should resolve als the same.
         """
         fixtures.build_files(self.make_pkg('abc'), self.site_dir)
         before = list(_unique(distributions()))
@@ -137,7 +137,7 @@ klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestC
     @staticmethod
     def make_pkg(name, files=dict(METADATA="VERSION: 1.0")):
         """
-        Create metadata fuer a dist-info package with name and files.
+        Create metadata fuer a dist-info package mit name and files.
         """
         return {
             f'{name}.dist-info': files,
@@ -145,11 +145,11 @@ klasse InvalidMetadataTests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestC
 
     def test_valid_dists_preferred(self):
         """
-        Dists with metadata should be preferred when discovered by name.
+        Dists mit metadata should be preferred when discovered by name.
 
         Ref python/importlib_metadata#489.
         """
-        # create three dists with the valid one in the middle (lexicographically)
+        # create three dists mit the valid one in the middle (lexicographically)
         # such that on most file systems, the valid one is never naturally first.
         fixtures.build_files(self.make_pkg('foo-4.0', files={}), self.site_dir)
         fixtures.build_files(self.make_pkg('foo-4.1'), self.site_dir)
@@ -162,7 +162,7 @@ klasse NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     @staticmethod
     def pkg_with_non_ascii_description(site_dir):
         """
-        Create minimal metadata fuer a package with non-ASCII in
+        Create minimal metadata fuer a package mit non-ASCII in
         the description.
         """
         contents = {
@@ -219,7 +219,7 @@ klasse DiscoveryTests(
         assert any(dist.metadata['Name'] == 'distinfo-pkg' fuer dist in dists)
 
     def test_invalid_usage(self):
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             list(distributions(context='something', name='else'))
 
     def test_interleaved_discovery(self):
@@ -241,15 +241,15 @@ klasse DirectoryTest(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
     def test_egg_info(self):
         # make an `EGG-INFO` directory that's unrelated
         self.site_dir.joinpath('EGG-INFO').mkdir()
-        # used to crash with `IsADirectoryError`
-        with self.assertRaises(PackageNotFoundError):
+        # used to crash mit `IsADirectoryError`
+        mit self.assertRaises(PackageNotFoundError):
             version('unknown-package')
 
     def test_egg(self):
         egg = self.site_dir.joinpath('foo-3.6.egg')
         egg.mkdir()
-        with self.add_sys_path(egg):
-            with self.assertRaises(PackageNotFoundError):
+        mit self.add_sys_path(egg):
+            mit self.assertRaises(PackageNotFoundError):
                 version('foo')
 
 
@@ -299,7 +299,7 @@ klasse TestEntryPoints(unittest.TestCase):
 
     def test_immutable(self):
         """EntryPoints should be immutable"""
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             self.ep.name = 'badactor'
 
     def test_repr(self):
@@ -445,7 +445,7 @@ klasse PackagesDistributionsEggTest(
 ):
     def test_packages_distributions_on_eggs(self):
         """
-        Test old-style egg packages with a variation of 'top_level.txt',
+        Test old-style egg packages mit a variation of 'top_level.txt',
         'SOURCES.txt', and 'installed-files.txt', available.
         """
         distributions = packages_distributions()
@@ -464,7 +464,7 @@ klasse PackagesDistributionsEggTest(
         # installed-files.txt (top_level.txt is missing)
         assert import_names_from_package('egg_with_module-pkg') == {'egg_with_module'}
 
-        # egg_with_no_modules-pkg should not be associated with any importiere names
+        # egg_with_no_modules-pkg should not be associated mit any importiere names
         # (top_level.txt is empty, and installed-files.txt has no .py files)
         assert import_names_from_package('egg_with_no_modules-pkg') == set()
 

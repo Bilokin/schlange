@@ -71,7 +71,7 @@ klasse GlobTests(unittest.TestCase):
         self.assertCountEqual(glob.glob(os.fsencode(p), **kwargs), bres)
         self.assertCountEqual(glob.iglob(os.fsencode(p), **kwargs), bres)
 
-        with change_cwd(self.tempdir):
+        mit change_cwd(self.tempdir):
             res2 = glob.glob(pattern, **kwargs)
             fuer x in res2:
                 self.assertFalsch(os.path.isabs(x), x)
@@ -171,7 +171,7 @@ klasse GlobTests(unittest.TestCase):
     def test_glob_directory_with_trailing_slash(self):
         seps = (os.sep, os.altsep) wenn os.altsep sonst (os.sep,)
         fuer sep in seps:
-            # Patterns ending with a slash shouldn't match non-dirs
+            # Patterns ending mit a slash shouldn't match non-dirs
             self.assertEqual(glob.glob(self.norm('Z*Z') + sep), [])
             self.assertEqual(glob.glob(self.norm('ZZZ') + sep), [])
             self.assertEqual(glob.glob(self.norm('aaa') + sep),
@@ -179,9 +179,9 @@ klasse GlobTests(unittest.TestCase):
             # Preserving the redundant separators is an implementation detail.
             self.assertEqual(glob.glob(self.norm('aaa') + sep*2),
                              [self.norm('aaa') + sep*2])
-            # When there is a wildcard pattern which ends with a pathname
+            # When there is a wildcard pattern which ends mit a pathname
             # separator, glob() doesn't blow.
-            # The result should end with the pathname separator.
+            # The result should end mit the pathname separator.
             # Normalizing the trailing separator is an implementation detail.
             eq = self.assertSequencesEqual_noorder
             eq(glob.glob(self.norm('aa*') + sep),
@@ -191,7 +191,7 @@ klasse GlobTests(unittest.TestCase):
                [self.norm('aaa') + os.sep, self.norm('aab') + os.sep])
 
     def test_glob_bytes_directory_with_trailing_slash(self):
-        # Same as test_glob_directory_with_trailing_slash, but with a
+        # Same als test_glob_directory_with_trailing_slash, but mit a
         # bytes argument.
         seps = (os.sep, os.altsep) wenn os.altsep sonst (os.sep,)
         fuer sep in seps:
@@ -321,7 +321,7 @@ klasse GlobTests(unittest.TestCase):
             ('a', 'bcd', 'EF'), ('a', 'bcd', 'efg')))
         eq(self.rglob('a', '**', 'bcd'), self.joins(('a', 'bcd')))
 
-        with change_cwd(self.tempdir):
+        mit change_cwd(self.tempdir):
             join = os.path.join
             eq(glob.glob('**', recursive=Wahr), [join(*i) fuer i in full])
             eq(glob.glob(join('**', ''), recursive=Wahr),

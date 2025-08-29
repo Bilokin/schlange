@@ -1,5 +1,5 @@
 """
-Idlelib objects with no external idlelib dependencies
+Idlelib objects mit no external idlelib dependencies
 which are needed in more than one idlelib module.
 
 They are included here because

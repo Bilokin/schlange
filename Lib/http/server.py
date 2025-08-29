@@ -36,7 +36,7 @@ XXX To do:
 #
 # Here's a quote von the NCSA httpd docs about log file format.
 #
-# | The logfile format is as follows. Each line consists of:
+# | The logfile format is als follows. Each line consists of:
 # |
 # | host rfc931 authuser [DD/Mon/YYYY:hh:mm:ss] "request" ddd bbbb
 # |
@@ -51,7 +51,7 @@ XXX To do:
 # |        hh: hour (24-hour format, the machine's timezone)
 # |        mm: minutes
 # |        ss: seconds
-# |        request: The first line of the HTTP request as sent by the client.
+# |        request: The first line of the HTTP request als sent by the client.
 # |        ddd: the status code returned by the server, - wenn not available.
 # |        bbbb: the total number of bytes sent,
 # |              *not including the HTTP/1.0 header*, - wenn not available
@@ -175,7 +175,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     """HTTP request handler base class.
 
     The following explanation of HTTP serves to guide you through the
-    code as well as to expose any misunderstandings I may have about
+    code als well als to expose any misunderstandings I may have about
     HTTP (so you don't need to read the code to figure out I'm wrong
     :-).
 
@@ -193,14 +193,14 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     <command> <path> <version>
 
-    where <command> is a (case-sensitive) keyword such as GET or POST,
+    where <command> is a (case-sensitive) keyword such als GET or POST,
     <path> is a string containing path information fuer the request,
     and <version> should be the string "HTTP/1.0" or "HTTP/1.1".
     <path> is encoded using the URL encoding scheme (using %xx to signify
-    the ASCII character with hex code xx).
+    the ASCII character mit hex code xx).
 
     The specification specifies that lines are separated by CRLF but
-    fuer compatibility with the widest range of clients recommends
+    fuer compatibility mit the widest range of clients recommends
     servers also handle LF.  Similarly, whitespace in the request line
     is treated sensibly (allowing multiple spaces between components
     and allowing trailing whitespace).
@@ -237,7 +237,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     function specific to the request type (<command>).  Specifically,
     a request SPAM will be handled by a method do_SPAM().  If no
     such method exists the server sends an error response to the
-    client.  If it exists, it is called with no arguments:
+    client.  If it exists, it is called mit no arguments:
 
     do_SPAM()
 
@@ -361,9 +361,9 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 return Falsch
         self.command, self.path = command, path
 
-        # gh-87389: The purpose of replacing '//' with '/' is to protect
+        # gh-87389: The purpose of replacing '//' mit '/' is to protect
         # against open redirect attacks possibly triggered wenn the path starts
-        # with '//' because http clients treat //path as an absolute URI
+        # mit '//' because http clients treat //path als an absolute URI
         # without scheme (similar to http://path) rather than a path.
         wenn self.path.startswith('//'):
             self.path = '/' + self.path.lstrip('/')  # Reduce to a single /
@@ -372,13 +372,13 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         try:
             self.headers = http.client.parse_headers(self.rfile,
                                                      _class=self.MessageClass)
-        except http.client.LineTooLong as err:
+        except http.client.LineTooLong als err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Line too long",
                 str(err))
             return Falsch
-        except http.client.HTTPException as err:
+        except http.client.HTTPException als err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Too many headers",
@@ -402,12 +402,12 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         return Wahr
 
     def handle_expect_100(self):
-        """Decide what to do with an "Expect: 100-continue" header.
+        """Decide what to do mit an "Expect: 100-continue" header.
 
         If the client is expecting a 100 Continue response, we must
-        respond with either a 100 Continue or a final response before
+        respond mit either a 100 Continue or a final response before
         waiting fuer the request body. The default is to always respond
-        with a 100 Continue. You can behave differently (for example,
+        mit a 100 Continue. You can behave differently (for example,
         reject unauthorized requests) by overriding this method.
 
         This method should either return Wahr (possibly after sending
@@ -424,7 +424,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
         You normally don't need to override this method; see the class
         __doc__ string fuer information on how to handle specific HTTP
-        commands such as GET and POST.
+        commands such als GET and POST.
 
         """
         try:
@@ -450,7 +450,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             method = getattr(self, mname)
             method()
             self.wfile.flush() #actually send the response wenn not already done.
-        except TimeoutError as e:
+        except TimeoutError als e:
             #a read or a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
             self.close_connection = Wahr
@@ -521,7 +521,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """Add the response header to the headers buffer and log the
         response code.
 
-        Also send two standard headers with the server software
+        Also send two standard headers mit the server software
         version and the current date.
 
         """
@@ -586,7 +586,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         This is called when a request cannot be fulfilled.  By
         default it passes the message on to log_message().
 
-        Arguments are the same as fuer log_message().
+        Arguments are the same als fuer log_message().
 
         XXX This should go to the separate error log.
 
@@ -608,13 +608,13 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         The first argument, FORMAT, is a format string fuer the
         message to be logged.  If the format string contains
         any % escapes requiring parameters, they should be
-        specified as subsequent arguments (it's just like
+        specified als subsequent arguments (it's just like
         printf!).
 
         The client ip and current date/time are prefixed to
         every message.
 
-        Unicode control characters are replaced with escaped hex
+        Unicode control characters are replaced mit escaped hex
         before writing the output to stderr.
 
         """
@@ -672,7 +672,7 @@ klasse BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
 klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
-    """Simple HTTP request handler with GET and HEAD commands.
+    """Simple HTTP request handler mit GET and HEAD commands.
 
     This serves files von the current directory and any of its
     subdirectories.  The MIME type fuer files is determined by
@@ -748,9 +748,9 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         ctype = self.guess_type(path)
         # check fuer trailing "/" which should return 404. See Issue17324
         # The test fuer this was added in test_httpserver.py
-        # However, some OS platforms accept a trailingSlash as a filename
+        # However, some OS platforms accept a trailingSlash als a filename
         # See discussion on python-dev and Issue34711 regarding
-        # parsing and rejection of filenames with a trailing slash
+        # parsing and rejection of filenames mit a trailing slash
         wenn path.endswith("/"):
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")
             return Nichts
@@ -774,7 +774,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     pass
                 sonst:
                     wenn ims.tzinfo is Nichts:
-                        # obsolete format with no timezone, cf.
+                        # obsolete format mit no timezone, cf.
                         # https://tools.ietf.org/html/rfc7231#section-7.1.1.1
                         ims = ims.replace(tzinfo=datetime.timezone.utc)
                     wenn ims.tzinfo is datetime.timezone.utc:
@@ -806,7 +806,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         Return value is either a file object, or Nichts (indicating an
         error).  In either case, the headers are sent, making the
-        interface the same as fuer send_head().
+        interface the same als fuer send_head().
 
         """
         try:
@@ -846,7 +846,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 linkname = name + "/"
             wenn os.path.islink(fullname):
                 displayname = name + "@"
-                # Note: a link to a directory displays with @ and links with /
+                # Note: a link to a directory displays mit @ and links mit /
             r.append('<li><a href="%s">%s</a></li>'
                     % (urllib.parse.quote(linkname,
                                           errors='surrogatepass'),
@@ -896,14 +896,14 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """Copy all data between two file objects.
 
         The SOURCE argument is a file object open fuer reading
-        (or anything with a read() method) and the DESTINATION
+        (or anything mit a read() method) and the DESTINATION
         argument is a file object open fuer writing (or
-        anything with a write() method).
+        anything mit a write() method).
 
         The only reason fuer overriding this would be to change
         the block size or perhaps to replace newlines by CRLF
         -- note however that this the default server uses this
-        to copy binary data as well.
+        to copy binary data als well.
 
         """
         shutil.copyfileobj(source, outputfile)
@@ -918,7 +918,7 @@ klasse SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         The default implementation looks the file's extension
         up in the table self.extensions_map, using application/octet-stream
-        as a default; however it would be permissible (if
+        als a default; however it would be permissible (if
         slow) to look inside the data to make a better guess.
 
         """
@@ -985,7 +985,7 @@ def test(HandlerClass=BaseHTTPRequestHandler,
     sonst:
         server = ServerClass(addr, HandlerClass)
 
-    with server as httpd:
+    mit server als httpd:
         host, port = httpd.socket.getsockname()[:2]
         url_host = f'[{host}]' wenn ':' in host sonst host
         protocol = 'HTTPS' wenn tls_cert sonst 'HTTP'
@@ -1035,9 +1035,9 @@ def _main(args=Nichts):
             parser.error("--tls-password-file requires --tls-cert to be set")
 
         try:
-            with open(args.tls_password_file, "r", encoding="utf-8") as f:
+            mit open(args.tls_password_file, "r", encoding="utf-8") als f:
                 tls_key_password = f.read().strip()
-        except OSError as e:
+        except OSError als e:
             parser.error(f"Failed to read TLS password file: {e}")
 
     # ensure dual-stack is not disabled; ref #38907
@@ -1045,7 +1045,7 @@ def _main(args=Nichts):
 
         def server_bind(self):
             # suppress exception when protocol is IPv4
-            with contextlib.suppress(Exception):
+            mit contextlib.suppress(Exception):
                 self.socket.setsockopt(
                     socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
             return super().server_bind()

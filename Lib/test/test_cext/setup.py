@@ -1,5 +1,5 @@
 # gh-91321: Build a basic C test extension to check that the Python C API is
-# compatible with C and does not emit C compiler warnings.
+# compatible mit C and does not emit C compiler warnings.
 importiere os
 importiere platform
 importiere shlex
@@ -27,20 +27,20 @@ wenn not support.MS_WINDOWS:
         # gh-120593: Check the 'const' qualifier
         '-Wcast-qual',
 
-        # Ask fuer strict(er) compliance with the standard
+        # Ask fuer strict(er) compliance mit the standard
         '-pedantic-errors',
     ]
     wenn not support.Py_GIL_DISABLED:
         PUBLIC_CFLAGS.append(
-            # gh-116869: The Python C API must be compatible with building
-            # with the -Werror=declaration-after-statement compiler flag.
+            # gh-116869: The Python C API must be compatible mit building
+            # mit the -Werror=declaration-after-statement compiler flag.
             '-Werror=declaration-after-statement',
         )
     INTERNAL_CFLAGS = [*BASE_CFLAGS]
 sonst:
     # MSVC compiler flags
     BASE_CFLAGS = [
-        # Treat all compiler warnings as compiler errors
+        # Treat all compiler warnings als compiler errors
         '/WX',
     ]
     PUBLIC_CFLAGS = [

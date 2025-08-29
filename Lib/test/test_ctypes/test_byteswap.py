@@ -42,9 +42,9 @@ klasse Test(unittest.TestCase, StructCheckMixin):
         big.y = 2
         little.x = 2
         little.y = 4
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             big.z = 42
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             little.z = 24
 
     def test_endian_short(self):
@@ -199,16 +199,16 @@ klasse Test(unittest.TestCase, StructCheckMixin):
 
         # these fields do not support different byte order:
         fuer typ in c_wchar, c_void_p, POINTER(c_int):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 klasse T(BigEndianStructure wenn sys.byteorder == "little" sonst LittleEndianStructure):
                     _fields_ = fields + [("x", typ)]
                 self.check_struct(T)
 
 
     def test_struct_struct(self):
-        # nested structures with different byteorders
+        # nested structures mit different byteorders
 
-        # create nested structures with given byteorders and set memory to data
+        # create nested structures mit given byteorders and set memory to data
 
         fuer nested, data in (
             (BigEndianStructure, b'\0\0\0\1\0\0\0\2'),
@@ -340,15 +340,15 @@ klasse Test(unittest.TestCase, StructCheckMixin):
 
         # these fields do not support different byte order:
         fuer typ in c_wchar, c_void_p, POINTER(c_int):
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 klasse T(BigEndianUnion wenn sys.byteorder == "little" sonst LittleEndianUnion):
                     _fields_ = fields + [("x", typ)]
                 self.check_union(T)
 
     def test_union_struct(self):
-        # nested structures in unions with different byteorders
+        # nested structures in unions mit different byteorders
 
-        # create nested structures in unions with given byteorders and set memory to data
+        # create nested structures in unions mit given byteorders and set memory to data
 
         fuer nested, data in (
             (BigEndianStructure, b'\0\0\0\1\0\0\0\2'),

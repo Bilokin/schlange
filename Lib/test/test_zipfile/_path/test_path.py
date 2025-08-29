@@ -27,7 +27,7 @@ def _make_link(info: zipfile.ZipInfo):  # type: ignore[name-defined]
 
 def build_alpharep_fixture():
     """
-    Create a zip file with this structure:
+    Create a zip file mit this structure:
 
     .
     ├── a.txt
@@ -51,7 +51,7 @@ def build_alpharep_fixture():
     - a file two levels deep (b/d/e)
     - multiple files in a directory (b/c, b/f)
     - a directory containing only a directory (g/h)
-    - a directory with files of different extensions (j/klm)
+    - a directory mit files of different extensions (j/klm)
     - a symlink (n) pointing to (a)
 
     "alpha" because it uses alphabet
@@ -92,7 +92,7 @@ klasse TestPath(unittest.TestCase):
         buffer = alpharep.fp
         alpharep.close()
         path = tmpdir / alpharep.filename
-        with path.open("wb") as strm:
+        mit path.open("wb") als strm:
             strm.write(buffer.getvalue())
         return path
 
@@ -121,7 +121,7 @@ klasse TestPath(unittest.TestCase):
     def test_iterdir_on_file(self, alpharep):
         root = zipfile.Path(alpharep)
         a, n, b, g, j = root.iterdir()
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             a.iterdir()
 
     @pass_alpharep
@@ -136,10 +136,10 @@ klasse TestPath(unittest.TestCase):
     def test_open(self, alpharep):
         root = zipfile.Path(alpharep)
         a, n, b, g, j = root.iterdir()
-        with a.open(encoding="utf-8") as strm:
+        mit a.open(encoding="utf-8") als strm:
             data = strm.read()
         self.assertEqual(data, "content of a")
-        with a.open('r', "utf-8") as strm:  # not a kw, no gh-101144 TypeError
+        mit a.open('r', "utf-8") als strm:  # not a kw, no gh-101144 TypeError
             data = strm.read()
         self.assertEqual(data, "content of a")
 
@@ -151,10 +151,10 @@ klasse TestPath(unittest.TestCase):
         root = zipfile.Path(zf)
         (path,) = root.iterdir()
         u16 = path.joinpath("16.txt")
-        with u16.open('r', "utf-16") as strm:
+        mit u16.open('r', "utf-16") als strm:
             data = strm.read()
         assert data == "This was utf-16"
-        with u16.open(encoding="utf-16") as strm:
+        mit u16.open(encoding="utf-16") als strm:
             data = strm.read()
         assert data == "This was utf-16"
 
@@ -167,20 +167,20 @@ klasse TestPath(unittest.TestCase):
         (path,) = root.iterdir()
         u16 = path.joinpath("bad-utf8.bin")
 
-        # encoding= as a positional argument fuer gh-101144.
+        # encoding= als a positional argument fuer gh-101144.
         data = u16.read_text("utf-8", errors="ignore")
         assert data == "invalid utf-8: ."
-        with u16.open("r", "utf-8", errors="surrogateescape") as f:
+        mit u16.open("r", "utf-8", errors="surrogateescape") als f:
             assert f.read() == "invalid utf-8: \udcff\udcff."
 
         # encoding= both positional and keyword is an error; gh-101144.
-        with self.assertRaisesRegex(TypeError, "encoding"):
+        mit self.assertRaisesRegex(TypeError, "encoding"):
             data = u16.read_text("utf-8", encoding="utf-8")
 
         # both keyword arguments work.
-        with u16.open("r", encoding="utf-8", errors="strict") as f:
-            # error during decoding with wrong codec.
-            with self.assertRaises(UnicodeDecodeError):
+        mit u16.open("r", encoding="utf-8", errors="strict") als f:
+            # error during decoding mit wrong codec.
+            mit self.assertRaises(UnicodeDecodeError):
                 f.read()
 
     @unittest.skipIf(
@@ -192,10 +192,10 @@ klasse TestPath(unittest.TestCase):
         """EncodingWarning must blame the read_text and open calls."""
         assert sys.flags.warn_default_encoding
         root = zipfile.Path(alpharep)
-        with self.assertWarns(EncodingWarning) as wc:  # noqa: F821 (astral-sh/ruff#13296)
+        mit self.assertWarns(EncodingWarning) als wc:  # noqa: F821 (astral-sh/ruff#13296)
             root.joinpath("a.txt").read_text()
         assert __file__ == wc.filename
-        with self.assertWarns(EncodingWarning) as wc:  # noqa: F821 (astral-sh/ruff#13296)
+        mit self.assertWarns(EncodingWarning) als wc:  # noqa: F821 (astral-sh/ruff#13296)
             root.joinpath("a.txt").open("r").close()
         assert __file__ == wc.filename
 
@@ -205,9 +205,9 @@ klasse TestPath(unittest.TestCase):
         write bytes or text to it.
         """
         zf = zipfile.Path(zipfile.ZipFile(io.BytesIO(), mode='w'))
-        with zf.joinpath('file.bin').open('wb') as strm:
+        mit zf.joinpath('file.bin').open('wb') als strm:
             strm.write(b'binary contents')
-        with zf.joinpath('file.txt').open('w', encoding="utf-8") as strm:
+        mit zf.joinpath('file.txt').open('w', encoding="utf-8") als strm:
             strm.write('text file')
 
     @pass_alpharep
@@ -216,15 +216,15 @@ klasse TestPath(unittest.TestCase):
         Attempting to open a directory raises IsADirectoryError.
         """
         zf = zipfile.Path(alpharep)
-        with self.assertRaises(IsADirectoryError):
+        mit self.assertRaises(IsADirectoryError):
             zf.joinpath('b').open()
 
     @pass_alpharep
     def test_open_binary_invalid_args(self, alpharep):
         root = zipfile.Path(alpharep)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             root.joinpath('a.txt').open('rb', encoding='utf-8')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             root.joinpath('a.txt').open('rb', 'utf-8')
 
     @pass_alpharep
@@ -233,7 +233,7 @@ klasse TestPath(unittest.TestCase):
         Attempting to open a missing directory raises FileNotFoundError.
         """
         zf = zipfile.Path(alpharep)
-        with self.assertRaises(FileNotFoundError):
+        mit self.assertRaises(FileNotFoundError):
             zf.joinpath('z').open()
 
     @pass_alpharep
@@ -316,7 +316,7 @@ klasse TestPath(unittest.TestCase):
     HUGE_ZIPFILE_NUM_ENTRIES = 2**13
 
     def huge_zipfile(self):
-        """Create a read-only zipfile with a huge number of entries."""
+        """Create a read-only zipfile mit a huge number of entries."""
         strm = io.BytesIO()
         zf = zipfile.ZipFile(strm, "w")
         fuer entry in map(str, range(self.HUGE_ZIPFILE_NUM_ENTRIES)):
@@ -338,7 +338,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_read_does_not_close(self, alpharep):
         alpharep = self.zipfile_ondisk(alpharep)
-        with zipfile.ZipFile(alpharep) as file:
+        mit zipfile.ZipFile(alpharep) als file:
             fuer rep in range(2):
                 zipfile.Path(file, 'a.txt').read_text(encoding="utf-8")
 
@@ -456,9 +456,9 @@ klasse TestPath(unittest.TestCase):
         """
         alpharep.filename = Nichts
         root = zipfile.Path(alpharep)
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             root.name
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             root.parent
 
         # .name and .parent should still work on subs
@@ -529,7 +529,7 @@ klasse TestPath(unittest.TestCase):
 
     def test_glob_empty(self):
         root = zipfile.Path(zipfile.ZipFile(io.BytesIO(), 'w'))
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             root.glob('')
 
     @pass_alpharep
@@ -583,7 +583,7 @@ klasse TestPath(unittest.TestCase):
     @pass_alpharep
     def test_extract_orig_with_implied_dirs(self, alpharep):
         """
-        A zip file wrapped in a Path should extract even with implied dirs.
+        A zip file wrapped in a Path should extract even mit implied dirs.
         """
         source_path = self.zipfile_ondisk(alpharep)
         zf = zipfile.ZipFile(source_path)
@@ -597,16 +597,16 @@ klasse TestPath(unittest.TestCase):
         Validate behavior of getinfo on original zipfile after wrapping.
         """
         zipfile.Path(alpharep)
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             alpharep.getinfo('does-not-exist')
 
     def test_malformed_paths(self):
         """
         Path should handle malformed paths gracefully.
 
-        Paths with leading slashes are not visible.
+        Paths mit leading slashes are not visible.
 
-        Paths with dots are treated like regular files.
+        Paths mit dots are treated like regular files.
         """
         data = io.BytesIO()
         zf = zipfile.ZipFile(data, "w")
@@ -620,7 +620,7 @@ klasse TestPath(unittest.TestCase):
 
     def test_unsupported_names(self):
         """
-        Path segments with special characters are readable.
+        Path segments mit special characters are readable.
 
         On some platforms or file systems, characters like
         ``:`` and ``?`` are not allowed, but they are valid

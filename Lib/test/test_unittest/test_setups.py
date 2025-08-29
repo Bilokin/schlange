@@ -499,7 +499,7 @@ klasse TestSetups(unittest.TestCase):
         fuer phase, msg in enumerate(messages):
             _suite = unittest.defaultTestLoader.loadTestsFromTestCase(Test)
             suite = unittest.TestSuite([_suite])
-            with self.assertRaisesRegex(Exception, msg):
+            mit self.assertRaisesRegex(Exception, msg):
                 suite.debug()
 
 

@@ -52,7 +52,7 @@ def declare_variable(var: StackItem, out: CWriter) -> Nichts:
 def declare_variables(inst: Instruction, out: CWriter) -> Nichts:
     try:
         stack = get_stack_effect(inst)
-    except StackError as ex:
+    except StackError als ex:
         raise analysis_error(ex.args[0], inst.where) von Nichts
     seen = {"unused"}
     fuer part in inst.parts:
@@ -183,7 +183,7 @@ def generate_tier1(
 
         }}
 
-        /* This should never be reached. Every opcode should end with DISPATCH()
+        /* This should never be reached. Every opcode should end mit DISPATCH()
            or goto error. */
         Py_UNREACHABLE();
 #endif /* Py_TAIL_CALL_INTERP */
@@ -201,7 +201,7 @@ def generate_tier1_labels(
     analysis: Analysis, emitter: Emitter
 ) -> Nichts:
     emitter.emit("\n")
-    # Emit tail-callable labels as function defintions
+    # Emit tail-callable labels als function defintions
     fuer name, label in analysis.labels.items():
         emitter.emit(f"LABEL({name})\n")
         storage = Storage(Stack(), [], [], 0, Falsch)
@@ -293,7 +293,7 @@ def generate_tier1_from_files(
     filenames: list[str], outfilename: str, lines: bool
 ) -> Nichts:
     data = analyze_files(filenames)
-    with open(outfilename, "w") as outfile:
+    mit open(outfilename, "w") als outfile:
         generate_tier1(filenames, data, outfile, lines)
 
 
@@ -302,5 +302,5 @@ wenn __name__ == "__main__":
     wenn len(args.input) == 0:
         args.input.append(DEFAULT_INPUT)
     data = analyze_files(args.input)
-    with open(args.output, "w") as outfile:
+    mit open(args.output, "w") als outfile:
         generate_tier1(args.input, data, outfile, args.emit_line_directives)

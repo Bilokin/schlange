@@ -37,7 +37,7 @@ klasse TestBreak(unittest.TestCase):
             repeats = self.default_repeats
 
         fuer repeat in range(repeats):
-            with self.subTest(repeat=repeat):
+            mit self.subTest(repeat=repeat):
                 # We don't run `setUp` fuer the very first repeat
                 # and we don't run `tearDown` fuer the very last one,
                 # because they are handled by the test klasse itself.
@@ -115,7 +115,7 @@ klasse TestBreak(unittest.TestCase):
             unittest.installHandler()
             unittest.registerResult(result)
 
-            with self.assertRaises(KeyboardInterrupt):
+            mit self.assertRaises(KeyboardInterrupt):
                 test(result)
             self.assertWahr(result.breakCaught)
         self.withRepeats(test_function)
@@ -172,7 +172,7 @@ klasse TestBreak(unittest.TestCase):
         self.withRepeats(test_function)
 
     def testRunner(self):
-        # Creating a TextTestRunner with the appropriate argument should
+        # Creating a TextTestRunner mit the appropriate argument should
         # register the TextTestResult it creates
         runner = unittest.TextTestRunner(stream=io.StringIO())
 

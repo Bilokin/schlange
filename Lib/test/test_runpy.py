@@ -27,8 +27,8 @@ von test.support.script_helper importiere make_script, make_zip_script
 
 importiere runpy
 von runpy importiere _run_code, _run_module_code, run_module, run_path
-# Note: This module can't safely test _run_module_as_main as it
-# runs its tests in the current process, which would mess with the
+# Note: This module can't safely test _run_module_as_main als it
+# runs its tests in the current process, which would mess mit the
 # real __main__ module (usually test.regrtest)
 # See test_cmd_line_script fuer a test that executes that code path
 
@@ -74,9 +74,9 @@ example_namespace.update(implicit_namespace)
 
 klasse CodeExecutionMixin:
     # Issue #15230 (run_path not handling run_name correctly) highlighted a
-    # problem with the way arguments were being passed von higher level APIs
+    # problem mit the way arguments were being passed von higher level APIs
     # down to lower level code. This mixin makes it easier to ensure full
-    # testing occurs at those upper layers as well, not just at the utility
+    # testing occurs at those upper layers als well, not just at the utility
     # layer
 
     # Figuring out the loader details in advance is hard to do, so we skip
@@ -117,7 +117,7 @@ klasse CodeExecutionMixin:
                 expected = (k, getattr(expected_spec, attr))
                 self.assertEqual(actual, expected)
         # For the rest, we still don't use direct dict comparison on the
-        # namespace, as the diffs are too hard to debug wenn anything breaks
+        # namespace, als the diffs are too hard to debug wenn anything breaks
         self.assertEqual(set(result_ns), set(expected_ns))
         fuer k in result_ns:
             actual = (k, result_ns[k])
@@ -141,7 +141,7 @@ klasse CodeExecutionMixin:
         self.assertNamespaceMatches(result_ns, expected_ns)
         self.assertIs(sys.argv[0], saved_argv0)
         self.assertIs(sys.modules.get(run_name, sentinel), saved_mod)
-        # And then with initial globals
+        # And then mit initial globals
         initial_ns = {"sentinel": sentinel}
         expected_ns["sentinel"] = sentinel
         result_ns = create_namespace(initial_ns)
@@ -167,7 +167,7 @@ klasse ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
         mod_name = "<Nonsense>"
         mod_fname = "Some other nonsense"
         mod_loader = "Now you're just being silly"
-        mod_package = '' # Treat as a top level module
+        mod_package = '' # Treat als a top level module
         mod_spec = importlib.machinery.ModuleSpec(mod_name,
                                                   origin=mod_fname,
                                                   loader=mod_loader)
@@ -231,7 +231,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                      *, namespace=Falsch, parent_namespaces=Falsch):
         # Enforce a couple of internal sanity checks on test cases
         wenn (namespace or parent_namespaces) and not depth:
-            raise RuntimeError("Can't mark top level module as a "
+            raise RuntimeError("Can't mark top level module als a "
                                "namespace package")
         pkg_name = "__runpy_pkg__"
         test_fname = mod_base+os.extsep+"py"
@@ -248,7 +248,7 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
                 wenn verbose > 1: drucke("  Next level in:", sub_dir)
                 wenn verbose > 1: drucke("  Created:", pkg_fname)
         mod_fname = os.path.join(sub_dir, test_fname)
-        with open(mod_fname, "w") as mod_file:
+        mit open(mod_fname, "w") als mod_file:
             mod_file.write(source)
         wenn verbose > 1: drucke("  Created:", mod_fname)
         mod_name = (pkg_name+".")*depth + mod_base
@@ -267,19 +267,19 @@ klasse RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             fuer name in files:
                 try:
                     os.remove(os.path.join(root, name))
-                except OSError as ex:
-                    wenn verbose > 1: drucke(ex) # Persist with cleaning up
+                except OSError als ex:
+                    wenn verbose > 1: drucke(ex) # Persist mit cleaning up
             fuer name in dirs:
                 fullname = os.path.join(root, name)
                 try:
                     os.rmdir(fullname)
-                except OSError as ex:
-                    wenn verbose > 1: drucke(ex) # Persist with cleaning up
+                except OSError als ex:
+                    wenn verbose > 1: drucke(ex) # Persist mit cleaning up
         try:
             os.rmdir(top)
             wenn verbose > 1: drucke("  Removed package tree")
-        except OSError as ex:
-            wenn verbose > 1: drucke(ex) # Persist with cleaning up
+        except OSError als ex:
+            wenn verbose > 1: drucke(ex) # Persist mit cleaning up
 
     def _fix_ns_for_legacy_pyc(self, ns, alter_sys):
         char_to_add = "c"
@@ -463,19 +463,19 @@ von ..uncle.cousin importiere nephew
         exceptions = (ImportError, AttributeError, TypeError, ValueError)
         fuer exception in exceptions:
             name = exception.__name__
-            with self.subTest(name):
+            mit self.subTest(name):
                 source = "raise {0}('{0} in __init__.py.')".format(name)
-                with open(init, "wt", encoding="ascii") as mod_file:
+                mit open(init, "wt", encoding="ascii") als mod_file:
                     mod_file.write(source)
                 try:
                     run_module(mod_name)
-                except exception as err:
+                except exception als err:
                     self.assertNotIn("finding spec", format(err))
                 sonst:
                     self.fail("Nothing raised; expected {}".format(name))
                 try:
                     run_module(mod_name + ".submodule")
-                except exception as err:
+                except exception als err:
                     self.assertNotIn("finding spec", format(err))
                 sonst:
                     self.fail("Nothing raised; expected {}".format(name))
@@ -484,7 +484,7 @@ von ..uncle.cousin importiere nephew
         pkg_dir, _, mod_name, _ = self._make_pkg("", 1)
         try:
             __import__(mod_name)
-            with self.assertWarnsRegex(RuntimeWarning,
+            mit self.assertWarnsRegex(RuntimeWarning,
                     r"found in sys\.modules"):
                 run_module(mod_name)
         finally:
@@ -497,12 +497,12 @@ von ..uncle.cousin importiere nephew
         # No warning should occur wenn we only imported the parent package
         __import__(package)
         self.assertIn(package, sys.modules)
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
             run_module(package)
         # But the warning should occur wenn we imported the __main__ submodule
         __import__(mod_name)
-        with self.assertWarnsRegex(RuntimeWarning, r"found in sys\.modules"):
+        mit self.assertWarnsRegex(RuntimeWarning, r"found in sys\.modules"):
             run_module(package)
 
     def test_run_package_in_namespace_package(self):
@@ -657,14 +657,14 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         self.assertRaisesRegex(ImportError, msg, run_path, script_name)
 
     def test_basic_script(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name)
             self._check_script(script_name, "<run_path>", script_name,
                                script_name, expect_spec=Falsch)
 
     def test_basic_script_with_pathlike_object(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name)
             self._check_script(FakePath(script_name), "<run_path>",
@@ -673,7 +673,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                expect_spec=Falsch)
 
     def test_basic_script_no_suffix(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name,
                                                  omit_suffix=Wahr)
@@ -681,7 +681,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                script_name, expect_spec=Falsch)
 
     def test_script_compiled(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name)
             compiled_name = py_compile.compile(script_name, doraise=Wahr)
@@ -690,14 +690,14 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                compiled_name, expect_spec=Falsch)
 
     def test_directory(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             self._check_script(script_dir, "<run_path>", script_name,
                                script_dir, mod_name=mod_name)
 
     def test_directory_compiled(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             compiled_name = py_compile.compile(script_name, doraise=Wahr)
@@ -708,14 +708,14 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                    script_dir, mod_name=mod_name)
 
     def test_directory_error(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = 'not_main'
             script_name = self._make_test_script(script_dir, mod_name)
             msg = "can't find '__main__' module in %r" % script_dir
             self._check_import_error(script_dir, msg)
 
     def test_zipfile(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             zip_name, fname = make_zip_script(script_dir, 'test_zip', script_name)
@@ -723,7 +723,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                mod_name=mod_name, check_loader=Falsch)
 
     def test_zipfile_compiled(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             compiled_name = py_compile.compile(script_name, doraise=Wahr)
@@ -733,7 +733,7 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
                                mod_name=mod_name, check_loader=Falsch)
 
     def test_zipfile_error(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             mod_name = 'not_main'
             script_name = self._make_test_script(script_dir, mod_name)
             zip_name, fname = make_zip_script(script_dir, 'test_zip', script_name)
@@ -743,19 +743,19 @@ klasse RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
     @no_tracing
     @requires_resource('cpu')
     def test_main_recursion_error(self):
-        with temp_dir() as script_dir, temp_dir() as dummy_dir:
+        mit temp_dir() als script_dir, temp_dir() als dummy_dir:
             mod_name = '__main__'
             source = ("import runpy\n"
                       "runpy.run_path(%r)\n") % dummy_dir
             script_name = self._make_test_script(script_dir, mod_name, source)
             zip_name, fname = make_zip_script(script_dir, 'test_zip', script_name)
-            with infinite_recursion(25):
+            mit infinite_recursion(25):
                 self.assertRaises(RecursionError, run_path, zip_name)
 
     def test_encoding(self):
-        with temp_dir() as script_dir:
+        mit temp_dir() als script_dir:
             filename = os.path.join(script_dir, 'script.py')
-            with open(filename, 'w', encoding='latin1') as f:
+            mit open(filename, 'w', encoding='latin1') als f:
                 f.write("""
 #coding:latin1
 s = "non-ASCII: h\xe9"
@@ -775,12 +775,12 @@ klasse TestExit(unittest.TestCase):
     @staticmethod
     @contextlib.contextmanager
     def tmp_path(*args, **kwargs):
-        with temp_dir() as tmp_fn:
+        mit temp_dir() als tmp_fn:
             yield pathlib.Path(tmp_fn)
 
 
     def run(self, *args, **kwargs):
-        with self.tmp_path() as tmp:
+        mit self.tmp_path() als tmp:
             self.ham = ham = tmp / "ham.py"
             ham.write_text(
                 textwrap.dedent(

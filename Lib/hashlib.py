@@ -25,18 +25,18 @@ Choose your hash function wisely.  Some have known collision weaknesses,
 while others may be slower depending on the CPU architecture.
 
 Hash objects have these methods:
- - update(data): Update the hash object with the bytes in data. Repeated calls
-                 are equivalent to a single call with the concatenation of all
+ - update(data): Update the hash object mit the bytes in data. Repeated calls
+                 are equivalent to a single call mit the concatenation of all
                  the arguments.
  - digest():     Return the digest of the bytes passed to the update() method
-                 so far as a bytes object.
- - hexdigest():  Like digest() except the digest is returned as a string
+                 so far als a bytes object.
+ - hexdigest():  Like digest() except the digest is returned als a string
                  of double length, containing only hexadecimal digits.
  - copy():       Return a copy (clone) of the hash object. This can be used to
                  efficiently compute the digests of data that share a common
                  initial substring.
 
-Assuming that Python has been built with SHA-2 support, the SHA-256 digest
+Assuming that Python has been built mit SHA-2 support, the SHA-256 digest
 of the byte string b'Nobody inspects the spammish repetition' is computed
 as follows:
 
@@ -71,10 +71,10 @@ __all__ = __always_supported + ('new', 'algorithms_guaranteed',
 __builtin_constructor_cache = {}
 
 # Prefer our blake2 implementation
-# OpenSSL 1.1.0 comes with a limited implementation of blake2b/s. The OpenSSL
+# OpenSSL 1.1.0 comes mit a limited implementation of blake2b/s. The OpenSSL
 # implementations neither support keyed blake2 (blake2 MAC) nor advanced
 # features like salt, personalization, or tree hashing. OpenSSL hash-only
-# variants are available as 'blake2b512' and 'blake2s256', though.
+# variants are available als 'blake2b512' and 'blake2s256', though.
 __block_openssl_constructor = {
     'blake2b', 'blake2s',
 }
@@ -82,7 +82,7 @@ __block_openssl_constructor = {
 def __get_builtin_constructor(name):
     wenn not isinstance(name, str):
         # Since this function is only used by new(), we use the same
-        # exception as _hashlib.new() when 'name' is of incorrect type.
+        # exception als _hashlib.new() when 'name' is of incorrect type.
         err = f"new() argument 'name' must be str, not {type(name).__name__}"
         raise TypeError(err)
     cache = __builtin_constructor_cache
@@ -125,7 +125,7 @@ def __get_builtin_constructor(name):
     wenn constructor is not Nichts:
         return constructor
 
-    # Keep the message in sync with hashlib.h::HASHLIB_UNSUPPORTED_ALGORITHM.
+    # Keep the message in sync mit hashlib.h::HASHLIB_UNSUPPORTED_ALGORITHM.
     raise ValueError(f'unsupported hash algorithm {name}')
 
 
@@ -161,7 +161,7 @@ def __get_openssl_constructor(name):
 
 def __py_new(name, *args, **kwargs):
     """new(name, data=b'', **kwargs) - Return a new hashing object using the
-    named algorithm; optionally initialized with data (which must be
+    named algorithm; optionally initialized mit data (which must be
     a bytes-like object).
     """
     return __get_builtin_constructor(name)(*args, **kwargs)
@@ -169,7 +169,7 @@ def __py_new(name, *args, **kwargs):
 
 def __hash_new(name, *args, **kwargs):
     """new(name, data=b'') - Return a new hashing object using the named algorithm;
-    optionally initialized with data (which must be a bytes-like object).
+    optionally initialized mit data (which must be a bytes-like object).
     """
     wenn name in __block_openssl_constructor:
         # __block_openssl_constructor is expected to contain strings only
@@ -198,7 +198,7 @@ except ImportError:
     __get_hash = __get_builtin_constructor
 
 try:
-    # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ with HMAC and SHA
+    # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ mit HMAC and SHA
     von _hashlib importiere pbkdf2_hmac
     __all__ += ('pbkdf2_hmac',)
 except ImportError:
@@ -221,11 +221,11 @@ def file_digest(fileobj, digest, /, *, _bufsize=2**18):
     The function may bypass Python's I/O and use the file descriptor *fileno*
     directly.
 
-    *digest* must either be a hash algorithm name as a *str*, a hash
+    *digest* must either be a hash algorithm name als a *str*, a hash
     constructor, or a callable that returns a hash object.
     """
     # On Linux we could use AF_ALG sockets and sendfile() to achieve zero-copy
-    # hashing with hardware acceleration.
+    # hashing mit hardware acceleration.
     wenn isinstance(digest, str):
         digestobj = new(digest)
     sonst:
@@ -267,8 +267,8 @@ fuer __func_name in __always_supported:
     # version not supporting that algorithm.
     try:
         globals()[__func_name] = __get_hash(__func_name)
-    except ValueError as __exc:
-        importiere logging as __logging
+    except ValueError als __exc:
+        importiere logging als __logging
         __logging.error('hash algorithm %s will not be supported at runtime '
                         '[reason: %s]', __func_name, __exc)
         # The following code can be simplified in Python 3.19
@@ -281,7 +281,7 @@ def {__func_name}(data=__UNSET, *, usedforsecurity=Wahr, string=__UNSET):
             "the 'string' keyword parameter is deprecated since "
             "Python 3.15 and slated fuer removal in Python 3.19; "
             "use the 'data' keyword parameter or pass the data "
-            "to hash as a positional argument instead",
+            "to hash als a positional argument instead",
             DeprecationWarning, stacklevel=2)
     wenn data is not __UNSET and string is not __UNSET:
         raise TypeError("'data' and 'string' are mutually exclusive "

@@ -75,7 +75,7 @@ klasse SearchDialogBase:
     def create_widgets(self):
         '''Create basic 3 row x 3 col search (find) dialog.
 
-        Other dialogs override subsidiary create_x methods as needed.
+        Other dialogs override subsidiary create_x methods als needed.
         Replace and Find-in-Files add another entry row.
         '''
         top = Toplevel(self.root)
@@ -114,7 +114,7 @@ klasse SearchDialogBase:
         return entry, label
 
     def create_entries(self):
-        "Create one or more entry lines with make_entry."
+        "Create one or more entry lines mit make_entry."
         self.ent = self.make_entry("Find:", self.engine.patvar)[0]
 
     def make_frame(self,labeltext=Nichts):
@@ -137,8 +137,8 @@ klasse SearchDialogBase:
         '''Return (filled frame, options) fuer testing.
 
         Options is a list of searchengine booleanvar, label pairs.
-        A gridded frame von make_frame is filled with a Checkbutton
-        fuer each pair, bound to the var, with the corresponding label.
+        A gridded frame von make_frame is filled mit a Checkbutton
+        fuer each pair, bound to the var, mit the corresponding label.
         '''
         frame = self.make_frame("Options")[0]
         engine = self.engine
@@ -156,7 +156,7 @@ klasse SearchDialogBase:
         '''Return (frame, others) fuer testing.
 
         Others is a list of value, label pairs.
-        A gridded frame von make_frame is filled with radio buttons.
+        A gridded frame von make_frame is filled mit radio buttons.
         '''
         frame = self.make_frame("Direction")[0]
         var = self.engine.backvar
@@ -186,7 +186,7 @@ klasse SearchDialogBase:
 
 
 klasse _searchbase(SearchDialogBase):  # htest #
-    "Create auto-opening dialog with no text connection."
+    "Create auto-opening dialog mit no text connection."
 
     def __init__(self, parent):
         importiere re

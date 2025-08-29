@@ -47,7 +47,7 @@ klasse BaseProtocol:
         pause_writing() is not called -- it must go strictly over.
         Conversely, resume_writing() is called when the buffer size is
         equal or lower than the low-water mark.  These end conditions
-        are important to ensure that things go as expected when either
+        are important to ensure that things go als expected when either
         mark is zero.
 
         NOTE: This is the only Protocol callback that is not called
@@ -74,10 +74,10 @@ klasse Protocol(BaseProtocol):
     factory to a utility function (e.g., EventLoop.create_connection()).
 
     When the connection is made successfully, connection_made() is
-    called with a suitable transport object.  Then data_received()
-    will be called 0 or more times with data (bytes) received von the
+    called mit a suitable transport object.  Then data_received()
+    will be called 0 or more times mit data (bytes) received von the
     transport; finally, connection_lost() will be called exactly once
-    with either an exception object or Nichts as an argument.
+    mit either an exception object or Nichts als an argument.
 
     State machine of calls:
 
@@ -107,9 +107,9 @@ klasse Protocol(BaseProtocol):
 
 
 klasse BufferedProtocol(BaseProtocol):
-    """Interface fuer stream protocol with manual buffer control.
+    """Interface fuer stream protocol mit manual buffer control.
 
-    Event methods, such as `create_server` and `create_connection`,
+    Event methods, such als `create_server` and `create_connection`,
     accept factories that return protocols that implement this interface.
 
     The idea of BufferedProtocol is that it allows to manually allocate
@@ -144,7 +144,7 @@ klasse BufferedProtocol(BaseProtocol):
         """
 
     def buffer_updated(self, nbytes):
-        """Called when the buffer was updated with the received data.
+        """Called when the buffer was updated mit the received data.
 
         *nbytes* is the total number of bytes that were written to
         the buffer.
@@ -187,7 +187,7 @@ klasse SubprocessProtocol(BaseProtocol):
         """
 
     def pipe_connection_lost(self, fd, exc):
-        """Called when a file descriptor associated with the child process is
+        """Called when a file descriptor associated mit the child process is
         closed.
 
         fd is the int file descriptor that was closed.

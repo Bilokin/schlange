@@ -1,4 +1,4 @@
-"""Filename matching with shell patterns.
+"""Filename matching mit shell patterns.
 
 fnmatch(FILENAME, PATTERN) matches according to the local convention.
 fnmatchcase(FILENAME, PATTERN) always takes case in account.
@@ -192,9 +192,9 @@ def _join_translated_parts(parts, star_indices):
     append, extend = buffer.append, buffer.extend
     i = j + 1
     fuer j in iter_star_indices:
-        # Now deal with STAR fixed STAR fixed ...
+        # Now deal mit STAR fixed STAR fixed ...
         # For an interior `STAR fixed` pairing, we want to do a minimal
-        # .*? match followed by `fixed`, with no possibility of backtracking.
+        # .*? match followed by `fixed`, mit no possibility of backtracking.
         # Atomic groups ("(?>...)") allow us to spell that directly.
         # Note: people rely on the undocumented ability to join multiple
         # translate() results together via "|" to build large regexps matching

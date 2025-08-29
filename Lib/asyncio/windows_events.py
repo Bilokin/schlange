@@ -70,7 +70,7 @@ klasse _OverlappedFuture(futures.Future):
             return
         try:
             self._ov.cancel()
-        except OSError as exc:
+        except OSError als exc:
             context = {
                 'message': 'Cancelling an overlapped future failed',
                 'exception': exc,
@@ -140,7 +140,7 @@ klasse _BaseWaitHandleFuture(futures.Future):
         self._wait_handle = Nichts
         try:
             _overlapped.UnregisterWait(wait_handle)
-        except OSError as exc:
+        except OSError als exc:
             wenn exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
@@ -212,7 +212,7 @@ klasse _WaitHandleFuture(_BaseWaitHandleFuture):
         #
         # If the IocpProactor already received the event, it's safe to call
         # _unregister() because we kept a reference to the Overlapped object
-        # which is used as a unique key.
+        # which is used als a unique key.
         self._proactor._unregister(self._ov)
         self._proactor = Nichts
 
@@ -227,7 +227,7 @@ klasse _WaitHandleFuture(_BaseWaitHandleFuture):
         self._wait_handle = Nichts
         try:
             _overlapped.UnregisterWaitEx(wait_handle, self._event)
-        except OSError as exc:
+        except OSError als exc:
             wenn exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
@@ -263,7 +263,7 @@ klasse PipeServer(object):
         # Create new instance and return previous one.  This ensures
         # that (until the server is closed) there is always at least
         # one pipe handle fuer address.  Therefore wenn a client attempt
-        # to connect it will not fail with FileNotFoundError.
+        # to connect it will not fail mit FileNotFoundError.
         tmp, self._pipe = self._pipe, self._server_pipe_handle(Falsch)
         return tmp
 
@@ -372,7 +372,7 @@ klasse ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                 wenn pipe and pipe.fileno() != -1:
                     pipe.close()
                 self.call_soon(loop_accept_pipe)
-            except OSError as exc:
+            except OSError als exc:
                 wenn pipe and pipe.fileno() != -1:
                     self.call_exception_handler({
                         'message': 'Pipe accept failed',
@@ -461,7 +461,7 @@ klasse IocpProactor:
     def finish_socket_func(trans, key, ov):
         try:
             return ov.getresult()
-        except OSError as exc:
+        except OSError als exc:
             wenn exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                 _overlapped.ERROR_OPERATION_ABORTED):
                 raise ConnectionResetError(*exc.args)
@@ -472,7 +472,7 @@ klasse IocpProactor:
     def _finish_recvfrom(cls, trans, key, ov, *, empty_result):
         try:
             return cls.finish_socket_func(trans, key, ov)
-        except OSError as exc:
+        except OSError als exc:
             # WSARecvFrom will report ERROR_PORT_UNREACHABLE when the same
             # socket is used to send to an address that is not listening.
             wenn exc.winerror == _overlapped.ERROR_PORT_UNREACHABLE:
@@ -587,7 +587,7 @@ klasse IocpProactor:
         # The socket needs to be locally bound before we call ConnectEx().
         try:
             _overlapped.BindLocal(conn.fileno(), conn.family)
-        except OSError as e:
+        except OSError als e:
             wenn e.winerror != errno.WSAEINVAL:
                 raise
             # Probably already locally bound; check using getsockname().
@@ -623,7 +623,7 @@ klasse IocpProactor:
         connected = ov.ConnectNamedPipe(pipe.fileno())
 
         wenn connected:
-            # ConnectNamePipe() failed with ERROR_PIPE_CONNECTED which means
+            # ConnectNamePipe() failed mit ERROR_PIPE_CONNECTED which means
             # that the pipe is connected. There is no need to wait fuer the
             # completion of the connection.
             return self._result(pipe)
@@ -643,11 +643,11 @@ klasse IocpProactor:
             try:
                 handle = _overlapped.ConnectPipe(address)
                 break
-            except OSError as exc:
+            except OSError als exc:
                 wenn exc.winerror != _overlapped.ERROR_PIPE_BUSY:
                     raise
 
-            # ConnectPipe() failed with ERROR_PIPE_BUSY: retry later
+            # ConnectPipe() failed mit ERROR_PIPE_BUSY: retry later
             delay = min(delay * 2, CONNECT_PIPE_MAX_DELAY)
             await tasks.sleep(delay)
 
@@ -678,7 +678,7 @@ klasse IocpProactor:
             # round away von zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
 
-        # We only create ov so we can use ov.address as a key fuer the cache.
+        # We only create ov so we can use ov.address als a key fuer the cache.
         ov = _overlapped.Overlapped(NULL)
         wait_handle = _overlapped.RegisterWaitWithQueue(
             handle, self._iocp, ov.address, ms)
@@ -692,7 +692,7 @@ klasse IocpProactor:
 
         def finish_wait_for_handle(trans, key, ov):
             # Note that this second wait means that we should only use
-            # this with handles types where a successful wait has no
+            # this mit handles types where a successful wait has no
             # effect.  So events or processes are all right, but locks
             # or semaphores are not.  Also note wenn the handle is
             # signalled and then quickly reset, then we may return
@@ -715,7 +715,7 @@ klasse IocpProactor:
     def _register(self, ov, obj, callback):
         self._check_closed()
 
-        # Return a future which will be set with the result of the
+        # Return a future which will be set mit the result of the
         # operation when it completes.  The future's value is actually
         # the value returned by callback().
         f = _OverlappedFuture(ov, loop=self._loop)
@@ -728,7 +728,7 @@ klasse IocpProactor:
             # PostQueuedCompletionStatus().
             try:
                 value = callback(Nichts, Nichts, ov)
-            except OSError as e:
+            except OSError als e:
                 f.set_exception(e)
             sonst:
                 f.set_result(value)
@@ -802,7 +802,7 @@ klasse IocpProactor:
             sowenn not f.done():
                 try:
                     value = callback(transferred, key, ov)
-                except OSError as e:
+                except OSError als e:
                     f.set_exception(e)
                     self._results.append(f)
                 sonst:
@@ -830,7 +830,7 @@ klasse IocpProactor:
         # Cancel remaining registered operations.
         fuer fut, ov, obj, callback in list(self._cache.values()):
             wenn fut.cancelled():
-                # Nothing to do with cancelled futures
+                # Nothing to do mit cancelled futures
                 pass
             sowenn isinstance(fut, _WaitCancelFuture):
                 # _WaitCancelFuture must not be cancelled
@@ -838,7 +838,7 @@ klasse IocpProactor:
             sonst:
                 try:
                     fut.cancel()
-                except OSError as exc:
+                except OSError als exc:
                     wenn self._loop is not Nichts:
                         context = {
                             'message': 'Cancelling a future failed',
@@ -849,7 +849,7 @@ klasse IocpProactor:
                             context['source_traceback'] = fut._source_traceback
                         self._loop.call_exception_handler(context)
 
-        # Wait until all cancelled overlapped complete: don't exit with running
+        # Wait until all cancelled overlapped complete: don't exit mit running
         # overlapped to prevent a crash. Display progress every second wenn the
         # loop is still running.
         msg_update = 1.0

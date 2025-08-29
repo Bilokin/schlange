@@ -64,7 +64,7 @@ klasse Test_Assertions(unittest.TestCase):
         self.assertRaises(KeyError, _raise, KeyError("key"))
         try:
             self.assertRaises(KeyError, lambda: Nichts)
-        except self.failureException as e:
+        except self.failureException als e:
             self.assertIn("KeyError not raised", str(e))
         sonst:
             self.fail("assertRaises() didn't fail")
@@ -74,25 +74,25 @@ klasse Test_Assertions(unittest.TestCase):
             pass
         sonst:
             self.fail("assertRaises() didn't let exception pass through")
-        with self.assertRaises(KeyError) as cm:
+        mit self.assertRaises(KeyError) als cm:
             try:
                 raise KeyError
-            except Exception as e:
+            except Exception als e:
                 exc = e
                 raise
         self.assertIs(cm.exception, exc)
 
-        with self.assertRaises(KeyError):
+        mit self.assertRaises(KeyError):
             raise KeyError("key")
         try:
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 pass
-        except self.failureException as e:
+        except self.failureException als e:
             self.assertIn("KeyError not raised", str(e))
         sonst:
             self.fail("assertRaises() didn't fail")
         try:
-            with self.assertRaises(KeyError):
+            mit self.assertRaises(KeyError):
                 raise ValueError
         except ValueError:
             pass
@@ -121,7 +121,7 @@ klasse Test_Assertions(unittest.TestCase):
                 self.assertRaises(ValueError, self.foo)
 
             def test_with(self):
-                with self.assertRaises(ValueError):
+                mit self.assertRaises(ValueError):
                     self.foo()
 
         Foo("test_functional").run()
@@ -135,7 +135,7 @@ klasse Test_Assertions(unittest.TestCase):
         self.assertNotRegex('Ala ma kota', r'r+')
         try:
             self.assertNotRegex('Ala ma kota', r'k.t', 'Message')
-        except self.failureException as e:
+        except self.failureException als e:
             self.assertIn('Message', e.args[0])
         sonst:
             self.fail('assertNotRegex should have failed.')
@@ -206,7 +206,7 @@ klasse TestLongMessage(unittest.TestCase):
             wenn withMsg:
                 kwargs = {"msg": "oops"}
 
-            with self.assertRaisesRegex(self.failureException,
+            mit self.assertRaisesRegex(self.failureException,
                                         expected_regex=expected_regex):
                 testMethod(*args, **kwargs)
 
@@ -342,7 +342,7 @@ klasse TestLongMessage(unittest.TestCase):
     def assertMessagesCM(self, methodName, args, func, errors):
         """
         Check that the correct error messages are raised while executing:
-          with method(*args):
+          mit method(*args):
               func()
         *errors* should be a list of 4 regex that match the error when:
           1) longMessage = Falsch and no msg passed;
@@ -354,8 +354,8 @@ klasse TestLongMessage(unittest.TestCase):
                     ({}, {"msg": "oops"}))
         fuer (cls, kwargs), err in zip(p, errors):
             method = getattr(cls, methodName)
-            with self.assertRaisesRegex(cls.failureException, err):
-                with method(*args, **kwargs) as cm:
+            mit self.assertRaisesRegex(cls.failureException, err):
+                mit method(*args, **kwargs) als cm:
                     func()
 
     def testAssertRaises(self):
@@ -371,7 +371,7 @@ klasse TestLongMessage(unittest.TestCase):
                               ['^TypeError not raised$', '^oops$',
                                '^TypeError not raised$',
                                '^TypeError not raised : oops$'])
-        # test error raised but with wrong message
+        # test error raised but mit wrong message
         def raise_wrong_message():
             raise TypeError('foo')
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'regex'),
@@ -403,7 +403,7 @@ klasse TestLongMessage(unittest.TestCase):
                               ['^UserWarning not triggered$', '^oops$',
                                '^UserWarning not triggered$',
                                '^UserWarning not triggered : oops$'])
-        # test warning raised but with wrong message
+        # test warning raised but mit wrong message
         def raise_wrong_message():
             warnings.warn('foo')
         self.assertMessagesCM('assertWarnsRegex', (UserWarning, 'regex'),

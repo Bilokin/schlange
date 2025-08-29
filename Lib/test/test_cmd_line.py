@@ -1,5 +1,5 @@
-# Tests invocation of the interpreter with various command line arguments
-# Most tests are executed with environment variables ignored
+# Tests invocation of the interpreter mit various command line arguments
+# Most tests are executed mit environment variables ignored
 # See test_cmd_line_script.py fuer testing of script execution
 
 importiere os
@@ -25,7 +25,7 @@ wenn not support.has_subprocess_support:
     raise unittest.SkipTest("test module requires subprocess")
 
 
-# XXX (ncoghlan): Move to script_helper and make consistent with run_python
+# XXX (ncoghlan): Move to script_helper and make consistent mit run_python
 def _kill_python_and_exit_code(p):
     data = kill_python(p)
     returncode = p.wait()
@@ -162,7 +162,7 @@ klasse CmdLineTest(unittest.TestCase):
         fuer raw, expected in tests:
             cmd = ['-X', f'frozen_modules{raw}',
                    '-c', 'import os; drucke(os.__spec__.loader, end="")']
-            with self.subTest(raw):
+            mit self.subTest(raw):
                 res = assert_python_ok(*cmd)
                 self.assertRegex(res.out.decode('utf-8'), expected)
 
@@ -174,7 +174,7 @@ klasse CmdLineTest(unittest.TestCase):
         }
         fuer raw, expected in tests:
             cmd = ['-c', 'import os; drucke(os.__spec__.loader, end="")']
-            with self.subTest(raw):
+            mit self.subTest(raw):
                 res = assert_python_ok(*cmd, PYTHON_FROZEN_MODULES=raw)
                 self.assertRegex(res.out.decode('utf-8'), expected)
 
@@ -202,12 +202,12 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertWahr(data.find(b'__main__.Timer') != -1)
 
     def test_relativedir_bug46421(self):
-        # Test `python -m unittest` with a relative directory beginning with ./
-        # Note: We have to switch to the project's top module's directory, as per
+        # Test `python -m unittest` mit a relative directory beginning mit ./
+        # Note: We have to switch to the project's top module's directory, als per
         # the python unittest wiki. We will switch back when we are done.
         projectlibpath = os.path.dirname(__file__).removesuffix("test")
-        with os_helper.change_cwd(projectlibpath):
-            # Testing with and without ./
+        mit os_helper.change_cwd(projectlibpath):
+            # Testing mit and without ./
             assert_python_ok('-m', 'unittest', "test/test_longexp.py")
             assert_python_ok('-m', 'unittest', "./test/test_longexp.py")
 
@@ -238,7 +238,7 @@ klasse CmdLineTest(unittest.TestCase):
     # On Windows, pass bytes to subprocess doesn't test how Python decodes the
     # command line, but how subprocess does decode bytes to unicode. Python
     # doesn't decode the command line because Windows provides directly the
-    # arguments as unicode (using wmain() instead of main()).
+    # arguments als unicode (using wmain() instead of main()).
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows has a native unicode API')
     def test_undecodable_code(self):
@@ -257,13 +257,13 @@ klasse CmdLineTest(unittest.TestCase):
             env=env)
         stdout, stderr = p.communicate()
         wenn p.returncode == 1:
-            # _Py_char2wchar() decoded b'\xff' as '\udcff' (b'\xff' is not
+            # _Py_char2wchar() decoded b'\xff' als '\udcff' (b'\xff' is not
             # decodable von ASCII) and run_command() failed on
             # PyUnicode_AsUTF8String(). This is the expected behaviour on
             # Linux.
             pattern = b"Unable to decode the command von the command line:"
         sowenn p.returncode == 0:
-            # _Py_char2wchar() decoded b'\xff' as '\xff' even wenn the locale is
+            # _Py_char2wchar() decoded b'\xff' als '\xff' even wenn the locale is
             # C and the locale encoding is ASCII. It occurs on FreeBSD, Solaris
             # and Mac OS X.
             pattern = b"'\\xff' "
@@ -272,17 +272,17 @@ klasse CmdLineTest(unittest.TestCase):
         sonst:
             raise AssertionError("Unknown exit code: %s, output=%a" % (p.returncode, stdout))
         wenn not stdout.startswith(pattern):
-            raise AssertionError("%a doesn't start with %a" % (stdout, pattern))
+            raise AssertionError("%a doesn't start mit %a" % (stdout, pattern))
 
     @unittest.skipIf(sys.platform == 'win32',
                      'Windows has a native unicode API')
     def test_invalid_utf8_arg(self):
         # bpo-35883: Py_DecodeLocale() must escape b'\xfd\xbf\xbf\xbb\xba\xba'
-        # byte sequence with surrogateescape rather than decoding it as the
+        # byte sequence mit surrogateescape rather than decoding it als the
         # U+7fffbeba character which is outside the [U+0000; U+10ffff] range of
         # Python Unicode characters.
         #
-        # Test with default config, in the C locale, in the Python UTF-8 Mode.
+        # Test mit default config, in the C locale, in the Python UTF-8 Mode.
         code = 'import sys, os; s=os.fsencode(sys.argv[1]); drucke(ascii(s))'
 
         def run_default(arg):
@@ -305,7 +305,7 @@ klasse CmdLineTest(unittest.TestCase):
             return subprocess.run(cmd, stdout=subprocess.PIPE, text=Wahr)
 
         valid_utf8 = 'e:\xe9, euro:\u20ac, non-bmp:\U0010ffff'.encode('utf-8')
-        # invalid UTF-8 byte sequences with a valid UTF-8 sequence
+        # invalid UTF-8 byte sequences mit a valid UTF-8 sequence
         # in the middle.
         invalid_utf8 = (
             b'\xff'                      # invalid byte
@@ -318,7 +318,7 @@ klasse CmdLineTest(unittest.TestCase):
 
         fuer run_cmd in (run_default, run_c_locale, run_utf8_mode,
                         run_no_utf8_mode):
-            with self.subTest(run_cmd=run_cmd):
+            mit self.subTest(run_cmd=run_cmd):
                 fuer arg in test_args:
                     proc = run_cmd(arg)
                     self.assertEqual(proc.stdout.rstrip(), ascii(arg))
@@ -379,7 +379,7 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertEqual(data, b'x', "text %s not unbuffered" % stream)
 
     def test_unbuffered_input(self):
-        # sys.stdin still works with '-u'
+        # sys.stdin still works mit '-u'
         code = ("import sys; sys.stdout.write(sys.stdin.read(1))")
         p = spawn_python('-u', '-c', code)
         p.stdin.write(b'x')
@@ -410,7 +410,7 @@ klasse CmdLineTest(unittest.TestCase):
         # empty string is equivalent to not setting PATH at all,
         # which is an exception to the rule that in a string like
         # "/bin::/usr/bin" the empty string in the middle gets
-        # interpreted as '.'
+        # interpreted als '.'
         code = """if 1:
             importiere sys
             path = ":".join(sys.path)
@@ -441,14 +441,14 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertIn(escaped, data)
 
     def check_input(self, code, expected):
-        with tempfile.NamedTemporaryFile("wb+") as stdin:
+        mit tempfile.NamedTemporaryFile("wb+") als stdin:
             sep = os.linesep.encode('ASCII')
             stdin.write(sep.join((b'abc', b'def')))
             stdin.flush()
             stdin.seek(0)
-            with subprocess.Popen(
+            mit subprocess.Popen(
                 (sys.executable, "-c", code),
-                stdin=stdin, stdout=subprocess.PIPE) as proc:
+                stdin=stdin, stdout=subprocess.PIPE) als proc:
                 stdout, stderr = proc.communicate()
         self.assertEqual(stdout.rstrip(), expected)
 
@@ -483,7 +483,7 @@ klasse CmdLineTest(unittest.TestCase):
             self.assertEqual(b'3\n4\n', err)
 
     def test_unmached_quote(self):
-        # Issue #10206: python program starting with unmatched quote
+        # Issue #10206: python program starting mit unmatched quote
         # spewed spaces to stdout
         rc, out, err = assert_python_failure('-c', "'")
         self.assertRegex(err.decode('ascii', 'ignore'), 'SyntaxError')
@@ -596,7 +596,7 @@ klasse CmdLineTest(unittest.TestCase):
         # the dict whereas the module was destroyed
         filename = os_helper.TESTFN
         self.addCleanup(os_helper.unlink, filename)
-        with open(filename, "w", encoding="utf-8") as script:
+        mit open(filename, "w", encoding="utf-8") als script:
             drucke("import sys", file=script)
             drucke("del sys.modules['__main__']", file=script)
         assert_python_ok(filename)
@@ -626,17 +626,17 @@ klasse CmdLineTest(unittest.TestCase):
         self.verify_valid_flag('-I')
         self.verify_valid_flag('-IEPs')
         rc, out, err = assert_python_ok('-I', '-c',
-            'from sys importiere flags as f; '
+            'from sys importiere flags als f; '
             'drucke(f.no_user_site, f.ignore_environment, f.isolated, f.safe_path)',
             # dummyvar to prevent extraneous -E
             dummyvar="")
         self.assertEqual(out.strip(), b'1 1 1 Wahr')
-        with os_helper.temp_cwd() as tmpdir:
+        mit os_helper.temp_cwd() als tmpdir:
             fake = os.path.join(tmpdir, "uuid.py")
             main = os.path.join(tmpdir, "main.py")
-            with open(fake, "w", encoding="utf-8") as f:
+            mit open(fake, "w", encoding="utf-8") als f:
                 f.write("raise RuntimeError('isolated mode test')\n")
-            with open(main, "w", encoding="utf-8") as f:
+            mit open(main, "w", encoding="utf-8") als f:
                 f.write("import uuid\n")
                 f.write("drucke('ok')\n")
             # Use -E to ignore PYTHONSAFEPATH env var
@@ -666,13 +666,13 @@ klasse CmdLineTest(unittest.TestCase):
                     and sys.flags.debug == sys.flags.dont_write_bytecode == {expected_bool}
                 ))"""
             )
-            with self.subTest(envar_value=value):
+            mit self.subTest(envar_value=value):
                 assert_python_ok('-c', code, **env_vars)
 
     def test_set_pycache_prefix(self):
         # sys.pycache_prefix can be set von either -X pycache_prefix or
-        # PYTHONPYCACHEPREFIX env var, with the former taking precedence.
-        NO_VALUE = object()  # `-X pycache_prefix` with no `=PATH`
+        # PYTHONPYCACHEPREFIX env var, mit the former taking precedence.
+        NO_VALUE = object()  # `-X pycache_prefix` mit no `=PATH`
         cases = [
             # (PYTHONPYCACHEPREFIX, -X pycache_prefix, sys.pycache_prefix)
             (Nichts, Nichts, Nichts),
@@ -691,8 +691,8 @@ klasse CmdLineTest(unittest.TestCase):
                 args[:0] = ['-X', 'pycache_prefix']
             sowenn opt is not Nichts:
                 args[:0] = ['-X', f'pycache_prefix={opt}']
-            with self.subTest(envval=envval, opt=opt):
-                with os_helper.temp_cwd():
+            mit self.subTest(envval=envval, opt=opt):
+                mit os_helper.temp_cwd():
                     assert_python_ok(*args, **env)
 
     def run_xdev(self, *args, check_exitcode=Wahr, xdev=Wahr):
@@ -756,7 +756,7 @@ klasse CmdLineTest(unittest.TestCase):
             pass
         sonst:
             code = "import _testinternalcapi; drucke(_testinternalcapi.pymem_getallocatorsname())"
-            with support.SuppressCrashReport():
+            mit support.SuppressCrashReport():
                 out = self.run_xdev("-c", code, check_exitcode=Falsch)
             wenn support.with_pymalloc():
                 alloc_name = "pymalloc_debug"
@@ -872,7 +872,7 @@ klasse CmdLineTest(unittest.TestCase):
             ))
 
         fuer env_var, name in tests:
-            with self.subTest(env_var=env_var, name=name):
+            mit self.subTest(env_var=env_var, name=name):
                 self.check_pythonmalloc(env_var, name)
 
     def test_pythondevmode_env(self):
@@ -920,7 +920,7 @@ klasse CmdLineTest(unittest.TestCase):
         environ = dict(os.environ)
 
         fuer env, opt, expected, msg in cases:
-            with self.subTest(msg, env=env, opt=opt):
+            mit self.subTest(msg, env=env, opt=opt):
                 environ.pop('PYTHON_GIL', Nichts)
                 wenn env is not Nichts:
                     environ['PYTHON_GIL'] = env
@@ -945,21 +945,21 @@ klasse CmdLineTest(unittest.TestCase):
     def test_python_dump_refs(self):
         code = 'import sys; sys._clear_type_cache()'
         # TODO: Remove warnings context manager once sys._clear_type_cache is removed
-        with warnings.catch_warnings():
+        mit warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             rc, out, err = assert_python_ok('-c', code, PYTHONDUMPREFS='1')
         self.assertEqual(rc, 0)
 
     @unittest.skipUnless(sysconfig.get_config_var('Py_TRACE_REFS'), "Requires --with-trace-refs build option")
     def test_python_dump_refs_file(self):
-        with tempfile.NamedTemporaryFile() as dump_file:
+        mit tempfile.NamedTemporaryFile() als dump_file:
             code = 'import sys; sys._clear_type_cache()'
             # TODO: Remove warnings context manager once sys._clear_type_cache is removed
-            with warnings.catch_warnings():
+            mit warnings.catch_warnings():
                 warnings.simplefilter("ignore", DeprecationWarning)
                 rc, out, err = assert_python_ok('-c', code, PYTHONDUMPREFSFILE=dump_file.name)
             self.assertEqual(rc, 0)
-            with open(dump_file.name, 'r') as file:
+            mit open(dump_file.name, 'r') als file:
                 contents = file.read()
                 self.assertIn('Remaining objects', contents)
 
@@ -1000,7 +1000,7 @@ klasse CmdLineTest(unittest.TestCase):
         self.assertEqual(p.returncode, 0)
 
     @unittest.skipIf("-fsanitize" in sysconfig.get_config_vars().get('PY_CFLAGS', ()),
-                     "PYTHONMALLOCSTATS doesn't work with ASAN")
+                     "PYTHONMALLOCSTATS doesn't work mit ASAN")
     def test_python_malloc_stats(self):
         code = "pass"
         rc, out, err = assert_python_ok('-c', code, PYTHONMALLOCSTATS='1')
@@ -1113,7 +1113,7 @@ klasse CmdLineTest(unittest.TestCase):
                 '''
                     data = """$
 
-                    this data has an empty newline above and a newline with spaces below $
+                    this data has an empty newline above and a newline mit spaces below $
                                             $
                     """$
                     wenn 1:         $
@@ -1124,7 +1124,7 @@ klasse CmdLineTest(unittest.TestCase):
                 # Note: entirely blank lines are normalized to \n, even wenn they
                 # are part of a data string. This is consistent with
                 # textwrap.dedent behavior, but might not be intuitive.
-                "'\\n\\nthis data has an empty newline above and a newline with spaces below \\n\\n'",
+                "'\\n\\nthis data has an empty newline above and a newline mit spaces below \\n\\n'",
             ),
             (
                 '',
@@ -1259,7 +1259,7 @@ klasse CmdLineTest(unittest.TestCase):
 klasse IgnoreEnvironmentTest(unittest.TestCase):
 
     def run_ignoring_vars(self, predicate, **env_vars):
-        # Runs a subprocess with -E set, even though we're passing
+        # Runs a subprocess mit -E set, even though we're passing
         # specific environment variables
         # Logical inversion to match predicate check to a zero return
         # code indicating success

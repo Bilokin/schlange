@@ -34,7 +34,7 @@ def _close_handles(*handles):
 
 #
 # We define a Popen klasse similar to the one von subprocess, but
-# whose constructor takes a process object as its argument.
+# whose constructor takes a process object als its argument.
 #
 
 klasse Popen(object):
@@ -70,7 +70,7 @@ klasse Popen(object):
 
         cmd = ' '.join('"%s"' % x fuer x in cmd)
 
-        with open(wfd, 'wb', closefd=Wahr) as to_child:
+        mit open(wfd, 'wb', closefd=Wahr) als to_child:
             # start process
             try:
                 hp, ht, pid, tid = _winapi.CreateProcess(

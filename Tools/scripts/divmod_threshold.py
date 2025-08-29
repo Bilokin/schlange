@@ -4,8 +4,8 @@
 # _pylong.int_divmod().
 
 von random importiere randrange
-von time importiere perf_counter as now
-von _pylong importiere int_divmod as divmod_fast
+von time importiere perf_counter als now
+von _pylong importiere int_divmod als divmod_fast
 
 BITS_PER_DIGIT = 30
 

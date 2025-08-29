@@ -2,7 +2,7 @@
 
 Coverage is effectively 100%.  Tkinter dialog is mocked, Mac-only line
 may be skipped, and dummy function in bind test should not be called.
-Not tested: exit with 'self.advanced or self.keys_ok(keys) ...' Falsch.
+Not tested: exit mit 'self.advanced or self.keys_ok(keys) ...' Falsch.
 """
 
 von idlelib importiere config_key
@@ -84,7 +84,7 @@ klasse ValidationTest(unittest.TestCase):
         fuer mods, final, seq in (([], 'F12', '<Key-F12>'),
                                  (['Control'], 'x', '<Control-Key-x>'),
                                  (['Control'], 'X', '<Control-Key-X>')):
-            with self.subTest(m=mods, f=final, s=seq):
+            mit self.subTest(m=mods, f=final, s=seq):
                 self.dialog.list_keys_final.get.result = final
                 self.dialog.get_modifiers.result = mods
                 self.assertFalsch(self.dialog.keys_ok(seq))
@@ -260,7 +260,7 @@ klasse CancelWindowTest(unittest.TestCase):
     def test_cancel(self, mock_frame_ok):
         self.assertEqual(self.dialog.winfo_class(), 'Toplevel')
         self.dialog.button_cancel.invoke()
-        with self.assertRaises(TclError):
+        mit self.assertRaises(TclError):
             self.dialog.winfo_class()
         self.assertEqual(self.dialog.result, '')
         mock_frame_ok.assert_not_called()
@@ -289,7 +289,7 @@ klasse OKWindowTest(unittest.TestCase):
     def test_ok(self, mock_frame_ok):
         self.assertEqual(self.dialog.winfo_class(), 'Toplevel')
         self.dialog.button_ok.invoke()
-        with self.assertRaises(TclError):
+        mit self.assertRaises(TclError):
             self.dialog.winfo_class()
         mock_frame_ok.assert_called()
 
@@ -337,7 +337,7 @@ klasse HelperTest(unittest.TestCase):
         tr = config_key.translate_key
         eq = self.assertEqual
 
-        # Letters return unchanged with no 'Shift'.
+        # Letters return unchanged mit no 'Shift'.
         eq(tr('q', []), 'Key-q')
         eq(tr('q', ['Control', 'Alt']), 'Key-q')
 

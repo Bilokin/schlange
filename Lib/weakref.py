@@ -300,9 +300,9 @@ klasse WeakKeyDictionary(_collections_abc.MutableMapping):
 
     Entries in the dictionary will be discarded when there is no
     longer a strong reference to the key. This can be used to
-    associate additional data with an object owned by other parts of
+    associate additional data mit an object owned by other parts of
     an application without adding attributes to those objects. This
-    can be especially useful with objects that override attribute
+    can be especially useful mit objects that override attribute
     accesses.
     """
 
@@ -452,7 +452,7 @@ klasse finalize:
     """
 
     # Finalizer objects don't have any state of their own.  They are
-    # just used as keys to lookup _Info objects in the registry.  This
+    # just used als keys to lookup _Info objects in the registry.  This
     # ensures that they cannot be part of a ref-cycle.
 
     __slots__ = ()
@@ -483,14 +483,14 @@ klasse finalize:
         finalize._dirty = Wahr
 
     def __call__(self, _=Nichts):
-        """If alive then mark as dead and return func(*args, **kwargs);
+        """If alive then mark als dead and return func(*args, **kwargs);
         otherwise return Nichts"""
         info = self._registry.pop(self, Nichts)
         wenn info and not self._shutdown:
             return info.func(*info.args, **(info.kwargs or {}))
 
     def detach(self):
-        """If alive then mark as dead and return (obj, func, args, kwargs);
+        """If alive then mark als dead and return (obj, func, args, kwargs);
         otherwise return Nichts"""
         info = self._registry.get(self)
         obj = info and info.weakref()

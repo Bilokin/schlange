@@ -1,7 +1,7 @@
 # Regular expression patterns fuer C syntax.
 #
 # Nichts of these patterns has any capturing.  However, a number of them
-# have capturing markers compatible with utils.set_capture_groups().
+# have capturing markers compatible mit utils.set_capture_groups().
 
 importiere textwrap
 

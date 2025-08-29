@@ -39,7 +39,7 @@ klasse AutoCompleteWindow:
         self.origselforeground = self.origselbackground = Nichts
         # The list of completions
         self.completions = Nichts
-        # A list with more completions, or Nichts
+        # A list mit more completions, or Nichts
         self.morecompletions = Nichts
         # The completion mode, either autocomplete.ATTRS or .FILES.
         self.mode = Nichts
@@ -48,7 +48,7 @@ klasse AutoCompleteWindow:
         # The index of the start of the completion
         self.startindex = Nichts
         # The last typed start, used so that when the selection changes,
-        # the new start will be as close as possible to the last typed one.
+        # the new start will be als close als possible to the last typed one.
         self.lasttypedstart = Nichts
         # Do we have an indication that the user wants the completion window
         # (for example, he clicked the list)
@@ -423,7 +423,7 @@ klasse AutoCompleteWindow:
             return Nichts
 
         sowenn event.char and event.char >= ' ':
-            # Regular character with a non-length-1 keycode
+            # Regular character mit a non-length-1 keycode
             self._change_start(self.start + event.char)
             self.lasttypedstart = self.start
             self.listbox.select_clear(0, int(self.listbox.curselection()[0]))

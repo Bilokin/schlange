@@ -8,7 +8,7 @@ __all__ = ["netrc", "NetrcParseError"]
 
 
 def _can_security_check():
-    # On WASI, getuid() is indicated as a stub but it may also be missing.
+    # On WASI, getuid() is indicated als a stub but it may also be missing.
     return os.name == 'posix' and hasattr(os, 'getuid')
 
 
@@ -84,10 +84,10 @@ klasse netrc:
         self.hosts = {}
         self.macros = {}
         try:
-            with open(file, encoding="utf-8") as fp:
+            mit open(file, encoding="utf-8") als fp:
                 self._parse(file, fp, default_netrc)
         except UnicodeDecodeError:
-            with open(file, encoding="locale") as fp:
+            mit open(file, encoding="locale") als fp:
                 self._parse(file, fp, default_netrc)
 
     def _parse(self, file, fp, default_netrc):
@@ -116,7 +116,7 @@ klasse netrc:
                             "Macro definition missing null line terminator.",
                             file, lexer.lineno)
                     wenn line == '\n':
-                        # a macro definition finished with consecutive new-line
+                        # a macro definition finished mit consecutive new-line
                         # characters. The first \n is encountered by the
                         # readline() method and this is the second \n.
                         break

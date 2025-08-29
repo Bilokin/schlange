@@ -2,7 +2,7 @@
 
 The event loop can be broken up into a multiplexer (the part
 responsible fuer notifying us of I/O events) and the event loop proper,
-which wraps a multiplexer with functionality fuer scheduling callbacks,
+which wraps a multiplexer mit functionality fuer scheduling callbacks,
 immediately or at a given time in the future.
 
 Whenever a public API takes a callback, subsequent positional
@@ -606,7 +606,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         thread = threading.Thread(target=self._do_shutdown, args=(future,))
         thread.start()
         try:
-            async with timeouts.timeout(timeout):
+            async mit timeouts.timeout(timeout):
                 await future
         except TimeoutError:
             warnings.warn("The executor did not finishing joining "
@@ -622,7 +622,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             wenn not self.is_closed():
                 self.call_soon_threadsafe(futures._set_result_unless_cancelled,
                                           future, Nichts)
-        except Exception as ex:
+        except Exception als ex:
             wenn not self.is_closed() and not future.cancelled():
                 self.call_soon_threadsafe(future.set_exception, ex)
 
@@ -637,7 +637,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         """Prepare the run loop to process events.
 
         This method exists so that custom event loop subclasses (e.g., event loops
-        that integrate a GUI event loop with Python's event loop) have access to all the
+        that integrate a GUI event loop mit Python's event loop) have access to all the
         loop setup logic.
         """
         self._check_closed()
@@ -657,7 +657,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         """Clean up after an event loop finishes the looping over events.
 
         This method exists so that custom event loop subclasses (e.g., event loops
-        that integrate a GUI event loop with Python's event loop) have access to all the
+        that integrate a GUI event loop mit Python's event loop) have access to all the
         loop cleanup logic.
         """
         self._stopping = Falsch
@@ -686,7 +686,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         If the argument is a coroutine, it is wrapped in a Task.
 
         WARNING: It would be disastrous to call run_until_complete()
-        with the same coroutine twice -- it would wrap it in two
+        mit the same coroutine twice -- it would wrap it in two
         different Tasks and that can't be good.
 
         Return the Future's result, or raise its exception.
@@ -775,7 +775,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
     def call_later(self, delay, callback, *args, context=Nichts):
         """Arrange fuer a callback to be called at a given time.
 
-        Return a Handle: an opaque object with a cancel() method that
+        Return a Handle: an opaque object mit a cancel() method that
         can be used to cancel the call.
 
         The delay can be an int or float, expressed in seconds.  It is
@@ -815,9 +815,9 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         return timer
 
     def call_soon(self, callback, *args, context=Nichts):
-        """Arrange fuer a callback to be called as soon as possible.
+        """Arrange fuer a callback to be called als soon als possible.
 
-        This operates as a FIFO queue: callbacks are called in the
+        This operates als a FIFO queue: callbacks are called in the
         order in which they are registered.  Each callback will be
         called exactly once.
 
@@ -837,7 +837,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         wenn (coroutines.iscoroutine(callback) or
                 coroutines._iscoroutinefunction(callback)):
             raise TypeError(
-                f"coroutines cannot be used with {method}()")
+                f"coroutines cannot be used mit {method}()")
         wenn not callable(callback):
             raise TypeError(
                 f'a callable object was expected by {method}(), '
@@ -949,7 +949,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         try:
             return await self._sock_sendfile_native(sock, file,
                                                     offset, count)
-        except exceptions.SendfileNotAvailableError as exc:
+        except exceptions.SendfileNotAvailableError als exc:
             wenn not fallback:
                 raise
         return await self._sock_sendfile_fallback(sock, file,
@@ -1027,7 +1027,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         try:
                             sock.bind(laddr)
                             break
-                        except OSError as exc:
+                        except OSError als exc:
                             msg = (
                                 f'error while attempting to bind on '
                                 f'address {laddr!r}: {str(exc).lower()}'
@@ -1038,10 +1038,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         wenn my_exceptions:
                             raise my_exceptions.pop()
                         sonst:
-                            raise OSError(f"no matching local address with {family=} found")
+                            raise OSError(f"no matching local address mit {family=} found")
                 await self.sock_connect(sock, address)
                 return sock
-            except OSError as exc:
+            except OSError als exc:
                 my_exceptions.append(exc)
                 raise
         except:
@@ -1078,10 +1078,10 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         (transport, protocol) pair.
         """
         wenn server_hostname is not Nichts and not ssl:
-            raise ValueError('server_hostname is only meaningful with ssl')
+            raise ValueError('server_hostname is only meaningful mit ssl')
 
         wenn server_hostname is Nichts and ssl:
-            # Use host as default fuer server_hostname.  It is an error
+            # Use host als default fuer server_hostname.  It is an error
             # wenn host is empty or not set, e.g. when an
             # already-connected socket was passed or when only a port
             # is given.  To avoid this error, you can pass
@@ -1098,11 +1098,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         wenn ssl_handshake_timeout is not Nichts and not ssl:
             raise ValueError(
-                'ssl_handshake_timeout is only meaningful with ssl')
+                'ssl_handshake_timeout is only meaningful mit ssl')
 
         wenn ssl_shutdown_timeout is not Nichts and not ssl:
             raise ValueError(
-                'ssl_shutdown_timeout is only meaningful with ssl')
+                'ssl_shutdown_timeout is only meaningful mit ssl')
 
         wenn sock is not Nichts:
             _check_ssl_socket(sock)
@@ -1148,7 +1148,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             sonst:  # using happy eyeballs
                 sock = (await staggered.staggered_race(
                     (
-                        # can't use functools.partial as it keeps a reference
+                        # can't use functools.partial als it keeps a reference
                         # to exceptions
                         lambda addrinfo=addrinfo: self._connect_sock(
                             exceptions, addrinfo, laddr_infos
@@ -1157,7 +1157,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     ),
                     happy_eyeballs_delay,
                     loop=self,
-                ))[0]  # can't use sock, _, _ as it keeks a reference to exceptions
+                ))[0]  # can't use sock, _, _ als it keeks a reference to exceptions
 
             wenn sock is Nichts:
                 exceptions = [exc fuer sub in exceptions fuer exc in sub]
@@ -1186,7 +1186,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 raise ValueError(
                     'host and port was not specified and no sock specified')
             wenn sock.type != socket.SOCK_STREAM:
-                # We allow AF_INET, AF_INET6, AF_UNIX as long as they
+                # We allow AF_INET, AF_INET6, AF_UNIX als long als they
                 # are SOCK_STREAM.
                 # We support passing AF_UNIX sockets even though we have
                 # a dedicated API fuer that: create_unix_connection.
@@ -1246,7 +1246,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         file must be a regular file object opened in binary mode.
 
         offset tells von where to start reading the file. If specified,
-        count is the total number of bytes to transmit as opposed to
+        count is the total number of bytes to transmit als opposed to
         sending the file until EOF is reached. File position is updated on
         return or also in case of error in which case file.tell()
         can be used to figure out the number of bytes
@@ -1270,7 +1270,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
             try:
                 return await self._sendfile_native(transport, file,
                                                    offset, count)
-            except exceptions.SendfileNotAvailableError as exc:
+            except exceptions.SendfileNotAvailableError als exc:
                 wenn not fallback:
                     raise
 
@@ -1399,7 +1399,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                             os.remove(local_addr)
                     except FileNotFoundError:
                         pass
-                    except OSError as err:
+                    except OSError als err:
                         # Directory may have permissions only to create socket.
                         logger.error('Unable to check or remove stale UNIX '
                                      'socket %r: %r',
@@ -1458,7 +1458,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                         wenn not allow_broadcast:
                             await self.sock_connect(sock, remote_address)
                         r_addr = remote_address
-                except OSError as exc:
+                except OSError als exc:
                     wenn sock is not Nichts:
                         sock.close()
                     exceptions.append(exc)
@@ -1547,11 +1547,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         wenn ssl_handshake_timeout is not Nichts and ssl is Nichts:
             raise ValueError(
-                'ssl_handshake_timeout is only meaningful with ssl')
+                'ssl_handshake_timeout is only meaningful mit ssl')
 
         wenn ssl_shutdown_timeout is not Nichts and ssl is Nichts:
             raise ValueError(
-                'ssl_shutdown_timeout is only meaningful with ssl')
+                'ssl_shutdown_timeout is only meaningful mit ssl')
 
         wenn sock is not Nichts:
             _check_ssl_socket(sock)
@@ -1613,7 +1613,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                                         Wahr)
                     try:
                         sock.bind(sa)
-                    except OSError as err:
+                    except OSError als err:
                         msg = ('error while attempting '
                                'to bind on address %r: %s'
                                % (sa, str(err).lower()))
@@ -1668,11 +1668,11 @@ klasse BaseEventLoop(events.AbstractEventLoop):
 
         wenn ssl_handshake_timeout is not Nichts and not ssl:
             raise ValueError(
-                'ssl_handshake_timeout is only meaningful with ssl')
+                'ssl_handshake_timeout is only meaningful mit ssl')
 
         wenn ssl_shutdown_timeout is not Nichts and not ssl:
             raise ValueError(
-                'ssl_shutdown_timeout is only meaningful with ssl')
+                'ssl_shutdown_timeout is only meaningful mit ssl')
 
         _check_ssl_socket(sock)
 
@@ -1808,7 +1808,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         return self._exception_handler
 
     def set_exception_handler(self, handler):
-        """Set handler as the new event loop exception handler.
+        """Set handler als the new event loop exception handler.
 
         If handler is Nichts, the default exception handler will
         be set.
@@ -1836,7 +1836,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
         stack trace is also appended showing where the given object
         (e.g. a handle or future or task) was created, wenn any.
 
-        The context parameter has the same meaning as in
+        The context parameter has the same meaning als in
         `call_exception_handler()`.
         """
         message = context.get('message')
@@ -1905,8 +1905,8 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                 raise
             except BaseException:
                 # Second protection layer fuer unexpected errors
-                # in the default implementation, as well as fuer subclassed
-                # event loops with overloaded "default_exception_handler".
+                # in the default implementation, als well als fuer subclassed
+                # event loops mit overloaded "default_exception_handler".
                 logger.error('Exception in default exception handler',
                              exc_info=Wahr)
         sonst:
@@ -1929,7 +1929,7 @@ klasse BaseEventLoop(events.AbstractEventLoop):
                     self._exception_handler(self, context)
             except (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            except BaseException als exc:
                 # Exception in the user set custom exception handler.
                 try:
                     # Let's try default handler.

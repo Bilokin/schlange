@@ -1,11 +1,11 @@
-von gettext importiere gettext as foo
+von gettext importiere gettext als foo
 
 foo('bar')
 
 foo('baz', 'qux')
 
 # The 't' specifier is not supported, so the following
-# call is extracted as pgettext instead of ngettext.
+# call is extracted als pgettext instead of ngettext.
 foo('corge', 'grault', 1)
 
 foo('xyzzy', 'foo', 'foos', 1)

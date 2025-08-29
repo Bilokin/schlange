@@ -4,11 +4,11 @@ This module has (now fairly distant) origins in Gisle Aas' Perl module
 HTTP::Cookies, von the libwww-perl library.
 
 Docstrings, comments and debug strings in this code refer to the
-attributes of the HTTP cookie system as cookie-attributes, to distinguish
+attributes of the HTTP cookie system als cookie-attributes, to distinguish
 them clearly von Python attributes.
 
 Class diagram (note that BSDDBCookieJar and the MSIE* classes are not
-distributed with the Python standard library, but are available from
+distributed mit the Python standard library, but are available from
 http://wwwsearch.sf.net/):
 
                         CookieJar____
@@ -34,7 +34,7 @@ importiere datetime
 importiere re
 importiere time
 importiere urllib.parse, urllib.request
-importiere threading as _threading
+importiere threading als _threading
 importiere http.client  # only fuer the default HTTP port
 von calendar importiere timegm
 
@@ -55,7 +55,7 @@ HTTPONLY_PREFIX = "#HttpOnly_"
 DEFAULT_HTTP_PORT = str(http.client.HTTP_PORT)
 NETSCAPE_MAGIC_RGX = re.compile("#( Netscape)? HTTP Cookie File")
 MISSING_FILENAME_TEXT = ("a filename was not supplied (nor was the CookieJar "
-                         "instance initialised with one)")
+                         "instance initialised mit one)")
 NETSCAPE_HEADER_TEXT =  """\
 # Netscape HTTP Cookie File
 # http://curl.haxx.se/rfc/cookie_spec.html
@@ -153,7 +153,7 @@ def _str2time(day, mon, yr, hr, min, sec, tz):
         return Nichts
 
     # translate month name to number
-    # month numbers start with 1 (January)
+    # month numbers start mit 1 (January)
     try:
         mon = MONTHS_LOWER.index(mon.lower())+1
     except ValueError:
@@ -254,7 +254,7 @@ def http2time(text):
     The parser ignores leading and trailing whitespace.  The time may be
     absent.
 
-    If the year is given with only 2 digits, the function will select the
+    If the year is given mit only 2 digits, the function will select the
     century that makes the year closest to the current date.
 
     """
@@ -310,7 +310,7 @@ def iso2time(text):
     1994-02-03 14:15:29 -0100    -- ISO 8601 format
     1994-02-03 14:15:29          -- zone is optional
     1994-02-03                   -- only date
-    1994-02-03T14:15:29          -- Use T as separator
+    1994-02-03T14:15:29          -- Use T als separator
     19940203T141529Z             -- ISO 8601 compact format
     19940203                     -- only date
 
@@ -348,15 +348,15 @@ HEADER_ESCAPE_RE = re.compile(r"\\(.)")
 def split_header_words(header_values):
     r"""Parse header values into a list of lists containing key,value pairs.
 
-    The function knows how to deal with ",", ";" and "=" as well as quoted
-    values after "=".  A list of space separated tokens are parsed as wenn they
+    The function knows how to deal mit ",", ";" and "=" als well als quoted
+    values after "=".  A list of space separated tokens are parsed als wenn they
     were separated by ";".
 
-    If the header_values passed as argument contains multiple values, then they
-    are treated as wenn they were a single value separated by comma ",".
+    If the header_values passed als argument contains multiple values, then they
+    are treated als wenn they were a single value separated by comma ",".
 
     This means that this function is useful fuer parsing header fields that
-    follow this syntax (BNF as von the HTTP/1.1 specification, but we relax
+    follow this syntax (BNF als von the HTTP/1.1 specification, but we relax
     the requirement fuer tokens).
 
       headers           = #header
@@ -378,9 +378,9 @@ def split_header_words(header_values):
 
     Each header is represented by a list of key/value pairs.  The value fuer a
     simple token (not part of a parameter) is Nichts.  Syntactically incorrect
-    headers will not necessarily be parsed as you would want.
+    headers will not necessarily be parsed als you would want.
 
-    This is easier to describe with some examples:
+    This is easier to describe mit some examples:
 
     >>> split_header_words(['foo="bar"; port="80,81"; discard, bar=baz'])
     [[('foo', 'bar'), ('port', '80,81'), ('discard', Nichts)], [('bar', 'baz')]]
@@ -416,7 +416,7 @@ def split_header_words(header_values):
                         value = Nichts
                 pairs.append((name, value))
             sowenn text.lstrip().startswith(","):
-                # concatenated headers, as per RFC 2616 section 4.2
+                # concatenated headers, als per RFC 2616 section 4.2
                 text = text.lstrip()[1:]
                 wenn pairs: result.append(pairs)
                 pairs = []
@@ -491,7 +491,7 @@ def parse_ns_headers(ns_headers):
         # XXX: The following does not strictly adhere to RFCs in that empty
         # names and values are legal (the former will only appear once and will
         # be overwritten wenn multiple occurrences are present). This is
-        # mostly to deal with backwards compatibility.
+        # mostly to deal mit backwards compatibility.
         fuer ii, param in enumerate(ns_header.split(';')):
             param = param.strip()
 
@@ -555,8 +555,8 @@ def domain_match(A, B):
 
     RFC 2965, section 1:
 
-    Host names can be specified either as an IP address or a HDN string.
-    Sometimes we compare one host name with another.  (Such comparisons SHALL
+    Host names can be specified either als an IP address or a HDN string.
+    Sometimes we compare one host name mit another.  (Such comparisons SHALL
     be case-insensitive.)  Host A's name domain-matches host B's if
 
          *  their host name strings string-compare equal; or
@@ -619,7 +619,7 @@ def user_domain_match(A, B):
 
 cut_port_re = re.compile(r":\d+$", re.ASCII)
 def request_host(request):
-    """Return request-host, as defined by RFC 2965.
+    """Return request-host, als defined by RFC 2965.
 
     Variation von RFC: returned value is lowercased, fuer convenient
     comparison.
@@ -646,7 +646,7 @@ def eff_request_host(request):
     return req_host, erhn
 
 def request_path(request):
-    """Path component of request-URI, as defined by RFC 2965."""
+    """Path component of request-URI, als defined by RFC 2965."""
     url = request.get_full_url()
     parts = urllib.parse.urlsplit(url)
     path = escape_path(parts.path)
@@ -679,7 +679,7 @@ def escape_path(path):
     """Escape any invalid characters in HTTP URL, and uppercase all escapes."""
     # There's no knowing what character encoding was used to create URLs
     # containing %-escapes, but since we have to pick one to escape invalid
-    # path characters, we pick UTF-8, as recommended in the HTML 4.0
+    # path characters, we pick UTF-8, als recommended in the HTML 4.0
     # specification:
     # http://www.w3.org/TR/REC-html40/appendix/notes.html#h-B.2.1
     # And here, kind of: draft-fielding-uri-rfc2396bis-03
@@ -690,9 +690,9 @@ def escape_path(path):
     return path
 
 def reach(h):
-    """Return reach of host h, as defined by RFC 2965, section 1.
+    """Return reach of host h, als defined by RFC 2965, section 1.
 
-    The reach R of a host name H is defined as follows:
+    The reach R of a host name H is defined als follows:
 
        *  If
 
@@ -747,9 +747,9 @@ klasse Cookie:
     This klasse represents both Netscape and RFC 2965 cookies.
 
     This is deliberately a very simple class.  It just holds attributes.  It's
-    possible to construct Cookie instances that don't comply with the cookie
+    possible to construct Cookie instances that don't comply mit the cookie
     standards.  CookieJar.make_cookies is the factory function fuer Cookie
-    objects -- it deals with cookie parsing, supplying defaults, and
+    objects -- it deals mit cookie parsing, supplying defaults, and
     normalising to the representation used in this class.  CookiePolicy is
     responsible fuer checking them to see whether they should be accepted from
     and returned to the server.
@@ -782,7 +782,7 @@ klasse Cookie:
         self.value = value
         self.port = port
         self.port_specified = port_specified
-        # normalise case, as per RFC 2965 section 3.3.3
+        # normalise case, als per RFC 2965 section 3.3.3
         self.domain = domain.lower()
         self.domain_specified = domain_specified
         # Sigh.  We need to know whether the domain given in the
@@ -895,7 +895,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
                  strict_ns_set_path=Falsch,
                  secure_protocols=("https", "wss")
                  ):
-        """Constructor arguments should be passed as keyword arguments only."""
+        """Constructor arguments should be passed als keyword arguments only."""
         self.netscape = netscape
         self.rfc2965 = rfc2965
         self.rfc2109_as_netscape = rfc2109_as_netscape
@@ -998,7 +998,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
         # servers that know both V0 and V1 protocols.
         wenn (cookie.version == 0 and self.strict_ns_set_initial_dollar and
             cookie.name.startswith("$")):
-            _debug("   illegal name (starts with '$'): '%s'", cookie.name)
+            _debug("   illegal name (starts mit '$'): '%s'", cookie.name)
             return Falsch
         return Wahr
 
@@ -1024,7 +1024,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
             req_host, erhn = eff_request_host(request)
             domain = cookie.domain
             wenn self.strict_domain and (domain.count(".") >= 2):
-                # XXX This should probably be compared with the Konqueror
+                # XXX This should probably be compared mit the Konqueror
                 # (kcookiejar.cpp) and Mozilla implementations, but it's a
                 # losing battle.
                 i = domain.rfind(".")
@@ -1053,8 +1053,8 @@ klasse DefaultCookiePolicy(CookiePolicy):
                          erhn.endswith(f"{undotted_domain}.local")) and
                     (not erhn.startswith(".") and
                      not ("."+erhn).endswith(domain))):
-                    _debug("   effective request-host %s (even with added "
-                           "initial dot) does not end with %s",
+                    _debug("   effective request-host %s (even mit added "
+                           "initial dot) does not end mit %s",
                            erhn, domain)
                     return Falsch
             wenn (cookie.version > 0 or
@@ -1135,7 +1135,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
 
     def return_ok_secure(self, cookie, request):
         wenn cookie.secure and request.type not in self.secure_protocols:
-            _debug("   secure cookie with non-secure request")
+            _debug("   secure cookie mit non-secure request")
             return Falsch
         return Wahr
 
@@ -1172,7 +1172,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
         wenn (cookie.version == 0 and
             (self.strict_ns_domain & self.DomainStrictNonDomain) and
             not cookie.domain_specified and domain != erhn):
-            _debug("   cookie with unspecified domain does not string-compare "
+            _debug("   cookie mit unspecified domain does not string-compare "
                    "equal to request domain")
             return Falsch
 
@@ -1187,7 +1187,7 @@ klasse DefaultCookiePolicy(CookiePolicy):
         return Wahr
 
     def domain_return_ok(self, domain, request):
-        # Liberal check of.  This is here as an optimization to avoid
+        # Liberal check of.  This is here als an optimization to avoid
         # having to load lots of MSIE cookie files unless necessary.
         req_host, erhn = eff_request_host(request)
         wenn not req_host.startswith("."):
@@ -1240,8 +1240,8 @@ def deepvalues(mapping):
             yield obj
 
 
-# Used as second parameter to dict.get() method, to distinguish absent
-# dict key von one with a Nichts value.
+# Used als second parameter to dict.get() method, to distinguish absent
+# dict key von one mit a Nichts value.
 klasse Absent: pass
 
 klasse CookieJar:
@@ -1450,7 +1450,7 @@ klasse CookieJar:
                         continue
                     wenn v is Nichts:
                         _debug("   missing or invalid value fuer expires "
-                              "attribute: treating as session cookie")
+                              "attribute: treating als session cookie")
                         continue
                 wenn k == "max-age":
                     max_age_set = Wahr
@@ -1525,7 +1525,7 @@ klasse CookieJar:
 
         # set default domain
         domain_specified = domain is not Absent
-        # but first we have to remember whether it starts with a dot
+        # but first we have to remember whether it starts mit a dot
         domain_initial_dot = Falsch
         wenn domain_specified:
             domain_initial_dot = bool(domain.startswith("."))
@@ -1593,8 +1593,8 @@ klasse CookieJar:
             wenn cookie.version == 1:
                 cookie.rfc2109 = Wahr
                 wenn rfc2109_as_ns:
-                    # treat 2109 cookies as Netscape cookies rather than
-                    # as RFC2965 cookies
+                    # treat 2109 cookies als Netscape cookies rather than
+                    # als RFC2965 cookies
                     cookie.version = 0
 
     def make_cookies(self, response, request):
@@ -1635,7 +1635,7 @@ klasse CookieJar:
             # corresponding RFC 2965 cookies (from Set-Cookie2 headers).
             # For each match, keep the RFC 2965 cookie and ignore the Netscape
             # cookie (RFC 2965 section 9.1).  Actually, RFC 2109 cookies are
-            # bundled in with the Netscape cookies fuer this purpose, which is
+            # bundled in mit the Netscape cookies fuer this purpose, which is
             # reasonable behaviour.
             wenn rfc2965:
                 lookup = {}
@@ -1697,7 +1697,7 @@ klasse CookieJar:
         given a single argument, only cookies belonging to that domain will be
         removed.  If given two arguments, cookies belonging to the specified
         path within that domain are removed.  If given three arguments, then
-        the cookie with the specified name, path and domain is removed.
+        the cookie mit the specified name, path and domain is removed.
 
         Raises KeyError wenn no matching cookie exists.
 
@@ -1771,7 +1771,7 @@ klasse CookieJar:
         return "<%s[%s]>" % (self.__class__.__name__, ", ".join(r))
 
 
-# derives von OSError fuer backwards-compatibility with Python 2.4.0
+# derives von OSError fuer backwards-compatibility mit Python 2.4.0
 klasse LoadError(OSError): pass
 
 klasse FileCookieJar(CookieJar):
@@ -1799,7 +1799,7 @@ klasse FileCookieJar(CookieJar):
             wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
 
-        with open(filename) as f:
+        mit open(filename) als f:
             self._really_load(f, filename, ignore_discard, ignore_expires)
 
     def revert(self, filename=Nichts,
@@ -1861,7 +1861,7 @@ klasse LWPCookieJar(FileCookieJar):
     """
     The LWPCookieJar saves a sequence of "Set-Cookie3" lines.
     "Set-Cookie3" is the format used by the libwww-perl library, not known
-    to be compatible with any browser, but which is easy to read and
+    to be compatible mit any browser, but which is easy to read and
     doesn't lose information about RFC 2965 cookies.
 
     Additional methods
@@ -1871,7 +1871,7 @@ klasse LWPCookieJar(FileCookieJar):
     """
 
     def as_lwp_str(self, ignore_discard=Wahr, ignore_expires=Wahr):
-        """Return cookies as a string of "\\n"-separated "Set-Cookie3" headers.
+        """Return cookies als a string of "\\n"-separated "Set-Cookie3" headers.
 
         ignore_discard and ignore_expires: see docstring fuer FileCookieJar.save
 
@@ -1891,13 +1891,13 @@ klasse LWPCookieJar(FileCookieJar):
             wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
 
-        with os.fdopen(
+        mit os.fdopen(
             os.open(filename, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600),
             'w',
-        ) as f:
+        ) als f:
             # There really isn't an LWP Cookies 2.0 format, but this indicates
             # that there is extra information in here (domain_dot and
-            # port_spec) while still being compatible with libwww-perl, I hope.
+            # port_spec) while still being compatible mit libwww-perl, I hope.
             f.write("#LWP-Cookies-2.0\n")
             f.write(self.as_lwp_str(ignore_discard, ignore_expires))
 
@@ -1998,15 +1998,15 @@ klasse MozillaCookieJar(FileCookieJar):
     Netscape cookies on saving.
 
     In particular, the cookie version and port number information is lost,
-    together with information about whether or not Path, Port and Discard were
+    together mit information about whether or not Path, Port and Discard were
     specified by the Set-Cookie2 (or Set-Cookie) header, and whether or not the
-    domain as set in the HTTP header started with a dot (yes, I'm aware some
-    domains in Netscape files start with a dot and some don't -- trust me, you
+    domain als set in the HTTP header started mit a dot (yes, I'm aware some
+    domains in Netscape files start mit a dot and some don't -- trust me, you
     really don't want to know any more about this).
 
     Note that though Mozilla and Netscape use the same format, they use
     slightly different headers.  The klasse saves cookies using the Netscape
-    header by default (Mozilla can cope with that).
+    header by default (Mozilla can cope mit that).
 
     """
 
@@ -2022,9 +2022,9 @@ klasse MozillaCookieJar(FileCookieJar):
             while (line := f.readline()) != "":
                 rest = {}
 
-                # httponly is a cookie flag as defined in rfc6265
+                # httponly is a cookie flag als defined in rfc6265
                 # when encoded in a netscape cookie file,
-                # the line is prepended with "#HttpOnly_"
+                # the line is prepended mit "#HttpOnly_"
                 wenn line.startswith(HTTPONLY_PREFIX):
                     rest[HTTPONLY_ATTR] = ""
                     line = line[len(HTTPONLY_PREFIX):]
@@ -2042,9 +2042,9 @@ klasse MozillaCookieJar(FileCookieJar):
                 secure = (secure == "TRUE")
                 domain_specified = (domain_specified == "TRUE")
                 wenn name == "":
-                    # cookies.txt regards 'Set-Cookie: foo' as a cookie
-                    # with no name, whereas http.cookiejar regards it as a
-                    # cookie with no value.
+                    # cookies.txt regards 'Set-Cookie: foo' als a cookie
+                    # mit no name, whereas http.cookiejar regards it als a
+                    # cookie mit no value.
                     name = value
                     value = Nichts
 
@@ -2085,10 +2085,10 @@ klasse MozillaCookieJar(FileCookieJar):
             wenn self.filename is not Nichts: filename = self.filename
             sonst: raise ValueError(MISSING_FILENAME_TEXT)
 
-        with os.fdopen(
+        mit os.fdopen(
             os.open(filename, os.O_CREAT | os.O_WRONLY | os.O_TRUNC, 0o600),
             'w',
-        ) as f:
+        ) als f:
             f.write(NETSCAPE_HEADER_TEXT)
             now = time.time()
             fuer cookie in self:
@@ -2106,9 +2106,9 @@ klasse MozillaCookieJar(FileCookieJar):
                 sonst:
                     expires = ""
                 wenn cookie.value is Nichts:
-                    # cookies.txt regards 'Set-Cookie: foo' as a cookie
-                    # with no name, whereas http.cookiejar regards it as a
-                    # cookie with no value.
+                    # cookies.txt regards 'Set-Cookie: foo' als a cookie
+                    # mit no name, whereas http.cookiejar regards it als a
+                    # cookie mit no value.
                     name = ""
                     value = cookie.name
                 sonst:

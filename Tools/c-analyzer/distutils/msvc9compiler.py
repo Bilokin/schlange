@@ -3,7 +3,7 @@
 Contains MSVCCompiler, an implementation of the abstract CCompiler class
 fuer the Microsoft Visual Studio 2008.
 
-The module is compatible with VS 2005 and VS 2008. You can find legacy support
+The module is compatible mit VS 2005 and VS 2008. You can find legacy support
 fuer older versions of VS in distutils.msvccompiler.
 """
 
@@ -138,10 +138,10 @@ klasse MacroExpander:
                 raise KeyError("sdkinstallrootv2.0")
         except KeyError:
             raise DistutilsPlatformError(
-            """Python was built with Visual Studio 2008;
-extensions must be built with a compiler than can generate compatible binaries.
+            """Python was built mit Visual Studio 2008;
+extensions must be built mit a compiler than can generate compatible binaries.
 Visual Studio 2008 was not found on this system. If you have Cygwin installed,
-you can try compiling with MingW32, by passing "-c mingw32" to setup.py.""")
+you can try compiling mit MingW32, by passing "-c mingw32" to setup.py.""")
 
         wenn version >= 9.0:
             self.set_macro("FrameworkVersion", self.vsbase, "clr version")
@@ -188,7 +188,7 @@ def get_build_version():
     return Nichts
 
 def normalize_and_reduce_paths(paths):
-    """Return a list of normalized paths with duplicates removed.
+    """Return a list of normalized paths mit duplicates removed.
 
     The current order of paths is maintained.
     """
@@ -295,14 +295,14 @@ wenn VERSION < 8.0:
 
 klasse MSVCCompiler(CCompiler) :
     """Concrete klasse that implements an interface to Microsoft Visual C++,
-       as defined by the CCompiler abstract class."""
+       als defined by the CCompiler abstract class."""
 
     compiler_type = 'msvc'
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary fuer this sort of single-compiler class.
-    # Would be nice to have a consistent interface with UnixCCompiler,
+    # als it really isn't necessary fuer this sort of single-compiler class.
+    # Would be nice to have a consistent interface mit UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
 
@@ -329,7 +329,7 @@ klasse MSVCCompiler(CCompiler) :
         self.__root = r"Software\Microsoft\VisualStudio"
         # self.__macros = MACROS
         self.__paths = []
-        # target platform (.plat_name is consistent with 'bdist')
+        # target platform (.plat_name is consistent mit 'bdist')
         self.plat_name = Nichts
         self.__arch = Nichts # deprecated name
         self.initialized = Falsch
@@ -361,7 +361,7 @@ klasse MSVCCompiler(CCompiler) :
             # no /MANIFESTFILE so nothing to do.
             return Nichts
         wenn target_desc == CCompiler.EXECUTABLE:
-            # by default, executables always get the manifest with the
+            # by default, executables always get the manifest mit the
             # CRT referenced.
             mfid = 1
         sonst:
@@ -379,7 +379,7 @@ klasse MSVCCompiler(CCompiler) :
             # This way, when installed fuer a restricted user (e.g.
             # runtimes are not in WinSxS folder, but in Python's own
             # folder), the runtimes do not need to be in every folder
-            # with .pyd's.
+            # mit .pyd's.
             # Returns either the filename of the modified manifest or
             # Nichts wenn no manifest should be embedded.
             manifest_f = open(manifest_file)

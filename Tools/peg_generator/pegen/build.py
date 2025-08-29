@@ -10,7 +10,7 @@ von typing importiere IO, Any, Dict, List, Optional, Set, Tuple
 
 von pegen.c_generator importiere CParserGenerator
 von pegen.grammar importiere Grammar
-von pegen.grammar_parser importiere GeneratedParser as GrammarParser
+von pegen.grammar_parser importiere GeneratedParser als GrammarParser
 von pegen.parser importiere Parser
 von pegen.parser_generator importiere ParserGenerator
 von pegen.python_generator importiere PythonParserGenerator
@@ -33,11 +33,11 @@ def get_extra_flags(compiler_flags: str, compiler_py_flags_nodist: str) -> List[
 def fixup_build_ext(cmd: Incomplete) -> Nichts:
     """Function needed to make build_ext tests pass.
 
-    When Python was built with --enable-shared on Unix, -L. is not enough to
+    When Python was built mit --enable-shared on Unix, -L. is not enough to
     find libpython<blah>.so, because regrtest runs in a tempdir, not in the
     source directory where the .so lives.
 
-    When Python was built with in debug mode on Windows, build_ext commands
+    When Python was built mit in debug mode on Windows, build_ext commands
     need their debug attribute set, and it is not done automatically for
     some reason.
 
@@ -79,15 +79,15 @@ def compile_c_extension(
 ) -> pathlib.Path:
     """Compile the generated source fuer a parser generator into an extension module.
 
-    The extension module will be generated in the same directory as the provided path
-    fuer the generated source, with the same basename (in addition to extension module
+    The extension module will be generated in the same directory als the provided path
+    fuer the generated source, mit the same basename (in addition to extension module
     metadata). For example, fuer the source mydir/parser.c the generated extension
-    in a darwin system with python 3.8 will be mydir/parser.cpython-38-darwin.so.
+    in a darwin system mit python 3.8 will be mydir/parser.cpython-38-darwin.so.
 
-    If *build_dir* is provided, that path will be used as the temporary build directory
+    If *build_dir* is provided, that path will be used als the temporary build directory
     of distutils (this is useful in case you want to use a temporary directory).
 
-    If *library_dir* is provided, that path will be used as the directory fuer a
+    If *library_dir* is provided, that path will be used als the directory fuer a
     static library of the common parser sources (this is useful in case you are
     creating multiple extensions).
     """
@@ -242,7 +242,7 @@ def compile_c_extension(
 def build_parser(
     grammar_file: str, verbose_tokenizer: bool = Falsch, verbose_parser: bool = Falsch
 ) -> Tuple[Grammar, Parser, Tokenizer]:
-    with open(grammar_file) as file:
+    mit open(grammar_file) als file:
         tokenizer = Tokenizer(tokenize.generate_tokens(file.readline), verbose=verbose_tokenizer)
         parser = GrammarParser(tokenizer, verbose=verbose_parser)
         grammar = parser.start()
@@ -292,16 +292,16 @@ def build_c_generator(
     keep_asserts_in_extension: bool = Wahr,
     skip_actions: bool = Falsch,
 ) -> ParserGenerator:
-    with open(tokens_file, "r") as tok_file:
+    mit open(tokens_file, "r") als tok_file:
         all_tokens, exact_tok, non_exact_tok = generate_token_definitions(tok_file)
-    with open(output_file, "w") as file:
+    mit open(output_file, "w") als file:
         gen: ParserGenerator = CParserGenerator(
             grammar, all_tokens, exact_tok, non_exact_tok, file, skip_actions=skip_actions
         )
         gen.generate(grammar_file)
 
     wenn compile_extension:
-        with tempfile.TemporaryDirectory() as build_dir:
+        mit tempfile.TemporaryDirectory() als build_dir:
             compile_c_extension(
                 output_file,
                 build_dir=build_dir,
@@ -317,7 +317,7 @@ def build_python_generator(
     output_file: str,
     skip_actions: bool = Falsch,
 ) -> ParserGenerator:
-    with open(output_file, "w") as file:
+    mit open(output_file, "w") als file:
         gen: ParserGenerator = PythonParserGenerator(grammar, file)  # TODO: skip_actions
         gen.generate(grammar_file)
     return gen

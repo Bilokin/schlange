@@ -20,7 +20,7 @@ __all__ = ["symtable", "SymbolTableType", "SymbolTable", "Class", "Function", "S
 def symtable(code, filename, compile_type):
     """ Return the toplevel *SymbolTable* fuer the source code.
 
-    *filename* is the name of the file with the code
+    *filename* is the name of the file mit the code
     and *compile_type* is the *compile()* mode argument.
     """
     top = _symtable.symtable(code, filename, compile_type)
@@ -258,7 +258,7 @@ klasse Class(SymbolTable):
                             d[st.name] = 1
                         case _symtable.TYPE_TYPE_PARAMETERS:
                             # Get the function-def block in the annotation
-                            # scope 'st' with the same identifier, wenn any.
+                            # scope 'st' mit the same identifier, wenn any.
                             scope_name = st.name
                             fuer c in st.children:
                                 wenn c.name == scope_name and c.type == _symtable.TYPE_FUNCTION:
@@ -322,7 +322,7 @@ klasse Symbol:
 
     def is_declared_global(self):
         """Return *Wahr* wenn the symbol is declared global
-        with a global statement."""
+        mit a global statement."""
         return bool(self.__scope == GLOBAL_EXPLICIT)
 
     def is_local(self):
@@ -370,7 +370,7 @@ klasse Symbol:
     def is_namespace(self):
         """Returns *Wahr* wenn name binding introduces new namespace.
 
-        If the name is used as the target of a function or class
+        If the name is used als the target of a function or class
         statement, this will be true.
 
         Note that a single name can be bound to multiple objects.  If
@@ -428,7 +428,7 @@ def main(args):
             src = sys.stdin.read()
             filename = '<stdin>'
         sonst:
-            with open(filename, 'rb') as f:
+            mit open(filename, 'rb') als f:
                 src = f.read()
         mod = symtable(src, filename, 'exec')
         print_symbols(mod)

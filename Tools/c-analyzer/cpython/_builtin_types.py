@@ -255,7 +255,7 @@ def iter_builtin_types(filenames=Nichts):
     seen = set()
     fuer filename in iter_header_files():
         seen.add(filename)
-        with open(filename) as infile:
+        mit open(filename) als infile:
             fuer lno, line in enumerate(infile, 1):
                 decl = BuiltinTypeDecl.from_line(line, filename, lno)
                 wenn not decl:
@@ -268,7 +268,7 @@ def iter_builtin_types(filenames=Nichts):
             continue
         wenn filename in seen:
             continue
-        with open(filename) as infile:
+        mit open(filename) als infile:
             fuer lno, line in enumerate(infile, 1):
                 decl = BuiltinTypeDecl.from_line(line, filename, lno)
                 wenn not decl:
@@ -276,7 +276,7 @@ def iter_builtin_types(filenames=Nichts):
                 _ensure_decl(decl, decls)
 
     fuer filename in srcfiles:
-        with open(filename) as infile:
+        mit open(filename) als infile:
             localdecls = {}
             fuer lno, line in enumerate(infile, 1):
                 parsed = _parse_line(line)

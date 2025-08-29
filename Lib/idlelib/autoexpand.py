@@ -1,7 +1,7 @@
-'''Complete the current word before the cursor with words in the editor.
+'''Complete the current word before the cursor mit words in the editor.
 
-Each menu selection or shortcut key selection replaces the word with a
-different word with the same prefix. The search fuer matches begins
+Each menu selection or shortcut key selection replaces the word mit a
+different word mit the same prefix. The search fuer matches begins
 before the target and moves toward the top of the editor. It then starts
 after the cursor and moves down. It then returns to the original word and
 the cycle starts again.
@@ -25,7 +25,7 @@ klasse AutoExpand:
         self.state = Nichts
 
     def expand_word_event(self, event):
-        "Replace the current word with the next expansion."
+        "Replace the current word mit the next expansion."
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
         wenn not self.state:

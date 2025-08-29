@@ -1,6 +1,6 @@
 """Unit tests fuer the bytes and bytearray types.
 
-XXX This is a mess.  Common tests should be unified with string_tests.py (and
+XXX This is a mess.  Common tests should be unified mit string_tests.py (and
 the latter should be modernized).
 """
 
@@ -32,7 +32,7 @@ wenn sys.flags.bytes_warning:
     def check_bytes_warnings(func):
         @functools.wraps(func)
         def wrapper(*args, **kw):
-            with warnings_helper.check_warnings(('', BytesWarning)):
+            mit warnings_helper.check_warnings(('', BytesWarning)):
                 return func(*args, **kw)
         return wrapper
 sonst:
@@ -126,7 +126,7 @@ klasse BaseBytesTest:
         self.assertEqual(b, b"\x01\x02\x03")
 
     def test_from_mutating_list(self):
-        # Issue #34973: Crash in bytes constructor with mutating list.
+        # Issue #34973: Crash in bytes constructor mit mutating list.
         klasse X:
             def __index__(self):
                 a.clear()
@@ -254,7 +254,7 @@ klasse BaseBytesTest:
 
     @check_bytes_warnings
     def test_compare_to_str(self):
-        # Byte comparisons with unicode should always fail!
+        # Byte comparisons mit unicode should always fail!
         # Test this fuer all expected byte orders and Unicode character
         # sizes.
         self.assertEqual(self.type2test(b"\0a\0b\0c") == "abc", Falsch)
@@ -294,7 +294,7 @@ klasse BaseBytesTest:
         self.assertEqual(b[-100:5], by("Hello"))
 
     def test_extended_getslice(self):
-        # Test extended slicing by comparing with list slicing.
+        # Test extended slicing by comparing mit list slicing.
         L = list(range(255))
         b = self.type2test(L)
         indices = (0, Nichts, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
@@ -408,9 +408,9 @@ klasse BaseBytesTest:
             self.assertRaises(TypeError, lambda: b * 3.14)
             self.assertRaises(TypeError, lambda: 3.14 * b)
             # XXX Shouldn't bytes and bytearray agree on what to raise?
-            with self.assertRaises((OverflowError, MemoryError)):
+            mit self.assertRaises((OverflowError, MemoryError)):
                 c = b * sys.maxsize
-            with self.assertRaises((OverflowError, MemoryError)):
+            mit self.assertRaises((OverflowError, MemoryError)):
                 b *= sys.maxsize
 
     def test_repeat_1char(self):
@@ -464,7 +464,7 @@ klasse BaseBytesTest:
             ("array.array", lambda bs: array.array('B', bs)),
         ]
         fuer name, factory in tests:
-            with self.subTest(name=name):
+            mit self.subTest(name=name):
                 self.assertEqual(self.type2test.fromhex(factory(b' 1A 2B 30 ')), b)
 
         # Invalid bytes are rejected
@@ -473,7 +473,7 @@ klasse BaseBytesTest:
             self.assertRaises(ValueError, self.type2test.fromhex, b)
 
         self.assertEqual(self.type2test.fromhex('0000'), b'\0\0')
-        with self.assertRaisesRegex(
+        mit self.assertRaisesRegex(
             TypeError,
             r'fromhex\(\) argument must be str or bytes-like, not tuple',
         ):
@@ -486,11 +486,11 @@ klasse BaseBytesTest:
 
         # For odd number of character(s)
         fuer value in ("a", "aaa", "deadbee"):
-            with self.assertRaises(ValueError) as cm:
+            mit self.assertRaises(ValueError) als cm:
                 self.type2test.fromhex(value)
             self.assertIn("fromhex() arg must contain an even number of hexadecimal digits", str(cm.exception))
         fuer value, position in (("a ", 1), (" aa a ", 5), (" aa a a ", 5)):
-            with self.assertRaises(ValueError) as cm:
+            mit self.assertRaises(ValueError) als cm:
                 self.type2test.fromhex(value)
             self.assertIn(f"non-hexadecimal number found in fromhex() arg at position {position}", str(cm.exception))
 
@@ -504,7 +504,7 @@ klasse BaseBytesTest:
             # test non-ASCII string
             ('12 3\xff 56', 4),
         ):
-            with self.assertRaises(ValueError) as cm:
+            mit self.assertRaises(ValueError) als cm:
                 self.type2test.fromhex(data)
             self.assertIn('at position %s' % pos, str(cm.exception))
 
@@ -519,20 +519,20 @@ klasse BaseBytesTest:
     def test_hex_separator_basics(self):
         three_bytes = self.type2test(b'\xb9\x01\xef')
         self.assertEqual(three_bytes.hex(), 'b901ef')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             three_bytes.hex('')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             three_bytes.hex('xx')
         self.assertEqual(three_bytes.hex(':', 0), 'b901ef')
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             three_bytes.hex(Nichts, 0)
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             three_bytes.hex('\xff')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             three_bytes.hex(b'\xff')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             three_bytes.hex(b'\x80')
-        with self.assertRaises(ValueError):
+        mit self.assertRaises(ValueError):
             three_bytes.hex(chr(0x100))
         self.assertEqual(three_bytes.hex(':', 0), 'b901ef')
         self.assertEqual(three_bytes.hex(b'\x00'), 'b9\x0001\x00ef')
@@ -587,20 +587,20 @@ klasse BaseBytesTest:
         self.assertEqual(dot_join([b"ab", memoryview(b"cd")]), b"ab.:cd")
         self.assertEqual(dot_join([bytearray(b"ab"), b"cd"]), b"ab.:cd")
         self.assertEqual(dot_join([b"ab", bytearray(b"cd")]), b"ab.:cd")
-        # Stress it with many items
+        # Stress it mit many items
         seq = [b"abc"] * 100000
         expected = b"abc" + b".:abc" * 99999
         self.assertEqual(dot_join(seq), expected)
-        # Stress test with empty separator
+        # Stress test mit empty separator
         seq = [b"abc"] * 100000
         expected = b"abc" * 100000
         self.assertEqual(self.type2test(b"").join(seq), expected)
         self.assertRaises(TypeError, self.type2test(b" ").join, Nichts)
         # Error handling and cleanup when some item in the middle of the
         # sequence has the wrong type.
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dot_join([bytearray(b"ab"), "cd", b"ef"])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             dot_join([memoryview(b"ab"), "cd", b"ef"])
 
     def test_count(self):
@@ -634,7 +634,7 @@ klasse BaseBytesTest:
         self.assertWahr(b.startswith(b"h"))
         self.assertFalsch(b.startswith(b"hellow"))
         self.assertFalsch(b.startswith(b"ha"))
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             b.startswith([b'h'])
         exc = str(cm.exception)
         self.assertIn('bytes', exc)
@@ -648,7 +648,7 @@ klasse BaseBytesTest:
         self.assertWahr(b.endswith(b"o"))
         self.assertFalsch(b.endswith(b"whello"))
         self.assertFalsch(b.endswith(b"no"))
-        with self.assertRaises(TypeError) as cm:
+        mit self.assertRaises(TypeError) als cm:
             b.endswith([b'o'])
         exc = str(cm.exception)
         self.assertIn('bytes', exc)
@@ -799,7 +799,7 @@ klasse BaseBytesTest:
         ]
 
         fuer msg, format_bytes, value in exceptions_params:
-            with self.assertRaisesRegex(TypeError, msg):
+            mit self.assertRaisesRegex(TypeError, msg):
                 operator.mod(format_bytes, value)
 
     def test_imod(self):
@@ -820,7 +820,7 @@ klasse BaseBytesTest:
         self.assertIs(type(b), self.type2test)
 
     def test_rmod(self):
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             object() % self.type2test(b'abc')
         self.assertIs(self.type2test(b'abc').__rmod__('%r'), NotImplemented)
 
@@ -1047,7 +1047,7 @@ klasse BaseBytesTest:
         c = b.translate(Nichts, b'e')
         self.assertEqual(c, b'hllo')
 
-        # test delete as a keyword argument
+        # test delete als a keyword argument
         c = b.translate(rosetta, delete=b'')
         self.assertEqual(c, b'helle')
         c = b.translate(rosetta, delete=b'l')
@@ -1058,9 +1058,9 @@ klasse BaseBytesTest:
     def test_sq_item(self):
         _testlimitedcapi = import_helper.import_module('_testlimitedcapi')
         obj = self.type2test((42,))
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             _testlimitedcapi.sequence_getitem(obj, -2)
-        with self.assertRaises(IndexError):
+        mit self.assertRaises(IndexError):
             _testlimitedcapi.sequence_getitem(obj, 1)
         self.assertEqual(_testlimitedcapi.sequence_getitem(obj, 0), 42)
 
@@ -1083,12 +1083,12 @@ klasse BytesTest(BaseBytesTest, unittest.TestCase):
     def test_getitem_error(self):
         b = b'python'
         msg = "byte indices must be integers or slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             b['a']
 
     def test_buffer_is_readonly(self):
         fd = os.open(__file__, os.O_RDONLY)
-        with open(fd, "rb", buffering=0) as f:
+        mit open(fd, "rb", buffering=0) als f:
             self.assertRaises(TypeError, f.readinto, b"")
 
     def test_custom(self):
@@ -1326,13 +1326,13 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
     def test_getitem_error(self):
         b = bytearray(b'python')
         msg = "bytearray indices must be integers or slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             b['a']
 
     def test_setitem_error(self):
         b = bytearray(b'python')
         msg = "bytearray indices must be integers or slices"
-        with self.assertRaisesRegex(TypeError, msg):
+        mit self.assertRaisesRegex(TypeError, msg):
             b['a'] = "python"
 
     def test_nohash(self):
@@ -1344,18 +1344,18 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
         tfn = tempfile.mktemp()
         try:
             # Prepare
-            with open(tfn, "wb") as f:
+            mit open(tfn, "wb") als f:
                 f.write(short_sample)
             # Test readinto
-            with open(tfn, "rb") as f:
+            mit open(tfn, "rb") als f:
                 b = bytearray(20)
                 n = f.readinto(b)
             self.assertEqual(n, len(short_sample))
             self.assertEqual(list(b), list(sample))
             # Test writing in binary mode
-            with open(tfn, "wb") as f:
+            mit open(tfn, "wb") als f:
                 f.write(b)
-            with open(tfn, "rb") as f:
+            mit open(tfn, "rb") als f:
                 self.assertEqual(f.read(), sample)
             # Text mode is ambiguous; don't test
         finally:
@@ -1493,10 +1493,10 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
             except TypeError:
                 pass
 
-        with self.subTest("tp_as_mapping"):
+        mit self.subTest("tp_as_mapping"):
             do_tests(setitem_as_mapping)
 
-        with self.subTest("tp_as_sequence"):
+        mit self.subTest("tp_as_sequence"):
             do_tests(setitem_as_sequence)
 
     def test_delitem(self):
@@ -1515,10 +1515,10 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
             delete(b, 4)
             self.assertEqual(b, bytearray([1, 2, 3, 4, 6, 7, 8]))
 
-        with self.subTest("tp_as_mapping"):
+        mit self.subTest("tp_as_mapping"):
             do_tests(del_as_mapping)
 
-        with self.subTest("tp_as_sequence"):
+        mit self.subTest("tp_as_sequence"):
             do_tests(del_as_sequence)
 
     def test_setslice(self):
@@ -1554,11 +1554,11 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
 
         fuer elem in [5, -5, 0, int(10e20), 'str', 2.3,
                      ['a', 'b'], [b'a', b'b'], [[]]]:
-            with self.assertRaises(TypeError):
+            mit self.assertRaises(TypeError):
                 b[3:4] = elem
 
         fuer elem in [[254, 255, 256], [-256, 9000]]:
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 b[3:4] = elem
 
     def test_setslice_extend(self):
@@ -1596,7 +1596,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
                     L = list(range(255))
                     b = bytearray(L)
                     # Make sure we have a slice of exactly the right length,
-                    # but with different data.
+                    # but mit different data.
                     data = L[start:stop:step]
                     data.reverse()
                     L[start:stop:step] = data
@@ -1707,7 +1707,7 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
                                "expected iterable of integers; got: 'str'",
                                a.extend, 'def')
         self.assertRaisesRegex(TypeError,  # But not fuer others.
-                               "can't extend bytearray with float",
+                               "can't extend bytearray mit float",
                                a.extend, 1.0)
 
     def test_remove(self):
@@ -1908,14 +1908,14 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
                 b.clear()
                 return 0
 
-        with self.subTest("tp_as_mapping"):
+        mit self.subTest("tp_as_mapping"):
             b = bytearray(b'Now you see me...')
-            with self.assertRaises(IndexError):
+            mit self.assertRaises(IndexError):
                 b[0] = Boom()
 
-        with self.subTest("tp_as_sequence"):
+        mit self.subTest("tp_as_sequence"):
             b = bytearray(b'Now you see me...')
-            with self.assertRaises(IndexError):
+            mit self.assertRaises(IndexError):
                 self._testlimitedcapi.sequence_setitem(b, 0, Boom())
 
     def test_mutating_index_inbounds(self):
@@ -1932,20 +1932,20 @@ klasse ByteArrayTest(BaseBytesTest, unittest.TestCase):
                 self.ba.extend([0] * 0x180)     # to check bounds checks
                 return 0
 
-        with self.subTest("skip_bounds_safety"):
+        mit self.subTest("skip_bounds_safety"):
             instance = MutatesOnIndex()
             instance.ba[instance] = ord("?")
             self.assertEqual(instance.ba[0], ord("?"), "Assigned bytearray not altered")
             self.assertEqual(instance.new_ba, bytearray(0x180), "Wrong object altered")
 
-        with self.subTest("skip_bounds_safety_capi"):
+        mit self.subTest("skip_bounds_safety_capi"):
             instance = MutatesOnIndex()
             instance.ba[instance] = ord("?")
             self._testlimitedcapi.sequence_setitem(instance.ba, instance, ord("?"))
             self.assertEqual(instance.ba[0], ord("?"), "Assigned bytearray not altered")
             self.assertEqual(instance.new_ba, bytearray(0x180), "Wrong object altered")
 
-        with self.subTest("skip_bounds_safety_slice"):
+        mit self.subTest("skip_bounds_safety_slice"):
             instance = MutatesOnIndex()
             instance.ba[instance:1] = [ord("?")]
             self.assertEqual(instance.ba[0], ord("?"), "Assigned bytearray not altered")
@@ -2000,7 +2000,7 @@ klasse AssortedBytesTest(unittest.TestCase):
         fuer b in b'abc', bytearray(b'abc'):
             self.assertEqual(format(b), str(b))
             self.assertEqual(format(b, ''), str(b))
-            with self.assertRaisesRegex(TypeError,
+            mit self.assertRaisesRegex(TypeError,
                                         r'\b%s\b' % re.escape(type(b).__name__)):
                 format(b, 's')
 
@@ -2075,29 +2075,29 @@ klasse AssortedBytesTest(unittest.TestCase):
     def test_compare(self):
         def bytes_warning():
             return warnings_helper.check_warnings(('', BytesWarning))
-        with bytes_warning():
+        mit bytes_warning():
             b'' == ''
-        with bytes_warning():
+        mit bytes_warning():
             '' == b''
-        with bytes_warning():
+        mit bytes_warning():
             b'' != ''
-        with bytes_warning():
+        mit bytes_warning():
             '' != b''
-        with bytes_warning():
+        mit bytes_warning():
             bytearray(b'') == ''
-        with bytes_warning():
+        mit bytes_warning():
             '' == bytearray(b'')
-        with bytes_warning():
+        mit bytes_warning():
             bytearray(b'') != ''
-        with bytes_warning():
+        mit bytes_warning():
             '' != bytearray(b'')
-        with bytes_warning():
+        mit bytes_warning():
             b'\0' == 0
-        with bytes_warning():
+        mit bytes_warning():
             0 == b'\0'
-        with bytes_warning():
+        mit bytes_warning():
             b'\0' != 0
-        with bytes_warning():
+        mit bytes_warning():
             0 != b'\0'
 
     # Optimizations:
@@ -2108,7 +2108,7 @@ klasse AssortedBytesTest(unittest.TestCase):
 
     # There are tests in string_tests.py that are more
     # comprehensive fuer things like partition, etc.
-    # Unfortunately they are all bundled with tests that
+    # Unfortunately they are all bundled mit tests that
     # are not appropriate fuer bytes
 
     # I've started porting some of those into bytearray_tests.py, we should port
@@ -2166,7 +2166,7 @@ klasse SubclassTest:
         a, b = b"abcd", b"efgh"
         _a, _b = self.type2test(a), self.type2test(b)
 
-        # test comparison operators with subclass instances
+        # test comparison operators mit subclass instances
         self.assertWahr(_a == _a)
         self.assertWahr(_a != _b)
         self.assertWahr(_a < _b)
@@ -2297,7 +2297,7 @@ klasse BytesSubclassTest(SubclassTest, unittest.TestCase):
 
 
 klasse FreeThreadingTest(unittest.TestCase):
-    @unittest.skipUnless(support.Py_GIL_DISABLED, 'this test can only possibly fail with GIL disabled')
+    @unittest.skipUnless(support.Py_GIL_DISABLED, 'this test can only possibly fail mit GIL disabled')
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_free_threading_bytearray(self):
@@ -2569,7 +2569,7 @@ klasse FreeThreadingTest(unittest.TestCase):
 
                 threads.append(thread)
 
-            with threading_helper.start_threads(threads):
+            mit threading_helper.start_threads(threads):
                 pass
 
         # hard errors
@@ -2635,7 +2635,7 @@ klasse FreeThreadingTest(unittest.TestCase):
         check([clear] + [upper] * 10, bytearray(b'a' * 0x400000))
         check([clear] + [zfill] * 10, bytearray(b'1' * 0x200000))
 
-    @unittest.skipUnless(support.Py_GIL_DISABLED, 'this test can only possibly fail with GIL disabled')
+    @unittest.skipUnless(support.Py_GIL_DISABLED, 'this test can only possibly fail mit GIL disabled')
     @threading_helper.reap_threads
     @threading_helper.requires_working_threading()
     def test_free_threading_bytearrayiter(self):
@@ -2663,7 +2663,7 @@ klasse FreeThreadingTest(unittest.TestCase):
 
                 threads.append(thread)
 
-            with threading_helper.start_threads(threads):
+            mit threading_helper.start_threads(threads):
                 pass
 
         fuer _ in range(10):

@@ -8,8 +8,8 @@ von test.support importiere import_helper, Py_DEBUG
 # Raise SkipTest wenn subinterpreters not supported.
 _queues = import_helper.import_module('_interpqueues')
 von concurrent importiere interpreters
-von concurrent.interpreters importiere _queues as queues, _crossinterp
-von .utils importiere _run_output, TestBase as _TestBase
+von concurrent.interpreters importiere _queues als queues, _crossinterp
+von .utils importiere _run_output, TestBase als _TestBase
 
 
 REPLACE = _crossinterp._UNBOUND_CONSTANT_TO_FLAG[_crossinterp.UNBOUND]
@@ -30,12 +30,12 @@ klasse TestBase(_TestBase):
 
 klasse LowLevelTests(TestBase):
 
-    # The behaviors in the low-level module are important in as much
-    # as they are exercised by the high-level module.  Therefore the
+    # The behaviors in the low-level module are important in als much
+    # als they are exercised by the high-level module.  Therefore the
     # most important testing happens in the high-level tests.
     # These low-level tests cover corner cases that are not
     # encountered by the high-level module, thus they
-    # mostly shouldn't matter as much.
+    # mostly shouldn't matter als much.
 
     def test_highlevel_reloaded(self):
         # See gh-115490 (https://github.com/python/cpython/issues/115490).
@@ -45,9 +45,9 @@ klasse LowLevelTests(TestBase):
         qid = _queues.create(2, REPLACE, -1)
         _queues.destroy(qid)
         self.assertEqual(get_num_queues(), 0)
-        with self.assertRaises(queues.QueueNotFoundError):
+        mit self.assertRaises(queues.QueueNotFoundError):
             _queues.get(qid)
-        with self.assertRaises(queues.QueueNotFoundError):
+        mit self.assertRaises(queues.QueueNotFoundError):
             _queues.destroy(qid)
 
     def test_not_destroyed(self):
@@ -55,7 +55,7 @@ klasse LowLevelTests(TestBase):
         stdout, stderr = self.assert_python_ok(
             '-c',
             dedent(f"""
-                importiere {_queues.__name__} as _queues
+                importiere {_queues.__name__} als _queues
                 _queues.create(2, {REPLACE}, -1)
                 """),
         )
@@ -66,13 +66,13 @@ klasse LowLevelTests(TestBase):
             self.assertEqual(stderr, '')
 
     def test_bind_release(self):
-        with self.subTest('typical'):
+        mit self.subTest('typical'):
             qid = _queues.create(2, REPLACE, -1)
             _queues.bind(qid)
             _queues.release(qid)
             self.assertEqual(get_num_queues(), 0)
 
-        with self.subTest('bind too much'):
+        mit self.subTest('bind too much'):
             qid = _queues.create(2, REPLACE, -1)
             _queues.bind(qid)
             _queues.bind(qid)
@@ -80,7 +80,7 @@ klasse LowLevelTests(TestBase):
             _queues.destroy(qid)
             self.assertEqual(get_num_queues(), 0)
 
-        with self.subTest('nested'):
+        mit self.subTest('nested'):
             qid = _queues.create(2, REPLACE, -1)
             _queues.bind(qid)
             _queues.bind(qid)
@@ -88,37 +88,37 @@ klasse LowLevelTests(TestBase):
             _queues.release(qid)
             self.assertEqual(get_num_queues(), 0)
 
-        with self.subTest('release without binding'):
+        mit self.subTest('release without binding'):
             qid = _queues.create(2, REPLACE, -1)
-            with self.assertRaises(queues.QueueError):
+            mit self.assertRaises(queues.QueueError):
                 _queues.release(qid)
 
 
 klasse QueueTests(TestBase):
 
     def test_create(self):
-        with self.subTest('vanilla'):
+        mit self.subTest('vanilla'):
             queue = queues.create()
             self.assertEqual(queue.maxsize, 0)
 
-        with self.subTest('small maxsize'):
+        mit self.subTest('small maxsize'):
             queue = queues.create(3)
             self.assertEqual(queue.maxsize, 3)
 
-        with self.subTest('big maxsize'):
+        mit self.subTest('big maxsize'):
             queue = queues.create(100)
             self.assertEqual(queue.maxsize, 100)
 
-        with self.subTest('no maxsize'):
+        mit self.subTest('no maxsize'):
             queue = queues.create(0)
             self.assertEqual(queue.maxsize, 0)
 
-        with self.subTest('negative maxsize'):
+        mit self.subTest('negative maxsize'):
             queue = queues.create(-10)
             self.assertEqual(queue.maxsize, -10)
 
-        with self.subTest('bad maxsize'):
-            with self.assertRaises(TypeError):
+        mit self.subTest('bad maxsize'):
+            mit self.assertRaises(TypeError):
                 queues.create('1')
 
     def test_shareable(self):
@@ -126,17 +126,17 @@ klasse QueueTests(TestBase):
 
         interp = interpreters.create()
         interp.exec(dedent(f"""
-            von concurrent.interpreters importiere _queues as queues
+            von concurrent.interpreters importiere _queues als queues
             queue1 = queues.Queue({queue1.id})
             """));
 
-        with self.subTest('same interpreter'):
+        mit self.subTest('same interpreter'):
             queue2 = queues.create()
             queue1.put(queue2)
             queue3 = queue1.get()
             self.assertIs(queue3, queue2)
 
-        with self.subTest('from current interpreter'):
+        mit self.subTest('from current interpreter'):
             queue4 = queues.create()
             queue1.put(queue4)
             out = _run_output(interp, dedent("""
@@ -146,7 +146,7 @@ klasse QueueTests(TestBase):
             qid = int(out)
             self.assertEqual(qid, queue4.id)
 
-        with self.subTest('from subinterpreter'):
+        mit self.subTest('from subinterpreter'):
             out = _run_output(interp, dedent("""
                 queue5 = queues.create()
                 queue1.put(queue5)
@@ -161,17 +161,17 @@ klasse QueueTests(TestBase):
         self.assertIsInstance(queue.id, int)
 
     def test_custom_id(self):
-        with self.assertRaises(queues.QueueNotFoundError):
+        mit self.assertRaises(queues.QueueNotFoundError):
             queues.Queue(1_000_000)
 
     def test_id_readonly(self):
         queue = queues.create()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             queue.id = 1_000_000
 
     def test_maxsize_readonly(self):
         queue = queues.create(10)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             queue.maxsize = 1_000_000
 
     def test_hashable(self):
@@ -189,7 +189,7 @@ klasse QueueTests(TestBase):
     def test_pickle(self):
         queue = queues.create()
         fuer protocol in range(pickle.HIGHEST_PROTOCOL + 1):
-            with self.subTest(protocol=protocol):
+            mit self.subTest(protocol=protocol):
                 data = pickle.dumps(queue, protocol)
                 unpickled = pickle.loads(data)
                 self.assertEqual(unpickled, queue)
@@ -211,7 +211,7 @@ klasse TestQueueOps(TestBase):
 
     def test_full(self):
         fuer maxsize in [1, 3, 11]:
-            with self.subTest(f'maxsize={maxsize}'):
+            mit self.subTest(f'maxsize={maxsize}'):
                 num_to_add = maxsize
                 expected = [Falsch] * (num_to_add * 2 + 3)
                 expected[maxsize] = Wahr
@@ -225,7 +225,7 @@ klasse TestQueueOps(TestBase):
                     actual.append(queue.full())
                     queue.put_nowait(Nichts)
                 actual.append(queue.full())
-                with self.assertRaises(queues.QueueFull):
+                mit self.assertRaises(queues.QueueFull):
                     queue.put_nowait(Nichts)
                 empty.append(queue.empty())
 
@@ -233,7 +233,7 @@ klasse TestQueueOps(TestBase):
                     actual.append(queue.full())
                     queue.get_nowait()
                 actual.append(queue.full())
-                with self.assertRaises(queues.QueueEmpty):
+                mit self.assertRaises(queues.QueueEmpty):
                     queue.get_nowait()
                 actual.append(queue.full())
                 empty.append(queue.empty())
@@ -243,7 +243,7 @@ klasse TestQueueOps(TestBase):
 
         # no max size
         fuer args in [(), (0,), (-1,), (-10,)]:
-            with self.subTest(f'maxsize={args[0]}' wenn args sonst '<default>'):
+            mit self.subTest(f'maxsize={args[0]}' wenn args sonst '<default>'):
                 num_to_add = 13
                 expected = [Falsch] * (num_to_add * 2 + 3)
 
@@ -261,7 +261,7 @@ klasse TestQueueOps(TestBase):
                     actual.append(queue.full())
                     queue.get_nowait()
                 actual.append(queue.full())
-                with self.assertRaises(queues.QueueEmpty):
+                mit self.assertRaises(queues.QueueEmpty):
                     queue.get_nowait()
                 actual.append(queue.full())
                 empty.append(queue.empty())
@@ -304,7 +304,7 @@ klasse TestQueueOps(TestBase):
         queue = queues.create(2)
         queue.put(Nichts)
         queue.put(Nichts)
-        with self.assertRaises(queues.QueueFull):
+        mit self.assertRaises(queues.QueueFull):
             queue.put(Nichts, timeout=0.1)
         queue.get()
         queue.put(Nichts)
@@ -313,7 +313,7 @@ klasse TestQueueOps(TestBase):
         queue = queues.create(2)
         queue.put_nowait(Nichts)
         queue.put_nowait(Nichts)
-        with self.assertRaises(queues.QueueFull):
+        mit self.assertRaises(queues.QueueFull):
             queue.put_nowait(Nichts)
         queue.get()
         queue.put_nowait(Nichts)
@@ -330,7 +330,7 @@ klasse TestQueueOps(TestBase):
             [1, 2, 3],
             {'a': 13, 'b': 17},
         ]:
-            with self.subTest(repr(obj)):
+            mit self.subTest(repr(obj)):
                 queue = queues.create()
 
                 queue.put(obj)
@@ -343,19 +343,19 @@ klasse TestQueueOps(TestBase):
 
     def test_get_timeout(self):
         queue = queues.create()
-        with self.assertRaises(queues.QueueEmpty):
+        mit self.assertRaises(queues.QueueEmpty):
             queue.get(timeout=0.1)
 
     def test_get_nowait(self):
         queue = queues.create()
-        with self.assertRaises(queues.QueueEmpty):
+        mit self.assertRaises(queues.QueueEmpty):
             queue.get_nowait()
 
     def test_put_get_full_fallback(self):
         expected = list(range(20))
         queue = queues.create()
         fuer methname in ('get', 'get_nowait'):
-            with self.subTest(f'{methname}()'):
+            mit self.subTest(f'{methname}()'):
                 get = getattr(queue, methname)
 
                 fuer i in range(20):
@@ -372,11 +372,11 @@ klasse TestQueueOps(TestBase):
     def test_put_get_same_interpreter(self):
         interp = interpreters.create()
         interp.exec(dedent("""
-            von concurrent.interpreters importiere _queues as queues
+            von concurrent.interpreters importiere _queues als queues
             queue = queues.create()
             """))
         fuer methname in ('get', 'get_nowait'):
-            with self.subTest(f'{methname}()'):
+            mit self.subTest(f'{methname}()'):
                 interp.exec(dedent(f"""
                     orig = b'spam'
                     queue.put(orig)
@@ -392,14 +392,14 @@ klasse TestQueueOps(TestBase):
         self.assertEqual(len(queues.list_all()), 2)
 
         fuer methname in ('get', 'get_nowait'):
-            with self.subTest(f'{methname}()'):
+            mit self.subTest(f'{methname}()'):
                 obj1 = b'spam'
                 queue1.put(obj1)
 
                 out = _run_output(
                     interp,
                     dedent(f"""
-                        von concurrent.interpreters importiere _queues as queues
+                        von concurrent.interpreters importiere _queues als queues
                         queue1 = queues.Queue({queue1.id})
                         queue2 = queues.Queue({queue2.id})
                         assert queue1.qsize() == 1, 'expected: queue1.qsize() == 1'
@@ -438,7 +438,7 @@ klasse TestQueueOps(TestBase):
             interp = interpreters.create()
 
             _run_output(interp, dedent(f"""
-                von concurrent.interpreters importiere _queues as queues
+                von concurrent.interpreters importiere _queues als queues
                 queue = queues.Queue({queue.id})
                 obj1 = b'spam'
                 obj2 = b'eggs'
@@ -454,46 +454,46 @@ klasse TestQueueOps(TestBase):
 
             return interp
 
-        with self.subTest('default'):  # UNBOUND
+        mit self.subTest('default'):  # UNBOUND
             queue = queues.create()
             interp = common(queue)
             del interp
             obj1 = queue.get()
             self.assertIs(obj1, queues.UNBOUND)
             self.assertEqual(queue.qsize(), 0)
-            with self.assertRaises(queues.QueueEmpty):
+            mit self.assertRaises(queues.QueueEmpty):
                 queue.get_nowait()
 
-        with self.subTest('UNBOUND'):
+        mit self.subTest('UNBOUND'):
             queue = queues.create()
             interp = common(queue, queues.UNBOUND)
             del interp
             obj1 = queue.get()
             self.assertIs(obj1, queues.UNBOUND)
             self.assertEqual(queue.qsize(), 0)
-            with self.assertRaises(queues.QueueEmpty):
+            mit self.assertRaises(queues.QueueEmpty):
                 queue.get_nowait()
 
-        with self.subTest('UNBOUND_ERROR'):
+        mit self.subTest('UNBOUND_ERROR'):
             queue = queues.create()
             interp = common(queue, queues.UNBOUND_ERROR)
 
             del interp
             self.assertEqual(queue.qsize(), 1)
-            with self.assertRaises(queues.ItemInterpreterDestroyed):
+            mit self.assertRaises(queues.ItemInterpreterDestroyed):
                 queue.get()
 
             self.assertEqual(queue.qsize(), 0)
-            with self.assertRaises(queues.QueueEmpty):
+            mit self.assertRaises(queues.QueueEmpty):
                 queue.get_nowait()
 
-        with self.subTest('UNBOUND_REMOVE'):
+        mit self.subTest('UNBOUND_REMOVE'):
             queue = queues.create()
 
             interp = common(queue, queues.UNBOUND_REMOVE)
             del interp
             self.assertEqual(queue.qsize(), 0)
-            with self.assertRaises(queues.QueueEmpty):
+            mit self.assertRaises(queues.QueueEmpty):
                 queue.get_nowait()
 
             queue.put(b'ham', unbounditems=queues.UNBOUND_REMOVE)
@@ -509,14 +509,14 @@ klasse TestQueueOps(TestBase):
             self.assertEqual(obj1, b'ham')
             self.assertEqual(obj2, 42)
             self.assertEqual(queue.qsize(), 0)
-            with self.assertRaises(queues.QueueEmpty):
+            mit self.assertRaises(queues.QueueEmpty):
                 queue.get_nowait()
 
     def test_put_cleared_with_subinterpreter_mixed(self):
         queue = queues.create()
         interp = interpreters.create()
         _run_output(interp, dedent(f"""
-            von concurrent.interpreters importiere _queues as queues
+            von concurrent.interpreters importiere _queues als queues
             queue = queues.Queue({queue.id})
             queue.put(1, unbounditems=queues.UNBOUND)
             queue.put(2, unbounditems=queues.UNBOUND_ERROR)
@@ -533,7 +533,7 @@ klasse TestQueueOps(TestBase):
         self.assertIs(obj1, queues.UNBOUND)
         self.assertEqual(queue.qsize(), 3)
 
-        with self.assertRaises(queues.ItemInterpreterDestroyed):
+        mit self.assertRaises(queues.ItemInterpreterDestroyed):
             queue.get()
         self.assertEqual(queue.qsize(), 2)
 
@@ -552,14 +552,14 @@ klasse TestQueueOps(TestBase):
 
         queue.put(1)
         _run_output(interp1, dedent(f"""
-            von concurrent.interpreters importiere _queues as queues
+            von concurrent.interpreters importiere _queues als queues
             queue = queues.Queue({queue.id})
             obj1 = queue.get()
             queue.put(2, unbounditems=queues.UNBOUND)
             queue.put(obj1, unbounditems=queues.UNBOUND_REMOVE)
             """))
         _run_output(interp2, dedent(f"""
-            von concurrent.interpreters importiere _queues as queues
+            von concurrent.interpreters importiere _queues als queues
             queue = queues.Queue({queue.id})
             obj2 = queue.get()
             obj1 = queue.get()
@@ -610,7 +610,7 @@ klasse TestQueueOps(TestBase):
         self.assertEqual(queue.qsize(), 3)
 
         # obj1
-        with self.assertRaises(queues.ItemInterpreterDestroyed):
+        mit self.assertRaises(queues.ItemInterpreterDestroyed):
             queue.get()
         self.assertEqual(queue.qsize(), 2)
 

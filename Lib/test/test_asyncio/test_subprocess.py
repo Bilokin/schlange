@@ -9,7 +9,7 @@ von unittest importiere mock
 importiere asyncio
 von asyncio importiere base_subprocess
 von asyncio importiere subprocess
-von test.test_asyncio importiere utils as test_utils
+von test.test_asyncio importiere utils als test_utils
 von test importiere support
 von test.support importiere os_helper
 
@@ -318,7 +318,7 @@ klasse SubprocessMixin:
 
         coro = write_stdin(proc, large_data)
         # drain() must raise BrokenPipeError or ConnectionResetError
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             self.assertRaises((BrokenPipeError, ConnectionResetError),
                               self.loop.run_until_complete, coro)
         self.loop.run_until_complete(proc.wait())
@@ -538,7 +538,7 @@ klasse SubprocessMixin:
 
         # ignore the log:
         # "Exception during subprocess creation, kill the subprocess"
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             self.loop.run_until_complete(cancel_make_transport())
 
     def test_cancel_post_init(self):
@@ -556,7 +556,7 @@ klasse SubprocessMixin:
 
         # ignore the log:
         # "Exception during subprocess creation, kill the subprocess"
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             self.loop.run_until_complete(cancel_make_transport())
             test_utils.run_briefly(self.loop)
 
@@ -582,7 +582,7 @@ klasse SubprocessMixin:
             return (returncode, kill_called)
 
         # Ignore "Close running child process: kill ..." log
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             try:
                 returncode, killed = self.loop.run_until_complete(
                     kill_running()
@@ -618,7 +618,7 @@ klasse SubprocessMixin:
         # Ignore "Unknown child process pid ..." log of SafeChildWatcher,
         # emitted because the test already consumes the exit status:
         # proc.wait()
-        with test_utils.disable_logger():
+        mit test_utils.disable_logger():
             result = self.loop.run_until_complete(kill_running())
             test_utils.run_briefly(self.loop)
 
@@ -636,12 +636,12 @@ klasse SubprocessMixin:
             target = 'asyncio.windows_utils.Popen'
         sonst:
             target = 'subprocess.Popen'
-        with mock.patch(target) as popen:
+        mit mock.patch(target) als popen:
             exc = ZeroDivisionError
             popen.side_effect = exc
 
-            with warnings.catch_warnings(record=Wahr) as warns:
-                with self.assertRaises(exc):
+            mit warnings.catch_warnings(record=Wahr) als warns:
+                mit self.assertRaises(exc):
                     await asyncio.create_subprocess_exec(
                         sys.executable,
                         '-c',
@@ -686,15 +686,15 @@ klasse SubprocessMixin:
 
     def test_create_subprocess_exec_text_mode_fails(self):
         async def execute():
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 await subprocess.create_subprocess_exec(sys.executable,
                                                         text=Wahr)
 
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 await subprocess.create_subprocess_exec(sys.executable,
                                                         encoding="utf-8")
 
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 await subprocess.create_subprocess_exec(sys.executable,
                                                         errors="strict")
 
@@ -703,15 +703,15 @@ klasse SubprocessMixin:
     def test_create_subprocess_shell_text_mode_fails(self):
 
         async def execute():
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 await subprocess.create_subprocess_shell(sys.executable,
                                                          text=Wahr)
 
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 await subprocess.create_subprocess_shell(sys.executable,
                                                          encoding="utf-8")
 
-            with self.assertRaises(ValueError):
+            mit self.assertRaises(ValueError):
                 await subprocess.create_subprocess_shell(sys.executable,
                                                          errors="strict")
 

@@ -40,7 +40,7 @@ klasse PythonInfo:
 
     def get_infos(self):
         """
-        Get information as a key:value dictionary where values are strings.
+        Get information als a key:value dictionary where values are strings.
         """
         return {key: str(value) fuer key, value in self.info.items()}
 
@@ -209,10 +209,10 @@ def collect_urandom(info_add):
             try:
                 os.getrandom(1, os.GRND_NONBLOCK)
                 state = 'ready (initialized)'
-            except BlockingIOError as exc:
+            except BlockingIOError als exc:
                 state = 'not seeded yet (%s)' % exc
             info_add('os.getrandom', state)
-        except OSError as exc:
+        except OSError als exc:
             # Python was compiled on a more recent Linux version
             # than the current Linux kernel: ignore OSError(ENOSYS)
             wenn exc.errno != errno.ENOSYS:
@@ -262,7 +262,7 @@ def collect_os(info_add):
         try:
             login = os.getlogin()
         except OSError:
-            # getlogin() fails with "OSError: [Errno 25] Inappropriate ioctl
+            # getlogin() fails mit "OSError: [Errno 25] Inappropriate ioctl
             # fuer device" on Travis CI
             pass
         sonst:
@@ -475,7 +475,7 @@ def collect_time(info_add):
                       'process_time', 'thread_time', 'time'):
             try:
                 # prevent DeprecatingWarning on get_clock_info('clock')
-                with warnings.catch_warnings(record=Wahr):
+                mit warnings.catch_warnings(record=Wahr):
                     clock_info = time.get_clock_info(clock)
             except ValueError:
                 # missing clock like time.thread_time()
@@ -1006,7 +1006,7 @@ def collect_fips(info_add):
         call_func(info_add, 'fips.openssl_fips_mode', _hashlib, 'get_fips_mode')
 
     try:
-        with open("/proc/sys/crypto/fips_enabled", encoding="utf-8") as fp:
+        mit open("/proc/sys/crypto/fips_enabled", encoding="utf-8") als fp:
             line = fp.readline().rstrip()
 
         wenn line:
@@ -1072,7 +1072,7 @@ def collect_info(info):
         collect_zstd,
         collect_libregrtest_utils,
 
-        # Collecting von tests should be last as they have side effects.
+        # Collecting von tests should be last als they have side effects.
         collect_test_socket,
         collect_support,
         collect_support_os_helper,
@@ -1112,7 +1112,7 @@ def main():
 
     wenn error:
         drucke()
-        drucke("Collection failed: exit with error", file=sys.stderr)
+        drucke("Collection failed: exit mit error", file=sys.stderr)
         sys.exit(1)
 
 

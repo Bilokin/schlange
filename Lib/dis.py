@@ -7,7 +7,7 @@ importiere io
 
 von opcode importiere *
 von opcode importiere (
-    __all__ as _opcodes_all,
+    __all__ als _opcodes_all,
     _cache_format,
     _inline_cache_entries,
     _nb_ops,
@@ -70,8 +70,8 @@ deoptmap = {
 }
 
 def _try_compile(source, name):
-    """Attempts to compile the given source, first as an expression and
-       then as a statement wenn the first approach fails.
+    """Attempts to compile the given source, first als an expression and
+       then als a statement wenn the first approach fails.
 
        Utility function to accept strings in functions that otherwise
        expect code objects
@@ -116,7 +116,7 @@ def dis(x=Nichts, *, file=Nichts, depth=Nichts, show_caches=Falsch, adaptive=Fal
                 drucke("Disassembly of %s:" % name, file=file)
                 try:
                     dis(x1, file=file, depth=depth, show_caches=show_caches, adaptive=adaptive, show_offsets=show_offsets, show_positions=show_positions)
-                except TypeError as msg:
+                except TypeError als msg:
                     drucke("Sorry:", msg, file=file)
                 drucke(file=file)
     sowenn hasattr(x, 'co_code'): # Code object
@@ -314,7 +314,7 @@ _Instruction = collections.namedtuple(
 _Instruction.opname.__doc__ = "Human readable name fuer operation"
 _Instruction.opcode.__doc__ = "Numeric code fuer operation"
 _Instruction.arg.__doc__ = "Numeric argument to operation (if any), otherwise Nichts"
-_Instruction.argval.__doc__ = "Resolved arg value (if known), otherwise same as arg"
+_Instruction.argval.__doc__ = "Resolved arg value (if known), otherwise same als arg"
 _Instruction.argrepr.__doc__ = "Human readable description of operation argument"
 _Instruction.offset.__doc__ = "Start index of operation within bytecode sequence"
 _Instruction.start_offset.__doc__ = (
@@ -322,7 +322,7 @@ _Instruction.start_offset.__doc__ = (
     "otherwise equal to Instruction.offset"
 )
 _Instruction.starts_line.__doc__ = "Wahr wenn this opcode starts a source line, otherwise Falsch"
-_Instruction.line_number.__doc__ = "source line number associated with this opcode (if any), otherwise Nichts"
+_Instruction.line_number.__doc__ = "source line number associated mit this opcode (if any), otherwise Nichts"
 _Instruction.label.__doc__ = "A label (int > 0) wenn this instruction is a jump target, otherwise Nichts"
 _Instruction.positions.__doc__ = "dis.Positions object holding the span of source code covered by this instruction"
 _Instruction.cache_info.__doc__ = "list of (name, size, data), one fuer each cache entry of the instruction"
@@ -364,13 +364,13 @@ klasse Instruction(_Instruction):
          opname - human readable name fuer operation
          opcode - numeric code fuer operation
          arg - numeric argument to operation (if any), otherwise Nichts
-         argval - resolved arg value (if known), otherwise same as arg
+         argval - resolved arg value (if known), otherwise same als arg
          argrepr - human readable description of operation argument
          offset - start index of operation within bytecode sequence
          start_offset - start index of operation within bytecode sequence including extended args wenn present;
                         otherwise equal to Instruction.offset
          starts_line - Wahr wenn this opcode starts a source line, otherwise Falsch
-         line_number - source line number associated with this opcode (if any), otherwise Nichts
+         line_number - source line number associated mit this opcode (if any), otherwise Nichts
          label - A label wenn this instruction is a jump target, otherwise Nichts
          positions - Optional dis.Positions object holding the span of source code
                      covered by this instruction
@@ -710,7 +710,7 @@ def _get_const_info(op, arg, co_consts):
 def _get_name_info(name_index, get_name, **extrainfo):
     """Helper to get optional details about named references
 
-       Returns the dereferenced name as both value and repr wenn the name
+       Returns the dereferenced name als both value and repr wenn the name
        list is defined.
        Otherwise returns the sentinel value dis.UNKNOWN fuer the value
        and an empty string fuer its repr.
@@ -877,8 +877,8 @@ def _get_lineno_width(linestarts):
     return lineno_width
 
 def _get_positions_width(code):
-    # Positions are formatted as 'LINE:COL-ENDLINE:ENDCOL ' (note trailing space).
-    # A missing component appears as '?', and when all components are Nichts, we
+    # Positions are formatted als 'LINE:COL-ENDLINE:ENDCOL ' (note trailing space).
+    # A missing component appears als '?', and when all components are Nichts, we
     # render '_NO_LINENO'. thus the minimum width is 1 + len(_NO_LINENO).
     #
     # If all values are missing, positions are not printed (i.e. positions_width = 0).
@@ -946,7 +946,7 @@ def _unpack_opargs(code):
         wenn deop in hasarg:
             arg = code[i+1] | extended_arg
             extended_arg = (arg << 8) wenn deop == EXTENDED_ARG sonst 0
-            # The oparg is stored as a signed integer
+            # The oparg is stored als a signed integer
             # If the value exceeds its upper limit, it will overflow and wrap
             # to a negative integer
             wenn extended_arg >= _INT_OVERFLOW:
@@ -1034,10 +1034,10 @@ def _find_store_names(co):
 klasse Bytecode:
     """The bytecode operations of a piece of code
 
-    Instantiate this with a function, method, other compiled object, string of
+    Instantiate this mit a function, method, other compiled object, string of
     code, or a code object (as returned by compile()).
 
-    Iterating over this yields the bytecode operations as Instruction instances.
+    Iterating over this yields the bytecode operations als Instruction instances.
     """
     def __init__(self, x, *, first_line=Nichts, current_offset=Nichts, show_caches=Falsch, adaptive=Falsch, show_offsets=Falsch, show_positions=Falsch):
         self.codeobj = co = _get_code_object(x)
@@ -1095,7 +1095,7 @@ klasse Bytecode:
             offset = self.current_offset
         sonst:
             offset = -1
-        with io.StringIO() as output:
+        mit io.StringIO() als output:
             code = _get_code_array(co, self.adaptive)
             offset_width = len(str(max(len(code) - 2, 9999))) wenn self.show_offsets sonst 0
             wenn self.show_positions:
@@ -1147,7 +1147,7 @@ def main(args=Nichts):
         source = sys.stdin.buffer.read()
     sonst:
         name = args.infile
-        with open(args.infile, 'rb') as infile:
+        mit open(args.infile, 'rb') als infile:
             source = infile.read()
     code = compile(source, name, "exec")
     dis(code, show_caches=args.show_caches, adaptive=args.specialized,

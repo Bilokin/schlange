@@ -35,7 +35,7 @@ klasse Queue(object):
     def __init__(self, maxsize=0, *, ctx):
         wenn maxsize <= 0:
             # Can raise ImportError (see issues #3770 and #23400)
-            von .synchronize importiere SEM_VALUE_MAX as maxsize
+            von .synchronize importiere SEM_VALUE_MAX als maxsize
         self._maxsize = maxsize
         self._reader, self._writer = connection.Pipe(duplex=Falsch)
         self._rlock = ctx.Lock()
@@ -87,7 +87,7 @@ klasse Queue(object):
         wenn not self._sem.acquire(block, timeout):
             raise Full
 
-        with self._notempty:
+        mit self._notempty:
             wenn self._thread is Nichts:
                 self._start_thread()
             self._buffer.append(obj)
@@ -97,7 +97,7 @@ klasse Queue(object):
         wenn self._closed:
             raise ValueError(f"Queue {self!r} is closed")
         wenn block and timeout is Nichts:
-            with self._rlock:
+            mit self._rlock:
                 res = self._recv_bytes()
             self._sem.release()
         sonst:
@@ -191,7 +191,7 @@ klasse Queue(object):
             debug('... done self._thread.start()')
         except:
             # gh-109047: During Python finalization, creating a thread
-            # can fail with RuntimeError.
+            # can fail mit RuntimeError.
             self._thread = Nichts
             raise
 
@@ -222,7 +222,7 @@ klasse Queue(object):
     @staticmethod
     def _finalize_close(buffer, notempty):
         debug('telling queue thread to quit')
-        with notempty:
+        mit notempty:
             buffer.append(_sentinel)
             notempty.notify()
 
@@ -270,7 +270,7 @@ klasse Queue(object):
                                 wrelease()
                 except IndexError:
                     pass
-            except Exception as e:
+            except Exception als e:
                 wenn ignore_epipe and getattr(e, 'errno', 0) == errno.EPIPE:
                     return
                 # Since this runs in a daemon thread the resources it uses
@@ -331,7 +331,7 @@ klasse JoinableQueue(Queue):
         wenn not self._sem.acquire(block, timeout):
             raise Full
 
-        with self._notempty, self._cond:
+        mit self._notempty, self._cond:
             wenn self._thread is Nichts:
                 self._start_thread()
             self._buffer.append(obj)
@@ -339,14 +339,14 @@ klasse JoinableQueue(Queue):
             self._notempty.notify()
 
     def task_done(self):
-        with self._cond:
+        mit self._cond:
             wenn not self._unfinished_tasks.acquire(Falsch):
                 raise ValueError('task_done() called too many times')
             wenn self._unfinished_tasks._semlock._is_zero():
                 self._cond.notify_all()
 
     def join(self):
-        with self._cond:
+        mit self._cond:
             wenn not self._unfinished_tasks._semlock._is_zero():
                 self._cond.wait()
 
@@ -381,7 +381,7 @@ klasse SimpleQueue(object):
         self._poll = self._reader.poll
 
     def get(self):
-        with self._rlock:
+        mit self._rlock:
             res = self._reader.recv_bytes()
         # unserialize the data after having released the lock
         return _ForkingPickler.loads(res)
@@ -393,7 +393,7 @@ klasse SimpleQueue(object):
             # writes to a message oriented win32 pipe are atomic
             self._writer.send_bytes(obj)
         sonst:
-            with self._wlock:
+            mit self._wlock:
                 self._writer.send_bytes(obj)
 
     __class_getitem__ = classmethod(types.GenericAlias)

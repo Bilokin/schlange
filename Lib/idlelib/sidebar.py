@@ -1,11 +1,11 @@
-"""Line numbering implementation fuer IDLE as an extension.
+"""Line numbering implementation fuer IDLE als an extension.
 Includes BaseSideBar which can be extended fuer other sidebar based extensions
 """
 importiere contextlib
 importiere functools
 importiere itertools
 
-importiere tkinter as tk
+importiere tkinter als tk
 von tkinter.font importiere Font
 von idlelib.config importiere idleConf
 von idlelib.delegator importiere Delegator
@@ -143,7 +143,7 @@ klasse BaseSideBar:
 
         # Redirect mouse scrolling to the main editor text widget.
         #
-        # Note that without this, scrolling with the mouse only scrolls
+        # Note that without this, scrolling mit the mouse only scrolls
         # the line numbers.
         self.main_widget.bind('<MouseWheel>', self.redirect_mousewheel_event)
 
@@ -183,7 +183,7 @@ klasse BaseSideBar:
 
         # auto_scrolling_after_id is set whenever text_auto_scroll is
         # scheduled via .after().  It is used to stop the auto-scrolling
-        # upon <B1-Enter>, as well as to avoid scheduling the function several
+        # upon <B1-Enter>, als well als to avoid scheduling the function several
         # times in parallel.
         auto_scrolling_after_id = Nichts
 
@@ -263,7 +263,7 @@ klasse BaseSideBar:
 
 
 klasse EndLineDelegator(Delegator):
-    """Generate callbacks with the current end line number.
+    """Generate callbacks mit the current end line number.
 
     The provided callback is called after every insert and delete.
     """
@@ -300,7 +300,7 @@ klasse LineNumbers(BaseSideBar):
 
         self.prev_end = 1
         self._sidebar_width_type = type(self.sidebar_text['width'])
-        with temp_enable_text_widget(self.sidebar_text):
+        mit temp_enable_text_widget(self.sidebar_text):
             self.sidebar_text.insert('insert', '1', 'linenumber')
         self.sidebar_text.config(takefocus=Falsch, exportselection=Falsch)
         self.sidebar_text.tag_config('linenumber', justify=tk.RIGHT)
@@ -332,7 +332,7 @@ klasse LineNumbers(BaseSideBar):
         """
         Perform the following action:
         Each line sidebar_text contains the linenumber fuer that line
-        Synchronize with editwin.text so that both sidebar_text and
+        Synchronize mit editwin.text so that both sidebar_text and
         editwin.text contain the same number of lines"""
         wenn end == self.prev_end:
             return
@@ -343,7 +343,7 @@ klasse LineNumbers(BaseSideBar):
             new_width = cur_width + width_difference
             self.sidebar_text['width'] = self._sidebar_width_type(new_width)
 
-        with temp_enable_text_widget(self.sidebar_text):
+        mit temp_enable_text_widget(self.sidebar_text):
             wenn end > self.prev_end:
                 new_text = '\n'.join(itertools.chain(
                     [''],
@@ -433,7 +433,7 @@ klasse ShellSidebar(BaseSideBar):
         super().bind_events()
 
         self.main_widget.bind(
-            # AquaTk defines <2> as the right button, not <3>.
+            # AquaTk defines <2> als the right button, not <3>.
             "<Button-2>" wenn macosx.isAquaTk() sonst "<Button-3>",
             self.context_menu_event,
         )
@@ -446,7 +446,7 @@ klasse ShellSidebar(BaseSideBar):
         rmenu.add_command(label='Copy',
                           command=mkcmd('<<copy>>'),
                           state='normal' wenn has_selection sonst 'disabled')
-        rmenu.add_command(label='Copy with prompts',
+        rmenu.add_command(label='Copy mit prompts',
                           command=mkcmd('<<copy-with-prompts>>'),
                           state='normal' wenn has_selection sonst 'disabled')
         rmenu.tk_popup(event.x_root, event.y_root)

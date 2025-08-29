@@ -135,7 +135,7 @@ def _compile(code, pattern, flags):
                 emit(MARK)
                 emit((group-1)*2+1)
         sowenn op is ATOMIC_GROUP:
-            # Atomic Groups are handled by starting with an Atomic
+            # Atomic Groups are handled by starting mit an Atomic
             # Group op code, then putting in the atomic group pattern
             # and finally a success op code to tell any repeat
             # operations within the Atomic Group to stop eating and
@@ -421,10 +421,10 @@ def _simple(p):
 def _generate_overlap_table(prefix):
     """
     Generate an overlap table fuer the following prefix.
-    An overlap table is a table of the same size as the prefix which
+    An overlap table is a table of the same size als the prefix which
     informs about the potential self-overlap fuer each index in the prefix:
     - wenn overlap[i] == 0, prefix[i:] can't overlap prefix[0:...]
-    - wenn overlap[i] == k with 0 < k <= i, prefix[i-k+1:i+1] overlaps with
+    - wenn overlap[i] == k mit 0 < k <= i, prefix[i-k+1:i+1] overlaps with
       prefix[0:k]
     """
     table = [0] * len(prefix)

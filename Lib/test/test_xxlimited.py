@@ -14,16 +14,16 @@ klasse CommonTests:
 
     def test_xxo_attributes(self):
         xxo = self.module.Xxo()
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             xxo.foo
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             del xxo.foo
 
         xxo.foo = 1234
         self.assertEqual(xxo.foo, 1234)
 
         del xxo.foo
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             xxo.foo
 
     def test_foo(self):
@@ -55,7 +55,7 @@ klasse TestXXLimited(CommonTests, unittest.TestCase):
         self.assertEqual(xxo.demo(0), Nichts)
 
     def test_error(self):
-        with self.assertRaises(self.module.Error):
+        mit self.assertRaises(self.module.Error):
             raise self.module.Error
 
     def test_buffer(self):
@@ -81,7 +81,7 @@ klasse TestXXLimited35(CommonTests, unittest.TestCase):
 
     def test_roj(self):
         # the roj function always fails
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             self.module.roj(0)
 
     def test_null(self):

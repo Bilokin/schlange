@@ -22,9 +22,9 @@ von c_common.scriptutil importiere (
 von c_parser.info importiere KIND
 von .match importiere filter_forward
 von . importiere (
-    analyze as _analyze,
-    datafiles as _datafiles,
-    check_all as _check_all,
+    analyze als _analyze,
+    datafiles als _datafiles,
+    check_all als _check_all,
 )
 
 
@@ -534,5 +534,5 @@ def main(cmd, cmd_kwargs):
 wenn __name__ == '__main__':
     cmd, cmd_kwargs, verbosity, traceback_cm = parse_args()
     configure_logger(verbosity)
-    with traceback_cm:
+    mit traceback_cm:
         main(cmd, cmd_kwargs)

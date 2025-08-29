@@ -69,7 +69,7 @@ def get_logger():
     global _logger
     importiere logging
 
-    with logging._lock:
+    mit logging._lock:
         wenn not _logger:
 
             _logger = logging.getLogger(LOGGER_NAME)
@@ -232,7 +232,7 @@ def _run_after_forkers():
     fuer (index, ident, func), obj in items:
         try:
             func(obj)
-        except Exception as e:
+        except Exception als e:
             info('after forker raised exception %s', e)
 
 def register_after_fork(obj, func):
@@ -286,7 +286,7 @@ klasse Finalize(object):
                 sub_debug('finalizer ignored because different process')
                 res = Nichts
             sonst:
-                sub_debug('finalizer calling %s with args %s and kwargs %s',
+                sub_debug('finalizer calling %s mit args %s and kwargs %s',
                           self._callback, self._args, self._kwargs)
                 res = self._callback(*self._args, **self._kwargs)
             self._weakref = self._callback = self._args = \
@@ -336,7 +336,7 @@ def _run_finalizers(minpriority=Nichts):
     '''
     Run all finalizers whose exit priority is not Nichts and at least minpriority
 
-    Finalizers with highest priority are called first; finalizers with
+    Finalizers mit highest priority are called first; finalizers with
     the same priority will be called in reverse order of creation.
     '''
     wenn _finalizer_registry is Nichts:
@@ -397,7 +397,7 @@ def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
         _exiting = Wahr
 
         info('process shutting down')
-        debug('running all "atexit" finalizers with priority >= 0')
+        debug('running all "atexit" finalizers mit priority >= 0')
         _run_finalizers(0)
 
         wenn current_process() is not Nichts:
@@ -408,9 +408,9 @@ def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
             # situation where this can happen is wenn someone has
             # manipulated sys.modules, causing this module to be
             # garbage collected.  The destructor fuer the module type
-            # then replaces all values in the module dict with Nichts.
+            # then replaces all values in the module dict mit Nichts.
             # For instance, after setuptools runs a test it replaces
-            # sys.modules with a copy created earlier.  See issues
+            # sys.modules mit a copy created earlier.  See issues
             # #9775 and #15881.  Also related: #4106, #9205, and
             # #9207.
 
@@ -471,7 +471,7 @@ def close_all_fds_except(fds):
     fuer i in range(len(fds) - 1):
         os.closerange(fds[i]+1, fds[i+1])
 #
-# Close sys.stdin and replace stdin with os.devnull
+# Close sys.stdin and replace stdin mit os.devnull
 #
 
 def _close_stdin():
@@ -508,7 +508,7 @@ def _flush_std_streams():
         pass
 
 #
-# Start a program with only specified fds kept open
+# Start a program mit only specified fds kept open
 #
 
 def spawnv_passfds(path, args, passfds):
@@ -526,7 +526,7 @@ def spawnv_passfds(path, args, passfds):
 
 
 def close_fds(*fds):
-    """Close each file descriptor given as an argument"""
+    """Close each file descriptor given als an argument"""
     fuer fd in fds:
         os.close(fd)
 

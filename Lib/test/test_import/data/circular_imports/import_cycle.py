@@ -1,3 +1,3 @@
-importiere test.test_import.data.circular_imports.import_cycle as m
+importiere test.test_import.data.circular_imports.import_cycle als m
 
 m.some_attribute

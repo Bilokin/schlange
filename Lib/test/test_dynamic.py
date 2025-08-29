@@ -15,7 +15,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
         """Perform TestCase-specific configuration on a function before testing.
 
         By default, this does nothing. Example usage: spinning a function so
-        that a JIT will optimize it. Subclasses should override this as needed.
+        that a JIT will optimize it. Subclasses should override this als needed.
 
         Args:
             func: function to configure.
@@ -33,7 +33,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
-        with swap_item(globals(), "len", lambda x: 7):
+        mit swap_item(globals(), "len", lambda x: 7):
             self.assertEqual(foo(), 7)
 
     def test_modify_builtins(self):
@@ -43,7 +43,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
-        with swap_attr(builtins, "len", lambda x: 7):
+        mit swap_attr(builtins, "len", lambda x: 7):
             self.assertEqual(foo(), 7)
 
     def test_modify_builtins_while_generator_active(self):
@@ -56,13 +56,13 @@ klasse RebindBuiltinsTests(unittest.TestCase):
 
         g = foo()
         self.assertEqual(next(g), 3)
-        with swap_attr(builtins, "len", lambda x: 7):
+        mit swap_attr(builtins, "len", lambda x: 7):
             self.assertEqual(next(g), 7)
 
     def test_modify_builtins_from_leaf_function(self):
         # Verify that modifications made by leaf functions percolate up the
         # callstack.
-        with swap_attr(builtins, "len", len):
+        mit swap_attr(builtins, "len", len):
             def bar():
                 builtins.len = lambda x: 4
 
@@ -115,7 +115,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
 
         g = foo()
         self.assertEqual(next(g), 3)
-        with swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
+        mit swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
             self.assertEqual(next(g), 3)
 
     def test_cannot_replace_builtins_dict_between_calls(self):
@@ -124,7 +124,7 @@ klasse RebindBuiltinsTests(unittest.TestCase):
         self.configure_func(foo)
 
         self.assertEqual(foo(), 3)
-        with swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
+        mit swap_item(globals(), "__builtins__", {"len": lambda x: 7}):
             self.assertEqual(foo(), 3)
 
     def test_eval_gives_lambda_custom_globals(self):
@@ -185,7 +185,7 @@ klasse TestTracing(unittest.TestCase):
             0 + C(0).x
 
         fuer func in (f, g, h):
-            with self.subTest(func.__name__):
+            mit self.subTest(func.__name__):
                 fuer _ in range(58):
                     func()
                 turn_on_trace = Wahr

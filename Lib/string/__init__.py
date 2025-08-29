@@ -31,7 +31,7 @@ octdigits = '01234567'
 punctuation = r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
 printable = digits + ascii_letters + punctuation + whitespace
 
-# Functions which aren't available as string methods.
+# Functions which aren't available als string methods.
 
 # Capitalize the words in a string, e.g. " aBc  dEf " -> "Abc Def".
 def capwords(s, sep=Nichts):
@@ -65,7 +65,7 @@ klasse Template:
     """A string klasse fuer supporting $-substitutions."""
 
     delimiter = '$'
-    # r'[a-z]' matches to non-ASCII letters when used with IGNORECASE, but
+    # r'[a-z]' matches to non-ASCII letters when used mit IGNORECASE, but
     # without the ASCII flag.  We can't add re.ASCII to flags because of
     # backward compatibility.  So we use the ?a local flag and [a-z] pattern.
     # See https://bugs.python.org/issue31672
@@ -293,7 +293,7 @@ klasse Formatter:
 
         *field_name* can be Nichts, in which case there's no object
         to format and output; otherwise, it is looked up and
-        formatted with *format_spec* and *conversion*.
+        formatted mit *format_spec* and *conversion*.
         """
         return _string.formatter_parser(format_string)
 
@@ -307,7 +307,7 @@ klasse Formatter:
         first, rest = _string.formatter_field_name_split(field_name)
         obj = self.get_value(first, args, kwargs)
         # loop through the rest of the field_name, doing
-        #  getattr or getitem as needed
+        #  getattr or getitem als needed
         fuer is_attr, i in rest:
             wenn is_attr:
                 obj = getattr(obj, i)

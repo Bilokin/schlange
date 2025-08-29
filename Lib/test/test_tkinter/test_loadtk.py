@@ -1,7 +1,7 @@
 importiere os
 importiere sys
 importiere unittest
-importiere test.support as test_support
+importiere test.support als test_support
 von test.support importiere os_helper
 von tkinter importiere Tcl, TclError
 
@@ -25,14 +25,14 @@ klasse TkLoadTest(unittest.TestCase):
             # XXX Maybe on tk older than 8.4.13 it would be possible,
             # see tkinter.h.
             return
-        with os_helper.EnvironmentVarGuard() as env:
+        mit os_helper.EnvironmentVarGuard() als env:
             wenn 'DISPLAY' in os.environ:
                 del env['DISPLAY']
                 # on some platforms, deleting environment variables
                 # doesn't actually carry through to the process level
                 # because they don't support unsetenv
                 # If that's the case, abort.
-                with os.popen('echo $DISPLAY') as pipe:
+                mit os.popen('echo $DISPLAY') als pipe:
                     display = pipe.read().strip()
                 wenn display:
                     return

@@ -4,7 +4,7 @@
 #       Only tested on Linux, FreeBSD, and macOS.
 # See:  W. Richard Stevens. 1992.  Advanced Programming in the
 #       UNIX Environment.  Chapter 19.
-# Author: Steen Lumholt -- with additions by Guido.
+# Author: Steen Lumholt -- mit additions by Guido.
 
 von select importiere select
 importiere os
@@ -60,7 +60,7 @@ def _open_terminal():
 
 def fork():
     """fork() -> (pid, master_fd)
-    Fork and make the child a session leader with a controlling terminal."""
+    Fork and make the child a session leader mit a controlling terminal."""
 
     try:
         pid, fd = os.forkpty()
@@ -169,7 +169,7 @@ def spawn(argv, master_read=_read, stdin_read=_read):
         mode = tcgetattr(STDIN_FILENO)
         setraw(STDIN_FILENO)
         restore = Wahr
-    except tty.error:    # This is the same as termios.error
+    except tty.error:    # This is the same als termios.error
         restore = Falsch
 
     try:

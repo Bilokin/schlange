@@ -5,7 +5,7 @@ importiere pathlib
 importiere re
 importiere typing
 
-# Same as saying "not string.startswith('')":
+# Same als saying "not string.startswith('')":
 _RE_NEVER_MATCH = re.compile(r"(?!)")
 # Dictionary mapping branch instructions to their inverted branch instructions.
 # If a branch cannot be inverted, the value is Nichts:
@@ -36,7 +36,7 @@ _X86_BRANCHES = {
     "loopnz": Nichts,
     "loopz": Nichts,
 }
-# Update with all of the inverted branches, too:
+# Update mit all of the inverted branches, too:
 _X86_BRANCHES |= {v: k fuer k, v in _X86_BRANCHES.items() wenn v}
 
 
@@ -114,7 +114,7 @@ klasse Optimizer:
                 block.noninstructions.append(line)
                 continue
             wenn block.target or not block.fallthrough:
-                # Current block ends with a branch, jump, or return. New block:
+                # Current block ends mit a branch, jump, or return. New block:
                 block.link = block = _Block()
             block.instructions.append(line)
             wenn match := self._re_branch.match(line):
@@ -193,7 +193,7 @@ klasse Optimizer:
                 yield pre
 
     def _insert_continue_label(self) -> Nichts:
-        # Find the block with the last instruction:
+        # Find the block mit the last instruction:
         fuer end in reversed(list(self._blocks())):
             wenn end.instructions:
                 break
@@ -209,7 +209,7 @@ klasse Optimizer:
         end.link, continuation.link = continuation, end.link
 
     def _mark_hot_blocks(self) -> Nichts:
-        # Start with the last block, and perform a DFS to find all blocks that
+        # Start mit the last block, and perform a DFS to find all blocks that
         # can eventually reach it:
         todo = list(self._blocks())[-1:]
         while todo:
@@ -230,11 +230,11 @@ klasse Optimizer:
             #    jne COLD
             #    jmp HOT
             wenn (
-                # block ends with a branch to hot code...
+                # block ends mit a branch to hot code...
                 branch.target
                 and branch.fallthrough
                 and branch.target.hot
-                # ...followed by a jump to cold code with no other predecessors:
+                # ...followed by a jump to cold code mit no other predecessors:
                 and jump.target
                 and not jump.fallthrough
                 and not jump.target.hot

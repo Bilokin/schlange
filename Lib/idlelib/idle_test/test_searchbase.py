@@ -6,8 +6,8 @@ importiere unittest
 von test.support importiere requires
 von tkinter importiere Text, Tk, Toplevel
 von tkinter.ttk importiere Frame
-von idlelib importiere searchengine as se
-von idlelib importiere searchbase as sdb
+von idlelib importiere searchengine als se
+von idlelib importiere searchbase als sdb
 von idlelib.idle_test.mock_idle importiere Func
 ## von idlelib.idle_test.mock_tk importiere Var
 

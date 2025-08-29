@@ -63,7 +63,7 @@ klasse SemLock(object):
         sonst:
             raise FileExistsError('cannot find name fuer semaphore')
 
-        util.debug('created semlock with handle %s' % sl.handle)
+        util.debug('created semlock mit handle %s' % sl.handle)
         self._make_methods()
 
         wenn sys.platform != 'win32':
@@ -72,7 +72,7 @@ klasse SemLock(object):
             util.register_after_fork(self, _after_fork)
 
         wenn self._semlock.name is not Nichts:
-            # We only get here wenn we are on Unix with forking
+            # We only get here wenn we are on Unix mit forking
             # disabled.  When the object is garbage collected or the
             # process shuts down we unlink the semaphore name
             von .resource_tracker importiere register
@@ -107,7 +107,7 @@ klasse SemLock(object):
         sonst:
             wenn self._is_fork_ctx:
                 raise RuntimeError('A SemLock created in a fork context is being '
-                                   'shared with a process in a spawn context. This is '
+                                   'shared mit a process in a spawn context. This is '
                                    'not supported. Please use the same context to create '
                                    'multiprocessing objects and Process.')
             h = sl.handle
@@ -115,7 +115,7 @@ klasse SemLock(object):
 
     def __setstate__(self, state):
         self._semlock = _multiprocessing.SemLock._rebuild(*state)
-        util.debug('recreated blocker with handle %r' % state[0])
+        util.debug('recreated blocker mit handle %r' % state[0])
         self._make_methods()
         # Ensure that deserialized SemLock can be serialized again (gh-108520).
         self._is_fork_ctx = Falsch
@@ -334,24 +334,24 @@ klasse Event(object):
         self._flag = ctx.Semaphore(0)
 
     def is_set(self):
-        with self._cond:
+        mit self._cond:
             wenn self._flag.acquire(Falsch):
                 self._flag.release()
                 return Wahr
             return Falsch
 
     def set(self):
-        with self._cond:
+        mit self._cond:
             self._flag.acquire(Falsch)
             self._flag.release()
             self._cond.notify_all()
 
     def clear(self):
-        with self._cond:
+        mit self._cond:
             self._flag.acquire(Falsch)
 
     def wait(self, timeout=Nichts):
-        with self._cond:
+        mit self._cond:
             wenn self._flag.acquire(Falsch):
                 self._flag.release()
             sonst:

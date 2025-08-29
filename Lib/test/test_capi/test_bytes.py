@@ -207,11 +207,11 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(decodeescape(br'\xa1\xa2'), b'\xa1\xa2')
         self.assertEqual(decodeescape(br'\2\24\241'), b'\x02\x14\xa1')
         self.assertEqual(decodeescape(b'\xa1\xa2'), b'\xa1\xa2')
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(decodeescape(br'\u4f60'), br'\u4f60')
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(decodeescape(br'\z'), br'\z')
-        with self.assertWarns(DeprecationWarning):
+        mit self.assertWarns(DeprecationWarning):
             self.assertEqual(decodeescape(br'\541'), b'a')
 
         fuer b in b'\\', br'\x', br'\xa', br'\xz', br'\xaz':
@@ -275,27 +275,27 @@ klasse CAPITest(unittest.TestCase):
         self.assertEqual(bytes_join(b'-', iter([b'a', b'b', b'c'])), b'a-b-c')
 
         # invalid 'sep' argument
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join(bytearray(b'sep'), [])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join(memoryview(b'sep'), [])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join('', [])  # empty Unicode string
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join('unicode', [])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join(123, [])
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             self.assertEqual(bytes_join(NULL, [b'a', b'b', b'c']), b'abc')
 
         # invalid 'iterable' argument
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join(b'', [b'bytes', 'unicode'])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join(b'', [b'bytes', 123])
-        with self.assertRaises(TypeError):
+        mit self.assertRaises(TypeError):
             bytes_join(b'', 123)
-        with self.assertRaises(SystemError):
+        mit self.assertRaises(SystemError):
             bytes_join(b'', NULL)
 
 

@@ -319,7 +319,7 @@ klasse BaseProcess(object):
             util.info('child process calling self.run()')
             self.run()
             exitcode = 0
-        except SystemExit as e:
+        except SystemExit als e:
             wenn e.code is Nichts:
                 exitcode = 0
             sowenn isinstance(e.code, int):
@@ -334,7 +334,7 @@ klasse BaseProcess(object):
             traceback.print_exc()
         finally:
             threading._shutdown()
-            util.info('process exiting with exitcode %d' % exitcode)
+            util.info('process exiting mit exitcode %d' % exitcode)
             util._flush_std_streams()
 
         return exitcode

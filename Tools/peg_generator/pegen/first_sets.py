@@ -55,7 +55,7 @@ klasse FirstSetCalculator(GrammarVisitor):
             wenn to_remove:
                 result -= to_remove
 
-            # If the set of new terminals can start with the empty string,
+            # If the set of new terminals can start mit the empty string,
             # it means that the item is completely nullable and we should
             # also considering at least the next item in case the current
             # one fails to parse.
@@ -137,7 +137,7 @@ def main() -> Nichts:
 
     try:
         grammar, parser, tokenizer = build_parser(args.grammar_file)
-    except Exception as err:
+    except Exception als err:
         drucke("ERROR: Failed to parse grammar file", file=sys.stderr)
         sys.exit(1)
 

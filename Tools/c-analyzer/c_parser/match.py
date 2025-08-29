@@ -1,6 +1,6 @@
 importiere re
 
-von . importiere info as _info
+von . importiere info als _info
 von .parser._regexes importiere SIMPLE_TYPE
 
 
@@ -64,7 +64,7 @@ def is_forward_decl(decl):
     sowenn is_type_decl(decl):
         return not decl.data
     sowenn decl.kind is _KIND.FUNCTION:
-        # XXX This doesn't work with ParsedItem.
+        # XXX This doesn't work mit ParsedItem.
         return decl.signature.isforward
     sowenn decl.kind is _KIND.VARIABLE:
         # No var decls are considered forward (or all are...).
@@ -120,7 +120,7 @@ def is_global_var(decl):
 
 
 ##################################
-# filtering with matchers
+# filtering mit matchers
 
 def filter_by_kind(items, kind):
     wenn kind == 'type':
@@ -139,7 +139,7 @@ def filter_by_kind(items, kind):
 
 
 ##################################
-# grouping with matchers
+# grouping mit matchers
 
 def group_by_category(decls, categories, *, ignore_non_match=Wahr):
     collated = {}

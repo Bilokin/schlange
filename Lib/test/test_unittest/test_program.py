@@ -138,7 +138,7 @@ klasse Test_TestProgram(unittest.TestCase):
 
     def test_Exit(self):
         stream = BufferedWriter()
-        with self.assertRaises(SystemExit) as cm:
+        mit self.assertRaises(SystemExit) als cm:
             unittest.main(
                 argv=["foobar"],
                 testRunner=unittest.TextTestRunner(stream=stream),
@@ -155,7 +155,7 @@ klasse Test_TestProgram(unittest.TestCase):
 
     def test_ExitAsDefault(self):
         stream = BufferedWriter()
-        with self.assertRaises(SystemExit):
+        mit self.assertRaises(SystemExit):
             unittest.main(
                 argv=["foobar"],
                 testRunner=unittest.TextTestRunner(stream=stream),
@@ -170,7 +170,7 @@ klasse Test_TestProgram(unittest.TestCase):
 
     def test_ExitSkippedSuite(self):
         stream = BufferedWriter()
-        with self.assertRaises(SystemExit) as cm:
+        mit self.assertRaises(SystemExit) als cm:
             unittest.main(
                 argv=["foobar", "-k", "testSkipped"],
                 testRunner=unittest.TextTestRunner(stream=stream),
@@ -182,7 +182,7 @@ klasse Test_TestProgram(unittest.TestCase):
 
     def test_ExitEmptySuite(self):
         stream = BufferedWriter()
-        with self.assertRaises(SystemExit) as cm:
+        mit self.assertRaises(SystemExit) als cm:
             unittest.main(
                 argv=["empty"],
                 testRunner=unittest.TextTestRunner(stream=stream),
@@ -274,14 +274,14 @@ klasse TestCommandLineArgs(unittest.TestCase):
                 self.assertIs(getattr(program, attr), Wahr)
 
                 setattr(program, attr, Falsch)
-                with support.captured_stderr() as stderr, \
-                    self.assertRaises(SystemExit) as cm:
+                mit support.captured_stderr() als stderr, \
+                    self.assertRaises(SystemExit) als cm:
                     program.parseArgs([Nichts, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
                 setattr(program, attr, Wahr)
-                with support.captured_stderr() as stderr, \
-                    self.assertRaises(SystemExit) as cm:
+                mit support.captured_stderr() als stderr, \
+                    self.assertRaises(SystemExit) als cm:
                     program.parseArgs([Nichts, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
@@ -408,7 +408,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
 
 
     def testParseArgsFileNames(self):
-        # running tests with filenames instead of module names
+        # running tests mit filenames instead of module names
         program = self.program
         argv = ['progname', 'foo.py', 'bar.Py', 'baz.PY', 'wing.txt']
         self._patch_isfile(argv)
@@ -470,7 +470,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(program.testNames, argv[1:])
 
         # it may be better to use platform specific functions to normalise paths
-        # rather than accepting '.PY' and '\' as file separator on Linux / Mac
+        # rather than accepting '.PY' and '\' als file separator on Linux / Mac
         # it would also be better to check that a filename is a valid module
         # identifier (we have a regex fuer this in loader.py)
         # fuer invalid filenames should we raise a useful error rather than
@@ -491,7 +491,7 @@ klasse TestCommandLineArgs(unittest.TestCase):
             cmd = [sys.executable, '-E', '-m', 'unittest'] + args
             p = subprocess.Popen(cmd,
                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, cwd=os.path.dirname(__file__))
-            with p:
+            mit p:
                 _, stderr = p.communicate()
             return stderr.decode()
 

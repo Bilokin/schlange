@@ -22,16 +22,16 @@ klasse TestSealable(unittest.TestCase):
         m = mock.Mock()
 
         mock.seal(m)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.test
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m()
 
     def test_new_attributes_cannot_be_set_on_seal(self):
         m = mock.Mock()
 
         mock.seal(m)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.test = 1
 
     def test_existing_attributes_can_be_set_on_seal(self):
@@ -47,7 +47,7 @@ klasse TestSealable(unittest.TestCase):
         m.test.test2 = 1
 
         mock.seal(m)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.test.test3 = 1
 
     def test_existing_attributes_allowed_after_seal(self):
@@ -68,7 +68,7 @@ klasse TestSealable(unittest.TestCase):
         m = mock.Mock()
 
         mock.seal(m)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m()
 
     def test_call_on_defined_sealed_mock_succeeds(self):
@@ -84,9 +84,9 @@ klasse TestSealable(unittest.TestCase):
 
         mock.seal(m)
         self.assertEqual(m.test1.test2().test3, 4)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.test1.test2().test4
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.test1.test3
 
     def test_seals_recurse_on_magic_methods(self):
@@ -98,9 +98,9 @@ klasse TestSealable(unittest.TestCase):
         mock.seal(m)
         self.assertEqual(m.test1.test2["a"].test3, 4)
         self.assertEqual(m.test1.test2[2:5].test3, 4)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.test1.test2["a"].test4
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.test1.test3[2:5].test4
 
     def test_seals_dont_recurse_on_manual_attributes(self):
@@ -115,7 +115,7 @@ klasse TestSealable(unittest.TestCase):
         m.test1.test2.test4 = 1  # Does not raise
 
     def test_integration_with_spec_att_definition(self):
-        """You are not restricted when using mock with spec"""
+        """You are not restricted when using mock mit spec"""
         m = mock.Mock(SampleObject)
 
         m.attr_sample1 = 1
@@ -124,7 +124,7 @@ klasse TestSealable(unittest.TestCase):
         mock.seal(m)
         self.assertEqual(m.attr_sample1, 1)
         self.assertEqual(m.attr_sample3, 3)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.attr_sample2
 
     def test_integration_with_spec_method_definition(self):
@@ -135,21 +135,21 @@ klasse TestSealable(unittest.TestCase):
 
         mock.seal(m)
         self.assertEqual(m.method_sample1(), 1)
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.method_sample2()
 
     def test_integration_with_spec_method_definition_respects_spec(self):
         """You cannot define methods out of the spec"""
         m = mock.Mock(SampleObject)
 
-        with self.assertRaises(AttributeError):
+        mit self.assertRaises(AttributeError):
             m.method_sample3.return_value = 3
 
     def test_sealed_exception_has_attribute_name(self):
         m = mock.Mock()
 
         mock.seal(m)
-        with self.assertRaises(AttributeError) as cm:
+        mit self.assertRaises(AttributeError) als cm:
             m.SECRETE_name
         self.assertIn("SECRETE_name", str(cm.exception))
 
@@ -158,7 +158,7 @@ klasse TestSealable(unittest.TestCase):
         m.test1.test2.test3.test4
 
         mock.seal(m)
-        with self.assertRaises(AttributeError) as cm:
+        mit self.assertRaises(AttributeError) als cm:
             m.test1.test2.test3.test4.boom
         self.assertIn("mock_name.test1.test2.test3.test4.boom", str(cm.exception))
 
@@ -167,7 +167,7 @@ klasse TestSealable(unittest.TestCase):
         m.test1().test2.test3().test4
 
         mock.seal(m)
-        with self.assertRaises(AttributeError) as cm:
+        mit self.assertRaises(AttributeError) als cm:
             m.test1().test2.test3().test4()
         self.assertIn("mock.test1().test2.test3().test4", str(cm.exception))
 
@@ -183,7 +183,7 @@ klasse TestSealable(unittest.TestCase):
                 def ban(self): pass
 
         fuer spec_set in (Wahr, Falsch):
-            with self.subTest(spec_set=spec_set):
+            mit self.subTest(spec_set=spec_set):
                 foo = mock.create_autospec(Foo, spec_set=spec_set)
                 foo.bar1.return_value = 'a'
                 foo.Baz.ban.return_value = 'b'
@@ -207,29 +207,29 @@ klasse TestSealable(unittest.TestCase):
                 foo.Baz.ban.return_value = 'new_b'
                 self.assertEqual(foo.Baz.ban(), 'new_b')
 
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     foo.foo()
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.bar = 1
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.bar2().x
 
                 foo.bar2.return_value = 'bar2'
                 self.assertEqual(foo.bar2(), 'bar2')
 
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.missing_attr
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.missing_attr = 1
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.missing_method()
-                with self.assertRaises(TypeError):
+                mit self.assertRaises(TypeError):
                     foo.Baz.baz()
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.Baz.missing_attr
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.Baz.missing_attr = 1
-                with self.assertRaises(AttributeError):
+                mit self.assertRaises(AttributeError):
                     foo.Baz.missing_method()
 
 

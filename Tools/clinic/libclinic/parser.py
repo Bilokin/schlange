@@ -48,6 +48,6 @@ klasse PythonParser:
 
     def parse(self, block: Block) -> Nichts:
         namespace = create_parser_namespace()
-        with contextlib.redirect_stdout(io.StringIO()) as s:
+        mit contextlib.redirect_stdout(io.StringIO()) als s:
             exec(block.input, namespace)
             block.output = s.getvalue()

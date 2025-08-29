@@ -122,7 +122,7 @@ SAVEDCWD = os.getcwd()
 # encoding in strict mode.
 TESTFN_UNDECODABLE = Nichts
 fuer name in (
-    # b'\xff' is not decodable by os.fsdecode() with code page 932. Windows
+    # b'\xff' is not decodable by os.fsdecode() mit code page 932. Windows
     # accepts it to create a file or a directory, or don't accept to enter to
     # such directory (when the bytes name is used). So test b'\xe7' first:
     # it is not decodable von cp932.
@@ -176,7 +176,7 @@ def can_symlink():
     global _can_symlink
     wenn _can_symlink is not Nichts:
         return _can_symlink
-    # WASI / wasmtime prevents symlinks with absolute paths, see man
+    # WASI / wasmtime prevents symlinks mit absolute paths, see man
     # openat2(2) RESOLVE_BENEATH. Almost all symlink tests use absolute
     # paths. Skip symlink tests on WASI fuer now.
     src = os.path.abspath(TESTFN)
@@ -231,7 +231,7 @@ def can_xattr():
         tmp_dir = tempfile.mkdtemp()
         tmp_fp, tmp_name = tempfile.mkstemp(dir=tmp_dir)
         try:
-            with open(TESTFN, "wb") as fp:
+            mit open(TESTFN, "wb") als fp:
                 try:
                     # TESTFN & tempfile may use different file systems with
                     # different capabilities
@@ -269,13 +269,13 @@ def can_chmod():
         _can_chmod = Falsch
         return _can_chmod
     try:
-        with open(TESTFN, "wb") as f:
+        mit open(TESTFN, "wb") als f:
             try:
                 os.chmod(TESTFN, 0o555)
                 mode1 = os.stat(TESTFN).st_mode
                 os.chmod(TESTFN, 0o777)
                 mode2 = os.stat(TESTFN).st_mode
-            except OSError as e:
+            except OSError als e:
                 can = Falsch
             sonst:
                 can = stat.S_IMODE(mode1) != stat.S_IMODE(mode2)
@@ -314,7 +314,7 @@ def save_mode(path, *, quiet=Falsch):
     finally:
         try:
             os.chmod(path, saved_mode.st_mode)
-        except OSError as exc:
+        except OSError als exc:
             wenn not quiet:
                 raise
             warnings.warn(f'tests may fail, unable to restore the mode of '
@@ -337,10 +337,10 @@ def can_dac_override():
         return _can_dac_override
 
     try:
-        with open(TESTFN, "wb") as f:
+        mit open(TESTFN, "wb") als f:
             os.chmod(TESTFN, 0o400)
             try:
-                with open(TESTFN, "wb"):
+                mit open(TESTFN, "wb"):
                     pass
             except OSError:
                 _can_dac_override = Falsch
@@ -358,7 +358,7 @@ def can_dac_override():
 
 def skip_if_dac_override(test):
     ok = not can_dac_override()
-    msg = "incompatible with CAP_DAC_OVERRIDE"
+    msg = "incompatible mit CAP_DAC_OVERRIDE"
     return test wenn ok sonst unittest.skip(msg)(test)
 
 
@@ -399,7 +399,7 @@ wenn sys.platform.startswith("win"):
             # permissions to do that much using Python's equivalent of the
             # Windows API FindFirstFile.
             # Other Windows APIs can fail or give incorrect results when
-            # dealing with files that are pending deletion.
+            # dealing mit files that are pending deletion.
             L = os.listdir(dirname)
             wenn not (L wenn waitall sonst name in L):
                 return
@@ -427,8 +427,8 @@ wenn sys.platform.startswith("win"):
                 fullname = os.path.join(path, name)
                 try:
                     mode = os.lstat(fullname).st_mode
-                except OSError as exc:
-                    drucke("support.rmtree(): os.lstat(%r) failed with %s"
+                except OSError als exc:
+                    drucke("support.rmtree(): os.lstat(%r) failed mit %s"
                           % (fullname, exc),
                           file=sys.__stderr__)
                     mode = 0
@@ -523,7 +523,7 @@ def temp_dir(path=Nichts, quiet=Falsch):
         try:
             os.mkdir(path)
             dir_created = Wahr
-        except OSError as exc:
+        except OSError als exc:
             wenn not quiet:
                 raise
             logging.getLogger(__name__).warning(
@@ -551,7 +551,7 @@ def change_cwd(path, quiet=Falsch):
 
     Arguments:
 
-      path: the directory to use as the temporary current working directory.
+      path: the directory to use als the temporary current working directory.
 
       quiet: wenn Falsch (the default), the context manager raises an exception
         on error.  Otherwise, it issues only a warning and keeps the current
@@ -561,7 +561,7 @@ def change_cwd(path, quiet=Falsch):
     saved_dir = os.getcwd()
     try:
         os.chdir(os.path.realpath(path))
-    except OSError as exc:
+    except OSError als exc:
         wenn not quiet:
             raise
         logging.getLogger(__name__).warning(
@@ -594,8 +594,8 @@ def temp_cwd(name='tempcwd', quiet=Falsch):
     only a warning is raised and the original CWD is used.
 
     """
-    with temp_dir(path=name, quiet=quiet) as temp_path:
-        with change_cwd(temp_path, quiet=quiet) as cwd_dir:
+    mit temp_dir(path=name, quiet=quiet) als temp_path:
+        mit change_cwd(temp_path, quiet=quiet) als cwd_dir:
             yield cwd_dir
 
 
@@ -623,7 +623,7 @@ def fs_is_case_insensitive(directory):
     """Detects wenn the file system fuer the specified directory
     is case-insensitive."""
     importiere tempfile
-    with tempfile.NamedTemporaryFile(dir=directory) as base:
+    mit tempfile.NamedTemporaryFile(dir=directory) als base:
         base_path = base.name
         case_path = base_path.upper()
         wenn case_path == base_path:
@@ -703,7 +703,7 @@ def fd_count():
                 # Prefer dup() over fstat(). fstat() can require input/output
                 # whereas dup() doesn't.
                 fd2 = os.dup(fd)
-            except OSError as e:
+            except OSError als e:
                 wenn e.errno != errno.EBADF:
                     raise
             sonst:
@@ -738,7 +738,7 @@ sonst:
 klasse EnvironmentVarGuard(collections.abc.MutableMapping):
     """Class to help protect the environment variable properly.
 
-    Can be used as a context manager.
+    Can be used als a context manager.
     """
 
     def __init__(self):

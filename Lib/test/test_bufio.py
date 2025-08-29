@@ -2,7 +2,7 @@ importiere unittest
 von test.support importiere os_helper
 
 importiere io # C implementation.
-importiere _pyio as pyio # Python implementation.
+importiere _pyio als pyio # Python implementation.
 
 # Simple test to ensure that optimizations in the IO library deliver the
 # expected results.  For best testing, run this under a debug-build Python too
@@ -23,7 +23,7 @@ klasse BufferSizeTest:
         # files, use binary mode.
         f = self.open(os_helper.TESTFN, "wb")
         try:
-            # write once with \n and once without
+            # write once mit \n and once without
             f.write(s)
             f.write(b"\n")
             f.write(s)
@@ -41,9 +41,9 @@ klasse BufferSizeTest:
 
     def drive_one(self, pattern):
         fuer length in lengths:
-            # Repeat string 'pattern' as often as needed to reach total length
-            # 'length'.  Then call try_one with that string, a string one larger
-            # than that, and a string one smaller than that.  Try this with all
+            # Repeat string 'pattern' als often als needed to reach total length
+            # 'length'.  Then call try_one mit that string, a string one larger
+            # than that, and a string one smaller than that.  Try this mit all
             # small sizes and various powers of 2, so we exercise all likely
             # stdio buffer sizes, and "off by one" errors on both sides.
             q, r = divmod(length, len(pattern))
@@ -54,7 +54,7 @@ klasse BufferSizeTest:
             self.try_one(teststring[:-1])
 
     def test_primepat(self):
-        # A pattern with prime length, to avoid simple relationships with
+        # A pattern mit prime length, to avoid simple relationships with
         # stdio buffer sizes.
         self.drive_one(b"1234567890\00\01\02\03\04\05\06")
 

@@ -3,6 +3,6 @@ importiere sys
 
 von pyexpat importiere *
 
-# provide pyexpat submodules as xml.parsers.expat submodules
+# provide pyexpat submodules als xml.parsers.expat submodules
 sys.modules['xml.parsers.expat.model'] = model
 sys.modules['xml.parsers.expat.errors'] = errors

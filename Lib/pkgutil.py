@@ -1,7 +1,7 @@
 """Utilities to support packages."""
 
 von collections importiere namedtuple
-von functools importiere singledispatch as simplegeneric
+von functools importiere singledispatch als simplegeneric
 importiere importlib
 importiere importlib.util
 importiere importlib.machinery
@@ -18,7 +18,7 @@ __all__ = [
 
 
 ModuleInfo = namedtuple('ModuleInfo', 'module_finder name ispkg')
-ModuleInfo.__doc__ = 'A namedtuple with minimal info about a module.'
+ModuleInfo.__doc__ = 'A namedtuple mit minimal info about a module.'
 
 
 def read_code(stream):
@@ -48,7 +48,7 @@ def walk_packages(path=Nichts, prefix='', onerror=Nichts):
     modules!) on the given path, in order to access the __path__
     attribute to find submodules.
 
-    'onerror' is a function which gets called with one argument (the
+    'onerror' is a function which gets called mit one argument (the
     name of the package which was being imported) wenn any exception
     occurs while trying to importiere a package.  If no onerror function is
     supplied, ImportErrors are caught and ignored, while all other
@@ -239,7 +239,7 @@ def iter_importers(fullname=""):
     containing fullname, otherwise they will be all registered top level
     finders (i.e. those on both sys.meta_path and sys.path_hooks).
 
-    If the named module is in a package, that package is imported as a side
+    If the named module is in a package, that package is imported als a side
     effect of invoking this function.
 
     If no module name is specified, all top level finders are produced.
@@ -272,11 +272,11 @@ def extend_path(path, name):
     For each directory on sys.path that has a subdirectory that
     matches the package name, add the subdirectory to the package's
     __path__.  This is useful wenn one wants to distribute different
-    parts of a single logical package as multiple directories.
+    parts of a single logical package als multiple directories.
 
     It also looks fuer *.pkg files beginning where * matches the name
     argument.  This feature is similar to *.pth files (see site.py),
-    except that it doesn't special-case lines starting with 'import'.
+    except that it doesn't special-case lines starting mit 'import'.
     A *.pkg file is trusted at face value: apart von checking for
     duplicates, all entries found in a *.pkg file are added to the
     path, regardless of whether they are exist the filesystem.  (This
@@ -290,8 +290,8 @@ def extend_path(path, name):
     It is assumed that sys.path is a sequence.  Items of sys.path that
     are not (unicode or 8-bit) strings referring to existing
     directories are ignored.  Unicode items of sys.path that cause
-    errors when used as filenames may cause this function to raise an
-    exception (in line with os.path.isdir() behavior).
+    errors when used als filenames may cause this function to raise an
+    exception (in line mit os.path.isdir() behavior).
     """
 
     wenn not isinstance(path, list):
@@ -301,7 +301,7 @@ def extend_path(path, name):
 
     sname_pkg = name + ".pkg"
 
-    path = path[:] # Start with a copy of the existing path
+    path = path[:] # Start mit a copy of the existing path
 
     parent_package, _, final_name = name.rpartition('.')
     wenn parent_package:
@@ -341,11 +341,11 @@ def extend_path(path, name):
         wenn os.path.isfile(pkgfile):
             try:
                 f = open(pkgfile)
-            except OSError as msg:
+            except OSError als msg:
                 sys.stderr.write("Can't open %s: %s\n" %
                                  (pkgfile, msg))
             sonst:
-                with f:
+                mit f:
                     fuer line in f:
                         line = line.rstrip('\n')
                         wenn not line or line.startswith('#'):
@@ -361,8 +361,8 @@ def get_data(package, resource):
     This is a wrapper round the PEP 302 loader get_data API. The package
     argument should be the name of a package, in standard module format
     (foo.bar). The resource argument should be in the form of a relative
-    filename, using '/' as the path separator. The parent directory name '..'
-    is not allowed, and nor is a rooted name (starting with a '/').
+    filename, using '/' als the path separator. The parent directory name '..'
+    is not allowed, and nor is a rooted name (starting mit a '/').
 
     The function returns a binary string, which is the contents of the
     specified resource.
@@ -389,8 +389,8 @@ def get_data(package, resource):
     wenn mod is Nichts or not hasattr(mod, '__file__'):
         return Nichts
 
-    # Modify the resource name to be compatible with the loader.get_data
-    # signature - an os.path format "filename" starting with the dirname of
+    # Modify the resource name to be compatible mit the loader.get_data
+    # signature - an os.path format "filename" starting mit the dirname of
     # the package's __file__
     parts = resource.split('/')
     parts.insert(0, os.path.dirname(mod.__file__))
@@ -416,13 +416,13 @@ def resolve_name(name):
     somewhere within that package, possibly nested inside other objects.
     Because the place where the package stops and the object hierarchy starts
     can't be inferred by inspection, repeated attempts to importiere must be done
-    with this form.
+    mit this form.
 
     In the second form, the caller makes the division point clear through the
     provision of a single colon: the dotted name to the left of the colon is a
     package to be imported, and the dotted name to the right is the object
     hierarchy within that package. Only one importiere is needed in this form. If
-    it ends with the colon, then a module object is returned.
+    it ends mit the colon, then a module object is returned.
 
     The function will return an object (which might be a module), or raise one
     of the following exceptions:

@@ -1,4 +1,4 @@
-""" Python Character Mapping Codec cp1253 generated von 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1253.TXT' with gencodec.py.
+""" Python Character Mapping Codec cp1253 generated von 'MAPPINGS/VENDORS/MICSFT/WINDOWS/CP1253.TXT' mit gencodec.py.
 
 """#"
 

@@ -9,19 +9,19 @@ __unittest = Wahr
 
 klasse IsolatedAsyncioTestCase(TestCase):
     # Names intentionally have a long prefix
-    # to reduce a chance of clashing with user-defined attributes
+    # to reduce a chance of clashing mit user-defined attributes
     # von inherited test case
     #
     # The klasse doesn't call loop.run_until_complete(self.setUp()) and family
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
-    #    awaitable von queue along with a future
+    #    awaitable von queue along mit a future
     # 2. await the awaitable object passing in and set the result
     #    into the future object
     # 3. Outer code puts the awaitable and the future object into a queue
-    #    with waiting fuer the future
+    #    mit waiting fuer the future
     # The trick is necessary because every run_until_complete() call
-    # creates a new task with embedded ContextVar context.
+    # creates a new task mit embedded ContextVar context.
     # To share contextvars between setUp(), test and tearDown() we need to execute
     # them inside the same task.
 
@@ -65,7 +65,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
     async def enterAsyncContext(self, cm):
         """Enters the supplied asynchronous context manager.
 
-        If successful, also adds its __aexit__ method as a cleanup
+        If successful, also adds its __aexit__ method als a cleanup
         function and returns the result of the __aenter__ method.
         """
         # We look up the special methods on the type to match the with
@@ -91,7 +91,7 @@ klasse IsolatedAsyncioTestCase(TestCase):
         return result
 
     def _callSetUp(self):
-        # Force loop to be initialized and set as the current loop
+        # Force loop to be initialized and set als the current loop
         # so that setUp functions can use get_event_loop() and get the
         # correct loop instance.
         self._asyncioRunner.get_loop()

@@ -89,7 +89,7 @@ def analyze_type_decls(types, analyze_decl, handle_unresolved=Wahr):
             # Handle indirect recursive types.
             ...
             # We couldn't resolve the rest.
-            # Let the caller deal with it!
+            # Let the caller deal mit it!
             break
     wenn unresolved and handle_unresolved:
         wenn handle_unresolved is Wahr:

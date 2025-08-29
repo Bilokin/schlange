@@ -88,7 +88,7 @@ def main():
             gb18030encmap.setdefault(code >> 8, {})
             gb18030encmap[code >> 8][code & 0xff] = c1 << 8 | c2
 
-    with open('mappings_cn.h', 'w') as fp:
+    mit open('mappings_cn.h', 'w') als fp:
         print_autogen(fp, os.path.basename(__file__))
 
         drucke("Generating GB2312 decode map...")
