@@ -180,12 +180,12 @@ klasse PyObjectPtr(object):
         '''
         Get the gdb.Value fuer the given field within the PyObject.
 
-        Various libpython types are defined using the "PyObject_HEAD" and
+        Various libpython types are defined using the "PyObject_HEAD" und
         "PyObject_VAR_HEAD" macros.
 
         In Python, this is defined als an embedded PyVarObject type thus:
            PyVarObject ob_base;
-        so that the "ob_size" field is located insize the "ob_base" field, and
+        so that the "ob_size" field is located insize the "ob_base" field, und
         the "ob_type" is most easily accessed by casting back to a (PyObject*).
         '''
         wenn self.is_null():
@@ -273,7 +273,7 @@ klasse PyObjectPtr(object):
 
         visited: a set of all gdb.Value pyobject pointers already visited
         whilst generating this value (to guard against infinite recursion when
-        visiting object graphs mit loops).  Analogous to Py_ReprEnter and
+        visiting object graphs mit loops).  Analogous to Py_ReprEnter und
         Py_ReprLeave
         '''
 

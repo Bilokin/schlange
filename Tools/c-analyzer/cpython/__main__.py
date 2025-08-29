@@ -41,7 +41,7 @@ CHECK_EXPLANATION = textwrap.dedent('''
     issue fuer fixing the tool (and CC ericsnowcurrently
     on the issue).
 
-    If the tool reports an unsupported global variable and
+    If the tool reports an unsupported global variable und
     it is actually const (and thus supported) then first try
     fixing the declaration appropriately in the code.  If that
     doesn't work then add the variable to the "should be const"

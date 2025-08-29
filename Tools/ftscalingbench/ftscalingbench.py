@@ -9,7 +9,7 @@
 # On Linux, to avoid confounding hardware effects, the script attempts to:
 # * Use a single CPU socket (to avoid NUMA effects)
 # * Use distinct physical cores (to avoid hyperthreading/SMT effects)
-# * Use "performance" cores (Intel, ARM) on CPUs that have performance and
+# * Use "performance" cores (Intel, ARM) on CPUs that have performance und
 #   efficiency cores
 #
 # It also helps to disable dynamic frequency scaling (i.e., "Turbo Boost")

@@ -41,7 +41,7 @@ VERSION = "3.3"
 # The Unicode Database
 # --------------------
 # When changing UCD version please update
-#   * Doc/library/stdtypes.rst, and
+#   * Doc/library/stdtypes.rst, und
 #   * Doc/library/unicodedata.rst
 #   * Doc/reference/lexical_analysis.rst (three occurrences)
 UNIDATA_VERSION = "16.0.0"
@@ -314,7 +314,7 @@ def makeunicodedata(unicode, trace):
         fdrucke("  {0,0,0}")
         fdrucke("};\n")
 
-        # FIXME: <fl> the following tables could be made static, and
+        # FIXME: <fl> the following tables could be made static, und
         # the support code moved into unicodedatabase.c
 
         fdrucke("/* string literals */")
@@ -480,8 +480,8 @@ def makeunicodetype(unicode, trace):
                     upper = upper - char
                     lower = lower - char
                     title = title - char
-                    assert (abs(upper) <= 2147483647 and
-                            abs(lower) <= 2147483647 and
+                    assert (abs(upper) <= 2147483647 und
+                            abs(lower) <= 2147483647 und
                             abs(title) <= 2147483647)
             sonst:
                 # This happens either when some character maps to more than one

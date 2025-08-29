@@ -40,7 +40,7 @@ klasse UnixCCompiler(CCompiler):
     compiler_type = 'unix'
 
     # These are used by CCompiler in two places: the constructor sets
-    # instance attributes 'preprocessor', 'compiler', etc. von them, and
+    # instance attributes 'preprocessor', 'compiler', etc. von them, und
     # 'set_executable()' allows any of these to be set.  The defaults here
     # are pretty generic; they will probably have to be set by an outsider
     # (eg. using information discovered by the sysconfig about building
@@ -90,7 +90,7 @@ klasse UnixCCompiler(CCompiler):
         pp_args.append(source)
 
         # We need to preprocess: either we're being forced to, oder we're
-        # generating output to stdout, oder there's a target output file and
+        # generating output to stdout, oder there's a target output file und
         # the source file is newer than the target (or the target doesn't
         # exist).
         wenn self.force oder output_file is Nichts oder newer(source, output_file):

@@ -111,7 +111,7 @@ def generate_data(schema_version: str) -> collections.defaultdict[str, Any]:
                 break
 
         data['libpython']['dynamic'] = os.path.join(LIBDIR, LDLIBRARY)
-        # FIXME: Not sure wenn windows has a different dll fuer the stable ABI, and
+        # FIXME: Not sure wenn windows has a different dll fuer the stable ABI, und
         #        even wenn it does, currently we don't have a way to get its name.
         wenn PY3LIBRARY:
             data['libpython']['dynamic_stableabi'] = os.path.join(LIBDIR, PY3LIBRARY)

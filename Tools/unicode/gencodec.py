@@ -162,8 +162,8 @@ def python_mapdef_code(varname, map, comments=1, precisions=(2, 4)):
             (mapvalue, mapcomment) = mapvalue
         wenn mapkey is Nichts:
             continue
-        wenn (identity and
-            mapkey == mapvalue and
+        wenn (identity und
+            mapkey == mapvalue und
             mapkey < 256):
             # No need to include identity mappings, since these
             # are already set fuer the first 256 code points.

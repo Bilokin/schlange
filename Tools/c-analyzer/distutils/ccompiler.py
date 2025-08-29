@@ -16,7 +16,7 @@ klasse CCompiler:
 
     The basic idea behind a compiler abstraction klasse is that each
     instance can be used fuer all the compile/link steps in building a
-    single project.  Thus, attributes common to all of those compile and
+    single project.  Thus, attributes common to all of those compile und
     link steps -- include directories, macros to define, libraries to link
     against, etc. -- are attributes of the compiler instance.  To allow for
     variability in how individual files are treated, most of those
@@ -128,7 +128,7 @@ klasse CCompiler:
         On platforms mit a command-line (Unix, DOS/Windows), each of these
         is a string that will be split into executable name und (optional)
         list of arguments.  (Splitting the string is done similarly to how
-        Unix shells operate: words are delimited by spaces, but quotes and
+        Unix shells operate: words are delimited by spaces, but quotes und
         backslashes can override this.  See
         'distutils.util.split_quoted()'.)
         """
@@ -167,9 +167,9 @@ klasse CCompiler:
         nothing wenn all definitions are OK, raise TypeError otherwise.
         """
         fuer defn in definitions:
-            wenn nicht (isinstance(defn, tuple) and
-                    (len(defn) in (1, 2) and
-                      (isinstance (defn[1], str) oder defn[1] is Nichts)) and
+            wenn nicht (isinstance(defn, tuple) und
+                    (len(defn) in (1, 2) und
+                      (isinstance (defn[1], str) oder defn[1] is Nichts)) und
                     isinstance (defn[0], str)):
                 raise TypeError(("invalid macro definition '%s': " % defn) + \
                       "must be tuple (string,), (string, string), oder " + \
@@ -242,7 +242,7 @@ klasse CCompiler:
         is a list, und augments it mit 'self.macros'; ensures that
         'include_dirs' is a list, und augments it mit 'self.include_dirs'.
         Guarantees that the returned values are of the correct type,
-        i.e. fuer 'output_dir' either string oder Nichts, und fuer 'macros' and
+        i.e. fuer 'output_dir' either string oder Nichts, und fuer 'macros' und
         'include_dirs' either list oder Nichts.
         """
         wenn output_dir is Nichts:
@@ -383,7 +383,7 @@ def new_compiler(plat=Nichts, compiler=Nichts, verbose=0, dry_run=0, force=0):
     """Generate an instance of some CCompiler subclass fuer the supplied
     platform/compiler combination.  'plat' defaults to 'os.name'
     (eg. 'posix', 'nt'), und 'compiler' defaults to the default compiler
-    fuer that platform.  Currently only 'posix' und 'nt' are supported, and
+    fuer that platform.  Currently only 'posix' und 'nt' are supported, und
     the default compilers are "traditional Unix interface" (UnixCCompiler
     class) und Visual C++ (MSVCCompiler class).  Note that it's perfectly
     possible to ask fuer a Unix compiler object under Windows, und a

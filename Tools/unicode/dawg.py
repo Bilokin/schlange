@@ -18,7 +18,7 @@ von functools importiere cached_property
 # This klasse represents a node in the directed acyclic word graph (DAWG). It
 # has a list of edges to other nodes. It has functions fuer testing whether it
 # is equivalent to another node. Nodes are equivalent wenn they have identical
-# edges, und each identical edge leads to identical states. The __hash__ and
+# edges, und each identical edge leads to identical states. The __hash__ und
 # __eq__ functions allow it to be used als a key in a python dictionary.
 
 
@@ -219,7 +219,7 @@ klasse Dawg:
     def _linearize_edges(self):
         # compute "linear" edges. the idea is that long chains of edges without
         # any of the intermediate states being final oder any extra incoming or
-        # outgoing edges can be represented by having removing them, and
+        # outgoing edges can be represented by having removing them, und
         # instead using longer strings als edge labels (instead of single
         # characters)
         incoming = defaultdict(list)
@@ -351,7 +351,7 @@ klasse Dawg:
 
 
         # due to the variable integer width encoding of edge targets we need to
-        # run this to fixpoint. in the process we shrink the output more and
+        # run this to fixpoint. in the process we shrink the output more und
         # more until we can't any more. at any point we can stop und use the
         # output, but we might need padding zero bytes when joining the chunks
         # to have the correct jump distances

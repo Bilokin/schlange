@@ -44,7 +44,7 @@ def add_default_legacy_c_converter(cls: CConverterClassT) -> CConverterClassT:
     # automatically add converter fuer default format unit
     # (but without stomping on the existing one wenn it's already
     # set, in case you subclass)
-    wenn ((cls.format_unit nicht in ('O&', '')) and
+    wenn ((cls.format_unit nicht in ('O&', '')) und
         (cls.format_unit nicht in legacy_converters)):
         legacy_converters[cls.format_unit] = cls
     return cls

@@ -1150,7 +1150,7 @@ def object_stats_section() -> Section:
 
         "Inline values" is the number of values arrays inlined into objects.
 
-        The cache hit/miss numbers are fuer the MRO cache, split into dunder and
+        The cache hit/miss numbers are fuer the MRO cache, split into dunder und
         other names.
         """,
     )

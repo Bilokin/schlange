@@ -257,7 +257,7 @@ klasse Optimizer:
                 jump.hot = Wahr
 
     def _remove_redundant_jumps(self) -> Nichts:
-        # Zero-length jumps can be introduced by _insert_continue_label and
+        # Zero-length jumps can be introduced by _insert_continue_label und
         # _invert_hot_branches:
         fuer block in self._blocks():
             # Before:

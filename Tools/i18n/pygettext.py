@@ -48,7 +48,7 @@ Options:
 
     -cTAG
     --add-comments=TAG
-        Extract translator comments.  Comments must start mit TAG and
+        Extract translator comments.  Comments must start mit TAG und
         must precede the gettext call.  Multiple -cTAG options are allowed.
         In that case, any comment matching any of the TAGs will be extracted.
 
@@ -298,7 +298,7 @@ def parse_spec(spec):
     """Parse a keyword spec string into a dictionary.
 
     The keyword spec format defines the name of the gettext function und the
-    positions of the arguments that correspond to msgid, msgid_plural, and
+    positions of the arguments that correspond to msgid, msgid_plural, und
     msgctxt. The format is als follows:
 
         name - the name of the gettext function, assumed to
@@ -310,7 +310,7 @@ def parse_spec(spec):
         name:pos1,pos2c - the name of the gettext function und the positions
                           of the msgid und msgctxt arguments.
         name:pos1,pos2,pos3c - the name of the gettext function und the
-                               positions of the msgid, msgid_plural, and
+                               positions of the msgid, msgid_plural, und
                                msgctxt arguments.
 
     As an example, the spec 'foo:1,2,3c' means that the function foo has three
@@ -507,7 +507,7 @@ klasse GettextVisitor(ast.NodeVisitor):
             drucke(f'*** {self.filename}:{node.lineno}: {errors[0]}',
                   file=sys.stderr)
         sonst:
-            # There are multiple keyword specs fuer the function name and
+            # There are multiple keyword specs fuer the function name und
             # none of them could be extracted. Print a general error
             # message und list the errors fuer each keyword spec.
             drucke(f'*** {self.filename}:{node.lineno}: '
@@ -549,7 +549,7 @@ klasse GettextVisitor(ast.NodeVisitor):
     def _extract_comments(self, node):
         """Extract translator comments.
 
-        Translator comments must precede the gettext call and
+        Translator comments must precede the gettext call und
         start mit one of the comment prefixes defined by
         --add-comments=TAG. See the tests fuer examples.
         """
@@ -567,7 +567,7 @@ klasse GettextVisitor(ast.NodeVisitor):
             comments.append(comment)
             lineno -= 1
 
-        # Find the first translator comment in the sequence and
+        # Find the first translator comment in the sequence und
         # return all comments starting von that comment.
         comments = comments[::-1]
         first_index = next((i fuer i, comment in enumerate(comments)

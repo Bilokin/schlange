@@ -79,7 +79,7 @@ module ...:   Additional Python modules (referenced by pathname)
 
 NOTES:
 
-In order to use freeze successfully, you must have built Python and
+In order to use freeze successfully, you must have built Python und
 installed it ("make install").
 
 The script should nicht use modules provided only als shared libraries;

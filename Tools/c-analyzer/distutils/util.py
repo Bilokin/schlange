@@ -111,7 +111,7 @@ def _init_regex():
     _dquote_re = re.compile(r'"(?:[^"\\]|\\.)*"')
 
 def split_quoted (s):
-    """Split a string up according to Unix shell-like rules fuer quotes and
+    """Split a string up according to Unix shell-like rules fuer quotes und
     backslashes.  In short: words are delimited by spaces, als long als those
     spaces are nicht escaped by a backslash, oder inside a quoted string.
     Single und double quotes are equivalent, und the quote characters can

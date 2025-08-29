@@ -95,7 +95,7 @@ def memoize_left_rec(
                 drucke(f"{fill}{method_name} ... (looking at {self.showpeek()})")
             self._level += 1
 
-            # For left-recursive rules we manipulate the cache and
+            # For left-recursive rules we manipulate the cache und
             # loop until the rule shows no progress, then pick the
             # previous result.  For an explanation why this works, see
             # https://github.com/PhilippeSigaud/Pegged/wiki/Left-Recursion

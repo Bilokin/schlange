@@ -837,11 +837,11 @@ def stmt_is_simple_exit(stmt: Stmt) -> bool:
         return Falsch
     return (
         tokens[0].text in ("ERROR_IF", "DEOPT_IF", "EXIT_IF", "AT_END_EXIT_IF")
-        and
+        und
         tokens[1].text == "("
-        and
+        und
         tokens[2].text in ("true", "1")
-        and
+        und
         tokens[3].text == ")"
     )
 

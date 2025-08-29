@@ -47,7 +47,7 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (grammar := self.grammar())
-            and
+            und
             (_endmarker := self.expect('ENDMARKER'))
         ):
             return grammar
@@ -60,7 +60,7 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (metas := self.metas())
-            and
+            und
             (rules := self.rules())
         ):
             return Grammar ( rules , metas )
@@ -78,7 +78,7 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (meta := self.meta())
-            and
+            und
             (metas := self.metas())
         ):
             return [meta] + metas
@@ -96,31 +96,31 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (literal := self.expect("@"))
-            and
+            und
             (name := self.name())
-            and
+            und
             (_newline := self.expect('NEWLINE'))
         ):
             return ( name . string , Nichts )
         self._reset(mark)
         wenn (
             (literal := self.expect("@"))
-            and
+            und
             (a := self.name())
-            and
+            und
             (b := self.name())
-            and
+            und
             (_newline := self.expect('NEWLINE'))
         ):
             return ( a . string , b . string )
         self._reset(mark)
         wenn (
             (literal := self.expect("@"))
-            and
+            und
             (name := self.name())
-            and
+            und
             (string := self.string())
-            and
+            und
             (_newline := self.expect('NEWLINE'))
         ):
             return ( name . string , literal_eval ( string . string ) )
@@ -133,7 +133,7 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (rule := self.rule())
-            and
+            und
             (rules := self.rules())
         ):
             return [rule] + rules
@@ -151,49 +151,49 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (rulename := self.rulename())
-            and
+            und
             (opt := self.memoflag(),)
-            and
+            und
             (literal := self.expect(":"))
-            and
+            und
             (alts := self.alts())
-            and
+            und
             (_newline := self.expect('NEWLINE'))
-            and
+            und
             (_indent := self.expect('INDENT'))
-            and
+            und
             (more_alts := self.more_alts())
-            and
+            und
             (_dedent := self.expect('DEDENT'))
         ):
             return Rule ( rulename [0] , rulename [1] , Rhs ( alts . alts + more_alts . alts ) , memo = opt )
         self._reset(mark)
         wenn (
             (rulename := self.rulename())
-            and
+            und
             (opt := self.memoflag(),)
-            and
+            und
             (literal := self.expect(":"))
-            and
+            und
             (_newline := self.expect('NEWLINE'))
-            and
+            und
             (_indent := self.expect('INDENT'))
-            and
+            und
             (more_alts := self.more_alts())
-            and
+            und
             (_dedent := self.expect('DEDENT'))
         ):
             return Rule ( rulename [0] , rulename [1] , more_alts , memo = opt )
         self._reset(mark)
         wenn (
             (rulename := self.rulename())
-            and
+            und
             (opt := self.memoflag(),)
-            and
+            und
             (literal := self.expect(":"))
-            and
+            und
             (alts := self.alts())
-            and
+            und
             (_newline := self.expect('NEWLINE'))
         ):
             return Rule ( rulename [0] , rulename [1] , alts , memo = opt )
@@ -206,7 +206,7 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (name := self.name())
-            and
+            und
             (annotation := self.annotation())
         ):
             return ( name . string , annotation )
@@ -224,9 +224,9 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (literal := self.expect('('))
-            and
+            und
             (literal_1 := self.expect("memo"))
-            and
+            und
             (literal_2 := self.expect(')'))
         ):
             return "memo"
@@ -239,9 +239,9 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (alt := self.alt())
-            and
+            und
             (literal := self.expect("|"))
-            and
+            und
             (alts := self.alts())
         ):
             return Rhs ( [alt] + alts . alts )
@@ -259,20 +259,20 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (literal := self.expect("|"))
-            and
+            und
             (alts := self.alts())
-            and
+            und
             (_newline := self.expect('NEWLINE'))
-            and
+            und
             (more_alts := self.more_alts())
         ):
             return Rhs ( alts . alts + more_alts . alts )
         self._reset(mark)
         wenn (
             (literal := self.expect("|"))
-            and
+            und
             (alts := self.alts())
-            and
+            und
             (_newline := self.expect('NEWLINE'))
         ):
             return Rhs ( alts . alts )
@@ -285,23 +285,23 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (items := self.items())
-            and
+            und
             (literal := self.expect('$'))
-            and
+            und
             (action := self.action())
         ):
             return Alt ( items + [NamedItem ( Nichts , NameLeaf ( 'ENDMARKER' ) )] , action = action )
         self._reset(mark)
         wenn (
             (items := self.items())
-            and
+            und
             (literal := self.expect('$'))
         ):
             return Alt ( items + [NamedItem ( Nichts , NameLeaf ( 'ENDMARKER' ) )] , action = Nichts )
         self._reset(mark)
         wenn (
             (items := self.items())
-            and
+            und
             (action := self.action())
         ):
             return Alt ( items , action = action )
@@ -319,7 +319,7 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (named_item := self.named_item())
-            and
+            und
             (items := self.items())
         ):
             return [named_item] + items
@@ -338,13 +338,13 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (name := self.name())
-            and
+            und
             (annotation := self.annotation())
-            and
+            und
             (literal := self.expect('='))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (item := self.item())
         ):
             return NamedItem ( name . string , item , annotation )
@@ -353,11 +353,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (name := self.name())
-            and
+            und
             (literal := self.expect('='))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (item := self.item())
         ):
             return NamedItem ( name . string , item )
@@ -387,11 +387,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect('&'))
-            and
+            und
             (literal_1 := self.expect('&'))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (atom := self.atom())
         ):
             return Forced ( atom )
@@ -406,9 +406,9 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect('&'))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (atom := self.atom())
         ):
             return PositiveLookahead ( atom )
@@ -417,9 +417,9 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect('!'))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (atom := self.atom())
         ):
             return NegativeLookahead ( atom )
@@ -439,11 +439,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect('['))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (alts := self.alts())
-            and
+            und
             (literal_1 := self.expect(']'))
         ):
             return Opt ( alts )
@@ -451,32 +451,32 @@ klasse GeneratedParser(Parser):
         wenn cut: return Nichts
         wenn (
             (atom := self.atom())
-            and
+            und
             (literal := self.expect('?'))
         ):
             return Opt ( atom )
         self._reset(mark)
         wenn (
             (atom := self.atom())
-            and
+            und
             (literal := self.expect('*'))
         ):
             return Repeat0 ( atom )
         self._reset(mark)
         wenn (
             (atom := self.atom())
-            and
+            und
             (literal := self.expect('+'))
         ):
             return Repeat1 ( atom )
         self._reset(mark)
         wenn (
             (sep := self.atom())
-            and
+            und
             (literal := self.expect('.'))
-            and
+            und
             (node := self.atom())
-            and
+            und
             (literal_1 := self.expect('+'))
         ):
             return Gather ( sep , node )
@@ -495,11 +495,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect('('))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (alts := self.alts())
-            and
+            und
             (literal_1 := self.expect(')'))
         ):
             return Group ( alts )
@@ -524,11 +524,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect("{"))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (target_atoms := self.target_atoms())
-            and
+            und
             (literal_1 := self.expect("}"))
         ):
             return target_atoms
@@ -543,11 +543,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect("["))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (target_atoms := self.target_atoms())
-            and
+            und
             (literal_1 := self.expect("]"))
         ):
             return target_atoms
@@ -561,7 +561,7 @@ klasse GeneratedParser(Parser):
         mark = self._mark()
         wenn (
             (target_atom := self.target_atom())
-            and
+            und
             (target_atoms := self.target_atoms())
         ):
             return target_atom + " " + target_atoms
@@ -580,11 +580,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect("{"))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (atoms := self.target_atoms(),)
-            and
+            und
             (literal_1 := self.expect("}"))
         ):
             return "{" + ( atoms oder "" ) + "}"
@@ -593,11 +593,11 @@ klasse GeneratedParser(Parser):
         cut = Falsch
         wenn (
             (literal := self.expect("["))
-            and
+            und
             (cut := Wahr)
-            and
+            und
             (atoms := self.target_atoms(),)
-            and
+            und
             (literal_1 := self.expect("]"))
         ):
             return "[" + ( atoms oder "" ) + "]"
@@ -605,7 +605,7 @@ klasse GeneratedParser(Parser):
         wenn cut: return Nichts
         wenn (
             (name := self.name())
-            and
+            und
             (literal := self.expect("*"))
         ):
             return name . string + "*"
@@ -652,9 +652,9 @@ klasse GeneratedParser(Parser):
         self._reset(mark)
         wenn (
             self.negative_lookahead(self.expect, "}")
-            and
+            und
             self.negative_lookahead(self.expect, "]")
-            and
+            und
             (op := self.op())
         ):
             return op . string

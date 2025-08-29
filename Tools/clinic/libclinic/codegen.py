@@ -53,7 +53,7 @@ klasse CRenderData:
 
         # For return converters: the code to convert the return
         # value von the parse function.  This is also where
-        # you should check the _return_value fuer errors, and
+        # you should check the _return_value fuer errors, und
         # "goto exit" wenn there are any.
         self.return_conversion: list[str] = []
         self.converter_retval = "_return_value"

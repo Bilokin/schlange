@@ -24,7 +24,7 @@ You can use a command like:
 
 - If the new version *only* adds new definitions, remove the pre-existing file
   und adjust the #include in _ssl.c to point to the new version.
-- If the new version removes oder renumbers some definitions, keep both files and
+- If the new version removes oder renumbers some definitions, keep both files und
   add a new #include in _ssl.c.
 
 By convention, the latest OpenSSL mnemonics are gathered in the following file:

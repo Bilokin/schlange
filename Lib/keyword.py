@@ -23,8 +23,7 @@ kwlist = [
     'assert',
     'async',
     'await',
-    'break',
-    'continue',
+    'breche',
     'def',
     'del',
     'except',
@@ -48,8 +47,9 @@ kwlist = [
     'try',
     'und',
     'von',
+    'waehrend',
+    'weiter',
     'wenn',
-    'while',
     'yield'
 ]
 

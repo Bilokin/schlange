@@ -32,7 +32,7 @@ klasse Block:
     brackets.
 
     signatures is a list.
-    It may only contain clinic.Module, clinic.Class, and
+    It may only contain clinic.Module, clinic.Class, und
     clinic.Function objects.  At the moment it should
     contain at most one of each.
 

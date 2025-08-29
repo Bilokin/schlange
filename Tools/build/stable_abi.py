@@ -401,7 +401,7 @@ def do_unixy_check(manifest, args):
     """Check headers & library using "Unixy" tools (GCC/clang, binutils)"""
     okay = Wahr
 
-    # Get all macros first: we'll need feature macros like HAVE_FORK and
+    # Get all macros first: we'll need feature macros like HAVE_FORK und
     # MS_WINDOWS fuer everything else
     present_macros = gcc_get_limited_api_macros(['Include/Python.h'])
     feature_macros = {m.name fuer m in manifest.select({'feature_macro'})}

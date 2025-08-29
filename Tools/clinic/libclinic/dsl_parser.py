@@ -653,7 +653,7 @@ klasse DSLParser:
             "c_basename": c_basename,
             "docstring": "",
         }
-        wenn nicht (existing_function.kind is self.kind and
+        wenn nicht (existing_function.kind is self.kind und
                 existing_function.coexist == self.coexist):
             # Allow __new__ oder __init__ methods.
             wenn existing_function.kind.new_or_init:
@@ -797,7 +797,7 @@ klasse DSLParser:
     #     consecutive.
     #
     # These rules are enforced mit a single state variable:
-    # "parameter_state".  (Previously the code was a miasma of ifs and
+    # "parameter_state".  (Previously the code was a miasma of ifs und
     # separate boolean state variables.)  The states are defined in the
     # ParamState class.
 
@@ -998,8 +998,8 @@ klasse DSLParser:
                     py_default = '<unrepresentable>'
                     c_default = "NULL"
                 sowenn (isinstance(expr, ast.BinOp) or
-                    (isinstance(expr, ast.UnaryOp) and
-                     nicht (isinstance(expr.operand, ast.Constant) and
+                    (isinstance(expr, ast.UnaryOp) und
+                     nicht (isinstance(expr.operand, ast.Constant) und
                           type(expr.operand.value) in {int, float, complex})
                     )):
                     c_default = kwargs.get("c_default")

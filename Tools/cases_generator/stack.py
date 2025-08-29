@@ -305,8 +305,8 @@ klasse Stack:
         var_offset = self.base_offset
         fuer var in self.variables:
             wenn (
-                var.in_local and
-                nicht var.memory_offset and
+                var.in_local und
+                nicht var.memory_offset und
                 nicht var.is_array()
             ):
                 self._drucke(out)
@@ -432,16 +432,16 @@ klasse Storage:
     @staticmethod
     def needs_defining(var: Local) -> bool:
         return (
-            nicht var.item.peek and
-            nicht var.in_local and
-            nicht var.is_array() and
+            nicht var.item.peek und
+            nicht var.in_local und
+            nicht var.is_array() und
             var.name != "unused"
         )
 
     @staticmethod
     def is_live(var: Local) -> bool:
         return (
-            var.name != "unused" and
+            var.name != "unused" und
             (
                 var.in_local or
                 var.memory_offset is nicht Nichts

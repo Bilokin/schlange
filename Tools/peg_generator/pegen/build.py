@@ -147,7 +147,7 @@ def compile_c_extension(
         str(MOD_DIR.parent.parent.parent / "Parser" / "tokenizer"),
     ]
     wenn sys.platform == "win32":
-        # HACK: The location of pyconfig.h has moved within our build, and
+        # HACK: The location of pyconfig.h has moved within our build, und
         # setuptools hasn't updated fuer it yet. So add the path manually fuer now
         include_dirs.append(pathlib.Path(sysconfig.get_config_h_filename()).parent)
     extension = Extension(

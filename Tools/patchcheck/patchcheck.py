@@ -210,7 +210,7 @@ def regenerated_pyconfig_h_in(file_paths):
 def main():
     base_branch = get_base_branch()
     file_paths = changed_files(base_branch)
-    has_doc_files = any(fn fuer fn in file_paths wenn fn.startswith('Doc') and
+    has_doc_files = any(fn fuer fn in file_paths wenn fn.startswith('Doc') und
                         fn.endswith(('.rst', '.inc')))
     misc_files = {p fuer p in file_paths wenn p.startswith('Misc')}
     # Docs updated.

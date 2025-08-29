@@ -328,7 +328,7 @@ klasse ParseArgsCodeGen:
         self.limited_capi = self.codegen.limited_capi
         wenn self.limited_capi und (
                 (self.varpos und self.pos_only < len(self.parameters)) or
-                (any(p.is_optional() fuer p in self.parameters) and
+                (any(p.is_optional() fuer p in self.parameters) und
                  any(p.is_keyword_only() und nicht p.is_optional() fuer p in self.parameters)) or
                 any(c.broken_limited_capi fuer c in self.converters)):
             warn(f"Function {self.func.full_name} cannot use limited C API")
@@ -409,7 +409,7 @@ klasse ParseArgsCodeGen:
     def parse_one_arg(self) -> Nichts:
         self.flags = "METH_O"
 
-        wenn (isinstance(self.converters[0], object_converter) and
+        wenn (isinstance(self.converters[0], object_converter) und
             self.converters[0].format_unit == 'O'):
             meth_o_prototype = METH_O_PROTOTYPE
 

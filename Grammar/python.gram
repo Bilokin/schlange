@@ -129,8 +129,8 @@ simple_stmt[stmt_ty] (memo):
     | &'del' del_stmt
     | &'yield' yield_stmt
     | &'assert' assert_stmt
-    | &'break' break_stmt
-    | &'continue' continue_stmt
+    | &'breche' break_stmt
+    | &'weiter' continue_stmt
     | &'global' global_stmt
     | &'nonlocal' nonlocal_stmt
 
@@ -141,7 +141,7 @@ compound_stmt[stmt_ty]:
     | &('mit' | 'async') with_stmt
     | &('fuer' | 'async') for_stmt
     | &'try' try_stmt
-    | &'while' while_stmt
+    | &'waehrend' while_stmt
     | match_stmt
 
 # SIMPLE STATEMENTS
@@ -195,10 +195,10 @@ pass_stmt[stmt_ty]:
     | 'pass' { _PyAST_Pass(EXTRA) }
 
 break_stmt[stmt_ty]:
-    | 'break' { _PyAST_Break(EXTRA) }
+    | 'breche' { _PyAST_Break(EXTRA) }
 
 continue_stmt[stmt_ty]:
-    | 'continue' { _PyAST_Continue(EXTRA) }
+    | 'weiter' { _PyAST_Continue(EXTRA) }
 
 global_stmt[stmt_ty]: 'global' a[asdl_expr_seq*]=','.NAME+ {
     _PyAST_Global(CHECK(asdl_identifier_seq*, _PyPegen_map_names_to_ids(p, a)), EXTRA) }
@@ -397,7 +397,7 @@ else_block[asdl_stmt_seq*]:
 
 while_stmt[stmt_ty]:
     | invalid_while_stmt
-    | 'while' a=named_expression ':' b=block c=[else_block] { _PyAST_While(a, b, c, EXTRA) }
+    | 'waehrend' a=named_expression ':' b=block c=[else_block] { _PyAST_While(a, b, c, EXTRA) }
 
 # For statement
 # -------------
@@ -1484,9 +1484,9 @@ invalid_else_stmt:
         RAISE_INDENTATION_ERROR("expected an indented block after 'sonst' statement on line %d", a->lineno) }
     | 'sonst' ':' block 'sowenn' { RAISE_SYNTAX_ERROR("'sowenn' block follows an 'sonst' block")}
 invalid_while_stmt:
-    | 'while' named_expression NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
-    | a='while' named_expression ':' NEWLINE !INDENT {
-        RAISE_INDENTATION_ERROR("expected an indented block after 'while' statement on line %d", a->lineno) }
+    | 'waehrend' named_expression NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
+    | a='waehrend' named_expression ':' NEWLINE !INDENT {
+        RAISE_INDENTATION_ERROR("expected an indented block after 'waehrend' statement on line %d", a->lineno) }
 invalid_for_stmt:
     | ['async'] 'fuer' star_targets 'in' star_expressions NEWLINE { RAISE_SYNTAX_ERROR("expected ':'") }
     | ['async'] a='fuer' star_targets 'in' star_expressions ':' NEWLINE !INDENT {

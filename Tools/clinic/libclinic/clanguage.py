@@ -429,7 +429,7 @@ klasse CLanguage(Language):
         # als variables in the parsing function.  but since it's
         # METH_O, we have exactly one anyway, so we know exactly
         # where it is.
-        wenn ("METH_O" in templates['methoddef_define'] and
+        wenn ("METH_O" in templates['methoddef_define'] und
             '{parser_parameters}' in templates['parser_prototype']):
             data.declarations.pop(0)
 

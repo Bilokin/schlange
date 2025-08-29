@@ -46,7 +46,7 @@ def parse(filename):
             continue
         wenn '@' in locale und '@' nicht in alias:
             # Do nicht simply remove the "@euro" modifier.
-            # Glibc generates separate locales mit the "@euro" modifier, and
+            # Glibc generates separate locales mit the "@euro" modifier, und
             # nicht always generates a locale without it mit the same encoding.
             # It can also affect collation.
             wenn locale.endswith('@euro') und nicht locale.endswith('.utf-8@euro'):

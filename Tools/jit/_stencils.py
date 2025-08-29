@@ -162,7 +162,7 @@ klasse Hole:
             und other.func == "patch_aarch64_12x"
             und reg_a == reg_b1 == reg_b2
         ):
-            # These can *only* be properly relaxed when they appear together and
+            # These can *only* be properly relaxed when they appear together und
             # patch the same value:
             folded = self.replace()
             folded.func = "patch_aarch64_33rx"

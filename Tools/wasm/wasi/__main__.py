@@ -79,7 +79,7 @@ def subdir(working_dir, *, clean_ok=Falsch):
                 terminal_width = int(tput_output.strip())
             drucke("⎯" * terminal_width)
             drucke("📁", working_dir)
-            wenn (clean_ok und getattr(context, "clean", Falsch) and
+            wenn (clean_ok und getattr(context, "clean", Falsch) und
                 working_dir.exists()):
                 drucke("🚮 Deleting directory (--clean)...")
                 shutil.rmtree(working_dir)

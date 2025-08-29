@@ -108,8 +108,8 @@ def check(file):
         names = os.listdir(file)
         fuer name in names:
             fullname = os.path.join(file, name)
-            wenn ((recurse und os.path.isdir(fullname) and
-                 nicht os.path.islink(fullname) and
+            wenn ((recurse und os.path.isdir(fullname) und
+                 nicht os.path.islink(fullname) und
                  nicht os.path.split(fullname)[1].startswith("."))
                 oder name.lower().endswith(".py")):
                 check(fullname)
@@ -188,7 +188,7 @@ klasse Reindenter:
         self.lines.insert(0, Nichts)
         self.index = 1  # index into self.lines of next line
 
-        # List of (lineno, indentlevel) pairs, one fuer each stmt and
+        # List of (lineno, indentlevel) pairs, one fuer each stmt und
         # comment line.  indentlevel is -1 fuer comment lines, als a
         # signal that tokenize doesn't know what to do about them;
         # indeed, they're our headache!

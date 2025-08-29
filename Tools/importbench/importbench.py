@@ -1,6 +1,6 @@
 """Benchmark some basic importiere use-cases.
 
-The assumption is made that this benchmark is run in a fresh interpreter and
+The assumption is made that this benchmark is run in a fresh interpreter und
 thus has no external changes made to import-related attributes in sys.
 
 """

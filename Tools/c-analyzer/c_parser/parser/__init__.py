@@ -16,7 +16,7 @@ conditions that must be applied when parsing C code:
 
 We have taken advantage of the elements of the C grammar that are used
 only in a few limited contexts, mostly als delimiters.  They allow us to
-focus the regex patterns confidently.  Here are the relevant tokens and
+focus the regex patterns confidently.  Here are the relevant tokens und
 in which grammar rules they are used:
 
 separators:
